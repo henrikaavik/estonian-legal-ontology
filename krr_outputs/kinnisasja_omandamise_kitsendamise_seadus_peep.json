@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KOK_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Kinnisasja omandamise kitsendamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Kinnisasja omandamise kitsendamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Kinnisasja omandamise kitsendamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Kinnisasja omandamise kitsendamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Restrictions on Acquisition of Immovables Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/106072023041.xml"
+        "@id": "https://www.riigiteataja.ee/akt/106072023041"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/106072023041/xml"
+      },
+      "estleg:globalId": "106072023041",
+      "eli:id_local": "106072023041",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "1002408",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "9c49247b0f14cda440ae4199b5a6c0fb082e30fbc68f0d856b1380e90bdc8680",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2012-03-04",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -66,10 +82,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2024-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/527122023007"
@@ -190,14 +202,40 @@
         {
           "@id": "estleg:Draft_REM11_0165"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/527122023007"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_KOK_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–3 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:KOK_TopicScheme"
+      },
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:KOK_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Kinnisasja omandamise kitsendamise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Kinnisasja omandamise kitsendamise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_KOK_1"
@@ -214,26 +252,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_KOK_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–3 Üldsätted",
-      "skos:prefLabel": "§1–3 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:KOK_TopicScheme"
-      },
-      "estleg:provisionCount": 3
-    },
-    {
       "@id": "estleg:Chapter_KOK_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
@@ -253,8 +280,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§4–9 Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendused",
-      "skos:prefLabel": "§4–9 Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendused",
+      "rdfs:label": {
+        "@value": "§4–9 Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendused",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§4–9 Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendused",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KOK_TopicScheme"
       },
@@ -266,7 +299,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendused",
+      "rdfs:label": {
+        "@value": "2. peatükk – Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendused",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
@@ -286,8 +322,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§10–10 Kinnisasja omandamise riigikaitselised kitsendused",
-      "skos:prefLabel": "§10–10 Kinnisasja omandamise riigikaitselised kitsendused",
+      "rdfs:label": {
+        "@value": "§10–10 Kinnisasja omandamise riigikaitselised kitsendused",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§10–10 Kinnisasja omandamise riigikaitselised kitsendused",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KOK_TopicScheme"
       },
@@ -299,7 +341,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Kinnisasja omandamise riigikaitselised kitsendused",
+      "rdfs:label": {
+        "@value": "3. peatükk – Kinnisasja omandamise riigikaitselised kitsendused",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
@@ -319,8 +364,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§11–12 Rakendussätted",
-      "skos:prefLabel": "§11–12 Rakendussätted",
+      "rdfs:label": {
+        "@value": "§11–12 Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§11–12 Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KOK_TopicScheme"
       },
@@ -332,7 +383,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "4. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
@@ -352,12 +406,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab avalikust huvist tulenevad maatulundusmaa sihtotstarbega kinnisasja ning riigi julgeoleku kaalutlustest lähtuvad kinnisasja omandamise kitsendused. Avalik huvi käesoleva seaduse tähenduses on eelkõige põllumajandus- ja metsamaad sisaldava maatulundusmaa sihtotstarbega kinnisasja sihtotstarbelise ja jätkusuutliku majandamise edendamine. (2) Põllumajandusmaa käesoleva seaduse tähenduses on maatulundusmaa sihtotstarbega kinnisasja või selle osa kõlvikulises koosseisus",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab avalikust huvist tulenevad maatulundusmaa sihtotstarbega kinnisasja ning riigi julgeoleku kaalutlustest lähtuvad kinnisasja omandamise kitsendused. Avalik huvi käesoleva seaduse tähenduses on eelkõige põllumajandus- ja metsamaad sisaldava maatulundusmaa sihtotstarbega kinnisasja sihtotstarbelise ja jätkusuutliku majandamise edendamine. (2) Põllumajandusmaa käesoleva seaduse tähenduses on maatulundusmaa sihtotstarbega kinnisasja või selle osa kõlvikulises koosseisus",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab avalikust huvist tulenevad maatulundusmaa sihtotstarbega kinnisasja ning riigi julgeoleku kaalutlustest lähtuvad kinnisasja omandamise kitsendused. Avalik huvi käesoleva seaduse tähenduses on eelkõige põllumajandus- ja metsamaad sisaldava maatulundusmaa sihtotstarbega kinnisasja sihtotstarbelise ja jätkusuutliku majandamise edendamine. (2) Põllumajandusmaa käesoleva seaduse tähenduses on maatulundusmaa sihtotstarbega kinnisasja või selle osa kõlvikulises koosseisus olev haritava maa või loodusliku rohumaa või mõlema nimetatud maa kõlvik. (3) Metsamaa käesoleva seaduse tähenduses on maatulundusmaa sihtotstarbega kinnisasja või selle osa kõlvikulises koosseisus olev metsamaa kõlvik. (4) Omandatava kinnisasja kõlvikuline koosseis tehakse kindlaks maakatastri andmete alusel. (5) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_1"
@@ -475,13 +535,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduse kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 2. Seaduse kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Käesolevat seadust ei kohaldata kinnisasja omandamise korral: maareformi seaduse alusel; kui omandaja on Eesti riik, Eesti kohaliku omavalitsuse üksus, muu Eestis loodud avalik-õiguslik juriidiline isik või maapiirkonna ettevõtluse toetamiseks asutatud riigi sihtasutus; kui kaasomanik omandab kinnisasja mõttelise osa teiselt kaasomanikult; abikaasade või registreeritud elukaaslaste ühisomandisse, kui vähemalt ühele abikaasadest või registreeritud elukaaslastest käesolevas seaduses",
-      "estleg:legalText": "(1) Käesolevat seadust ei kohaldata kinnisasja omandamise korral: maareformi seaduse alusel; kui omandaja on Eesti riik, Eesti kohaliku omavalitsuse üksus, muu Eestis loodud avalik-õiguslik juriidiline isik või maapiirkonna ettevõtluse toetamiseks asutatud riigi sihtasutus; kui kaasomanik omandab kinnisasja mõttelise osa teiselt kaasomanikult; abikaasade või registreeritud elukaaslaste ühisomandisse, kui vähemalt ühele abikaasadest või registreeritud elukaaslastest käesolevas seaduses sätestatud kitsendusi ei kohaldata; võõrandaja abikaasa, registreeritud elukaaslase, alaneja või üleneja sugulase poolt; pärimise teel; kui kinnisasi omandatakse juriidiliste isikute ühinemise või jagunemise teel. (2) Kinnisasja omandamisega on käesolevas seaduses võrdsustatud kinnisasja mõttelise osa omandamine, kui kinnisasi tervikuna vastab käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele või asub käesoleva seaduse § 10 lõikes 1 nimetatud maa-alal. (3) Käesoleva seaduse §-des 5 ja 10 on kinnisasja omandamisega võrdsustatud hoonestusõiguse omandamine, kinnisasja koormamine kasutusvaldusega rohkem kui kümneks aastaks või tähtajatult ning kinnisasja koormamine hoonestusõigusega. Käesolevat lõiget ei kohaldata, kui hoonestusõiguse omandab kinnisasja omanik või kui kinnisasi koormatakse kasutusvaldusega või hoonestusõigusega kinnisasja omaniku kasuks. (4) Käesolevat seadust ei kohaldata korteriomandi ja korterihoonestusõiguse omandamise korral ning kinnisasja koormamise korral korterihoonestusõigusega.",
+      "estleg:summary": {
+        "@value": "(1) Käesolevat seadust ei kohaldata kinnisasja omandamise korral: 1) maareformi seaduse alusel; 2) kui omandaja on Eesti riik, Eesti kohaliku omavalitsuse üksus, muu Eestis loodud avalik-õiguslik juriidiline isik või maapiirkonna ettevõtluse toetamiseks asutatud riigi sihtasutus; 3) kui kaasomanik omandab kinnisasja mõttelise osa teiselt kaasomanikult; 4) abikaasade või registreeritud elukaaslaste ühisomandisse, kui vähemalt ühele abikaasadest või registreeritud elukaaslastest käesolevas",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesolevat seadust ei kohaldata kinnisasja omandamise korral: 1) maareformi seaduse alusel; 2) kui omandaja on Eesti riik, Eesti kohaliku omavalitsuse üksus, muu Eestis loodud avalik-õiguslik juriidiline isik või maapiirkonna ettevõtluse toetamiseks asutatud riigi sihtasutus; 3) kui kaasomanik omandab kinnisasja mõttelise osa teiselt kaasomanikult; 4) abikaasade või registreeritud elukaaslaste ühisomandisse, kui vähemalt ühele abikaasadest või registreeritud elukaaslastest käesolevas seaduses sätestatud kitsendusi ei kohaldata; 5) võõrandaja abikaasa, registreeritud elukaaslase, alaneja või üleneja sugulase poolt; 6) pärimise teel; 7) kui kinnisasi omandatakse juriidiliste isikute ühinemise või jagunemise teel. (2) Kinnisasja omandamisega on käesolevas seaduses võrdsustatud kinnisasja mõttelise osa omandamine, kui kinnisasi tervikuna vastab käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele või asub käesoleva seaduse § 10 lõikes 1 nimetatud maa-alal. (3) Käesoleva seaduse §-des 5 ja 10 on kinnisasja omandamisega võrdsustatud hoonestusõiguse omandamine, kinnisasja koormamine kasutusvaldusega rohkem kui kümneks aastaks või tähtajatult ning kinnisasja koormamine hoonestusõigusega. Käesolevat lõiget ei kohaldata, kui hoonestusõiguse omandab kinnisasja omanik või kui kinnisasi koormatakse kasutusvaldusega või hoonestusõigusega kinnisasja omaniku kasuks. (4) Käesolevat seadust ei kohaldata korteriomandi ja korterihoonestusõiguse omandamise korral ning kinnisasja koormamise korral korterihoonestusõigusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_1"
       },
@@ -562,11 +628,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Käesolevat seadust ei kohaldata kinnisasja omandamise korral: maareformi seaduse alusel; kui omandaja on Eesti riik, Eesti kohaliku omavalitsuse üksus, muu Eestis loodud avalik-õiguslik juriidiline isik või maapiirkonna ettevõtluse toetamiseks asutatud riigi sihtasutus; kui kaasomanik omandab kinnisasja mõttelise osa teiselt kaasomanikult; abikaasade või registreeritud elukaaslaste ühisomandisse, kui vähemalt ühele abikaasadest või registreeritud elukaaslastest käesolevas seaduses sätestatud kitsendusi ei kohaldata; võõrandaja abikaasa, registreeritud elukaaslase, alaneja või üleneja sugulase poolt; pärimise teel; kui kinnisasi omandatakse juriidiliste isikute ühinemise või jagunemise teel.",
+      "estleg:legalText": "(1) Käesolevat seadust ei kohaldata kinnisasja omandamise korral: 1) maareformi seaduse alusel; 2) kui omandaja on Eesti riik, Eesti kohaliku omavalitsuse üksus, muu Eestis loodud avalik-õiguslik juriidiline isik või maapiirkonna ettevõtluse toetamiseks asutatud riigi sihtasutus; 3) kui kaasomanik omandab kinnisasja mõttelise osa teiselt kaasomanikult; 4) abikaasade või registreeritud elukaaslaste ühisomandisse, kui vähemalt ühele abikaasadest või registreeritud elukaaslastest käesolevas seaduses sätestatud kitsendusi ei kohaldata; 5) võõrandaja abikaasa, registreeritud elukaaslase, alaneja või üleneja sugulase poolt; 6) pärimise teel; 7) kui kinnisasi omandatakse juriidiliste isikute ühinemise või jagunemise teel.",
       "estleg:parentProvision": {
         "@id": "estleg:KOK_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -653,12 +728,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kitsendusi rikkuva tehingu tühisus",
+      "rdfs:label": {
+        "@value": "§ 3. Kitsendusi rikkuva tehingu tühisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Käesolevas seaduses sätestatud kinnisasja omandamise kitsendusi rikkuv tehing on tühine. (2) Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendusi rikkuva tehingu korral taotleb kinnisasja asukohajärgne kohaliku omavalitsuse üksus (edaspidi kohaliku omavalitsuse üksus) kinnistusraamatu kande parandamist ja vaidluse korral pöördub kohtusse tehingu tühisuse tuvastamiseks. Kohaliku omavalitsuse üksuse täidetava riikliku ülesande kulud hüvitatakse valla- ja linnavalitsusele",
+      "estleg:summary": {
+        "@value": "(1) Käesolevas seaduses sätestatud kinnisasja omandamise kitsendusi rikkuv tehing on tühine. (2) Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendusi rikkuva tehingu korral taotleb kinnisasja asukohajärgne kohaliku omavalitsuse üksus (edaspidi kohaliku omavalitsuse üksus) kinnistusraamatu kande parandamist ja vaidluse korral pöördub kohtusse tehingu tühisuse tuvastamiseks. Kohaliku omavalitsuse üksuse täidetava riikliku ülesande kulud hüvitatakse valla- ja linnavalitsusele",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolevas seaduses sätestatud kinnisasja omandamise kitsendusi rikkuv tehing on tühine. (2) Maatulundusmaa sihtotstarbega kinnisasja omandamise kitsendusi rikkuva tehingu korral taotleb kinnisasja asukohajärgne kohaliku omavalitsuse üksus (edaspidi kohaliku omavalitsuse üksus) kinnistusraamatu kande parandamist ja vaidluse korral pöördub kohtusse tehingu tühisuse tuvastamiseks. Kohaliku omavalitsuse üksuse täidetava riikliku ülesande kulud hüvitatakse valla- ja linnavalitsusele riigieelarvest. (3) Riigi julgeoleku kaalutlustest lähtuva kinnisasja omandamise kitsendusi rikkuva tehingu korral taotleb valdkonna eest vastutav minister kinnistusraamatu kande parandamist ja vaidluse korral pöördub kohtusse tehingu tühisuse tuvastamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_1"
@@ -781,12 +862,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamine lepinguriigi isiku poolt",
+      "rdfs:label": {
+        "@value": "§ 4. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamine lepinguriigi isiku poolt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Eesti või teise Euroopa Majanduspiirkonna lepinguriigi või Majandusliku Koostöö ja Arengu Organisatsiooni liikmesriigi (edaspidi koos lepinguriik) kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi ilma kitsendusteta. (2) Juriidilisel isikul, kelle asukoht on lepinguriigis (edaspidi lepinguriigi juriidiline isik), on õigus omandada põllumajandusmaad, metsamaad või põllumajandus- ja metsamaad kokku vähem kui kümme hektarit sisaldav kinnisasi ilma kitsendusteta.",
+      "estleg:summary": {
+        "@value": "(1) Eesti või teise Euroopa Majanduspiirkonna lepinguriigi või Majandusliku Koostöö ja Arengu Organisatsiooni liikmesriigi (edaspidi koos lepinguriik) kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi ilma kitsendusteta. (2) Juriidilisel isikul, kelle asukoht on lepinguriigis (edaspidi lepinguriigi juriidiline isik), on õigus omandada põllumajandusmaad, metsamaad või põllumajandus- ja metsamaad kokku vähem kui kümme hektarit sisaldav kinnisasi ilma kitsendusteta.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti või teise Euroopa Majanduspiirkonna lepinguriigi või Majandusliku Koostöö ja Arengu Organisatsiooni liikmesriigi (edaspidi koos lepinguriik) kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi ilma kitsendusteta. (2) Juriidilisel isikul, kelle asukoht on lepinguriigis (edaspidi lepinguriigi juriidiline isik), on õigus omandada põllumajandusmaad, metsamaad või põllumajandus- ja metsamaad kokku vähem kui kümme hektarit sisaldav kinnisasi ilma kitsendusteta. (3) Lepinguriigi juriidilisel isikul on õigus omandada põllumajandusmaad kümme hektarit või rohkem sisaldav kinnisasi, kui ta on kinnisasja omandamise tehingu tegemise aastale vahetult eelnenud kolm aastat tegelenud Euroopa Liidu toimimise lepingu I lisas loetletud põllumajandustoodete, välja arvatud kalatoodete ja puuvilla (edaspidi põllumajandustoode) tootmisega. (4) Lepinguriigi juriidilisel isikul on õigus omandada metsamaad kümme hektarit või rohkem sisaldav kinnisasi, kui ta on kinnisasja omandamise tehingu tegemise aastale vahetult eelnenud kolm aastat tegelenud metsa majandamisega metsaseaduse tähenduses (edaspidi metsa majandamine) või põllumajandustoodete tootmisega. (5) Lepinguriigi juriidilisel isikul on õigus omandada kinnisasi, mis sisaldab põllumajandusmaad vähem kui kümme hektarit ja metsamaad vähem kui kümme hektarit, kuid põllumajandus- ja metsamaad kokku kümme hektarit või rohkem, kui ta on kinnisasja omandamise tehingu tegemise aastale vahetult eelnenud kolm aastat tegelenud põllumajandustoodete tootmise või metsa majandamisega. (6) Kui lepinguriigi juriidiline isik ei vasta käesoleva paragrahvi lõigetes 3–5 sätestatud nõuetele, võib ta omandada põllumajandusmaad, metsamaad või põllumajandus- ja metsamaad kokku kümme hektarit või rohkem sisaldava kinnisasja üksnes omandatava kinnisasja asukohajärgse kohaliku omavalitsuse üksuse volikogu (edaspidi volikogu) loal.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_2"
@@ -1054,13 +1141,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamine kolmanda riigi isiku poolt",
+      "rdfs:label": {
+        "@value": "§ 5. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamine kolmanda riigi isiku poolt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Kolmanda riigi kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on vahetult enne loa taotlemist elanud Eestis püsivalt vähemalt kuus kuud või kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis füüsilisest isikust ettevõtjana: põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab põllumajandusmaad, või metsa majandamisega või põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab metsamaad",
-      "estleg:legalText": "(1) Kolmanda riigi kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on vahetult enne loa taotlemist elanud Eestis püsivalt vähemalt kuus kuud või kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis füüsilisest isikust ettevõtjana: põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab põllumajandusmaad, või metsa majandamisega või põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad. (2) Kolmanda riigi kodanik käesoleva seaduse tähenduses on füüsiline isik, kes ei ole lepinguriigi kodanik. (3) Kolmanda riigi juriidilisel isikul on õigus omandada põllumajandusmaad sisaldav kinnisasi üksnes volikogu loal, kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis põllumajandustoodete tootmisega ning kui tema filiaal on kantud Eesti äriregistrisse. (4) Kolmanda riigi juriidilisel isikul on õigus omandada metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis metsa majandamisega või põllumajandustoodete tootmisega ning kui tema filiaal on kantud Eesti äriregistrisse. (5) Kolmanda riigi juriidilisel isikul on õigus omandada nii põllumajandus- kui ka metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis põllumajandustoodete tootmise või metsa majandamisega ning kui tema filiaal on kantud Eesti äriregistrisse. (6) Kolmanda riigi juriidiline isik käesoleva seaduse tähenduses on juriidiline isik, kelle asukoht ei ole lepinguriigis.",
+      "estleg:summary": {
+        "@value": "(1) Kolmanda riigi kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on vahetult enne loa taotlemist elanud Eestis püsivalt vähemalt kuus kuud või kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis füüsilisest isikust ettevõtjana: 1) põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab põllumajandusmaad, või 2) metsa majandamisega või põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kolmanda riigi kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on vahetult enne loa taotlemist elanud Eestis püsivalt vähemalt kuus kuud või kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis füüsilisest isikust ettevõtjana: 1) põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab põllumajandusmaad, või 2) metsa majandamisega või põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad. (2) Kolmanda riigi kodanik käesoleva seaduse tähenduses on füüsiline isik, kes ei ole lepinguriigi kodanik. (3) Kolmanda riigi juriidilisel isikul on õigus omandada põllumajandusmaad sisaldav kinnisasi üksnes volikogu loal, kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis põllumajandustoodete tootmisega ning kui tema filiaal on kantud Eesti äriregistrisse. (4) Kolmanda riigi juriidilisel isikul on õigus omandada metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis metsa majandamisega või põllumajandustoodete tootmisega ning kui tema filiaal on kantud Eesti äriregistrisse. (5) Kolmanda riigi juriidilisel isikul on õigus omandada nii põllumajandus- kui ka metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis põllumajandustoodete tootmise või metsa majandamisega ning kui tema filiaal on kantud Eesti äriregistrisse. (6) Kolmanda riigi juriidiline isik käesoleva seaduse tähenduses on juriidiline isik, kelle asukoht ei ole lepinguriigis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_2"
       },
@@ -1126,11 +1219,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kolmanda riigi kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on vahetult enne loa taotlemist elanud Eestis püsivalt vähemalt kuus kuud või kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis füüsilisest isikust ettevõtjana: põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab põllumajandusmaad, või metsa majandamisega või põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad.",
+      "estleg:legalText": "(1) Kolmanda riigi kodanikul on õigus omandada põllumajandus- ja metsamaad sisaldav kinnisasi üksnes volikogu loal, kui ta on vahetult enne loa taotlemist elanud Eestis püsivalt vähemalt kuus kuud või kui ta on loa taotlemise aastale vahetult eelnenud aasta tegelenud Eestis füüsilisest isikust ettevõtjana: 1) põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab põllumajandusmaad, või 2) metsa majandamisega või põllumajandustoodete tootmisega, kui omandatav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad.",
       "estleg:parentProvision": {
         "@id": "estleg:KOK_Par_5"
       },
       "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -1287,13 +1384,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loa taotlemine",
+      "rdfs:label": {
+        "@value": "§ 6. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loa taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 4 lõikes 6 või § 5 lõikes 1 või lõigetes 3–5 nimetatud isik (edaspidi taotleja) esitab kohaliku omavalitsuse üksusele vormikohase taotluse põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loa saamiseks (edaspidi käesolevas peatükis loataotlus) ning kinnisasja sihtotstarbelise kasutamise tegevuskava (edaspidi tegevuskava). (2) Avalikke funktsioone täitev eraõiguslik juriidiline isik, kes soovib omandada kinnisasja avalike funktsioonide täitmiseks, ei pea loa",
-      "estleg:legalText": "(1) Käesoleva seaduse § 4 lõikes 6 või § 5 lõikes 1 või lõigetes 3–5 nimetatud isik (edaspidi taotleja) esitab kohaliku omavalitsuse üksusele vormikohase taotluse põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loa saamiseks (edaspidi käesolevas peatükis loataotlus) ning kinnisasja sihtotstarbelise kasutamise tegevuskava (edaspidi tegevuskava). (2) Avalikke funktsioone täitev eraõiguslik juriidiline isik, kes soovib omandada kinnisasja avalike funktsioonide täitmiseks, ei pea loa taotlemisel esitama tegevuskava. Nimetatud isik näitab loataotlusel, milliste avalike funktsioonide täitmiseks ta soovib kinnisasja omandada ning põhjendab avalikku huvi loa andmiseks. (3) Loataotluse vormi kehtestab määrusega. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „põllumajandusminister” sõnadega „valdkonna eest vastutav minister”. (4) Tegevuskavas annab taotleja ülevaate vähemalt viie aasta kavandatavate tegevuste kohta ning kinnitab, et omandatavat kinnisasja hakatakse kasutama vastavalt selle sihtotstarbele efektiivselt, jätkusuutlikult ja sihipäraselt. Tegevuskavaga koos esitab taotleja dokumendid, mis tõendavad, et tegevuskavas kirjeldatud tegevuste elluviimiseks on piisavalt vahendeid, sealhulgas finantsvahendeid. (5) Käesoleva seaduse § 4 lõikes 6 nimetatud isik võib tegevuskavas kavandada omandatava kinnisasja teisele isikule kasutada andmise, esitades kohaliku omavalitsuse üksusele teise isiku kinnituse, mis tõendab, et viimane on tegelenud Eestis loa taotlemise aastale vahetult eelnenud kolm aastat: põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab põllumajandusmaad, või metsa majandamisega või põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad. (6) Käesoleva seaduse § 4 lõikes 6 nimetatud isik ei pea tegevuskavas tõendama käesoleva paragrahvi lõikes 4 nimetatud vahendite olemasolu, kui ta kavandab tegevuskavas anda omandatava maa vähemalt viieks aastaks kasutada teisele isikule käesoleva paragrahvi lõike 5 kohaselt. (7) Kolmanda riigi isik ei saa tegevuskavas kavandada omandatava kinnisasja teisele isikule kasutada andmist.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 4 lõikes 6 või § 5 lõikes 1 või lõigetes 3–5 nimetatud isik (edaspidi taotleja) esitab kohaliku omavalitsuse üksusele vormikohase taotluse põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loa saamiseks (edaspidi käesolevas peatükis loataotlus) ning kinnisasja sihtotstarbelise kasutamise tegevuskava (edaspidi tegevuskava). (2) Avalikke funktsioone täitev eraõiguslik juriidiline isik, kes soovib omandada kinnisasja avalike funktsioonide täitmiseks, ei pea loa",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse § 4 lõikes 6 või § 5 lõikes 1 või lõigetes 3–5 nimetatud isik (edaspidi taotleja) esitab kohaliku omavalitsuse üksusele vormikohase taotluse põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loa saamiseks (edaspidi käesolevas peatükis loataotlus) ning kinnisasja sihtotstarbelise kasutamise tegevuskava (edaspidi tegevuskava). (2) Avalikke funktsioone täitev eraõiguslik juriidiline isik, kes soovib omandada kinnisasja avalike funktsioonide täitmiseks, ei pea loa taotlemisel esitama tegevuskava. Nimetatud isik näitab loataotlusel, milliste avalike funktsioonide täitmiseks ta soovib kinnisasja omandada ning põhjendab avalikku huvi loa andmiseks. (3) Loataotluse vormi kehtestab määrusega. (4) Tegevuskavas annab taotleja ülevaate vähemalt viie aasta kavandatavate tegevuste kohta ning kinnitab, et omandatavat kinnisasja hakatakse kasutama vastavalt selle sihtotstarbele efektiivselt, jätkusuutlikult ja sihipäraselt. Tegevuskavaga koos esitab taotleja dokumendid, mis tõendavad, et tegevuskavas kirjeldatud tegevuste elluviimiseks on piisavalt vahendeid, sealhulgas finantsvahendeid. (5) Käesoleva seaduse § 4 lõikes 6 nimetatud isik võib tegevuskavas kavandada omandatava kinnisasja teisele isikule kasutada andmise, esitades kohaliku omavalitsuse üksusele teise isiku kinnituse, mis tõendab, et viimane on tegelenud Eestis loa taotlemise aastale vahetult eelnenud kolm aastat: 1) põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab põllumajandusmaad, või 2) metsa majandamisega või põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad. (6) Käesoleva seaduse § 4 lõikes 6 nimetatud isik ei pea tegevuskavas tõendama käesoleva paragrahvi lõikes 4 nimetatud vahendite olemasolu, kui ta kavandab tegevuskavas anda omandatava maa vähemalt viieks aastaks kasutada teisele isikule käesoleva paragrahvi lõike 5 kohaselt. (7) Kolmanda riigi isik ei saa tegevuskavas kavandada omandatava kinnisasja teisele isikule kasutada andmist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_2"
       },
@@ -1432,7 +1535,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Loataotluse vormi kehtestab määrusega. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „põllumajandusminister” sõnadega „valdkonna eest vastutav minister”.",
+      "estleg:legalText": "(3) Loataotluse vormi kehtestab määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:KOK_Par_6"
       },
@@ -1495,11 +1598,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Käesoleva seaduse § 4 lõikes 6 nimetatud isik võib tegevuskavas kavandada omandatava kinnisasja teisele isikule kasutada andmise, esitades kohaliku omavalitsuse üksusele teise isiku kinnituse, mis tõendab, et viimane on tegelenud Eestis loa taotlemise aastale vahetult eelnenud kolm aastat: põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab põllumajandusmaad, või metsa majandamisega või põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad.",
+      "estleg:legalText": "(5) Käesoleva seaduse § 4 lõikes 6 nimetatud isik võib tegevuskavas kavandada omandatava kinnisasja teisele isikule kasutada andmise, esitades kohaliku omavalitsuse üksusele teise isiku kinnituse, mis tõendab, et viimane on tegelenud Eestis loa taotlemise aastale vahetult eelnenud kolm aastat: 1) põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab põllumajandusmaad, või 2) metsa majandamisega või põllumajandustoodete tootmisega, kui kasutusele võetav kinnisasi sisaldab metsamaad või nii põllumajandus- kui ka metsamaad.",
       "estleg:parentProvision": {
         "@id": "estleg:KOK_Par_6"
       },
       "rdfs:label": "§ 6 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1579,13 +1686,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loataotluse menetlemine",
+      "rdfs:label": {
+        "@value": "§ 7. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loataotluse menetlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Loataotluse saamise korral kontrollib kohaliku omavalitsuse üksus taotleja, loataotluse ja tegevuskava nõuetekohasust ning ettenähtud dokumentide olemasolu. (2) Kui taotleja ei ole esitanud kõiki ettenähtud dokumente või esitatud dokumendid ei võimalda tuvastada loa andmiseks vajalikke asjaolusid, määrab kohaliku omavalitsuse üksus taotlejale tähtaja puuduste kõrvaldamiseks. Kui taotleja ei ole kõrvaldanud puudusi määratud tähtaja jooksul, võib kohaliku omavalitsuse üksus jätta loataotluse",
-      "estleg:legalText": "(1) Loataotluse saamise korral kontrollib kohaliku omavalitsuse üksus taotleja, loataotluse ja tegevuskava nõuetekohasust ning ettenähtud dokumentide olemasolu. (2) Kui taotleja ei ole esitanud kõiki ettenähtud dokumente või esitatud dokumendid ei võimalda tuvastada loa andmiseks vajalikke asjaolusid, määrab kohaliku omavalitsuse üksus taotlejale tähtaja puuduste kõrvaldamiseks. Kui taotleja ei ole kõrvaldanud puudusi määratud tähtaja jooksul, võib kohaliku omavalitsuse üksus jätta loataotluse läbi vaatamata. (3) Kohaliku omavalitsuse üksus jätab loataotluse läbi vaatamata ja tagastab selle taotlejale, kui: kolmanda riigi isiku suhtes ei ole täidetud käesoleva seaduse § 5 lõikes 1 või lõigetes 3–5 sätestatud nõuded; käesoleva seaduse § 6 lõigetes 4 ja 5 sätestatud nõuded ei ole täidetud; kolmanda riigi isik kavandab tegevuskavas anda omandatava kinnisasja kasutada teisele isikule. (4) Volikogu võib teha kinnisasja omandamise loa andmisest keeldumise otsuse, kui: taotleja või loataotlus ei vasta käesolevas seaduses sätestatud nõuetele; loa andmine on vastuolus avaliku huviga käesoleva seaduse tähenduses ja puudub muu ülekaalukas avalik huvi; loa andmine takistab kohaliku omavalitsuse üksusel täita talle seadusega antud ülesandeid. (5) Volikogu teeb kinnisasja omandamise loa andmise otsuse või loa andmisest keeldumise otsuse 45 päeva jooksul kohaliku omavalitsuse üksusele loataotluse esitamisest arvates.",
+      "estleg:summary": {
+        "@value": "(1) Loataotluse saamise korral kontrollib kohaliku omavalitsuse üksus taotleja, loataotluse ja tegevuskava nõuetekohasust ning ettenähtud dokumentide olemasolu. (2) Kui taotleja ei ole esitanud kõiki ettenähtud dokumente või esitatud dokumendid ei võimalda tuvastada loa andmiseks vajalikke asjaolusid, määrab kohaliku omavalitsuse üksus taotlejale tähtaja puuduste kõrvaldamiseks. Kui taotleja ei ole kõrvaldanud puudusi määratud tähtaja jooksul, võib kohaliku omavalitsuse üksus jätta loataotluse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Loataotluse saamise korral kontrollib kohaliku omavalitsuse üksus taotleja, loataotluse ja tegevuskava nõuetekohasust ning ettenähtud dokumentide olemasolu. (2) Kui taotleja ei ole esitanud kõiki ettenähtud dokumente või esitatud dokumendid ei võimalda tuvastada loa andmiseks vajalikke asjaolusid, määrab kohaliku omavalitsuse üksus taotlejale tähtaja puuduste kõrvaldamiseks. Kui taotleja ei ole kõrvaldanud puudusi määratud tähtaja jooksul, võib kohaliku omavalitsuse üksus jätta loataotluse läbi vaatamata. (3) Kohaliku omavalitsuse üksus jätab loataotluse läbi vaatamata ja tagastab selle taotlejale, kui: 1) kolmanda riigi isiku suhtes ei ole täidetud käesoleva seaduse § 5 lõikes 1 või lõigetes 3–5 sätestatud nõuded; 2) käesoleva seaduse § 6 lõigetes 4 ja 5 sätestatud nõuded ei ole täidetud; 3) kolmanda riigi isik kavandab tegevuskavas anda omandatava kinnisasja kasutada teisele isikule. (4) Volikogu võib teha kinnisasja omandamise loa andmisest keeldumise otsuse, kui: 1) taotleja või loataotlus ei vasta käesolevas seaduses sätestatud nõuetele; 2) loa andmine on vastuolus avaliku huviga käesoleva seaduse tähenduses ja puudub muu ülekaalukas avalik huvi; 3) loa andmine takistab kohaliku omavalitsuse üksusel täita talle seadusega antud ülesandeid. (5) Volikogu teeb kinnisasja omandamise loa andmise otsuse või loa andmisest keeldumise otsuse 45 päeva jooksul kohaliku omavalitsuse üksusele loataotluse esitamisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_2"
       },
@@ -1728,11 +1841,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kohaliku omavalitsuse üksus jätab loataotluse läbi vaatamata ja tagastab selle taotlejale, kui: kolmanda riigi isiku suhtes ei ole täidetud käesoleva seaduse § 5 lõikes 1 või lõigetes 3–5 sätestatud nõuded; käesoleva seaduse § 6 lõigetes 4 ja 5 sätestatud nõuded ei ole täidetud; kolmanda riigi isik kavandab tegevuskavas anda omandatava kinnisasja kasutada teisele isikule.",
+      "estleg:legalText": "(3) Kohaliku omavalitsuse üksus jätab loataotluse läbi vaatamata ja tagastab selle taotlejale, kui: 1) kolmanda riigi isiku suhtes ei ole täidetud käesoleva seaduse § 5 lõikes 1 või lõigetes 3–5 sätestatud nõuded; 2) käesoleva seaduse § 6 lõigetes 4 ja 5 sätestatud nõuded ei ole täidetud; 3) kolmanda riigi isik kavandab tegevuskavas anda omandatava kinnisasja kasutada teisele isikule.",
       "estleg:parentProvision": {
         "@id": "estleg:KOK_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1766,11 +1884,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Volikogu võib teha kinnisasja omandamise loa andmisest keeldumise otsuse, kui: taotleja või loataotlus ei vasta käesolevas seaduses sätestatud nõuetele; loa andmine on vastuolus avaliku huviga käesoleva seaduse tähenduses ja puudub muu ülekaalukas avalik huvi; loa andmine takistab kohaliku omavalitsuse üksusel täita talle seadusega antud ülesandeid.",
+      "estleg:legalText": "(4) Volikogu võib teha kinnisasja omandamise loa andmisest keeldumise otsuse, kui: 1) taotleja või loataotlus ei vasta käesolevas seaduses sätestatud nõuetele; 2) loa andmine on vastuolus avaliku huviga käesoleva seaduse tähenduses ja puudub muu ülekaalukas avalik huvi; 3) loa andmine takistab kohaliku omavalitsuse üksusel täita talle seadusega antud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:KOK_Par_7"
       },
       "rdfs:label": "§ 7 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1826,13 +1949,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loataotluse menetlemine",
+      "rdfs:label": {
+        "@value": "§ 8. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loataotluse menetlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 8. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise loataotluse menetlemine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_2"
       },
@@ -1858,12 +1986,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise nõuetele vastavuse kontrollimine",
+      "rdfs:label": {
+        "@value": "§ 9. Põllumajandus- ja metsamaad sisaldava kinnisasja omandamise nõuetele vastavuse kontrollimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele vastavust ning § 4 lõikes 6 või § 5 lõikes 1 või lõigetes 3–5 nimetatud loa olemasolu kinnisasja võõrandamise korral kontrollib notar, kohtutäitur, pankrotihaldur või kinnisasja asukohajärgne kohaliku omavalitsuse üksus. (2) Käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele vastavuse kontrollimiseks esitab isik notarile, kohtutäiturile, pankrotihaldurile või kohaliku omavalitsuse üksusele lepinguriigi juriidilise isiku",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele vastavust ning § 4 lõikes 6 või § 5 lõikes 1 või lõigetes 3–5 nimetatud loa olemasolu kinnisasja võõrandamise korral kontrollib notar, kohtutäitur, pankrotihaldur või kinnisasja asukohajärgne kohaliku omavalitsuse üksus. (2) Käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele vastavuse kontrollimiseks esitab isik notarile, kohtutäiturile, pankrotihaldurile või kohaliku omavalitsuse üksusele lepinguriigi juriidilise isiku",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele vastavust ning § 4 lõikes 6 või § 5 lõikes 1 või lõigetes 3–5 nimetatud loa olemasolu kinnisasja võõrandamise korral kontrollib notar, kohtutäitur, pankrotihaldur või kinnisasja asukohajärgne kohaliku omavalitsuse üksus. (2) Käesoleva seaduse § 4 lõigetes 3–5 sätestatud nõuetele vastavuse kontrollimiseks esitab isik notarile, kohtutäiturile, pankrotihaldurile või kohaliku omavalitsuse üksusele lepinguriigi juriidilise isiku asukohajärgse riigi pädeva asutuse väljastatud dokumendi, mis tõendab isiku vastavust nimetatud nõuetele. (3) Isik, kes on käesoleva seaduse § 4 lõigetes 3–5 või § 5 lõikes 1 või lõigetes 3–5 sätestatud nõuete kohaselt tegelenud Eestis põllumajandustoodete tootmisega või metsa majandamisega, esitab notarile, kohtutäiturile, pankrotihaldurile või kinnisasja asukohajärgse kohaliku omavalitsuse üksusele selle kohta Maksu- ja Tolliameti tõendi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_2"
@@ -2028,13 +2162,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Riigikaitselised kitsendused",
+      "rdfs:label": {
+        "@value": "§ 10. Riigikaitselised kitsendused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Füüsilisel isikul, kes ei ole Euroopa Majanduspiirkonna lepinguriigi või Suurbritannia ja Põhja-Iiri Ühendkuningriigi kodanik, või juriidilisel isikul, kelle asukoht ei ole Euroopa Majanduspiirkonna lepinguriigis või Suurbritannia ja Põhja-Iiri Ühendkuningriigis, on keelatud omandada kinnisasja järgmistel maa-aladel või maa-alade suuruse või nime muutumise korral nende 1999. aasta 31. detsembri seisuga eksisteerinud piirides: meresaared, välja arvatud Saare- ja Hiiumaa, Muhu ning Vormsi;",
-      "estleg:legalText": "(1) Füüsilisel isikul, kes ei ole Euroopa Majanduspiirkonna lepinguriigi või Suurbritannia ja Põhja-Iiri Ühendkuningriigi kodanik, või juriidilisel isikul, kelle asukoht ei ole Euroopa Majanduspiirkonna lepinguriigis või Suurbritannia ja Põhja-Iiri Ühendkuningriigis, on keelatud omandada kinnisasja järgmistel maa-aladel või maa-alade suuruse või nime muutumise korral nende 1999. aasta 31. detsembri seisuga eksisteerinud piirides: meresaared, välja arvatud Saare- ja Hiiumaa, Muhu ning Vormsi; Ida-Virumaa: Narva, Narva-Jõesuu ja Sillamäe linn, Alajõe, Iisaku, Illuka, Toila ja Vaivara vald; Tartumaa: Meeksi ja Piirissaare vald; Põlvamaa: Mikitamäe, Orava, Räpina ja Värska vald; Võrumaa: Meremäe, Misso ja Vastseliina vald. (2) Riiklikult olulise põhjuse korral võib Vabariigi Valitsus korraldusega anda käesoleva paragrahvi lõikes 1 nimetatud isikule loa omandada kinnisasi samas lõikes nimetatud maa-aladel.",
+      "estleg:summary": {
+        "@value": "(1) Füüsilisel isikul, kes ei ole Euroopa Majanduspiirkonna lepinguriigi või Suurbritannia ja Põhja-Iiri Ühendkuningriigi kodanik, või juriidilisel isikul, kelle asukoht ei ole Euroopa Majanduspiirkonna lepinguriigis või Suurbritannia ja Põhja-Iiri Ühendkuningriigis, on keelatud omandada kinnisasja järgmistel maa-aladel või maa-alade suuruse või nime muutumise korral nende 1999. aasta 31. detsembri seisuga eksisteerinud piirides: 1) meresaared, välja arvatud Saare- ja Hiiumaa, Muhu ning Vormsi;",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Füüsilisel isikul, kes ei ole Euroopa Majanduspiirkonna lepinguriigi või Suurbritannia ja Põhja-Iiri Ühendkuningriigi kodanik, või juriidilisel isikul, kelle asukoht ei ole Euroopa Majanduspiirkonna lepinguriigis või Suurbritannia ja Põhja-Iiri Ühendkuningriigis, on keelatud omandada kinnisasja järgmistel maa-aladel või maa-alade suuruse või nime muutumise korral nende 1999. aasta 31. detsembri seisuga eksisteerinud piirides: 1) meresaared, välja arvatud Saare- ja Hiiumaa, Muhu ning Vormsi; 2) Ida-Virumaa: Narva, Narva-Jõesuu ja Sillamäe linn, Alajõe, Iisaku, Illuka, Toila ja Vaivara vald; 3) Tartumaa: Meeksi ja Piirissaare vald; 4) Põlvamaa: Mikitamäe, Orava, Räpina ja Värska vald; 5) Võrumaa: Meremäe, Misso ja Vastseliina vald. (2) Riiklikult olulise põhjuse korral võib Vabariigi Valitsus korraldusega anda käesoleva paragrahvi lõikes 1 nimetatud isikule loa omandada kinnisasi samas lõikes nimetatud maa-aladel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_3"
       },
@@ -2091,11 +2231,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Füüsilisel isikul, kes ei ole Euroopa Majanduspiirkonna lepinguriigi või Suurbritannia ja Põhja-Iiri Ühendkuningriigi kodanik, või juriidilisel isikul, kelle asukoht ei ole Euroopa Majanduspiirkonna lepinguriigis või Suurbritannia ja Põhja-Iiri Ühendkuningriigis, on keelatud omandada kinnisasja järgmistel maa-aladel või maa-alade suuruse või nime muutumise korral nende 1999. aasta 31. detsembri seisuga eksisteerinud piirides: meresaared, välja arvatud Saare- ja Hiiumaa, Muhu ning Vormsi; Ida-Virumaa: Narva, Narva-Jõesuu ja Sillamäe linn, Alajõe, Iisaku, Illuka, Toila ja Vaivara vald; Tartumaa: Meeksi ja Piirissaare vald; Põlvamaa: Mikitamäe, Orava, Räpina ja Värska vald; Võrumaa: Meremäe, Misso ja Vastseliina vald.",
+      "estleg:legalText": "(1) Füüsilisel isikul, kes ei ole Euroopa Majanduspiirkonna lepinguriigi või Suurbritannia ja Põhja-Iiri Ühendkuningriigi kodanik, või juriidilisel isikul, kelle asukoht ei ole Euroopa Majanduspiirkonna lepinguriigis või Suurbritannia ja Põhja-Iiri Ühendkuningriigis, on keelatud omandada kinnisasja järgmistel maa-aladel või maa-alade suuruse või nime muutumise korral nende 1999. aasta 31. detsembri seisuga eksisteerinud piirides: 1) meresaared, välja arvatud Saare- ja Hiiumaa, Muhu ning Vormsi; 2) Ida-Virumaa: Narva, Narva-Jõesuu ja Sillamäe linn, Alajõe, Iisaku, Illuka, Toila ja Vaivara vald; 3) Tartumaa: Meeksi ja Piirissaare vald; 4) Põlvamaa: Mikitamäe, Orava, Räpina ja Värska vald; 5) Võrumaa: Meremäe, Misso ja Vastseliina vald.",
       "estleg:parentProvision": {
         "@id": "estleg:KOK_Par_10"
       },
       "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -2162,12 +2309,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Seaduse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 11. Seaduse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "(1) Senikehtinud kinnisasja omandamise kitsendamise seaduse alusel esitatud kinnisasja omandamise loa taotluse suhtes kohaldatakse käesolevas seaduses sätestatud nõudeid ning seda menetletakse käesolevas seaduses sätestatud alusel ja korras. (2) Käesoleva seaduse jõustumise ajal kehtiv kinnisasja omandamise luba, mis on antud senikehtinud kinnisasja omandamise kitsendamise seaduse alusel, kehtib kuni kehtetuks tunnistamiseni, kehtivusaja lõppemiseni või sellega antud õiguse lõpliku",
+      "estleg:summary": {
+        "@value": "(1) Senikehtinud kinnisasja omandamise kitsendamise seaduse alusel esitatud kinnisasja omandamise loa taotluse suhtes kohaldatakse käesolevas seaduses sätestatud nõudeid ning seda menetletakse käesolevas seaduses sätestatud alusel ja korras. (2) Käesoleva seaduse jõustumise ajal kehtiv kinnisasja omandamise luba, mis on antud senikehtinud kinnisasja omandamise kitsendamise seaduse alusel, kehtib kuni kehtetuks tunnistamiseni, kehtivusaja lõppemiseni või sellega antud õiguse lõpliku",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Senikehtinud kinnisasja omandamise kitsendamise seaduse alusel esitatud kinnisasja omandamise loa taotluse suhtes kohaldatakse käesolevas seaduses sätestatud nõudeid ning seda menetletakse käesolevas seaduses sätestatud alusel ja korras. (2) Käesoleva seaduse jõustumise ajal kehtiv kinnisasja omandamise luba, mis on antud senikehtinud kinnisasja omandamise kitsendamise seaduse alusel, kehtib kuni kehtetuks tunnistamiseni, kehtivusaja lõppemiseni või sellega antud õiguse lõpliku realiseerimiseni. (3) Loataotlus, mis esitati enne 2018. aasta 1. jaanuari kinnisasja asukohajärgsele maavanemale, kuid mille menetlust ei ole maavanem lõpetanud, edastab maavanem koos haldusmenetluse käigus kogutud muude dokumentidega hiljemalt 2017. aasta 31. detsembril kohaliku omavalitsuse üksusele. Kohaliku omavalitsuse üksus viib loamenetluse läbi käesoleva seaduse § 7 kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_4"
@@ -2274,12 +2427,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Seaduse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 12. Seaduse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kinnisasja omandamise kitsendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KOK_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KOK_4"
@@ -2295,6 +2454,22 @@
           "@id": "estleg:KOK_Par_12_v104072017064"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/527122023007",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:KOK_Map"
+      },
+      "rdfs:label": {
+        "@value": "Restrictions on Acquisition of Immovables Act",
+        "@language": "en"
+      }
     }
   ]
 }

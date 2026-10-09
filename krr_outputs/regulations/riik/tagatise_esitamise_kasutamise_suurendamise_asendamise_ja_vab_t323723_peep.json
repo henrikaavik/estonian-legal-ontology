@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,18 +39,13 @@
       "estleg:globalId": "13132745",
       "estleg:terviktekstId": "323723",
       "estleg:entryIntoForce": {
-        "@value": "2008-08-01",
+        "@value": "2009-02-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2009-01-21",
         "@type": "xsd:date"
       },
-      "estleg:publicationYear": {
-        "@value": "2008",
-        "@type": "xsd:gYear"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_323723_0cc31fa474"
@@ -62,7 +64,13 @@
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
-      ]
+      ],
+      "dcterms:title": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_323723_Par_1",
@@ -71,13 +79,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "Käesolev määrus sätestab Keskkonnaameti (edaspidi amet) kantud keskkonnakahju vältimise või heastamisega seotud kulude (edaspidi kulud) tasumise ajatamiseks tagatise esitamise, kasutamise, asendamise ja vabastamise korra.RTL200911131131267232009-02-01+02:00",
-      "estleg:legalText": "Käesolev määrus sätestab Keskkonnaameti (edaspidi amet) kantud keskkonnakahju vältimise või heastamisega seotud kulude (edaspidi kulud) tasumise ajatamiseks tagatise esitamise, kasutamise, asendamise ja vabastamise korra.RTL200911131131267232009-02-01+02:00 Käesolev määrus sätestab Keskkonnaameti (edaspidi amet) kantud keskkonnakahju vältimise või heastamisega seotud kulude (edaspidi kulud) tasumise ajatamiseks tagatise esitamise, kasutamise, asendamise ja vabastamise korra.",
+      "estleg:summary": {
+        "@value": "Käesolev määrus sätestab Keskkonnaameti (edaspidi amet) kantud keskkonnakahju vältimise või heastamisega seotud kulude (edaspidi kulud) tasumise ajatamiseks tagatise esitamise, kasutamise, asendamise ja vabastamise korra.RTL200911131131267232009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev määrus sätestab Keskkonnaameti (edaspidi amet) kantud keskkonnakahju vältimise või heastamisega seotud kulude (edaspidi kulud) tasumise ajatamiseks tagatise esitamise, kasutamise, asendamise ja vabastamise korra.RTL200911131131267232009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -96,7 +110,25 @@
         {
           "@id": "estleg:Institution_keskkonnaamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev määrus sätestab Keskkonnaameti (edaspidi amet) kantud keskkonnakahju vältimise või heastamisega seotud kulude (edaspidi kulud) tasumise ajatamiseks tagatise esitamise, kasutamise, asendamise ja vabastamise korra.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_323723_Par_2",
@@ -105,13 +137,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Tagatise esitamine",
+      "rdfs:label": {
+        "@value": "§ 2. Tagatise esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "1(1)Kui amet nõuab keskkonnakahju ajatamiseks kahju tekitajalt tagatist, teatab ta sellest kahju tekitajale kirjalikult. Kui amet nõuab keskkonnakahju ajatamiseks kahju tekitajalt tagatist, teatab ta sellest kahju tekitajale kirjalikult. 2(2)Tagatis esitatakse ametile 30 kalendripäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud kirjaliku teate saamisest arvates. Kahju tekitaja põhjendatud taotluse alusel võib amet pikendada tagatise esitamist 30 kalendripäeva võrra. Tagatis esitatakse ametil",
-      "estleg:legalText": "1(1)Kui amet nõuab keskkonnakahju ajatamiseks kahju tekitajalt tagatist, teatab ta sellest kahju tekitajale kirjalikult. Kui amet nõuab keskkonnakahju ajatamiseks kahju tekitajalt tagatist, teatab ta sellest kahju tekitajale kirjalikult. 2(2)Tagatis esitatakse ametile 30 kalendripäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud kirjaliku teate saamisest arvates. Kahju tekitaja põhjendatud taotluse alusel võib amet pikendada tagatise esitamist 30 kalendripäeva võrra. Tagatis esitatakse ametile 30 kalendripäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud kirjaliku teate saamisest arvates. Kahju tekitaja põhjendatud taotluse alusel võib amet pikendada tagatise esitamist 30 kalendripäeva võrra. 3(3)Kui käesoleva paragrahvi lõikes 2 määratud tähtajaks ei ole käesolevas määruses sätestatud nõuetele vastavat tagatist esitatud, on ametil õigus lugeda tagatis mitteesitatuks ja jätta kulude tasumise ajatamise taotlus rahuldamata.RTL200911131131267232009-02-01+02:00 Kui käesoleva paragrahvi lõikes 2 määratud tähtajaks ei ole käesolevas määruses sätestatud nõuetele vastavat tagatist esitatud, on ametil õigus lugeda tagatis mitteesitatuks ja jätta kulude tasumise ajatamise taotlus rahuldamata.",
+      "estleg:summary": {
+        "@value": "1(1)Kui amet nõuab keskkonnakahju ajatamiseks kahju tekitajalt tagatist, teatab ta sellest kahju tekitajale kirjalikult. 2(2)Tagatis esitatakse ametile 30 kalendripäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud kirjaliku teate saamisest arvates. Kahju tekitaja põhjendatud taotluse alusel võib amet pikendada tagatise esitamist 30 kalendripäeva võrra.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Kui amet nõuab keskkonnakahju ajatamiseks kahju tekitajalt tagatist, teatab ta sellest kahju tekitajale kirjalikult. 2(2)Tagatis esitatakse ametile 30 kalendripäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud kirjaliku teate saamisest arvates. Kahju tekitaja põhjendatud taotluse alusel võib amet pikendada tagatise esitamist 30 kalendripäeva võrra. 3(3)Kui käesoleva paragrahvi lõikes 2 määratud tähtajaks ei ole käesolevas määruses sätestatud nõuetele vastavat tagatist esitatud, on ametil õigus lugeda tagatis mitteesitatuks ja jätta kulude tasumise ajatamise taotlus rahuldamata.RTL200911131131267232009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -128,7 +166,57 @@
         {
           "@id": "estleg:Reg_323723_Par_2_v323723"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_323723_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_323723_Par_2_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui amet nõuab keskkonnakahju ajatamiseks kahju tekitajalt tagatist, teatab ta sellest kahju tekitajale kirjalikult.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tagatis esitatakse ametile 30 kalendripäeva jooksul käesoleva paragrahvi lõikes 1 nimetatud kirjaliku teate saamisest arvates. Kahju tekitaja põhjendatud taotluse alusel võib amet pikendada tagatise esitamist 30 kalendripäeva võrra.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui käesoleva paragrahvi lõikes 2 määratud tähtajaks ei ole käesolevas määruses sätestatud nõuetele vastavat tagatist esitatud, on ametil õigus lugeda tagatis mitteesitatuks ja jätta kulude tasumise ajatamise taotlus rahuldamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:Reg_323723_Par_3",
@@ -137,13 +225,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Käenduse esitamine tagatisena",
+      "rdfs:label": {
+        "@value": "§ 3. Käenduse esitamine tagatisena",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "1(1)Käendusleping peab sisaldama käendaja ja käendatava nime, aadressi, käendaja registri- või isikukoodi, käendatava registri- või isikukoodi ning tagatise suurust, mille ulatuses kohustub käendaja tasuma maksegraafiku-järgseks tähtpäevaks tasumata kulud ning nendelt arvestatud intressi, käenduse kehtivuse aega ning käenduslepingu sõlmimise kohta, päeva ja käendaja või tema esindaja allkirja. Käendusleping peab sisaldama käendaja ja käendatava nime, aadressi, käendaja registri- või isikukoodi, ",
-      "estleg:legalText": "1(1)Käendusleping peab sisaldama käendaja ja käendatava nime, aadressi, käendaja registri- või isikukoodi, käendatava registri- või isikukoodi ning tagatise suurust, mille ulatuses kohustub käendaja tasuma maksegraafiku-järgseks tähtpäevaks tasumata kulud ning nendelt arvestatud intressi, käenduse kehtivuse aega ning käenduslepingu sõlmimise kohta, päeva ja käendaja või tema esindaja allkirja. Käendusleping peab sisaldama käendaja ja käendatava nime, aadressi, käendaja registri- või isikukoodi, käendatava registri- või isikukoodi ning tagatise suurust, mille ulatuses kohustub käendaja tasuma maksegraafiku-järgseks tähtpäevaks tasumata kulud ning nendelt arvestatud intressi, käenduse kehtivuse aega ning käenduslepingu sõlmimise kohta, päeva ja käendaja või tema esindaja allkirja. 2(2)Juriidilisest isikust käendaja esitab ametile käenduslepingu allkirjastamise õigusega isikute nimed ja allkirjanäidised. Juriidilisest isikust käendaja esitab ametile käenduslepingu allkirjastamise õigusega isikute nimed ja allkirjanäidised. 3(3)Käendaja usaldusväärsuse hindamiseks võib amet nõuda käendajalt andmeid või dokumente tema majandusliku olukorra ja kolmandate isikute ees võetud varaliste kohustuste kohta, juriidilise isiku korral andmeid rentaabluse, maksevõime ja likviidsuse kohta ning juriidilise isiku osanike, nõukogu või üldkoosoleku otsust käendamise kohta.RTL200911131131267232009-02-01+02:00 Käendaja usaldusväärsuse hindamiseks võib amet nõuda käendajalt andmeid või dokumente tema majandusliku olukorra ja kolmandate isikute ees võetud varaliste kohustuste kohta, juriidilise isiku korral andmeid rentaabluse, maksevõime ja likviidsuse kohta ning juriidilise isiku osanike, nõukogu või üldkoosoleku otsust käendamise kohta.",
+      "estleg:summary": {
+        "@value": "1(1)Käendusleping peab sisaldama käendaja ja käendatava nime, aadressi, käendaja registri- või isikukoodi, käendatava registri- või isikukoodi ning tagatise suurust, mille ulatuses kohustub käendaja tasuma maksegraafiku-järgseks tähtpäevaks tasumata kulud ning nendelt arvestatud intressi, käenduse kehtivuse aega ning käenduslepingu sõlmimise kohta, päeva ja käendaja või tema esindaja allkirja.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Käendusleping peab sisaldama käendaja ja käendatava nime, aadressi, käendaja registri- või isikukoodi, käendatava registri- või isikukoodi ning tagatise suurust, mille ulatuses kohustub käendaja tasuma maksegraafiku-järgseks tähtpäevaks tasumata kulud ning nendelt arvestatud intressi, käenduse kehtivuse aega ning käenduslepingu sõlmimise kohta, päeva ja käendaja või tema esindaja allkirja. 2(2)Juriidilisest isikust käendaja esitab ametile käenduslepingu allkirjastamise õigusega isikute nimed ja allkirjanäidised. 3(3)Käendaja usaldusväärsuse hindamiseks võib amet nõuda käendajalt andmeid või dokumente tema majandusliku olukorra ja kolmandate isikute ees võetud varaliste kohustuste kohta, juriidilise isiku korral andmeid rentaabluse, maksevõime ja likviidsuse kohta ning juriidilise isiku osanike, nõukogu või üldkoosoleku otsust käendamise kohta.RTL200911131131267232009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -163,7 +257,57 @@
         {
           "@id": "estleg:Reg_323723_Par_3_v323723"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_323723_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_323723_Par_3_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käendusleping peab sisaldama käendaja ja käendatava nime, aadressi, käendaja registri- või isikukoodi, käendatava registri- või isikukoodi ning tagatise suurust, mille ulatuses kohustub käendaja tasuma maksegraafiku-järgseks tähtpäevaks tasumata kulud ning nendelt arvestatud intressi, käenduse kehtivuse aega ning käenduslepingu sõlmimise kohta, päeva ja käendaja või tema esindaja allkirja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juriidilisest isikust käendaja esitab ametile käenduslepingu allkirjastamise õigusega isikute nimed ja allkirjanäidised.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käendaja usaldusväärsuse hindamiseks võib amet nõuda käendajalt andmeid või dokumente tema majandusliku olukorra ja kolmandate isikute ees võetud varaliste kohustuste kohta, juriidilise isiku korral andmeid rentaabluse, maksevõime ja likviidsuse kohta ning juriidilise isiku osanike, nõukogu või üldkoosoleku otsust käendamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:Reg_323723_Par_4",
@@ -172,13 +316,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Hüpoteegi seadmine tagatisena",
+      "rdfs:label": {
+        "@value": "§ 4. Hüpoteegi seadmine tagatisena",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "1(1)Kinnisasja korral esitab kahju tekitaja ametile hüpoteegi seadmiseks panditava kinnisasja omandiõigust ning väärtust tõendavad dokumendid, juriidilise isiku korral vajadusel osanike, nõukogu või üldkoosoleku otsuse hüpoteegi seadmise nõusoleku kohta, ning nõusoleku alluda kohesele sundtäitmisele hüpoteegiga tagatud nõude rahuldamiseks. Kinnisasja korral esitab kahju tekitaja ametile hüpoteegi seadmiseks panditava kinnisasja omandiõigust ning väärtust tõendavad dokumendid, juriidilise isiku k",
-      "estleg:legalText": "1(1)Kinnisasja korral esitab kahju tekitaja ametile hüpoteegi seadmiseks panditava kinnisasja omandiõigust ning väärtust tõendavad dokumendid, juriidilise isiku korral vajadusel osanike, nõukogu või üldkoosoleku otsuse hüpoteegi seadmise nõusoleku kohta, ning nõusoleku alluda kohesele sundtäitmisele hüpoteegiga tagatud nõude rahuldamiseks. Kinnisasja korral esitab kahju tekitaja ametile hüpoteegi seadmiseks panditava kinnisasja omandiõigust ning väärtust tõendavad dokumendid, juriidilise isiku korral vajadusel osanike, nõukogu või üldkoosoleku otsuse hüpoteegi seadmise nõusoleku kohta, ning nõusoleku alluda kohesele sundtäitmisele hüpoteegiga tagatud nõude rahuldamiseks. 2(2)Hüpoteegi seadmise lepingule kirjutab alla ameti peadirektor või tema volitatud isik.RTL200911131131267232009-02-01+02:00 Hüpoteegi seadmise lepingule kirjutab alla ameti peadirektor või tema volitatud isik.",
+      "estleg:summary": {
+        "@value": "1(1)Kinnisasja korral esitab kahju tekitaja ametile hüpoteegi seadmiseks panditava kinnisasja omandiõigust ning väärtust tõendavad dokumendid, juriidilise isiku korral vajadusel osanike, nõukogu või üldkoosoleku otsuse hüpoteegi seadmise nõusoleku kohta, ning nõusoleku alluda kohesele sundtäitmisele hüpoteegiga tagatud nõude rahuldamiseks. 2(2)Hüpoteegi seadmise lepingule kirjutab alla ameti peadirektor või tema volitatud isik.RTL200911131131267232009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Kinnisasja korral esitab kahju tekitaja ametile hüpoteegi seadmiseks panditava kinnisasja omandiõigust ning väärtust tõendavad dokumendid, juriidilise isiku korral vajadusel osanike, nõukogu või üldkoosoleku otsuse hüpoteegi seadmise nõusoleku kohta, ning nõusoleku alluda kohesele sundtäitmisele hüpoteegiga tagatud nõude rahuldamiseks. 2(2)Hüpoteegi seadmise lepingule kirjutab alla ameti peadirektor või tema volitatud isik.RTL200911131131267232009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -195,7 +345,41 @@
         {
           "@id": "estleg:Reg_323723_Par_4_v323723"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_323723_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnisasja korral esitab kahju tekitaja ametile hüpoteegi seadmiseks panditava kinnisasja omandiõigust ning väärtust tõendavad dokumendid, juriidilise isiku korral vajadusel osanike, nõukogu või üldkoosoleku otsuse hüpoteegi seadmise nõusoleku kohta, ning nõusoleku alluda kohesele sundtäitmisele hüpoteegiga tagatud nõude rahuldamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Hüpoteegi seadmise lepingule kirjutab alla ameti peadirektor või tema volitatud isik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_323723_Par_5",
@@ -204,13 +388,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Tagatise suurendamine ja asendamine",
+      "rdfs:label": {
+        "@value": "§ 5. Tagatise suurendamine ja asendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "1(1)Kui ametile on alust eeldada, et esitatud tagatis ei ole enam küllaldane, usaldusväärne või hõlpsasti realiseeritav, kuid tagatise nõudmise aluseks olevad asjaolud ei ole ära langenud, nõuab ta kahju tekitajalt tagatise suurendamist või algse tagatise asendamist uuega. Kui ametile on alust eeldada, et esitatud tagatis ei ole enam küllaldane, usaldusväärne või hõlpsasti realiseeritav, kuid tagatise nõudmise aluseks olevad asjaolud ei ole ära langenud, nõuab ta kahju tekitajalt tagatise suuren",
-      "estleg:legalText": "1(1)Kui ametile on alust eeldada, et esitatud tagatis ei ole enam küllaldane, usaldusväärne või hõlpsasti realiseeritav, kuid tagatise nõudmise aluseks olevad asjaolud ei ole ära langenud, nõuab ta kahju tekitajalt tagatise suurendamist või algse tagatise asendamist uuega. Kui ametile on alust eeldada, et esitatud tagatis ei ole enam küllaldane, usaldusväärne või hõlpsasti realiseeritav, kuid tagatise nõudmise aluseks olevad asjaolud ei ole ära langenud, nõuab ta kahju tekitajalt tagatise suurendamist või algse tagatise asendamist uuega. 2(2)Tagatise suurendamisele ja asendamisele kohaldatakse käesoleva määruse §-des 2–5 sätestatut.RTL200911131131267232009-02-01+02:00 Tagatise suurendamisele ja asendamisele kohaldatakse käesoleva määruse §-des 2–5 sätestatut.",
+      "estleg:summary": {
+        "@value": "1(1)Kui ametile on alust eeldada, et esitatud tagatis ei ole enam küllaldane, usaldusväärne või hõlpsasti realiseeritav, kuid tagatise nõudmise aluseks olevad asjaolud ei ole ära langenud, nõuab ta kahju tekitajalt tagatise suurendamist või algse tagatise asendamist uuega. 2(2)Tagatise suurendamisele ja asendamisele kohaldatakse käesoleva määruse §-des 2–5 sätestatut.RTL200911131131267232009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Kui ametile on alust eeldada, et esitatud tagatis ei ole enam küllaldane, usaldusväärne või hõlpsasti realiseeritav, kuid tagatise nõudmise aluseks olevad asjaolud ei ole ära langenud, nõuab ta kahju tekitajalt tagatise suurendamist või algse tagatise asendamist uuega. 2(2)Tagatise suurendamisele ja asendamisele kohaldatakse käesoleva määruse §-des 2–5 sätestatut.RTL200911131131267232009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -224,7 +414,41 @@
         {
           "@id": "estleg:Reg_323723_Par_5_v323723"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_323723_Par_5_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui ametile on alust eeldada, et esitatud tagatis ei ole enam küllaldane, usaldusväärne või hõlpsasti realiseeritav, kuid tagatise nõudmise aluseks olevad asjaolud ei ole ära langenud, nõuab ta kahju tekitajalt tagatise suurendamist või algse tagatise asendamist uuega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tagatise suurendamisele ja asendamisele kohaldatakse käesoleva määruse §-des 2–5 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
     },
     {
       "@id": "estleg:Reg_323723_Par_6",
@@ -233,18 +457,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Tagatise kohta andmete esitamine",
+      "rdfs:label": {
+        "@value": "§ 6. Tagatise kohta andmete esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "Kahju tekitaja ja käendaja kohustuvad informeerima ametit kirjalikult 10 tööpäeva jooksul tagatisega seotud andmete muutumisest ja mis tahes asjaoludest, mis võivad vähendada tagatise väärtust, usaldusväärsust või realiseeritavust, või põhjustada tagatava kohustuse mittekohast täitmist.RTL200911131131267232009-02-01+02:00",
-      "estleg:legalText": "Kahju tekitaja ja käendaja kohustuvad informeerima ametit kirjalikult 10 tööpäeva jooksul tagatisega seotud andmete muutumisest ja mis tahes asjaoludest, mis võivad vähendada tagatise väärtust, usaldusväärsust või realiseeritavust, või põhjustada tagatava kohustuse mittekohast täitmist.RTL200911131131267232009-02-01+02:00 Kahju tekitaja ja käendaja kohustuvad informeerima ametit kirjalikult 10 tööpäeva jooksul tagatisega seotud andmete muutumisest ja mis tahes asjaoludest, mis võivad vähendada tagatise väärtust, usaldusväärsust või realiseeritavust, või põhjustada tagatava kohustuse mittekohast täitmist.",
+      "estleg:summary": {
+        "@value": "Kahju tekitaja ja käendaja kohustuvad informeerima ametit kirjalikult 10 tööpäeva jooksul tagatisega seotud andmete muutumisest ja mis tahes asjaoludest, mis võivad vähendada tagatise väärtust, usaldusväärsust või realiseeritavust, või põhjustada tagatava kohustuse mittekohast täitmist.RTL200911131131267232009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kahju tekitaja ja käendaja kohustuvad informeerima ametit kirjalikult 10 tööpäeva jooksul tagatisega seotud andmete muutumisest ja mis tahes asjaoludest, mis võivad vähendada tagatise väärtust, usaldusväärsust või realiseeritavust, või põhjustada tagatava kohustuse mittekohast täitmist.RTL200911131131267232009-02-01+02:00",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_323723_Par_6_v323723"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_6_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kahju tekitaja ja käendaja kohustuvad informeerima ametit kirjalikult 10 tööpäeva jooksul tagatisega seotud andmete muutumisest ja mis tahes asjaoludest, mis võivad vähendada tagatise väärtust, usaldusväärsust või realiseeritavust, või põhjustada tagatava kohustuse mittekohast täitmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     },
     {
       "@id": "estleg:Reg_323723_Par_7",
@@ -253,13 +501,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Tagatise kasutamine",
+      "rdfs:label": {
+        "@value": "§ 7. Tagatise kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "Amet võib ajagraafikus määratud tähtpäevaks kulude tasumata jätmisel:11)nõuda kulude tasumist vastavalt ajagraafikule;22)realiseerida tasumata kulude katteks hüpoteegiga koormatud kinnisasja «Täitemenetluse seadustikus» sätestatud korras.RTL200911131131267232009-02-01+02:00 Amet võib ajagraafikus määratud tähtpäevaks kulude tasumata jätmisel: nõuda kulude tasumist vastavalt ajagraafikule; realiseerida tasumata kulude katteks hüpoteegiga koormatud kinnisasja «Täitemenetluse seadustikus» sätestatu",
-      "estleg:legalText": "Amet võib ajagraafikus määratud tähtpäevaks kulude tasumata jätmisel:11)nõuda kulude tasumist vastavalt ajagraafikule;22)realiseerida tasumata kulude katteks hüpoteegiga koormatud kinnisasja «Täitemenetluse seadustikus» sätestatud korras.RTL200911131131267232009-02-01+02:00 Amet võib ajagraafikus määratud tähtpäevaks kulude tasumata jätmisel: nõuda kulude tasumist vastavalt ajagraafikule; realiseerida tasumata kulude katteks hüpoteegiga koormatud kinnisasja «Täitemenetluse seadustikus» sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Amet võib ajagraafikus määratud tähtpäevaks kulude tasumata jätmisel:11)nõuda kulude tasumist vastavalt ajagraafikule;22)realiseerida tasumata kulude katteks hüpoteegiga koormatud kinnisasja «Täitemenetluse seadustikus» sätestatud korras.RTL200911131131267232009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "Amet võib ajagraafikus määratud tähtpäevaks kulude tasumata jätmisel:11)nõuda kulude tasumist vastavalt ajagraafikule;22)realiseerida tasumata kulude katteks hüpoteegiga koormatud kinnisasja «Täitemenetluse seadustikus» sätestatud korras.RTL200911131131267232009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -276,6 +530,28 @@
         {
           "@id": "estleg:Reg_323723_Par_7_v323723"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_7_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Amet võib ajagraafikus määratud tähtpäevaks kulude tasumata jätmisel: 1) nõuda kulude tasumist vastavalt ajagraafikule; 2) realiseerida tasumata kulude katteks hüpoteegiga koormatud kinnisasja «Täitemenetluse seadustikus» sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -285,13 +561,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Tagatise vabastamine",
+      "rdfs:label": {
+        "@value": "§ 8. Tagatise vabastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tagatise esitamise, kasutamise, suurendamise, asendamise ja vabastamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_323723_Map"
       },
-      "estleg:summary": "Kui kahju tekitaja on tasunud vastavalt ajagraafikule kõik kulud, vabastab amet tagatise ning teatab sellest viivitamatult kirjalikult kahju tekitajale.RTL200911131131267232009-02-01+02:00",
-      "estleg:legalText": "Kui kahju tekitaja on tasunud vastavalt ajagraafikule kõik kulud, vabastab amet tagatise ning teatab sellest viivitamatult kirjalikult kahju tekitajale.RTL200911131131267232009-02-01+02:00 Kui kahju tekitaja on tasunud vastavalt ajagraafikule kõik kulud, vabastab amet tagatise ning teatab sellest viivitamatult kirjalikult kahju tekitajale.",
+      "estleg:summary": {
+        "@value": "Kui kahju tekitaja on tasunud vastavalt ajagraafikule kõik kulud, vabastab amet tagatise ning teatab sellest viivitamatult kirjalikult kahju tekitajale.RTL200911131131267232009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kui kahju tekitaja on tasunud vastavalt ajagraafikule kõik kulud, vabastab amet tagatise ning teatab sellest viivitamatult kirjalikult kahju tekitajale.RTL200911131131267232009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -305,7 +587,25 @@
         {
           "@id": "estleg:Reg_323723_Par_8_v323723"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_323723_Par_8_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_323723_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui kahju tekitaja on tasunud vastavalt ajagraafikule kõik kulud, vabastab amet tagatise ning teatab sellest viivitamatult kirjalikult kahju tekitajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_323723_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
     }
   ]
 }

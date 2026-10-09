@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KMSK_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Kaubandusliku meresõidu koodeks teemakaardistus",
+      "rdfs:label": {
+        "@value": "Kaubandusliku meresõidu koodeks teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Kaubandusliku meresõidu koodeks",
-      "dcterms:title": [
-        {
-          "@value": "Kaubandusliku meresõidu koodeks",
-          "@language": "et"
-        },
-        {
-          "@value": "Merchant Shipping Code",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Kaubandusliku meresõidu koodeks",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/130062023024.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062023024"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062023024/xml"
+      },
+      "estleg:globalId": "130062023024",
+      "eli:id_local": "130062023024",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159174",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "2ceb5c42f9c28d41f86648ef40e89b09b64ef25e628aae26eda97f2aeb0162c5",
+      "estleg:issuer": "Ülemnõukogu",
+      "estleg:entryIntoForce": {
+        "@value": "1992-03-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/530062023010"
@@ -87,14 +99,40 @@
         {
           "@id": "estleg:Institution_transpordiamet"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/530062023010"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_KMSK_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–31 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–31 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:KMSK_TopicScheme"
+      },
+      "estleg:provisionCount": 18
     },
     {
       "@id": "estleg:KMSK_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Kaubandusliku meresõidu koodeks teemaskeem",
+      "rdfs:label": {
+        "@value": "Kaubandusliku meresõidu koodeks teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_KMSK_1"
@@ -110,22 +148,11 @@
         },
         {
           "@id": "estleg:Cluster_KMSK_24"
+        },
+        {
+          "@id": "estleg:Cluster_KMSK_Preamble"
         }
       ]
-    },
-    {
-      "@id": "estleg:Cluster_KMSK_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–31 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–31 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:KMSK_TopicScheme"
-      },
-      "estleg:provisionCount": 15
     },
     {
       "@id": "estleg:Chapter_KMSK_1",
@@ -133,7 +160,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
@@ -153,8 +183,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§32–51 LAEV",
-      "skos:prefLabel": "§32–51 LAEV",
+      "rdfs:label": {
+        "@value": "§32–51 LAEV",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§32–51 LAEV",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KMSK_TopicScheme"
       },
@@ -166,7 +202,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – LAEV",
+      "rdfs:label": {
+        "@value": "2. peatükk – LAEV",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
@@ -186,8 +225,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§52–73 LAEVAPERE",
-      "skos:prefLabel": "§52–73 LAEVAPERE",
+      "rdfs:label": {
+        "@value": "§52–73 LAEVAPERE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§52–73 LAEVAPERE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KMSK_TopicScheme"
       },
@@ -199,7 +244,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – LAEVAPERE",
+      "rdfs:label": {
+        "@value": "3. peatükk – LAEVAPERE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
@@ -207,20 +255,6 @@
       "dcterms:subject": {
         "@id": "estleg:Cluster_KMSK_3"
       },
-      "estleg:hasPart": [
-        {
-          "@id": "estleg:KMSK_Par_74"
-        },
-        {
-          "@id": "estleg:KMSK_Par_91"
-        },
-        {
-          "@id": "estleg:KMSK_Par_92"
-        },
-        {
-          "@id": "estleg:KMSK_Par_109"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -233,12 +267,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§110–118 MERRE UPPUNUD VARA",
-      "skos:prefLabel": "§110–118 MERRE UPPUNUD VARA",
+      "rdfs:label": {
+        "@value": "§110–118 MERRE UPPUNUD VARA",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§110–118 MERRE UPPUNUD VARA",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KMSK_TopicScheme"
       },
-      "estleg:provisionCount": 9
+      "estleg:provisionCount": 10
     },
     {
       "@id": "estleg:Chapter_KMSK_6",
@@ -246,7 +286,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – MERRE UPPUNUD VARA",
+      "rdfs:label": {
+        "@value": "6. peatükk – MERRE UPPUNUD VARA",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
@@ -254,110 +297,6 @@
       "dcterms:subject": {
         "@id": "estleg:Cluster_KMSK_6"
       },
-      "estleg:hasPart": [
-        {
-          "@id": "estleg:KMSK_Par_119"
-        },
-        {
-          "@id": "estleg:KMSK_Par_129"
-        },
-        {
-          "@id": "estleg:KMSK_Par_130"
-        },
-        {
-          "@id": "estleg:KMSK_Par_178"
-        },
-        {
-          "@id": "estleg:KMSK_Par_179"
-        },
-        {
-          "@id": "estleg:KMSK_Par_189"
-        },
-        {
-          "@id": "estleg:KMSK_Par_190"
-        },
-        {
-          "@id": "estleg:KMSK_Par_196"
-        },
-        {
-          "@id": "estleg:KMSK_Par_197"
-        },
-        {
-          "@id": "estleg:KMSK_Par_208"
-        },
-        {
-          "@id": "estleg:KMSK_Par_209"
-        },
-        {
-          "@id": "estleg:KMSK_Par_216"
-        },
-        {
-          "@id": "estleg:KMSK_Par_217"
-        },
-        {
-          "@id": "estleg:KMSK_Par_223"
-        },
-        {
-          "@id": "estleg:KMSK_Par_224"
-        },
-        {
-          "@id": "estleg:KMSK_Par_263"
-        },
-        {
-          "@id": "estleg:KMSK_Par_264"
-        },
-        {
-          "@id": "estleg:KMSK_Par_282"
-        },
-        {
-          "@id": "estleg:KMSK_Par_283"
-        },
-        {
-          "@id": "estleg:KMSK_Par_290"
-        },
-        {
-          "@id": "estleg:KMSK_Par_291"
-        },
-        {
-          "@id": "estleg:KMSK_Par_300"
-        },
-        {
-          "@id": "estleg:KMSK_Par_301"
-        },
-        {
-          "@id": "estleg:KMSK_Par_303"
-        },
-        {
-          "@id": "estleg:KMSK_Par_314"
-        },
-        {
-          "@id": "estleg:KMSK_Par_326"
-        },
-        {
-          "@id": "estleg:KMSK_Par_327"
-        },
-        {
-          "@id": "estleg:KMSK_Par_340"
-        },
-        {
-          "@id": "estleg:KMSK_Par_341"
-        },
-        {
-          "@id": "estleg:KMSK_Par_346"
-        },
-        {
-          "@id": "estleg:KMSK_Par_347"
-        },
-        {
-          "@id": "estleg:KMSK_Par_353"
-        },
-        {
-          "@id": "estleg:KMSK_Par_354"
-        },
-        {
-          "@id": "estleg:KMSK_Par_372"
-        }
-      ],
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -370,8 +309,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§373–375 VASTUTUS",
-      "skos:prefLabel": "§373–375 VASTUTUS",
+      "rdfs:label": {
+        "@value": "§373–375 VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§373–375 VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KMSK_TopicScheme"
       },
@@ -383,7 +328,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "24. peatükk – VASTUTUS",
+      "rdfs:label": {
+        "@value": "24. peatükk – VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "24",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
@@ -397,24 +345,64 @@
       }
     },
     {
+      "@id": "estleg:Cluster_KMSK_Preamble",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "Sissejuhatavad sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Sissejuhatavad sätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:KMSK_TopicScheme"
+      },
+      "estleg:provisionCount": 38
+    },
+    {
+      "@id": "estleg:Chapter_KMSK_Preamble",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": {
+        "@value": "Sissejuhatavad sätted",
+        "@language": "et"
+      },
+      "estleg:partOfAct": {
+        "@id": "estleg:KMSK_Map"
+      },
+      "dcterms:subject": {
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      }
+    },
+    {
       "@id": "estleg:KMSK_Par_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": {
+        "@value": "§ 1.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
+      "estleg:summary": "§ 1.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KMSK_1"
       },
-      "estleg:summary": "§ 1.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:KMSK_Par_1_v22215"
@@ -431,13 +419,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 2.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 2.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -463,12 +456,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Vedu ja pukseerimine ning muude teenuste osutamine ainult Eesti Vabariigi (edasp...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Vedu ja pukseerimine ning muude teenuste osutamine ainult Eesti Vabariigi (edasp...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Vedu ja pukseerimine ning muude teenuste osutamine ainult Eesti Vabariigi (edaspidi Eesti) sadamate vahel või sadama akvatooriumil või väljumisega Eesti sadamast ja sisenemisega samasse sadamasse toimub Eesti ja Euroopa Liidu liikmesriigi ning Euroopa Majanduspiirkonna lepingu osalisriigi riigilipu all sõitvate laevadega.",
+      "estleg:summary": {
+        "@value": "Vedu ja pukseerimine ning muude teenuste osutamine ainult Eesti Vabariigi (edaspidi Eesti) sadamate vahel või sadama akvatooriumil või väljumisega Eesti sadamast ja sisenemisega samasse sadamasse toimub Eesti ja Euroopa Liidu liikmesriigi ning Euroopa Majanduspiirkonna lepingu osalisriigi riigilipu all sõitvate laevadega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vedu ja pukseerimine ning muude teenuste osutamine ainult Eesti Vabariigi (edaspidi Eesti) sadamate vahel või sadama akvatooriumil või väljumisega Eesti sadamast ja sisenemisega samasse sadamasse toimub Eesti ja Euroopa Liidu liikmesriigi ning Euroopa Majanduspiirkonna lepingu osalisriigi riigilipu all sõitvate laevadega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
@@ -495,18 +494,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4.",
+      "rdfs:label": {
+        "@value": "§ 4.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
+      "estleg:summary": "§ 4.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KMSK_1"
-      },
-      "estleg:summary": "§ 4."
+      }
     },
     {
       "@id": "estleg:KMSK_Par_5",
@@ -515,13 +517,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 5.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 5.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -541,13 +548,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [Kliimaministeerium kavandab ja viib ellu merenduse arengu ja meresõidu ohutuse p...]",
+      "rdfs:label": {
+        "@value": "§ 6. [(2) Transpordiameti pädevusse kuulub: 1) 2) 3) 4) 5) 6) merre uppunud vara ülest...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Transpordiameti pädevusse kuulub: kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - merre uppunud vara ülestõstmise korraldamine juhul, kui see segab laevaliiklust; järelevalve kaubanduslikku meresõitu reguleerivate õigusaktide, sealhulgas Rahvusvahelise Mereorganisatsiooni (IMO) konventsioonide, millega Eesti Vabariik on ühinenud, koodeksite, resolutsioonide ja ringkirjade täitmise üle. kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - kehtetu -",
-      "estleg:legalText": "(1) Kehtetu - (2) Transpordiameti pädevusse kuulub: kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - merre uppunud vara ülestõstmise korraldamine juhul, kui see segab laevaliiklust; järelevalve kaubanduslikku meresõitu reguleerivate õigusaktide, sealhulgas Rahvusvahelise Mereorganisatsiooni (IMO) konventsioonide, millega Eesti Vabariik on ühinenud, koodeksite, resolutsioonide ja ringkirjade täitmise üle. kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - kehtetu -",
+      "estleg:summary": {
+        "@value": "(2) Transpordiameti pädevusse kuulub: 1) 2) 3) 4) 5) 6) merre uppunud vara ülestõstmise korraldamine juhul, kui see segab laevaliiklust; 7) järelevalve kaubanduslikku meresõitu reguleerivate õigusaktide, sealhulgas Rahvusvahelise Mereorganisatsiooni (IMO) konventsioonide, millega Eesti Vabariik on ühinenud, koodeksite, resolutsioonide ja ringkirjade täitmise üle. 8) 9) 10) 11) 12) 13) 14)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(2) Transpordiameti pädevusse kuulub: 1) 2) 3) 4) 5) 6) merre uppunud vara ülestõstmise korraldamine juhul, kui see segab laevaliiklust; 7) järelevalve kaubanduslikku meresõitu reguleerivate õigusaktide, sealhulgas Rahvusvahelise Mereorganisatsiooni (IMO) konventsioonide, millega Eesti Vabariik on ühinenud, koodeksite, resolutsioonide ja ringkirjade täitmise üle. 8) 9) 10) 11) 12) 13) 14)",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -555,9 +568,6 @@
         "@id": "estleg:Chapter_KMSK_1"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:KMSK_Par_6_Lg_1"
-        },
         {
           "@id": "estleg:KMSK_Par_6_Lg_2"
         }
@@ -601,30 +611,33 @@
       ]
     },
     {
-      "@id": "estleg:KMSK_Par_6_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KMSK_Par_6"
-      },
-      "rdfs:label": "§ 6 lg 1"
-    },
-    {
       "@id": "estleg:KMSK_Par_6_Lg_2",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Transpordiameti pädevusse kuulub: kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - merre uppunud vara ülestõstmise korraldamine juhul, kui see segab laevaliiklust; järelevalve kaubanduslikku meresõitu reguleerivate õigusaktide, sealhulgas Rahvusvahelise Mereorganisatsiooni (IMO) konventsioonide, millega Eesti Vabariik on ühinenud, koodeksite, resolutsioonide ja ringkirjade täitmise üle. kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - kehtetu - kehtetu -",
+      "estleg:legalText": "(2) Transpordiameti pädevusse kuulub: 1) 2) 3) 4) 5) 6) merre uppunud vara ülestõstmise korraldamine juhul, kui see segab laevaliiklust; 7) järelevalve kaubanduslikku meresõitu reguleerivate õigusaktide, sealhulgas Rahvusvahelise Mereorganisatsiooni (IMO) konventsioonide, millega Eesti Vabariik on ühinenud, koodeksite, resolutsioonide ja ringkirjade täitmise üle. 8) 9) 10) 11) 12) 13) 14)",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_6"
       },
       "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -647,13 +660,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 7.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 7.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -676,13 +694,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 8.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 8.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -705,13 +728,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8¹.",
-      "rdfs:label": "§ 8¹. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 8¹.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 8¹.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -746,13 +774,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 9.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 9.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -775,13 +808,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9¹.",
-      "rdfs:label": "§ 9¹. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 9¹.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 9¹.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -807,13 +845,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9².",
-      "rdfs:label": "§ 9². [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 9².",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 9².",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -836,18 +879,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10.",
+      "rdfs:label": {
+        "@value": "§ 10.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
+      "estleg:summary": "§ 10.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KMSK_1"
       },
-      "estleg:summary": "§ 10.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:KMSK_Par_10_v22215"
@@ -864,13 +910,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 14.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 14.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -896,13 +947,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 15.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 15.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -925,12 +981,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. [Laevapere õiguslik seisund, sealhulgas ka suhted laevapere liikmete vahel, mis s...]",
+      "rdfs:label": {
+        "@value": "§ 16. [Laevapere liikmete ja laevaomaniku vahelisi suhteid reguleerib laeva lipuriigi s...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Laevapere liikmete ja laevaomaniku vahelisi suhteid reguleerib laeva lipuriigi seadustik, kui nendevahelise lepinguga ei ole sätestatud teisiti.",
+      "estleg:summary": {
+        "@value": "Laevapere liikmete ja laevaomaniku vahelisi suhteid reguleerib laeva lipuriigi seadustik, kui nendevahelise lepinguga ei ole sätestatud teisiti.",
+        "@language": "et"
+      },
       "estleg:legalText": "Laevapere liikmete ja laevaomaniku vahelisi suhteid reguleerib laeva lipuriigi seadustik, kui nendevahelise lepinguga ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
@@ -958,10 +1020,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Laevapere liikmete ja laevaomaniku vahelisi suhteid reguleerib laeva lipuriigi seadustik, kui nendevahelise lepinguga ei ole sätestatud teisiti.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laevapere liikmete ja laevaomaniku vahelisi suhteid reguleerib laeva lipuriigi seadustik, kui nendevahelise lepinguga ei ole sätestatud teisiti.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_16"
-      }
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:KMSK_Par_17",
@@ -970,18 +1034,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17.",
+      "rdfs:label": {
+        "@value": "§ 17.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
+      "estleg:summary": "§ 17.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KMSK_1"
       },
-      "estleg:summary": "§ 17.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:KMSK_Par_17_v22215"
@@ -998,13 +1065,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 31.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 31.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_1"
       },
@@ -1030,18 +1102,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32.",
+      "rdfs:label": {
+        "@value": "§ 32.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
+      "estleg:summary": "§ 32.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KMSK_2"
-      },
-      "estleg:summary": "§ 32."
+      }
     },
     {
       "@id": "estleg:KMSK_Par_41",
@@ -1050,13 +1125,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 41.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 41.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
@@ -1076,18 +1156,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42",
-      "rdfs:label": "§ 42",
+      "rdfs:label": {
+        "@value": "§ 42",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
+      "estleg:summary": "§ 42",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KMSK_2"
-      },
-      "estleg:summary": "§ 42"
+      }
     },
     {
       "@id": "estleg:KMSK_Par_46",
@@ -1096,18 +1179,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46",
-      "rdfs:label": "§ 46",
+      "rdfs:label": {
+        "@value": "§ 46",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
+      "estleg:summary": "§ 46",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KMSK_2"
-      },
-      "estleg:summary": "§ 46"
+      }
     },
     {
       "@id": "estleg:KMSK_Par_47",
@@ -1116,13 +1202,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42. – § 47.",
-      "rdfs:label": "§ 42. – § 47. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 42. – § 47.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 42. – § 47.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
@@ -1142,13 +1233,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
-      "rdfs:label": "§ 48. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 48.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 48.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
@@ -1171,12 +1267,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
-      "rdfs:label": "§ 49. [Tunnistus laeva omandiõiguse kohta ja laevapilet võivad laevas olla ametlikult k...]",
+      "rdfs:label": {
+        "@value": "§ 49. [Tunnistus laeva omandiõiguse kohta ja laevapilet võivad laevas olla ametlikult k...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Tunnistus laeva omandiõiguse kohta ja laevapilet võivad laevas olla ametlikult kinnitatud ärakirjana.",
+      "estleg:summary": {
+        "@value": "Tunnistus laeva omandiõiguse kohta ja laevapilet võivad laevas olla ametlikult kinnitatud ärakirjana.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tunnistus laeva omandiõiguse kohta ja laevapilet võivad laevas olla ametlikult kinnitatud ärakirjana.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
@@ -1200,13 +1302,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 50.",
-      "rdfs:label": "§ 50. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 50.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 50.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
@@ -1229,13 +1336,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 51.",
-      "rdfs:label": "§ 51. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 51.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 51.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_2"
       },
@@ -1258,12 +1370,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52.",
-      "rdfs:label": "§ 52. [Laevapere koosneb kaptenist, teistest laeva juhtkonda kuuluvatest isikutest ja l...]",
+      "rdfs:label": {
+        "@value": "§ 52. [Laeva juhtkonda kuuluvad peale kapteni tüürimehed, kapteniabid, laevamehaanikud,...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Laeva juhtkonda kuuluvad peale kapteni tüürimehed, kapteniabid, laevamehaanikud, elektromehaanikud, raadiospetsialistid ja arstid. Laevaomanik võib juhtkonna koosseisu arvata ka teisi laevaspetsialiste. Laevameeskond koosneb tekimeeskonnast, masinameeskonnast ja teistest laevapere liikmetest, kes ei kuulu laeva juhtkonda.",
+      "estleg:summary": {
+        "@value": "Laeva juhtkonda kuuluvad peale kapteni tüürimehed, kapteniabid, laevamehaanikud, elektromehaanikud, raadiospetsialistid ja arstid. Laevaomanik võib juhtkonna koosseisu arvata ka teisi laevaspetsialiste. Laevameeskond koosneb tekimeeskonnast, masinameeskonnast ja teistest laevapere liikmetest, kes ei kuulu laeva juhtkonda.",
+        "@language": "et"
+      },
       "estleg:legalText": "Laeva juhtkonda kuuluvad peale kapteni tüürimehed, kapteniabid, laevamehaanikud, elektromehaanikud, raadiospetsialistid ja arstid. Laevaomanik võib juhtkonna koosseisu arvata ka teisi laevaspetsialiste. Laevameeskond koosneb tekimeeskonnast, masinameeskonnast ja teistest laevapere liikmetest, kes ei kuulu laeva juhtkonda.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1301,10 +1419,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Laeva juhtkonda kuuluvad peale kapteni tüürimehed, kapteniabid, laevamehaanikud, elektromehaanikud, raadiospetsialistid ja arstid. Laevaomanik võib juhtkonna koosseisu arvata ka teisi laevaspetsialiste.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva juhtkonda kuuluvad peale kapteni tüürimehed, kapteniabid, laevamehaanikud, elektromehaanikud, raadiospetsialistid ja arstid. Laevaomanik võib juhtkonna koosseisu arvata ka teisi laevaspetsialiste.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_52"
       },
+      "rdfs:label": "§ 52 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1319,10 +1439,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Laevameeskond koosneb tekimeeskonnast, masinameeskonnast ja teistest laevapere liikmetest, kes ei kuulu laeva juhtkonda.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Laevameeskond koosneb tekimeeskonnast, masinameeskonnast ja teistest laevapere liikmetest, kes ei kuulu laeva juhtkonda.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_52"
-      }
+      },
+      "rdfs:label": "§ 52 lg 2"
     },
     {
       "@id": "estleg:KMSK_Par_53",
@@ -1331,13 +1453,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 53.",
-      "rdfs:label": "§ 53. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 53.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 53.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
       },
@@ -1357,13 +1484,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54.",
-      "rdfs:label": "§ 54. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 54.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 54.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
       },
@@ -1383,13 +1515,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 55.",
-      "rdfs:label": "§ 55. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 55.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 55.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
       },
@@ -1409,13 +1546,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 56.",
-      "rdfs:label": "§ 56. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 56.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 56.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
       },
@@ -1435,12 +1577,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 57.",
-      "rdfs:label": "§ 57. [Laevapere liikme ja laevaomaniku vahelisi töösuhteid reguleerivad meretöö seadus...]",
+      "rdfs:label": {
+        "@value": "§ 57. [Laevapere liikme ja laevaomaniku vahelisi töösuhteid reguleerivad meretöö seadus...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Laevapere liikme ja laevaomaniku vahelisi töösuhteid reguleerivad meretöö seadus ja teised töösuhet reguleerivad õigusaktid.",
+      "estleg:summary": {
+        "@value": "Laevapere liikme ja laevaomaniku vahelisi töösuhteid reguleerivad meretöö seadus ja teised töösuhet reguleerivad õigusaktid.",
+        "@language": "et"
+      },
       "estleg:legalText": "Laevapere liikme ja laevaomaniku vahelisi töösuhteid reguleerivad meretöö seadus ja teised töösuhet reguleerivad õigusaktid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1464,12 +1612,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 58.",
-      "rdfs:label": "§ 58. [Ühtki laevapere liiget ei saa kapteni nõusolekuta laevale määrata.]",
+      "rdfs:label": {
+        "@value": "§ 58. [Ühtki laevapere liiget ei saa kapteni nõusolekuta laevale määrata.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Ühtki laevapere liiget ei saa kapteni nõusolekuta laevale määrata.",
+      "estleg:summary": {
+        "@value": "Ühtki laevapere liiget ei saa kapteni nõusolekuta laevale määrata.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühtki laevapere liiget ei saa kapteni nõusolekuta laevale määrata.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1499,12 +1653,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 59.",
-      "rdfs:label": "§ 59. [Kaptenil on õigus laevapere liikmete suhtes kasutada ergutusvahendeid ja määrata...]",
+      "rdfs:label": {
+        "@value": "§ 59. [Vajaduse korral on kaptenil õigus kõrvaldada tööülesannete täitmisest laevapere...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Vajaduse korral on kaptenil õigus kõrvaldada tööülesannete täitmisest laevapere iga liige.",
+      "estleg:summary": {
+        "@value": "Vajaduse korral on kaptenil õigus kõrvaldada tööülesannete täitmisest laevapere iga liige.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vajaduse korral on kaptenil õigus kõrvaldada tööülesannete täitmisest laevapere iga liige.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1532,10 +1692,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vajaduse korral on kaptenil õigus kõrvaldada tööülesannete täitmisest laevapere iga liige.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vajaduse korral on kaptenil õigus kõrvaldada tööülesannete täitmisest laevapere iga liige.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_59"
-      }
+      },
+      "rdfs:label": "§ 59 lg 1"
     },
     {
       "@id": "estleg:KMSK_Par_60",
@@ -1544,12 +1706,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 60.",
-      "rdfs:label": "§ 60. [Laevaomanik peab hüvitama tekitatud kahju laevapere liikmete vara hävimise või k...]",
+      "rdfs:label": {
+        "@value": "§ 60. [Laevaomanik peab hüvitama tekitatud kahju laevapere liikmete vara hävimise või k...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Laevaomanik peab hüvitama tekitatud kahju laevapere liikmete vara hävimise või kahjustuse korral laeva avarii puhul, lähtudes samalaadse ja sama kvaliteediga vara riiklikest jaehindadest ning arvestades hävinud või kahjustatud vara kulumist. Avariis süüdi olevate laevapere liikmete vara väärtus ei kuulu hüvitamisele.",
+      "estleg:summary": {
+        "@value": "Laevaomanik peab hüvitama tekitatud kahju laevapere liikmete vara hävimise või kahjustuse korral laeva avarii puhul, lähtudes samalaadse ja sama kvaliteediga vara riiklikest jaehindadest ning arvestades hävinud või kahjustatud vara kulumist. Avariis süüdi olevate laevapere liikmete vara väärtus ei kuulu hüvitamisele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Laevaomanik peab hüvitama tekitatud kahju laevapere liikmete vara hävimise või kahjustuse korral laeva avarii puhul, lähtudes samalaadse ja sama kvaliteediga vara riiklikest jaehindadest ning arvestades hävinud või kahjustatud vara kulumist. Avariis süüdi olevate laevapere liikmete vara väärtus ei kuulu hüvitamisele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1577,13 +1745,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 61.",
-      "rdfs:label": "§ 61. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 61.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 61.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
       },
@@ -1606,12 +1779,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 62.",
-      "rdfs:label": "§ 62. [Kaptenil lasub laeva üldjuhtimine, sealhulgas laeva navigeerimine, kõikide ohutu...]",
+      "rdfs:label": {
+        "@value": "§ 62. [Kapteni korraldused temale antud volituste piires kuuluvad vastuvaidlematus korr...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kapteni korraldused temale antud volituste piires kuuluvad vastuvaidlematus korras täitmisele kõigi laeval olevate isikute poolt. Kui laeval viibiva isiku tegevus on ohtlik laevale või laeval olevatele inimestele ja varale, on kaptenil õigus paigutada see isik eriruumi ja hoida teda seal kuni laeva saabumiseni esimesse Eesti sadamasse. Eriruumis ebaseadusliku kinnipidamise eest vastutab kapten seadusega kehtestatud korras.",
+      "estleg:summary": {
+        "@value": "Kapteni korraldused temale antud volituste piires kuuluvad vastuvaidlematus korras täitmisele kõigi laeval olevate isikute poolt. Kui laeval viibiva isiku tegevus on ohtlik laevale või laeval olevatele inimestele ja varale, on kaptenil õigus paigutada see isik eriruumi ja hoida teda seal kuni laeva saabumiseni esimesse Eesti sadamasse. Eriruumis ebaseadusliku kinnipidamise eest vastutab kapten seadusega kehtestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kapteni korraldused temale antud volituste piires kuuluvad vastuvaidlematus korras täitmisele kõigi laeval olevate isikute poolt. Kui laeval viibiva isiku tegevus on ohtlik laevale või laeval olevatele inimestele ja varale, on kaptenil õigus paigutada see isik eriruumi ja hoida teda seal kuni laeva saabumiseni esimesse Eesti sadamasse. Eriruumis ebaseadusliku kinnipidamise eest vastutab kapten seadusega kehtestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1654,10 +1833,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kapteni korraldused temale antud volituste piires kuuluvad vastuvaidlematus korras täitmisele kõigi laeval olevate isikute poolt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kapteni korraldused temale antud volituste piires kuuluvad vastuvaidlematus korras täitmisele kõigi laeval olevate isikute poolt.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_62"
       },
+      "rdfs:label": "§ 62 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1674,10 +1855,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui laeval viibiva isiku tegevus on ohtlik laevale või laeval olevatele inimestele ja varale, on kaptenil õigus paigutada see isik eriruumi ja hoida teda seal kuni laeva saabumiseni esimesse Eesti sadamasse. Eriruumis ebaseadusliku kinnipidamise eest vastutab kapten seadusega kehtestatud korras.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui laeval viibiva isiku tegevus on ohtlik laevale või laeval olevatele inimestele ja varale, on kaptenil õigus paigutada see isik eriruumi ja hoida teda seal kuni laeva saabumiseni esimesse Eesti sadamasse. Eriruumis ebaseadusliku kinnipidamise eest vastutab kapten seadusega kehtestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_62"
       },
+      "rdfs:label": "§ 62 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1695,13 +1878,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 63.",
-      "rdfs:label": "§ 63. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 63.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 63.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
       },
@@ -1724,13 +1912,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 64.",
-      "rdfs:label": "§ 64. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 64.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 64.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
       },
@@ -1756,12 +1949,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 65.",
-      "rdfs:label": "§ 65. [Kapten peab igast lapsesünni juhust laeval koostama akti kahe tunnistaja, ja kui...]",
+      "rdfs:label": {
+        "@value": "§ 65. [Kapteni koostatud akt ei asenda sünnitunnistust ja kuulub esitamisele perekonnas...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kapteni koostatud akt ei asenda sünnitunnistust ja kuulub esitamisele perekonnaseisuametile sünnitunnistuse saamiseks.",
+      "estleg:summary": {
+        "@value": "Kapteni koostatud akt ei asenda sünnitunnistust ja kuulub esitamisele perekonnaseisuametile sünnitunnistuse saamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kapteni koostatud akt ei asenda sünnitunnistust ja kuulub esitamisele perekonnaseisuametile sünnitunnistuse saamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1794,10 +1993,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kapteni koostatud akt ei asenda sünnitunnistust ja kuulub esitamisele perekonnaseisuametile sünnitunnistuse saamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kapteni koostatud akt ei asenda sünnitunnistust ja kuulub esitamisele perekonnaseisuametile sünnitunnistuse saamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_65"
       },
+      "rdfs:label": "§ 65 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_perekonnaseisuamet"
@@ -1811,12 +2012,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 66.",
-      "rdfs:label": "§ 66. [Kapten on kohustatud võtma hoiule laeval viibiva isiku poolt koostatud testamend...]",
+      "rdfs:label": {
+        "@value": "§ 66. [Kapten peab koostama iga surmajuhtumi kohta laeval akti kahe tunnistaja, ja kui...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kapten peab koostama iga surmajuhtumi kohta laeval akti kahe tunnistaja, ja kui laeval on arst või velsker, siis ka tema juuresolekul. Samuti peab ta tegema sellekohase kande logiraamatusse. Surmaakti juurde lisatakse surnu laeval oleva vara loetelu. Kapten võtab tarvitusele abinõud surnu vara säilitamiseks. Jõudnud Eesti sadamasse, annab kapten surma kohta koostatud akti ja surnule kuulunud vara loetelu politseile, ning välisriigi sadamas, kus on Eesti konsulaarametnik, Eesti",
+      "estleg:summary": {
+        "@value": "Kapten peab koostama iga surmajuhtumi kohta laeval akti kahe tunnistaja, ja kui laeval on arst või velsker, siis ka tema juuresolekul. Samuti peab ta tegema sellekohase kande logiraamatusse. Surmaakti juurde lisatakse surnu laeval oleva vara loetelu. Kapten võtab tarvitusele abinõud surnu vara säilitamiseks. Jõudnud Eesti sadamasse, annab kapten surma kohta koostatud akti ja surnule kuulunud vara loetelu politseile, ning välisriigi sadamas, kus on Eesti konsulaarametnik, Eesti",
+        "@language": "et"
+      },
       "estleg:legalText": "Kapten peab koostama iga surmajuhtumi kohta laeval akti kahe tunnistaja, ja kui laeval on arst või velsker, siis ka tema juuresolekul. Samuti peab ta tegema sellekohase kande logiraamatusse. Surmaakti juurde lisatakse surnu laeval oleva vara loetelu. Kapten võtab tarvitusele abinõud surnu vara säilitamiseks. Jõudnud Eesti sadamasse, annab kapten surma kohta koostatud akti ja surnule kuulunud vara loetelu politseile, ning välisriigi sadamas, kus on Eesti konsulaarametnik, Eesti konsulaarametnikule ja rakendab abinõusid surnu matmiseks. Erandjuhtudel, kui laev peab avamerel viibima pikemat aega ja surnukeha ei ole võimalik säilitada, on kaptenil õigus matta surnu merre meretavade kohaselt, koostades selle kohta vastava akti ja tehes vastava kande logiraamatusse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1868,10 +2075,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kapten peab koostama iga surmajuhtumi kohta laeval akti kahe tunnistaja, ja kui laeval on arst või velsker, siis ka tema juuresolekul. Samuti peab ta tegema sellekohase kande logiraamatusse. Surmaakti juurde lisatakse surnu laeval oleva vara loetelu. Kapten võtab tarvitusele abinõud surnu vara säilitamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kapten peab koostama iga surmajuhtumi kohta laeval akti kahe tunnistaja, ja kui laeval on arst või velsker, siis ka tema juuresolekul. Samuti peab ta tegema sellekohase kande logiraamatusse. Surmaakti juurde lisatakse surnu laeval oleva vara loetelu. Kapten võtab tarvitusele abinõud surnu vara säilitamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_66"
       },
+      "rdfs:label": "§ 66 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1886,10 +2095,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Jõudnud Eesti sadamasse, annab kapten surma kohta koostatud akti ja surnule kuulunud vara loetelu politseile, ning välisriigi sadamas, kus on Eesti konsulaarametnik, Eesti konsulaarametnikule ja rakendab abinõusid surnu matmiseks. Erandjuhtudel, kui laev peab avamerel viibima pikemat aega ja surnukeha ei ole võimalik säilitada, on kaptenil õigus matta surnu merre meretavade kohaselt, koostades selle kohta vastava akti ja tehes vastava kande logiraamatusse.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Jõudnud Eesti sadamasse, annab kapten surma kohta koostatud akti ja surnule kuulunud vara loetelu politseile, ning välisriigi sadamas, kus on Eesti konsulaarametnik, Eesti konsulaarametnikule ja rakendab abinõusid surnu matmiseks. Erandjuhtudel, kui laev peab avamerel viibima pikemat aega ja surnukeha ei ole võimalik säilitada, on kaptenil õigus matta surnu merre meretavade kohaselt, koostades selle kohta vastava akti ja tehes vastava kande logiraamatusse.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_66"
       },
+      "rdfs:label": "§ 66 lg 2",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1905,12 +2116,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 67.",
-      "rdfs:label": "§ 67. [Kapten on kohustatud, kui ta saab seda teha ohustamata oma laevaperet ja reisija...]",
+      "rdfs:label": {
+        "@value": "§ 67. [Käesolevas paragrahvis tähendatud kohustuste täitmata jätmise eest kannab kapten...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Käesolevas paragrahvis tähendatud kohustuste täitmata jätmise eest kannab kapten seadusega kehtestatud vastutust.",
+      "estleg:summary": {
+        "@value": "Käesolevas paragrahvis tähendatud kohustuste täitmata jätmise eest kannab kapten seadusega kehtestatud vastutust.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas paragrahvis tähendatud kohustuste täitmata jätmise eest kannab kapten seadusega kehtestatud vastutust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1941,10 +2158,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas paragrahvis tähendatud kohustuste täitmata jätmise eest kannab kapten seadusega kehtestatud vastutust.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas paragrahvis tähendatud kohustuste täitmata jätmise eest kannab kapten seadusega kehtestatud vastutust.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_67"
-      }
+      },
+      "rdfs:label": "§ 67 lg 1"
     },
     {
       "@id": "estleg:KMSK_Par_68",
@@ -1953,12 +2172,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 68.",
-      "rdfs:label": "§ 68. [Laeva või sellel olevaid inimesi või lasti ähvardava ohu korral, samuti muudel e...]",
+      "rdfs:label": {
+        "@value": "§ 68. [Laevanõukogu ei piira kapteni õigusi ja lõpliku otsuse teeb kapten.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Laevanõukogu ei piira kapteni õigusi ja lõpliku otsuse teeb kapten.",
+      "estleg:summary": {
+        "@value": "Laevanõukogu ei piira kapteni õigusi ja lõpliku otsuse teeb kapten.",
+        "@language": "et"
+      },
       "estleg:legalText": "Laevanõukogu ei piira kapteni õigusi ja lõpliku otsuse teeb kapten.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -1986,10 +2211,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Laevanõukogu ei piira kapteni õigusi ja lõpliku otsuse teeb kapten.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laevanõukogu ei piira kapteni õigusi ja lõpliku otsuse teeb kapten.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_68"
-      }
+      },
+      "rdfs:label": "§ 68 lg 1"
     },
     {
       "@id": "estleg:KMSK_Par_69",
@@ -1998,12 +2225,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 69.",
-      "rdfs:label": "§ 69. [Laeva toiduvarude, sealhulgas minimaalvarude lõppemisel on kaptenil õigus üldise...]",
+      "rdfs:label": {
+        "@value": "§ 69. [Rekvireerimise kohta koostatakse akt. Rekvireeritud toiduainete ja lasti maksumu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Rekvireerimise kohta koostatakse akt. Rekvireeritud toiduainete ja lasti maksumuse hüvitab laevaomanik.",
+      "estleg:summary": {
+        "@value": "Rekvireerimise kohta koostatakse akt. Rekvireeritud toiduainete ja lasti maksumuse hüvitab laevaomanik.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rekvireerimise kohta koostatakse akt. Rekvireeritud toiduainete ja lasti maksumuse hüvitab laevaomanik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -2037,10 +2270,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rekvireerimise kohta koostatakse akt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rekvireerimise kohta koostatakse akt.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_69"
-      }
+      },
+      "rdfs:label": "§ 69 lg 1"
     },
     {
       "@id": "estleg:KMSK_Par_69_Lg_2",
@@ -2048,10 +2283,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rekvireeritud toiduainete ja lasti maksumuse hüvitab laevaomanik.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rekvireeritud toiduainete ja lasti maksumuse hüvitab laevaomanik.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_69"
-      }
+      },
+      "rdfs:label": "§ 69 lg 2"
     },
     {
       "@id": "estleg:KMSK_Par_70",
@@ -2060,12 +2297,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 70.",
-      "rdfs:label": "§ 70. [Kui kapteni arvates ähvardab laeva paratamatu hukk, annab kapten pärast kõikide...]",
+      "rdfs:label": {
+        "@value": "§ 70. [Kui kapteni arvates ähvardab laeva paratamatu hukk, annab kapten pärast kõikide...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kui kapteni arvates ähvardab laeva paratamatu hukk, annab kapten pärast kõikide meetmete rakendamist reisijate päästmiseks laevaperele loa laevalt lahkuda. Kapten lahkub laevalt viimasena, võttes tarvitusele kõik temast sõltuvad abinõud logiraamatu, masinapäevaraamatu ja raadiopäevaraamatu, antud merereisi kaartide, dokumentide ja väärtuste päästmiseks.",
+      "estleg:summary": {
+        "@value": "Kui kapteni arvates ähvardab laeva paratamatu hukk, annab kapten pärast kõikide meetmete rakendamist reisijate päästmiseks laevaperele loa laevalt lahkuda. Kapten lahkub laevalt viimasena, võttes tarvitusele kõik temast sõltuvad abinõud logiraamatu, masinapäevaraamatu ja raadiopäevaraamatu, antud merereisi kaartide, dokumentide ja väärtuste päästmiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui kapteni arvates ähvardab laeva paratamatu hukk, annab kapten pärast kõikide meetmete rakendamist reisijate päästmiseks laevaperele loa laevalt lahkuda. Kapten lahkub laevalt viimasena, võttes tarvitusele kõik temast sõltuvad abinõud logiraamatu, masinapäevaraamatu ja raadiopäevaraamatu, antud merereisi kaartide, dokumentide ja väärtuste päästmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -2086,12 +2329,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 71.",
-      "rdfs:label": "§ 71. [Kapten on kohustatud sõjaohu korral tarvitusele võtma kõik abinõud laeval asuvat...]",
+      "rdfs:label": {
+        "@value": "§ 71. [Kapten on kohustatud sõjaohu korral tarvitusele võtma kõik abinõud laeval asuvat...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kapten on kohustatud sõjaohu korral tarvitusele võtma kõik abinõud laeval asuvate inimeste päästmiseks ning laeva, seal olevate dokumentide, lasti ja muu vara hõivamise vältimiseks.",
+      "estleg:summary": {
+        "@value": "Kapten on kohustatud sõjaohu korral tarvitusele võtma kõik abinõud laeval asuvate inimeste päästmiseks ning laeva, seal olevate dokumentide, lasti ja muu vara hõivamise vältimiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kapten on kohustatud sõjaohu korral tarvitusele võtma kõik abinõud laeval asuvate inimeste päästmiseks ning laeva, seal olevate dokumentide, lasti ja muu vara hõivamise vältimiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -2119,12 +2368,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 72.",
-      "rdfs:label": "§ 72. [Kui kaptenil tekib merereisi ajal vältimatu vajadus raha järele reisi jätkamisek...]",
+      "rdfs:label": {
+        "@value": "§ 72. [Reisi jätkamiseks on kapten kohustatud valima sellise vahendite saamise viisi, m...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Reisi jätkamiseks on kapten kohustatud valima sellise vahendite saamise viisi, mis toob kõige vähem kahju laevaomanikule ja lastiomanikule. Müüdud lasti maksumus tuleb tema omanikule välja maksta, välja arvatud juhud, kui esilekutsutud kahju langeb üldavarii tunnuste alla või kui müük toimus ainult lasti huvides.",
+      "estleg:summary": {
+        "@value": "Reisi jätkamiseks on kapten kohustatud valima sellise vahendite saamise viisi, mis toob kõige vähem kahju laevaomanikule ja lastiomanikule. Müüdud lasti maksumus tuleb tema omanikule välja maksta, välja arvatud juhud, kui esilekutsutud kahju langeb üldavarii tunnuste alla või kui müük toimus ainult lasti huvides.",
+        "@language": "et"
+      },
       "estleg:legalText": "Reisi jätkamiseks on kapten kohustatud valima sellise vahendite saamise viisi, mis toob kõige vähem kahju laevaomanikule ja lastiomanikule. Müüdud lasti maksumus tuleb tema omanikule välja maksta, välja arvatud juhud, kui esilekutsutud kahju langeb üldavarii tunnuste alla või kui müük toimus ainult lasti huvides.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -2167,10 +2422,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Reisi jätkamiseks on kapten kohustatud valima sellise vahendite saamise viisi, mis toob kõige vähem kahju laevaomanikule ja lastiomanikule.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Reisi jätkamiseks on kapten kohustatud valima sellise vahendite saamise viisi, mis toob kõige vähem kahju laevaomanikule ja lastiomanikule.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_72"
-      }
+      },
+      "rdfs:label": "§ 72 lg 1"
     },
     {
       "@id": "estleg:KMSK_Par_72_Lg_2",
@@ -2178,10 +2435,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Müüdud lasti maksumus tuleb tema omanikule välja maksta, välja arvatud juhud, kui esilekutsutud kahju langeb üldavarii tunnuste alla või kui müük toimus ainult lasti huvides.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Müüdud lasti maksumus tuleb tema omanikule välja maksta, välja arvatud juhud, kui esilekutsutud kahju langeb üldavarii tunnuste alla või kui müük toimus ainult lasti huvides.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_72"
       },
+      "rdfs:label": "§ 72 lg 2",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2202,12 +2461,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 73.",
-      "rdfs:label": "§ 73. [Kui reisil viibival laeval leiab aset tegu, millele kohaldatakse Eesti karistuss...]",
+      "rdfs:label": {
+        "@value": "§ 73. [Kapten dokumenteerib seletused, korraldused ja muud sündmusega seotud toimingud...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kapten dokumenteerib seletused, korraldused ja muud sündmusega seotud toimingud vabas vormis ning annab nimetatud dokumendid esimesel võimalusel üle prokuratuurile. Vajaduse korral võib kapten saata kuriteo toimepanemises kahtlustatava isiku ja kogutud materjalid Eestisse teise Eestis registreeritud laevaga. Kui laeval Eesti sadamas oleku ajal leiab aset tegu, millele kohaldatakse Eesti karistusseadustikku, on kapten kohustatud selle teo toimepannud isiku üle andma kohalikele võimudele.",
+      "estleg:summary": {
+        "@value": "Kapten dokumenteerib seletused, korraldused ja muud sündmusega seotud toimingud vabas vormis ning annab nimetatud dokumendid esimesel võimalusel üle prokuratuurile. Vajaduse korral võib kapten saata kuriteo toimepanemises kahtlustatava isiku ja kogutud materjalid Eestisse teise Eestis registreeritud laevaga. Kui laeval Eesti sadamas oleku ajal leiab aset tegu, millele kohaldatakse Eesti karistusseadustikku, on kapten kohustatud selle teo toimepannud isiku üle andma kohalikele võimudele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kapten dokumenteerib seletused, korraldused ja muud sündmusega seotud toimingud vabas vormis ning annab nimetatud dokumendid esimesel võimalusel üle prokuratuurile. Vajaduse korral võib kapten saata kuriteo toimepanemises kahtlustatava isiku ja kogutud materjalid Eestisse teise Eestis registreeritud laevaga. Kui laeval Eesti sadamas oleku ajal leiab aset tegu, millele kohaldatakse Eesti karistusseadustikku, on kapten kohustatud selle teo toimepannud isiku üle andma kohalikele võimudele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_3"
@@ -2261,10 +2526,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kapten dokumenteerib seletused, korraldused ja muud sündmusega seotud toimingud vabas vormis ning annab nimetatud dokumendid esimesel võimalusel üle prokuratuurile. Vajaduse korral võib kapten saata kuriteo toimepanemises kahtlustatava isiku ja kogutud materjalid Eestisse teise Eestis registreeritud laevaga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kapten dokumenteerib seletused, korraldused ja muud sündmusega seotud toimingud vabas vormis ning annab nimetatud dokumendid esimesel võimalusel üle prokuratuurile. Vajaduse korral võib kapten saata kuriteo toimepanemises kahtlustatava isiku ja kogutud materjalid Eestisse teise Eestis registreeritud laevaga.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_73"
       },
+      "rdfs:label": "§ 73 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2284,10 +2551,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui laeval Eesti sadamas oleku ajal leiab aset tegu, millele kohaldatakse Eesti karistusseadustikku, on kapten kohustatud selle teo toimepannud isiku üle andma kohalikele võimudele.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui laeval Eesti sadamas oleku ajal leiab aset tegu, millele kohaldatakse Eesti karistusseadustikku, on kapten kohustatud selle teo toimepannud isiku üle andma kohalikele võimudele.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_73"
       },
+      "rdfs:label": "§ 73 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2305,17 +2574,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 74",
-      "rdfs:label": "§ 74",
+      "rdfs:label": {
+        "@value": "§ 74",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 74",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_3"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_3"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       }
     },
     {
@@ -2325,17 +2597,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 91",
-      "rdfs:label": "§ 91",
+      "rdfs:label": {
+        "@value": "§ 91",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 91",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_3"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_3"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       }
     },
     {
@@ -2345,17 +2620,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 92",
-      "rdfs:label": "§ 92",
+      "rdfs:label": {
+        "@value": "§ 92",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 92",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_3"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_3"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       }
     },
     {
@@ -2365,17 +2643,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 109",
-      "rdfs:label": "§ 109",
+      "rdfs:label": {
+        "@value": "§ 109",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 109",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_3"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_3"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       }
     },
     {
@@ -2385,13 +2666,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 110.",
-      "rdfs:label": "§ 110. [Eesti territoriaal- või sisemerre või majandusvööndisse või laevatatavatesse sis...]",
+      "rdfs:label": {
+        "@value": "§ 110. [Uppunud vara omanik on kohustatud uppunud varast viivitamata teatama politseiasu...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Uppunud vara omanik on kohustatud uppunud varast viivitamata teatama politseiasutusele ja esitama vara kohta järgmised andmed: uppunud vara omaniku nimi ja püsiv tegevuskoht; uppunud vara asukoht; uppunud vara suurus, tüüp ja konstruktsioon; uppunud vara kahjustuste olemus ja suurus; lasti liik, kogus ja ohtlikkus; pardal olevate naftasaaduste, sealhulgas punkrikütuse ja määrdeainete liik ja kogus. Politseiasutus edastab käesoleva paragrahvi teises lõigus nimetatud andmed ühe päeva jooksul",
-      "estleg:legalText": "Uppunud vara omanik on kohustatud uppunud varast viivitamata teatama politseiasutusele ja esitama vara kohta järgmised andmed: uppunud vara omaniku nimi ja püsiv tegevuskoht; uppunud vara asukoht; uppunud vara suurus, tüüp ja konstruktsioon; uppunud vara kahjustuste olemus ja suurus; lasti liik, kogus ja ohtlikkus; pardal olevate naftasaaduste, sealhulgas punkrikütuse ja määrdeainete liik ja kogus. Politseiasutus edastab käesoleva paragrahvi teises lõigus nimetatud andmed ühe päeva jooksul pärast andmete saamist Transpordiametile ja Kaitseväele.",
+      "estleg:summary": {
+        "@value": "Uppunud vara omanik on kohustatud uppunud varast viivitamata teatama politseiasutusele ja esitama vara kohta järgmised andmed: 1) uppunud vara omaniku nimi ja püsiv tegevuskoht; 2) uppunud vara asukoht; 3) uppunud vara suurus, tüüp ja konstruktsioon; 4) uppunud vara kahjustuste olemus ja suurus; 5) lasti liik, kogus ja ohtlikkus; 6) pardal olevate naftasaaduste, sealhulgas punkrikütuse ja määrdeainete liik ja kogus. Politseiasutus edastab käesoleva paragrahvi teises lõigus nimetatud andmed ühe",
+        "@language": "et"
+      },
+      "estleg:legalText": "Uppunud vara omanik on kohustatud uppunud varast viivitamata teatama politseiasutusele ja esitama vara kohta järgmised andmed: 1) uppunud vara omaniku nimi ja püsiv tegevuskoht; 2) uppunud vara asukoht; 3) uppunud vara suurus, tüüp ja konstruktsioon; 4) uppunud vara kahjustuste olemus ja suurus; 5) lasti liik, kogus ja ohtlikkus; 6) pardal olevate naftasaaduste, sealhulgas punkrikütuse ja määrdeainete liik ja kogus. Politseiasutus edastab käesoleva paragrahvi teises lõigus nimetatud andmed ühe päeva jooksul pärast andmete saamist Transpordiametile ja Kaitseväele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
       },
@@ -2453,10 +2740,20 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Uppunud vara omanik on kohustatud uppunud varast viivitamata teatama politseiasutusele ja esitama vara kohta järgmised andmed: uppunud vara omaniku nimi ja püsiv tegevuskoht; uppunud vara asukoht; uppunud vara suurus, tüüp ja konstruktsioon; uppunud vara kahjustuste olemus ja suurus; lasti liik, kogus ja ohtlikkus; pardal olevate naftasaaduste, sealhulgas punkrikütuse ja määrdeainete liik ja kogus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Uppunud vara omanik on kohustatud uppunud varast viivitamata teatama politseiasutusele ja esitama vara kohta järgmised andmed: 1) uppunud vara omaniku nimi ja püsiv tegevuskoht; 2) uppunud vara asukoht; 3) uppunud vara suurus, tüüp ja konstruktsioon; 4) uppunud vara kahjustuste olemus ja suurus; 5) lasti liik, kogus ja ohtlikkus; 6) pardal olevate naftasaaduste, sealhulgas punkrikütuse ja määrdeainete liik ja kogus.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_110"
       },
+      "rdfs:label": "§ 110 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2476,10 +2773,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Politseiasutus edastab käesoleva paragrahvi teises lõigus nimetatud andmed ühe päeva jooksul pärast andmete saamist Transpordiametile ja Kaitseväele.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Politseiasutus edastab käesoleva paragrahvi teises lõigus nimetatud andmed ühe päeva jooksul pärast andmete saamist Transpordiametile ja Kaitseväele.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_110"
       },
+      "rdfs:label": "§ 110 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2502,12 +2801,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 111.",
-      "rdfs:label": "§ 111. [Uppunud vara omanik, kui ta kavatseb seda vara üles tõsta, peab sellest kirjalik...]",
+      "rdfs:label": {
+        "@value": "§ 111. [Kooskõlastatult huvitatud ametkondadega määrab Transpordiamet asjaolusid arvesse...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kooskõlastatult huvitatud ametkondadega määrab Transpordiamet asjaolusid arvesse võttes kindlaks vara ülestõstmise tähtaja ja teavitab sellest vara omanikku. Vara omanik esitab pärast ülestõstmise tähtaja määramist Transpordiametile taotluse uppunud vara ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamiseks. Transpordiamet kooskõlastab ülestõstmistööde teostamise korra ja tööde tegija või teeb omapoolsed ettepanekud 30 päeva jooksul taotluse saamisest arvates.",
+      "estleg:summary": {
+        "@value": "Kooskõlastatult huvitatud ametkondadega määrab Transpordiamet asjaolusid arvesse võttes kindlaks vara ülestõstmise tähtaja ja teavitab sellest vara omanikku. Vara omanik esitab pärast ülestõstmise tähtaja määramist Transpordiametile taotluse uppunud vara ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamiseks. Transpordiamet kooskõlastab ülestõstmistööde teostamise korra ja tööde tegija või teeb omapoolsed ettepanekud 30 päeva jooksul taotluse saamisest arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kooskõlastatult huvitatud ametkondadega määrab Transpordiamet asjaolusid arvesse võttes kindlaks vara ülestõstmise tähtaja ja teavitab sellest vara omanikku. Vara omanik esitab pärast ülestõstmise tähtaja määramist Transpordiametile taotluse uppunud vara ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamiseks. Transpordiamet kooskõlastab ülestõstmistööde teostamise korra ja tööde tegija või teeb omapoolsed ettepanekud 30 päeva jooksul taotluse saamisest arvates. Enne ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamist Transpordiameti poolt ei ole lubatud uppunud vara üles tõsta. Uppunud vara omanik peab tarvitusele võtma meetmed keskkonnaohu kõrvaldamiseks. Kui kaasneb oht saastada keskkonda, on politseiasutusel või Kaitseväel õigus enne vara ülestõstmist rakendada meetmeid keskkonnaohu kõrvaldamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
@@ -2565,10 +2870,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kooskõlastatult huvitatud ametkondadega määrab Transpordiamet asjaolusid arvesse võttes kindlaks vara ülestõstmise tähtaja ja teavitab sellest vara omanikku. Vara omanik esitab pärast ülestõstmise tähtaja määramist Transpordiametile taotluse uppunud vara ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamiseks. Transpordiamet kooskõlastab ülestõstmistööde teostamise korra ja tööde tegija või teeb omapoolsed ettepanekud 30 päeva jooksul taotluse saamisest arvates. Enne ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamist Transpordiameti poolt ei ole lubatud uppunud vara üles tõsta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kooskõlastatult huvitatud ametkondadega määrab Transpordiamet asjaolusid arvesse võttes kindlaks vara ülestõstmise tähtaja ja teavitab sellest vara omanikku. Vara omanik esitab pärast ülestõstmise tähtaja määramist Transpordiametile taotluse uppunud vara ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamiseks. Transpordiamet kooskõlastab ülestõstmistööde teostamise korra ja tööde tegija või teeb omapoolsed ettepanekud 30 päeva jooksul taotluse saamisest arvates. Enne ülestõstmistööde teostamise korra ja tööde tegija kooskõlastamist Transpordiameti poolt ei ole lubatud uppunud vara üles tõsta.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_111"
       },
+      "rdfs:label": "§ 111 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -2594,10 +2901,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Uppunud vara omanik peab tarvitusele võtma meetmed keskkonnaohu kõrvaldamiseks. Kui kaasneb oht saastada keskkonda, on politseiasutusel või Kaitseväel õigus enne vara ülestõstmist rakendada meetmeid keskkonnaohu kõrvaldamiseks.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Uppunud vara omanik peab tarvitusele võtma meetmed keskkonnaohu kõrvaldamiseks. Kui kaasneb oht saastada keskkonda, on politseiasutusel või Kaitseväel õigus enne vara ülestõstmist rakendada meetmeid keskkonnaohu kõrvaldamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_111"
       },
+      "rdfs:label": "§ 111 lg 2",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2618,12 +2927,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 112.",
-      "rdfs:label": "§ 112. [Kui uppunud vara takistab üldkasutataval veeteel laevaliiklust, meretööndust või...]",
+      "rdfs:label": {
+        "@value": "§ 112. [Kui uppunud vara omanik ei ole teada, avaldab Transpordiamet teate uppunud vara...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kui uppunud vara omanik ei ole teada, avaldab Transpordiamet teate uppunud vara ülestõstmise tähtaegade kohta väljaandes Teadaanded meremeestele, Transpordiameti veebilehel ja ühes üleriigilises ajalehes. Kui sealjuures on teada uppunud laeva lipp, saadab Transpordiamet vastava teate ka Eesti Vabariigi Välisministeeriumile. Kui uppunud vara omanik ei ole Transpordiameti ettekirjutuses määratud tähtaja jooksul vara üles tõstnud, on Transpordiametil õigus rakendada asendustäitmist või sunniraha",
+      "estleg:summary": {
+        "@value": "Kui uppunud vara omanik ei ole teada, avaldab Transpordiamet teate uppunud vara ülestõstmise tähtaegade kohta väljaandes Teadaanded meremeestele, Transpordiameti veebilehel ja ühes üleriigilises ajalehes. Kui sealjuures on teada uppunud laeva lipp, saadab Transpordiamet vastava teate ka Eesti Vabariigi Välisministeeriumile. Kui uppunud vara omanik ei ole Transpordiameti ettekirjutuses määratud tähtaja jooksul vara üles tõstnud, on Transpordiametil õigus rakendada asendustäitmist või sunniraha",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui uppunud vara omanik ei ole teada, avaldab Transpordiamet teate uppunud vara ülestõstmise tähtaegade kohta väljaandes Teadaanded meremeestele, Transpordiameti veebilehel ja ühes üleriigilises ajalehes. Kui sealjuures on teada uppunud laeva lipp, saadab Transpordiamet vastava teate ka Eesti Vabariigi Välisministeeriumile. Kui uppunud vara omanik ei ole Transpordiameti ettekirjutuses määratud tähtaja jooksul vara üles tõstnud, on Transpordiametil õigus rakendada asendustäitmist või sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär füüsilisele isikule on 3200 eurot ning juriidilisele isikule 32 000 eurot. Kui uppunud varal puudub omanik, on Transpordiametil õigus rakendada vajalikke meetmeid vara ülestõstmiseks, vajaduse korral aga selle hävitamiseks või muul viisil eemaldamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
@@ -2697,10 +3012,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui uppunud vara omanik ei ole teada, avaldab Transpordiamet teate uppunud vara ülestõstmise tähtaegade kohta väljaandes Teadaanded meremeestele, Transpordiameti veebilehel ja ühes üleriigilises ajalehes.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui uppunud vara omanik ei ole teada, avaldab Transpordiamet teate uppunud vara ülestõstmise tähtaegade kohta väljaandes Teadaanded meremeestele, Transpordiameti veebilehel ja ühes üleriigilises ajalehes.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_112"
       },
+      "rdfs:label": "§ 112 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2722,10 +3039,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui sealjuures on teada uppunud laeva lipp, saadab Transpordiamet vastava teate ka Eesti Vabariigi Välisministeeriumile.",
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui sealjuures on teada uppunud laeva lipp, saadab Transpordiamet vastava teate ka Eesti Vabariigi Välisministeeriumile.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_112"
       },
+      "rdfs:label": "§ 112 lg 2",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2750,10 +3069,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui uppunud vara omanik ei ole Transpordiameti ettekirjutuses määratud tähtaja jooksul vara üles tõstnud, on Transpordiametil õigus rakendada asendustäitmist või sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär füüsilisele isikule on 3200 eurot ning juriidilisele isikule 32 000 eurot.",
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui uppunud vara omanik ei ole Transpordiameti ettekirjutuses määratud tähtaja jooksul vara üles tõstnud, on Transpordiametil õigus rakendada asendustäitmist või sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär füüsilisele isikule on 3200 eurot ning juriidilisele isikule 32 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_112"
       },
+      "rdfs:label": "§ 112 lg 3",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2784,10 +3105,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui uppunud varal puudub omanik, on Transpordiametil õigus rakendada vajalikke meetmeid vara ülestõstmiseks, vajaduse korral aga selle hävitamiseks või muul viisil eemaldamiseks.",
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui uppunud varal puudub omanik, on Transpordiametil õigus rakendada vajalikke meetmeid vara ülestõstmiseks, vajaduse korral aga selle hävitamiseks või muul viisil eemaldamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_112"
       },
+      "rdfs:label": "§ 112 lg 4",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2810,12 +3133,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 113.",
-      "rdfs:label": "§ 113. [Transpordiamet võib uppunud vara omanikul keelata vara ülestõstmise omaniku või...]",
+      "rdfs:label": {
+        "@value": "§ 113. [Kui ülalnimetatud merealas uppunud varaga kaasneb oht saastada keskkonda, korral...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kui ülalnimetatud merealas uppunud varaga kaasneb oht saastada keskkonda, korraldab Kaitsevägi enne vara ülestõstmist keskkonnaohu kõrvaldamise.",
+      "estleg:summary": {
+        "@value": "Kui ülalnimetatud merealas uppunud varaga kaasneb oht saastada keskkonda, korraldab Kaitsevägi enne vara ülestõstmist keskkonnaohu kõrvaldamise.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui ülalnimetatud merealas uppunud varaga kaasneb oht saastada keskkonda, korraldab Kaitsevägi enne vara ülestõstmist keskkonnaohu kõrvaldamise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
@@ -2861,10 +3190,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui ülalnimetatud merealas uppunud varaga kaasneb oht saastada keskkonda, korraldab Kaitsevägi enne vara ülestõstmist keskkonnaohu kõrvaldamise.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui ülalnimetatud merealas uppunud varaga kaasneb oht saastada keskkonda, korraldab Kaitsevägi enne vara ülestõstmist keskkonnaohu kõrvaldamise.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_113"
-      }
+      },
+      "rdfs:label": "§ 113 lg 1"
     },
     {
       "@id": "estleg:KMSK_Par_114",
@@ -2873,12 +3204,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 114.",
-      "rdfs:label": "§ 114. [Kui uppunud vara on üldkasutataval veeteel vahetult ohtlik laevaliiklusele, inim...]",
+      "rdfs:label": {
+        "@value": "§ 114. [Kui uppunud vara on üldkasutataval veeteel vahetult ohtlik laevaliiklusele, inim...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kui uppunud vara on üldkasutataval veeteel vahetult ohtlik laevaliiklusele, inimeste elule või tervisele või keskkonnale, peab uppunud vara omanik viivitamata korraldama uppunud vara ülestõstmise ja võtma tarvitusele meetmed ohu kõrvaldamiseks. Kui uppunud vara omanik ei täida kohustust oht viivitamata kõrvaldada, on Transpordiametil ja keskkonnaohu puhul politseiasutusel või Kaitseväel õigus rakendada asendustäitmist asendustäitmise ja sunniraha seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Kui uppunud vara on üldkasutataval veeteel vahetult ohtlik laevaliiklusele, inimeste elule või tervisele või keskkonnale, peab uppunud vara omanik viivitamata korraldama uppunud vara ülestõstmise ja võtma tarvitusele meetmed ohu kõrvaldamiseks. Kui uppunud vara omanik ei täida kohustust oht viivitamata kõrvaldada, on Transpordiametil ja keskkonnaohu puhul politseiasutusel või Kaitseväel õigus rakendada asendustäitmist asendustäitmise ja sunniraha seaduses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui uppunud vara on üldkasutataval veeteel vahetult ohtlik laevaliiklusele, inimeste elule või tervisele või keskkonnale, peab uppunud vara omanik viivitamata korraldama uppunud vara ülestõstmise ja võtma tarvitusele meetmed ohu kõrvaldamiseks. Kui uppunud vara omanik ei täida kohustust oht viivitamata kõrvaldada, on Transpordiametil ja keskkonnaohu puhul politseiasutusel või Kaitseväel õigus rakendada asendustäitmist asendustäitmise ja sunniraha seaduses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
@@ -2937,13 +3274,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 115.",
-      "rdfs:label": "§ 115. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 115.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 115.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
       },
@@ -2966,13 +3308,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 116.",
-      "rdfs:label": "§ 116. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 116.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 116.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
       },
@@ -2995,12 +3342,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 117.",
-      "rdfs:label": "§ 117. [Keeldumine uppunud või ülestõstetud varast ei vabasta selle omanikku kohustusest...]",
+      "rdfs:label": {
+        "@value": "§ 117. [Keeldumine uppunud või ülestõstetud varast ei vabasta selle omanikku kohustusest...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Keeldumine uppunud või ülestõstetud varast ei vabasta selle omanikku kohustusest hüvitada Transpordiameti kulud ja kahjud juhtudel, mis on ette nähtud käesoleva koodeksi §-des 112, 113, 114 ja käesolevas paragrahvis.",
+      "estleg:summary": {
+        "@value": "Keeldumine uppunud või ülestõstetud varast ei vabasta selle omanikku kohustusest hüvitada Transpordiameti kulud ja kahjud juhtudel, mis on ette nähtud käesoleva koodeksi §-des 112, 113, 114 ja käesolevas paragrahvis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Keeldumine uppunud või ülestõstetud varast ei vabasta selle omanikku kohustusest hüvitada Transpordiameti kulud ja kahjud juhtudel, mis on ette nähtud käesoleva koodeksi §-des 112, 113, 114 ja käesolevas paragrahvis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
@@ -3058,13 +3411,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 118.",
-      "rdfs:label": "§ 118. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 118.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 118.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
       },
@@ -3093,12 +3451,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 118¹.",
-      "rdfs:label": "§ 118¹. [Kultuuriväärtusega uppunud vara kaitse, uurimine ja ülestõstmine toimub muinsusk...]",
+      "rdfs:label": {
+        "@value": "§ 118¹. [Kultuuriväärtusega uppunud vara kaitse, uurimine ja ülestõstmine toimub muinsusk...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Kultuuriväärtusega uppunud vara kaitse, uurimine ja ülestõstmine toimub muinsuskaitseseaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Kultuuriväärtusega uppunud vara kaitse, uurimine ja ülestõstmine toimub muinsuskaitseseaduses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kultuuriväärtusega uppunud vara kaitse, uurimine ja ülestõstmine toimub muinsuskaitseseaduses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_6"
@@ -3119,17 +3483,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 119",
-      "rdfs:label": "§ 119",
+      "rdfs:label": {
+        "@value": "§ 119",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 119",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3144,17 +3511,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 129",
-      "rdfs:label": "§ 129",
+      "rdfs:label": {
+        "@value": "§ 129",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 129",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3172,17 +3542,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 130",
-      "rdfs:label": "§ 130",
+      "rdfs:label": {
+        "@value": "§ 130",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 130",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3200,17 +3573,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 178",
-      "rdfs:label": "§ 178",
+      "rdfs:label": {
+        "@value": "§ 178",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 178",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3228,17 +3604,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 179",
-      "rdfs:label": "§ 179",
+      "rdfs:label": {
+        "@value": "§ 179",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 179",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3253,17 +3632,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 189",
-      "rdfs:label": "§ 189",
+      "rdfs:label": {
+        "@value": "§ 189",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 189",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3281,17 +3663,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 190",
-      "rdfs:label": "§ 190",
+      "rdfs:label": {
+        "@value": "§ 190",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 190",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3306,17 +3691,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 196",
-      "rdfs:label": "§ 196",
+      "rdfs:label": {
+        "@value": "§ 196",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 196",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3334,17 +3722,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 197",
-      "rdfs:label": "§ 197",
+      "rdfs:label": {
+        "@value": "§ 197",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 197",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3359,17 +3750,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 208",
-      "rdfs:label": "§ 208",
+      "rdfs:label": {
+        "@value": "§ 208",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 208",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3387,17 +3781,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 209",
-      "rdfs:label": "§ 209",
+      "rdfs:label": {
+        "@value": "§ 209",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 209",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3412,17 +3809,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 216",
-      "rdfs:label": "§ 216",
+      "rdfs:label": {
+        "@value": "§ 216",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 216",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3440,17 +3840,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 217",
-      "rdfs:label": "§ 217",
+      "rdfs:label": {
+        "@value": "§ 217",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 217",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3465,17 +3868,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 223",
-      "rdfs:label": "§ 223",
+      "rdfs:label": {
+        "@value": "§ 223",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 223",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3493,17 +3899,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 224",
-      "rdfs:label": "§ 224",
+      "rdfs:label": {
+        "@value": "§ 224",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 224",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3518,17 +3927,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 263",
-      "rdfs:label": "§ 263",
+      "rdfs:label": {
+        "@value": "§ 263",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 263",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3546,17 +3958,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 264",
-      "rdfs:label": "§ 264",
+      "rdfs:label": {
+        "@value": "§ 264",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 264",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3571,17 +3986,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 282",
-      "rdfs:label": "§ 282",
+      "rdfs:label": {
+        "@value": "§ 282",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 282",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3599,17 +4017,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 283",
-      "rdfs:label": "§ 283",
+      "rdfs:label": {
+        "@value": "§ 283",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 283",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3624,17 +4045,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 290",
-      "rdfs:label": "§ 290",
+      "rdfs:label": {
+        "@value": "§ 290",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 290",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3652,17 +4076,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 291",
-      "rdfs:label": "§ 291",
+      "rdfs:label": {
+        "@value": "§ 291",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 291",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3677,17 +4104,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 300",
-      "rdfs:label": "§ 300",
+      "rdfs:label": {
+        "@value": "§ 300",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 300",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3705,17 +4135,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 301",
-      "rdfs:label": "§ 301",
+      "rdfs:label": {
+        "@value": "§ 301",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 301",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3730,17 +4163,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 303",
-      "rdfs:label": "§ 303",
+      "rdfs:label": {
+        "@value": "§ 303",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 303",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3755,17 +4191,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 314",
-      "rdfs:label": "§ 314",
+      "rdfs:label": {
+        "@value": "§ 314",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 314",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3780,17 +4219,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 326",
-      "rdfs:label": "§ 326",
+      "rdfs:label": {
+        "@value": "§ 326",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 326",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3808,17 +4250,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 327",
-      "rdfs:label": "§ 327",
+      "rdfs:label": {
+        "@value": "§ 327",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 327",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3833,17 +4278,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 340",
-      "rdfs:label": "§ 340",
+      "rdfs:label": {
+        "@value": "§ 340",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 340",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3858,17 +4306,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 341",
-      "rdfs:label": "§ 341",
+      "rdfs:label": {
+        "@value": "§ 341",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 341",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       }
     },
     {
@@ -3878,17 +4329,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 346",
-      "rdfs:label": "§ 346",
+      "rdfs:label": {
+        "@value": "§ 346",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 346",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       }
     },
     {
@@ -3898,17 +4352,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 347",
-      "rdfs:label": "§ 347",
+      "rdfs:label": {
+        "@value": "§ 347",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 347",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3923,17 +4380,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 353",
-      "rdfs:label": "§ 353",
+      "rdfs:label": {
+        "@value": "§ 353",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 353",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3951,17 +4411,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 354",
-      "rdfs:label": "§ 354",
+      "rdfs:label": {
+        "@value": "§ 354",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 354",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -3976,17 +4439,20 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 372",
-      "rdfs:label": "§ 372",
+      "rdfs:label": {
+        "@value": "§ 372",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
       "estleg:summary": "§ 372",
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_KMSK_6"
-      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KMSK_6"
+        "@id": "estleg:Cluster_KMSK_Preamble"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KMSK_Preamble"
       },
       "estleg:hasVersion": [
         {
@@ -4001,12 +4467,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 373.",
-      "rdfs:label": "§ 373. [Veo ja pukseerimise ning muude teenuste osutamise eest ainult Eesti sadamate vah...]",
+      "rdfs:label": {
+        "@value": "§ 373. [Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatra...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
+      "estleg:summary": {
+        "@value": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_24"
@@ -4069,10 +4541,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 32 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_373"
       },
+      "rdfs:label": "§ 373 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -4099,12 +4573,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 374.",
-      "rdfs:label": "§ 374. [Uppunud varast teatamata jätmise eest –karistatakse rahatrahviga kuni 300 trahvi...]",
+      "rdfs:label": {
+        "@value": "§ 374. [Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatra...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+      "estleg:summary": {
+        "@value": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_24"
@@ -4167,10 +4647,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_374"
       },
+      "rdfs:label": "§ 374 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -4197,12 +4679,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 375.",
-      "rdfs:label": "§ 375. [Käesoleva koodeksi §-des 373 ja 374 sätestatud väärtegudele kohaldatakse karistu...]",
+      "rdfs:label": {
+        "@value": "§ 375. [Paragrahvides 373 ja 374 sätestatud väärtegude kohtuväline menetleja on politsei...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaubandusliku meresõidu koodeks",
       "estleg:partOfAct": {
         "@id": "estleg:KMSK_Map"
       },
-      "estleg:summary": "Paragrahvides 373 ja 374 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+      "estleg:summary": {
+        "@value": "Paragrahvides 373 ja 374 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Paragrahvides 373 ja 374 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KMSK_24"
@@ -4247,9 +4735,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Paragrahvides 373 ja 374 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Paragrahvides 373 ja 374 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
       "estleg:parentProvision": {
         "@id": "estleg:KMSK_Par_375"
+      },
+      "rdfs:label": "§ 375 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/530062023010",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:KMSK_Map"
+      },
+      "rdfs:label": {
+        "@value": "Merchant Shipping Code",
+        "@language": "en"
       }
     }
   ]

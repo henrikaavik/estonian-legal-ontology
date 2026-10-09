@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Vabariigi Valitsuse sanktsiooni kehtestamine seoses olukorraga Valgevenes (määrus)",
+      "rdfs:label": {
+        "@value": "Vabariigi Valitsuse sanktsiooni kehtestamine seoses olukorraga Valgevenes (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Vabariigi Valitsuse sanktsiooni kehtestamine seoses olukorraga Valgevenes",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1050108",
       "estleg:preambleText": "Määrus antakse rahvusvahelise sanktsiooni seaduse § 27 lõike 1 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2020-08-31",
+        "@value": "2025-08-02",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2025-07-28",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2020-08-28",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1050108_2f750e8abe"
@@ -87,7 +89,13 @@
         {
           "@id": "http://eurovoc.europa.eu/695"
         }
-      ]
+      ],
+      "dcterms:title": "Vabariigi Valitsuse sanktsiooni kehtestamine seoses olukorraga Valgevenes",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1050108_Par_1",
@@ -96,13 +104,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Valitsuse sanktsiooni kehtestamine seoses olukorraga Valgevenes",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050108_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina Eestisse sissesõidukeeld.",
-      "estleg:legalText": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina Eestisse sissesõidukeeld. Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina Eestisse sissesõidukeeld.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina Eestisse sissesõidukeeld.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina Eestisse sissesõidukeeld.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -143,7 +157,25 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050108_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050108_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina Eestisse sissesõidukeeld.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050108_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1050108_Par_2",
@@ -152,13 +184,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Määruse kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 2. Määruse kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Valitsuse sanktsiooni kehtestamine seoses olukorraga Valgevenes",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050108_Map"
       },
-      "estleg:summary": "Sissesõidukeeldu kohaldatakse rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas loetletud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad vastutavad valimistulemuste võltsimise, vägivalla või inimõiguste rikkumise eest Valgevenes või on aidanud sellele kaasa.",
-      "estleg:legalText": "Sissesõidukeeldu kohaldatakse rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas loetletud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad vastutavad valimistulemuste võltsimise, vägivalla või inimõiguste rikkumise eest Valgevenes või on aidanud sellele kaasa. Sissesõidukeeldu kohaldatakse rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas loetletud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad vastutavad valimistulemuste võltsimise, vägivalla või inimõiguste rikkumise eest Valgevenes või on aidanud sellele kaasa.",
+      "estleg:summary": {
+        "@value": "Sissesõidukeeldu kohaldatakse rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas loetletud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad vastutavad valimistulemuste võltsimise, vägivalla või inimõiguste rikkumise eest Valgevenes või on aidanud sellele kaasa.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sissesõidukeeldu kohaldatakse rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas loetletud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad vastutavad valimistulemuste võltsimise, vägivalla või inimõiguste rikkumise eest Valgevenes või on aidanud sellele kaasa.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -190,7 +228,25 @@
         {
           "@id": "estleg:Institution_valisminister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050108_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050108_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sissesõidukeeldu kohaldatakse rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas loetletud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad vastutavad valimistulemuste võltsimise, vägivalla või inimõiguste rikkumise eest Valgevenes või on aidanud sellele kaasa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050108_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1050108_Par_3",
@@ -199,12 +255,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Määruse kehtivus",
+      "rdfs:label": {
+        "@value": "§ 3. Määruse kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Valitsuse sanktsiooni kehtestamine seoses olukorraga Valgevenes",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050108_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {

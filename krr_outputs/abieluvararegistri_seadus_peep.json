@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:AVRS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Abieluvararegistri seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Abieluvararegistri seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Abieluvararegistri seadus",
-      "dcterms:title": [
-        {
-          "@value": "Abieluvararegistri seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Marital Property Register Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Abieluvararegistri seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/114032025013.xml"
+        "@id": "https://www.riigiteataja.ee/akt/114032025013"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/114032025013/xml"
+      },
+      "estleg:globalId": "114032025013",
+      "eli:id_local": "114032025013",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "161919",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "47de29154a7d84e5d056351ca0c7b3e6ecbf6203cfe3704756d4855420a20e2d",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1996-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -45,10 +61,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/520032025003"
@@ -115,14 +127,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU12_1314"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/520032025003"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_AVRS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–9 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–9 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:AVRS_TopicScheme"
+      },
+      "estleg:provisionCount": 9
     },
     {
       "@id": "estleg:AVRS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Abieluvararegistri seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Abieluvararegistri seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_AVRS_1"
@@ -142,26 +180,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_AVRS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–9 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–9 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:AVRS_TopicScheme"
-      },
-      "estleg:provisionCount": 9
-    },
-    {
       "@id": "estleg:Chapter_AVRS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
@@ -181,8 +208,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§10–16 ABIELUVARAREGISTRI SISU",
-      "skos:prefLabel": "§10–16 ABIELUVARAREGISTRI SISU",
+      "rdfs:label": {
+        "@value": "§10–16 ABIELUVARAREGISTRI SISU",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§10–16 ABIELUVARAREGISTRI SISU",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AVRS_TopicScheme"
       },
@@ -194,7 +227,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – ABIELUVARAREGISTRI SISU",
+      "rdfs:label": {
+        "@value": "2. peatükk – ABIELUVARAREGISTRI SISU",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
@@ -214,12 +250,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§17–36 REGISTRIKANDED",
-      "skos:prefLabel": "§17–36 REGISTRIKANDED",
+      "rdfs:label": {
+        "@value": "§17–36 REGISTRIKANDED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§17–36 REGISTRIKANDED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AVRS_TopicScheme"
       },
-      "estleg:provisionCount": 20
+      "estleg:provisionCount": 23
     },
     {
       "@id": "estleg:Chapter_AVRS_3",
@@ -227,7 +269,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – REGISTRIKANDED",
+      "rdfs:label": {
+        "@value": "3. peatükk – REGISTRIKANDED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
@@ -247,8 +292,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§37–40 KANNETE PARANDAMINE JA KAEBUSTE ESITAMINE",
-      "skos:prefLabel": "§37–40 KANNETE PARANDAMINE JA KAEBUSTE ESITAMINE",
+      "rdfs:label": {
+        "@value": "§37–40 KANNETE PARANDAMINE JA KAEBUSTE ESITAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§37–40 KANNETE PARANDAMINE JA KAEBUSTE ESITAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AVRS_TopicScheme"
       },
@@ -260,7 +311,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – KANNETE PARANDAMINE JA KAEBUSTE ESITAMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – KANNETE PARANDAMINE JA KAEBUSTE ESITAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
@@ -280,12 +334,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§41–45 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§41–45 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§41–45 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§41–45 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AVRS_TopicScheme"
       },
-      "estleg:provisionCount": 5
+      "estleg:provisionCount": 12
     },
     {
       "@id": "estleg:Chapter_AVRS_5",
@@ -293,7 +353,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "5. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
@@ -313,13 +376,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Abieluvararegister",
+      "rdfs:label": {
+        "@value": "§ 1. Abieluvararegister",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Abieluvararegister on riiklik register, kuhu kantakse andmed abieluvaralepingus või kooselulepingus sisalduvate varaliste õiguste kohta ning andmed muude varaliste õiguste kohta seaduses sätestatud juhtudel. Abieluvararegistri eesmärk on võimaldada kolmandatel isikutel saada teavet abikaasade või registreeritud elukaaslaste vahelise varasuhte ning sellest tulenevate õiguste ja kohustuste kohta. Kui abieluvararegistris puuduvad andmed abikaasade kohta, siis eeldatakse, et abikaasade",
-      "estleg:legalText": "(1) Abieluvararegister on riiklik register, kuhu kantakse andmed abieluvaralepingus või kooselulepingus sisalduvate varaliste õiguste kohta ning andmed muude varaliste õiguste kohta seaduses sätestatud juhtudel. Abieluvararegistri eesmärk on võimaldada kolmandatel isikutel saada teavet abikaasade või registreeritud elukaaslaste vahelise varasuhte ning sellest tulenevate õiguste ja kohustuste kohta. Kui abieluvararegistris puuduvad andmed abikaasade kohta, siis eeldatakse, et abikaasade varalistele suhetele kohaldatakse varaühisuse varasuhte sätteid. (1¹) Abieluvararegistrit peetakse elektrooniliselt. (2) Abieluvararegistri pidamise ja andmetöötluse korra kehtestab määrusega. (2¹) Kehtetu - (3) Abieluvararegistrile ja selle pidamisele kohaldatakse avaliku teabe seaduses andmekogude kohta sätestatut käesolevas seaduses sätestatud erisustega.",
+      "estleg:summary": {
+        "@value": "(1) Abieluvararegister on riiklik register, kuhu kantakse andmed abieluvaralepingus või kooselulepingus sisalduvate varaliste õiguste kohta ning andmed muude varaliste õiguste kohta seaduses sätestatud juhtudel. Abieluvararegistri eesmärk on võimaldada kolmandatel isikutel saada teavet abikaasade või registreeritud elukaaslaste vahelise varasuhte ning sellest tulenevate õiguste ja kohustuste kohta. Kui abieluvararegistris puuduvad andmed abikaasade kohta, siis eeldatakse, et abikaasade",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abieluvararegister on riiklik register, kuhu kantakse andmed abieluvaralepingus või kooselulepingus sisalduvate varaliste õiguste kohta ning andmed muude varaliste õiguste kohta seaduses sätestatud juhtudel. Abieluvararegistri eesmärk on võimaldada kolmandatel isikutel saada teavet abikaasade või registreeritud elukaaslaste vahelise varasuhte ning sellest tulenevate õiguste ja kohustuste kohta. Kui abieluvararegistris puuduvad andmed abikaasade kohta, siis eeldatakse, et abikaasade varalistele suhetele kohaldatakse varaühisuse varasuhte sätteid. (1¹) Abieluvararegistrit peetakse elektrooniliselt. (2) Abieluvararegistri pidamise ja andmetöötluse korra kehtestab määrusega. (3) Abieluvararegistrile ja selle pidamisele kohaldatakse avaliku teabe seaduses andmekogude kohta sätestatut käesolevas seaduses sätestatud erisustega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -335,9 +404,6 @@
         },
         {
           "@id": "estleg:AVRS_Par_1_Lg_2"
-        },
-        {
-          "@id": "estleg:AVRS_Par_1_Lg_2_1"
         },
         {
           "@id": "estleg:AVRS_Par_1_Lg_3"
@@ -425,19 +491,6 @@
       "estleg:implementedByCount": 1
     },
     {
-      "@id": "estleg:AVRS_Par_1_Lg_2_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2¹",
-      "estleg:legalText": "(2¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_1"
-      },
-      "rdfs:label": "§ 1 lg 2¹"
-    },
-    {
       "@id": "estleg:AVRS_Par_1_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -457,13 +510,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Abieluvararegistri vastutav ja volitatud töötleja ning andmeandjad",
+      "rdfs:label": {
+        "@value": "§ 2. Abieluvararegistri vastutav ja volitatud töötleja ning andmeandjad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (1¹) Abieluvararegistri vastutav töötleja on Notarite Koda ning volitatud töötlejad on abielu sõlmimise kinnitanud või vaimuliku kinnitatud abielu paberil abielukandelt andmehõive teinud perekonnaseisuametnikud, notarid ning Registrite ja Infosüsteemide Keskus. Abieluvararegistrit arendab, hooldab ning majutab Registrite ja Infosüsteemide Keskus. Abieluvararegistri andmeandjad on abielu sõlmimise kinnitanud perekonnaseisuametnikud, perekonnaseisuasutuse ülesandeid täitvad isikud",
-      "estleg:legalText": "(1) Kehtetu - (1¹) Abieluvararegistri vastutav töötleja on Notarite Koda ning volitatud töötlejad on abielu sõlmimise kinnitanud või vaimuliku kinnitatud abielu paberil abielukandelt andmehõive teinud perekonnaseisuametnikud, notarid ning Registrite ja Infosüsteemide Keskus. Abieluvararegistrit arendab, hooldab ning majutab Registrite ja Infosüsteemide Keskus. Abieluvararegistri andmeandjad on abielu sõlmimise kinnitanud perekonnaseisuametnikud, perekonnaseisuasutuse ülesandeid täitvad isikud ja kohtuametnikud. (1²) Vastutav töötleja: vastutab abieluvararegistri pidamise ning andmete väljastamise õiguspärasuse ja otstarbekuse eest; teeb töötlejate üle registri kasutamisel järelevalvet; teeb seaduses sätestatud juhul kandeid abieluvararegistrisse; korraldab registrisse sisestamata jäetud andmete sisestamise või avastatud ebaõigete andmete parandamise; võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks registri turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt; korraldab koostöös Registrite ja Infosüsteemide Keskusega registrisse kantud andmete säilimise vastavalt kehtestatud nõuetele ja selleks varukoopiate tegemise ning muude organisatsiooniliste, füüsiliste ja infotehnoloogiliste meetmete rakendamise; tagab koostöös Registrite ja Infosüsteemide Keskusega abieluvararegistri tõrgeteta toimimise; tagab registri andmete sisestamise, muutmise ja kustutamise ning registri andmetega tutvumise ainult selleks õigust omavatele isikutele; esitab vajaduse korral Justiits- ja Digiministeeriumile statistikat registriandmetest. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (1³) Volitatud töötleja: tagab andmete kandmise abieluvararegistrisse, seal nende muutmise ja kustutamise; võimaldab andmetega tutvuda ainult selleks õigust omavatel isikutel; vastutab enda või volitatud isikute poolt abieluvararegistrisse kantud andmete õigsuse eest; annab abieluvararegistri andmetes puuduste avastamise korral sellest viivitamata teada Registrite ja Infosüsteemide Keskusele, välja arvatud juhul, kui tal on võimalik puudus iseseisvalt kõrvaldada; võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks infosüsteemi turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt. (1⁴) Registrite ja Infosüsteemide Keskus tegutseb oma pädevuse piires Notarite Koja korralduste kohaselt. Kõik süsteemisisesed täiendused ja muudatused kooskõlastatakse Notarite Kojaga. Registrite ja Infosüsteemide Keskuse pädevuses on: tark- ja riistvaraga seotud probleemide lahendamine; infotehnoloogilise ja keskusesisese organisatsioonilise andmeturbe korraldamine ning vastavasisuliste soovituste ja teabe andmine; kasutusjuhendi täiendamine ja ajakohasena hoidmine; tarkvara versiooniuuenduste testimine; andmeside ja süsteemi töö tagamine Notarite Koja kehtestatud nõuete kohaselt; kasutajatoe organiseerimine; Notarite Koja korraldusel tarkvaraarenduste ja abieluvararegistri muudatuste tellimine või ise nende tegemine; riskide hindamine arvutiprogrammide ühendamisel; Notarite Koja teavitamine abieluvararegistriga seonduvast; Notarite Koja korraldusel andmetöötlusfunktsioonide täitmine. (2) Kehtetu - (2¹) Kehtetu - (3) Kehtetu - (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1¹) Abieluvararegistri vastutav töötleja on Notarite Koda ning volitatud töötlejad on abielu sõlmimise kinnitanud või vaimuliku kinnitatud abielu paberil abielukandelt andmehõive teinud perekonnaseisuametnikud, notarid ning Registrite ja Infosüsteemide Keskus. Abieluvararegistrit arendab, hooldab ning majutab Registrite ja Infosüsteemide Keskus. Abieluvararegistri andmeandjad on abielu sõlmimise kinnitanud perekonnaseisuametnikud, perekonnaseisuasutuse ülesandeid täitvad isikud ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1¹) Abieluvararegistri vastutav töötleja on Notarite Koda ning volitatud töötlejad on abielu sõlmimise kinnitanud või vaimuliku kinnitatud abielu paberil abielukandelt andmehõive teinud perekonnaseisuametnikud, notarid ning Registrite ja Infosüsteemide Keskus. Abieluvararegistrit arendab, hooldab ning majutab Registrite ja Infosüsteemide Keskus. Abieluvararegistri andmeandjad on abielu sõlmimise kinnitanud perekonnaseisuametnikud, perekonnaseisuasutuse ülesandeid täitvad isikud ja kohtuametnikud. (1²) Vastutav töötleja: 1) vastutab abieluvararegistri pidamise ning andmete väljastamise õiguspärasuse ja otstarbekuse eest; 2) teeb töötlejate üle registri kasutamisel järelevalvet; 3) teeb seaduses sätestatud juhul kandeid abieluvararegistrisse; 4) korraldab registrisse sisestamata jäetud andmete sisestamise või avastatud ebaõigete andmete parandamise; 5) võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks registri turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt; 6) korraldab koostöös Registrite ja Infosüsteemide Keskusega registrisse kantud andmete säilimise vastavalt kehtestatud nõuetele ja selleks varukoopiate tegemise ning muude organisatsiooniliste, füüsiliste ja infotehnoloogiliste meetmete rakendamise; 7) tagab koostöös Registrite ja Infosüsteemide Keskusega abieluvararegistri tõrgeteta toimimise; 8) tagab registri andmete sisestamise, muutmise ja kustutamise ning registri andmetega tutvumise ainult selleks õigust omavatele isikutele; 9) esitab vajaduse korral Justiits- ja Digiministeeriumile statistikat registriandmetest. (1³) Volitatud töötleja: 1) tagab andmete kandmise abieluvararegistrisse, seal nende muutmise ja kustutamise; 2) võimaldab andmetega tutvuda ainult selleks õigust omavatel isikutel; 3) vastutab enda või volitatud isikute poolt abieluvararegistrisse kantud andmete õigsuse eest; 4) annab abieluvararegistri andmetes puuduste avastamise korral sellest viivitamata teada Registrite ja Infosüsteemide Keskusele, välja arvatud juhul, kui tal on võimalik puudus iseseisvalt kõrvaldada; 5) võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks infosüsteemi turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt. (1⁴) Registrite ja Infosüsteemide Keskus tegutseb oma pädevuse piires Notarite Koja korralduste kohaselt. Kõik süsteemisisesed täiendused ja muudatused kooskõlastatakse Notarite Kojaga. Registrite ja Infosüsteemide Keskuse pädevuses on: 1) tark- ja riistvaraga seotud probleemide lahendamine; 2) infotehnoloogilise ja keskusesisese organisatsioonilise andmeturbe korraldamine ning vastavasisuliste soovituste ja teabe andmine; 3) kasutusjuhendi täiendamine ja ajakohasena hoidmine; 4) tarkvara versiooniuuenduste testimine; 5) andmeside ja süsteemi töö tagamine Notarite Koja kehtestatud nõuete kohaselt; 6) kasutajatoe organiseerimine; 7) Notarite Koja korraldusel tarkvaraarenduste ja abieluvararegistri muudatuste tellimine või ise nende tegemine; 8) riskide hindamine arvutiprogrammide ühendamisel; 9) Notarite Koja teavitamine abieluvararegistriga seonduvast; 10) Notarite Koja korraldusel andmetöötlusfunktsioonide täitmine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -471,9 +530,6 @@
         "@id": "estleg:Chapter_AVRS_1"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:AVRS_Par_2_Lg_1"
-        },
         {
           "@id": "estleg:AVRS_Par_2_Lg_1_1"
         },
@@ -485,18 +541,6 @@
         },
         {
           "@id": "estleg:AVRS_Par_2_Lg_1_4"
-        },
-        {
-          "@id": "estleg:AVRS_Par_2_Lg_2"
-        },
-        {
-          "@id": "estleg:AVRS_Par_2_Lg_2_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_2_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_2_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -550,19 +594,6 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_2_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 1"
-    },
-    {
       "@id": "estleg:AVRS_Par_2_Lg_1_1",
       "@type": [
         "estleg:Subsection",
@@ -594,11 +625,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1²",
-      "estleg:legalText": "(1²) Vastutav töötleja: vastutab abieluvararegistri pidamise ning andmete väljastamise õiguspärasuse ja otstarbekuse eest; teeb töötlejate üle registri kasutamisel järelevalvet; teeb seaduses sätestatud juhul kandeid abieluvararegistrisse; korraldab registrisse sisestamata jäetud andmete sisestamise või avastatud ebaõigete andmete parandamise; võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks registri turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt; korraldab koostöös Registrite ja Infosüsteemide Keskusega registrisse kantud andmete säilimise vastavalt kehtestatud nõuetele ja selleks varukoopiate tegemise ning muude organisatsiooniliste, füüsiliste ja infotehnoloogiliste meetmete rakendamise; tagab koostöös Registrite ja Infosüsteemide Keskusega abieluvararegistri tõrgeteta toimimise; tagab registri andmete sisestamise, muutmise ja kustutamise ning registri andmetega tutvumise ainult selleks õigust omavatele isikutele; esitab vajaduse korral Justiits- ja Digiministeeriumile statistikat registriandmetest. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "(1²) Vastutav töötleja: 1) vastutab abieluvararegistri pidamise ning andmete väljastamise õiguspärasuse ja otstarbekuse eest; 2) teeb töötlejate üle registri kasutamisel järelevalvet; 3) teeb seaduses sätestatud juhul kandeid abieluvararegistrisse; 4) korraldab registrisse sisestamata jäetud andmete sisestamise või avastatud ebaõigete andmete parandamise; 5) võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks registri turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt; 6) korraldab koostöös Registrite ja Infosüsteemide Keskusega registrisse kantud andmete säilimise vastavalt kehtestatud nõuetele ja selleks varukoopiate tegemise ning muude organisatsiooniliste, füüsiliste ja infotehnoloogiliste meetmete rakendamise; 7) tagab koostöös Registrite ja Infosüsteemide Keskusega abieluvararegistri tõrgeteta toimimise; 8) tagab registri andmete sisestamise, muutmise ja kustutamise ning registri andmetega tutvumise ainult selleks õigust omavatele isikutele; 9) esitab vajaduse korral Justiits- ja Digiministeeriumile statistikat registriandmetest.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1²",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -632,11 +674,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1³",
-      "estleg:legalText": "(1³) Volitatud töötleja: tagab andmete kandmise abieluvararegistrisse, seal nende muutmise ja kustutamise; võimaldab andmetega tutvuda ainult selleks õigust omavatel isikutel; vastutab enda või volitatud isikute poolt abieluvararegistrisse kantud andmete õigsuse eest; annab abieluvararegistri andmetes puuduste avastamise korral sellest viivitamata teada Registrite ja Infosüsteemide Keskusele, välja arvatud juhul, kui tal on võimalik puudus iseseisvalt kõrvaldada; võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks infosüsteemi turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt.",
+      "estleg:legalText": "(1³) Volitatud töötleja: 1) tagab andmete kandmise abieluvararegistrisse, seal nende muutmise ja kustutamise; 2) võimaldab andmetega tutvuda ainult selleks õigust omavatel isikutel; 3) vastutab enda või volitatud isikute poolt abieluvararegistrisse kantud andmete õigsuse eest; 4) annab abieluvararegistri andmetes puuduste avastamise korral sellest viivitamata teada Registrite ja Infosüsteemide Keskusele, välja arvatud juhul, kui tal on võimalik puudus iseseisvalt kõrvaldada; 5) võtab andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks infosüsteemi turvanõuetele vastavaid organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid ning rakendab neid järjepidevalt.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1³",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -654,11 +703,23 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1⁴",
-      "estleg:legalText": "(1⁴) Registrite ja Infosüsteemide Keskus tegutseb oma pädevuse piires Notarite Koja korralduste kohaselt. Kõik süsteemisisesed täiendused ja muudatused kooskõlastatakse Notarite Kojaga. Registrite ja Infosüsteemide Keskuse pädevuses on: tark- ja riistvaraga seotud probleemide lahendamine; infotehnoloogilise ja keskusesisese organisatsioonilise andmeturbe korraldamine ning vastavasisuliste soovituste ja teabe andmine; kasutusjuhendi täiendamine ja ajakohasena hoidmine; tarkvara versiooniuuenduste testimine; andmeside ja süsteemi töö tagamine Notarite Koja kehtestatud nõuete kohaselt; kasutajatoe organiseerimine; Notarite Koja korraldusel tarkvaraarenduste ja abieluvararegistri muudatuste tellimine või ise nende tegemine; riskide hindamine arvutiprogrammide ühendamisel; Notarite Koja teavitamine abieluvararegistriga seonduvast; Notarite Koja korraldusel andmetöötlusfunktsioonide täitmine.",
+      "estleg:legalText": "(1⁴) Registrite ja Infosüsteemide Keskus tegutseb oma pädevuse piires Notarite Koja korralduste kohaselt. Kõik süsteemisisesed täiendused ja muudatused kooskõlastatakse Notarite Kojaga. Registrite ja Infosüsteemide Keskuse pädevuses on: 1) tark- ja riistvaraga seotud probleemide lahendamine; 2) infotehnoloogilise ja keskusesisese organisatsioonilise andmeturbe korraldamine ning vastavasisuliste soovituste ja teabe andmine; 3) kasutusjuhendi täiendamine ja ajakohasena hoidmine; 4) tarkvara versiooniuuenduste testimine; 5) andmeside ja süsteemi töö tagamine Notarite Koja kehtestatud nõuete kohaselt; 6) kasutajatoe organiseerimine; 7) Notarite Koja korraldusel tarkvaraarenduste ja abieluvararegistri muudatuste tellimine või ise nende tegemine; 8) riskide hindamine arvutiprogrammide ühendamisel; 9) Notarite Koja teavitamine abieluvararegistriga seonduvast; 10) Notarite Koja korraldusel andmetöötlusfunktsioonide täitmine.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1⁴",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -673,71 +734,24 @@
       }
     },
     {
-      "@id": "estleg:AVRS_Par_2_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 2"
-    },
-    {
-      "@id": "estleg:AVRS_Par_2_Lg_2_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2¹",
-      "estleg:legalText": "(2¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 2¹"
-    },
-    {
-      "@id": "estleg:AVRS_Par_2_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 3"
-    },
-    {
-      "@id": "estleg:AVRS_Par_2_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 4"
-    },
-    {
       "@id": "estleg:AVRS_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kohtunikuabi pädevus",
+      "rdfs:label": {
+        "@value": "§ 3. Kohtunikuabi pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 3. Kohtunikuabi pädevus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -775,13 +789,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Registri tööpiirkonna muutumine",
+      "rdfs:label": {
+        "@value": "§ 4. Registri tööpiirkonna muutumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 4. Registri tööpiirkonna muutumine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -813,13 +832,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Abikaasa elukoht ja selle muutumine",
+      "rdfs:label": {
+        "@value": "§ 5. Abikaasa elukoht ja selle muutumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 5. Abikaasa elukoht ja selle muutumine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -848,13 +872,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Abieluvararegistri andmetega tutvumine",
+      "rdfs:label": {
+        "@value": "§ 6. Abieluvararegistri andmetega tutvumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Igaüks võib abieluvararegistri registrikaardile kantud andmetega tutvuda ja saada nendest väljatrükke. Abieluvararegistri registrikaardile kantud andmetega tutvumiseks peab isik end identifitseerima digitaalse isikutunnistuse abil. Abieluvararegistri registrikaardile kantud isikul on õigus saada registrist teavet selle kohta, kes on tema abieluvararegistri registrikaardiga tutvunud. (2) Abieluvararegistri dokumentidega võib tutvuda ning neist väljatrükke saada õigustatud huvi olemasolu",
-      "estleg:legalText": "(1) Igaüks võib abieluvararegistri registrikaardile kantud andmetega tutvuda ja saada nendest väljatrükke. Abieluvararegistri registrikaardile kantud andmetega tutvumiseks peab isik end identifitseerima digitaalse isikutunnistuse abil. Abieluvararegistri registrikaardile kantud isikul on õigus saada registrist teavet selle kohta, kes on tema abieluvararegistri registrikaardiga tutvunud. (2) Abieluvararegistri dokumentidega võib tutvuda ning neist väljatrükke saada õigustatud huvi olemasolu korral. Abikaasa, registreeritud elukaaslase, notari, perekonnaseisuametniku, kohtutäituri, pankrotihalduri, kohtu ja järelevalveõigusliku asutuse õigustatud huvi eeldatakse. (3) Registritoimikuga tutvumise loa annab notar. Kui notar keeldub registritoimikuga tutvumise loa andmisest, kohaldatakse notariaadiseaduse § 41. (4) Kehtetu - (5) Abieluvararegistrisse kantud andmetega ja dokumentidega saab tutvuda notaribüroos notari tasu seaduses sätestatud tasu eest. Abieluvararegistri andmetega saab tutvuda vastava veebilehe kaudu tasuta. (6) Abieluvararegistrisse kantud andmed avalikustatakse ajakohasena ning viisil ja vormis, mis võimaldab üksikpäringuna saadud teabe allalaadimist masinloetaval kujul. Automatiseeritud päringuid võidakse avada üksnes seadusest tuleneva avalik-õigusliku ülesande täitmiseks.",
+      "estleg:summary": {
+        "@value": "(1) Igaüks võib abieluvararegistri registrikaardile kantud andmetega tutvuda ja saada nendest väljatrükke. Abieluvararegistri registrikaardile kantud andmetega tutvumiseks peab isik end identifitseerima digitaalse isikutunnistuse abil. Abieluvararegistri registrikaardile kantud isikul on õigus saada registrist teavet selle kohta, kes on tema abieluvararegistri registrikaardiga tutvunud. (2) Abieluvararegistri dokumentidega võib tutvuda ning neist väljatrükke saada õigustatud huvi olemasolu",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Igaüks võib abieluvararegistri registrikaardile kantud andmetega tutvuda ja saada nendest väljatrükke. Abieluvararegistri registrikaardile kantud andmetega tutvumiseks peab isik end identifitseerima digitaalse isikutunnistuse abil. Abieluvararegistri registrikaardile kantud isikul on õigus saada registrist teavet selle kohta, kes on tema abieluvararegistri registrikaardiga tutvunud. (2) Abieluvararegistri dokumentidega võib tutvuda ning neist väljatrükke saada õigustatud huvi olemasolu korral. Abikaasa, registreeritud elukaaslase, notari, perekonnaseisuametniku, kohtutäituri, pankrotihalduri, kohtu ja järelevalveõigusliku asutuse õigustatud huvi eeldatakse. (3) Registritoimikuga tutvumise loa annab notar. Kui notar keeldub registritoimikuga tutvumise loa andmisest, kohaldatakse notariaadiseaduse § 41. (5) Abieluvararegistrisse kantud andmetega ja dokumentidega saab tutvuda notaribüroos notari tasu seaduses sätestatud tasu eest. Abieluvararegistri andmetega saab tutvuda vastava veebilehe kaudu tasuta. (6) Abieluvararegistrisse kantud andmed avalikustatakse ajakohasena ning viisil ja vormis, mis võimaldab üksikpäringuna saadud teabe allalaadimist masinloetaval kujul. Automatiseeritud päringuid võidakse avada üksnes seadusest tuleneva avalik-õigusliku ülesande täitmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -870,9 +900,6 @@
         },
         {
           "@id": "estleg:AVRS_Par_6_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_6_Lg_4"
         },
         {
           "@id": "estleg:AVRS_Par_6_Lg_5"
@@ -1014,19 +1041,6 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_6_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_6"
-      },
-      "rdfs:label": "§ 6 lg 4"
-    },
-    {
       "@id": "estleg:AVRS_Par_6_Lg_5",
       "@type": [
         "estleg:Subsection",
@@ -1077,13 +1091,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kande õiguslik tähendus",
+      "rdfs:label": {
+        "@value": "§ 7. Kande õiguslik tähendus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Kandega ei ole seotud seadusest tulenevate varaliste õiguste tekkimine, muutumine ja lõppemine abikaasade või registreeritud elukaaslaste endi vahelistes suhetes.",
-      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Kandega ei ole seotud seadusest tulenevate varaliste õiguste tekkimine, muutumine ja lõppemine abikaasade või registreeritud elukaaslaste endi vahelistes suhetes.",
+      "estleg:summary": {
+        "@value": "(4) Kandega ei ole seotud seadusest tulenevate varaliste õiguste tekkimine, muutumine ja lõppemine abikaasade või registreeritud elukaaslaste endi vahelistes suhetes.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(4) Kandega ei ole seotud seadusest tulenevate varaliste õiguste tekkimine, muutumine ja lõppemine abikaasade või registreeritud elukaaslaste endi vahelistes suhetes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -1091,15 +1111,6 @@
         "@id": "estleg:Chapter_AVRS_1"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:AVRS_Par_7_Lg_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_7_Lg_2"
-        },
-        {
-          "@id": "estleg:AVRS_Par_7_Lg_3"
-        },
         {
           "@id": "estleg:AVRS_Par_7_Lg_4"
         }
@@ -1123,45 +1134,6 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_7_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 1"
-    },
-    {
-      "@id": "estleg:AVRS_Par_7_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 2"
-    },
-    {
-      "@id": "estleg:AVRS_Par_7_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 3"
-    },
-    {
       "@id": "estleg:AVRS_Par_7_Lg_4",
       "@type": [
         "estleg:Subsection",
@@ -1181,13 +1153,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Töökeel",
+      "rdfs:label": {
+        "@value": "§ 8. Töökeel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Abieluvararegistrit peetakse eesti keeles. (2) Dokumendid, mis ei ole eesti keeles, esitatakse perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule koos vandetõlgi tehtud eestikeelse tõlkega. - sõna „registripidajale” asendatud sõnadega „perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule” (RT I, 21.12.2016, 1)",
-      "estleg:legalText": "(1) Abieluvararegistrit peetakse eesti keeles. (2) Dokumendid, mis ei ole eesti keeles, esitatakse perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule koos vandetõlgi tehtud eestikeelse tõlkega. - sõna „registripidajale” asendatud sõnadega „perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule” (RT I, 21.12.2016, 1)",
+      "estleg:summary": {
+        "@value": "(1) Abieluvararegistrit peetakse eesti keeles. (2) Dokumendid, mis ei ole eesti keeles, esitatakse perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule koos vandetõlgi tehtud eestikeelse tõlkega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abieluvararegistrit peetakse eesti keeles. (2) Dokumendid, mis ei ole eesti keeles, esitatakse perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule koos vandetõlgi tehtud eestikeelse tõlkega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -1257,7 +1235,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Dokumendid, mis ei ole eesti keeles, esitatakse perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule koos vandetõlgi tehtud eestikeelse tõlkega. - sõna „registripidajale” asendatud sõnadega „perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule” (RT I, 21.12.2016, 1)",
+      "estleg:legalText": "(2) Dokumendid, mis ei ole eesti keeles, esitatakse perekonnaseisuametnikule või perekonnaseisuasutuse ülesandeid täitvale isikule koos vandetõlgi tehtud eestikeelse tõlkega.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_8"
       },
@@ -1279,13 +1257,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Registri pitsat",
+      "rdfs:label": {
+        "@value": "§ 9. Registri pitsat",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 9. Registri pitsat",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_1"
       },
@@ -1314,12 +1297,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Registri koosseis",
+      "rdfs:label": {
+        "@value": "§ 10. Registri koosseis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Abieluvararegister koosneb elektroonilisest arhiivist ja registrikaardile kantavatest andmetest.",
+      "estleg:summary": {
+        "@value": "Abieluvararegister koosneb elektroonilisest arhiivist ja registrikaardile kantavatest andmetest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Abieluvararegister koosneb elektroonilisest arhiivist ja registrikaardile kantavatest andmetest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_2"
@@ -1355,10 +1344,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Abieluvararegister koosneb elektroonilisest arhiivist ja registrikaardile kantavatest andmetest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Abieluvararegister koosneb elektroonilisest arhiivist ja registrikaardile kantavatest andmetest.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_10"
-      }
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:AVRS_Par_11",
@@ -1367,12 +1358,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Registrikaart",
+      "rdfs:label": {
+        "@value": "§ 11. Registrikaart",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kanne tehakse registrikaardile. (2) Registrikaartidel on unikaalne numeratsioon. Iga registrikaart saab jooksva numbri selle avamise ajalise järjekorra järgi. (3) Abikaasade või registreeritud elukaaslaste varaliste õiguste kohta võib avada ainult ühe registrikaardi.",
+      "estleg:summary": {
+        "@value": "(1) Kanne tehakse registrikaardile. (2) Registrikaartidel on unikaalne numeratsioon. Iga registrikaart saab jooksva numbri selle avamise ajalise järjekorra järgi. (3) Abikaasade või registreeritud elukaaslaste varaliste õiguste kohta võib avada ainult ühe registrikaardi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kanne tehakse registrikaardile. (2) Registrikaartidel on unikaalne numeratsioon. Iga registrikaart saab jooksva numbri selle avamise ajalise järjekorra järgi. (3) Abikaasade või registreeritud elukaaslaste varaliste õiguste kohta võib avada ainult ühe registrikaardi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_2"
@@ -1463,13 +1460,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Registritoimik",
+      "rdfs:label": {
+        "@value": "§ 12. Registritoimik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 12. Registritoimik",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_2"
       },
@@ -1498,13 +1500,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Registripäevik",
+      "rdfs:label": {
+        "@value": "§ 13. Registripäevik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 13. Registripäevik",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_2"
       },
@@ -1542,13 +1549,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Asenduskaart",
+      "rdfs:label": {
+        "@value": "§ 14. Asenduskaart",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 14. Asenduskaart",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_2"
       },
@@ -1574,13 +1586,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Tähestikuline kartoteek",
+      "rdfs:label": {
+        "@value": "§ 15. Tähestikuline kartoteek",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 15. Tähestikuline kartoteek",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_2"
       },
@@ -1603,13 +1620,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Abieluvararegistri arhiiv",
+      "rdfs:label": {
+        "@value": "§ 16. Abieluvararegistri arhiiv",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Abieluvararegistrisse kantud andmeid, abieluvaralepinguid, kooselulepinguid, kohtulahendeid ja muid kande aluseks olevaid dokumente säilitatakse elektrooniliselt tähtajatult. (2) Kehtetu -",
-      "estleg:legalText": "(1) Abieluvararegistrisse kantud andmeid, abieluvaralepinguid, kooselulepinguid, kohtulahendeid ja muid kande aluseks olevaid dokumente säilitatakse elektrooniliselt tähtajatult. (2) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Abieluvararegistrisse kantud andmeid, abieluvaralepinguid, kooselulepinguid, kohtulahendeid ja muid kande aluseks olevaid dokumente säilitatakse elektrooniliselt tähtajatult.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abieluvararegistrisse kantud andmeid, abieluvaralepinguid, kooselulepinguid, kohtulahendeid ja muid kande aluseks olevaid dokumente säilitatakse elektrooniliselt tähtajatult.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_2"
       },
@@ -1619,9 +1642,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:AVRS_Par_16_Lg_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_16_Lg_2"
         }
       ],
       "estleg:hasVersion": [
@@ -1659,32 +1679,25 @@
       "rdfs:label": "§ 16 lg 1"
     },
     {
-      "@id": "estleg:AVRS_Par_16_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_16"
-      },
-      "rdfs:label": "§ 16 lg 2"
-    },
-    {
       "@id": "estleg:AVRS_Par_17",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Registrikaardi kanded",
+      "rdfs:label": {
+        "@value": "§ 17. Registrikaardi kanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Registrikaardile kantakse järgmised andmed: registrikaardi number; abikaasade ees- ja perekonnanimed; mõlema abikaasa isikukood, selle puudumisel sünniaeg; kande jooksev number; seaduses sätestatud juhtudel varasuhte liik, varasuhte muutmine või lõppemine, samuti esemed või teatavasse liiki kuuluvad esemed, mis on abieluvaralepinguga tunnistatud ühisvaraks või lahusvaraks; abikaasade varaliste õiguste suhtes välisriigi või Eesti õiguse kohaldamine; kande alus, kande tegemise",
-      "estleg:legalText": "(1) Kehtetu - (2) Registrikaardile kantakse järgmised andmed: registrikaardi number; abikaasade ees- ja perekonnanimed; mõlema abikaasa isikukood, selle puudumisel sünniaeg; kande jooksev number; seaduses sätestatud juhtudel varasuhte liik, varasuhte muutmine või lõppemine, samuti esemed või teatavasse liiki kuuluvad esemed, mis on abieluvaralepinguga tunnistatud ühisvaraks või lahusvaraks; abikaasade varaliste õiguste suhtes välisriigi või Eesti õiguse kohaldamine; kande alus, kande tegemise kuupäev, kande teinud isiku nimi ja ametinimetus ning märked; muud seaduses sätestatud andmed. (2¹) Käesoleva paragrahvi lõikes 2 sätestatud andmed kantakse registrikaardile ka kooselulepingu sõlminud registreeritud elukaaslaste kohta. Registrikaardile kantakse andmed varasuhte liigi kohta ka juhul, kui registreeritud elukaaslaste varasuhe oli varaühisus. (3) Kehtetu - (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(2) Registrikaardile kantakse järgmised andmed: 1) registrikaardi number; 2) abikaasade ees- ja perekonnanimed; 3) mõlema abikaasa isikukood, selle puudumisel sünniaeg; 4) kande jooksev number; 5) seaduses sätestatud juhtudel varasuhte liik, varasuhte muutmine või lõppemine, samuti esemed või teatavasse liiki kuuluvad esemed, mis on abieluvaralepinguga tunnistatud ühisvaraks või lahusvaraks; 6) abikaasade varaliste õiguste suhtes välisriigi või Eesti õiguse kohaldamine; 7) kande alus, kande",
+        "@language": "et"
+      },
+      "estleg:legalText": "(2) Registrikaardile kantakse järgmised andmed: 1) registrikaardi number; 2) abikaasade ees- ja perekonnanimed; 3) mõlema abikaasa isikukood, selle puudumisel sünniaeg; 4) kande jooksev number; 5) seaduses sätestatud juhtudel varasuhte liik, varasuhte muutmine või lõppemine, samuti esemed või teatavasse liiki kuuluvad esemed, mis on abieluvaralepinguga tunnistatud ühisvaraks või lahusvaraks; 6) abikaasade varaliste õiguste suhtes välisriigi või Eesti õiguse kohaldamine; 7) kande alus, kande tegemise kuupäev, kande teinud isiku nimi ja ametinimetus ning märked; 8) muud seaduses sätestatud andmed. (2¹) Käesoleva paragrahvi lõikes 2 sätestatud andmed kantakse registrikaardile ka kooselulepingu sõlminud registreeritud elukaaslaste kohta. Registrikaardile kantakse andmed varasuhte liigi kohta ka juhul, kui registreeritud elukaaslaste varasuhe oli varaühisus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -1693,19 +1706,10 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:AVRS_Par_17_Lg_1"
-        },
-        {
           "@id": "estleg:AVRS_Par_17_Lg_2"
         },
         {
           "@id": "estleg:AVRS_Par_17_Lg_2_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_17_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_17_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -1736,30 +1740,27 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_17_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_17"
-      },
-      "rdfs:label": "§ 17 lg 1"
-    },
-    {
       "@id": "estleg:AVRS_Par_17_Lg_2",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Registrikaardile kantakse järgmised andmed: registrikaardi number; abikaasade ees- ja perekonnanimed; mõlema abikaasa isikukood, selle puudumisel sünniaeg; kande jooksev number; seaduses sätestatud juhtudel varasuhte liik, varasuhte muutmine või lõppemine, samuti esemed või teatavasse liiki kuuluvad esemed, mis on abieluvaralepinguga tunnistatud ühisvaraks või lahusvaraks; abikaasade varaliste õiguste suhtes välisriigi või Eesti õiguse kohaldamine; kande alus, kande tegemise kuupäev, kande teinud isiku nimi ja ametinimetus ning märked; muud seaduses sätestatud andmed.",
+      "estleg:legalText": "(2) Registrikaardile kantakse järgmised andmed: 1) registrikaardi number; 2) abikaasade ees- ja perekonnanimed; 3) mõlema abikaasa isikukood, selle puudumisel sünniaeg; 4) kande jooksev number; 5) seaduses sätestatud juhtudel varasuhte liik, varasuhte muutmine või lõppemine, samuti esemed või teatavasse liiki kuuluvad esemed, mis on abieluvaralepinguga tunnistatud ühisvaraks või lahusvaraks; 6) abikaasade varaliste õiguste suhtes välisriigi või Eesti õiguse kohaldamine; 7) kande alus, kande tegemise kuupäev, kande teinud isiku nimi ja ametinimetus ning märked; 8) muud seaduses sätestatud andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_17"
       },
       "rdfs:label": "§ 17 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1784,45 +1785,24 @@
       "rdfs:label": "§ 17 lg 2¹"
     },
     {
-      "@id": "estleg:AVRS_Par_17_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_17"
-      },
-      "rdfs:label": "§ 17 lg 3"
-    },
-    {
-      "@id": "estleg:AVRS_Par_17_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_17"
-      },
-      "rdfs:label": "§ 17 lg 4"
-    },
-    {
       "@id": "estleg:AVRS_Par_18",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Abikaasa andmed registrikaardil",
+      "rdfs:label": {
+        "@value": "§ 18. Abikaasa andmed registrikaardil",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 18. Abikaasa andmed registrikaardil",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -1845,13 +1825,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Abieluvararegistri kanded",
+      "rdfs:label": {
+        "@value": "§ 19. Abieluvararegistri kanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Abieluvararegistri kande teeb notar või perekonnaseisuametnik. Käesoleva paragrahvi lõikes 21 sätestatud juhul teeb kande Notarite Koda. Kanne tehakse koos notari või perekonnaseisuametniku ametitoiminguga hiljemalt kande aluseks oleva toimingu tegemise päevale järgneval tööpäeval. (1¹) Kande abieluvaralepingu alusel varasuhtes tehtud muudatuste kohta teeb notar abieluvaralepingu alusel. Kui abieluvaraleping on sõlmitud notari juures enne abielu sõlmimist, jõustub kanne abieluvaralepingu",
-      "estleg:legalText": "(1) Abieluvararegistri kande teeb notar või perekonnaseisuametnik. Käesoleva paragrahvi lõikes 21 sätestatud juhul teeb kande Notarite Koda. Kanne tehakse koos notari või perekonnaseisuametniku ametitoiminguga hiljemalt kande aluseks oleva toimingu tegemise päevale järgneval tööpäeval. (1¹) Kande abieluvaralepingu alusel varasuhtes tehtud muudatuste kohta teeb notar abieluvaralepingu alusel. Kui abieluvaraleping on sõlmitud notari juures enne abielu sõlmimist, jõustub kanne abieluvaralepingu kohta abieluvararegistris pärast abielukande tegemist rahvastikuregistris. Kande kooselulepinguga seotud varalise kokkuleppe kohta teeb notar kooselulepingu või kooseluseaduse § 16 lõikes 2 nimetatud kokkuleppe alusel. (2) Kehtetu - (2¹) Notarite Koda teeb abieluvararegistri kande, kui: kande aluseks on jõustunud kohtulahend; parandatakse ebaõiget kannet; volitatud töötleja on ekslikult jätnud registrikaardi avamata ja volitatud töötleja ei saa registrikaarti ise avada. (2²) Perekonnaseisuametniku tehtavale abieluvararegistri kandele kohaldatakse perekonnaseisutoimingute seaduse §-s 7 sätestatut käesolevas seaduses sätestatud erisustega. (3) Kehtetu - (3¹) Kehtetu - (4) Kehtetu - (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Abieluvararegistri kande teeb notar või perekonnaseisuametnik. Käesoleva paragrahvi lõikes 2¹ sätestatud juhul teeb kande Notarite Koda. Kanne tehakse koos notari või perekonnaseisuametniku ametitoiminguga hiljemalt kande aluseks oleva toimingu tegemise päevale järgneval tööpäeval. (1¹) Kande abieluvaralepingu alusel varasuhtes tehtud muudatuste kohta teeb notar abieluvaralepingu alusel. Kui abieluvaraleping on sõlmitud notari juures enne abielu sõlmimist, jõustub kanne abieluvaralepingu",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abieluvararegistri kande teeb notar või perekonnaseisuametnik. Käesoleva paragrahvi lõikes 2¹ sätestatud juhul teeb kande Notarite Koda. Kanne tehakse koos notari või perekonnaseisuametniku ametitoiminguga hiljemalt kande aluseks oleva toimingu tegemise päevale järgneval tööpäeval. (1¹) Kande abieluvaralepingu alusel varasuhtes tehtud muudatuste kohta teeb notar abieluvaralepingu alusel. Kui abieluvaraleping on sõlmitud notari juures enne abielu sõlmimist, jõustub kanne abieluvaralepingu kohta abieluvararegistris pärast abielukande tegemist rahvastikuregistris. Kande kooselulepinguga seotud varalise kokkuleppe kohta teeb notar kooselulepingu või kooseluseaduse § 16 lõikes 2 nimetatud kokkuleppe alusel. (2¹) Notarite Koda teeb abieluvararegistri kande, kui: 1) kande aluseks on jõustunud kohtulahend; 2) parandatakse ebaõiget kannet; 3) volitatud töötleja on ekslikult jätnud registrikaardi avamata ja volitatud töötleja ei saa registrikaarti ise avada. (2²) Perekonnaseisuametniku tehtavale abieluvararegistri kandele kohaldatakse perekonnaseisutoimingute seaduse §-s 7 sätestatut käesolevas seaduses sätestatud erisustega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -1866,25 +1852,10 @@
           "@id": "estleg:AVRS_Par_19_Lg_1_1"
         },
         {
-          "@id": "estleg:AVRS_Par_19_Lg_2"
-        },
-        {
           "@id": "estleg:AVRS_Par_19_Lg_2_1"
         },
         {
           "@id": "estleg:AVRS_Par_19_Lg_2_2"
-        },
-        {
-          "@id": "estleg:AVRS_Par_19_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_19_Lg_3_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_19_Lg_4"
-        },
-        {
-          "@id": "estleg:AVRS_Par_19_Lg_5"
         }
       ],
       "estleg:targetGroup": [
@@ -1945,7 +1916,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Abieluvararegistri kande teeb notar või perekonnaseisuametnik. Käesoleva paragrahvi lõikes 21 sätestatud juhul teeb kande Notarite Koda. Kanne tehakse koos notari või perekonnaseisuametniku ametitoiminguga hiljemalt kande aluseks oleva toimingu tegemise päevale järgneval tööpäeval.",
+      "estleg:legalText": "(1) Abieluvararegistri kande teeb notar või perekonnaseisuametnik. Käesoleva paragrahvi lõikes 2¹ sätestatud juhul teeb kande Notarite Koda. Kanne tehakse koos notari või perekonnaseisuametniku ametitoiminguga hiljemalt kande aluseks oleva toimingu tegemise päevale järgneval tööpäeval.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_19"
       },
@@ -1988,30 +1959,22 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_19_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_19"
-      },
-      "rdfs:label": "§ 19 lg 2"
-    },
-    {
       "@id": "estleg:AVRS_Par_19_Lg_2_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2¹",
-      "estleg:legalText": "(2¹) Notarite Koda teeb abieluvararegistri kande, kui: kande aluseks on jõustunud kohtulahend; parandatakse ebaõiget kannet; volitatud töötleja on ekslikult jätnud registrikaardi avamata ja volitatud töötleja ei saa registrikaarti ise avada.",
+      "estleg:legalText": "(2¹) Notarite Koda teeb abieluvararegistri kande, kui: 1) kande aluseks on jõustunud kohtulahend; 2) parandatakse ebaõiget kannet; 3) volitatud töötleja on ekslikult jätnud registrikaardi avamata ja volitatud töötleja ei saa registrikaarti ise avada.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_19"
       },
       "rdfs:label": "§ 19 lg 2¹",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2044,71 +2007,24 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_19_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_19"
-      },
-      "rdfs:label": "§ 19 lg 3"
-    },
-    {
-      "@id": "estleg:AVRS_Par_19_Lg_3_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3¹",
-      "estleg:legalText": "(3¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_19"
-      },
-      "rdfs:label": "§ 19 lg 3¹"
-    },
-    {
-      "@id": "estleg:AVRS_Par_19_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_19"
-      },
-      "rdfs:label": "§ 19 lg 4"
-    },
-    {
-      "@id": "estleg:AVRS_Par_19_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_19"
-      },
-      "rdfs:label": "§ 19 lg 5"
-    },
-    {
       "@id": "estleg:AVRS_Par_20",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Avalduse esitamine ja tagasivõtmine",
+      "rdfs:label": {
+        "@value": "§ 20. Avalduse esitamine ja tagasivõtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 20. Avalduse esitamine ja tagasivõtmine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2143,13 +2059,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Kande tegemiseks vajalikud dokumendid",
+      "rdfs:label": {
+        "@value": "§ 21. Kande tegemiseks vajalikud dokumendid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Abieluvararegistri kande tegemisel lisatakse abieluvararegistrisse järgmised dokumendid: abieluvaraleping või kooseluleping; abiellumisavaldus; jõustunud kohtulahendi ärakiri, kui kande tegemist taotletakse kohtulahendi alusel; kehtetu - dokumendi või kohtulahendi ärakiri abikaasa või registreeritud elukaaslase surma kohta, kui kanne kustutatakse abielu või kooselulepingu lõppemise tõttu, ning dokumendi või kohtulahendi ärakiri abielu lahutamise või kooselulepingu lõpetamise kohta, kui",
-      "estleg:legalText": "(1) Abieluvararegistri kande tegemisel lisatakse abieluvararegistrisse järgmised dokumendid: abieluvaraleping või kooseluleping; abiellumisavaldus; jõustunud kohtulahendi ärakiri, kui kande tegemist taotletakse kohtulahendi alusel; kehtetu - dokumendi või kohtulahendi ärakiri abikaasa või registreeritud elukaaslase surma kohta, kui kanne kustutatakse abielu või kooselulepingu lõppemise tõttu, ning dokumendi või kohtulahendi ärakiri abielu lahutamise või kooselulepingu lõpetamise kohta, kui kanne kustutatakse abielulahutuse või kooselulepingu lõpetamise tõttu; kehtetu - muud seadusest tulenevad dokumendid; kehtetu - (1¹) Kehtetu - (2) Kehtetu - (2¹) Kui perekonnaseisuametnikul või perekonnaseisuasutuse ülesandeid täitval isikul on elektrooniline juurdepääs registrile, millest kontrollida käesoleva paragrahvi lõike 1 punktides 2 ja 4 nimetatud andmete olemasolu, ei pea nende ärakirju või väljavõtteid kandeavaldusele lisama. (3) Abikaasade või registreeritud elukaaslaste varalistele õigustele välisriigi õiguse kohaldamise kandmisel abieluvararegistrisse on kande aluseks dokumendid, millest nähtub välisriigi õiguse kohaldamise lubatavus rahvusvahelise eraõiguse seaduse § 58 lõigete 1 ja 4 järgi. Kandes tuleb märkida, millise riigi õigust abikaasade või registreeritud elukaaslaste varalistele õigustele kohaldatakse. (4) Kehtetu - (5) Kande parandamine toimub käesoleva seaduse §-s 37 sätestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Abieluvararegistri kande tegemisel lisatakse abieluvararegistrisse järgmised dokumendid: 1) abieluvaraleping või kooseluleping; 1¹) abiellumisavaldus; 2) jõustunud kohtulahendi ärakiri, kui kande tegemist taotletakse kohtulahendi alusel; 3) 4) dokumendi või kohtulahendi ärakiri abikaasa või registreeritud elukaaslase surma kohta, kui kanne kustutatakse abielu või kooselulepingu lõppemise tõttu, ning dokumendi või kohtulahendi ärakiri abielu lahutamise või kooselulepingu lõpetamise kohta,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abieluvararegistri kande tegemisel lisatakse abieluvararegistrisse järgmised dokumendid: 1) abieluvaraleping või kooseluleping; 1¹) abiellumisavaldus; 2) jõustunud kohtulahendi ärakiri, kui kande tegemist taotletakse kohtulahendi alusel; 3) 4) dokumendi või kohtulahendi ärakiri abikaasa või registreeritud elukaaslase surma kohta, kui kanne kustutatakse abielu või kooselulepingu lõppemise tõttu, ning dokumendi või kohtulahendi ärakiri abielu lahutamise või kooselulepingu lõpetamise kohta, kui kanne kustutatakse abielulahutuse või kooselulepingu lõpetamise tõttu; 5) 6) muud seadusest tulenevad dokumendid; 6¹) (2¹) Kui perekonnaseisuametnikul või perekonnaseisuasutuse ülesandeid täitval isikul on elektrooniline juurdepääs registrile, millest kontrollida käesoleva paragrahvi lõike 1 punktides 2 ja 4 nimetatud andmete olemasolu, ei pea nende ärakirju või väljavõtteid kandeavaldusele lisama. (3) Abikaasade või registreeritud elukaaslaste varalistele õigustele välisriigi õiguse kohaldamise kandmisel abieluvararegistrisse on kande aluseks dokumendid, millest nähtub välisriigi õiguse kohaldamise lubatavus rahvusvahelise eraõiguse seaduse § 58 lõigete 1 ja 4 järgi. Kandes tuleb märkida, millise riigi õigust abikaasade või registreeritud elukaaslaste varalistele õigustele kohaldatakse. (5) Kande parandamine toimub käesoleva seaduse §-s 37 sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2161,19 +2083,10 @@
           "@id": "estleg:AVRS_Par_21_Lg_1"
         },
         {
-          "@id": "estleg:AVRS_Par_21_Lg_1_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_21_Lg_2"
-        },
-        {
           "@id": "estleg:AVRS_Par_21_Lg_2_1"
         },
         {
           "@id": "estleg:AVRS_Par_21_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_21_Lg_4"
         },
         {
           "@id": "estleg:AVRS_Par_21_Lg_5"
@@ -2228,37 +2141,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Abieluvararegistri kande tegemisel lisatakse abieluvararegistrisse järgmised dokumendid: abieluvaraleping või kooseluleping; abiellumisavaldus; jõustunud kohtulahendi ärakiri, kui kande tegemist taotletakse kohtulahendi alusel; kehtetu - dokumendi või kohtulahendi ärakiri abikaasa või registreeritud elukaaslase surma kohta, kui kanne kustutatakse abielu või kooselulepingu lõppemise tõttu, ning dokumendi või kohtulahendi ärakiri abielu lahutamise või kooselulepingu lõpetamise kohta, kui kanne kustutatakse abielulahutuse või kooselulepingu lõpetamise tõttu; kehtetu - muud seadusest tulenevad dokumendid; kehtetu -",
+      "estleg:legalText": "(1) Abieluvararegistri kande tegemisel lisatakse abieluvararegistrisse järgmised dokumendid: 1) abieluvaraleping või kooseluleping; 1¹) abiellumisavaldus; 2) jõustunud kohtulahendi ärakiri, kui kande tegemist taotletakse kohtulahendi alusel; 3) 4) dokumendi või kohtulahendi ärakiri abikaasa või registreeritud elukaaslase surma kohta, kui kanne kustutatakse abielu või kooselulepingu lõppemise tõttu, ning dokumendi või kohtulahendi ärakiri abielu lahutamise või kooselulepingu lõpetamise kohta, kui kanne kustutatakse abielulahutuse või kooselulepingu lõpetamise tõttu; 5) 6) muud seadusest tulenevad dokumendid; 6¹)",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 1"
-    },
-    {
-      "@id": "estleg:AVRS_Par_21_Lg_1_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_21"
-      },
-      "rdfs:label": "§ 21 lg 1¹"
-    },
-    {
-      "@id": "estleg:AVRS_Par_21_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_21"
-      },
-      "rdfs:label": "§ 21 lg 2"
+      "rdfs:label": "§ 21 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "1¹",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "6¹"
+      ]
     },
     {
       "@id": "estleg:AVRS_Par_21_Lg_2_1",
@@ -2308,19 +2205,6 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_21_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_21"
-      },
-      "rdfs:label": "§ 21 lg 4"
-    },
-    {
       "@id": "estleg:AVRS_Par_21_Lg_5",
       "@type": [
         "estleg:Subsection",
@@ -2345,13 +2229,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Dokumentide vastuvõtmine",
+      "rdfs:label": {
+        "@value": "§ 22. Dokumentide vastuvõtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 22. Dokumentide vastuvõtmine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2383,13 +2272,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22¹.",
-      "rdfs:label": "§ 22¹. Märge sissetulnud kandeavalduse kohta",
+      "rdfs:label": {
+        "@value": "§ 22¹. Märge sissetulnud kandeavalduse kohta",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 22¹. Märge sissetulnud kandeavalduse kohta",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2412,13 +2306,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Tähtaeg puuduste kõrvaldamiseks",
+      "rdfs:label": {
+        "@value": "§ 23. Tähtaeg puuduste kõrvaldamiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 23. Tähtaeg puuduste kõrvaldamiseks",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2450,13 +2349,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Kandeavalduse läbivaatamine",
+      "rdfs:label": {
+        "@value": "§ 24. Kandeavalduse läbivaatamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 24. Kandeavalduse läbivaatamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2494,13 +2398,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Kandemääruse sisu",
+      "rdfs:label": {
+        "@value": "§ 25. Kandemääruse sisu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 25. Kandemääruse sisu",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2532,13 +2441,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Kande tekst",
+      "rdfs:label": {
+        "@value": "§ 26. Kande tekst",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 26. Kande tekst",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2564,13 +2478,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Kande tegemine",
+      "rdfs:label": {
+        "@value": "§ 27. Kande tegemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Registrikaardi kanded nummerdatakse nende tegemise järjekorras. (2) Kande tekst peab olema loetav ja üheselt mõistetav. Kandes võib kasutada üksnes üldtuntud lühendeid. (3) Kandele tuleb lisada kande teinud isikut identifitseeriv teave. (4) Kehtetu -",
-      "estleg:legalText": "(1) Registrikaardi kanded nummerdatakse nende tegemise järjekorras. (2) Kande tekst peab olema loetav ja üheselt mõistetav. Kandes võib kasutada üksnes üldtuntud lühendeid. (3) Kandele tuleb lisada kande teinud isikut identifitseeriv teave. (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Registrikaardi kanded nummerdatakse nende tegemise järjekorras. (2) Kande tekst peab olema loetav ja üheselt mõistetav. Kandes võib kasutada üksnes üldtuntud lühendeid. (3) Kandele tuleb lisada kande teinud isikut identifitseeriv teave.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Registrikaardi kanded nummerdatakse nende tegemise järjekorras. (2) Kande tekst peab olema loetav ja üheselt mõistetav. Kandes võib kasutada üksnes üldtuntud lühendeid. (3) Kandele tuleb lisada kande teinud isikut identifitseeriv teave.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2586,9 +2506,6 @@
         },
         {
           "@id": "estleg:AVRS_Par_27_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_27_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -2677,32 +2594,24 @@
       }
     },
     {
-      "@id": "estleg:AVRS_Par_27_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_27"
-      },
-      "rdfs:label": "§ 27 lg 4"
-    },
-    {
       "@id": "estleg:AVRS_Par_27_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27¹.",
-      "rdfs:label": "§ 27¹. Kandemääruse sisu",
+      "rdfs:label": {
+        "@value": "§ 27¹. Kandemääruse sisu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 27¹. Kandemääruse sisu",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2725,13 +2634,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Mitme avalduse lahendamine",
+      "rdfs:label": {
+        "@value": "§ 28. Mitme avalduse lahendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 28. Mitme avalduse lahendamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2754,13 +2668,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Kandest ja kandemäärusest teatamine",
+      "rdfs:label": {
+        "@value": "§ 29. Kandest ja kandemäärusest teatamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 29. Kandest ja kandemäärusest teatamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2795,13 +2714,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Kande avaldamine",
+      "rdfs:label": {
+        "@value": "§ 30. Kande avaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 30. Kande avaldamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2830,13 +2754,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Abiregistrikaart",
+      "rdfs:label": {
+        "@value": "§ 31. Abiregistrikaart",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 31. Abiregistrikaart",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2862,13 +2791,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Kande muutmine ja kustutamine",
+      "rdfs:label": {
+        "@value": "§ 32. Kande muutmine ja kustutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Kanne muudetakse senise kande kustutamise ja uue kande tegemise teel. Muudetud kannet asendav uus kanne saab senise kande järjekoha. (4) Kande kustutamiseks tehakse kustutuskanne. (5) Muudetud või kustutatud kannet peab olema võimalik taasesitada.",
-      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Kanne muudetakse senise kande kustutamise ja uue kande tegemise teel. Muudetud kannet asendav uus kanne saab senise kande järjekoha. (4) Kande kustutamiseks tehakse kustutuskanne. (5) Muudetud või kustutatud kannet peab olema võimalik taasesitada.",
+      "estleg:summary": {
+        "@value": "(3) Kanne muudetakse senise kande kustutamise ja uue kande tegemise teel. Muudetud kannet asendav uus kanne saab senise kande järjekoha. (4) Kande kustutamiseks tehakse kustutuskanne. (5) Muudetud või kustutatud kannet peab olema võimalik taasesitada.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(3) Kanne muudetakse senise kande kustutamise ja uue kande tegemise teel. Muudetud kannet asendav uus kanne saab senise kande järjekoha. (4) Kande kustutamiseks tehakse kustutuskanne. (5) Muudetud või kustutatud kannet peab olema võimalik taasesitada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -2876,12 +2811,6 @@
         "@id": "estleg:Chapter_AVRS_3"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:AVRS_Par_32_Lg_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_32_Lg_2"
-        },
         {
           "@id": "estleg:AVRS_Par_32_Lg_3"
         },
@@ -2912,32 +2841,6 @@
           "@id": "estleg:AVRS_Par_32_v119122012008"
         }
       ]
-    },
-    {
-      "@id": "estleg:AVRS_Par_32_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_32"
-      },
-      "rdfs:label": "§ 32 lg 1"
-    },
-    {
-      "@id": "estleg:AVRS_Par_32_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_32"
-      },
-      "rdfs:label": "§ 32 lg 2"
     },
     {
       "@id": "estleg:AVRS_Par_32_Lg_3",
@@ -2992,13 +2895,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Dokumentide ja lõivu tagastamine",
+      "rdfs:label": {
+        "@value": "§ 33. Dokumentide ja lõivu tagastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 33. Dokumentide ja lõivu tagastamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -3027,13 +2935,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Registrikaardi sulgemine",
+      "rdfs:label": {
+        "@value": "§ 34. Registrikaardi sulgemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Kui registrikaardil ei ole kehtivaid kandeid, tehakse sellele märge sulgemise kohta. Sulgemise märkes näidatakse sulgemise alus ja kuupäev ning märke teinud isiku nimi ja ametinimetus. (3¹) Registrikaart suletakse alati, kui perekonnaseisuametnik või perekonnaseisuasutuse ülesandeid täitev isik saab teada abielu või kooselulepingu lõppemise faktist. (3²) Tehniliste võimaluste korral suletakse registrikaart automaatselt.",
-      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Kui registrikaardil ei ole kehtivaid kandeid, tehakse sellele märge sulgemise kohta. Sulgemise märkes näidatakse sulgemise alus ja kuupäev ning märke teinud isiku nimi ja ametinimetus. (3¹) Registrikaart suletakse alati, kui perekonnaseisuametnik või perekonnaseisuasutuse ülesandeid täitev isik saab teada abielu või kooselulepingu lõppemise faktist. (3²) Tehniliste võimaluste korral suletakse registrikaart automaatselt. Tsiviilkohtumenetluse seadustiku § 597 lõikes 4 sätestatut ei kohaldata. (4) Suletud registrikaarti peab olema võimalik taasesitada.",
+      "estleg:summary": {
+        "@value": "(3) Kui registrikaardil ei ole kehtivaid kandeid, tehakse sellele märge sulgemise kohta. Sulgemise märkes näidatakse sulgemise alus ja kuupäev ning märke teinud isiku nimi ja ametinimetus. (3¹) Registrikaart suletakse alati, kui perekonnaseisuametnik või perekonnaseisuasutuse ülesandeid täitev isik saab teada abielu või kooselulepingu lõppemise faktist. (3²) Tehniliste võimaluste korral suletakse registrikaart automaatselt. Tsiviilkohtumenetluse seadustiku § 597 lõikes 4 sätestatut ei kohaldata.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(3) Kui registrikaardil ei ole kehtivaid kandeid, tehakse sellele märge sulgemise kohta. Sulgemise märkes näidatakse sulgemise alus ja kuupäev ning märke teinud isiku nimi ja ametinimetus. (3¹) Registrikaart suletakse alati, kui perekonnaseisuametnik või perekonnaseisuasutuse ülesandeid täitev isik saab teada abielu või kooselulepingu lõppemise faktist. (3²) Tehniliste võimaluste korral suletakse registrikaart automaatselt. Tsiviilkohtumenetluse seadustiku § 597 lõikes 4 sätestatut ei kohaldata. (4) Suletud registrikaarti peab olema võimalik taasesitada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -3041,12 +2955,6 @@
         "@id": "estleg:Chapter_AVRS_3"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:AVRS_Par_34_Lg_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_34_Lg_2"
-        },
         {
           "@id": "estleg:AVRS_Par_34_Lg_3"
         },
@@ -3094,32 +3002,6 @@
           "@id": "estleg:AVRS_Par_34_v106072023008"
         }
       ]
-    },
-    {
-      "@id": "estleg:AVRS_Par_34_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_34"
-      },
-      "rdfs:label": "§ 34 lg 1"
-    },
-    {
-      "@id": "estleg:AVRS_Par_34_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_34"
-      },
-      "rdfs:label": "§ 34 lg 2"
     },
     {
       "@id": "estleg:AVRS_Par_34_Lg_3",
@@ -3210,13 +3092,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Väljatrükkide tegemine ja tõendite väljastamine",
+      "rdfs:label": {
+        "@value": "§ 35. Väljatrükkide tegemine ja tõendite väljastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Abieluvararegistri andmetest tehakse väljatrükke käesoleva seaduse § 6 kohaselt. (2) Väljatrükk sisaldab registrikaardi kõiki kehtivaid kandeid. Väljatrükk sisaldab kustutatud kannet, kui seda on taotletud või kui seda on vaja teise kande mõistmiseks. (3) Kehtetu - (3¹) Kui abikaasade kohta ei ole tehtud abieluvararegistrisse kannet, väljastab notar isiku soovil tõendi, et abikaasade varalistele suhetele kohaldatakse varaühisuse varasuhet.",
-      "estleg:legalText": "(1) Abieluvararegistri andmetest tehakse väljatrükke käesoleva seaduse § 6 kohaselt. (2) Väljatrükk sisaldab registrikaardi kõiki kehtivaid kandeid. Väljatrükk sisaldab kustutatud kannet, kui seda on taotletud või kui seda on vaja teise kande mõistmiseks. (3) Kehtetu - (3¹) Kui abikaasade kohta ei ole tehtud abieluvararegistrisse kannet, väljastab notar isiku soovil tõendi, et abikaasade varalistele suhetele kohaldatakse varaühisuse varasuhet. (4) Isiku nõudel annab perekonnaseisuametnik või perekonnaseisuasutuse ülesandeid täitev isik tõendi, et kannet ei ole muudetud või et kannet või järgmisi kandeid registris ei ole. (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Abieluvararegistri andmetest tehakse väljatrükke käesoleva seaduse § 6 kohaselt. (2) Väljatrükk sisaldab registrikaardi kõiki kehtivaid kandeid. Väljatrükk sisaldab kustutatud kannet, kui seda on taotletud või kui seda on vaja teise kande mõistmiseks. (3¹) Kui abikaasade kohta ei ole tehtud abieluvararegistrisse kannet, väljastab notar isiku soovil tõendi, et abikaasade varalistele suhetele kohaldatakse varaühisuse varasuhet. (4) Isiku nõudel annab perekonnaseisuametnik või",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abieluvararegistri andmetest tehakse väljatrükke käesoleva seaduse § 6 kohaselt. (2) Väljatrükk sisaldab registrikaardi kõiki kehtivaid kandeid. Väljatrükk sisaldab kustutatud kannet, kui seda on taotletud või kui seda on vaja teise kande mõistmiseks. (3¹) Kui abikaasade kohta ei ole tehtud abieluvararegistrisse kannet, väljastab notar isiku soovil tõendi, et abikaasade varalistele suhetele kohaldatakse varaühisuse varasuhet. (4) Isiku nõudel annab perekonnaseisuametnik või perekonnaseisuasutuse ülesandeid täitev isik tõendi, et kannet ei ole muudetud või et kannet või järgmisi kandeid registris ei ole.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -3231,16 +3119,10 @@
           "@id": "estleg:AVRS_Par_35_Lg_2"
         },
         {
-          "@id": "estleg:AVRS_Par_35_Lg_3"
-        },
-        {
           "@id": "estleg:AVRS_Par_35_Lg_3_1"
         },
         {
           "@id": "estleg:AVRS_Par_35_Lg_4"
-        },
-        {
-          "@id": "estleg:AVRS_Par_35_Lg_5"
         }
       ],
       "estleg:targetGroup": [
@@ -3310,19 +3192,6 @@
       "rdfs:label": "§ 35 lg 2"
     },
     {
-      "@id": "estleg:AVRS_Par_35_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_35"
-      },
-      "rdfs:label": "§ 35 lg 3"
-    },
-    {
       "@id": "estleg:AVRS_Par_35_Lg_3_1",
       "@type": [
         "estleg:Subsection",
@@ -3370,32 +3239,24 @@
       }
     },
     {
-      "@id": "estleg:AVRS_Par_35_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_35"
-      },
-      "rdfs:label": "§ 35 lg 5"
-    },
-    {
       "@id": "estleg:AVRS_Par_36",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Menetluse kulud",
+      "rdfs:label": {
+        "@value": "§ 36. Menetluse kulud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 36. Menetluse kulud",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
       },
@@ -3421,12 +3282,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36¹.",
-      "rdfs:label": "§ 36¹. Registritoimingute tasud ja andmete väljastamise eest tasumise kord",
+      "rdfs:label": {
+        "@value": "§ 36¹. Registritoimingute tasud ja andmete väljastamise eest tasumise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Abieluvararegistri kande tegemise, muutmise ja kustutamise eest tasutakse notari tasu notari tasu seaduses sätestatud korras. (2) Tasu ei võeta, kui abieluvararegistrisse tehakse kanne vastavalt abiellumisavaldusele perekonnaseisuasutuse või notari esitatud kandeavalduse alusel või kui parandatakse alusetut või ebaõiget kannet. (3) Abieluvararegistri dokumentidest ja andmetest väljatrükkide ning ärakirjade väljastamise eest notari juures tasutakse notari tasu notari tasu seaduses sätestatud",
+      "estleg:summary": {
+        "@value": "(1) Abieluvararegistri kande tegemise, muutmise ja kustutamise eest tasutakse notari tasu notari tasu seaduses sätestatud korras. (2) Tasu ei võeta, kui abieluvararegistrisse tehakse kanne vastavalt abiellumisavaldusele perekonnaseisuasutuse või notari esitatud kandeavalduse alusel või kui parandatakse alusetut või ebaõiget kannet. (3) Abieluvararegistri dokumentidest ja andmetest väljatrükkide ning ärakirjade väljastamise eest notari juures tasutakse notari tasu notari tasu seaduses sätestatud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Abieluvararegistri kande tegemise, muutmise ja kustutamise eest tasutakse notari tasu notari tasu seaduses sätestatud korras. (2) Tasu ei võeta, kui abieluvararegistrisse tehakse kanne vastavalt abiellumisavaldusele perekonnaseisuasutuse või notari esitatud kandeavalduse alusel või kui parandatakse alusetut või ebaõiget kannet. (3) Abieluvararegistri dokumentidest ja andmetest väljatrükkide ning ärakirjade väljastamise eest notari juures tasutakse notari tasu notari tasu seaduses sätestatud korras. (4) Riigiasutus, valla- ja linnavalitsus ning kohtutäitur on vabastatud tasu maksmisest tema pädevuses oleva ülesande täitmiseks vajaliku registridokumendi ärakirja väljastamise eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_3"
@@ -3564,13 +3431,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Kande parandamine",
+      "rdfs:label": {
+        "@value": "§ 37. Kande parandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (5) Kehtetu - (6) Kehtetu - (7) Kehtetu - (8) Kanne parandatakse juhul, kui see on: tehtud ebaõigena; muutunud ebaõigeks abieluvararegistrisse kantud isiku isikuandmete muutumise tõttu. (9) Ebaõige kande parandab Notarite Koda omal algatusel või huvitatud isiku avalduse alusel. (9¹) Notarite Koda avab omal algatusel või huvitatud isiku avalduse alusel registrikaardi, kui registrikaart on jäänud volitatud töötleja poolt avamata ja volitatud",
-      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (5) Kehtetu - (6) Kehtetu - (7) Kehtetu - (8) Kanne parandatakse juhul, kui see on: tehtud ebaõigena; muutunud ebaõigeks abieluvararegistrisse kantud isiku isikuandmete muutumise tõttu. (9) Ebaõige kande parandab Notarite Koda omal algatusel või huvitatud isiku avalduse alusel. (9¹) Notarite Koda avab omal algatusel või huvitatud isiku avalduse alusel registrikaardi, kui registrikaart on jäänud volitatud töötleja poolt avamata ja volitatud töötleja ei saa seda ise avada. (10) Kehtetu - (11) Abieluvararegistrisse kantud isikuandmete muutumise korral parandab kande Notarite Koda selle andmekogu andmete alusel, millesse need andmed on kantud põhiandmetena avaliku teabe seaduse tähenduses. (12) Selliste isikuandmete muutumisel, mis ei ole põhiandmetena kantud Eesti andmekogusse, parandab Notarite Koda kande sellekohase teate ja vastava registri kinnitatud väljavõtte või muu usaldusväärse tõendi alusel. (13) Välisriigis väljaantud dokument peab olema legaliseeritud või kinnitatud tunnistusega (apostille’ga), kui välisleping ei sätesta teisiti. (14) Õigusliku tähenduseta kirjavea ja muu ilmse eksimuse parandab Notarite Koda. (15) Tehniliste võimaluste olemasolu korral parandatakse käesoleva paragrahvi lõikes 11 nimetatud kanne automaatselt.",
+      "estleg:summary": {
+        "@value": "(8) Kanne parandatakse juhul, kui see on: 1) tehtud ebaõigena; 2) muutunud ebaõigeks abieluvararegistrisse kantud isiku isikuandmete muutumise tõttu. (9) Ebaõige kande parandab Notarite Koda omal algatusel või huvitatud isiku avalduse alusel. (9¹) Notarite Koda avab omal algatusel või huvitatud isiku avalduse alusel registrikaardi, kui registrikaart on jäänud volitatud töötleja poolt avamata ja volitatud töötleja ei saa seda ise avada. (11) Abieluvararegistrisse kantud isikuandmete muutumise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(8) Kanne parandatakse juhul, kui see on: 1) tehtud ebaõigena; 2) muutunud ebaõigeks abieluvararegistrisse kantud isiku isikuandmete muutumise tõttu. (9) Ebaõige kande parandab Notarite Koda omal algatusel või huvitatud isiku avalduse alusel. (9¹) Notarite Koda avab omal algatusel või huvitatud isiku avalduse alusel registrikaardi, kui registrikaart on jäänud volitatud töötleja poolt avamata ja volitatud töötleja ei saa seda ise avada. (11) Abieluvararegistrisse kantud isikuandmete muutumise korral parandab kande Notarite Koda selle andmekogu andmete alusel, millesse need andmed on kantud põhiandmetena avaliku teabe seaduse tähenduses. (12) Selliste isikuandmete muutumisel, mis ei ole põhiandmetena kantud Eesti andmekogusse, parandab Notarite Koda kande sellekohase teate ja vastava registri kinnitatud väljavõtte või muu usaldusväärse tõendi alusel. (13) Välisriigis väljaantud dokument peab olema legaliseeritud või kinnitatud tunnistusega (apostille’ga), kui välisleping ei sätesta teisiti. (14) Õigusliku tähenduseta kirjavea ja muu ilmse eksimuse parandab Notarite Koda. (15) Tehniliste võimaluste olemasolu korral parandatakse käesoleva paragrahvi lõikes 11 nimetatud kanne automaatselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_4"
       },
@@ -3579,27 +3452,6 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:AVRS_Par_37_Lg_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_37_Lg_2"
-        },
-        {
-          "@id": "estleg:AVRS_Par_37_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_37_Lg_4"
-        },
-        {
-          "@id": "estleg:AVRS_Par_37_Lg_5"
-        },
-        {
-          "@id": "estleg:AVRS_Par_37_Lg_6"
-        },
-        {
-          "@id": "estleg:AVRS_Par_37_Lg_7"
-        },
-        {
           "@id": "estleg:AVRS_Par_37_Lg_8"
         },
         {
@@ -3607,9 +3459,6 @@
         },
         {
           "@id": "estleg:AVRS_Par_37_Lg_9_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_37_Lg_10"
         },
         {
           "@id": "estleg:AVRS_Par_37_Lg_11"
@@ -3663,108 +3512,21 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_37_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 1"
-    },
-    {
-      "@id": "estleg:AVRS_Par_37_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 2"
-    },
-    {
-      "@id": "estleg:AVRS_Par_37_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 3"
-    },
-    {
-      "@id": "estleg:AVRS_Par_37_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 4"
-    },
-    {
-      "@id": "estleg:AVRS_Par_37_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 5"
-    },
-    {
-      "@id": "estleg:AVRS_Par_37_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 6"
-    },
-    {
-      "@id": "estleg:AVRS_Par_37_Lg_7",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 7"
-    },
-    {
       "@id": "estleg:AVRS_Par_37_Lg_8",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "8",
-      "estleg:legalText": "(8) Kanne parandatakse juhul, kui see on: tehtud ebaõigena; muutunud ebaõigeks abieluvararegistrisse kantud isiku isikuandmete muutumise tõttu.",
+      "estleg:legalText": "(8) Kanne parandatakse juhul, kui see on: 1) tehtud ebaõigena; 2) muutunud ebaõigeks abieluvararegistrisse kantud isiku isikuandmete muutumise tõttu.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_37"
       },
       "rdfs:label": "§ 37 lg 8",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3824,19 +3586,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       }
-    },
-    {
-      "@id": "estleg:AVRS_Par_37_Lg_10",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "10",
-      "estleg:legalText": "(10) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_37"
-      },
-      "rdfs:label": "§ 37 lg 10"
     },
     {
       "@id": "estleg:AVRS_Par_37_Lg_11",
@@ -3944,13 +3693,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Kande parandamise viis",
+      "rdfs:label": {
+        "@value": "§ 38. Kande parandamise viis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (5) Kanne parandatakse senise kande kustutamise ja uue kande tegemise teel. Uues kandes märgitakse, et see asendab eelmist. (6) Senist kannet asendav uus kanne saab senise kande järjekoha.",
-      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Kehtetu - (4) Kehtetu - (5) Kanne parandatakse senise kande kustutamise ja uue kande tegemise teel. Uues kandes märgitakse, et see asendab eelmist. (6) Senist kannet asendav uus kanne saab senise kande järjekoha.",
+      "estleg:summary": {
+        "@value": "(5) Kanne parandatakse senise kande kustutamise ja uue kande tegemise teel. Uues kandes märgitakse, et see asendab eelmist. (6) Senist kannet asendav uus kanne saab senise kande järjekoha.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(5) Kanne parandatakse senise kande kustutamise ja uue kande tegemise teel. Uues kandes märgitakse, et see asendab eelmist. (6) Senist kannet asendav uus kanne saab senise kande järjekoha.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_4"
       },
@@ -3958,18 +3713,6 @@
         "@id": "estleg:Chapter_AVRS_4"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:AVRS_Par_38_Lg_1"
-        },
-        {
-          "@id": "estleg:AVRS_Par_38_Lg_2"
-        },
-        {
-          "@id": "estleg:AVRS_Par_38_Lg_3"
-        },
-        {
-          "@id": "estleg:AVRS_Par_38_Lg_4"
-        },
         {
           "@id": "estleg:AVRS_Par_38_Lg_5"
         },
@@ -4007,58 +3750,6 @@
       ]
     },
     {
-      "@id": "estleg:AVRS_Par_38_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_38"
-      },
-      "rdfs:label": "§ 38 lg 1"
-    },
-    {
-      "@id": "estleg:AVRS_Par_38_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_38"
-      },
-      "rdfs:label": "§ 38 lg 2"
-    },
-    {
-      "@id": "estleg:AVRS_Par_38_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_38"
-      },
-      "rdfs:label": "§ 38 lg 3"
-    },
-    {
-      "@id": "estleg:AVRS_Par_38_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AVRS_Par_38"
-      },
-      "rdfs:label": "§ 38 lg 4"
-    },
-    {
       "@id": "estleg:AVRS_Par_38_Lg_5",
       "@type": [
         "estleg:Subsection",
@@ -4091,18 +3782,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38¹.",
-      "rdfs:label": "§ 38¹.",
+      "rdfs:label": {
+        "@value": "§ 38¹.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
+      "estleg:summary": "§ 38¹.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_4"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_AVRS_4"
-      },
-      "estleg:summary": "§ 38¹."
+      }
     },
     {
       "@id": "estleg:AVRS_Par_40",
@@ -4111,13 +3805,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 40.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 40.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_4"
       },
@@ -4140,12 +3839,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 41. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 1996. aasta 1. septembril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 1996. aasta 1. septembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 1996. aasta 1. septembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
@@ -4170,10 +3875,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 1996. aasta 1. septembril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 1996. aasta 1. septembril.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_41"
-      }
+      },
+      "rdfs:label": "§ 41 lg 1"
     },
     {
       "@id": "estleg:AVRS_Par_41_1",
@@ -4182,13 +3889,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41¹.",
-      "rdfs:label": "§ 41¹. Kandemääruse tegemise erisus",
+      "rdfs:label": {
+        "@value": "§ 41¹. Kandemääruse tegemise erisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 41¹. Kandemääruse tegemise erisus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
       },
@@ -4214,13 +3926,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
-      "rdfs:label": "§ 42. Registripidamine arvutis",
+      "rdfs:label": {
+        "@value": "§ 42. Registripidamine arvutis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 42. Registripidamine arvutis",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
       },
@@ -4258,13 +3975,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42¹.",
-      "rdfs:label": "§ 42¹. Üleminek elektroonilisele abieluvararegistrile",
+      "rdfs:label": {
+        "@value": "§ 42¹. Üleminek elektroonilisele abieluvararegistrile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 42¹. Üleminek elektroonilisele abieluvararegistrile",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
       },
@@ -4302,13 +4024,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42².",
-      "rdfs:label": "§ 42². Registrikaardi ümberkirjutamine ametiülesande korras",
+      "rdfs:label": {
+        "@value": "§ 42². Registrikaardi ümberkirjutamine ametiülesande korras",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 42². Registrikaardi ümberkirjutamine ametiülesande korras",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
       },
@@ -4337,12 +4064,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42³.",
-      "rdfs:label": "§ 42³. Kandeavalduste menetlemine",
+      "rdfs:label": {
+        "@value": "§ 42³. Kandeavalduste menetlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Enne 2013. aasta 1. jaanuari esitatud kandeavaldus, mille kohta ei ole 2013. aasta 1. jaanuariks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaadatakse läbi 14 päeva jooksul käesoleva seaduse jõustumisest arvates.",
+      "estleg:summary": {
+        "@value": "Enne 2013. aasta 1. jaanuari esitatud kandeavaldus, mille kohta ei ole 2013. aasta 1. jaanuariks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaadatakse läbi 14 päeva jooksul käesoleva seaduse jõustumisest arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Enne 2013. aasta 1. jaanuari esitatud kandeavaldus, mille kohta ei ole 2013. aasta 1. jaanuariks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaadatakse läbi 14 päeva jooksul käesoleva seaduse jõustumisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
@@ -4367,10 +4100,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Enne 2013. aasta 1. jaanuari esitatud kandeavaldus, mille kohta ei ole 2013. aasta 1. jaanuariks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaadatakse läbi 14 päeva jooksul käesoleva seaduse jõustumisest arvates.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne 2013. aasta 1. jaanuari esitatud kandeavaldus, mille kohta ei ole 2013. aasta 1. jaanuariks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaadatakse läbi 14 päeva jooksul käesoleva seaduse jõustumisest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_42_3"
-      }
+      },
+      "rdfs:label": "§ 42³ lg 1"
     },
     {
       "@id": "estleg:AVRS_Par_42_4",
@@ -4379,12 +4114,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42⁴.",
-      "rdfs:label": "§ 42⁴. Kandeavalduse menetlemine abieluvararegistri üleminekul",
+      "rdfs:label": {
+        "@value": "§ 42⁴. Kandeavalduse menetlemine abieluvararegistri üleminekul",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Enne 2018. aasta 1. märtsi esitatud kandeavalduse, mille kohta ei ole 2018. aasta 1. märtsiks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaatab kinnistusosakond läbi ja teeb selle kohta kande seni kehtinud korras 14 päeva jooksul avalduse vastuvõtmise päevast arvates.",
+      "estleg:summary": {
+        "@value": "Enne 2018. aasta 1. märtsi esitatud kandeavalduse, mille kohta ei ole 2018. aasta 1. märtsiks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaatab kinnistusosakond läbi ja teeb selle kohta kande seni kehtinud korras 14 päeva jooksul avalduse vastuvõtmise päevast arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Enne 2018. aasta 1. märtsi esitatud kandeavalduse, mille kohta ei ole 2018. aasta 1. märtsiks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaatab kinnistusosakond läbi ja teeb selle kohta kande seni kehtinud korras 14 päeva jooksul avalduse vastuvõtmise päevast arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
@@ -4418,10 +4159,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Enne 2018. aasta 1. märtsi esitatud kandeavalduse, mille kohta ei ole 2018. aasta 1. märtsiks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaatab kinnistusosakond läbi ja teeb selle kohta kande seni kehtinud korras 14 päeva jooksul avalduse vastuvõtmise päevast arvates.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne 2018. aasta 1. märtsi esitatud kandeavalduse, mille kohta ei ole 2018. aasta 1. märtsiks tehtud abieluvararegistrisse kannet või koostatud kandemäärust, vaatab kinnistusosakond läbi ja teeb selle kohta kande seni kehtinud korras 14 päeva jooksul avalduse vastuvõtmise päevast arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_42_4"
-      }
+      },
+      "rdfs:label": "§ 42⁴ lg 1"
     },
     {
       "@id": "estleg:AVRS_Par_42_5",
@@ -4430,12 +4173,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42⁵.",
-      "rdfs:label": "§ 42⁵. Abieluvararegistri pidamise üleandmine",
+      "rdfs:label": {
+        "@value": "§ 42⁵. Abieluvararegistri pidamise üleandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Abieluvararegistri annab Justiitsministeerium üle Notarite Kojale automatiseeritud korras.",
+      "estleg:summary": {
+        "@value": "Abieluvararegistri annab Justiitsministeerium üle Notarite Kojale automatiseeritud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Abieluvararegistri annab Justiitsministeerium üle Notarite Kojale automatiseeritud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
@@ -4475,10 +4224,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Abieluvararegistri annab Justiitsministeerium üle Notarite Kojale automatiseeritud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Abieluvararegistri annab Justiitsministeerium üle Notarite Kojale automatiseeritud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_42_5"
       },
+      "rdfs:label": "§ 42⁵ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -4502,12 +4253,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42⁶.",
-      "rdfs:label": "§ 42⁶. Riigi vastutus",
+      "rdfs:label": {
+        "@value": "§ 42⁶. Riigi vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Riik vastutab enne abieluvararegistri üleminekut esitatud kandeavalduse alusel tehtud kannetest tulenevate ning abieluvararegistri pidaja üleminekuga seotud kahjude eest, mis tulenevad abieluvararegistri pidamise, automatiseeritud andmetöötluse või andmetöötlusseadme vigadest.",
+      "estleg:summary": {
+        "@value": "Riik vastutab enne abieluvararegistri üleminekut esitatud kandeavalduse alusel tehtud kannetest tulenevate ning abieluvararegistri pidaja üleminekuga seotud kahjude eest, mis tulenevad abieluvararegistri pidamise, automatiseeritud andmetöötluse või andmetöötlusseadme vigadest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riik vastutab enne abieluvararegistri üleminekut esitatud kandeavalduse alusel tehtud kannetest tulenevate ning abieluvararegistri pidaja üleminekuga seotud kahjude eest, mis tulenevad abieluvararegistri pidamise, automatiseeritud andmetöötluse või andmetöötlusseadme vigadest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
@@ -4549,10 +4306,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riik vastutab enne abieluvararegistri üleminekut esitatud kandeavalduse alusel tehtud kannetest tulenevate ning abieluvararegistri pidaja üleminekuga seotud kahjude eest, mis tulenevad abieluvararegistri pidamise, automatiseeritud andmetöötluse või andmetöötlusseadme vigadest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riik vastutab enne abieluvararegistri üleminekut esitatud kandeavalduse alusel tehtud kannetest tulenevate ning abieluvararegistri pidaja üleminekuga seotud kahjude eest, mis tulenevad abieluvararegistri pidamise, automatiseeritud andmetöötluse või andmetöötlusseadme vigadest.",
       "estleg:parentProvision": {
         "@id": "estleg:AVRS_Par_42_6"
       },
+      "rdfs:label": "§ 42⁶ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -4570,13 +4329,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
-      "rdfs:label": "§ 43. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 43.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 43.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
       },
@@ -4605,18 +4369,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
-      "rdfs:label": "§ 44.",
+      "rdfs:label": {
+        "@value": "§ 44.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
+      "estleg:summary": "§ 44.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_AVRS_5"
-      },
-      "estleg:summary": "§ 44."
+      }
     },
     {
       "@id": "estleg:AVRS_Par_45",
@@ -4625,12 +4392,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 45. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Abieluvararegistri seadus",
       "estleg:partOfAct": {
         "@id": "estleg:AVRS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AVRS_5"
@@ -4643,6 +4416,22 @@
           "@id": "estleg:AVRS_Par_45_v13335177"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/520032025003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:AVRS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Marital Property Register Act",
+        "@language": "en"
+      }
     }
   ]
 }

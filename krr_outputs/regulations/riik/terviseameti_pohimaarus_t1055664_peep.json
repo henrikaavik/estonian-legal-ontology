@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Terviseameti põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Terviseameti põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Terviseameti põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1055664",
       "estleg:preambleText": "Määrus kehtestatakse Vabariigi Valitsuse seaduse § 40 lõike 2 ja § 42 lõike 1 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2023-01-01",
+        "@value": "2026-05-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2026-04-22",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-12-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1055664_2966e61c92"
@@ -94,7 +96,13 @@
         {
           "@id": "http://eurovoc.europa.eu/557"
         }
-      ]
+      ],
+      "dcterms:title": "Terviseameti põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1055664_Par_1",
@@ -103,13 +111,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Terviseameti staatus",
+      "rdfs:label": {
+        "@value": "§ 1. Terviseameti staatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Terviseamet (edaspidi amet) on Sotsiaalministeeriumi valitsemisalas tegutsev valitsusasutus, millel on juhtimisfunktsioon ning mis teeb riiklikku järelevalvet ning kohaldab riiklikku sundi seaduses ettenähtud alustel ja ulatuses. Terviseamet (edaspidi amet) on Sotsiaalministeeriumi valitsemisalas tegutsev valitsusasutus, millel on juhtimisfunktsioon ning mis teeb riiklikku järelevalvet ning kohaldab riiklikku sundi seaduses ettenähtud alustel ja ulatuses. 2 (2) Amet esindab oma ülesannete ",
-      "estleg:legalText": "1 (1) Terviseamet (edaspidi amet) on Sotsiaalministeeriumi valitsemisalas tegutsev valitsusasutus, millel on juhtimisfunktsioon ning mis teeb riiklikku järelevalvet ning kohaldab riiklikku sundi seaduses ettenähtud alustel ja ulatuses. Terviseamet (edaspidi amet) on Sotsiaalministeeriumi valitsemisalas tegutsev valitsusasutus, millel on juhtimisfunktsioon ning mis teeb riiklikku järelevalvet ning kohaldab riiklikku sundi seaduses ettenähtud alustel ja ulatuses. 2 (2) Amet esindab oma ülesannete täitmisel riiki. Amet esindab oma ülesannete täitmisel riiki. 3 (3) Ameti ingliskeelne nimetus on Health Board. Ameti ingliskeelne nimetus on Health Board.",
+      "estleg:summary": {
+        "@value": "1 (1) Terviseamet (edaspidi amet) on Sotsiaalministeeriumi valitsemisalas tegutsev valitsusasutus, millel on juhtimisfunktsioon ning mis teeb riiklikku järelevalvet ning kohaldab riiklikku sundi seaduses ettenähtud alustel ja ulatuses. 2 (2) Amet esindab oma ülesannete täitmisel riiki. 3 (3) Ameti ingliskeelne nimetus on Health Board.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Terviseamet (edaspidi amet) on Sotsiaalministeeriumi valitsemisalas tegutsev valitsusasutus, millel on juhtimisfunktsioon ning mis teeb riiklikku järelevalvet ning kohaldab riiklikku sundi seaduses ettenähtud alustel ja ulatuses. 2 (2) Amet esindab oma ülesannete täitmisel riiki. 3 (3) Ameti ingliskeelne nimetus on Health Board.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -148,7 +162,57 @@
         {
           "@id": "estleg:Institution_sotsiaalministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_1_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Terviseamet (edaspidi amet) on Sotsiaalministeeriumi valitsemisalas tegutsev valitsusasutus, millel on juhtimisfunktsioon ning mis teeb riiklikku järelevalvet ning kohaldab riiklikku sundi seaduses ettenähtud alustel ja ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Amet esindab oma ülesannete täitmisel riiki.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ameti ingliskeelne nimetus on Health Board.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:Reg_1055664_Par_2",
@@ -157,13 +221,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ameti pitsat ja sümboolika",
+      "rdfs:label": {
+        "@value": "§ 2. Ameti pitsat ja sümboolika",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Ametil on väikese riigivapi kujutise ja oma nimega pitsat. Ametil on väikese riigivapi kujutise ja oma nimega pitsat. 2 (2) Ametil on oma sümboolikaga dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti teabehalduse korras. Ameti dokumendiplankidel kasutatakse väikese riigivapi kujutist. Ametil on oma sümboolikaga dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti teabehalduse korras. Ameti dokumendiplankidel kasutatakse väikese riigivapi kujutist.",
-      "estleg:legalText": "1 (1) Ametil on väikese riigivapi kujutise ja oma nimega pitsat. Ametil on väikese riigivapi kujutise ja oma nimega pitsat. 2 (2) Ametil on oma sümboolikaga dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti teabehalduse korras. Ameti dokumendiplankidel kasutatakse väikese riigivapi kujutist. Ametil on oma sümboolikaga dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti teabehalduse korras. Ameti dokumendiplankidel kasutatakse väikese riigivapi kujutist.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametil on väikese riigivapi kujutise ja oma nimega pitsat. 2 (2) Ametil on oma sümboolikaga dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti teabehalduse korras. Ameti dokumendiplankidel kasutatakse väikese riigivapi kujutist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametil on väikese riigivapi kujutise ja oma nimega pitsat. 2 (2) Ametil on oma sümboolikaga dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti teabehalduse korras. Ameti dokumendiplankidel kasutatakse väikese riigivapi kujutist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -194,7 +264,41 @@
         {
           "@id": "estleg:Reg_1055664_Par_2_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametil on väikese riigivapi kujutise ja oma nimega pitsat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametil on oma sümboolikaga dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti teabehalduse korras. Ameti dokumendiplankidel kasutatakse väikese riigivapi kujutist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1055664_Par_3",
@@ -203,13 +307,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ameti eelarve",
+      "rdfs:label": {
+        "@value": "§ 3. Ameti eelarve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "Ametil on oma eelarve ja ameti kulud kaetakse riigieelarvest. Ameti eelarve kinnitab, muudab ja täitmist kontrollib valdkonna eest vastutav minister.",
-      "estleg:legalText": "Ametil on oma eelarve ja ameti kulud kaetakse riigieelarvest. Ameti eelarve kinnitab, muudab ja täitmist kontrollib valdkonna eest vastutav minister. Ametil on oma eelarve ja ameti kulud kaetakse riigieelarvest. Ameti eelarve kinnitab, muudab ja täitmist kontrollib valdkonna eest vastutav minister.",
+      "estleg:summary": {
+        "@value": "Ametil on oma eelarve ja ameti kulud kaetakse riigieelarvest. Ameti eelarve kinnitab, muudab ja täitmist kontrollib valdkonna eest vastutav minister.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ametil on oma eelarve ja ameti kulud kaetakse riigieelarvest. Ameti eelarve kinnitab, muudab ja täitmist kontrollib valdkonna eest vastutav minister.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -243,7 +353,25 @@
         {
           "@id": "estleg:Reg_1055664_Par_3_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametil on oma eelarve ja ameti kulud kaetakse riigieelarvest. Ameti eelarve kinnitab, muudab ja täitmist kontrollib valdkonna eest vastutav minister.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1055664_Par_4",
@@ -252,13 +380,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Aruandekohustuslikkus",
+      "rdfs:label": {
+        "@value": "§ 4. Aruandekohustuslikkus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes seadusega sätestatud korras suunab ja koordineerib ameti tegevust ning teostab ameti tegevuse üle teenistuslikku järelevalvet.",
-      "estleg:legalText": "Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes seadusega sätestatud korras suunab ja koordineerib ameti tegevust ning teostab ameti tegevuse üle teenistuslikku järelevalvet. Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes seadusega sätestatud korras suunab ja koordineerib ameti tegevust ning teostab ameti tegevuse üle teenistuslikku järelevalvet.",
+      "estleg:summary": {
+        "@value": "Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes seadusega sätestatud korras suunab ja koordineerib ameti tegevust ning teostab ameti tegevuse üle teenistuslikku järelevalvet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes seadusega sätestatud korras suunab ja koordineerib ameti tegevust ning teostab ameti tegevuse üle teenistuslikku järelevalvet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -289,7 +423,25 @@
         {
           "@id": "estleg:Reg_1055664_Par_4_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes seadusega sätestatud korras suunab ja koordineerib ameti tegevust ning teostab ameti tegevuse üle teenistuslikku järelevalvet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1055664_Par_5",
@@ -298,13 +450,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Asukoht",
+      "rdfs:label": {
+        "@value": "§ 5. Asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukohad määrab ameti peadirektor.",
-      "estleg:legalText": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukohad määrab ameti peadirektor. Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukohad määrab ameti peadirektor.",
+      "estleg:summary": {
+        "@value": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukohad määrab ameti peadirektor.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukohad määrab ameti peadirektor.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -335,7 +493,25 @@
         {
           "@id": "estleg:Reg_1055664_Par_5_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukohad määrab ameti peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_1055664_Par_6",
@@ -344,13 +520,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Ameti tegevusvaldkonnad ja ülesanded",
+      "rdfs:label": {
+        "@value": "§ 6. Ameti tegevusvaldkonnad ja ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Ameti eesmärk on viia ellu tervist kaitsva ja parendava elukeskkonna kujundamisele suunatud ning kvaliteetsele tervisekaitse- ja tervishoiuteenusele orienteeritud rahvastiku tervise poliitikat järgmistes tegevusvaldkondades: 1 1) tervishoid; 2 2) nakkushaiguste epidemioloogia; 3 3) tervist toetav ja ohutu keskkond; 4 4) kemikaaliohutus; 5 5) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 6 6) tervishoiusüsteemi toimepidevus kriisideks. Ameti eesmärk on viia ellu tervist kaitsva ja par",
-      "estleg:legalText": "1 (1) Ameti eesmärk on viia ellu tervist kaitsva ja parendava elukeskkonna kujundamisele suunatud ning kvaliteetsele tervisekaitse- ja tervishoiuteenusele orienteeritud rahvastiku tervise poliitikat järgmistes tegevusvaldkondades: 1 1) tervishoid; 2 2) nakkushaiguste epidemioloogia; 3 3) tervist toetav ja ohutu keskkond; 4 4) kemikaaliohutus; 5 5) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 6 6) tervishoiusüsteemi toimepidevus kriisideks. Ameti eesmärk on viia ellu tervist kaitsva ja parendava elukeskkonna kujundamisele suunatud ning kvaliteetsele tervisekaitse- ja tervishoiuteenusele orienteeritud rahvastiku tervise poliitikat järgmistes tegevusvaldkondades: tervishoid; nakkushaiguste epidemioloogia; tervist toetav ja ohutu keskkond; kemikaaliohutus; kehtetu - tervishoiusüsteemi toimepidevus kriisideks. 2 (2) Oma tegevusvaldkondades täidab amet järgmisi ülesandeid: 1 1) töötab välja ja viib ellu ameti strateegia ja tööplaanid; 2 2) annab oma pädevuse piires haldusakte ja viib läbi toiminguid; 3 3) koostab tegevusvaldkonna piires olukorra ülevaateid, ohuprognoose ja juhiseid; 4 4) teeb oma tegevusvaldkonnas riiklikku ja haldusjärelevalvet, viib läbi väärteomenetlusi ja kohaldab riiklikku sundi; 5 5) teeb õigusaktidega ettenähtud juhtudel ettekirjutusi ja otsuseid vastavalt oma pädevusele seadustega sätestatud korras; 6 6) annab õigusaktidega ettenähtud juhtudel lube, kooskõlastusi ja hinnanguid vastavalt oma pädevusele; 7 7) lahendab isikute avaldusi, taotlusi ja kaebusi ning nõustab isikuid ameti tegevusvaldkondadega seotud küsimustes; 8 8) avalikustab õigusaktidega ettenähtud teabe ja tagab ametile teatavaks saanud ärialase teabe konfidentsiaalsuse, kui seadus ei näe ette selle avaldamist; 9 9) teeb ettepanekuid õigusaktide muutmiseks ja väljatöötamiseks, vajadusel annab arvamusi õigusaktide eelnõude kohta ning osaleb õigusaktide eelnõude väljatöötamises; 10 10) teeb koostööd valitsusasutuste ja teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; 11 11) esindab riiki ameti tegevusvaldkondadega seotud Euroopa institutsioonides ja rahvusvahelistes organisatsioonides õigusaktidega sätestatud korras või ministri korraldusel; 12 12) esindab oma pädevuse piires ametit kohtus; 13 13) annab oma pädevuse piires ekspertarvamusi ja hinnanguid oma tegevusvaldkondades; 14 14) täidab muid seadusest ja selle alusel antud õigusaktidest tulenevaid ülesandeid. Oma tegevusvaldkondades täidab amet järgmisi ülesandeid: töötab välja ja viib ellu ameti strateegia ja tööplaanid; annab oma pädevuse piires haldusakte ja viib läbi toiminguid; koostab tegevusvaldkonna piires olukorra ülevaateid, ohuprognoose ja juhiseid; teeb oma tegevusvaldkonnas riiklikku ja haldusjärelevalvet, viib läbi väärteomenetlusi ja kohaldab riiklikku sundi; teeb õigusaktidega ettenähtud juhtudel ettekirjutusi ja otsuseid vastavalt oma pädevusele seadustega sätestatud korras; annab õigusaktidega ettenähtud juhtudel lube, kooskõlastusi ja hinnanguid vastavalt oma pädevusele; lahendab isikute avaldusi, taotlusi ja kaebusi ning nõustab isikuid ameti tegevusvaldkondadega seotud küsimustes; avalikustab õigusaktidega ettenähtud teabe ja tagab ametile teatavaks saanud ärialase teabe konfidentsiaalsuse, kui seadus ei näe ette selle avaldamist; teeb ettepanekuid õigusaktide muutmiseks ja väljatöötamiseks, vajadusel annab arvamusi õigusaktide eelnõude kohta ning osaleb õigusaktide eelnõude väljatöötamises; teeb koostööd valitsusasutuste ja teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; esindab riiki ameti tegevusvaldkondadega seotud Euroopa institutsioonides ja rahvusvahelistes organisatsioonides õigusaktidega sätestatud korras või ministri korraldusel; esindab oma pädevuse piires ametit kohtus; annab oma pädevuse piires ekspertarvamusi ja hinnanguid oma tegevusvaldkondades; täidab muid seadusest ja selle alusel antud õigusaktidest tulenevaid ülesandeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti eesmärk on viia ellu tervist kaitsva ja parendava elukeskkonna kujundamisele suunatud ning kvaliteetsele tervisekaitse- ja tervishoiuteenusele orienteeritud rahvastiku tervise poliitikat järgmistes tegevusvaldkondades: 1 1) tervishoid; 2 2) nakkushaiguste epidemioloogia; 3 3) tervist toetav ja ohutu keskkond; 4 4) kemikaaliohutus; 5 5) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 6 6) tervishoiusüsteemi toimepidevus kriisideks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti eesmärk on viia ellu tervist kaitsva ja parendava elukeskkonna kujundamisele suunatud ning kvaliteetsele tervisekaitse- ja tervishoiuteenusele orienteeritud rahvastiku tervise poliitikat järgmistes tegevusvaldkondades: 1 1) tervishoid; 2 2) nakkushaiguste epidemioloogia; 3 3) tervist toetav ja ohutu keskkond; 4 4) kemikaaliohutus; 5 5) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 6 6) tervishoiusüsteemi toimepidevus kriisideks. 2 (2) Oma tegevusvaldkondades täidab amet järgmisi ülesandeid: 1 1) töötab välja ja viib ellu ameti strateegia ja tööplaanid; 2 2) annab oma pädevuse piires haldusakte ja viib läbi toiminguid; 3 3) koostab tegevusvaldkonna piires olukorra ülevaateid, ohuprognoose ja juhiseid; 4 4) teeb oma tegevusvaldkonnas riiklikku ja haldusjärelevalvet, viib läbi väärteomenetlusi ja kohaldab riiklikku sundi; 5 5) teeb õigusaktidega ettenähtud juhtudel ettekirjutusi ja otsuseid vastavalt oma pädevusele seadustega sätestatud korras; 6 6) annab õigusaktidega ettenähtud juhtudel lube, kooskõlastusi ja hinnanguid vastavalt oma pädevusele; 7 7) lahendab isikute avaldusi, taotlusi ja kaebusi ning nõustab isikuid ameti tegevusvaldkondadega seotud küsimustes; 8 8) avalikustab õigusaktidega ettenähtud teabe ja tagab ametile teatavaks saanud ärialase teabe konfidentsiaalsuse, kui seadus ei näe ette selle avaldamist; 9 9) teeb ettepanekuid õigusaktide muutmiseks ja väljatöötamiseks, vajadusel annab arvamusi õigusaktide eelnõude kohta ning osaleb õigusaktide eelnõude väljatöötamises; 10 10) teeb koostööd valitsusasutuste ja teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; 11 11) esindab riiki ameti tegevusvaldkondadega seotud Euroopa institutsioonides ja rahvusvahelistes organisatsioonides õigusaktidega sätestatud korras või ministri korraldusel; 12 12) esindab oma pädevuse piires ametit kohtus; 13 13) annab oma pädevuse piires ekspertarvamusi ja hinnanguid oma tegevusvaldkondades; 14 14) täidab muid seadusest ja selle alusel antud õigusaktidest tulenevaid ülesandeid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -372,6 +554,64 @@
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_6_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti eesmärk on viia ellu tervist kaitsva ja parendava elukeskkonna kujundamisele suunatud ning kvaliteetsele tervisekaitse- ja tervishoiuteenusele orienteeritud rahvastiku tervise poliitikat järgmistes tegevusvaldkondades: 1) tervishoid; 2) nakkushaiguste epidemioloogia; 3) tervist toetav ja ohutu keskkond; 4) kemikaaliohutus; 5) 6) tervishoiusüsteemi toimepidevus kriisideks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Oma tegevusvaldkondades täidab amet järgmisi ülesandeid: 1) töötab välja ja viib ellu ameti strateegia ja tööplaanid; 2) annab oma pädevuse piires haldusakte ja viib läbi toiminguid; 3) koostab tegevusvaldkonna piires olukorra ülevaateid, ohuprognoose ja juhiseid; 4) teeb oma tegevusvaldkonnas riiklikku ja haldusjärelevalvet, viib läbi väärteomenetlusi ja kohaldab riiklikku sundi; 5) teeb õigusaktidega ettenähtud juhtudel ettekirjutusi ja otsuseid vastavalt oma pädevusele seadustega sätestatud korras; 6) annab õigusaktidega ettenähtud juhtudel lube, kooskõlastusi ja hinnanguid vastavalt oma pädevusele; 7) lahendab isikute avaldusi, taotlusi ja kaebusi ning nõustab isikuid ameti tegevusvaldkondadega seotud küsimustes; 8) avalikustab õigusaktidega ettenähtud teabe ja tagab ametile teatavaks saanud ärialase teabe konfidentsiaalsuse, kui seadus ei näe ette selle avaldamist; 9) teeb ettepanekuid õigusaktide muutmiseks ja väljatöötamiseks, vajadusel annab arvamusi õigusaktide eelnõude kohta ning osaleb õigusaktide eelnõude väljatöötamises; 10) teeb koostööd valitsusasutuste ja teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; 11) esindab riiki ameti tegevusvaldkondadega seotud Euroopa institutsioonides ja rahvusvahelistes organisatsioonides õigusaktidega sätestatud korras või ministri korraldusel; 12) esindab oma pädevuse piires ametit kohtus; 13) annab oma pädevuse piires ekspertarvamusi ja hinnanguid oma tegevusvaldkondades; 14) täidab muid seadusest ja selle alusel antud õigusaktidest tulenevaid ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14"
       ]
     },
     {
@@ -381,13 +621,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Ameti struktuur",
+      "rdfs:label": {
+        "@value": "§ 7. Ameti struktuur",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Ameti peamisteks struktuuriüksusteks on osakonnad ja laborid. Osakonna koosseisu võivad kuuluda keskused. Ameti peamisteks struktuuriüksusteks on osakonnad ja laborid. Osakonna koosseisu võivad kuuluda keskused. 2 (2) Peadirektori ja peadirektori asetäitja otseses alluvuses võivad olla teenistuskohad, mis ei kuulu ühegi struktuuriüksuse koosseisu. Peadirektori ja peadirektori asetäitja otseses alluvuses võivad olla teenistuskohad, mis ei kuulu ühegi struktuuriüksuse koosseisu.",
-      "estleg:legalText": "1 (1) Ameti peamisteks struktuuriüksusteks on osakonnad ja laborid. Osakonna koosseisu võivad kuuluda keskused. Ameti peamisteks struktuuriüksusteks on osakonnad ja laborid. Osakonna koosseisu võivad kuuluda keskused. 2 (2) Peadirektori ja peadirektori asetäitja otseses alluvuses võivad olla teenistuskohad, mis ei kuulu ühegi struktuuriüksuse koosseisu. Peadirektori ja peadirektori asetäitja otseses alluvuses võivad olla teenistuskohad, mis ei kuulu ühegi struktuuriüksuse koosseisu.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti peamisteks struktuuriüksusteks on osakonnad ja laborid. Osakonna koosseisu võivad kuuluda keskused. 2 (2) Peadirektori ja peadirektori asetäitja otseses alluvuses võivad olla teenistuskohad, mis ei kuulu ühegi struktuuriüksuse koosseisu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti peamisteks struktuuriüksusteks on osakonnad ja laborid. Osakonna koosseisu võivad kuuluda keskused. 2 (2) Peadirektori ja peadirektori asetäitja otseses alluvuses võivad olla teenistuskohad, mis ei kuulu ühegi struktuuriüksuse koosseisu.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -401,7 +647,41 @@
         {
           "@id": "estleg:Reg_1055664_Par_7_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_7_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti peamisteks struktuuriüksusteks on osakonnad ja laborid. Osakonna koosseisu võivad kuuluda keskused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peadirektori ja peadirektori asetäitja otseses alluvuses võivad olla teenistuskohad, mis ei kuulu ühegi struktuuriüksuse koosseisu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:Reg_1055664_Par_8",
@@ -410,13 +690,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Osakonnad",
+      "rdfs:label": {
+        "@value": "§ 8. Osakonnad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Ameti struktuuri kuuluvad järgmised osakonnad: 1 1) nakkushaiguste epidemioloogia osakond; 2 2) keskkonnatervise osakond; 3 3) kemikaaliohutuse osakond; 4 4) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 5 5) tervishoiuteenuste osakond; 6 6) tervishoiu kriisideks valmisoleku osakond; 7 7) mürgistusteabe osakond; 8 8) Põhja regionaalosakond; 9 9) Lõuna regionaalosakond; 10 10) Ida regionaalosakond; 11 11) Lääne regionaalosakond; 12 12) analüüsi- ja arendusosakond; 13 13) personaliosak",
-      "estleg:legalText": "1 (1) Ameti struktuuri kuuluvad järgmised osakonnad: 1 1) nakkushaiguste epidemioloogia osakond; 2 2) keskkonnatervise osakond; 3 3) kemikaaliohutuse osakond; 4 4) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 5 5) tervishoiuteenuste osakond; 6 6) tervishoiu kriisideks valmisoleku osakond; 7 7) mürgistusteabe osakond; 8 8) Põhja regionaalosakond; 9 9) Lõuna regionaalosakond; 10 10) Ida regionaalosakond; 11 11) Lääne regionaalosakond; 12 12) analüüsi- ja arendusosakond; 13 13) personaliosakond; 14 14) õigusosakond; 15 15) kommunikatsiooniosakond; 16 16) üldosakond. Ameti struktuuri kuuluvad järgmised osakonnad: nakkushaiguste epidemioloogia osakond; keskkonnatervise osakond; kemikaaliohutuse osakond; kehtetu - tervishoiuteenuste osakond; tervishoiu kriisideks valmisoleku osakond; mürgistusteabe osakond; Põhja regionaalosakond; Lõuna regionaalosakond; Ida regionaalosakond; Lääne regionaalosakond; analüüsi- ja arendusosakond; personaliosakond; õigusosakond; kommunikatsiooniosakond; üldosakond. 2 (2) Nakkushaiguste epidemioloogia osakonna põhiülesanneteks on nakkushaiguste ennetamise, seire, tõrje, epidemioloogilise riskianalüüsi ja riskihindamise tegevuste korraldamine ning nakkushaiguste valdkonda reguleerivates õigusaktides ametile kehtestatud ülesannete täitmine. Nakkushaiguste epidemioloogia osakonna põhiülesanneteks on nakkushaiguste ennetamise, seire, tõrje, epidemioloogilise riskianalüüsi ja riskihindamise tegevuste korraldamine ning nakkushaiguste valdkonda reguleerivates õigusaktides ametile kehtestatud ülesannete täitmine. 3 (3) Keskkonnatervise osakonna põhiülesanneteks on vee, ilu-, isikuteenuste ning haridus- ja sotsiaalasutuste terviseohutuse edendamine, planeeringute ja füüsikalistest ning keemilistest teguritest tingitud terviseohtude hindamine ning terviseriskide vähendamine. RT I 2026-04-28 1 128042026001 2026-05-01 Keskkonnatervise osakonna põhiülesanneteks on vee, ilu-, isikuteenuste ning haridus- ja sotsiaalasutuste terviseohutuse edendamine, planeeringute ja füüsikalistest ning keemilistest teguritest tingitud terviseohtude hindamine ning terviseriskide vähendamine. 4 (4) Kemikaaliohutuse osakonna põhiülesanneteks on kemikaalide turustamiseelsete tegevuste korraldamine, biotsiidi registreerimistunnistuste ja lubade väljastamine, vastavalt ameti pädevusele toodete terviseohutuse edendamine ning kemikaalide, biotsiidide, detergentide, kosmeetikatoodete ja tubakatoodete alal liikmesriigi pädeva asutuse ülesannete täitmine. Kemikaaliohutuse osakonna põhiülesanneteks on kemikaalide turustamiseelsete tegevuste korraldamine, biotsiidi registreerimistunnistuste ja lubade väljastamine, vastavalt ameti pädevusele toodete terviseohutuse edendamine ning kemikaalide, biotsiidide, detergentide, kosmeetikatoodete ja tubakatoodete alal liikmesriigi pädeva asutuse ülesannete täitmine. 5 (5) Kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 Kehtetu - 6 (6) Tervishoiuteenuste osakonna põhiülesanneteks on kiirabiteenuse osutamise korraldamine, tervishoiuteenuse osutajate tegutsemisõiguse haldamine ning tervishoiutöötajate registreerimine, kutsekvalifikatsiooni tunnustamine, tervishoiuteenuse kvaliteedi ja patsiendiohutuse süsteemse arendamise koordineerimine ja toetamine ning tervishoiuteenuse osutamisele kohalduvates õigusaktides ametile kehtestatud ülesannete täitmine. RT I 2025-12-04 1 104122025001 2026-01-01 Tervishoiuteenuste osakonna põhiülesanneteks on kiirabiteenuse osutamise korraldamine, tervishoiuteenuse osutajate tegutsemisõiguse haldamine ning tervishoiutöötajate registreerimine, kutsekvalifikatsiooni tunnustamine, tervishoiuteenuse kvaliteedi ja patsiendiohutuse süsteemse arendamise koordineerimine ja toetamine ning tervishoiuteenuse osutamisele kohalduvates õigusaktides ametile kehtestatud ülesannete täitmine. 7 (7) Tervishoiu kriisideks valmisoleku osakonna põhiülesandeks on tervishoiu hädaolukordadeks ja riigikaitseks valmistumise korraldamine. Tervishoiu kriisideks valmisoleku osakonna põhiülesandeks on tervishoiu hädaolukordadeks ja riigikaitseks valmistumise korraldamine. 8 (8) Mürgistusteabe osakonna põhiülesanneteks on mürgistusteabe kogumise ja töötlemise tagamine, selle edastamine elanikkonnale ja tervishoiuteenuse osutajatele, antidootide nomenklatuuri, koguste ja jaotuse määramine ning antidootide varu kohta tervishoiuteenuse osutajatele informatsiooni tagamine. Mürgistusteabe osakonna põhiülesanneteks on mürgistusteabe kogumise ja töötlemise tagamine, selle edastamine elanikkonnale ja tervishoiuteenuse osutajatele, antidootide nomenklatuuri, koguste ja jaotuse määramine ning antidootide varu kohta tervishoiuteenuse osutajatele informatsiooni tagamine. 9 (9) Regionaalosakondade põhiülesanneteks on ameti tegevust reguleerivate õigusaktide ning ameti antud haldusaktide rakendamine enda haldusterritooriumil, sh riikliku ja haldusjärelevalve tegemine ja haldussunni kohaldamine, väärteomenetluse läbiviimine ning ennetus- ja nõustamistegevus lähtuvalt ameti koostatud juhenditest. Regionaalosakondade põhiülesanneteks on ameti tegevust reguleerivate õigusaktide ning ameti antud haldusaktide rakendamine enda haldusterritooriumil, sh riikliku ja haldusjärelevalve tegemine ja haldussunni kohaldamine, väärteomenetluse läbiviimine ning ennetus- ja nõustamistegevus lähtuvalt ameti koostatud juhenditest. 10 (10) Analüüsi- ja arendusosakonna põhiülesanneteks on ameti protsesside ja infotehnoloogilise arendusvajaduse kirjeldamise ja analüüsi ning strateegilise planeerimise koordineerimine ja korraldamine. Analüüsi- ja arendusosakonna põhiülesanneteks on ameti protsesside ja infotehnoloogilise arendusvajaduse kirjeldamise ja analüüsi ning strateegilise planeerimise koordineerimine ja korraldamine. 11 (11) Personaliosakonna põhiülesanneteks on ameti personalipoliitika kujundamine ja elluviimine ning personalitöö koordineerimine. Personaliosakonna põhiülesanneteks on ameti personalipoliitika kujundamine ja elluviimine ning personalitöö koordineerimine. 12 (12) Õigusosakonna põhiülesanneteks on ameti tegevuse, sh õigus- ja haldusaktide õiguspärasuse tagamine, õigusloomes osalemine ning ameti esindamine õiguslikes vaidlustes. Õigusosakonna põhiülesanneteks on ameti tegevuse, sh õigus- ja haldusaktide õiguspärasuse tagamine, õigusloomes osalemine ning ameti esindamine õiguslikes vaidlustes. 13 (13) Kommunikatsiooniosakonna põhiülesanneteks on ameti eesmärkide saavutamise toetamiseks professionaalse sise- ja väliskommunikatsiooni ning meediasuhtluse korraldamine. Kommunikatsiooniosakonna põhiülesanneteks on ameti eesmärkide saavutamise toetamiseks professionaalse sise- ja väliskommunikatsiooni ning meediasuhtluse korraldamine. 14 (14) Üldosakonna põhiülesanneteks on ameti tugifunktsioonide täitmine asjaajamise, dokumendihalduse, kliendihalduse ja arhiivitöö korraldamise, riigivara haldamise, töökeskkonna kujundamise, hangete korraldamise, finantsarvestuse ja eelarvestamise korraldamise valdkonnas. Üldosakonna põhiülesanneteks on ameti tugifunktsioonide täitmine asjaajamise, dokumendihalduse, kliendihalduse ja arhiivitöö korraldamise, riigivara haldamise, töökeskkonna kujundamise, hangete korraldamise, finantsarvestuse ja eelarvestamise korraldamise valdkonnas.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti struktuuri kuuluvad järgmised osakonnad: 1 1) nakkushaiguste epidemioloogia osakond; 2 2) keskkonnatervise osakond; 3 3) kemikaaliohutuse osakond; 4 4) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 5 5) tervishoiuteenuste osakond; 6 6) tervishoiu kriisideks valmisoleku osakond; 7 7) mürgistusteabe osakond; 8 8) Põhja regionaalosakond; 9 9) Lõuna regionaalosakond; 10 10) Ida regionaalosakond; 11 11) Lääne regionaalosakond; 12 12) analüüsi- ja arendusosakond; 13 13)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti struktuuri kuuluvad järgmised osakonnad: 1 1) nakkushaiguste epidemioloogia osakond; 2 2) keskkonnatervise osakond; 3 3) kemikaaliohutuse osakond; 4 4) kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 5 5) tervishoiuteenuste osakond; 6 6) tervishoiu kriisideks valmisoleku osakond; 7 7) mürgistusteabe osakond; 8 8) Põhja regionaalosakond; 9 9) Lõuna regionaalosakond; 10 10) Ida regionaalosakond; 11 11) Lääne regionaalosakond; 12 12) analüüsi- ja arendusosakond; 13 13) personaliosakond; 14 14) õigusosakond; 15 15) kommunikatsiooniosakond; 16 16) üldosakond. 2 (2) Nakkushaiguste epidemioloogia osakonna põhiülesanneteks on nakkushaiguste ennetamise, seire, tõrje, epidemioloogilise riskianalüüsi ja riskihindamise tegevuste korraldamine ning nakkushaiguste valdkonda reguleerivates õigusaktides ametile kehtestatud ülesannete täitmine. 3 (3) Keskkonnatervise osakonna põhiülesanneteks on vee, ilu-, isikuteenuste ning haridus- ja sotsiaalasutuste terviseohutuse edendamine, planeeringute ja füüsikalistest ning keemilistest teguritest tingitud terviseohtude hindamine ning terviseriskide vähendamine. RT I 2026-04-28 1 128042026001 2026-05-01 4 (4) Kemikaaliohutuse osakonna põhiülesanneteks on kemikaalide turustamiseelsete tegevuste korraldamine, biotsiidi registreerimistunnistuste ja lubade väljastamine, vastavalt ameti pädevusele toodete terviseohutuse edendamine ning kemikaalide, biotsiidide, detergentide, kosmeetikatoodete ja tubakatoodete alal liikmesriigi pädeva asutuse ülesannete täitmine. 5 (5) Kehtetu - RT I 2024-12-05 5 105122024005 2025-01-01 6 (6) Tervishoiuteenuste osakonna põhiülesanneteks on kiirabiteenuse osutamise korraldamine, tervishoiuteenuse osutajate tegutsemisõiguse haldamine ning tervishoiutöötajate registreerimine, kutsekvalifikatsiooni tunnustamine, tervishoiuteenuse kvaliteedi ja patsiendiohutuse süsteemse arendamise koordineerimine ja toetamine ning tervishoiuteenuse osutamisele kohalduvates õigusaktides ametile kehtestatud ülesannete täitmine. RT I 2025-12-04 1 104122025001 2026-01-01 7 (7) Tervishoiu kriisideks valmisoleku osakonna põhiülesandeks on tervishoiu hädaolukordadeks ja riigikaitseks valmistumise korraldamine. 8 (8) Mürgistusteabe osakonna põhiülesanneteks on mürgistusteabe kogumise ja töötlemise tagamine, selle edastamine elanikkonnale ja tervishoiuteenuse osutajatele, antidootide nomenklatuuri, koguste ja jaotuse määramine ning antidootide varu kohta tervishoiuteenuse osutajatele informatsiooni tagamine. 9 (9) Regionaalosakondade põhiülesanneteks on ameti tegevust reguleerivate õigusaktide ning ameti antud haldusaktide rakendamine enda haldusterritooriumil, sh riikliku ja haldusjärelevalve tegemine ja haldussunni kohaldamine, väärteomenetluse läbiviimine ning ennetus- ja nõustamistegevus lähtuvalt ameti koostatud juhenditest. 10 (10) Analüüsi- ja arendusosakonna põhiülesanneteks on ameti protsesside ja infotehnoloogilise arendusvajaduse kirjeldamise ja analüüsi ning strateegilise planeerimise koordineerimine ja korraldamine. 11 (11) Personaliosakonna põhiülesanneteks on ameti personalipoliitika kujundamine ja elluviimine ning personalitöö koordineerimine. 12 (12) Õigusosakonna põhiülesanneteks on ameti tegevuse, sh õigus- ja haldusaktide õiguspärasuse tagamine, õigusloomes osalemine ning ameti esindamine õiguslikes vaidlustes. 13 (13) Kommunikatsiooniosakonna põhiülesanneteks on ameti eesmärkide saavutamise toetamiseks professionaalse sise- ja väliskommunikatsiooni ning meediasuhtluse korraldamine. 14 (14) Üldosakonna põhiülesanneteks on ameti tugifunktsioonide täitmine asjaajamise, dokumendihalduse, kliendihalduse ja arhiivitöö korraldamise, riigivara haldamise, töökeskkonna kujundamise, hangete korraldamise, finantsarvestuse ja eelarvestamise korraldamise valdkonnas.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -433,7 +719,235 @@
         {
           "@id": "estleg:Reg_1055664_Par_8_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_8"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_9"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_10"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_11"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_12"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_13"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_8_Lg_14"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti struktuuri kuuluvad järgmised osakonnad: 1) nakkushaiguste epidemioloogia osakond; 2) keskkonnatervise osakond; 3) kemikaaliohutuse osakond; 4) 5) tervishoiuteenuste osakond; 6) tervishoiu kriisideks valmisoleku osakond; 7) mürgistusteabe osakond; 8) Põhja regionaalosakond; 9) Lõuna regionaalosakond; 10) Ida regionaalosakond; 11) Lääne regionaalosakond; 12) analüüsi- ja arendusosakond; 13) personaliosakond; 14) õigusosakond; 15) kommunikatsiooniosakond; 16) üldosakond.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nakkushaiguste epidemioloogia osakonna põhiülesanneteks on nakkushaiguste ennetamise, seire, tõrje, epidemioloogilise riskianalüüsi ja riskihindamise tegevuste korraldamine ning nakkushaiguste valdkonda reguleerivates õigusaktides ametile kehtestatud ülesannete täitmine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Keskkonnatervise osakonna põhiülesanneteks on vee, ilu-, isikuteenuste ning haridus- ja sotsiaalasutuste terviseohutuse edendamine, planeeringute ja füüsikalistest ning keemilistest teguritest tingitud terviseohtude hindamine ning terviseriskide vähendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kemikaaliohutuse osakonna põhiülesanneteks on kemikaalide turustamiseelsete tegevuste korraldamine, biotsiidi registreerimistunnistuste ja lubade väljastamine, vastavalt ameti pädevusele toodete terviseohutuse edendamine ning kemikaalide, biotsiidide, detergentide, kosmeetikatoodete ja tubakatoodete alal liikmesriigi pädeva asutuse ülesannete täitmine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Tervishoiuteenuste osakonna põhiülesanneteks on kiirabiteenuse osutamise korraldamine, tervishoiuteenuse osutajate tegutsemisõiguse haldamine ning tervishoiutöötajate registreerimine, kutsekvalifikatsiooni tunnustamine, tervishoiuteenuse kvaliteedi ja patsiendiohutuse süsteemse arendamise koordineerimine ja toetamine ning tervishoiuteenuse osutamisele kohalduvates õigusaktides ametile kehtestatud ülesannete täitmine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Tervishoiu kriisideks valmisoleku osakonna põhiülesandeks on tervishoiu hädaolukordadeks ja riigikaitseks valmistumise korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 7"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Mürgistusteabe osakonna põhiülesanneteks on mürgistusteabe kogumise ja töötlemise tagamine, selle edastamine elanikkonnale ja tervishoiuteenuse osutajatele, antidootide nomenklatuuri, koguste ja jaotuse määramine ning antidootide varu kohta tervishoiuteenuse osutajatele informatsiooni tagamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 8"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Regionaalosakondade põhiülesanneteks on ameti tegevust reguleerivate õigusaktide ning ameti antud haldusaktide rakendamine enda haldusterritooriumil, sh riikliku ja haldusjärelevalve tegemine ja haldussunni kohaldamine, väärteomenetluse läbiviimine ning ennetus- ja nõustamistegevus lähtuvalt ameti koostatud juhenditest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 9"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Analüüsi- ja arendusosakonna põhiülesanneteks on ameti protsesside ja infotehnoloogilise arendusvajaduse kirjeldamise ja analüüsi ning strateegilise planeerimise koordineerimine ja korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 10"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_11",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "11",
+      "estleg:legalText": "(11) Personaliosakonna põhiülesanneteks on ameti personalipoliitika kujundamine ja elluviimine ning personalitöö koordineerimine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 11"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_12",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "12",
+      "estleg:legalText": "(12) Õigusosakonna põhiülesanneteks on ameti tegevuse, sh õigus- ja haldusaktide õiguspärasuse tagamine, õigusloomes osalemine ning ameti esindamine õiguslikes vaidlustes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 12"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_13",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "13",
+      "estleg:legalText": "(13) Kommunikatsiooniosakonna põhiülesanneteks on ameti eesmärkide saavutamise toetamiseks professionaalse sise- ja väliskommunikatsiooni ning meediasuhtluse korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 13"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_8_Lg_14",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "14",
+      "estleg:legalText": "(14) Üldosakonna põhiülesanneteks on ameti tugifunktsioonide täitmine asjaajamise, dokumendihalduse, kliendihalduse ja arhiivitöö korraldamise, riigivara haldamise, töökeskkonna kujundamise, hangete korraldamise, finantsarvestuse ja eelarvestamise korraldamise valdkonnas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 14"
     },
     {
       "@id": "estleg:Reg_1055664_Par_9",
@@ -442,13 +956,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Laborid",
+      "rdfs:label": {
+        "@value": "§ 9. Laborid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Ameti struktuuriüksuseks on rahvatervise labor. Rahvatervise labori koosseisu võivad kuuluda funktsionaalsed ja regionaalsed laborid. Ameti struktuuriüksuseks on rahvatervise labor. Rahvatervise labori koosseisu võivad kuuluda funktsionaalsed ja regionaalsed laborid. 2 (2) Rahvatervise labori põhiülesanneteks on rahvatervise ohutuse vallas nakkushaiguste, keemiliste ja füüsikaliste ohutegurite määramine ning labori analüüsivõimekuse tagamine. Rahvatervise labori põhiülesanneteks on rahvate",
-      "estleg:legalText": "1 (1) Ameti struktuuriüksuseks on rahvatervise labor. Rahvatervise labori koosseisu võivad kuuluda funktsionaalsed ja regionaalsed laborid. Ameti struktuuriüksuseks on rahvatervise labor. Rahvatervise labori koosseisu võivad kuuluda funktsionaalsed ja regionaalsed laborid. 2 (2) Rahvatervise labori põhiülesanneteks on rahvatervise ohutuse vallas nakkushaiguste, keemiliste ja füüsikaliste ohutegurite määramine ning labori analüüsivõimekuse tagamine. Rahvatervise labori põhiülesanneteks on rahvatervise ohutuse vallas nakkushaiguste, keemiliste ja füüsikaliste ohutegurite määramine ning labori analüüsivõimekuse tagamine. 3 (3) Rahvatervise labor osutab tasulisi teenuseid vastavalt rahvatervishoiu seaduse § 12 lõike 4 alusel kehtestatud määruse tingimustele ja hinnakirjale. RT I 2025-12-04 1 104122025001 2026-01-01 Rahvatervise labor osutab tasulisi teenuseid vastavalt rahvatervishoiu seaduse § 12 lõike 4 alusel kehtestatud määruse tingimustele ja hinnakirjale.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti struktuuriüksuseks on rahvatervise labor. Rahvatervise labori koosseisu võivad kuuluda funktsionaalsed ja regionaalsed laborid. 2 (2) Rahvatervise labori põhiülesanneteks on rahvatervise ohutuse vallas nakkushaiguste, keemiliste ja füüsikaliste ohutegurite määramine ning labori analüüsivõimekuse tagamine. 3 (3) Rahvatervise labor osutab tasulisi teenuseid vastavalt rahvatervishoiu seaduse § 12 lõike 4 alusel kehtestatud määruse tingimustele ja hinnakirjale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti struktuuriüksuseks on rahvatervise labor. Rahvatervise labori koosseisu võivad kuuluda funktsionaalsed ja regionaalsed laborid. 2 (2) Rahvatervise labori põhiülesanneteks on rahvatervise ohutuse vallas nakkushaiguste, keemiliste ja füüsikaliste ohutegurite määramine ning labori analüüsivõimekuse tagamine. 3 (3) Rahvatervise labor osutab tasulisi teenuseid vastavalt rahvatervishoiu seaduse § 12 lõike 4 alusel kehtestatud määruse tingimustele ja hinnakirjale. RT I 2025-12-04 1 104122025001 2026-01-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -462,7 +982,57 @@
         {
           "@id": "estleg:Reg_1055664_Par_9_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_9_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti struktuuriüksuseks on rahvatervise labor. Rahvatervise labori koosseisu võivad kuuluda funktsionaalsed ja regionaalsed laborid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvatervise labori põhiülesanneteks on rahvatervise ohutuse vallas nakkushaiguste, keemiliste ja füüsikaliste ohutegurite määramine ning labori analüüsivõimekuse tagamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvatervise labor osutab tasulisi teenuseid vastavalt rahvatervishoiu seaduse § 12 lõike 4 alusel kehtestatud määruse tingimustele ja hinnakirjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
     },
     {
       "@id": "estleg:Reg_1055664_Par_10",
@@ -471,18 +1041,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Struktuuriüksuste põhimäärused",
+      "rdfs:label": {
+        "@value": "§ 10. Struktuuriüksuste põhimäärused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "Struktuuriüksuste täpsemad ülesanded, pädevus ja juhtimise korraldus sätestatakse nende põhimäärustes, mille kinnitab peadirektor.",
-      "estleg:legalText": "Struktuuriüksuste täpsemad ülesanded, pädevus ja juhtimise korraldus sätestatakse nende põhimäärustes, mille kinnitab peadirektor. Struktuuriüksuste täpsemad ülesanded, pädevus ja juhtimise korraldus sätestatakse nende põhimäärustes, mille kinnitab peadirektor.",
+      "estleg:summary": {
+        "@value": "Struktuuriüksuste täpsemad ülesanded, pädevus ja juhtimise korraldus sätestatakse nende põhimäärustes, mille kinnitab peadirektor.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Struktuuriüksuste täpsemad ülesanded, pädevus ja juhtimise korraldus sätestatakse nende põhimäärustes, mille kinnitab peadirektor.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1055664_Par_10_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_10_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Struktuuriüksuste täpsemad ülesanded, pädevus ja juhtimise korraldus sätestatakse nende põhimäärustes, mille kinnitab peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:Reg_1055664_Par_11",
@@ -491,13 +1085,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Peadirektor",
+      "rdfs:label": {
+        "@value": "§ 11. Peadirektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Ametit juhib peadirektor, kelle nimetab ametisse ja vabastab ametist valdkonna eest vastutav minister kantsleri ettepanekul. Ametit juhib peadirektor, kelle nimetab ametisse ja vabastab ametist valdkonna eest vastutav minister kantsleri ettepanekul. 2 (2) Peadirektori äraolekul asendab teda ministri või kantsleri määratud peadirektori asetäitja või struktuuriüksuse juht. Peadirektori äraolekul asendab teda ministri või kantsleri määratud peadirektori asetäitja või struktuuriüksuse juht. 3 ",
-      "estleg:legalText": "1 (1) Ametit juhib peadirektor, kelle nimetab ametisse ja vabastab ametist valdkonna eest vastutav minister kantsleri ettepanekul. Ametit juhib peadirektor, kelle nimetab ametisse ja vabastab ametist valdkonna eest vastutav minister kantsleri ettepanekul. 2 (2) Peadirektori äraolekul asendab teda ministri või kantsleri määratud peadirektori asetäitja või struktuuriüksuse juht. Peadirektori äraolekul asendab teda ministri või kantsleri määratud peadirektori asetäitja või struktuuriüksuse juht. 3 (3) Peadirektor: 1 1) juhib ameti tööd ja korraldab ise või peadirektori asetäitja kaudu ameti tegevust ja tema pädevusse kuuluvate ülesannete täitmist; 2 2) vastutab ameti tegevust reguleerivate õigusaktide täpse ja otstarbeka täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3 3) esindab ametit oma pädevuse ja ministrilt saadud volituste piires ning võib samas piires volitada ameti teenistujaid ametit esindama; 4 4) tagab sisekontrollisüsteemi rakendamise ametis; 5 5) teostab teenistuslikku järelevalvet seadusega määratud ulatuses; 6 6) kehtestab ameti teenistuskohtade koosseisu valdkonna eest vastutava ministri käskkirjaga kinnitatud teenistuskohtade koosseisu arvu piires; 7 7) sõlmib ja lõpetab ametiasutuse töötajatega töölepingud ning nimetab ametisse ja vabastab ametist ameti koosseisu kuuluvad ametnikud; 8 8) esitab valdkonna eest vastutavale ministrile kinnitamiseks ameti tulude ja kulude eelarve ning vastutab eelarve täpse ja otstarbeka täitmise eest; 9 9) kinnitab ameti tööplaanid ning tulude ja kulude alaeelarved; 10 10) esitab valdkonna asekantslerile ettepanekuid ameti tegevusvaldkonna korraldamiseks; 11 11) tagab ameti tegevusvaldkondade arendamise kaudu kvaliteetse teenuse osutamise; 12 12) valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid; 13 13) annab vastavalt õigusaktidele teenistusalastes küsimustes käskkirju; 14 14) sõlmib ameti nimel lepinguid ning võib samas piires volitada ameti teenistujaid lepinguid sõlmima; 15 15) kaasab ameti pädevuses olevate ülesannete lahendamiseks eksperte; 16 16) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ning korrad, struktuuriüksuste põhimäärused, teenistujate ametijuhendid ja ametipalgad vastavuses kehtivate õigusaktidega; 16 16¹) moodustab vastutuskindlustuse lepituskomisjoni tervishoiuteenuse osutaja kohustusliku vastutuskindlustuse seaduse alusel; RT I 2024-12-05 5 105122024005 2025-01-01 17 17) täidab muid ülesandeid, mis on talle pandud seaduse, Vabariigi Valitsuse määruse või korralduse, ministri määruse või käskkirjaga. Peadirektor: juhib ameti tööd ja korraldab ise või peadirektori asetäitja kaudu ameti tegevust ja tema pädevusse kuuluvate ülesannete täitmist; vastutab ameti tegevust reguleerivate õigusaktide täpse ja otstarbeka täitmise eest ning annab aru valdkonna eest vastutavale ministrile; esindab ametit oma pädevuse ja ministrilt saadud volituste piires ning võib samas piires volitada ameti teenistujaid ametit esindama; tagab sisekontrollisüsteemi rakendamise ametis; teostab teenistuslikku järelevalvet seadusega määratud ulatuses; kehtestab ameti teenistuskohtade koosseisu valdkonna eest vastutava ministri käskkirjaga kinnitatud teenistuskohtade koosseisu arvu piires; sõlmib ja lõpetab ametiasutuse töötajatega töölepingud ning nimetab ametisse ja vabastab ametist ameti koosseisu kuuluvad ametnikud; esitab valdkonna eest vastutavale ministrile kinnitamiseks ameti tulude ja kulude eelarve ning vastutab eelarve täpse ja otstarbeka täitmise eest; kinnitab ameti tööplaanid ning tulude ja kulude alaeelarved; esitab valdkonna asekantslerile ettepanekuid ameti tegevusvaldkonna korraldamiseks; tagab ameti tegevusvaldkondade arendamise kaudu kvaliteetse teenuse osutamise; valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid; annab vastavalt õigusaktidele teenistusalastes küsimustes käskkirju; sõlmib ameti nimel lepinguid ning võib samas piires volitada ameti teenistujaid lepinguid sõlmima; kaasab ameti pädevuses olevate ülesannete lahendamiseks eksperte; kinnitab ameti sisemist töökorraldust reguleerivad juhendid ning korrad, struktuuriüksuste põhimäärused, teenistujate ametijuhendid ja ametipalgad vastavuses kehtivate õigusaktidega; moodustab vastutuskindlustuse lepituskomisjoni tervishoiuteenuse osutaja kohustusliku vastutuskindlustuse seaduse alusel; täidab muid ülesandeid, mis on talle pandud seaduse, Vabariigi Valitsuse määruse või korralduse, ministri määruse või käskkirjaga.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametit juhib peadirektor, kelle nimetab ametisse ja vabastab ametist valdkonna eest vastutav minister kantsleri ettepanekul. 2 (2) Peadirektori äraolekul asendab teda ministri või kantsleri määratud peadirektori asetäitja või struktuuriüksuse juht. 3 (3) Peadirektor: 1 1) juhib ameti tööd ja korraldab ise või peadirektori asetäitja kaudu ameti tegevust ja tema pädevusse kuuluvate ülesannete täitmist; 2 2) vastutab ameti tegevust reguleerivate õigusaktide täpse ja otstarbeka täitmise eest…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametit juhib peadirektor, kelle nimetab ametisse ja vabastab ametist valdkonna eest vastutav minister kantsleri ettepanekul. 2 (2) Peadirektori äraolekul asendab teda ministri või kantsleri määratud peadirektori asetäitja või struktuuriüksuse juht. 3 (3) Peadirektor: 1 1) juhib ameti tööd ja korraldab ise või peadirektori asetäitja kaudu ameti tegevust ja tema pädevusse kuuluvate ülesannete täitmist; 2 2) vastutab ameti tegevust reguleerivate õigusaktide täpse ja otstarbeka täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3 3) esindab ametit oma pädevuse ja ministrilt saadud volituste piires ning võib samas piires volitada ameti teenistujaid ametit esindama; 4 4) tagab sisekontrollisüsteemi rakendamise ametis; 5 5) teostab teenistuslikku järelevalvet seadusega määratud ulatuses; 6 6) kehtestab ameti teenistuskohtade koosseisu valdkonna eest vastutava ministri käskkirjaga kinnitatud teenistuskohtade koosseisu arvu piires; 7 7) sõlmib ja lõpetab ametiasutuse töötajatega töölepingud ning nimetab ametisse ja vabastab ametist ameti koosseisu kuuluvad ametnikud; 8 8) esitab valdkonna eest vastutavale ministrile kinnitamiseks ameti tulude ja kulude eelarve ning vastutab eelarve täpse ja otstarbeka täitmise eest; 9 9) kinnitab ameti tööplaanid ning tulude ja kulude alaeelarved; 10 10) esitab valdkonna asekantslerile ettepanekuid ameti tegevusvaldkonna korraldamiseks; 11 11) tagab ameti tegevusvaldkondade arendamise kaudu kvaliteetse teenuse osutamise; 12 12) valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid; 13 13) annab vastavalt õigusaktidele teenistusalastes küsimustes käskkirju; 14 14) sõlmib ameti nimel lepinguid ning võib samas piires volitada ameti teenistujaid lepinguid sõlmima; 15 15) kaasab ameti pädevuses olevate ülesannete lahendamiseks eksperte; 16 16) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ning korrad, struktuuriüksuste põhimäärused, teenistujate ametijuhendid ja ametipalgad vastavuses kehtivate õigusaktidega; 16 16<sup>1</sup>) moodustab vastutuskindlustuse lepituskomisjoni tervishoiuteenuse osutaja kohustusliku vastutuskindlustuse seaduse alusel; RT I 2024-12-05 5 105122024005 2025-01-01 17 17) täidab muid ülesandeid, mis on talle pandud seaduse, Vabariigi Valitsuse määruse või korralduse, ministri määruse või käskkirjaga.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -536,6 +1136,76 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_11_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametit juhib peadirektor, kelle nimetab ametisse ja vabastab ametist valdkonna eest vastutav minister kantsleri ettepanekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peadirektori äraolekul asendab teda ministri või kantsleri määratud peadirektori asetäitja või struktuuriüksuse juht.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Peadirektor: 1) juhib ameti tööd ja korraldab ise või peadirektori asetäitja kaudu ameti tegevust ja tema pädevusse kuuluvate ülesannete täitmist; 2) vastutab ameti tegevust reguleerivate õigusaktide täpse ja otstarbeka täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3) esindab ametit oma pädevuse ja ministrilt saadud volituste piires ning võib samas piires volitada ameti teenistujaid ametit esindama; 4) tagab sisekontrollisüsteemi rakendamise ametis; 5) teostab teenistuslikku järelevalvet seadusega määratud ulatuses; 6) kehtestab ameti teenistuskohtade koosseisu valdkonna eest vastutava ministri käskkirjaga kinnitatud teenistuskohtade koosseisu arvu piires; 7) sõlmib ja lõpetab ametiasutuse töötajatega töölepingud ning nimetab ametisse ja vabastab ametist ameti koosseisu kuuluvad ametnikud; 8) esitab valdkonna eest vastutavale ministrile kinnitamiseks ameti tulude ja kulude eelarve ning vastutab eelarve täpse ja otstarbeka täitmise eest; 9) kinnitab ameti tööplaanid ning tulude ja kulude alaeelarved; 10) esitab valdkonna asekantslerile ettepanekuid ameti tegevusvaldkonna korraldamiseks; 11) tagab ameti tegevusvaldkondade arendamise kaudu kvaliteetse teenuse osutamise; 12) valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid; 13) annab vastavalt õigusaktidele teenistusalastes küsimustes käskkirju; 14) sõlmib ameti nimel lepinguid ning võib samas piires volitada ameti teenistujaid lepinguid sõlmima; 15) kaasab ameti pädevuses olevate ülesannete lahendamiseks eksperte; 16) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ning korrad, struktuuriüksuste põhimäärused, teenistujate ametijuhendid ja ametipalgad vastavuses kehtivate õigusaktidega; 16¹) moodustab vastutuskindlustuse lepituskomisjoni tervishoiuteenuse osutaja kohustusliku vastutuskindlustuse seaduse alusel; 17) täidab muid ülesandeid, mis on talle pandud seaduse, Vabariigi Valitsuse määruse või korralduse, ministri määruse või käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "16¹",
+        "17"
       ]
     },
     {
@@ -545,13 +1215,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Peadirektori asetäitja",
+      "rdfs:label": {
+        "@value": "§ 12. Peadirektori asetäitja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Ameti koosseisus on kuni kolm peadirektori asetäitja ametikohta, kes alluvad vahetult peadirektorile. Peadirektori asetäitja vastutusvaldkonna määrab peadirektor. Ameti koosseisus on kuni kolm peadirektori asetäitja ametikohta, kes alluvad vahetult peadirektorile. Peadirektori asetäitja vastutusvaldkonna määrab peadirektor. 2 (2) Peadirektori asetäitja äraolekul asendab teda peadirektori määratud teine peadirektori asetäitja või struktuuriüksuse juht. Peadirektori asetäitja äraolekul asend",
-      "estleg:legalText": "1 (1) Ameti koosseisus on kuni kolm peadirektori asetäitja ametikohta, kes alluvad vahetult peadirektorile. Peadirektori asetäitja vastutusvaldkonna määrab peadirektor. Ameti koosseisus on kuni kolm peadirektori asetäitja ametikohta, kes alluvad vahetult peadirektorile. Peadirektori asetäitja vastutusvaldkonna määrab peadirektor. 2 (2) Peadirektori asetäitja äraolekul asendab teda peadirektori määratud teine peadirektori asetäitja või struktuuriüksuse juht. Peadirektori asetäitja äraolekul asendab teda peadirektori määratud teine peadirektori asetäitja või struktuuriüksuse juht. 3 (3) Peadirektori asetäitja: 1 1) juhib talle alluvate struktuuriüksuste tööd; 2 2) koordineerib ja suunab oma vastutusvaldkonna tegevusi; 3 3) vastutab oma vastutusvaldkonna struktuuriüksuste ülesannete täitmise eest; 4 4) teeb peadirektorile ettepanekuid ameti eelarve koostamiseks ning eelarvevahendite kasutamiseks vastavas valdkonnas; 5 5) vastutab oma vastutusvaldkonna eelarvevahendite eesmärgipärase ja otstarbeka kasutamise eest; 6 6) teeb peadirektorile ettepanekuid ameti struktuuri ja koosseisu kohta ning oma vastutusvaldkonna korraldamiseks; 7 7) esindab ametit oma vastutusvaldkonna ja peadirektorilt saadud volituste piires; 8 8) teeb koostööd teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; 9 9) täidab muid peadirektori poolt määratud ülesandeid. Peadirektori asetäitja: juhib talle alluvate struktuuriüksuste tööd; koordineerib ja suunab oma vastutusvaldkonna tegevusi; vastutab oma vastutusvaldkonna struktuuriüksuste ülesannete täitmise eest; teeb peadirektorile ettepanekuid ameti eelarve koostamiseks ning eelarvevahendite kasutamiseks vastavas valdkonnas; vastutab oma vastutusvaldkonna eelarvevahendite eesmärgipärase ja otstarbeka kasutamise eest; teeb peadirektorile ettepanekuid ameti struktuuri ja koosseisu kohta ning oma vastutusvaldkonna korraldamiseks; esindab ametit oma vastutusvaldkonna ja peadirektorilt saadud volituste piires; teeb koostööd teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; täidab muid peadirektori poolt määratud ülesandeid. 4 (4) Peadirektori asetäitja vastutusvaldkonnad, täpsemad ülesanded, pädevus, õigused ja kohustused määratakse peadirektori asetäitja ametijuhendis. Peadirektori asetäitja vastutusvaldkonnad, täpsemad ülesanded, pädevus, õigused ja kohustused määratakse peadirektori asetäitja ametijuhendis.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti koosseisus on kuni kolm peadirektori asetäitja ametikohta, kes alluvad vahetult peadirektorile. Peadirektori asetäitja vastutusvaldkonna määrab peadirektor. 2 (2) Peadirektori asetäitja äraolekul asendab teda peadirektori määratud teine peadirektori asetäitja või struktuuriüksuse juht. 3 (3) Peadirektori asetäitja: 1 1) juhib talle alluvate struktuuriüksuste tööd; 2 2) koordineerib ja suunab oma vastutusvaldkonna tegevusi; 3 3) vastutab oma vastutusvaldkonna struktuuriüksuste…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti koosseisus on kuni kolm peadirektori asetäitja ametikohta, kes alluvad vahetult peadirektorile. Peadirektori asetäitja vastutusvaldkonna määrab peadirektor. 2 (2) Peadirektori asetäitja äraolekul asendab teda peadirektori määratud teine peadirektori asetäitja või struktuuriüksuse juht. 3 (3) Peadirektori asetäitja: 1 1) juhib talle alluvate struktuuriüksuste tööd; 2 2) koordineerib ja suunab oma vastutusvaldkonna tegevusi; 3 3) vastutab oma vastutusvaldkonna struktuuriüksuste ülesannete täitmise eest; 4 4) teeb peadirektorile ettepanekuid ameti eelarve koostamiseks ning eelarvevahendite kasutamiseks vastavas valdkonnas; 5 5) vastutab oma vastutusvaldkonna eelarvevahendite eesmärgipärase ja otstarbeka kasutamise eest; 6 6) teeb peadirektorile ettepanekuid ameti struktuuri ja koosseisu kohta ning oma vastutusvaldkonna korraldamiseks; 7 7) esindab ametit oma vastutusvaldkonna ja peadirektorilt saadud volituste piires; 8 8) teeb koostööd teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; 9 9) täidab muid peadirektori poolt määratud ülesandeid. 4 (4) Peadirektori asetäitja vastutusvaldkonnad, täpsemad ülesanded, pädevus, õigused ja kohustused määratakse peadirektori asetäitja ametijuhendis.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -581,7 +1257,84 @@
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_12_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti koosseisus on kuni kolm peadirektori asetäitja ametikohta, kes alluvad vahetult peadirektorile. Peadirektori asetäitja vastutusvaldkonna määrab peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peadirektori asetäitja äraolekul asendab teda peadirektori määratud teine peadirektori asetäitja või struktuuriüksuse juht.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Peadirektori asetäitja: 1) juhib talle alluvate struktuuriüksuste tööd; 2) koordineerib ja suunab oma vastutusvaldkonna tegevusi; 3) vastutab oma vastutusvaldkonna struktuuriüksuste ülesannete täitmise eest; 4) teeb peadirektorile ettepanekuid ameti eelarve koostamiseks ning eelarvevahendite kasutamiseks vastavas valdkonnas; 5) vastutab oma vastutusvaldkonna eelarvevahendite eesmärgipärase ja otstarbeka kasutamise eest; 6) teeb peadirektorile ettepanekuid ameti struktuuri ja koosseisu kohta ning oma vastutusvaldkonna korraldamiseks; 7) esindab ametit oma vastutusvaldkonna ja peadirektorilt saadud volituste piires; 8) teeb koostööd teiste riigiasutuste, kohaliku omavalitsuse üksuste, valitsusväliste siseriiklike ja rahvusvaheliste organisatsioonide ning avalikkusega; 9) täidab muid peadirektori poolt määratud ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Peadirektori asetäitja vastutusvaldkonnad, täpsemad ülesanded, pädevus, õigused ja kohustused määratakse peadirektori asetäitja ametijuhendis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
     },
     {
       "@id": "estleg:Reg_1055664_Par_13",
@@ -590,13 +1343,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Struktuuriüksuse juht",
+      "rdfs:label": {
+        "@value": "§ 13. Struktuuriüksuse juht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Struktuuriüksuse juht juhib struktuuriüksust ning korraldab selle ülesannete täitmist. Struktuuriüksuse juht juhib struktuuriüksust ning korraldab selle ülesannete täitmist. 2 (2) Struktuuriüksuse juhi täpsemad ülesanded, pädevus, õigused ja kohustused määratakse struktuuriüksuse juhi ametijuhendis. Struktuuriüksuse juhi täpsemad ülesanded, pädevus, õigused ja kohustused määratakse struktuuriüksuse juhi ametijuhendis.",
-      "estleg:legalText": "1 (1) Struktuuriüksuse juht juhib struktuuriüksust ning korraldab selle ülesannete täitmist. Struktuuriüksuse juht juhib struktuuriüksust ning korraldab selle ülesannete täitmist. 2 (2) Struktuuriüksuse juhi täpsemad ülesanded, pädevus, õigused ja kohustused määratakse struktuuriüksuse juhi ametijuhendis. Struktuuriüksuse juhi täpsemad ülesanded, pädevus, õigused ja kohustused määratakse struktuuriüksuse juhi ametijuhendis.",
+      "estleg:summary": {
+        "@value": "1 (1) Struktuuriüksuse juht juhib struktuuriüksust ning korraldab selle ülesannete täitmist. 2 (2) Struktuuriüksuse juhi täpsemad ülesanded, pädevus, õigused ja kohustused määratakse struktuuriüksuse juhi ametijuhendis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Struktuuriüksuse juht juhib struktuuriüksust ning korraldab selle ülesannete täitmist. 2 (2) Struktuuriüksuse juhi täpsemad ülesanded, pädevus, õigused ja kohustused määratakse struktuuriüksuse juhi ametijuhendis.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1000946_Par_18"
@@ -606,7 +1365,41 @@
         {
           "@id": "estleg:Reg_1055664_Par_13_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_13_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Struktuuriüksuse juht juhib struktuuriüksust ning korraldab selle ülesannete täitmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Struktuuriüksuse juhi täpsemad ülesanded, pädevus, õigused ja kohustused määratakse struktuuriüksuse juhi ametijuhendis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
     },
     {
       "@id": "estleg:Reg_1055664_Par_14",
@@ -615,13 +1408,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Komisjonid, nõukogud ja töörühmad",
+      "rdfs:label": {
+        "@value": "§ 14. Komisjonid, nõukogud ja töörühmad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Peadirektor võib moodustada ameti tegevusalas nõuandva õigusega alalisi ja ajutisi komisjone, nõukogusid ning töörühmi (edaspidi komisjon). Peadirektor võib moodustada ameti tegevusalas nõuandva õigusega alalisi ja ajutisi komisjone, nõukogusid ning töörühmi (edaspidi komisjon). 2 (2) Komisjonil on õigus pöörduda ameti struktuuriüksuste või teenistujate poole oma tööks vajalike andmete ja dokumentide saamiseks. Komisjonil on õigus pöörduda ameti struktuuriüksuste või teenistujate poole oma",
-      "estleg:legalText": "1 (1) Peadirektor võib moodustada ameti tegevusalas nõuandva õigusega alalisi ja ajutisi komisjone, nõukogusid ning töörühmi (edaspidi komisjon). Peadirektor võib moodustada ameti tegevusalas nõuandva õigusega alalisi ja ajutisi komisjone, nõukogusid ning töörühmi (edaspidi komisjon). 2 (2) Komisjonil on õigus pöörduda ameti struktuuriüksuste või teenistujate poole oma tööks vajalike andmete ja dokumentide saamiseks. Komisjonil on õigus pöörduda ameti struktuuriüksuste või teenistujate poole oma tööks vajalike andmete ja dokumentide saamiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) Peadirektor võib moodustada ameti tegevusalas nõuandva õigusega alalisi ja ajutisi komisjone, nõukogusid ning töörühmi (edaspidi komisjon). 2 (2) Komisjonil on õigus pöörduda ameti struktuuriüksuste või teenistujate poole oma tööks vajalike andmete ja dokumentide saamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Peadirektor võib moodustada ameti tegevusalas nõuandva õigusega alalisi ja ajutisi komisjone, nõukogusid ning töörühmi (edaspidi komisjon). 2 (2) Komisjonil on õigus pöörduda ameti struktuuriüksuste või teenistujate poole oma tööks vajalike andmete ja dokumentide saamiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -649,7 +1448,41 @@
         {
           "@id": "estleg:Reg_1055664_Par_14_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_14_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Peadirektor võib moodustada ameti tegevusalas nõuandva õigusega alalisi ja ajutisi komisjone, nõukogusid ning töörühmi (edaspidi komisjon).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Komisjonil on õigus pöörduda ameti struktuuriüksuste või teenistujate poole oma tööks vajalike andmete ja dokumentide saamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
     },
     {
       "@id": "estleg:Reg_1055664_Par_15",
@@ -658,13 +1491,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Komisjoni moodustamine",
+      "rdfs:label": {
+        "@value": "§ 15. Komisjoni moodustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "1 (1) Komisjon moodustatakse peadirektori käskkirjaga, milles määratakse komisjoni ülesanded, esimees ja liikmed, ülesannete täitmise tähtajad ja muud vajalikud tingimused. Komisjon moodustatakse peadirektori käskkirjaga, milles määratakse komisjoni ülesanded, esimees ja liikmed, ülesannete täitmise tähtajad ja muud vajalikud tingimused. 2 (2) Komisjoni liikmeks võib määrata väljastpoolt ametit muid isikuid nende nõusolekul. Kui tegemist on teise riigi ametiasutuse või riigi ametiasutuse hallata",
-      "estleg:legalText": "1 (1) Komisjon moodustatakse peadirektori käskkirjaga, milles määratakse komisjoni ülesanded, esimees ja liikmed, ülesannete täitmise tähtajad ja muud vajalikud tingimused. Komisjon moodustatakse peadirektori käskkirjaga, milles määratakse komisjoni ülesanded, esimees ja liikmed, ülesannete täitmise tähtajad ja muud vajalikud tingimused. 2 (2) Komisjoni liikmeks võib määrata väljastpoolt ametit muid isikuid nende nõusolekul. Kui tegemist on teise riigi ametiasutuse või riigi ametiasutuse hallatava asutuse ametniku või töötajaga, on isiku komisjoni liikmeks määramisel lisaks vajalik teise asutuse juhi nõusolek. Komisjoni liikmeks võib määrata väljastpoolt ametit muid isikuid nende nõusolekul. Kui tegemist on teise riigi ametiasutuse või riigi ametiasutuse hallatava asutuse ametniku või töötajaga, on isiku komisjoni liikmeks määramisel lisaks vajalik teise asutuse juhi nõusolek.",
+      "estleg:summary": {
+        "@value": "1 (1) Komisjon moodustatakse peadirektori käskkirjaga, milles määratakse komisjoni ülesanded, esimees ja liikmed, ülesannete täitmise tähtajad ja muud vajalikud tingimused. 2 (2) Komisjoni liikmeks võib määrata väljastpoolt ametit muid isikuid nende nõusolekul. Kui tegemist on teise riigi ametiasutuse või riigi ametiasutuse hallatava asutuse ametniku või töötajaga, on isiku komisjoni liikmeks määramisel lisaks vajalik teise asutuse juhi nõusolek.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Komisjon moodustatakse peadirektori käskkirjaga, milles määratakse komisjoni ülesanded, esimees ja liikmed, ülesannete täitmise tähtajad ja muud vajalikud tingimused. 2 (2) Komisjoni liikmeks võib määrata väljastpoolt ametit muid isikuid nende nõusolekul. Kui tegemist on teise riigi ametiasutuse või riigi ametiasutuse hallatava asutuse ametniku või töötajaga, on isiku komisjoni liikmeks määramisel lisaks vajalik teise asutuse juhi nõusolek.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -692,7 +1531,41 @@
         {
           "@id": "estleg:Reg_1055664_Par_15_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1055664_Par_15_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Komisjon moodustatakse peadirektori käskkirjaga, milles määratakse komisjoni ülesanded, esimees ja liikmed, ülesannete täitmise tähtajad ja muud vajalikud tingimused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Komisjoni liikmeks võib määrata väljastpoolt ametit muid isikuid nende nõusolekul. Kui tegemist on teise riigi ametiasutuse või riigi ametiasutuse hallatava asutuse ametniku või töötajaga, on isiku komisjoni liikmeks määramisel lisaks vajalik teise asutuse juhi nõusolek.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
     },
     {
       "@id": "estleg:Reg_1055664_Par_16",
@@ -701,13 +1574,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Ümberkorraldamine ja tegevuse lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 16. Ümberkorraldamine ja tegevuse lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "Ameti korraldatakse ümber või tema tegevus lõpetatakse seaduses sätestatud korras.",
-      "estleg:legalText": "Ameti korraldatakse ümber või tema tegevus lõpetatakse seaduses sätestatud korras. Ameti korraldatakse ümber või tema tegevus lõpetatakse seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Ameti korraldatakse ümber või tema tegevus lõpetatakse seaduses sätestatud korras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti korraldatakse ümber või tema tegevus lõpetatakse seaduses sätestatud korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -738,7 +1617,25 @@
         {
           "@id": "estleg:Reg_1055664_Par_16_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_16_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti korraldatakse ümber või tema tegevus lõpetatakse seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:Reg_1055664_Par_17",
@@ -747,18 +1644,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 17. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud.] [Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1055664_Par_17_v1055664"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_17_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) [Käesolevast tekstist välja jäetud.]",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
     },
     {
       "@id": "estleg:Reg_1055664_Par_18",
@@ -767,16 +1688,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 18. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Terviseameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1055664_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2023. a.",
-      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2023. a. Määrus jõustub 1. jaanuaril 2023. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2023. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2023. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1055664_Par_18_v1055664"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1055664_Par_18_Lg_1"
         }
       ]
     },
@@ -803,6 +1735,19 @@
       },
       "estleg:citationDetail": "lg 1",
       "estleg:citationText": "ja § 42 lõike 1"
+    },
+    {
+      "@id": "estleg:Reg_1055664_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. jaanuaril 2023. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1055664_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
     }
   ]
 }

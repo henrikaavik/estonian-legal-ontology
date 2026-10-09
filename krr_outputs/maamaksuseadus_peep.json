@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:MAAMAK_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Maamaksuseadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Maamaksuseadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Maamaksuseadus",
-      "dcterms:title": [
-        {
-          "@value": "Maamaksuseadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Land Tax Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Maamaksuseadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/130062024005.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062024005"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062024005/xml"
+      },
+      "estleg:globalId": "130062024005",
+      "eli:id_local": "130062024005",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "161873",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "2446e949aa8467461dd15de57652ebd4daab8e02babc6fff7f9d4bbb2181fd45",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1993-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/505012026005"
@@ -566,19 +578,10 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU13_0441"
         }
-      ]
-    },
-    {
-      "@id": "estleg:MAAMAK_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Maamaksuseadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_MAAMAK_default"
-        }
-      ]
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/505012026005"
+      }
     },
     {
       "@id": "estleg:Cluster_MAAMAK_default",
@@ -587,12 +590,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–13 Maamaksuseadus",
-      "skos:prefLabel": "§1–13 Maamaksuseadus",
+      "rdfs:label": {
+        "@value": "§1–13 Maamaksuseadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–13 Maamaksuseadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MAAMAK_TopicScheme"
       },
-      "estleg:provisionCount": 13
+      "estleg:provisionCount": 24
+    },
+    {
+      "@id": "estleg:MAAMAK_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Maamaksuseadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_MAAMAK_default"
+        }
+      ]
     },
     {
       "@id": "estleg:MAAMAK_Par_1",
@@ -601,13 +625,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Maamaks",
+      "rdfs:label": {
+        "@value": "§ 1. Maamaks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Maamaks on maa maksustamishinnast lähtuv maks. (2) Maa maksustamishind määratakse ja selle vaidlustamise kord kehtestatakse, lähtudes maa hindamise seadusest. Iga korralisel hindamisel määratud maa maksustamishind võetakse maamaksu arvestamisel aluseks korralisest hindamisest arvates ülejärgmise aasta 1. jaanuaril. (3) Maksu- ja Tolliamet arvutab maamaksu kohaliku omavalitsuse üksuse poolt maamaksu infosüsteemi esitatud alusandmete põhjal. (4) Kehtetu -",
-      "estleg:legalText": "(1) Maamaks on maa maksustamishinnast lähtuv maks. (2) Maa maksustamishind määratakse ja selle vaidlustamise kord kehtestatakse, lähtudes maa hindamise seadusest. Iga korralisel hindamisel määratud maa maksustamishind võetakse maamaksu arvestamisel aluseks korralisest hindamisest arvates ülejärgmise aasta 1. jaanuaril. (3) Maksu- ja Tolliamet arvutab maamaksu kohaliku omavalitsuse üksuse poolt maamaksu infosüsteemi esitatud alusandmete põhjal. (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Maamaks on maa maksustamishinnast lähtuv maks. (2) Maa maksustamishind määratakse ja selle vaidlustamise kord kehtestatakse, lähtudes maa hindamise seadusest. Iga korralisel hindamisel määratud maa maksustamishind võetakse maamaksu arvestamisel aluseks korralisest hindamisest arvates ülejärgmise aasta 1. jaanuaril. (3) Maksu- ja Tolliamet arvutab maamaksu kohaliku omavalitsuse üksuse poolt maamaksu infosüsteemi esitatud alusandmete põhjal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Maamaks on maa maksustamishinnast lähtuv maks. (2) Maa maksustamishind määratakse ja selle vaidlustamise kord kehtestatakse, lähtudes maa hindamise seadusest. Iga korralisel hindamisel määratud maa maksustamishind võetakse maamaksu arvestamisel aluseks korralisest hindamisest arvates ülejärgmise aasta 1. jaanuaril. (3) Maksu- ja Tolliamet arvutab maamaksu kohaliku omavalitsuse üksuse poolt maamaksu infosüsteemi esitatud alusandmete põhjal.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -620,9 +650,6 @@
         },
         {
           "@id": "estleg:MAAMAK_Par_1_Lg_3"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_1_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -740,31 +767,24 @@
       ]
     },
     {
-      "@id": "estleg:MAAMAK_Par_1_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_1"
-      },
-      "rdfs:label": "§ 1 lg 4"
-    },
-    {
       "@id": "estleg:MAAMAK_Par_2",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Maksu objekt",
+      "rdfs:label": {
+        "@value": "§ 2. Maksu objekt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Maamaksuga maksustatakse kogu maa, välja arvatud käesoleva seaduse §-s 4 nimetatud maa.",
+      "estleg:summary": {
+        "@value": "Maamaksuga maksustatakse kogu maa, välja arvatud käesoleva seaduse §-s 4 nimetatud maa.",
+        "@language": "et"
+      },
       "estleg:legalText": "Maamaksuga maksustatakse kogu maa, välja arvatud käesoleva seaduse §-s 4 nimetatud maa.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -799,10 +819,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maamaksuga maksustatakse kogu maa, välja arvatud käesoleva seaduse §-s 4 nimetatud maa.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maamaksuga maksustatakse kogu maa, välja arvatud käesoleva seaduse §-s 4 nimetatud maa.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:MAAMAK_Par_4"
@@ -816,12 +838,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Maksu subjekt",
+      "rdfs:label": {
+        "@value": "§ 3. Maksu subjekt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Maamaksu maksab maa omanik või käesoleva seaduse §-s 10 ettenähtud juhul maa kasutaja.",
+      "estleg:summary": {
+        "@value": "Maamaksu maksab maa omanik või käesoleva seaduse §-s 10 ettenähtud juhul maa kasutaja.",
+        "@language": "et"
+      },
       "estleg:legalText": "Maamaksu maksab maa omanik või käesoleva seaduse §-s 10 ettenähtud juhul maa kasutaja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -857,10 +885,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maamaksu maksab maa omanik või käesoleva seaduse §-s 10 ettenähtud juhul maa kasutaja.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maamaksu maksab maa omanik või käesoleva seaduse §-s 10 ettenähtud juhul maa kasutaja.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -883,13 +913,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Maksuvaba maa",
+      "rdfs:label": {
+        "@value": "§ 4. Maksuvaba maa",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Maamaksu ei maksta: kehtetu - kaitsealade loodusreservaadi ja sihtkaitsevööndi maalt ning püsielupaikade sihtkaitsevööndi maalt; välisriikide diplomaatiliste ja konsulaaresinduste hoonete või nende osade juurde kuuluvalt maalt; välisriigi või rahvusvahelise organisatsiooni kasutuses olevalt maalt Vabariigi Valitsuse ja välisriigi või rahvusvahelise organisatsiooni vahel sõlmitud lepingu alusel; kehtetu - kirikute ja koguduste pühakodade aluselt maalt; vastava omavalitsusüksuse haldusalal",
-      "estleg:legalText": "(1) Maamaksu ei maksta: kehtetu - kaitsealade loodusreservaadi ja sihtkaitsevööndi maalt ning püsielupaikade sihtkaitsevööndi maalt; välisriikide diplomaatiliste ja konsulaaresinduste hoonete või nende osade juurde kuuluvalt maalt; välisriigi või rahvusvahelise organisatsiooni kasutuses olevalt maalt Vabariigi Valitsuse ja välisriigi või rahvusvahelise organisatsiooni vahel sõlmitud lepingu alusel; kehtetu - kirikute ja koguduste pühakodade aluselt maalt; vastava omavalitsusüksuse haldusalal asuvalt munitsipaalmaalt, välja arvatud käesoleva seaduse §-s 10 ettenähtud juhul; avaliku veekogu ja avalikult kasutatava veekogu aluselt maalt; välislepingus sätestatud juhtudel rahvusvahelise sõjalise peakorteri kasutuses olevalt maalt; riigi omandis olevalt ühiskondlike ehitiste maa sihtotstarbega maalt, kui seda maad kasutab riigiasutus, kohaliku omavalitsuse asutus või juriidiline isik käesoleva lõike punktis 2, 3, 5 või 8 nimetatud otstarbel; üldkasutatava maa sihtotstarbega maalt; riigitee, kohaliku tee ja avalikuks kasutamiseks määratud eratee teemaalt. (2) Looduskaitseseaduse §-s 31 sätestatud piiranguvööndimaalt, 5. peatükis sätestatud hoiualade maalt, § 50 lõike 1 alusel määratud püsielupaiga piiranguvööndi maalt ja § 68 alusel sätestatud looduse üksikobjekti piiranguvööndi maalt ning veeseaduse § 118 alusel sätestatud kalda või ranna veekaitsevööndi maalt makstakse maamaksu 50 protsenti maamaksumäärast. (3) Käesoleva paragrahvi lõike 1 punktides 11, 7 ja 11 ning lõikes 2 nimetatud maksuvabastust kohaldatakse vabastuse aluse tekkimisele järgneva aasta 1. jaanuarist. Kui maksuvabastuse alus tekib 1. jaanuaril, kohaldatakse maksuvabastust samast päevast.",
+      "estleg:summary": {
+        "@value": "(1) Maamaksu ei maksta: 1) 1¹) kaitsealade loodusreservaadi ja sihtkaitsevööndi maalt ning püsielupaikade sihtkaitsevööndi maalt; 2) välisriikide diplomaatiliste ja konsulaaresinduste hoonete või nende osade juurde kuuluvalt maalt; 3) välisriigi või rahvusvahelise organisatsiooni kasutuses olevalt maalt Vabariigi Valitsuse ja välisriigi või rahvusvahelise organisatsiooni vahel sõlmitud lepingu alusel; 4) 5) kirikute ja koguduste pühakodade aluselt maalt; 6) vastava omavalitsusüksuse haldusalal",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Maamaksu ei maksta: 1) 1¹) kaitsealade loodusreservaadi ja sihtkaitsevööndi maalt ning püsielupaikade sihtkaitsevööndi maalt; 2) välisriikide diplomaatiliste ja konsulaaresinduste hoonete või nende osade juurde kuuluvalt maalt; 3) välisriigi või rahvusvahelise organisatsiooni kasutuses olevalt maalt Vabariigi Valitsuse ja välisriigi või rahvusvahelise organisatsiooni vahel sõlmitud lepingu alusel; 4) 5) kirikute ja koguduste pühakodade aluselt maalt; 6) vastava omavalitsusüksuse haldusalal asuvalt munitsipaalmaalt, välja arvatud käesoleva seaduse §-s 10 ettenähtud juhul; 7) avaliku veekogu ja avalikult kasutatava veekogu aluselt maalt; 8) välislepingus sätestatud juhtudel rahvusvahelise sõjalise peakorteri kasutuses olevalt maalt; 9) riigi omandis olevalt ühiskondlike ehitiste maa sihtotstarbega maalt, kui seda maad kasutab riigiasutus, kohaliku omavalitsuse asutus või juriidiline isik käesoleva lõike punktis 2, 3, 5 või 8 nimetatud otstarbel; 10) üldkasutatava maa sihtotstarbega maalt; 11) riigitee, kohaliku tee ja avalikuks kasutamiseks määratud eratee teemaalt. (2) Looduskaitseseaduse §-s 31 sätestatud piiranguvööndimaalt, 5. peatükis sätestatud hoiualade maalt, § 50 lõike 1 alusel määratud püsielupaiga piiranguvööndi maalt ja § 68 alusel sätestatud looduse üksikobjekti piiranguvööndi maalt ning veeseaduse § 118 alusel sätestatud kalda või ranna veekaitsevööndi maalt makstakse maamaksu 50 protsenti maamaksumäärast. (3) Käesoleva paragrahvi lõike 1 punktides 1¹, 7 ja 11 ning lõikes 2 nimetatud maksuvabastust kohaldatakse vabastuse aluse tekkimisele järgneva aasta 1. jaanuarist. Kui maksuvabastuse alus tekib 1. jaanuaril, kohaldatakse maksuvabastust samast päevast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -993,12 +1029,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Maamaksu ei maksta: kehtetu - kaitsealade loodusreservaadi ja sihtkaitsevööndi maalt ning püsielupaikade sihtkaitsevööndi maalt; välisriikide diplomaatiliste ja konsulaaresinduste hoonete või nende osade juurde kuuluvalt maalt; välisriigi või rahvusvahelise organisatsiooni kasutuses olevalt maalt Vabariigi Valitsuse ja välisriigi või rahvusvahelise organisatsiooni vahel sõlmitud lepingu alusel; kehtetu - kirikute ja koguduste pühakodade aluselt maalt; vastava omavalitsusüksuse haldusalal asuvalt munitsipaalmaalt, välja arvatud käesoleva seaduse §-s 10 ettenähtud juhul; avaliku veekogu ja avalikult kasutatava veekogu aluselt maalt; välislepingus sätestatud juhtudel rahvusvahelise sõjalise peakorteri kasutuses olevalt maalt; riigi omandis olevalt ühiskondlike ehitiste maa sihtotstarbega maalt, kui seda maad kasutab riigiasutus, kohaliku omavalitsuse asutus või juriidiline isik käesoleva lõike punktis 2, 3, 5 või 8 nimetatud otstarbel; üldkasutatava maa sihtotstarbega maalt; riigitee, kohaliku tee ja avalikuks kasutamiseks määratud eratee teemaalt.",
+      "estleg:legalText": "(1) Maamaksu ei maksta: 1) 1¹) kaitsealade loodusreservaadi ja sihtkaitsevööndi maalt ning püsielupaikade sihtkaitsevööndi maalt; 2) välisriikide diplomaatiliste ja konsulaaresinduste hoonete või nende osade juurde kuuluvalt maalt; 3) välisriigi või rahvusvahelise organisatsiooni kasutuses olevalt maalt Vabariigi Valitsuse ja välisriigi või rahvusvahelise organisatsiooni vahel sõlmitud lepingu alusel; 4) 5) kirikute ja koguduste pühakodade aluselt maalt; 6) vastava omavalitsusüksuse haldusalal asuvalt munitsipaalmaalt, välja arvatud käesoleva seaduse §-s 10 ettenähtud juhul; 7) avaliku veekogu ja avalikult kasutatava veekogu aluselt maalt; 8) välislepingus sätestatud juhtudel rahvusvahelise sõjalise peakorteri kasutuses olevalt maalt; 9) riigi omandis olevalt ühiskondlike ehitiste maa sihtotstarbega maalt, kui seda maad kasutab riigiasutus, kohaliku omavalitsuse asutus või juriidiline isik käesoleva lõike punktis 2, 3, 5 või 8 nimetatud otstarbel; 10) üldkasutatava maa sihtotstarbega maalt; 11) riigitee, kohaliku tee ja avalikuks kasutamiseks määratud eratee teemaalt.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_4"
       },
       "rdfs:label": "§ 4 lg 1",
-      "estleg:itemNumber": "2",
+      "estleg:itemNumber": [
+        "1",
+        "1¹",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1066,7 +1115,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõike 1 punktides 11, 7 ja 11 ning lõikes 2 nimetatud maksuvabastust kohaldatakse vabastuse aluse tekkimisele järgneva aasta 1. jaanuarist. Kui maksuvabastuse alus tekib 1. jaanuaril, kohaldatakse maksuvabastust samast päevast.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõike 1 punktides 1¹, 7 ja 11 ning lõikes 2 nimetatud maksuvabastust kohaldatakse vabastuse aluse tekkimisele järgneva aasta 1. jaanuarist. Kui maksuvabastuse alus tekib 1. jaanuaril, kohaldatakse maksuvabastust samast päevast.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_4"
       },
@@ -1079,13 +1128,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Maksumäär",
+      "rdfs:label": {
+        "@value": "§ 5. Maksumäär",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Kohaliku omavalitsuse volikogu kehtestab hiljemalt maksustamisaastale eelneva aasta 1. oktoobriks igale järgmisele maa sihtotstarbegrupile maksumäära: elamumaale ja maatulundusmaa õuemaa kõlvikule 0,1–1,0 protsenti maa maksustamishinnast aastas; käesoleva lõike punktis 1 nimetamata maatulundusmaale 0,1–0,5 protsenti maa maksustamishinnast aastas; käesoleva lõike punktides 1 ja 2 nimetamata sihtotstarbega maale 0,1–2,0 protsenti maa maksustamishinnast aastas.",
-      "estleg:legalText": "(1) Kohaliku omavalitsuse volikogu kehtestab hiljemalt maksustamisaastale eelneva aasta 1. oktoobriks igale järgmisele maa sihtotstarbegrupile maksumäära: elamumaale ja maatulundusmaa õuemaa kõlvikule 0,1–1,0 protsenti maa maksustamishinnast aastas; käesoleva lõike punktis 1 nimetamata maatulundusmaale 0,1–0,5 protsenti maa maksustamishinnast aastas; käesoleva lõike punktides 1 ja 2 nimetamata sihtotstarbega maale 0,1–2,0 protsenti maa maksustamishinnast aastas. (2) Kehtetu - (3) Maksumäärade muutmise korral sisestab kohaliku omavalitsuse üksus muudetud maamaksumäärad maamaksu infosüsteemi maksustamisaastale eelneva aasta 2. oktoobriks. Kui nimetatud tähtpäevaks ei ole muudetud maksumäärasid maamaksu infosüsteemi sisestatud, arvutatakse maamaks eelmisel aastal kehtinud määrade järgi. Maamaksumäärad avaldatakse Maksu- ja Tolliameti veebilehel. (4) Kehtetu - (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Kohaliku omavalitsuse volikogu kehtestab hiljemalt maksustamisaastale eelneva aasta 1. oktoobriks igale järgmisele maa sihtotstarbegrupile maksumäära: 1) elamumaale ja maatulundusmaa õuemaa kõlvikule 0,1–1,0 protsenti maa maksustamishinnast aastas; 2) käesoleva lõike punktis 1 nimetamata maatulundusmaale 0,1–0,5 protsenti maa maksustamishinnast aastas; 3) käesoleva lõike punktides 1 ja 2 nimetamata sihtotstarbega maale 0,1–2,0 protsenti maa maksustamishinnast aastas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kohaliku omavalitsuse volikogu kehtestab hiljemalt maksustamisaastale eelneva aasta 1. oktoobriks igale järgmisele maa sihtotstarbegrupile maksumäära: 1) elamumaale ja maatulundusmaa õuemaa kõlvikule 0,1–1,0 protsenti maa maksustamishinnast aastas; 2) käesoleva lõike punktis 1 nimetamata maatulundusmaale 0,1–0,5 protsenti maa maksustamishinnast aastas; 3) käesoleva lõike punktides 1 ja 2 nimetamata sihtotstarbega maale 0,1–2,0 protsenti maa maksustamishinnast aastas. (3) Maksumäärade muutmise korral sisestab kohaliku omavalitsuse üksus muudetud maamaksumäärad maamaksu infosüsteemi maksustamisaastale eelneva aasta 2. oktoobriks. Kui nimetatud tähtpäevaks ei ole muudetud maksumäärasid maamaksu infosüsteemi sisestatud, arvutatakse maamaks eelmisel aastal kehtinud määrade järgi. Maamaksumäärad avaldatakse Maksu- ja Tolliameti veebilehel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -1094,16 +1149,7 @@
           "@id": "estleg:MAAMAK_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:MAAMAK_Par_5_Lg_2"
-        },
-        {
           "@id": "estleg:MAAMAK_Par_5_Lg_3"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_5_Lg_4"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_5_Lg_5"
         }
       ],
       "estleg:targetGroup": [
@@ -1181,12 +1227,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kohaliku omavalitsuse volikogu kehtestab hiljemalt maksustamisaastale eelneva aasta 1. oktoobriks igale järgmisele maa sihtotstarbegrupile maksumäära: elamumaale ja maatulundusmaa õuemaa kõlvikule 0,1–1,0 protsenti maa maksustamishinnast aastas; käesoleva lõike punktis 1 nimetamata maatulundusmaale 0,1–0,5 protsenti maa maksustamishinnast aastas; käesoleva lõike punktides 1 ja 2 nimetamata sihtotstarbega maale 0,1–2,0 protsenti maa maksustamishinnast aastas.",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse volikogu kehtestab hiljemalt maksustamisaastale eelneva aasta 1. oktoobriks igale järgmisele maa sihtotstarbegrupile maksumäära: 1) elamumaale ja maatulundusmaa õuemaa kõlvikule 0,1–1,0 protsenti maa maksustamishinnast aastas; 2) käesoleva lõike punktis 1 nimetamata maatulundusmaale 0,1–0,5 protsenti maa maksustamishinnast aastas; 3) käesoleva lõike punktides 1 ja 2 nimetamata sihtotstarbega maale 0,1–2,0 protsenti maa maksustamishinnast aastas.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_5"
       },
       "rdfs:label": "§ 5 lg 1",
-      "estleg:itemNumber": "1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1426,19 +1476,6 @@
       "estleg:competenceType": "regulation"
     },
     {
-      "@id": "estleg:MAAMAK_Par_5_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_5"
-      },
-      "rdfs:label": "§ 5 lg 2"
-    },
-    {
       "@id": "estleg:MAAMAK_Par_5_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -1498,54 +1535,31 @@
       ]
     },
     {
-      "@id": "estleg:MAAMAK_Par_5_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_5"
-      },
-      "rdfs:label": "§ 5 lg 4"
-    },
-    {
-      "@id": "estleg:MAAMAK_Par_5_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_5"
-      },
-      "rdfs:label": "§ 5 lg 5"
-    },
-    {
       "@id": "estleg:MAAMAK_Par_5_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5¹.",
-      "rdfs:label": "§ 5¹. Maamaksu infosüsteem",
+      "rdfs:label": {
+        "@value": "§ 5¹. Maamaksu infosüsteem",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Maamaksu infosüsteem on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registrisse kuuluv andmekogu. Andmekogu pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Kehtetu - (3) Maamaksu infosüsteem on elektrooniline andmekogu, mille eesmärk on maamaksu arvestamiseks vajaliku teabe kogumine ja töötlemine. (3¹) Kohaliku omavalitsuse üksus esitab Maksu- ja Tolliametile maamaksu infosüsteemi maamaksu arvutamiseks vajalikud alusandmed",
-      "estleg:legalText": "(1) Maamaksu infosüsteem on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registrisse kuuluv andmekogu. Andmekogu pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (2) Kehtetu - (3) Maamaksu infosüsteem on elektrooniline andmekogu, mille eesmärk on maamaksu arvestamiseks vajaliku teabe kogumine ja töötlemine. (3¹) Kohaliku omavalitsuse üksus esitab Maksu- ja Tolliametile maamaksu infosüsteemi maamaksu arvutamiseks vajalikud alusandmed maksustamisaasta 1. veebruariks. (3²) Kohaliku omavalitsuse üksus on kohustatud kontrollima maamaksu infosüsteemis olevate andmete õigsust ja vajaduse korral andmed parandama või neid täiendama. (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Maamaksu infosüsteem on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registrisse kuuluv andmekogu. Andmekogu pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (3) Maamaksu infosüsteem on elektrooniline andmekogu, mille eesmärk on maamaksu arvestamiseks vajaliku teabe kogumine ja töötlemine. (3¹) Kohaliku omavalitsuse üksus esitab Maksu- ja Tolliametile maamaksu infosüsteemi maamaksu arvutamiseks vajalikud alusandmed maksustamisaasta 1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Maamaksu infosüsteem on maksukorralduse seaduse § 17 lõike 1 alusel asutatud maksukohustuslaste registrisse kuuluv andmekogu. Andmekogu pidamise kord sätestatakse maksukohustuslaste registri põhimääruses. (3) Maamaksu infosüsteem on elektrooniline andmekogu, mille eesmärk on maamaksu arvestamiseks vajaliku teabe kogumine ja töötlemine. (3¹) Kohaliku omavalitsuse üksus esitab Maksu- ja Tolliametile maamaksu infosüsteemi maamaksu arvutamiseks vajalikud alusandmed maksustamisaasta 1. veebruariks. (3²) Kohaliku omavalitsuse üksus on kohustatud kontrollima maamaksu infosüsteemis olevate andmete õigsust ja vajaduse korral andmed parandama või neid täiendama.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:MAAMAK_Par_5_1_Lg_1"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_5_1_Lg_2"
         },
         {
           "@id": "estleg:MAAMAK_Par_5_1_Lg_3"
@@ -1555,9 +1569,6 @@
         },
         {
           "@id": "estleg:MAAMAK_Par_5_1_Lg_3_2"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_5_1_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -1628,19 +1639,6 @@
           "@id": "estleg:MKS_Par_17_Lg_1"
         }
       ]
-    },
-    {
-      "@id": "estleg:MAAMAK_Par_5_1_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_5_1"
-      },
-      "rdfs:label": "§ 5¹ lg 2"
     },
     {
       "@id": "estleg:MAAMAK_Par_5_1_Lg_3",
@@ -1716,31 +1714,24 @@
       ]
     },
     {
-      "@id": "estleg:MAAMAK_Par_5_1_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_5_1"
-      },
-      "rdfs:label": "§ 5¹ lg 4"
-    },
-    {
       "@id": "estleg:MAAMAK_Par_6",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Maksu laekumine",
+      "rdfs:label": {
+        "@value": "§ 6. Maksu laekumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Maamaks laekub maa asukohajärgse kohaliku omavalitsuse üksuse eelarvesse.",
+      "estleg:summary": {
+        "@value": "Maamaks laekub maa asukohajärgse kohaliku omavalitsuse üksuse eelarvesse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Maamaks laekub maa asukohajärgse kohaliku omavalitsuse üksuse eelarvesse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -1787,10 +1778,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maamaks laekub maa asukohajärgse kohaliku omavalitsuse üksuse eelarvesse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maamaks laekub maa asukohajärgse kohaliku omavalitsuse üksuse eelarvesse.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_6"
       },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1813,13 +1806,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Maksu tasumine",
+      "rdfs:label": {
+        "@value": "§ 7. Maksu tasumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Kuni 100-eurone maamaks mis tahes kohaliku omavalitsuse üksuses asuvalt maalt tasutakse 31. märtsiks. Maamaksust, mis ületab 100 eurot, tasutakse 31. märtsiks vähemalt pool, kuid mitte vähem kui 100 eurot. Ülejäänud osa maamaksust tasutakse hiljemalt 1. oktoobriks. (2) Maksu- ja Tolliamet väljastab maksumaksjale maksuteate tasumisele kuuluva maamaksu summa kohta hiljemalt 15. veebruariks. Maamaksuteade on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut,",
-      "estleg:legalText": "(1) Kuni 100-eurone maamaks mis tahes kohaliku omavalitsuse üksuses asuvalt maalt tasutakse 31. märtsiks. Maamaksust, mis ületab 100 eurot, tasutakse 31. märtsiks vähemalt pool, kuid mitte vähem kui 100 eurot. Ülejäänud osa maamaksust tasutakse hiljemalt 1. oktoobriks. (2) Maksu- ja Tolliamet väljastab maksumaksjale maksuteate tasumisele kuuluva maamaksu summa kohta hiljemalt 15. veebruariks. Maamaksuteade on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut, kui seaduses ei ole sätestatud teisiti. Maksuteadet ei pea allkirjastama. (2¹) Valdkonna eest vastutav minister võib Vabariigi Valitsuse volitusel sõlmida vastavalt halduskoostöö seadusele eraõigusliku juriidilise isikuga lepingu maksuteadete kättetoimetamisega seotud tööde tegemiseks. Eelnimetatud eraõiguslikku juriidilist isikut loetakse haldusülesande piires maksukohustuslaste registri volitatud töötlejaks ja talle laieneb isikuandmete kaitse seaduses sätestatu. (2²) Kui maksumaksjale kuulub mitu maatükki või ta kasutab mitut ühe kohaliku omavalitsuse üksuse haldusterritooriumil asuvat maatükki, summeeritakse maatükkide eest tasumisele kuuluvad maksusummad, arvestamata käesoleva paragrahvi lõikes 3 sätestatut. (2³) Kehtetu - (3) Maamaksu ei määrata ja maksuteadet ei väljastata, kui maksusumma on alla 5 euro. (4) Maksumaksja, kes ei ole maksustamisaasta maamaksuteadet 25. veebruariks kätte saanud, on kohustatud sellest 30 päeva jooksul teavitama Maksu- ja Tolliametit. (5) Kui maksumaksja ei ole saanud ühtegi maamaksuteadet, arvates käesoleva seaduse jõustumisest, on ta kohustatud kirjalikult või elektrooniliselt teatama maa asukohajärgsele valla- või linnavalitsusele enda omandis või kasutuses oleva maa suuruse ja sihtotstarbe. (6) Kehtetu - (7) Maamaksu arvutamise ja tasumise korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Kuni 100-eurone maamaks mis tahes kohaliku omavalitsuse üksuses asuvalt maalt tasutakse 31. märtsiks. Maamaksust, mis ületab 100 eurot, tasutakse 31. märtsiks vähemalt pool, kuid mitte vähem kui 100 eurot. Ülejäänud osa maamaksust tasutakse hiljemalt 1. oktoobriks. (2) Maksu- ja Tolliamet väljastab maksumaksjale maksuteate tasumisele kuuluva maamaksu summa kohta hiljemalt 15. veebruariks. Maamaksuteade on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kuni 100-eurone maamaks mis tahes kohaliku omavalitsuse üksuses asuvalt maalt tasutakse 31. märtsiks. Maamaksust, mis ületab 100 eurot, tasutakse 31. märtsiks vähemalt pool, kuid mitte vähem kui 100 eurot. Ülejäänud osa maamaksust tasutakse hiljemalt 1. oktoobriks. (2) Maksu- ja Tolliamet väljastab maksumaksjale maksuteate tasumisele kuuluva maamaksu summa kohta hiljemalt 15. veebruariks. Maamaksuteade on haldusakt, millele rakendatakse maksukorralduse seaduses maksuotsuse kohta sätestatut, kui seaduses ei ole sätestatud teisiti. Maksuteadet ei pea allkirjastama. (2¹) Valdkonna eest vastutav minister võib Vabariigi Valitsuse volitusel sõlmida vastavalt halduskoostöö seadusele eraõigusliku juriidilise isikuga lepingu maksuteadete kättetoimetamisega seotud tööde tegemiseks. Eelnimetatud eraõiguslikku juriidilist isikut loetakse haldusülesande piires maksukohustuslaste registri volitatud töötlejaks ja talle laieneb isikuandmete kaitse seaduses sätestatu. (2²) Kui maksumaksjale kuulub mitu maatükki või ta kasutab mitut ühe kohaliku omavalitsuse üksuse haldusterritooriumil asuvat maatükki, summeeritakse maatükkide eest tasumisele kuuluvad maksusummad, arvestamata käesoleva paragrahvi lõikes 3 sätestatut. (3) Maamaksu ei määrata ja maksuteadet ei väljastata, kui maksusumma on alla 5 euro. (4) Maksumaksja, kes ei ole maksustamisaasta maamaksuteadet 25. veebruariks kätte saanud, on kohustatud sellest 30 päeva jooksul teavitama Maksu- ja Tolliametit. (5) Kui maksumaksja ei ole saanud ühtegi maamaksuteadet, arvates käesoleva seaduse jõustumisest, on ta kohustatud kirjalikult või elektrooniliselt teatama maa asukohajärgsele valla- või linnavalitsusele enda omandis või kasutuses oleva maa suuruse ja sihtotstarbe. (7) Maamaksu arvutamise ja tasumise korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -1837,9 +1836,6 @@
           "@id": "estleg:MAAMAK_Par_7_Lg_2_2"
         },
         {
-          "@id": "estleg:MAAMAK_Par_7_Lg_2_3"
-        },
-        {
           "@id": "estleg:MAAMAK_Par_7_Lg_3"
         },
         {
@@ -1847,9 +1843,6 @@
         },
         {
           "@id": "estleg:MAAMAK_Par_7_Lg_5"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_7_Lg_6"
         },
         {
           "@id": "estleg:MAAMAK_Par_7_Lg_7"
@@ -2046,19 +2039,6 @@
       ]
     },
     {
-      "@id": "estleg:MAAMAK_Par_7_Lg_2_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2³",
-      "estleg:legalText": "(2³) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 2³"
-    },
-    {
       "@id": "estleg:MAAMAK_Par_7_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -2130,19 +2110,6 @@
       }
     },
     {
-      "@id": "estleg:MAAMAK_Par_7_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 6"
-    },
-    {
       "@id": "estleg:MAAMAK_Par_7_Lg_7",
       "@type": [
         "estleg:Subsection",
@@ -2168,13 +2135,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Maamaksuteate elektrooniline kättetoimetamine",
+      "rdfs:label": {
+        "@value": "§ 7¹. Maamaksuteate elektrooniline kättetoimetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Maamaksuteate elektroonilisele kättetoimetamisele kohaldatakse maksukorralduse seaduse § 54 lõigetes 1−3 ja lõike 4 punktis 1, samuti maksukorralduse seaduse § 451 alusel valdkonna eest vastutava ministri poolt antud määrusega sätestatut.",
-      "estleg:legalText": "Maamaksuteate elektroonilisele kättetoimetamisele kohaldatakse maksukorralduse seaduse § 54 lõigetes 1−3 ja lõike 4 punktis 1, samuti maksukorralduse seaduse § 451 alusel valdkonna eest vastutava ministri poolt antud määrusega sätestatut.",
+      "estleg:summary": {
+        "@value": "Maamaksuteate elektroonilisele kättetoimetamisele kohaldatakse maksukorralduse seaduse § 54 lõigetes 1−3 ja lõike 4 punktis 1, samuti maksukorralduse seaduse § 45¹ alusel valdkonna eest vastutava ministri poolt antud määrusega sätestatut.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Maamaksuteate elektroonilisele kättetoimetamisele kohaldatakse maksukorralduse seaduse § 54 lõigetes 1−3 ja lõike 4 punktis 1, samuti maksukorralduse seaduse § 45¹ alusel valdkonna eest vastutava ministri poolt antud määrusega sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -2206,10 +2179,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maamaksuteate elektroonilisele kättetoimetamisele kohaldatakse maksukorralduse seaduse § 54 lõigetes 1−3 ja lõike 4 punktis 1, samuti maksukorralduse seaduse § 451 alusel valdkonna eest vastutava ministri poolt antud määrusega sätestatut.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maamaksuteate elektroonilisele kättetoimetamisele kohaldatakse maksukorralduse seaduse § 54 lõigetes 1−3 ja lõike 4 punktis 1, samuti maksukorralduse seaduse § 45¹ alusel valdkonna eest vastutava ministri poolt antud määrusega sätestatut.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_7_1"
       },
+      "rdfs:label": "§ 7¹ lg 1",
       "estleg:itemNumber": "1",
       "estleg:references": [
         {
@@ -2224,12 +2199,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Maksukohustuse tekkimine",
+      "rdfs:label": {
+        "@value": "§ 8. Maksukohustuse tekkimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Maamaksukohustus tekib jooksva aasta 1. jaanuaril ja maksuteade väljastatakse isikule, kes 1. jaanuari seisuga on kinnistusraamatu andmete kohaselt kinnisasja omanik, hoonestaja või kasutusvaldaja või pärimisregistri andmete kohaselt kinnisasja pärija. (2) Kinnistusraamatus mittekajastuvale käesoleva seaduse §-s 10 sätestatud kasutusõigusele kohaldatakse käesoleva paragrahvi 1. lõikes sätestatut, arvestades kasutusõiguse kokkuleppe kehtivust maksustamisaasta 1. jaanuari seisuga.",
+      "estleg:summary": {
+        "@value": "(1) Maamaksukohustus tekib jooksva aasta 1. jaanuaril ja maksuteade väljastatakse isikule, kes 1. jaanuari seisuga on kinnistusraamatu andmete kohaselt kinnisasja omanik, hoonestaja või kasutusvaldaja või pärimisregistri andmete kohaselt kinnisasja pärija. (2) Kinnistusraamatus mittekajastuvale käesoleva seaduse §-s 10 sätestatud kasutusõigusele kohaldatakse käesoleva paragrahvi 1. lõikes sätestatut, arvestades kasutusõiguse kokkuleppe kehtivust maksustamisaasta 1. jaanuari seisuga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maamaksukohustus tekib jooksva aasta 1. jaanuaril ja maksuteade väljastatakse isikule, kes 1. jaanuari seisuga on kinnistusraamatu andmete kohaselt kinnisasja omanik, hoonestaja või kasutusvaldaja või pärimisregistri andmete kohaselt kinnisasja pärija. (2) Kinnistusraamatus mittekajastuvale käesoleva seaduse §-s 10 sätestatud kasutusõigusele kohaldatakse käesoleva paragrahvi 1. lõikes sätestatut, arvestades kasutusõiguse kokkuleppe kehtivust maksustamisaasta 1. jaanuari seisuga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -2462,13 +2443,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8¹.",
-      "rdfs:label": "§ 8¹. Maamaksu tõusu piirmäär",
+      "rdfs:label": {
+        "@value": "§ 8¹. Maamaksu tõusu piirmäär",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Kohaliku omavalitsuse üksuse volikogu kehtestab määrusega maamaksu aastase suurenemise maksimaalse piirmäära vahemikus 10−100 protsenti hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kui maamaksu summa suureneb eelmise maksustamisperioodiga võrreldes rohkem kui käesoleva paragrahvi lõike 1 alusel kehtestatud piirmäär, suureneb maamaks volikogu kehtestatud piirmäära ulatuses, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud juhul.",
-      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu kehtestab määrusega maamaksu aastase suurenemise maksimaalse piirmäära vahemikus 10−100 protsenti hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kui maamaksu summa suureneb eelmise maksustamisperioodiga võrreldes rohkem kui käesoleva paragrahvi lõike 1 alusel kehtestatud piirmäär, suureneb maamaks volikogu kehtestatud piirmäära ulatuses, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud juhul. Seejuures ei võeta arvesse käesoleva seaduse §-s 4 sätestatud maksuvabastusi ega §-s 11 sätestatud maamaksusoodustusi. (2) Kui käesoleva paragrahvi lõike 11 alusel arvutatud maamaksu summa suurenemine on võrreldes eelmise maksustamisperioodiga väiksem kui 5 eurot või sellega võrdne, suurendatakse maksusummat 5 euro võrra, kuid mitte rohkem kui maa maksustamishinnale ja maamaksumäärale tugineva maamaksu summani. (2¹) Maamaksu summa aastase suurenemise piirmäära kehtestamise või muutmise korral sisestab kohaliku omavalitsuse üksus käesoleva paragrahvi lõikes 1 nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt maksustamisperioodile eelneva aasta 2. oktoobriks. Kui nimetatud tähtpäevaks ei ole maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi sisestatud, arvutatakse maamaks eelmisel aastal kehtinud piirmäära järgi. (3) Kui moodustatakse uus katastriüksus või katastriüksuse maksustamishind muutub kõlvikute, pindala või sihtotstarbe muutumise tõttu, arvutatakse katastriüksusele 2001. aasta korralise hindamise tulemuste põhjal maksustamishind, võrreldakse seda viimase korralise hindamise tulemuste põhjal määratava maa maksustamishinnaga ning seejärel kohaldatakse maksustamishinna muutusest tingitud maamaksusumma muutusele käesoleva paragrahvi lõiget 1 ja vajaduse korral lõiget 2. (4) Kui käesoleva paragrahvi lõikes 3 nimetatud katastriüksuse muudatuste tulemusel arvestatud uue katastriüksuse maksustamishinna suhtes oleks rakendunud lõikes 1 nimetatud maamaksu suurenemise piirmäär, suurendatakse lõikes 3 nimetatud arvestuslikku maamaksu summat iga maksustamisperioodi kohta kohaliku omavalitsuse üksuse volikogu kehtestatud maamaksu summa aastase suurenemise piirmäära ulatuses ja kohaldatakse vajaduse korral lõiget 2.",
+      "estleg:summary": {
+        "@value": "(1) Kohaliku omavalitsuse üksuse volikogu kehtestab määrusega maamaksu aastase suurenemise maksimaalse piirmäära vahemikus 10−100 protsenti hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kui maamaksu summa suureneb eelmise maksustamisperioodiga võrreldes rohkem kui käesoleva paragrahvi lõike 1 alusel kehtestatud piirmäär, suureneb maamaks volikogu kehtestatud piirmäära ulatuses, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud juhul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu kehtestab määrusega maamaksu aastase suurenemise maksimaalse piirmäära vahemikus 10−100 protsenti hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kui maamaksu summa suureneb eelmise maksustamisperioodiga võrreldes rohkem kui käesoleva paragrahvi lõike 1 alusel kehtestatud piirmäär, suureneb maamaks volikogu kehtestatud piirmäära ulatuses, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud juhul. Seejuures ei võeta arvesse käesoleva seaduse §-s 4 sätestatud maksuvabastusi ega §-s 11 sätestatud maamaksusoodustusi. (2) Kui käesoleva paragrahvi lõike 1¹ alusel arvutatud maamaksu summa suurenemine on võrreldes eelmise maksustamisperioodiga väiksem kui 5 eurot või sellega võrdne, suurendatakse maksusummat 5 euro võrra, kuid mitte rohkem kui maa maksustamishinnale ja maamaksumäärale tugineva maamaksu summani. (2¹) Maamaksu summa aastase suurenemise piirmäära kehtestamise või muutmise korral sisestab kohaliku omavalitsuse üksus käesoleva paragrahvi lõikes 1 nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt maksustamisperioodile eelneva aasta 2. oktoobriks. Kui nimetatud tähtpäevaks ei ole maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi sisestatud, arvutatakse maamaks eelmisel aastal kehtinud piirmäära järgi. (3) Kui moodustatakse uus katastriüksus või katastriüksuse maksustamishind muutub kõlvikute, pindala või sihtotstarbe muutumise tõttu, arvutatakse katastriüksusele 2001. aasta korralise hindamise tulemuste põhjal maksustamishind, võrreldakse seda viimase korralise hindamise tulemuste põhjal määratava maa maksustamishinnaga ning seejärel kohaldatakse maksustamishinna muutusest tingitud maamaksusumma muutusele käesoleva paragrahvi lõiget 1 ja vajaduse korral lõiget 2. (4) Kui käesoleva paragrahvi lõikes 3 nimetatud katastriüksuse muudatuste tulemusel arvestatud uue katastriüksuse maksustamishinna suhtes oleks rakendunud lõikes 1 nimetatud maamaksu suurenemise piirmäär, suurendatakse lõikes 3 nimetatud arvestuslikku maamaksu summat iga maksustamisperioodi kohta kohaliku omavalitsuse üksuse volikogu kehtestatud maamaksu summa aastase suurenemise piirmäära ulatuses ja kohaldatakse vajaduse korral lõiget 2.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -2582,7 +2569,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kui käesoleva paragrahvi lõike 11 alusel arvutatud maamaksu summa suurenemine on võrreldes eelmise maksustamisperioodiga väiksem kui 5 eurot või sellega võrdne, suurendatakse maksusummat 5 euro võrra, kuid mitte rohkem kui maa maksustamishinnale ja maamaksumäärale tugineva maamaksu summani.",
+      "estleg:legalText": "(2) Kui käesoleva paragrahvi lõike 1¹ alusel arvutatud maamaksu summa suurenemine on võrreldes eelmise maksustamisperioodiga väiksem kui 5 eurot või sellega võrdne, suurendatakse maksusummat 5 euro võrra, kuid mitte rohkem kui maa maksustamishinnale ja maamaksumäärale tugineva maamaksu summani.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_8_1"
       },
@@ -2662,13 +2649,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Maksu maksmise kontroll",
+      "rdfs:label": {
+        "@value": "§ 9. Maksu maksmise kontroll",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 9. Maksu maksmise kontroll",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -2691,12 +2683,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Maakasutaja maksukohustus",
+      "rdfs:label": {
+        "@value": "§ 10. Maakasutaja maksukohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Kui maakasutus ei ole maareformi seadusega ettenähtud korras ümber vormistatud, maksab maamaksu maa kasutaja. (2) Maa koormamisel hoonestusõiguse või kasutusvaldusega maksab maamaksu hoonestaja või kasutusvaldaja. (3) Munitsipaalomandis oleva kinnisasja maavara kaevandamiseks andmise korral maksab maamaksu maa kasutamise õiguse saanud isik. (4) Riigi omandis oleva kinnisasja kasutamiseks andmise korral maksab maamaksu kinnisasja kasutamise õiguse saanud isik, välja arvatud juhul, kui",
+      "estleg:summary": {
+        "@value": "(1) Kui maakasutus ei ole maareformi seadusega ettenähtud korras ümber vormistatud, maksab maamaksu maa kasutaja. (2) Maa koormamisel hoonestusõiguse või kasutusvaldusega maksab maamaksu hoonestaja või kasutusvaldaja. (3) Munitsipaalomandis oleva kinnisasja maavara kaevandamiseks andmise korral maksab maamaksu maa kasutamise õiguse saanud isik. (4) Riigi omandis oleva kinnisasja kasutamiseks andmise korral maksab maamaksu kinnisasja kasutamise õiguse saanud isik, välja arvatud juhul, kui",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui maakasutus ei ole maareformi seadusega ettenähtud korras ümber vormistatud, maksab maamaksu maa kasutaja. (2) Maa koormamisel hoonestusõiguse või kasutusvaldusega maksab maamaksu hoonestaja või kasutusvaldaja. (3) Munitsipaalomandis oleva kinnisasja maavara kaevandamiseks andmise korral maksab maamaksu maa kasutamise õiguse saanud isik. (4) Riigi omandis oleva kinnisasja kasutamiseks andmise korral maksab maamaksu kinnisasja kasutamise õiguse saanud isik, välja arvatud juhul, kui kinnisasja kasutustasu kujundamisel on proportsionaalselt kasutusõiguse ulatusega arvestatud maamaksu summaga või kui kinnisasja kasutamise õigus tuleneb reaalservituudi või isikliku kasutusõiguse seadmise lepingust ja kasutamiseks andmise lepingus ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -2891,13 +2889,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Maksusoodustused",
+      "rdfs:label": {
+        "@value": "§ 11. Maksusoodustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Kohaliku omavalitsuse üksuse volikogu võib määrusega kehtestada käesoleva paragrahvi lõikes 11 sätestatud tingimustel kodualuse maa maksusoodustuse kuni 1000 eurot hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kodualuse maana käsitatakse maa omaniku omandis olevat või käesoleva seaduse §-s 10 nimetatud maa kasutaja kasutuses olevat maad, mille sihtotstarve või üks sihtotstarvetest on elamumaa, või maatulundusmaa õuemaa kõlvikut, kui sellel maal asuvas hoones on maa",
-      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu võib määrusega kehtestada käesoleva paragrahvi lõikes 11 sätestatud tingimustel kodualuse maa maksusoodustuse kuni 1000 eurot hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kodualuse maana käsitatakse maa omaniku omandis olevat või käesoleva seaduse §-s 10 nimetatud maa kasutaja kasutuses olevat maad, mille sihtotstarve või üks sihtotstarvetest on elamumaa, või maatulundusmaa õuemaa kõlvikut, kui sellel maal asuvas hoones on maa omaniku või kasutaja elukoht rahvastikuregistrisse kantud elukoha andmete järgi. (2) Käesoleva paragrahvi lõikes 1 nimetatud maksusoodustus kehtib hooneühistu maale, arvestades selliste hooneühistu liikmete osamaksude proportsiooni, kelle rahvastikuregistrijärgne elukoht on sellel maal asuvas hoones. (3) Kui maa või korteriomand on ühis- või kaasomandis või käesoleva seaduse § 10 lõike 2 alusel kasutada antud, rakendatakse käesoleva paragrahvi lõikes 1 nimetatud maksusoodustust omandile või maakasutusele üks kord. (3¹) Kehtetu - (3²) Kehtetu - (4) Kehtetu - (5) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 11 nimetatud tingimustel määrata täiendava maksusoodustuse kuni 1000 eurot järgmistele sihtrühmadele: riikliku pensionikindlustuse seaduse alusel pensioni saajad; isikud, kellel on töövõimetoetuse seaduse alusel tuvastatud osaline või puuduv töövõime. (6) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 11 nimetatud tingimustel määrata täiendava maksusoodustuse represseeritule ja represseerituga võrdsustatud isikule okupatsioonirežiimide poolt represseeritud isiku seaduse tähenduses, vabastades tema kasutuses oleva lõikes 11 nimetatud maa täielikult maamaksust. (7) Käesoleva paragrahvi lõikes 5 või 6 nimetatud täiendava maksusoodustuse saamiseks esitab käesolevas paragrahvis sätestatud tingimustele vastav isik taotluse kohaliku omavalitsuse üksusele volikogu kehtestatud korra järgi. (8) Käesoleva paragrahvi lõikes 1 nimetatud maksusoodustuse saamiseks õigustatud isik ja lõikes 5 või 6 nimetatud maksusoodustust kasutada sooviv isik peavad vastama käesolevas paragrahvis sätestatud tingimustele maksustamisperioodi 1. jaanuari seisuga. (8¹) Maksusoodustuse kehtestamise või muutmise korral sisestab kohaliku omavalitsuse üksus käesoleva paragrahvi lõigetes 1, 5 ja 6 nimetatud maksusoodustuse maamaksu infosüsteemi hiljemalt maksustamisperioodile eelneva aasta 2. oktoobriks. Kui nimetatud tähtpäevaks ei ole maksusoodustust maamaksu infosüsteemi sisestatud, arvutatakse maamaksusoodustus eelmisel aastal kehtinud määra järgi. (9) Maamaksu maksusoodustuse taotlemise korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Kohaliku omavalitsuse üksuse volikogu võib määrusega kehtestada käesoleva paragrahvi lõikes 1¹ sätestatud tingimustel kodualuse maa maksusoodustuse kuni 1000 eurot hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kodualuse maana käsitatakse maa omaniku omandis olevat või käesoleva seaduse §-s 10 nimetatud maa kasutaja kasutuses olevat maad, mille sihtotstarve või üks sihtotstarvetest on elamumaa, või maatulundusmaa õuemaa kõlvikut, kui sellel maal asuvas hoones on maa",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu võib määrusega kehtestada käesoleva paragrahvi lõikes 1¹ sätestatud tingimustel kodualuse maa maksusoodustuse kuni 1000 eurot hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks. (1¹) Kodualuse maana käsitatakse maa omaniku omandis olevat või käesoleva seaduse §-s 10 nimetatud maa kasutaja kasutuses olevat maad, mille sihtotstarve või üks sihtotstarvetest on elamumaa, või maatulundusmaa õuemaa kõlvikut, kui sellel maal asuvas hoones on maa omaniku või kasutaja elukoht rahvastikuregistrisse kantud elukoha andmete järgi. (2) Käesoleva paragrahvi lõikes 1 nimetatud maksusoodustus kehtib hooneühistu maale, arvestades selliste hooneühistu liikmete osamaksude proportsiooni, kelle rahvastikuregistrijärgne elukoht on sellel maal asuvas hoones. (3) Kui maa või korteriomand on ühis- või kaasomandis või käesoleva seaduse § 10 lõike 2 alusel kasutada antud, rakendatakse käesoleva paragrahvi lõikes 1 nimetatud maksusoodustust omandile või maakasutusele üks kord. (5) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 1¹ nimetatud tingimustel määrata täiendava maksusoodustuse kuni 1000 eurot järgmistele sihtrühmadele: 1) riikliku pensionikindlustuse seaduse alusel pensioni saajad; 2) isikud, kellel on töövõimetoetuse seaduse alusel tuvastatud osaline või puuduv töövõime. (6) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 1¹ nimetatud tingimustel määrata täiendava maksusoodustuse represseeritule ja represseerituga võrdsustatud isikule okupatsioonirežiimide poolt represseeritud isiku seaduse tähenduses, vabastades tema kasutuses oleva lõikes 1¹ nimetatud maa täielikult maamaksust. (7) Käesoleva paragrahvi lõikes 5 või 6 nimetatud täiendava maksusoodustuse saamiseks esitab käesolevas paragrahvis sätestatud tingimustele vastav isik taotluse kohaliku omavalitsuse üksusele volikogu kehtestatud korra järgi. (8) Käesoleva paragrahvi lõikes 1 nimetatud maksusoodustuse saamiseks õigustatud isik ja lõikes 5 või 6 nimetatud maksusoodustust kasutada sooviv isik peavad vastama käesolevas paragrahvis sätestatud tingimustele maksustamisperioodi 1. jaanuari seisuga. (8¹) Maksusoodustuse kehtestamise või muutmise korral sisestab kohaliku omavalitsuse üksus käesoleva paragrahvi lõigetes 1, 5 ja 6 nimetatud maksusoodustuse maamaksu infosüsteemi hiljemalt maksustamisperioodile eelneva aasta 2. oktoobriks. Kui nimetatud tähtpäevaks ei ole maksusoodustust maamaksu infosüsteemi sisestatud, arvutatakse maamaksusoodustus eelmisel aastal kehtinud määra järgi. (9) Maamaksu maksusoodustuse taotlemise korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -2913,15 +2917,6 @@
         },
         {
           "@id": "estleg:MAAMAK_Par_11_Lg_3"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_11_Lg_3_1"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_11_Lg_3_2"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_11_Lg_4"
         },
         {
           "@id": "estleg:MAAMAK_Par_11_Lg_5"
@@ -3096,7 +3091,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu võib määrusega kehtestada käesoleva paragrahvi lõikes 11 sätestatud tingimustel kodualuse maa maksusoodustuse kuni 1000 eurot hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks.",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu võib määrusega kehtestada käesoleva paragrahvi lõikes 1¹ sätestatud tingimustel kodualuse maa maksusoodustuse kuni 1000 eurot hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_11"
       },
@@ -3236,62 +3231,21 @@
       ]
     },
     {
-      "@id": "estleg:MAAMAK_Par_11_Lg_3_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3¹",
-      "estleg:legalText": "(3¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_11"
-      },
-      "rdfs:label": "§ 11 lg 3¹"
-    },
-    {
-      "@id": "estleg:MAAMAK_Par_11_Lg_3_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3²",
-      "estleg:legalText": "(3²) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_11"
-      },
-      "rdfs:label": "§ 11 lg 3²"
-    },
-    {
-      "@id": "estleg:MAAMAK_Par_11_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_11"
-      },
-      "rdfs:label": "§ 11 lg 4",
-      "estleg:implementedBy": [
-        {
-          "@id": "estleg:Reg_1027880_Map"
-        }
-      ],
-      "estleg:implementedByCount": 1
-    },
-    {
       "@id": "estleg:MAAMAK_Par_11_Lg_5",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 11 nimetatud tingimustel määrata täiendava maksusoodustuse kuni 1000 eurot järgmistele sihtrühmadele: riikliku pensionikindlustuse seaduse alusel pensioni saajad; isikud, kellel on töövõimetoetuse seaduse alusel tuvastatud osaline või puuduv töövõime.",
+      "estleg:legalText": "(5) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 1¹ nimetatud tingimustel määrata täiendava maksusoodustuse kuni 1000 eurot järgmistele sihtrühmadele: 1) riikliku pensionikindlustuse seaduse alusel pensioni saajad; 2) isikud, kellel on töövõimetoetuse seaduse alusel tuvastatud osaline või puuduv töövõime.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_11"
       },
       "rdfs:label": "§ 11 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -3343,7 +3297,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 11 nimetatud tingimustel määrata täiendava maksusoodustuse represseeritule ja represseerituga võrdsustatud isikule okupatsioonirežiimide poolt represseeritud isiku seaduse tähenduses, vabastades tema kasutuses oleva lõikes 11 nimetatud maa täielikult maamaksust.",
+      "estleg:legalText": "(6) Kohaliku omavalitsuse üksuse volikogu võib hiljemalt maksustamisperioodile eelneva aasta 1. oktoobriks käesoleva paragrahvi lõikes 1¹ nimetatud tingimustel määrata täiendava maksusoodustuse represseeritule ja represseerituga võrdsustatud isikule okupatsioonirežiimide poolt represseeritud isiku seaduse tähenduses, vabastades tema kasutuses oleva lõikes 1¹ nimetatud maa täielikult maamaksust.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_11"
       },
@@ -3507,13 +3461,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
-      "rdfs:label": "§ 11¹. Maksuvabastuse ja -soodustuse arvutamine",
+      "rdfs:label": {
+        "@value": "§ 11¹. Maksuvabastuse ja -soodustuse arvutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Kui käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvaba maa on väiksem kui kogu maatükk, arvutatakse iga selline maksuvabastus kogu maatüki maksustamishinnast võrdeliselt selle maksuvaba maa pindala osaga kogu maatüki pindalast. (2) Kui käesoleva seaduse § 4 lõikes 1 nimetatud maksuvabastus on seotud maa sihtotstarbe või kõlvikuga, arvutatakse iga selline maksuvabastus kogu maatüki asjaomase sihtotstarbega ala või kõlviku maksustamishinnast võrdeliselt maksuvaba maa pindala osaga kogu",
-      "estleg:legalText": "(1) Kui käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvaba maa on väiksem kui kogu maatükk, arvutatakse iga selline maksuvabastus kogu maatüki maksustamishinnast võrdeliselt selle maksuvaba maa pindala osaga kogu maatüki pindalast. (2) Kui käesoleva seaduse § 4 lõikes 1 nimetatud maksuvabastus on seotud maa sihtotstarbe või kõlvikuga, arvutatakse iga selline maksuvabastus kogu maatüki asjaomase sihtotstarbega ala või kõlviku maksustamishinnast võrdeliselt maksuvaba maa pindala osaga kogu asjaomase sihtotstarbega ala või kõlviku pindalast. (3) Mitme käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvabastuse või § 11 lõigetes 1–3, 5 ja 6 nimetatud maksusoodustuse esinemisel samal maksustataval maatükil maksuvabastused ja -soodustused summeeritakse. , jõustumine muudetud [RT I, 04.07.2014, 12] (4) Kui kinnisasja omanikul, hoonestajal või kasutusvaldajal, kelle omandis või kasutuses on kahe või enama kohaliku omavalitsuse üksuse territooriumil asuv kinnisasi, on õigus käesoleva seaduse § 11 lõikes 1, 5 või 6 nimetatud maamaksusoodustusele, rakendatakse asjaomaste kohaliku omavalitsuse üksuste kehtestatud maksusoodustusi proportsionaalselt nende territooriumile jääva kinnisasja pindalaga.",
+      "estleg:summary": {
+        "@value": "(1) Kui käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvaba maa on väiksem kui kogu maatükk, arvutatakse iga selline maksuvabastus kogu maatüki maksustamishinnast võrdeliselt selle maksuvaba maa pindala osaga kogu maatüki pindalast. (2) Kui käesoleva seaduse § 4 lõikes 1 nimetatud maksuvabastus on seotud maa sihtotstarbe või kõlvikuga, arvutatakse iga selline maksuvabastus kogu maatüki asjaomase sihtotstarbega ala või kõlviku maksustamishinnast võrdeliselt maksuvaba maa pindala osaga kogu",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvaba maa on väiksem kui kogu maatükk, arvutatakse iga selline maksuvabastus kogu maatüki maksustamishinnast võrdeliselt selle maksuvaba maa pindala osaga kogu maatüki pindalast. (2) Kui käesoleva seaduse § 4 lõikes 1 nimetatud maksuvabastus on seotud maa sihtotstarbe või kõlvikuga, arvutatakse iga selline maksuvabastus kogu maatüki asjaomase sihtotstarbega ala või kõlviku maksustamishinnast võrdeliselt maksuvaba maa pindala osaga kogu asjaomase sihtotstarbega ala või kõlviku pindalast. (3) Mitme käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvabastuse või § 11 lõigetes 1–3, 5 ja 6 nimetatud maksusoodustuse esinemisel samal maksustataval maatükil maksuvabastused ja -soodustused summeeritakse. (4) Kui kinnisasja omanikul, hoonestajal või kasutusvaldajal, kelle omandis või kasutuses on kahe või enama kohaliku omavalitsuse üksuse territooriumil asuv kinnisasi, on õigus käesoleva seaduse § 11 lõikes 1, 5 või 6 nimetatud maamaksusoodustusele, rakendatakse asjaomaste kohaliku omavalitsuse üksuste kehtestatud maksusoodustusi proportsionaalselt nende territooriumile jääva kinnisasja pindalaga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -3611,7 +3571,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Mitme käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvabastuse või § 11 lõigetes 1–3, 5 ja 6 nimetatud maksusoodustuse esinemisel samal maksustataval maatükil maksuvabastused ja -soodustused summeeritakse. , jõustumine muudetud [RT I, 04.07.2014, 12]",
+      "estleg:legalText": "(3) Mitme käesoleva seaduse § 4 lõigetes 1 ja 2 nimetatud maksuvabastuse või § 11 lõigetes 1–3, 5 ja 6 nimetatud maksusoodustuse esinemisel samal maksustataval maatükil maksuvabastused ja -soodustused summeeritakse.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_11_1"
       },
@@ -3667,13 +3627,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Maksumaksja vastutus",
+      "rdfs:label": {
+        "@value": "§ 12. Maksumaksja vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 12. Maksumaksja vastutus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -3714,12 +3679,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12¹.",
-      "rdfs:label": "§ 12¹. Alusandmete sisestamine maamaksu infosüsteemi",
+      "rdfs:label": {
+        "@value": "§ 12¹. Alusandmete sisestamine maamaksu infosüsteemi",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Kohaliku omavalitsuse üksus sisestab maamaksu infosüsteemi pidamise põhimääruses nimetatud maamaksu alusandmed maamaksu infosüsteemi 2017. aasta 1. veebruariks.",
+      "estleg:summary": {
+        "@value": "Kohaliku omavalitsuse üksus sisestab maamaksu infosüsteemi pidamise põhimääruses nimetatud maamaksu alusandmed maamaksu infosüsteemi 2017. aasta 1. veebruariks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kohaliku omavalitsuse üksus sisestab maamaksu infosüsteemi pidamise põhimääruses nimetatud maamaksu alusandmed maamaksu infosüsteemi 2017. aasta 1. veebruariks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -3760,10 +3731,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kohaliku omavalitsuse üksus sisestab maamaksu infosüsteemi pidamise põhimääruses nimetatud maamaksu alusandmed maamaksu infosüsteemi 2017. aasta 1. veebruariks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksus sisestab maamaksu infosüsteemi pidamise põhimääruses nimetatud maamaksu alusandmed maamaksu infosüsteemi 2017. aasta 1. veebruariks.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_12_1"
       },
+      "rdfs:label": "§ 12¹ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -3786,12 +3759,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12².",
-      "rdfs:label": "§ 12². Maamaksu infosüsteemi likvideerimine",
+      "rdfs:label": {
+        "@value": "§ 12². Maamaksu infosüsteemi likvideerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Kuni 2021. aasta 1. jaanuarini peetav maamaksu infosüsteem likvideeritakse hiljemalt 2021. aasta 31. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Kuni 2021. aasta 1. jaanuarini peetav maamaksu infosüsteem likvideeritakse hiljemalt 2021. aasta 31. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kuni 2021. aasta 1. jaanuarini peetav maamaksu infosüsteem likvideeritakse hiljemalt 2021. aasta 31. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -3818,10 +3797,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kuni 2021. aasta 1. jaanuarini peetav maamaksu infosüsteem likvideeritakse hiljemalt 2021. aasta 31. jaanuaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kuni 2021. aasta 1. jaanuarini peetav maamaksu infosüsteem likvideeritakse hiljemalt 2021. aasta 31. jaanuaril.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_12_2"
-      }
+      },
+      "rdfs:label": "§ 12² lg 1"
     },
     {
       "@id": "estleg:MAAMAK_Par_12_3",
@@ -3830,13 +3811,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12³.",
-      "rdfs:label": "§ 12³. Käesoleva seaduse § 8",
+      "rdfs:label": {
+        "@value": "§ 12³. Käesoleva seaduse § 8¹ lõike 4 rakendamise erand 2024. aastal",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 81 lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2024. aastal 10 protsenti või 5 euro võrra, kui maamaksu summa kümneprotsendine suurenemine on väiksem kui 5 eurot.",
-      "estleg:legalText": "Käesoleva seaduse § 81 lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2024. aastal 10 protsenti või 5 euro võrra, kui maamaksu summa kümneprotsendine suurenemine on väiksem kui 5 eurot.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 8¹ lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2024. aastal 10 protsenti või 5 euro võrra, kui maamaksu summa kümneprotsendine suurenemine on väiksem kui 5 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva seaduse § 8¹ lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2024. aastal 10 protsenti või 5 euro võrra, kui maamaksu summa kümneprotsendine suurenemine on väiksem kui 5 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -3857,10 +3844,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 81 lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2024. aastal 10 protsenti või 5 euro võrra, kui maamaksu summa kümneprotsendine suurenemine on väiksem kui 5 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 8¹ lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2024. aastal 10 protsenti või 5 euro võrra, kui maamaksu summa kümneprotsendine suurenemine on väiksem kui 5 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_12_3"
-      }
+      },
+      "rdfs:label": "§ 12³ lg 1"
     },
     {
       "@id": "estleg:MAAMAK_Par_12_4",
@@ -3869,13 +3858,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁴.",
-      "rdfs:label": "§ 12⁴. Käesoleva seaduse § 8",
+      "rdfs:label": {
+        "@value": "§ 12⁴. Käesoleva seaduse § 8¹ lõike 2¹ rakendamise erand 2025. aastal",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Kui kohaliku omavalitsuse üksus ei ole sisestanud käesoleva seaduse § 81 lõikes 21 nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt 2025. aasta 2. oktoobriks, loetakse maamaksu summa aastase suurenemise piirmääraks 2026. aastal 10 protsenti.",
-      "estleg:legalText": "Kui kohaliku omavalitsuse üksus ei ole sisestanud käesoleva seaduse § 81 lõikes 21 nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt 2025. aasta 2. oktoobriks, loetakse maamaksu summa aastase suurenemise piirmääraks 2026. aastal 10 protsenti.",
+      "estleg:summary": {
+        "@value": "Kui kohaliku omavalitsuse üksus ei ole sisestanud käesoleva seaduse § 8¹ lõikes 2¹ nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt 2025. aasta 2. oktoobriks, loetakse maamaksu summa aastase suurenemise piirmääraks 2026. aastal 10 protsenti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kui kohaliku omavalitsuse üksus ei ole sisestanud käesoleva seaduse § 8¹ lõikes 2¹ nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt 2025. aasta 2. oktoobriks, loetakse maamaksu summa aastase suurenemise piirmääraks 2026. aastal 10 protsenti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -3910,10 +3905,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui kohaliku omavalitsuse üksus ei ole sisestanud käesoleva seaduse § 81 lõikes 21 nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt 2025. aasta 2. oktoobriks, loetakse maamaksu summa aastase suurenemise piirmääraks 2026. aastal 10 protsenti.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui kohaliku omavalitsuse üksus ei ole sisestanud käesoleva seaduse § 8¹ lõikes 2¹ nimetatud maamaksu summa aastase suurenemise piirmäära maamaksu infosüsteemi hiljemalt 2025. aasta 2. oktoobriks, loetakse maamaksu summa aastase suurenemise piirmääraks 2026. aastal 10 protsenti.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_12_4"
       },
+      "rdfs:label": "§ 12⁴ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -3936,13 +3933,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁵.",
-      "rdfs:label": "§ 12⁵. Käesoleva seaduse § 8",
+      "rdfs:label": {
+        "@value": "§ 12⁵. Käesoleva seaduse § 8¹ lõike 4 rakendamise erand 2025. aasta eest maamaksu tasumisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 81 lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2025. aastal 50 protsenti või 20 euro võrra, kui maamaksu summa viiekümneprotsendine suurenemine on väiksem kui 20 eurot.",
-      "estleg:legalText": "Käesoleva seaduse § 81 lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2025. aastal 50 protsenti või 20 euro võrra, kui maamaksu summa viiekümneprotsendine suurenemine on väiksem kui 20 eurot.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 8¹ lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2025. aastal 50 protsenti või 20 euro võrra, kui maamaksu summa viiekümneprotsendine suurenemine on väiksem kui 20 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva seaduse § 8¹ lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2025. aastal 50 protsenti või 20 euro võrra, kui maamaksu summa viiekümneprotsendine suurenemine on väiksem kui 20 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -3963,10 +3966,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 81 lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2025. aastal 50 protsenti või 20 euro võrra, kui maamaksu summa viiekümneprotsendine suurenemine on väiksem kui 20 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 8¹ lõikes 4 sätestatud juhul suurendatakse sama paragrahvi lõikes 3 nimetatud arvestuslikku maamaksu summat 2025. aastal 50 protsenti või 20 euro võrra, kui maamaksu summa viiekümneprotsendine suurenemine on väiksem kui 20 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_12_5"
-      }
+      },
+      "rdfs:label": "§ 12⁵ lg 1"
     },
     {
       "@id": "estleg:MAAMAK_Par_12_6",
@@ -3975,12 +3980,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁶.",
-      "rdfs:label": "§ 12⁶. Käesoleva seaduse § 11 lõigete 5–8 rakendamine",
+      "rdfs:label": {
+        "@value": "§ 12⁶. Käesoleva seaduse § 11 lõigete 5–8 rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 11 lõikeid 5–8 rakendatakse esimest korda 2026. aasta maamaksu suhtes.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 11 lõikeid 5–8 rakendatakse esimest korda 2026. aasta maamaksu suhtes.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse § 11 lõikeid 5–8 rakendatakse esimest korda 2026. aasta maamaksu suhtes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
@@ -4012,10 +4023,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 11 lõikeid 5–8 rakendatakse esimest korda 2026. aasta maamaksu suhtes.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 11 lõikeid 5–8 rakendatakse esimest korda 2026. aasta maamaksu suhtes.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_12_6"
       },
+      "rdfs:label": "§ 12⁶ lg 1",
       "estleg:references": [
         {
           "@id": "estleg:MAAMAK_Par_11"
@@ -4029,13 +4042,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12⁷.",
-      "rdfs:label": "§ 12⁷. Käesoleva seaduse §-de 8",
+      "rdfs:label": {
+        "@value": "§ 12⁷. Käesoleva seaduse §-de 8¹ ja 11 rakendamise mõju järelhindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "Regionaal- ja Põllumajandusministeerium analüüsib hiljemalt 2029. aasta 1. jaanuariks käesoleva seaduse §-s 81 sätestatud kohaliku omavalitsuse üksuse volikogu kehtestatava maamaksu summa aastase suurenemise piirmäära ning §-s 11 sätestatud maksusoodustuste kehtestamise muudatuste eesmärgi saavutamist ja nimetatud sätete rakendamise mõju ning esitab vajaduse korral ettepanekud asjakohaste õigusaktide muutmiseks.",
-      "estleg:legalText": "Regionaal- ja Põllumajandusministeerium analüüsib hiljemalt 2029. aasta 1. jaanuariks käesoleva seaduse §-s 81 sätestatud kohaliku omavalitsuse üksuse volikogu kehtestatava maamaksu summa aastase suurenemise piirmäära ning §-s 11 sätestatud maksusoodustuste kehtestamise muudatuste eesmärgi saavutamist ja nimetatud sätete rakendamise mõju ning esitab vajaduse korral ettepanekud asjakohaste õigusaktide muutmiseks.",
+      "estleg:summary": {
+        "@value": "Regionaal- ja Põllumajandusministeerium analüüsib hiljemalt 2029. aasta 1. jaanuariks käesoleva seaduse §-s 8¹ sätestatud kohaliku omavalitsuse üksuse volikogu kehtestatava maamaksu summa aastase suurenemise piirmäära ning §-s 11 sätestatud maksusoodustuste kehtestamise muudatuste eesmärgi saavutamist ja nimetatud sätete rakendamise mõju ning esitab vajaduse korral ettepanekud asjakohaste õigusaktide muutmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Regionaal- ja Põllumajandusministeerium analüüsib hiljemalt 2029. aasta 1. jaanuariks käesoleva seaduse §-s 8¹ sätestatud kohaliku omavalitsuse üksuse volikogu kehtestatava maamaksu summa aastase suurenemise piirmäära ning §-s 11 sätestatud maksusoodustuste kehtestamise muudatuste eesmärgi saavutamist ja nimetatud sätete rakendamise mõju ning esitab vajaduse korral ettepanekud asjakohaste õigusaktide muutmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
@@ -4084,10 +4103,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Regionaal- ja Põllumajandusministeerium analüüsib hiljemalt 2029. aasta 1. jaanuariks käesoleva seaduse §-s 81 sätestatud kohaliku omavalitsuse üksuse volikogu kehtestatava maamaksu summa aastase suurenemise piirmäära ning §-s 11 sätestatud maksusoodustuste kehtestamise muudatuste eesmärgi saavutamist ja nimetatud sätete rakendamise mõju ning esitab vajaduse korral ettepanekud asjakohaste õigusaktide muutmiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Regionaal- ja Põllumajandusministeerium analüüsib hiljemalt 2029. aasta 1. jaanuariks käesoleva seaduse §-s 8¹ sätestatud kohaliku omavalitsuse üksuse volikogu kehtestatava maamaksu summa aastase suurenemise piirmäära ning §-s 11 sätestatud maksusoodustuste kehtestamise muudatuste eesmärgi saavutamist ja nimetatud sätete rakendamise mõju ning esitab vajaduse korral ettepanekud asjakohaste õigusaktide muutmiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:MAAMAK_Par_12_7"
       },
+      "rdfs:label": "§ 12⁷ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -4113,22 +4134,25 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 13. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maamaksuseadus",
       "estleg:partOfAct": {
         "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub 1993. aasta 1. juulist. (2) Kehtetu - (3) 1993. aasta II poolaasta maamaks tasutakse hiljemalt 1993. aasta 15. novembriks.",
-      "estleg:legalText": "(1) Käesolev seadus jõustub 1993. aasta 1. juulist. (2) Kehtetu - (3) 1993. aasta II poolaasta maamaks tasutakse hiljemalt 1993. aasta 15. novembriks.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub 1993. aasta 1. juulist. (3) 1993. aasta II poolaasta maamaks tasutakse hiljemalt 1993. aasta 15. novembriks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesolev seadus jõustub 1993. aasta 1. juulist. (3) 1993. aasta II poolaasta maamaks tasutakse hiljemalt 1993. aasta 15. novembriks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MAAMAK_default"
       },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:MAAMAK_Par_13_Lg_1"
-        },
-        {
-          "@id": "estleg:MAAMAK_Par_13_Lg_2"
         },
         {
           "@id": "estleg:MAAMAK_Par_13_Lg_3"
@@ -4175,19 +4199,6 @@
       "rdfs:label": "§ 13 lg 1"
     },
     {
-      "@id": "estleg:MAAMAK_Par_13_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:MAAMAK_Par_13"
-      },
-      "rdfs:label": "§ 13 lg 2"
-    },
-    {
       "@id": "estleg:MAAMAK_Par_13_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -4201,116 +4212,20 @@
       "rdfs:label": "§ 13 lg 3"
     },
     {
-      "@id": "estleg:Citation_MAAMAK_P_7_1_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/505012026005",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_7_1"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationDetail": "MKS",
-      "estleg:citationText": "maksukorralduse seaduse § 451"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_7_1_Lg_1_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_7_1_Lg_1"
+      "eli:realizes": {
+        "@id": "estleg:MAAMAK_Map"
       },
-      "estleg:citationDetail": "MKS",
-      "estleg:citationText": "maksukorralduse seaduse § 451"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_3_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_3"
-      },
-      "estleg:citationText": "Käesoleva seaduse § 81 lõikes 4"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_3_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_3_Lg_1"
-      },
-      "estleg:citationText": "Käesoleva seaduse § 81 lõikes 4"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_4_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_4"
-      },
-      "estleg:citationText": "käesoleva seaduse § 81 lõikes 21"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_4_Lg_1_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_4_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 81 lõikes 21"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_5_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_5"
-      },
-      "estleg:citationText": "Käesoleva seaduse § 81 lõikes 4"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_5_Lg_1_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_5_Lg_1"
-      },
-      "estleg:citationText": "Käesoleva seaduse § 81 lõikes 4"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_7_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_7"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 81"
-    },
-    {
-      "@id": "estleg:Citation_MAAMAK_P_12_7_Lg_1_10",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:MAAMAK_Par_12_7_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 81"
+      "rdfs:label": {
+        "@value": "Land Tax Act",
+        "@language": "en"
+      }
     }
   ]
 }

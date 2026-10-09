@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:FMAKLTAETEOL_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
       "dcterms:title": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/807340.xml"
+        "@id": "https://www.riigiteataja.ee/akt/807340"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/807340/xml"
+      },
+      "estleg:globalId": "807340",
+      "eli:id_local": "807340",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "158170",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "71aa7ec15fc2f3fe4c0da2430ebd18774bbf170c5f1d6f484ddcadb6ab12cb7c",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2004-10-29",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -43,30 +64,39 @@
       ]
     },
     {
-      "@id": "estleg:FMAKLTAETEOL_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_FMAKLTAETEOL_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_FMAKLTAETEOL_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
-      "skos:prefLabel": "§1–2 Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:FMAKLTAETEOL_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:FMAKLTAETEOL_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_FMAKLTAETEOL_default"
+        }
+      ]
     },
     {
       "@id": "estleg:FMAKLTAETEOL_Par_1",
@@ -75,12 +105,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetami...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda (juurde lisatud), mis on vastu võetud Euroopa Nõukogu ministrite komitee...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:FMAKLTAETEOL_Map"
       },
-      "estleg:summary": "Ühineda (juurde lisatud), mis on vastu võetud Euroopa Nõukogu ministrite komitee 1988. aasta 26. oktoobri resolutsiooniga nr (88) 15.",
+      "estleg:summary": {
+        "@value": "Ühineda (juurde lisatud), mis on vastu võetud Euroopa Nõukogu ministrite komitee 1988. aasta 26. oktoobri resolutsiooniga nr (88) 15.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda (juurde lisatud), mis on vastu võetud Euroopa Nõukogu ministrite komitee 1988. aasta 26. oktoobri resolutsiooniga nr (88) 15.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_FMAKLTAETEOL_default"
@@ -102,10 +138,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda (juurde lisatud), mis on vastu võetud Euroopa Nõukogu ministrite komitee 1988. aasta 26. oktoobri resolutsiooniga nr (88) 15.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda (juurde lisatud), mis on vastu võetud Euroopa Nõukogu ministrite komitee 1988. aasta 26. oktoobri resolutsiooniga nr (88) 15.",
       "estleg:parentProvision": {
         "@id": "estleg:FMAKLTAETEOL_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:FMAKLTAETEOL_Par_2",
@@ -114,12 +152,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Euroopa toetusfondi «Eurimages» juhatuse liikme nimetab Vabariigi Valitsus.<tabl...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Euroopa toetusfondi «Eurimages» juhatuse liikme nimetab Vabariigi Valitsus.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Filmide ja muude audiovisuaalteoste kaastootmise ning levitamise toetamiseks asutatud Euroopa toetusfondi \"Eurimages\" osalise leppega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:FMAKLTAETEOL_Map"
       },
-      "estleg:summary": "Euroopa toetusfondi «Eurimages» juhatuse liikme nimetab Vabariigi Valitsus.",
+      "estleg:summary": {
+        "@value": "Euroopa toetusfondi «Eurimages» juhatuse liikme nimetab Vabariigi Valitsus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Euroopa toetusfondi «Eurimages» juhatuse liikme nimetab Vabariigi Valitsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_FMAKLTAETEOL_default"
@@ -176,10 +220,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Euroopa toetusfondi «Eurimages» juhatuse liikme nimetab Vabariigi Valitsus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Euroopa toetusfondi «Eurimages» juhatuse liikme nimetab Vabariigi Valitsus.",
       "estleg:parentProvision": {
         "@id": "estleg:FMAKLTAETEOL_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"

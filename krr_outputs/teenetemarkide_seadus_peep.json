@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TeenMS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Teenetemärkide seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Teenetemärkide seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Teenetemärkide seadus",
-      "dcterms:title": [
-        {
-          "@value": "Teenetemärkide seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Decorations Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Teenetemärkide seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072014137.xml"
+        "@id": "https://www.riigiteataja.ee/akt/112072014137"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/112072014137/xml"
+      },
+      "estleg:globalId": "112072014137",
+      "eli:id_local": "112072014137",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "317751",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "bb5063d14490dfc7711e8993fed28bb2ed3dc644010e68562754ca95892e2987",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2015-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2015-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2015-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/528012015008"
@@ -84,14 +96,40 @@
         {
           "@id": "estleg:Institution_vabariigipresident"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/528012015008"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_TeenMS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–9 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–9 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:TeenMS_TopicScheme"
+      },
+      "estleg:provisionCount": 9
     },
     {
       "@id": "estleg:TeenMS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Teenetemärkide seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Teenetemärkide seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_TeenMS_1"
@@ -117,26 +155,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_TeenMS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–9 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–9 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:TeenMS_TopicScheme"
-      },
-      "estleg:provisionCount": 9
-    },
-    {
       "@id": "estleg:Chapter_TeenMS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
@@ -156,8 +183,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§10–13 TEENETEMÄRGI ANDMINE, KANDMINE JA ÄRAVÕTMINE",
-      "skos:prefLabel": "§10–13 TEENETEMÄRGI ANDMINE, KANDMINE JA ÄRAVÕTMINE",
+      "rdfs:label": {
+        "@value": "§10–13 TEENETEMÄRGI ANDMINE, KANDMINE JA ÄRAVÕTMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§10–13 TEENETEMÄRGI ANDMINE, KANDMINE JA ÄRAVÕTMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TeenMS_TopicScheme"
       },
@@ -169,7 +202,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – TEENETEMÄRGI ANDMINE, KANDMINE JA ÄRAVÕTMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – TEENETEMÄRGI ANDMINE, KANDMINE JA ÄRAVÕTMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
@@ -189,12 +225,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "TEENETEMÄRKIDE KLASSID JA KIRJELDUS",
-      "skos:prefLabel": "TEENETEMÄRKIDE KLASSID JA KIRJELDUS",
+      "rdfs:label": {
+        "@value": "TEENETEMÄRKIDE KLASSID JA KIRJELDUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "TEENETEMÄRKIDE KLASSID JA KIRJELDUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TeenMS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 48
     },
     {
       "@id": "estleg:Division_TeenMS_3_1",
@@ -202,7 +244,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Vabadusristi aumärk",
+      "rdfs:label": {
+        "@value": "1. jagu – Vabadusristi aumärk",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_3"
       }
@@ -213,7 +258,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Riigivapi teenetemärk",
+      "rdfs:label": {
+        "@value": "2. jagu – Riigivapi teenetemärk",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_3"
       }
@@ -224,7 +272,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Maarjamaa Risti teenetemärk",
+      "rdfs:label": {
+        "@value": "3. jagu – Maarjamaa Risti teenetemärk",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_3"
       }
@@ -235,7 +286,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "4. jagu – Valgetähe teenetemärk",
+      "rdfs:label": {
+        "@value": "4. jagu – Valgetähe teenetemärk",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_3"
       }
@@ -246,7 +300,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "5. jagu – Kotkaristi teenetemärk",
+      "rdfs:label": {
+        "@value": "5. jagu – Kotkaristi teenetemärk",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_3"
       }
@@ -257,7 +314,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "6. jagu – Eesti Punase Risti teenetemärk",
+      "rdfs:label": {
+        "@value": "6. jagu – Eesti Punase Risti teenetemärk",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_3"
       }
@@ -268,7 +328,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "7. jagu – Teenetemärgi miniatuur",
+      "rdfs:label": {
+        "@value": "7. jagu – Teenetemärgi miniatuur",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_3"
       }
@@ -279,7 +342,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – TEENETEMÄRKIDE KLASSID JA KIRJELDUS",
+      "rdfs:label": {
+        "@value": "3. peatükk – TEENETEMÄRKIDE KLASSID JA KIRJELDUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
@@ -322,8 +388,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§62–64 TEENETEMÄRKIDE REGISTER",
-      "skos:prefLabel": "§62–64 TEENETEMÄRKIDE REGISTER",
+      "rdfs:label": {
+        "@value": "§62–64 TEENETEMÄRKIDE REGISTER",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§62–64 TEENETEMÄRKIDE REGISTER",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TeenMS_TopicScheme"
       },
@@ -335,7 +407,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – TEENETEMÄRKIDE REGISTER",
+      "rdfs:label": {
+        "@value": "4. peatükk – TEENETEMÄRKIDE REGISTER",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
@@ -355,8 +430,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§65–65 TEENETEMÄRGI MINIATUUR JA TÄIENDAV ROSETTMÄRK",
-      "skos:prefLabel": "§65–65 TEENETEMÄRGI MINIATUUR JA TÄIENDAV ROSETTMÄRK",
+      "rdfs:label": {
+        "@value": "§65–65 TEENETEMÄRGI MINIATUUR JA TÄIENDAV ROSETTMÄRK",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§65–65 TEENETEMÄRGI MINIATUUR JA TÄIENDAV ROSETTMÄRK",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TeenMS_TopicScheme"
       },
@@ -368,7 +449,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – TEENETEMÄRGI MINIATUUR JA TÄIENDAV ROSETTMÄRK",
+      "rdfs:label": {
+        "@value": "5. peatükk – TEENETEMÄRGI MINIATUUR JA TÄIENDAV ROSETTMÄRK",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
@@ -388,8 +472,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§66–70 VASTUTUS",
-      "skos:prefLabel": "§66–70 VASTUTUS",
+      "rdfs:label": {
+        "@value": "§66–70 VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§66–70 VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TeenMS_TopicScheme"
       },
@@ -401,7 +491,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – VASTUTUS",
+      "rdfs:label": {
+        "@value": "6. peatükk – VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
@@ -421,8 +514,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§71–76 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§71–76 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§71–76 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§71–76 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TeenMS_TopicScheme"
       },
@@ -434,7 +533,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "7. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
@@ -454,12 +556,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seadusega kehtestatakse Vabariigi Presidendi poolt antavad riiklikud autasud (edaspidi teenetemärgid), sätestatakse nende klassid ja kirjeldus ning teenetemärkide andmise ja kandmise, äravõtmise ja tagastamise kord, au- ja teenetemärkide registreerimise kord ning vastutus seaduse rikkumise eest. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seadusega kehtestatakse Vabariigi Presidendi poolt antavad riiklikud autasud (edaspidi teenetemärgid), sätestatakse nende klassid ja kirjeldus ning teenetemärkide andmise ja kandmise, äravõtmise ja tagastamise kord, au- ja teenetemärkide registreerimise kord ning vastutus seaduse rikkumise eest. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seadusega kehtestatakse Vabariigi Presidendi poolt antavad riiklikud autasud (edaspidi teenetemärgid), sätestatakse nende klassid ja kirjeldus ning teenetemärkide andmise ja kandmise, äravõtmise ja tagastamise kord, au- ja teenetemärkide registreerimise kord ning vastutus seaduse rikkumise eest. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
@@ -537,13 +645,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Riiklikud teenetemärgid",
+      "rdfs:label": {
+        "@value": "§ 2. Riiklikud teenetemärgid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Teenetemärgid on: Vabadusristi aumärk; Riigivapi teenetemärk; Maarjamaa Risti teenetemärk; Valgetähe teenetemärk; Kotkaristi teenetemärk; Eesti Punase Risti teenetemärk. (2) Teenetemärgiga äravahetamiseni sarnase teenete-, au- või muu märgi kehtestamine, valmistamine ja kasutamine on keelatud.",
-      "estleg:legalText": "(1) Teenetemärgid on: Vabadusristi aumärk; Riigivapi teenetemärk; Maarjamaa Risti teenetemärk; Valgetähe teenetemärk; Kotkaristi teenetemärk; Eesti Punase Risti teenetemärk. (2) Teenetemärgiga äravahetamiseni sarnase teenete-, au- või muu märgi kehtestamine, valmistamine ja kasutamine on keelatud.",
+      "estleg:summary": {
+        "@value": "(1) Teenetemärgid on: 1) Vabadusristi aumärk; 2) Riigivapi teenetemärk; 3) Maarjamaa Risti teenetemärk; 4) Valgetähe teenetemärk; 5) Kotkaristi teenetemärk; 6) Eesti Punase Risti teenetemärk. (2) Teenetemärgiga äravahetamiseni sarnase teenete-, au- või muu märgi kehtestamine, valmistamine ja kasutamine on keelatud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Teenetemärgid on: 1) Vabadusristi aumärk; 2) Riigivapi teenetemärk; 3) Maarjamaa Risti teenetemärk; 4) Valgetähe teenetemärk; 5) Kotkaristi teenetemärk; 6) Eesti Punase Risti teenetemärk. (2) Teenetemärgiga äravahetamiseni sarnase teenete-, au- või muu märgi kehtestamine, valmistamine ja kasutamine on keelatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
       },
@@ -581,11 +695,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Teenetemärgid on: Vabadusristi aumärk; Riigivapi teenetemärk; Maarjamaa Risti teenetemärk; Valgetähe teenetemärk; Kotkaristi teenetemärk; Eesti Punase Risti teenetemärk.",
+      "estleg:legalText": "(1) Teenetemärgid on: 1) Vabadusristi aumärk; 2) Riigivapi teenetemärk; 3) Maarjamaa Risti teenetemärk; 4) Valgetähe teenetemärk; 5) Kotkaristi teenetemärk; 6) Eesti Punase Risti teenetemärk.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 1"
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
     },
     {
       "@id": "estleg:TeenMS_Par_2_Lg_2",
@@ -614,13 +736,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Vabadusristi aumärk",
+      "rdfs:label": {
+        "@value": "§ 3. Vabadusristi aumärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi aumärk on asutatud 1919. aastal Vabadussõja-aegsete teenete tunnustamiseks. Vabadusristi aumärk on sõjaline teenetemärk Eesti iseseisvuse kaitsmiseks peetava sõja puhul. (2) Vabadusristi aumärgil on kolm liiki: I liik – antakse sõjaväeliste teenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas; II liik – antakse isikliku vapruse tunnustamiseks Eesti riigi kaitseks peetavas sõjas; III liik – antakse administratiiv- ja tsiviilteenete tunnustamiseks Eesti riigi kaitseks",
-      "estleg:legalText": "(1) Vabadusristi aumärk on asutatud 1919. aastal Vabadussõja-aegsete teenete tunnustamiseks. Vabadusristi aumärk on sõjaline teenetemärk Eesti iseseisvuse kaitsmiseks peetava sõja puhul. (2) Vabadusristi aumärgil on kolm liiki: I liik – antakse sõjaväeliste teenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas; II liik – antakse isikliku vapruse tunnustamiseks Eesti riigi kaitseks peetavas sõjas; III liik – antakse administratiiv- ja tsiviilteenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas. (3) Vabadusristi andmine lõpetati 1925. aasta 19. juuni seadusega. Vabadusristi võib uuesti anda Eesti iseseisvuse kaitsmiseks peetava sõja puhul alates sõjaseisukorra väljakuulutamisest kuni Vabadusristi andmise lõpetamiseks vastu võetava seaduse jõustumiseni.",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi aumärk on asutatud 1919. aastal Vabadussõja-aegsete teenete tunnustamiseks. Vabadusristi aumärk on sõjaline teenetemärk Eesti iseseisvuse kaitsmiseks peetava sõja puhul. (2) Vabadusristi aumärgil on kolm liiki: 1) I liik – antakse sõjaväeliste teenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas; 2) II liik – antakse isikliku vapruse tunnustamiseks Eesti riigi kaitseks peetavas sõjas; 3) III liik – antakse administratiiv- ja tsiviilteenete tunnustamiseks Eesti riigi",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabadusristi aumärk on asutatud 1919. aastal Vabadussõja-aegsete teenete tunnustamiseks. Vabadusristi aumärk on sõjaline teenetemärk Eesti iseseisvuse kaitsmiseks peetava sõja puhul. (2) Vabadusristi aumärgil on kolm liiki: 1) I liik – antakse sõjaväeliste teenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas; 2) II liik – antakse isikliku vapruse tunnustamiseks Eesti riigi kaitseks peetavas sõjas; 3) III liik – antakse administratiiv- ja tsiviilteenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas. (3) Vabadusristi andmine lõpetati 1925. aasta 19. juuni seadusega. Vabadusristi võib uuesti anda Eesti iseseisvuse kaitsmiseks peetava sõja puhul alates sõjaseisukorra väljakuulutamisest kuni Vabadusristi andmise lõpetamiseks vastu võetava seaduse jõustumiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
       },
@@ -673,11 +801,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Vabadusristi aumärgil on kolm liiki: I liik – antakse sõjaväeliste teenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas; II liik – antakse isikliku vapruse tunnustamiseks Eesti riigi kaitseks peetavas sõjas; III liik – antakse administratiiv- ja tsiviilteenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas.",
+      "estleg:legalText": "(2) Vabadusristi aumärgil on kolm liiki: 1) I liik – antakse sõjaväeliste teenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas; 2) II liik – antakse isikliku vapruse tunnustamiseks Eesti riigi kaitseks peetavas sõjas; 3) III liik – antakse administratiiv- ja tsiviilteenete tunnustamiseks Eesti riigi kaitseks peetavas sõjas.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 2"
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:TeenMS_Par_3_Lg_3",
@@ -706,12 +839,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Riigivapi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 4. Riigivapi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi teenetemärk on asutatud 1936. aastal Eesti iseseisvuse väljakuulutamise päeva – 1918. aasta 24. veebruari mälestamiseks. Riigivapi teenetemärk antakse ainult Eesti kodanikule kõrgeima teenetemärgina riigile osutatud teenete tunnustamiseks. (2) Vabariigi President on Riigivapi ketiklassi teenetemärgi kavaler. Teenetemärgi kett antakse edasi koos Vabariigi Presidendi ametiga.",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi teenetemärk on asutatud 1936. aastal Eesti iseseisvuse väljakuulutamise päeva – 1918. aasta 24. veebruari mälestamiseks. Riigivapi teenetemärk antakse ainult Eesti kodanikule kõrgeima teenetemärgina riigile osutatud teenete tunnustamiseks. (2) Vabariigi President on Riigivapi ketiklassi teenetemärgi kavaler. Teenetemärgi kett antakse edasi koos Vabariigi Presidendi ametiga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi teenetemärk on asutatud 1936. aastal Eesti iseseisvuse väljakuulutamise päeva – 1918. aasta 24. veebruari mälestamiseks. Riigivapi teenetemärk antakse ainult Eesti kodanikule kõrgeima teenetemärgina riigile osutatud teenete tunnustamiseks. (2) Vabariigi President on Riigivapi ketiklassi teenetemärgi kavaler. Teenetemärgi kett antakse edasi koos Vabariigi Presidendi ametiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
@@ -817,12 +956,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Maarjamaa Risti teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 5. Maarjamaa Risti teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Maarjamaa Risti teenetemärk on asutatud 1995. aastal Eesti riigi iseseisvuse auks. Maarjamaa Risti teenetemärk antakse välismaalastele kõrgeima teenetemärgina Eesti riigile osutatud teenete tunnustamiseks.",
+      "estleg:summary": {
+        "@value": "Maarjamaa Risti teenetemärk on asutatud 1995. aastal Eesti riigi iseseisvuse auks. Maarjamaa Risti teenetemärk antakse välismaalastele kõrgeima teenetemärgina Eesti riigile osutatud teenete tunnustamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Maarjamaa Risti teenetemärk on asutatud 1995. aastal Eesti riigi iseseisvuse auks. Maarjamaa Risti teenetemärk antakse välismaalastele kõrgeima teenetemärgina Eesti riigile osutatud teenete tunnustamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
@@ -850,10 +995,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maarjamaa Risti teenetemärk on asutatud 1995. aastal Eesti riigi iseseisvuse auks. Maarjamaa Risti teenetemärk antakse välismaalastele kõrgeima teenetemärgina Eesti riigile osutatud teenete tunnustamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maarjamaa Risti teenetemärk on asutatud 1995. aastal Eesti riigi iseseisvuse auks. Maarjamaa Risti teenetemärk antakse välismaalastele kõrgeima teenetemärgina Eesti riigile osutatud teenete tunnustamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_5"
-      }
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:TeenMS_Par_6",
@@ -862,12 +1009,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Valgetähe teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 6. Valgetähe teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Valgetähe teenetemärk on asutatud 1936. aastal Eesti rahva vabadusvõitluse mälestamiseks. Valgetähe teenetemärk antakse riigiteenistuses või kohaliku omavalitsuse teenistuses olevatele isikutele, samuti majanduse, hariduse, teaduse, kultuuri või spordi alal osutatud või muude üldkasulike teenete ning saavutuste tunnustamiseks.",
+      "estleg:summary": {
+        "@value": "Valgetähe teenetemärk on asutatud 1936. aastal Eesti rahva vabadusvõitluse mälestamiseks. Valgetähe teenetemärk antakse riigiteenistuses või kohaliku omavalitsuse teenistuses olevatele isikutele, samuti majanduse, hariduse, teaduse, kultuuri või spordi alal osutatud või muude üldkasulike teenete ning saavutuste tunnustamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Valgetähe teenetemärk on asutatud 1936. aastal Eesti rahva vabadusvõitluse mälestamiseks. Valgetähe teenetemärk antakse riigiteenistuses või kohaliku omavalitsuse teenistuses olevatele isikutele, samuti majanduse, hariduse, teaduse, kultuuri või spordi alal osutatud või muude üldkasulike teenete ning saavutuste tunnustamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
@@ -909,10 +1062,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Valgetähe teenetemärk on asutatud 1936. aastal Eesti rahva vabadusvõitluse mälestamiseks. Valgetähe teenetemärk antakse riigiteenistuses või kohaliku omavalitsuse teenistuses olevatele isikutele, samuti majanduse, hariduse, teaduse, kultuuri või spordi alal osutatud või muude üldkasulike teenete ning saavutuste tunnustamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valgetähe teenetemärk on asutatud 1936. aastal Eesti rahva vabadusvõitluse mälestamiseks. Valgetähe teenetemärk antakse riigiteenistuses või kohaliku omavalitsuse teenistuses olevatele isikutele, samuti majanduse, hariduse, teaduse, kultuuri või spordi alal osutatud või muude üldkasulike teenete ning saavutuste tunnustamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_6"
       },
+      "rdfs:label": "§ 6 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -935,12 +1090,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kotkaristi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 7. Kotkaristi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Kotkaristi teenetemärk on asutatud 1928. aastal Kaitseliidu poolt Eesti iseseisvuse 10. aastapäevaks. Kotkaristi teenetemärk antakse sõjaliste ja riigikaitseliste teenete tunnustamiseks.",
+      "estleg:summary": {
+        "@value": "Kotkaristi teenetemärk on asutatud 1928. aastal Kaitseliidu poolt Eesti iseseisvuse 10. aastapäevaks. Kotkaristi teenetemärk antakse sõjaliste ja riigikaitseliste teenete tunnustamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kotkaristi teenetemärk on asutatud 1928. aastal Kaitseliidu poolt Eesti iseseisvuse 10. aastapäevaks. Kotkaristi teenetemärk antakse sõjaliste ja riigikaitseliste teenete tunnustamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
@@ -968,10 +1129,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kotkaristi teenetemärk on asutatud 1928. aastal Kaitseliidu poolt Eesti iseseisvuse 10. aastapäevaks. Kotkaristi teenetemärk antakse sõjaliste ja riigikaitseliste teenete tunnustamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kotkaristi teenetemärk on asutatud 1928. aastal Kaitseliidu poolt Eesti iseseisvuse 10. aastapäevaks. Kotkaristi teenetemärk antakse sõjaliste ja riigikaitseliste teenete tunnustamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_7"
-      }
+      },
+      "rdfs:label": "§ 7 lg 1"
     },
     {
       "@id": "estleg:TeenMS_Par_8",
@@ -980,12 +1143,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Eesti Punase Risti teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 8. Eesti Punase Risti teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Eesti Punase Risti teenetemärk on asutatud 1920. aastal Eesti Punase Risti Seltsi poolt. Eesti Punase Risti teenetemärk antakse Eesti rahva huvides tervishoiu ja sotsiaalalal osutatud teenete tunnustamiseks ning elu päästmise eest.",
+      "estleg:summary": {
+        "@value": "Eesti Punase Risti teenetemärk on asutatud 1920. aastal Eesti Punase Risti Seltsi poolt. Eesti Punase Risti teenetemärk antakse Eesti rahva huvides tervishoiu ja sotsiaalalal osutatud teenete tunnustamiseks ning elu päästmise eest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Punase Risti teenetemärk on asutatud 1920. aastal Eesti Punase Risti Seltsi poolt. Eesti Punase Risti teenetemärk antakse Eesti rahva huvides tervishoiu ja sotsiaalalal osutatud teenete tunnustamiseks ning elu päästmise eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
@@ -1022,10 +1191,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti Punase Risti teenetemärk on asutatud 1920. aastal Eesti Punase Risti Seltsi poolt. Eesti Punase Risti teenetemärk antakse Eesti rahva huvides tervishoiu ja sotsiaalalal osutatud teenete tunnustamiseks ning elu päästmise eest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Punase Risti teenetemärk on asutatud 1920. aastal Eesti Punase Risti Seltsi poolt. Eesti Punase Risti teenetemärk antakse Eesti rahva huvides tervishoiu ja sotsiaalalal osutatud teenete tunnustamiseks ning elu päästmise eest.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_8"
       },
+      "rdfs:label": "§ 8 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
@@ -1043,12 +1214,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Teenetemärgi kavaler",
+      "rdfs:label": {
+        "@value": "§ 9. Teenetemärgi kavaler",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Teenetemärgi võib anda Eesti kodanikule ja välismaalasele. (2) Teenetemärgi võib anda ka postuumselt. (3) Teenetemärgi võib anda lahinguliste teenete eest ka väeüksusele või allüksusele. (4) Isikut, kellelt on teenetemärk ära võetud, ei loeta teenetemärgi kavaleriks.",
+      "estleg:summary": {
+        "@value": "(1) Teenetemärgi võib anda Eesti kodanikule ja välismaalasele. (2) Teenetemärgi võib anda ka postuumselt. (3) Teenetemärgi võib anda lahinguliste teenete eest ka väeüksusele või allüksusele. (4) Isikut, kellelt on teenetemärk ära võetud, ei loeta teenetemärgi kavaleriks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teenetemärgi võib anda Eesti kodanikule ja välismaalasele. (2) Teenetemärgi võib anda ka postuumselt. (3) Teenetemärgi võib anda lahinguliste teenete eest ka väeüksusele või allüksusele. (4) Isikut, kellelt on teenetemärk ära võetud, ei loeta teenetemärgi kavaleriks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_1"
@@ -1196,12 +1373,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Teenetemärgi andmine",
+      "rdfs:label": {
+        "@value": "§ 10. Teenetemärgi andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Teenetemärkide korraline andmine toimub üks kord aastas – 24. veebruariks, iseseisvuspäevaks. (2) Erandjuhtudel, sealhulgas riigivisiidi puhul või Eestisse akrediteeritud diplomaadi lahkumisel riigist tema ametiaja lõppemise korral, samuti postuumselt võib teenetemärgi anda ka muul ajal. (3) Isikule, kellele on antud teenetemärk, võib rahuajal samalaadsete teenete eest uuesti teenetemärgi anda üldjuhul pärast viie ja erilaadsete teenete eest üldjuhul pärast kolme aasta möödumist eelmise",
+      "estleg:summary": {
+        "@value": "(1) Teenetemärkide korraline andmine toimub üks kord aastas – 24. veebruariks, iseseisvuspäevaks. (2) Erandjuhtudel, sealhulgas riigivisiidi puhul või Eestisse akrediteeritud diplomaadi lahkumisel riigist tema ametiaja lõppemise korral, samuti postuumselt võib teenetemärgi anda ka muul ajal. (3) Isikule, kellele on antud teenetemärk, võib rahuajal samalaadsete teenete eest uuesti teenetemärgi anda üldjuhul pärast viie ja erilaadsete teenete eest üldjuhul pärast kolme aasta möödumist eelmise",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teenetemärkide korraline andmine toimub üks kord aastas – 24. veebruariks, iseseisvuspäevaks. (2) Erandjuhtudel, sealhulgas riigivisiidi puhul või Eestisse akrediteeritud diplomaadi lahkumisel riigist tema ametiaja lõppemise korral, samuti postuumselt võib teenetemärgi anda ka muul ajal. (3) Isikule, kellele on antud teenetemärk, võib rahuajal samalaadsete teenete eest uuesti teenetemärgi anda üldjuhul pärast viie ja erilaadsete teenete eest üldjuhul pärast kolme aasta möödumist eelmise teenetemärgi andmise otsuse tegemisest. (4) Enne välismaalasele teenetemärgi andmist kuulab Vabariigi President ära valdkonna eest vastutava ministri arvamuse. (5) Teenetemärk koos tunnistusega antakse tasuta. (6) Teenetemärkide andmist ja sellega seonduvat korraldab Vabariigi Presidendi Kantselei.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_2"
@@ -1386,12 +1569,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Teenetemärgi andmise ettepanekud",
+      "rdfs:label": {
+        "@value": "§ 11. Teenetemärgi andmise ettepanekud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Igaühel, samuti igal asutusel ja institutsioonil, on õigus esitada Vabariigi Presidendile ettepanek teenetemärgi andmiseks. Vabariigi Presidendi Kantselei teavitab ettepaneku tegijat selle kättesaamisest. (2) Ettepanekud iseseisvuspäevaks teenetemärgi andmise kohta esitatakse Vabariigi Presidendile teenetemärkide andmisele eelneva aasta 1. novembriks. (3) Vabariigi President vaatab teenetemärgi andmise ettepanekud läbi ja otsustab teenetemärkide andmise.",
+      "estleg:summary": {
+        "@value": "(1) Igaühel, samuti igal asutusel ja institutsioonil, on õigus esitada Vabariigi Presidendile ettepanek teenetemärgi andmiseks. Vabariigi Presidendi Kantselei teavitab ettepaneku tegijat selle kättesaamisest. (2) Ettepanekud iseseisvuspäevaks teenetemärgi andmise kohta esitatakse Vabariigi Presidendile teenetemärkide andmisele eelneva aasta 1. novembriks. (3) Vabariigi President vaatab teenetemärgi andmise ettepanekud läbi ja otsustab teenetemärkide andmise.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Igaühel, samuti igal asutusel ja institutsioonil, on õigus esitada Vabariigi Presidendile ettepanek teenetemärgi andmiseks. Vabariigi Presidendi Kantselei teavitab ettepaneku tegijat selle kättesaamisest. (2) Ettepanekud iseseisvuspäevaks teenetemärgi andmise kohta esitatakse Vabariigi Presidendile teenetemärkide andmisele eelneva aasta 1. novembriks. (3) Vabariigi President vaatab teenetemärgi andmise ettepanekud läbi ja otsustab teenetemärkide andmise. Ettepaneku alusel teenetemärgi andmata jätmist ei pea põhjendama. (4) Teenetemärgi andmise ettepanek peab sisaldama selle isiku nime, sünniaega ja teene kirjeldust, kelle suhtes ettepanek tehakse. (5) Teave teenetemärgi andmise ettepaneku kohta tunnistatakse asutusesiseseks kasutamiseks mõeldud teabeks viieks aastaks alates ettepaneku saamisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_2"
@@ -1581,12 +1770,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Teenetemärgi kandmine",
+      "rdfs:label": {
+        "@value": "§ 12. Teenetemärgi kandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Teenetemärki võib kanda üksnes isik, kellele Vabariigi President on teenetemärgi andnud ja kellelt ei ole seda ära võetud. (2) Teenetemärki kantakse kooskõlas teenetemärkide kandmise hea tavaga. Teenetemärkide kandmise hea tava kohta annab selgitusi Vabariigi Presidendi Kantselei.",
+      "estleg:summary": {
+        "@value": "(1) Teenetemärki võib kanda üksnes isik, kellele Vabariigi President on teenetemärgi andnud ja kellelt ei ole seda ära võetud. (2) Teenetemärki kantakse kooskõlas teenetemärkide kandmise hea tavaga. Teenetemärkide kandmise hea tava kohta annab selgitusi Vabariigi Presidendi Kantselei.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teenetemärki võib kanda üksnes isik, kellele Vabariigi President on teenetemärgi andnud ja kellelt ei ole seda ära võetud. (2) Teenetemärki kantakse kooskõlas teenetemärkide kandmise hea tavaga. Teenetemärkide kandmise hea tava kohta annab selgitusi Vabariigi Presidendi Kantselei.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_2"
@@ -1686,13 +1881,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Teenetemärgi äravõtmine ja tagastamine",
+      "rdfs:label": {
+        "@value": "§ 13. Teenetemärgi äravõtmine ja tagastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabariigi President võib otsustada isikult teenetemärk ära võtta, kui: on jõustunud kohtuotsus, millega isik on süüdi mõistetud tahtliku kuriteo toimepanemises, või saavad teatavaks enne teenetemärgi andmist esinenud asjaolud, millest teadmise korral ei oleks isikule teenetemärki antud, või isiku hilisem käitumine on olnud niivõrd vääritu, et see välistaks talle teenetemärgi andmise. (2) Isik, kellelt Vabariigi President on oma otsusega teenetemärgi ära võtnud, peab teenetemärgi tagastama",
-      "estleg:legalText": "(1) Vabariigi President võib otsustada isikult teenetemärk ära võtta, kui: on jõustunud kohtuotsus, millega isik on süüdi mõistetud tahtliku kuriteo toimepanemises, või saavad teatavaks enne teenetemärgi andmist esinenud asjaolud, millest teadmise korral ei oleks isikule teenetemärki antud, või isiku hilisem käitumine on olnud niivõrd vääritu, et see välistaks talle teenetemärgi andmise. (2) Isik, kellelt Vabariigi President on oma otsusega teenetemärgi ära võtnud, peab teenetemärgi tagastama Vabariigi Presidendi Kantseleile.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi President võib otsustada isikult teenetemärk ära võtta, kui: 1) on jõustunud kohtuotsus, millega isik on süüdi mõistetud tahtliku kuriteo toimepanemises, või 2) saavad teatavaks enne teenetemärgi andmist esinenud asjaolud, millest teadmise korral ei oleks isikule teenetemärki antud, või 3) isiku hilisem käitumine on olnud niivõrd vääritu, et see välistaks talle teenetemärgi andmise. (2) Isik, kellelt Vabariigi President on oma otsusega teenetemärgi ära võtnud, peab teenetemärgi",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi President võib otsustada isikult teenetemärk ära võtta, kui: 1) on jõustunud kohtuotsus, millega isik on süüdi mõistetud tahtliku kuriteo toimepanemises, või 2) saavad teatavaks enne teenetemärgi andmist esinenud asjaolud, millest teadmise korral ei oleks isikule teenetemärki antud, või 3) isiku hilisem käitumine on olnud niivõrd vääritu, et see välistaks talle teenetemärgi andmise. (2) Isik, kellelt Vabariigi President on oma otsusega teenetemärgi ära võtnud, peab teenetemärgi tagastama Vabariigi Presidendi Kantseleile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_2"
       },
@@ -1761,11 +1962,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Vabariigi President võib otsustada isikult teenetemärk ära võtta, kui: on jõustunud kohtuotsus, millega isik on süüdi mõistetud tahtliku kuriteo toimepanemises, või saavad teatavaks enne teenetemärgi andmist esinenud asjaolud, millest teadmise korral ei oleks isikule teenetemärki antud, või isiku hilisem käitumine on olnud niivõrd vääritu, et see välistaks talle teenetemärgi andmise.",
+      "estleg:legalText": "(1) Vabariigi President võib otsustada isikult teenetemärk ära võtta, kui: 1) on jõustunud kohtuotsus, millega isik on süüdi mõistetud tahtliku kuriteo toimepanemises, või 2) saavad teatavaks enne teenetemärgi andmist esinenud asjaolud, millest teadmise korral ei oleks isikule teenetemärki antud, või 3) isiku hilisem käitumine on olnud niivõrd vääritu, et see välistaks talle teenetemärgi andmise.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_13"
       },
       "rdfs:label": "§ 13 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1822,13 +2028,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Vabadusristi aumärgi järgud",
+      "rdfs:label": {
+        "@value": "§ 14. Vabadusristi aumärgi järgud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Iga Vabadusristi aumärgi liik jaguneb kolme järku.",
+      "estleg:summary": {
+        "@value": "Iga Vabadusristi aumärgi liik jaguneb kolme järku.",
+        "@language": "et"
+      },
       "estleg:legalText": "Iga Vabadusristi aumärgi liik jaguneb kolme järku.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -1855,10 +2070,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Iga Vabadusristi aumärgi liik jaguneb kolme järku.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Iga Vabadusristi aumärgi liik jaguneb kolme järku.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_14"
-      }
+      },
+      "rdfs:label": "§ 14 lg 1"
     },
     {
       "@id": "estleg:TeenMS_Par_15",
@@ -1867,13 +2084,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Vabadusristi I liigi 1. järk",
+      "rdfs:label": {
+        "@value": "§ 15. Vabadusristi I liigi 1. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi I liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne valge emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega must sõõr, millel on kuldsed täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur kuldse äärisega must sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1).",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi I liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne valge emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega must sõõr, millel on kuldsed täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur kuldse äärisega must sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi I liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne valge emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega must sõõr, millel on kuldsed täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur kuldse äärisega must sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune must muareelint, mille mõlemal äärel on 7 mm laiune sinine (PANTONE 285 C) ja 8 mm laiune valge triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -1933,13 +2159,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Vabadusristi I liigi 2. järk",
+      "rdfs:label": {
+        "@value": "§ 16. Vabadusristi I liigi 2. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi I liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne valge emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega must sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega must sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1).",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi I liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne valge emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega must sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega must sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi I liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne valge emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega must sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega must sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune must muareelint, mille mõlemal äärel on 7 mm laiune sinine (PANTONE 285 C) ja 8 mm laiune valge triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -1996,13 +2231,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Vabadusristi I liigi 3. järk",
+      "rdfs:label": {
+        "@value": "§ 17. Vabadusristi I liigi 3. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi I liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune reljeefne valge emailiga kaetud oksüdeeritud metallist äärisega ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega must sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega must sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1).",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi I liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune reljeefne valge emailiga kaetud oksüdeeritud metallist äärisega ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega must sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega must sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi I liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune reljeefne valge emailiga kaetud oksüdeeritud metallist äärisega ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega must sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega must sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune must muareelint, mille mõlemal äärel on 7 mm laiune sinine (PANTONE 285 C) ja 8 mm laiune valge triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -2062,13 +2306,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Vabadusristi II liigi 1. järk",
+      "rdfs:label": {
+        "@value": "§ 18. Vabadusristi II liigi 1. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi II liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne musta emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega punane sõõr, millel on kuldsed täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur kuldse äärisega punane sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1).",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi II liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne musta emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega punane sõõr, millel on kuldsed täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur kuldse äärisega punane sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi II liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne musta emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega punane sõõr, millel on kuldsed täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur kuldse äärisega punane sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune sinine (PANTONE 285 C) muareelint, mille mõlemal äärel on 7 mm laiune must ja 8 mm laiune valge triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -2131,13 +2384,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Vabadusristi II liigi 2. järk",
+      "rdfs:label": {
+        "@value": "§ 19. Vabadusristi II liigi 2. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi II liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne musta emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega punane sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega punane sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1).",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi II liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne musta emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega punane sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega punane sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi II liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne musta emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega punane sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega punane sõõr hõbedases kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune sinine (PANTONE 285 C) muareelint, mille mõlemal äärel on 7 mm laiune must ja 8 mm laiune valge triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -2194,13 +2456,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Vabadusristi II liigi 3. järk",
+      "rdfs:label": {
+        "@value": "§ 20. Vabadusristi II liigi 3. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi II liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune oksüdeeritud rauast ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Risti südamikus paikneb hõbedase äärisega punane sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega punane sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune sinine (PANTONE 285 C) muareelint, mille mõlemal äärel on 7 mm laiune",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi II liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune oksüdeeritud rauast ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Risti südamikus paikneb hõbedase äärisega punane sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega punane sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune sinine (PANTONE 285 C) muareelint, mille mõlemal äärel on 7 mm laiune",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi II liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune oksüdeeritud rauast ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Risti südamikus paikneb hõbedase äärisega punane sõõr, millel on hõbedased täht «E» ja käsivars mõõgaga, ning risti tagaküljel sama suur hõbedase äärisega punane sõõr kuldses kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune sinine (PANTONE 285 C) muareelint, mille mõlemal äärel on 7 mm laiune must ja 8 mm laiune valge triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -2257,13 +2528,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Vabadusristi III liigi 1. järk",
+      "rdfs:label": {
+        "@value": "§ 21. Vabadusristi III liigi 1. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi III liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne sinise emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur kuldse äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune valge muareelint, mille",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi III liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne sinise emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur kuldse äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune valge muareelint, mille",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi III liigi 1. järgu aumärgi rist on 45 mm kõrgune ja 39 mm laiune reljeefne sinise emailiga kaetud kuldse äärisega ladina rist. Risti harud on 9 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune kuldne triip. Risti südamikus paikneb kuldse äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur kuldse äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune valge muareelint, mille mõlemal äärel on 7 mm laiune sinine (PANTONE 285 C) ja 8 mm laiune must triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -2323,13 +2603,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Vabadusristi III liigi 2. järk",
+      "rdfs:label": {
+        "@value": "§ 22. Vabadusristi III liigi 2. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi III liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne sinise emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur hõbedase äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1).",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi III liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne sinise emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur hõbedase äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi III liigi 2. järgu aumärgi rist on 39 mm kõrgune ja 34 mm laiune reljeefne sinise emailiga kaetud hõbedase äärisega ladina rist. Risti harud on 8 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur hõbedase äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune valge muareelint, mille mõlemal äärel on 7 mm laiune sinine (PANTONE 285 C) ja 8 mm laiune must triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -2386,13 +2675,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Vabadusristi III liigi 3. järk",
+      "rdfs:label": {
+        "@value": "§ 23. Vabadusristi III liigi 3. järk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabadusristi III liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune reljeefne sinise emailiga kaetud oksüdeeritud metallist äärisega ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur hõbedase äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1).",
+      "estleg:summary": {
+        "@value": "(1) Vabadusristi III liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune reljeefne sinise emailiga kaetud oksüdeeritud metallist äärisega ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur hõbedase äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabadusristi III liigi 3. järgu aumärgi rist on 36 mm kõrgune ja 30 mm laiune reljeefne sinise emailiga kaetud oksüdeeritud metallist äärisega ladina rist. Risti harud on 7 mm laiused, nende otsad laienevad T-kujuliseks. Harude keskjoonel on 1 mm laiune hõbedane triip. Risti südamikus paikneb hõbedase äärisega valge sõõr, millel on must täht «E», ning risti tagaküljel sama suur hõbedase äärisega valge sõõr mustas kirjas kuupäevaga «24. II 1919» (lisa 1). (2) Aumärgi lint on 30 mm laiune valge muareelint, mille mõlemal äärel on 7 mm laiune sinine (PANTONE 285 C) ja 8 mm laiune must triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_1"
       },
@@ -2449,13 +2747,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Riigivapi teenetemärgi kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 24. Riigivapi teenetemärgi kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi kõikide klasside teenetemärkide mõlemalt poolt kullatud suure riigivapi kujulise ripatsi tagaküljel on reljeefsete numbritega kuupäev «24. II 1918». (2) Riigivapi kõikide klasside teenetemärkide muareelint on sinine (PANTONE 285 C).",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi kõikide klasside teenetemärkide mõlemalt poolt kullatud suure riigivapi kujulise ripatsi tagaküljel on reljeefsete numbritega kuupäev «24. II 1918». (2) Riigivapi kõikide klasside teenetemärkide muareelint on sinine (PANTONE 285 C).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi kõikide klasside teenetemärkide mõlemalt poolt kullatud suure riigivapi kujulise ripatsi tagaküljel on reljeefsete numbritega kuupäev «24. II 1918». (2) Riigivapi kõikide klasside teenetemärkide muareelint on sinine (PANTONE 285 C).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_2"
       },
@@ -2509,13 +2816,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Riigivapi ketiklassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 25. Riigivapi ketiklassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi ketiklassi teenetemärgi kett on Eesti ornamentkaunistusega 30 mm laiune kuldkett. Keti nelja kaunistuse südamikku on paigutatud vääriskivid. Keti küljes ripub 69 mm läbimõõduga kullatud suure riigivapi kujuline ripats (lisa 2). (2) Riigivapi ketiklassi teenetemärgi juurde kuulub kaheksaharuline 87 mm läbimõõduga kuldtäht, mille keskel on 42 mm läbimõõduga suure riigivapi kujuline märk. (3) Riigivapi ketiklassi teenetemärgi juurde kuulub erisuurpael, mis on meestel 105 mm ja",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi ketiklassi teenetemärgi kett on Eesti ornamentkaunistusega 30 mm laiune kuldkett. Keti nelja kaunistuse südamikku on paigutatud vääriskivid. Keti küljes ripub 69 mm läbimõõduga kullatud suure riigivapi kujuline ripats (lisa 2). (2) Riigivapi ketiklassi teenetemärgi juurde kuulub kaheksaharuline 87 mm läbimõõduga kuldtäht, mille keskel on 42 mm läbimõõduga suure riigivapi kujuline märk. (3) Riigivapi ketiklassi teenetemärgi juurde kuulub erisuurpael, mis on meestel 105 mm ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi ketiklassi teenetemärgi kett on Eesti ornamentkaunistusega 30 mm laiune kuldkett. Keti nelja kaunistuse südamikku on paigutatud vääriskivid. Keti küljes ripub 69 mm läbimõõduga kullatud suure riigivapi kujuline ripats (lisa 2). (2) Riigivapi ketiklassi teenetemärgi juurde kuulub kaheksaharuline 87 mm läbimõõduga kuldtäht, mille keskel on 42 mm läbimõõduga suure riigivapi kujuline märk. (3) Riigivapi ketiklassi teenetemärgi juurde kuulub erisuurpael, mis on meestel 105 mm ja naistel 64 mm laiune sinine muareelint 5 mm kuldse äärisega, mille põiksõlme küljes ripub 58 mm läbimõõduga kullatud suure riigivapi kujuline ripats. (4) Riigivapi ketiklassi teenetemärgi rosettmärgiks on I klassi rosettmärk (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_2"
       },
@@ -2601,13 +2917,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Riigivapi I klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 26. Riigivapi I klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune sinine muareelint, mille põiksõlme küljes ripub 58 mm läbimõõduga kullatud suure riigivapi kujuline ripats (lisa 2). (2) Hõbetäht on 87 mm läbimõõduga kaheksaharuline täht, mille keskel on 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. (3) Riigivapi I klassi teenetemärgi rosettmärk on sinine rosett kuldsel alusel (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune sinine muareelint, mille põiksõlme küljes ripub 58 mm läbimõõduga kullatud suure riigivapi kujuline ripats (lisa 2). (2) Hõbetäht on 87 mm läbimõõduga kaheksaharuline täht, mille keskel on 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. (3) Riigivapi I klassi teenetemärgi rosettmärk on sinine rosett kuldsel alusel (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune sinine muareelint, mille põiksõlme küljes ripub 58 mm läbimõõduga kullatud suure riigivapi kujuline ripats (lisa 2). (2) Hõbetäht on 87 mm läbimõõduga kaheksaharuline täht, mille keskel on 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. (3) Riigivapi I klassi teenetemärgi rosettmärk on sinine rosett kuldsel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_2"
       },
@@ -2677,13 +3002,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Riigivapi II klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 27. Riigivapi II klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi II klassi teenetemärk koosneb 41 mm laiuse sinise muareelindi küljes rippuvast 55 mm läbimõõduga kullatud suure riigivapi kujulisest ripatsist ja selle juurde kuuluvast samasugusest tähest nagu I klassi teenetemärgil (lisa 2). (2) Riigivapi II klassi teenetemärgi rosettmärk on sinine rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi II klassi teenetemärk koosneb 41 mm laiuse sinise muareelindi küljes rippuvast 55 mm läbimõõduga kullatud suure riigivapi kujulisest ripatsist ja selle juurde kuuluvast samasugusest tähest nagu I klassi teenetemärgil (lisa 2). (2) Riigivapi II klassi teenetemärgi rosettmärk on sinine rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi II klassi teenetemärk koosneb 41 mm laiuse sinise muareelindi küljes rippuvast 55 mm läbimõõduga kullatud suure riigivapi kujulisest ripatsist ja selle juurde kuuluvast samasugusest tähest nagu I klassi teenetemärgil (lisa 2). (2) Riigivapi II klassi teenetemärgi rosettmärk on sinine rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_2"
       },
@@ -2737,13 +3071,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Riigivapi III klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 28. Riigivapi III klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 2). (2) Riigivapi III klassi teenetemärgi rosettmärk on sinine rosett hõbedasel alusel (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 2). (2) Riigivapi III klassi teenetemärgi rosettmärk on sinine rosett hõbedasel alusel (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 2). (2) Riigivapi III klassi teenetemärgi rosettmärk on sinine rosett hõbedasel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_2"
       },
@@ -2797,13 +3140,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Riigivapi IV klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 29. Riigivapi IV klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi IV klassi teenetemärk on 35 mm laiuse sinise muareelindi küljes rippuv 42 mm läbimõõduga kullatud suure riigivapi kujuline ripats. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga sinine rullmärk (lisa 2). (2) Riigivapi IV klassi teenetemärgi rosettmärk on sinine rosett (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi IV klassi teenetemärk on 35 mm laiuse sinise muareelindi küljes rippuv 42 mm läbimõõduga kullatud suure riigivapi kujuline ripats. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga sinine rullmärk (lisa 2). (2) Riigivapi IV klassi teenetemärgi rosettmärk on sinine rosett (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi IV klassi teenetemärk on 35 mm laiuse sinise muareelindi küljes rippuv 42 mm läbimõõduga kullatud suure riigivapi kujuline ripats. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga sinine rullmärk (lisa 2). (2) Riigivapi IV klassi teenetemärgi rosettmärk on sinine rosett (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_2"
       },
@@ -2857,13 +3209,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Riigivapi V klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 30. Riigivapi V klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riigivapi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 2). (2) Riigivapi V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Riigivapi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 2). (2) Riigivapi V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigivapi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 2). (2) Riigivapi V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_2"
       },
@@ -2917,13 +3278,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Maarjamaa Risti teenetemärgi kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 31. Maarjamaa Risti teenetemärgi kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Maarjamaa Risti kõikide klasside teenetemärkide ristid koos kilbiga on ühesuuruse ja ühesuguse kujundusega, välja arvatud keti lülideks olevad ristid. (2) Maarjamaa Risti kõikide klasside teenetemärkide muareelint on sinine (PANTONE 300 C).",
+      "estleg:summary": {
+        "@value": "(1) Maarjamaa Risti kõikide klasside teenetemärkide ristid koos kilbiga on ühesuuruse ja ühesuguse kujundusega, välja arvatud keti lülideks olevad ristid. (2) Maarjamaa Risti kõikide klasside teenetemärkide muareelint on sinine (PANTONE 300 C).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maarjamaa Risti kõikide klasside teenetemärkide ristid koos kilbiga on ühesuuruse ja ühesuguse kujundusega, välja arvatud keti lülideks olevad ristid. (2) Maarjamaa Risti kõikide klasside teenetemärkide muareelint on sinine (PANTONE 300 C).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_3"
       },
@@ -2977,13 +3347,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Maarjamaa Risti ketiklassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 32. Maarjamaa Risti ketiklassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Maarjamaa Risti ketiklassi teenetemärgi kett on 22 mm laiune hõbekett, mis koosneb kaheteistkümnest Maarja monogrammist, kuuest kullatud põhjaga gooti kilbist, millel on kolm emailitud sinist lõvi ja kuuest 22 mm läbimõõduga Maarjamaa Ristist. Keti lukuks on gooti kilp, mille külge on kinnitatud Maarjamaa Rist (lisa 3). (2) Maarjamaa Rist on hõbedast, mõlemalt poolt valge emailiga kaetud 48 mm läbimõõduga käpprist, mille harud on mõlemalt poolt ääristatud 2 mm laiuse sinise ja musta",
+      "estleg:summary": {
+        "@value": "(1) Maarjamaa Risti ketiklassi teenetemärgi kett on 22 mm laiune hõbekett, mis koosneb kaheteistkümnest Maarja monogrammist, kuuest kullatud põhjaga gooti kilbist, millel on kolm emailitud sinist lõvi ja kuuest 22 mm läbimõõduga Maarjamaa Ristist. Keti lukuks on gooti kilp, mille külge on kinnitatud Maarjamaa Rist (lisa 3). (2) Maarjamaa Rist on hõbedast, mõlemalt poolt valge emailiga kaetud 48 mm läbimõõduga käpprist, mille harud on mõlemalt poolt ääristatud 2 mm laiuse sinise ja musta",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maarjamaa Risti ketiklassi teenetemärgi kett on 22 mm laiune hõbekett, mis koosneb kaheteistkümnest Maarja monogrammist, kuuest kullatud põhjaga gooti kilbist, millel on kolm emailitud sinist lõvi ja kuuest 22 mm läbimõõduga Maarjamaa Ristist. Keti lukuks on gooti kilp, mille külge on kinnitatud Maarjamaa Rist (lisa 3). (2) Maarjamaa Rist on hõbedast, mõlemalt poolt valge emailiga kaetud 48 mm läbimõõduga käpprist, mille harud on mõlemalt poolt ääristatud 2 mm laiuse sinise ja musta emailitud triibuga. Risti tagaküljel on kiri «PRO TERRA MARIANA». Risti harude vahel paiknevad Maarja monogrammid. (3) Maarjamaa Risti ketiklassi teenetemärgi juurde kuulub kaheksaharuline 80 mm läbimõõduga hõbetäht. Sellele on kinnitatud 48 mm läbimõõduga Maarjamaa Rist, mille keskele on paigutatud kolme sinise lõviga kuldne gooti kilp, mille läbimõõt on 16 mm. (4) Maarjamaa Risti ketiklassi teenetemärgi juurde kuulub I klassi teenetemärgi suurpael, mis on meestel 105 mm ja naistel 64 mm laiune sinine muareelint. Põiksõlme küljes ripub kolme sinise lõviga kuldne gooti kilp, millele kinnitub Maarjamaa Rist. (5) Maarjamaa Risti ketiklassi teenetemärgi juurde kuulub I klassi rosettmärk (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_3"
       },
@@ -3085,13 +3464,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Maarjamaa Risti I klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 33. Maarjamaa Risti I klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Maarjamaa Risti I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune sinine muareelint. Selle põiksõlme küljes ripub kolme sinise lõviga kuldne gooti kilp, millele kinnitub Maarjamaa Rist (lisa 3). (2) Hõbetäht on samasugune nagu Maarjamaa Risti ketiklassi teenetemärgi juurde kuuluv hõbetäht. (3) Maarjamaa Risti I klassi teenetemärgi rosettmärk on sinine rosett kuldsel alusel (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Maarjamaa Risti I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune sinine muareelint. Selle põiksõlme küljes ripub kolme sinise lõviga kuldne gooti kilp, millele kinnitub Maarjamaa Rist (lisa 3). (2) Hõbetäht on samasugune nagu Maarjamaa Risti ketiklassi teenetemärgi juurde kuuluv hõbetäht. (3) Maarjamaa Risti I klassi teenetemärgi rosettmärk on sinine rosett kuldsel alusel (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maarjamaa Risti I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune sinine muareelint. Selle põiksõlme küljes ripub kolme sinise lõviga kuldne gooti kilp, millele kinnitub Maarjamaa Rist (lisa 3). (2) Hõbetäht on samasugune nagu Maarjamaa Risti ketiklassi teenetemärgi juurde kuuluv hõbetäht. (3) Maarjamaa Risti I klassi teenetemärgi rosettmärk on sinine rosett kuldsel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_3"
       },
@@ -3161,13 +3549,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Maarjamaa Risti II klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 34. Maarjamaa Risti II klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Maarjamaa Risti II klassi teenetemärk koosneb 40 mm laiuse sinise muareelindi külge kinnitatud kolme sinise lõviga kuldsest gooti kilbist, millele kinnitub Maarjamaa Rist, ning selle juurde kuuluvast samasugusest hõbetähest nagu ketiklassi teenetemärgil (lisa 3). (2) Maarjamaa Risti II klassi teenetemärgi rosettmärk on sinine rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Maarjamaa Risti II klassi teenetemärk koosneb 40 mm laiuse sinise muareelindi külge kinnitatud kolme sinise lõviga kuldsest gooti kilbist, millele kinnitub Maarjamaa Rist, ning selle juurde kuuluvast samasugusest hõbetähest nagu ketiklassi teenetemärgil (lisa 3). (2) Maarjamaa Risti II klassi teenetemärgi rosettmärk on sinine rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maarjamaa Risti II klassi teenetemärk koosneb 40 mm laiuse sinise muareelindi külge kinnitatud kolme sinise lõviga kuldsest gooti kilbist, millele kinnitub Maarjamaa Rist, ning selle juurde kuuluvast samasugusest hõbetähest nagu ketiklassi teenetemärgil (lisa 3). (2) Maarjamaa Risti II klassi teenetemärgi rosettmärk on sinine rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_3"
       },
@@ -3221,13 +3618,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Maarjamaa Risti III klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 35. Maarjamaa Risti III klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Maarjamaa Risti III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 3). (2) Maarjamaa Risti III klassi teenetemärgi rosettmärk on sinine rosett hõbedasel alusel (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Maarjamaa Risti III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 3). (2) Maarjamaa Risti III klassi teenetemärgi rosettmärk on sinine rosett hõbedasel alusel (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maarjamaa Risti III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 3). (2) Maarjamaa Risti III klassi teenetemärgi rosettmärk on sinine rosett hõbedasel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_3"
       },
@@ -3281,13 +3687,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Maarjamaa Risti IV klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 36. Maarjamaa Risti IV klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Maarjamaa Risti IV klassi teenetemärk on 35 mm laiuse sinise muareelindi külge kinnitatud kolme sinise lõviga kuldne gooti kilp, millele kinnitub Maarjamaa Rist. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga sinine rullmärk (lisa 3). (2) Maarjamaa Risti IV klassi teenetemärgi rosettmärk on sinine rosett (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Maarjamaa Risti IV klassi teenetemärk on 35 mm laiuse sinise muareelindi külge kinnitatud kolme sinise lõviga kuldne gooti kilp, millele kinnitub Maarjamaa Rist. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga sinine rullmärk (lisa 3). (2) Maarjamaa Risti IV klassi teenetemärgi rosettmärk on sinine rosett (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maarjamaa Risti IV klassi teenetemärk on 35 mm laiuse sinise muareelindi külge kinnitatud kolme sinise lõviga kuldne gooti kilp, millele kinnitub Maarjamaa Rist. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga sinine rullmärk (lisa 3). (2) Maarjamaa Risti IV klassi teenetemärgi rosettmärk on sinine rosett (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_3"
       },
@@ -3341,13 +3756,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Maarjamaa Risti V klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 37. Maarjamaa Risti V klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Maarjamaa Risti V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 3). (2) Maarjamaa Risti V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Maarjamaa Risti V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 3). (2) Maarjamaa Risti V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Maarjamaa Risti V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 3). (2) Maarjamaa Risti V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_3"
       },
@@ -3401,13 +3825,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Valgetähe teenetemärgi kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 38. Valgetähe teenetemärgi kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe kõikide klasside teenetemärkide tähed on ühesuguse kujunduse, kuid eri mõõtmetega. (2) Valgetähe kõikide klasside teenetemärkide muareelint on punane (PANTONE 206 MC).",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe kõikide klasside teenetemärkide tähed on ühesuguse kujunduse, kuid eri mõõtmetega. (2) Valgetähe kõikide klasside teenetemärkide muareelint on punane (PANTONE 206 MC).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe kõikide klasside teenetemärkide tähed on ühesuguse kujunduse, kuid eri mõõtmetega. (2) Valgetähe kõikide klasside teenetemärkide muareelint on punane (PANTONE 206 MC).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3464,13 +3897,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39. Valgetähe ketiklassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 39. Valgetähe ketiklassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe ketiklassi teenetemärgi kett on Eesti ornamentkaunistusega 30 mm laiune kullatud hõbekett, mille lukuks on 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. Keti külge on kinnitatud kuueharuline mõlemalt poolt valge emailiga kaetud kullatud täht, mille läbimõõt on 65 mm. Tähe esikülje südamikus on kuueharuline väike kuldtäht, tagakülje südamikus on kuupäev «7. X 1936». Tähe südamikust väljuvad harudevahelised kuldkaunistused (lisa 4).",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe ketiklassi teenetemärgi kett on Eesti ornamentkaunistusega 30 mm laiune kullatud hõbekett, mille lukuks on 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. Keti külge on kinnitatud kuueharuline mõlemalt poolt valge emailiga kaetud kullatud täht, mille läbimõõt on 65 mm. Tähe esikülje südamikus on kuueharuline väike kuldtäht, tagakülje südamikus on kuupäev «7. X 1936». Tähe südamikust väljuvad harudevahelised kuldkaunistused (lisa 4).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe ketiklassi teenetemärgi kett on Eesti ornamentkaunistusega 30 mm laiune kullatud hõbekett, mille lukuks on 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. Keti külge on kinnitatud kuueharuline mõlemalt poolt valge emailiga kaetud kullatud täht, mille läbimõõt on 65 mm. Tähe esikülje südamikus on kuueharuline väike kuldtäht, tagakülje südamikus on kuupäev «7. X 1936». Tähe südamikust väljuvad harudevahelised kuldkaunistused (lisa 4). (2) Valgetähe ketiklassi teenetemärgi juurde kuulub kuuekandiline 83 mm läbimõõduga kuldtäht, millele on kinnitatud kuueharuline valge emailiga kaetud täht. Tähe südamikku on paigutatud 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. (3) Valgetähe ketiklassi teenetemärgi juurde kuulub I klassi suurpael. (4) Valgetähe ketiklassi teenetemärgi rosettmärgiks on I klassi rosettmärk (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3556,13 +3998,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40. Valgetähe I klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 40. Valgetähe I klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune punane muareelint, mille põiksõlme küljes ripub 65 mm läbimõõduga kuueharuline valgetäht (lisa 4). (2) Hõbetäht on 83 mm läbimõõduga kuuekandiline täht, millele on kinnitatud kuueharuline valge emailiga kaetud täht. Tähe südamikku on paigutatud 38 mm läbimõõduga kullatud suure riigivapi kujuline märk.",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune punane muareelint, mille põiksõlme küljes ripub 65 mm läbimõõduga kuueharuline valgetäht (lisa 4). (2) Hõbetäht on 83 mm läbimõõduga kuuekandiline täht, millele on kinnitatud kuueharuline valge emailiga kaetud täht. Tähe südamikku on paigutatud 38 mm läbimõõduga kullatud suure riigivapi kujuline märk.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune punane muareelint, mille põiksõlme küljes ripub 65 mm läbimõõduga kuueharuline valgetäht (lisa 4). (2) Hõbetäht on 83 mm läbimõõduga kuuekandiline täht, millele on kinnitatud kuueharuline valge emailiga kaetud täht. Tähe südamikku on paigutatud 38 mm läbimõõduga kullatud suure riigivapi kujuline märk. (3) Valgetähe I klassi teenetemärgi rosettmärk on punane rosett kuldsel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3632,13 +4083,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41. Valgetähe II klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 41. Valgetähe II klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe II klassi teenetemärk koosneb 41 mm laiuse punase muareelindi küljes rippuvast 65 mm läbimõõduga valgetähest ning selle juurde kuuluvast samasugusest tähest nagu I klassi teenetemärgil (lisa 4). (2) Valgetähe II klassi teenetemärgi rosettmärk on punane rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe II klassi teenetemärk koosneb 41 mm laiuse punase muareelindi küljes rippuvast 65 mm läbimõõduga valgetähest ning selle juurde kuuluvast samasugusest tähest nagu I klassi teenetemärgil (lisa 4). (2) Valgetähe II klassi teenetemärgi rosettmärk on punane rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe II klassi teenetemärk koosneb 41 mm laiuse punase muareelindi küljes rippuvast 65 mm läbimõõduga valgetähest ning selle juurde kuuluvast samasugusest tähest nagu I klassi teenetemärgil (lisa 4). (2) Valgetähe II klassi teenetemärgi rosettmärk on punane rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3692,13 +4152,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
-      "rdfs:label": "§ 42. Valgetähe III klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 42. Valgetähe III klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 4). (2) Valgetähe III klassi teenetemärgi rosettmärk on punane rosett hõbedasel alusel (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 4). (2) Valgetähe III klassi teenetemärgi rosettmärk on punane rosett hõbedasel alusel (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 4). (2) Valgetähe III klassi teenetemärgi rosettmärk on punane rosett hõbedasel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3752,13 +4221,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
-      "rdfs:label": "§ 43. Valgetähe IV klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 43. Valgetähe IV klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe IV klassi teenetemärk on 35 mm laiuse punase muareelindi küljes rippuv 47 mm läbimõõduga valgetäht. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga punane rullmärk (lisa 4). (2) Valgetähe IV klassi teenetemärgi rosettmärk on punane rosett (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe IV klassi teenetemärk on 35 mm laiuse punase muareelindi küljes rippuv 47 mm läbimõõduga valgetäht. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga punane rullmärk (lisa 4). (2) Valgetähe IV klassi teenetemärgi rosettmärk on punane rosett (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe IV klassi teenetemärk on 35 mm laiuse punase muareelindi küljes rippuv 47 mm läbimõõduga valgetäht. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga punane rullmärk (lisa 4). (2) Valgetähe IV klassi teenetemärgi rosettmärk on punane rosett (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3812,13 +4290,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
-      "rdfs:label": "§ 44. Valgetähe V klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 44. Valgetähe V klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 4). (2) Valgetähe V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 4). (2) Valgetähe V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 4). (2) Valgetähe V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3872,13 +4359,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45. Valgetähe medaliklassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 45. Valgetähe medaliklassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Valgetähe medaliklassi teenetemärgi medal on sõõrikujuline, Eesti ornamentkaunistusega, väljatöötatud kannaga hõbemedal, mille läbimõõt on 31 mm. Medali esiküljel on reljeefne emailitud valgetähe kujutis. Medali tagaküljel on reljeefsete numbritega kuupäev «7. X 1936» (lisa 4). (2) Valgetähe medaliklassi teenetemärgi lint on 30 mm laiune punane muareelint. (3) Valgetähe medaliklassi teenetemärgi rosettmärgiks on V klassi rosettmärk (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Valgetähe medaliklassi teenetemärgi medal on sõõrikujuline, Eesti ornamentkaunistusega, väljatöötatud kannaga hõbemedal, mille läbimõõt on 31 mm. Medali esiküljel on reljeefne emailitud valgetähe kujutis. Medali tagaküljel on reljeefsete numbritega kuupäev «7. X 1936» (lisa 4). (2) Valgetähe medaliklassi teenetemärgi lint on 30 mm laiune punane muareelint. (3) Valgetähe medaliklassi teenetemärgi rosettmärgiks on V klassi rosettmärk (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valgetähe medaliklassi teenetemärgi medal on sõõrikujuline, Eesti ornamentkaunistusega, väljatöötatud kannaga hõbemedal, mille läbimõõt on 31 mm. Medali esiküljel on reljeefne emailitud valgetähe kujutis. Medali tagaküljel on reljeefsete numbritega kuupäev «7. X 1936» (lisa 4). (2) Valgetähe medaliklassi teenetemärgi lint on 30 mm laiune punane muareelint. (3) Valgetähe medaliklassi teenetemärgi rosettmärgiks on V klassi rosettmärk (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_4"
       },
@@ -3948,13 +4444,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
-      "rdfs:label": "§ 46. Kotkaristi teenetemärgi kirjeldus ja lindilõige",
+      "rdfs:label": {
+        "@value": "§ 46. Kotkaristi teenetemärgi kirjeldus ja lindilõige",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Kotkaristi kõikide klasside teenetemärkide ristid on ühesuguse kujundusega. (2) Kotkaristi kõikide klasside teenetemärkide muareelint on oranž (PANTONE 137 MC). (3) Kotkaristi kõikide klasside teenetemärkide juurde kuulub 10 mm kõrgune ja 35 mm laiune lindilõige, millele on kinnitatud teenetemärgi klassi tähistav rosettmärk (lisa 7). Kotkaristi sõjaliste teenetemärkide lindilõikeile on lisatud ristuvad mõõgad.",
+      "estleg:summary": {
+        "@value": "(1) Kotkaristi kõikide klasside teenetemärkide ristid on ühesuguse kujundusega. (2) Kotkaristi kõikide klasside teenetemärkide muareelint on oranž (PANTONE 137 MC). (3) Kotkaristi kõikide klasside teenetemärkide juurde kuulub 10 mm kõrgune ja 35 mm laiune lindilõige, millele on kinnitatud teenetemärgi klassi tähistav rosettmärk (lisa 7). Kotkaristi sõjaliste teenetemärkide lindilõikeile on lisatud ristuvad mõõgad.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kotkaristi kõikide klasside teenetemärkide ristid on ühesuguse kujundusega. (2) Kotkaristi kõikide klasside teenetemärkide muareelint on oranž (PANTONE 137 MC). (3) Kotkaristi kõikide klasside teenetemärkide juurde kuulub 10 mm kõrgune ja 35 mm laiune lindilõige, millele on kinnitatud teenetemärgi klassi tähistav rosettmärk (lisa 7). Kotkaristi sõjaliste teenetemärkide lindilõikeile on lisatud ristuvad mõõgad.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4030,13 +4535,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
-      "rdfs:label": "§ 47. Kotkaristi I klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 47. Kotkaristi I klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Kotkaristi I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune oranž muareelint 4 mm laiuse sinise triibuga ja 4 mm laiuse oranži kandiga (lisa 5). (2) Suurpael lõpeb põiksõlmega, mille küljes ripub neljaharuline mõlemalt küljelt emailitud ja 0,5 mm laiuse kuldraamiga ümbritsetud 58 mm läbimõõduga must Malta rist. Risti iga haru välimises otsas asetseva täisnurkse sisselõike kaateti pikkus on 15 mm.",
+      "estleg:summary": {
+        "@value": "(1) Kotkaristi I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune oranž muareelint 4 mm laiuse sinise triibuga ja 4 mm laiuse oranži kandiga (lisa 5). (2) Suurpael lõpeb põiksõlmega, mille küljes ripub neljaharuline mõlemalt küljelt emailitud ja 0,5 mm laiuse kuldraamiga ümbritsetud 58 mm läbimõõduga must Malta rist. Risti iga haru välimises otsas asetseva täisnurkse sisselõike kaateti pikkus on 15 mm.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kotkaristi I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 105 mm ja naistel 64 mm laiune oranž muareelint 4 mm laiuse sinise triibuga ja 4 mm laiuse oranži kandiga (lisa 5). (2) Suurpael lõpeb põiksõlmega, mille küljes ripub neljaharuline mõlemalt küljelt emailitud ja 0,5 mm laiuse kuldraamiga ümbritsetud 58 mm läbimõõduga must Malta rist. Risti iga haru välimises otsas asetseva täisnurkse sisselõike kaateti pikkus on 15 mm. Risti esiküljel on oksüdeeritud hõbedast lennuvalmis põhjakotkas, kelle vasaku jala küünte vahel on väike riigivapp ja parema jala küünte vahel kaheteraline mõõk. Kotka tiibadevaheline laius on 23 mm, kotka pikkus pealaest sabasulgede otsteni on 19 mm, mõõga pikkus on 14,5 mm. Risti tagaküljel on 10 mm läbimõõduga must emailitud kuldse äärisega sõõr, mille keskel on ülalt alla kirjutatud kuupäev «24. II 1928»; risti harude tagaküljel on deviis «PRO PATRIA». (3) Hõbetäht on 85 mm läbimõõduga reljeefne kaheksaharuline täht, mis koosneb teemandikujulisest tsentrist väljapoole suurenevate kühmude ridadest. Tähe keskel on V klassi teenetemärgi rist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4112,13 +4626,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
-      "rdfs:label": "§ 48. Kotkaristi II klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 48. Kotkaristi II klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Kotkaristi II klassi teenetemärk koosneb samasugusest ristist ja tähest, nagu on I klassi teenetemärgil, kuid rist ripub 40 mm laiuse oranži muareelindi küljes, mille keskel on 1 mm laiune sinine triip, äärtel 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant (lisa 5).",
+      "estleg:summary": {
+        "@value": "Kotkaristi II klassi teenetemärk koosneb samasugusest ristist ja tähest, nagu on I klassi teenetemärgil, kuid rist ripub 40 mm laiuse oranži muareelindi küljes, mille keskel on 1 mm laiune sinine triip, äärtel 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant (lisa 5).",
+        "@language": "et"
+      },
       "estleg:legalText": "Kotkaristi II klassi teenetemärk koosneb samasugusest ristist ja tähest, nagu on I klassi teenetemärgil, kuid rist ripub 40 mm laiuse oranži muareelindi küljes, mille keskel on 1 mm laiune sinine triip, äärtel 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant (lisa 5).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4148,10 +4671,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kotkaristi II klassi teenetemärk koosneb samasugusest ristist ja tähest, nagu on I klassi teenetemärgil, kuid rist ripub 40 mm laiuse oranži muareelindi küljes, mille keskel on 1 mm laiune sinine triip, äärtel 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant (lisa 5).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kotkaristi II klassi teenetemärk koosneb samasugusest ristist ja tähest, nagu on I klassi teenetemärgil, kuid rist ripub 40 mm laiuse oranži muareelindi küljes, mille keskel on 1 mm laiune sinine triip, äärtel 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant (lisa 5).",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_48"
-      }
+      },
+      "rdfs:label": "§ 48 lg 1"
     },
     {
       "@id": "estleg:TeenMS_Par_49",
@@ -4160,13 +4685,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
-      "rdfs:label": "§ 49. Kotkaristi III klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 49. Kotkaristi III klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Kotkaristi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 5).",
+      "estleg:summary": {
+        "@value": "Kotkaristi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 5).",
+        "@language": "et"
+      },
       "estleg:legalText": "Kotkaristi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 5).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4190,10 +4724,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kotkaristi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 5).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kotkaristi III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 5).",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_49"
-      }
+      },
+      "rdfs:label": "§ 49 lg 1"
     },
     {
       "@id": "estleg:TeenMS_Par_50",
@@ -4202,13 +4738,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 50.",
-      "rdfs:label": "§ 50. Kotkaristi IV klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 50. Kotkaristi IV klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Kotkaristi IV klassi teenetemärk koosneb samasugusest ristist nagu III klassi teenetemärgil, kuid risti läbimõõt on 50 mm ja iga ristiharu välisotsas asetseva täisnurkse sisselõike kaateti pikkus on 12,5 mm (lisa 5). (2) Teenetemärgi lint on 35 mm laiune ja 50 mm pikkune oranž muareelint, mille äärtel on 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant. Lindile on paigutatud siniste triipudega 22 mm läbimõõduga oranž rullmärk.",
+      "estleg:summary": {
+        "@value": "(1) Kotkaristi IV klassi teenetemärk koosneb samasugusest ristist nagu III klassi teenetemärgil, kuid risti läbimõõt on 50 mm ja iga ristiharu välisotsas asetseva täisnurkse sisselõike kaateti pikkus on 12,5 mm (lisa 5). (2) Teenetemärgi lint on 35 mm laiune ja 50 mm pikkune oranž muareelint, mille äärtel on 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant. Lindile on paigutatud siniste triipudega 22 mm läbimõõduga oranž rullmärk.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kotkaristi IV klassi teenetemärk koosneb samasugusest ristist nagu III klassi teenetemärgil, kuid risti läbimõõt on 50 mm ja iga ristiharu välisotsas asetseva täisnurkse sisselõike kaateti pikkus on 12,5 mm (lisa 5). (2) Teenetemärgi lint on 35 mm laiune ja 50 mm pikkune oranž muareelint, mille äärtel on 3 mm laiune sinine triip ja 1,5 mm laiune oranž kant. Lindile on paigutatud siniste triipudega 22 mm läbimõõduga oranž rullmärk.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4268,13 +4813,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 51.",
-      "rdfs:label": "§ 51. Kotkaristi V klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 51. Kotkaristi V klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Kotkaristi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 5).",
+      "estleg:summary": {
+        "@value": "Kotkaristi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 5).",
+        "@language": "et"
+      },
       "estleg:legalText": "Kotkaristi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 5).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4298,10 +4852,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kotkaristi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 5).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kotkaristi V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 5).",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_51"
-      }
+      },
+      "rdfs:label": "§ 51 lg 1"
     },
     {
       "@id": "estleg:TeenMS_Par_52",
@@ -4310,13 +4866,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52.",
-      "rdfs:label": "§ 52. Kotkaristi medaliklassi teenetemärgid",
+      "rdfs:label": {
+        "@value": "§ 52. Kotkaristi medaliklassi teenetemärgid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Kotkaristi medaliklassi teenetemärgid on kuld-, hõbe- ja raudrist, mis on kujult ja suuruselt samasugused nagu V klassi teenetemärk, kuid need on metallist, ilma emailita (lisa 5). (2) Kotkaristi kuld-, hõbe- ja raudristi lint on 35 mm laiune oranž muareelint, mille keskel on 1 mm laiused sinised triibud: kuldristil on kolm triipu vahedega 2,5 mm; hõberistil on kaks triipu vahega 6 mm; raudristil on üks triip.",
-      "estleg:legalText": "(1) Kotkaristi medaliklassi teenetemärgid on kuld-, hõbe- ja raudrist, mis on kujult ja suuruselt samasugused nagu V klassi teenetemärk, kuid need on metallist, ilma emailita (lisa 5). (2) Kotkaristi kuld-, hõbe- ja raudristi lint on 35 mm laiune oranž muareelint, mille keskel on 1 mm laiused sinised triibud: kuldristil on kolm triipu vahedega 2,5 mm; hõberistil on kaks triipu vahega 6 mm; raudristil on üks triip.",
+      "estleg:summary": {
+        "@value": "(1) Kotkaristi medaliklassi teenetemärgid on kuld-, hõbe- ja raudrist, mis on kujult ja suuruselt samasugused nagu V klassi teenetemärk, kuid need on metallist, ilma emailita (lisa 5). (2) Kotkaristi kuld-, hõbe- ja raudristi lint on 35 mm laiune oranž muareelint, mille keskel on 1 mm laiused sinised triibud: 1) kuldristil on kolm triipu vahedega 2,5 mm; 2) hõberistil on kaks triipu vahega 6 mm; 3) raudristil on üks triip.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kotkaristi medaliklassi teenetemärgid on kuld-, hõbe- ja raudrist, mis on kujult ja suuruselt samasugused nagu V klassi teenetemärk, kuid need on metallist, ilma emailita (lisa 5). (2) Kotkaristi kuld-, hõbe- ja raudristi lint on 35 mm laiune oranž muareelint, mille keskel on 1 mm laiused sinised triibud: 1) kuldristil on kolm triipu vahedega 2,5 mm; 2) hõberistil on kaks triipu vahega 6 mm; 3) raudristil on üks triip.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4363,11 +4928,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kotkaristi kuld-, hõbe- ja raudristi lint on 35 mm laiune oranž muareelint, mille keskel on 1 mm laiused sinised triibud: kuldristil on kolm triipu vahedega 2,5 mm; hõberistil on kaks triipu vahega 6 mm; raudristil on üks triip.",
+      "estleg:legalText": "(2) Kotkaristi kuld-, hõbe- ja raudristi lint on 35 mm laiune oranž muareelint, mille keskel on 1 mm laiused sinised triibud: 1) kuldristil on kolm triipu vahedega 2,5 mm; 2) hõberistil on kaks triipu vahega 6 mm; 3) raudristil on üks triip.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_52"
       },
-      "rdfs:label": "§ 52 lg 2"
+      "rdfs:label": "§ 52 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:TeenMS_Par_53",
@@ -4376,13 +4946,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 53.",
-      "rdfs:label": "§ 53. Sõjaline Kotkaristi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 53. Sõjaline Kotkaristi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Kotkaristi teenetemärk on sõjaline, kui talle on lisatud kaks ristuvat mõõka: ristil on ristuvad mõõgad kinnitatud mõõkade käepidemete kohalt liikuvalt ülemiste ristiharude tippude külge. Mõõkade pikkus koos käepidemega on I, II ja III klassi teenetemärgil 35 mm, IV ja V klassi teenetemärgil ning kuld-, hõbe- ja raudristil 33 mm; tähel on ristuvad mõõgad kinnitatud tähe põikharude peale, vertikaal- ja horisontaalharud jäävad katmata. Mõõkade käepidemed asetsevad allpool.",
-      "estleg:legalText": "(1) Kotkaristi teenetemärk on sõjaline, kui talle on lisatud kaks ristuvat mõõka: ristil on ristuvad mõõgad kinnitatud mõõkade käepidemete kohalt liikuvalt ülemiste ristiharude tippude külge. Mõõkade pikkus koos käepidemega on I, II ja III klassi teenetemärgil 35 mm, IV ja V klassi teenetemärgil ning kuld-, hõbe- ja raudristil 33 mm; tähel on ristuvad mõõgad kinnitatud tähe põikharude peale, vertikaal- ja horisontaalharud jäävad katmata. Mõõkade käepidemed asetsevad allpool. Mõõkade pikkus on 85 mm. (2) Kotkaristi teenetemärgi põhiklassidel ja kuldristil on kuldmõõgad, Kotkaristi hõbe- ja raudristil on ristiga samast metallist mõõgad.",
+      "estleg:summary": {
+        "@value": "(1) Kotkaristi teenetemärk on sõjaline, kui talle on lisatud kaks ristuvat mõõka: 1) ristil on ristuvad mõõgad kinnitatud mõõkade käepidemete kohalt liikuvalt ülemiste ristiharude tippude külge. Mõõkade pikkus koos käepidemega on I, II ja III klassi teenetemärgil 35 mm, IV ja V klassi teenetemärgil ning kuld-, hõbe- ja raudristil 33 mm; 2) tähel on ristuvad mõõgad kinnitatud tähe põikharude peale, vertikaal- ja horisontaalharud jäävad katmata. Mõõkade käepidemed asetsevad allpool.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kotkaristi teenetemärk on sõjaline, kui talle on lisatud kaks ristuvat mõõka: 1) ristil on ristuvad mõõgad kinnitatud mõõkade käepidemete kohalt liikuvalt ülemiste ristiharude tippude külge. Mõõkade pikkus koos käepidemega on I, II ja III klassi teenetemärgil 35 mm, IV ja V klassi teenetemärgil ning kuld-, hõbe- ja raudristil 33 mm; 2) tähel on ristuvad mõõgad kinnitatud tähe põikharude peale, vertikaal- ja horisontaalharud jäävad katmata. Mõõkade käepidemed asetsevad allpool. Mõõkade pikkus on 85 mm. (2) Kotkaristi teenetemärgi põhiklassidel ja kuldristil on kuldmõõgad, Kotkaristi hõbe- ja raudristil on ristiga samast metallist mõõgad.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_5"
       },
@@ -4419,11 +4998,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kotkaristi teenetemärk on sõjaline, kui talle on lisatud kaks ristuvat mõõka: ristil on ristuvad mõõgad kinnitatud mõõkade käepidemete kohalt liikuvalt ülemiste ristiharude tippude külge. Mõõkade pikkus koos käepidemega on I, II ja III klassi teenetemärgil 35 mm, IV ja V klassi teenetemärgil ning kuld-, hõbe- ja raudristil 33 mm; tähel on ristuvad mõõgad kinnitatud tähe põikharude peale, vertikaal- ja horisontaalharud jäävad katmata. Mõõkade käepidemed asetsevad allpool. Mõõkade pikkus on 85 mm.",
+      "estleg:legalText": "(1) Kotkaristi teenetemärk on sõjaline, kui talle on lisatud kaks ristuvat mõõka: 1) ristil on ristuvad mõõgad kinnitatud mõõkade käepidemete kohalt liikuvalt ülemiste ristiharude tippude külge. Mõõkade pikkus koos käepidemega on I, II ja III klassi teenetemärgil 35 mm, IV ja V klassi teenetemärgil ning kuld-, hõbe- ja raudristil 33 mm; 2) tähel on ristuvad mõõgad kinnitatud tähe põikharude peale, vertikaal- ja horisontaalharud jäävad katmata. Mõõkade käepidemed asetsevad allpool. Mõõkade pikkus on 85 mm.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_53"
       },
       "rdfs:label": "§ 53 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -4454,13 +5037,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54.",
-      "rdfs:label": "§ 54. Eesti Punase Risti teenetemärgi kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 54. Eesti Punase Risti teenetemärgi kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti Punase Risti kõikide klasside teenetemärkide ristid on ühesuguse kujundusega. (2) Eesti Punase Risti teenetemärgi kõikide klasside muareelint on helesinine (PANTONE 297 MC).",
+      "estleg:summary": {
+        "@value": "(1) Eesti Punase Risti kõikide klasside teenetemärkide ristid on ühesuguse kujundusega. (2) Eesti Punase Risti teenetemärgi kõikide klasside muareelint on helesinine (PANTONE 297 MC).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Punase Risti kõikide klasside teenetemärkide ristid on ühesuguse kujundusega. (2) Eesti Punase Risti teenetemärgi kõikide klasside muareelint on helesinine (PANTONE 297 MC).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_6"
       },
@@ -4514,13 +5106,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 55.",
-      "rdfs:label": "§ 55. Eesti Punase Risti I klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 55. Eesti Punase Risti I klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti Punase Risti I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 110 mm ja naistel 64 mm laiune muareelint, mille keskel on 59 mm laiune sinine triip. Mõlemal pool seda triipu on 6 mm laiune must triip, 7 mm laiune valge triip, 2 mm laiune must triip ja 10,5 mm laiune sinine triip äärtel. Suurpael lõpeb põiksõlmega, mille küljes ripub 41 mm läbimõõduga ja 9,5 mm laiuste harudega rist.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Punase Risti I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 110 mm ja naistel 64 mm laiune muareelint, mille keskel on 59 mm laiune sinine triip. Mõlemal pool seda triipu on 6 mm laiune must triip, 7 mm laiune valge triip, 2 mm laiune must triip ja 10,5 mm laiune sinine triip äärtel. Suurpael lõpeb põiksõlmega, mille küljes ripub 41 mm läbimõõduga ja 9,5 mm laiuste harudega rist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Punase Risti I klassi teenetemärk koosneb suurpaelast ja selle juurde kuuluvast hõbetähest. Suurpael on meestel 110 mm ja naistel 64 mm laiune muareelint, mille keskel on 59 mm laiune sinine triip. Mõlemal pool seda triipu on 6 mm laiune must triip, 7 mm laiune valge triip, 2 mm laiune must triip ja 10,5 mm laiune sinine triip äärtel. Suurpael lõpeb põiksõlmega, mille küljes ripub 41 mm läbimõõduga ja 9,5 mm laiuste harudega rist. (2) Risti ümbritseb valge 2 mm laiune emailitud raam, millel on 1,5 mm laiune kullatud äär. Risti nurkades on neli kullatud üheksaharulist kiirtekimpu. Risti esiküljel on 24,5 mm läbimõõduga stiliseeritud kaheksanurk, mida ääristavad Eesti lipu värvid ja mille keskel punasel emailpõhjal on kullatud täht «E». Risti tagaküljel on kuldse äärisega 22 mm läbimõõduga punane emailitud sõõr, millel on kiri «INTER ARMA CARITAS», ja sõõri keskel aastaarv «1919». Risti ülemine haru lõpeb 19 mm kõrguse tuletorni kujutisega. Tuletorn on kaetud valge emailiga, seisab kullatud ja ornamendiga ilustatud alusel ning selle ülemisest otsast hargneb kummalegi poole viis kullatud kiirt (lisa 6). (3) Hõbetäht on 86 mm läbimõõduga kaheksaharuline täht läikivate kolmeharuliselt lõppevate kiirtega, mille peal asetsevad tsentrist väljapoole suurenevad ümmargused kühmud. Iga kiirtepaari vahel on kuus tuhmist hõbedast püramiiditaolisest tsentrist väljapoole suurenevatest kühmudest koosnevat rida, mis lõpevad ümmarguse munakesega. Tähe peal asetseb 41 mm pikkuste ja 9,5 mm laiuste harudega punane emailitud rist, mis on ümbritsetud 1,5 mm laiusesse kullatud raami paigutatud 2 mm laiuse valge emailitud triibuga. Ristil on Eesti lipu värvidesse paigutatud 24,5 mm läbimõõduga stiliseeritud kaheksanurgas kolm sinist sammuvat otsavaatavat lõvi kuldsel põhjal. (4) Eesti Punase Risti I klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine rosett kuldsel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_6"
       },
@@ -4624,13 +5225,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 56.",
-      "rdfs:label": "§ 56. Eesti Punase Risti II klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 56. Eesti Punase Risti II klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti Punase Risti II klassi teenetemärk koosneb samasugusest tähest ja võrdsete harudega emailitud ristist nagu I klassi teenetemärgil (lisa 6). (2) Eesti Punase Risti II klassi teenetemärgi lint on 40 mm laiune muareelint, mille keskel on 21 mm laiune sinine triip. Mõlemal pool seda triipu on 2 mm laiune must triip, 2,5 mm laiune valge triip, 1 mm laiune must triip ja 4 mm laiune sinine triip äärtel. (3) Eesti Punase Risti II klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine",
+      "estleg:summary": {
+        "@value": "(1) Eesti Punase Risti II klassi teenetemärk koosneb samasugusest tähest ja võrdsete harudega emailitud ristist nagu I klassi teenetemärgil (lisa 6). (2) Eesti Punase Risti II klassi teenetemärgi lint on 40 mm laiune muareelint, mille keskel on 21 mm laiune sinine triip. Mõlemal pool seda triipu on 2 mm laiune must triip, 2,5 mm laiune valge triip, 1 mm laiune must triip ja 4 mm laiune sinine triip äärtel. (3) Eesti Punase Risti II klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Punase Risti II klassi teenetemärk koosneb samasugusest tähest ja võrdsete harudega emailitud ristist nagu I klassi teenetemärgil (lisa 6). (2) Eesti Punase Risti II klassi teenetemärgi lint on 40 mm laiune muareelint, mille keskel on 21 mm laiune sinine triip. Mõlemal pool seda triipu on 2 mm laiune must triip, 2,5 mm laiune valge triip, 1 mm laiune must triip ja 4 mm laiune sinine triip äärtel. (3) Eesti Punase Risti II klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine rosett alusel, mille vasak pool on hõbedane ja parem pool kuldne (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_6"
       },
@@ -4700,13 +5310,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 57.",
-      "rdfs:label": "§ 57. Eesti Punase Risti III klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 57. Eesti Punase Risti III klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti Punase Risti III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 6). (2) Eesti Punase Risti III klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine rosett hõbedasel alusel (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Eesti Punase Risti III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 6). (2) Eesti Punase Risti III klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine rosett hõbedasel alusel (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Punase Risti III klassi teenetemärk on samasugune nagu II klassi teenetemärk, kuid puudub täht (lisa 6). (2) Eesti Punase Risti III klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine rosett hõbedasel alusel (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_6"
       },
@@ -4760,13 +5379,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 58.",
-      "rdfs:label": "§ 58. Eesti Punase Risti IV klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 58. Eesti Punase Risti IV klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti Punase Risti IV klassi teenetemärgi rist on samasugune nagu II klassi teenetemärgil, kuid risti läbimõõt on 38 mm (lisa 6). (2) Eesti Punase Risti IV klassi teenetemärgi lint on 36 mm laiune muareelint, mille keskel on 19 mm laiune sinine triip. Mõlemal pool seda triipu on 2 mm laiune must triip, 2,5 mm laiune valge triip, 0,5 mm laiune must triip ja 3,5 mm laiune sinine triip äärtel. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga rullmärk.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Punase Risti IV klassi teenetemärgi rist on samasugune nagu II klassi teenetemärgil, kuid risti läbimõõt on 38 mm (lisa 6). (2) Eesti Punase Risti IV klassi teenetemärgi lint on 36 mm laiune muareelint, mille keskel on 19 mm laiune sinine triip. Mõlemal pool seda triipu on 2 mm laiune must triip, 2,5 mm laiune valge triip, 0,5 mm laiune must triip ja 3,5 mm laiune sinine triip äärtel. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga rullmärk.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Punase Risti IV klassi teenetemärgi rist on samasugune nagu II klassi teenetemärgil, kuid risti läbimõõt on 38 mm (lisa 6). (2) Eesti Punase Risti IV klassi teenetemärgi lint on 36 mm laiune muareelint, mille keskel on 19 mm laiune sinine triip. Mõlemal pool seda triipu on 2 mm laiune must triip, 2,5 mm laiune valge triip, 0,5 mm laiune must triip ja 3,5 mm laiune sinine triip äärtel. Teenetemärgi lindile on paigutatud 22 mm läbimõõduga rullmärk. (3) Eesti Punase Risti IV klassi teenetemärgi rosettmärk on mustvalge triibuga helesinine rosett (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_6"
       },
@@ -4836,13 +5464,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 59.",
-      "rdfs:label": "§ 59. Eesti Punase Risti V klassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 59. Eesti Punase Risti V klassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti Punase Risti V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 6). (2) Eesti Punase Risti V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:summary": {
+        "@value": "(1) Eesti Punase Risti V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 6). (2) Eesti Punase Risti V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Punase Risti V klassi teenetemärk on samasugune nagu IV klassi teenetemärk, kuid lindil puudub rullmärk (lisa 6). (2) Eesti Punase Risti V klassi teenetemärgi rosettmärk on teenetemärgi lindi 3 mm laiune riba (lisa 7).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_6"
       },
@@ -4896,13 +5533,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 60.",
-      "rdfs:label": "§ 60. Eesti Punase Risti medaliklassi teenetemärk",
+      "rdfs:label": {
+        "@value": "§ 60. Eesti Punase Risti medaliklassi teenetemärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti Punase Risti medaliklassi teenetemärk on sõõrikujuline 29 mm läbimõõduga hõbemedal. Medali esiküljel on 13,5 mm suurune ühepikkuste, 3 mm laiuste harudega reljeefne emailitud punase risti kujutis. Medali tagaküljel on reljeefne kiri «EESTI PUNANE RIST» (lisa 6). (2) Eesti Punase Risti medaliklassi teenetemärgi lint on samasugune nagu V klassi teenetemärgil. (3) Eesti Punase Risti medaliklassi teenetemärgi rosettmärgiks on V klassi rosettmärk.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Punase Risti medaliklassi teenetemärk on sõõrikujuline 29 mm läbimõõduga hõbemedal. Medali esiküljel on 13,5 mm suurune ühepikkuste, 3 mm laiuste harudega reljeefne emailitud punase risti kujutis. Medali tagaküljel on reljeefne kiri «EESTI PUNANE RIST» (lisa 6). (2) Eesti Punase Risti medaliklassi teenetemärgi lint on samasugune nagu V klassi teenetemärgil. (3) Eesti Punase Risti medaliklassi teenetemärgi rosettmärgiks on V klassi rosettmärk.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Punase Risti medaliklassi teenetemärk on sõõrikujuline 29 mm läbimõõduga hõbemedal. Medali esiküljel on 13,5 mm suurune ühepikkuste, 3 mm laiuste harudega reljeefne emailitud punase risti kujutis. Medali tagaküljel on reljeefne kiri «EESTI PUNANE RIST» (lisa 6). (2) Eesti Punase Risti medaliklassi teenetemärgi lint on samasugune nagu V klassi teenetemärgil. (3) Eesti Punase Risti medaliklassi teenetemärgi rosettmärgiks on V klassi rosettmärk.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_6"
       },
@@ -4972,13 +5618,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 61.",
-      "rdfs:label": "§ 61. Teenetemärgi miniatuuri kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 61. Teenetemärgi miniatuuri kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Teenetemärgi miniatuur on tema V klassi teenetemärgi täpne vähendatud koopia, mille märgi läbimõõt on 17 mm ja lindi laius 15 mm. Miniatuuri kõrgus koos lindiga on 50 mm. (2) Teenetemärgi medaliklassi miniatuur on tema täpne vähendatud koopia põhiklassi miniatuuri mõõtudes. (3) Teenetemärgi miniatuuri lindi alaservast 10 mm kõrgemale kinnitatakse teenetemärgi klassi tunnusena vastava klassi rosettmärk.",
+      "estleg:summary": {
+        "@value": "(1) Teenetemärgi miniatuur on tema V klassi teenetemärgi täpne vähendatud koopia, mille märgi läbimõõt on 17 mm ja lindi laius 15 mm. Miniatuuri kõrgus koos lindiga on 50 mm. (2) Teenetemärgi medaliklassi miniatuur on tema täpne vähendatud koopia põhiklassi miniatuuri mõõtudes. (3) Teenetemärgi miniatuuri lindi alaservast 10 mm kõrgemale kinnitatakse teenetemärgi klassi tunnusena vastava klassi rosettmärk.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teenetemärgi miniatuur on tema V klassi teenetemärgi täpne vähendatud koopia, mille märgi läbimõõt on 17 mm ja lindi laius 15 mm. Miniatuuri kõrgus koos lindiga on 50 mm. (2) Teenetemärgi medaliklassi miniatuur on tema täpne vähendatud koopia põhiklassi miniatuuri mõõtudes. (3) Teenetemärgi miniatuuri lindi alaservast 10 mm kõrgemale kinnitatakse teenetemärgi klassi tunnusena vastava klassi rosettmärk.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TeenMS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TeenMS_3_7"
       },
@@ -5054,12 +5709,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 62.",
-      "rdfs:label": "§ 62. Teenetemärkide register",
+      "rdfs:label": {
+        "@value": "§ 62. Teenetemärkide register",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Presidendi Kantselei peab teenetemärkide registrit, et tagada korrastatud ülevaade Vabariigi Presidendilt teenetemärgi saanud isikutest ning välisriigilt au- või teenetemärgi saanud Eesti kodanikest ja nendele antud teenetemärkidest ning vastava informatsiooni kättesaadavus selleks õigustatud isikutele ja asutustele. (2) Teenetemärkide registri asutab ja selle põhimääruse",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Presidendi Kantselei peab teenetemärkide registrit, et tagada korrastatud ülevaade Vabariigi Presidendilt teenetemärgi saanud isikutest ning välisriigilt au- või teenetemärgi saanud Eesti kodanikest ja nendele antud teenetemärkidest ning vastava informatsiooni kättesaadavus selleks õigustatud isikutele ja asutustele. (2) Teenetemärkide registri asutab ja selle põhimääruse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Presidendi Kantselei peab teenetemärkide registrit, et tagada korrastatud ülevaade Vabariigi Presidendilt teenetemärgi saanud isikutest ning välisriigilt au- või teenetemärgi saanud Eesti kodanikest ja nendele antud teenetemärkidest ning vastava informatsiooni kättesaadavus selleks õigustatud isikutele ja asutustele. (2) Teenetemärkide registri asutab ja selle põhimääruse",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_4"
@@ -5160,12 +5821,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 63.",
-      "rdfs:label": "§ 63. Teenetemärkide andmete kandmine registrisse",
+      "rdfs:label": {
+        "@value": "§ 63. Teenetemärkide andmete kandmine registrisse",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Vabariigi Presidendi otsuse alusel kannab Vabariigi Presidendi Kantselei teenetemärkide registrisse käesoleva seaduse § 11 lõikes 4 nimetatud andmed ning antud teenetemärgi nimetuse, klassi, andmise ja kätteandmise aja, samuti andmed teenetemärgi äravõtmise kohta.",
+      "estleg:summary": {
+        "@value": "Vabariigi Presidendi otsuse alusel kannab Vabariigi Presidendi Kantselei teenetemärkide registrisse käesoleva seaduse § 11 lõikes 4 nimetatud andmed ning antud teenetemärgi nimetuse, klassi, andmise ja kätteandmise aja, samuti andmed teenetemärgi äravõtmise kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Presidendi otsuse alusel kannab Vabariigi Presidendi Kantselei teenetemärkide registrisse käesoleva seaduse § 11 lõikes 4 nimetatud andmed ning antud teenetemärgi nimetuse, klassi, andmise ja kätteandmise aja, samuti andmed teenetemärgi äravõtmise kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_4"
@@ -5208,10 +5875,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Presidendi otsuse alusel kannab Vabariigi Presidendi Kantselei teenetemärkide registrisse käesoleva seaduse § 11 lõikes 4 nimetatud andmed ning antud teenetemärgi nimetuse, klassi, andmise ja kätteandmise aja, samuti andmed teenetemärgi äravõtmise kohta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Presidendi otsuse alusel kannab Vabariigi Presidendi Kantselei teenetemärkide registrisse käesoleva seaduse § 11 lõikes 4 nimetatud andmed ning antud teenetemärgi nimetuse, klassi, andmise ja kätteandmise aja, samuti andmed teenetemärgi äravõtmise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_63"
       },
+      "rdfs:label": "§ 63 lg 1",
       "estleg:isLegalBasisFor": [
         {
           "@id": "estleg:TeenMS_Par_11_Lg_4"
@@ -5235,12 +5904,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 64.",
-      "rdfs:label": "§ 64. Välisriigi au- ja teenetemärgi registreerimine",
+      "rdfs:label": {
+        "@value": "§ 64. Välisriigi au- ja teenetemärgi registreerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Eesti kodanik, kellele on antud välisriigi au- või teenetemärk, peab esitama mõistliku tähtaja jooksul pärast au- või teenetemärgi saamist avalduse Vabariigi Presidendi Kantseleile selle teenetemärkide registris registreerimiseks. Avaldusele lisatakse koopia au- või teenetemärgi tunnistusest. (2) Vabariigi Presidendi Kantselei võib registreerida Eesti kodanikule antud välisriigi au- või teenetemärgi ilma isiku avalduseta, kui selle andmine on Vabariigi Presidendi Kantseleile teada.",
+      "estleg:summary": {
+        "@value": "(1) Eesti kodanik, kellele on antud välisriigi au- või teenetemärk, peab esitama mõistliku tähtaja jooksul pärast au- või teenetemärgi saamist avalduse Vabariigi Presidendi Kantseleile selle teenetemärkide registris registreerimiseks. Avaldusele lisatakse koopia au- või teenetemärgi tunnistusest. (2) Vabariigi Presidendi Kantselei võib registreerida Eesti kodanikule antud välisriigi au- või teenetemärgi ilma isiku avalduseta, kui selle andmine on Vabariigi Presidendi Kantseleile teada.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti kodanik, kellele on antud välisriigi au- või teenetemärk, peab esitama mõistliku tähtaja jooksul pärast au- või teenetemärgi saamist avalduse Vabariigi Presidendi Kantseleile selle teenetemärkide registris registreerimiseks. Avaldusele lisatakse koopia au- või teenetemärgi tunnistusest. (2) Vabariigi Presidendi Kantselei võib registreerida Eesti kodanikule antud välisriigi au- või teenetemärgi ilma isiku avalduseta, kui selle andmine on Vabariigi Presidendi Kantseleile teada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_4"
@@ -5346,12 +6021,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 65.",
-      "rdfs:label": "§ 65. Teenetemärgi miniatuuri ja täiendava rosettmärgi saamine",
+      "rdfs:label": {
+        "@value": "§ 65. Teenetemärgi miniatuuri ja täiendava rosettmärgi saamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Teenetemärgi kavaleril on õigus taotleda Vabariigi Presidendi Kantseleilt lisaks talle antud teenetemärgile teenetemärgi miniatuuri ja täiendavat rosettmärki. (2) Taotlus esitatakse Vabariigi Presidendi Kantseleile. Enne taotluse esitamist tuleb tasuda riigilõiv riigilõivuseaduses sätestatud suuruses. (3) Vabariigi Presidendi Kantselei teeb otsuse taotluse rahuldamise kohta 30 päeva jooksul taotluse saamisest arvates ning väljastab taotletu teenetemärgi kavalerile mõistliku tähtaja jooksul.",
+      "estleg:summary": {
+        "@value": "(1) Teenetemärgi kavaleril on õigus taotleda Vabariigi Presidendi Kantseleilt lisaks talle antud teenetemärgile teenetemärgi miniatuuri ja täiendavat rosettmärki. (2) Taotlus esitatakse Vabariigi Presidendi Kantseleile. Enne taotluse esitamist tuleb tasuda riigilõiv riigilõivuseaduses sätestatud suuruses. (3) Vabariigi Presidendi Kantselei teeb otsuse taotluse rahuldamise kohta 30 päeva jooksul taotluse saamisest arvates ning väljastab taotletu teenetemärgi kavalerile mõistliku tähtaja jooksul.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teenetemärgi kavaleril on õigus taotleda Vabariigi Presidendi Kantseleilt lisaks talle antud teenetemärgile teenetemärgi miniatuuri ja täiendavat rosettmärki. (2) Taotlus esitatakse Vabariigi Presidendi Kantseleile. Enne taotluse esitamist tuleb tasuda riigilõiv riigilõivuseaduses sätestatud suuruses. (3) Vabariigi Presidendi Kantselei teeb otsuse taotluse rahuldamise kohta 30 päeva jooksul taotluse saamisest arvates ning väljastab taotletu teenetemärgi kavalerile mõistliku tähtaja jooksul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_5"
@@ -5463,13 +6144,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 66.",
-      "rdfs:label": "§ 66. Riikliku teenetemärgi valmistamine, kandmine ja muu kasutamine isiku poolt, kellel puudub selleks õigus",
+      "rdfs:label": {
+        "@value": "§ 66. Riikliku teenetemärgi valmistamine, kandmine ja muu kasutamine isiku poolt, kellel puudub selleks õigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 66. Riikliku teenetemärgi valmistamine, kandmine ja muu kasutamine isiku poolt, kellel puudub selleks õigus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_6"
       },
@@ -5507,12 +6193,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 67.",
-      "rdfs:label": "§ 67. Teenetemärgi ebaseaduslik käitlemine",
+      "rdfs:label": {
+        "@value": "§ 67. Teenetemärgi ebaseaduslik käitlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riikliku teenetemärgi ostmise, müümise, vahetamise või muu tasulise üleandmise, samuti teenetemärgi kandmise eest isiku poolt, kellel ei ole selleks õigust, – karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Riikliku teenetemärgi ostmise, müümise, vahetamise või muu tasulise üleandmise, samuti teenetemärgi kandmise eest isiku poolt, kellel ei ole selleks õigust, – karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riikliku teenetemärgi ostmise, müümise, vahetamise või muu tasulise üleandmise, samuti teenetemärgi kandmise eest isiku poolt, kellel ei ole selleks õigust, – karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_6"
@@ -5641,12 +6333,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 68.",
-      "rdfs:label": "§ 68. Riikliku teenetemärgi mitteaustamine",
+      "rdfs:label": {
+        "@value": "§ 68. Riikliku teenetemärgi mitteaustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riikliku teenetemärgi purustamise, rüvetamise, teotamise või muul viisil ebaväärika kasutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Riikliku teenetemärgi purustamise, rüvetamise, teotamise või muul viisil ebaväärika kasutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riikliku teenetemärgi purustamise, rüvetamise, teotamise või muul viisil ebaväärika kasutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_6"
@@ -5773,12 +6471,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 69.",
-      "rdfs:label": "§ 69. Toimingud riikliku teenetemärgiga äravahetamiseni sarnase esemega",
+      "rdfs:label": {
+        "@value": "§ 69. Toimingud riikliku teenetemärgiga äravahetamiseni sarnase esemega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Riikliku teenetemärgiga äravahetamiseni sarnase eseme valmistamise, kandmise või muu kasutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Riikliku teenetemärgiga äravahetamiseni sarnase eseme valmistamise, kandmise või muu kasutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riikliku teenetemärgiga äravahetamiseni sarnase eseme valmistamise, kandmise või muu kasutamise eest –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_6"
@@ -5905,12 +6609,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 70.",
-      "rdfs:label": "§ 70. Menetlus",
+      "rdfs:label": {
+        "@value": "§ 70. Menetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Politsei- ja Piirivalveamet.",
+      "estleg:summary": {
+        "@value": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Politsei- ja Piirivalveamet.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Politsei- ja Piirivalveamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_6"
@@ -5972,10 +6682,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Politsei- ja Piirivalveamet.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Politsei- ja Piirivalveamet.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_70"
       },
+      "rdfs:label": "§ 70 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -5998,12 +6710,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 71.",
-      "rdfs:label": "§ 71. Riigivapi ketiklassi teenetemärgi andmine tagasiulatuvalt",
+      "rdfs:label": {
+        "@value": "§ 71. Riigivapi ketiklassi teenetemärgi andmine tagasiulatuvalt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Riigivapi ketiklassi teenetemärgi kavalerid on president Lennart Georg Meri ja president Arnold Rüütel.",
+      "estleg:summary": {
+        "@value": "Riigivapi ketiklassi teenetemärgi kavalerid on president Lennart Georg Meri ja president Arnold Rüütel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riigivapi ketiklassi teenetemärgi kavalerid on president Lennart Georg Meri ja president Arnold Rüütel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_7"
@@ -6028,10 +6746,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigivapi ketiklassi teenetemärgi kavalerid on president Lennart Georg Meri ja president Arnold Rüütel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivapi ketiklassi teenetemärgi kavalerid on president Lennart Georg Meri ja president Arnold Rüütel.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_71"
-      }
+      },
+      "rdfs:label": "§ 71 lg 1"
     },
     {
       "@id": "estleg:TeenMS_Par_72",
@@ -6040,12 +6760,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 72.",
-      "rdfs:label": "§ 72. Asjaajamise üleandmine",
+      "rdfs:label": {
+        "@value": "§ 72. Asjaajamise üleandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "Riigikantselei annab teenetemärkide andmisega seonduva asjaajamise Vabariigi Presidendi Kantseleile üle kuu aja jooksul käesoleva seaduse jõustumisest arvates. Esitatud taotlused loetakse teenetemärgi andmise ettepanekuteks.",
+      "estleg:summary": {
+        "@value": "Riigikantselei annab teenetemärkide andmisega seonduva asjaajamise Vabariigi Presidendi Kantseleile üle kuu aja jooksul käesoleva seaduse jõustumisest arvates. Esitatud taotlused loetakse teenetemärgi andmise ettepanekuteks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riigikantselei annab teenetemärkide andmisega seonduva asjaajamise Vabariigi Presidendi Kantseleile üle kuu aja jooksul käesoleva seaduse jõustumisest arvates. Esitatud taotlused loetakse teenetemärgi andmise ettepanekuteks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_7"
@@ -6075,10 +6801,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigikantselei annab teenetemärkide andmisega seonduva asjaajamise Vabariigi Presidendi Kantseleile üle kuu aja jooksul käesoleva seaduse jõustumisest arvates. Esitatud taotlused loetakse teenetemärgi andmise ettepanekuteks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigikantselei annab teenetemärkide andmisega seonduva asjaajamise Vabariigi Presidendi Kantseleile üle kuu aja jooksul käesoleva seaduse jõustumisest arvates. Esitatud taotlused loetakse teenetemärgi andmise ettepanekuteks.",
       "estleg:parentProvision": {
         "@id": "estleg:TeenMS_Par_72"
       },
+      "rdfs:label": "§ 72 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_vabariigipresident"
@@ -6092,18 +6820,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 73.",
-      "rdfs:label": "§ 73.",
+      "rdfs:label": {
+        "@value": "§ 73.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
+      "estleg:summary": "§ 73.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TeenMS_7"
       },
-      "estleg:summary": "§ 73.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:TeenMS_Par_73_v12906303"
@@ -6117,12 +6848,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 75.",
-      "rdfs:label": "§ 75. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 75. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_7"
@@ -6149,12 +6886,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 76.",
-      "rdfs:label": "§ 76. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 76. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teenetemärkide seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TeenMS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub 2008. aasta 1. märtsil. (2) Käesoleva seaduse § 4 lõige 2 ja § 71 jõustuvad 2008. aasta 23. veebruaril. (3) Käesoleva seaduse § 74 jõustub üldises korras.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub 2008. aasta 1. märtsil. (2) Käesoleva seaduse § 4 lõige 2 ja § 71 jõustuvad 2008. aasta 23. veebruaril. (3) Käesoleva seaduse § 74 jõustub üldises korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus jõustub 2008. aasta 1. märtsil. (2) Käesoleva seaduse § 4 lõige 2 ja § 71 jõustuvad 2008. aasta 23. veebruaril. (3) Käesoleva seaduse § 74 jõustub üldises korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TeenMS_7"
@@ -6235,26 +6978,20 @@
       "rdfs:label": "§ 76 lg 3"
     },
     {
-      "@id": "estleg:Citation_TeenMS_P_76_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/528012015008",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:TeenMS_Par_76"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "Käesoleva seaduse § 74"
-    },
-    {
-      "@id": "estleg:Citation_TeenMS_P_76_Lg_3_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TeenMS_Par_76_Lg_3"
+      "eli:realizes": {
+        "@id": "estleg:TeenMS_Map"
       },
-      "estleg:citationText": "Käesoleva seaduse § 74"
+      "rdfs:label": {
+        "@value": "Decorations Act",
+        "@language": "en"
+      }
     }
   ]
 }

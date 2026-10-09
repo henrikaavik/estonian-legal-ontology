@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:PPR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Patendikoostöölepingu (PCT) ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Patendikoostöölepingu (PCT) ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Patendikoostöölepingu (PCT) ratifitseerimise seadus",
       "dcterms:title": "Patendikoostöölepingu (PCT) ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/24617.xml"
+        "@id": "https://www.riigiteataja.ee/akt/24617"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/24617/xml"
+      },
+      "estleg:globalId": "24617",
+      "eli:id_local": "24617",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "151587",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f8b27dcea9052ac4db6bd51dbf77cc1dfb3ae7e0b5bd054f16c65260bd3119e8",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -72,30 +93,39 @@
       ]
     },
     {
-      "@id": "estleg:PPR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Patendikoostöölepingu (PCT) ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_PPR_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_PPR_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PPR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:PPR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Patendikoostöölepingu (PCT) ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PPR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:PPR_Par_1",
@@ -104,12 +134,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud 1970. aasta 19. juunil Washingtonis alla kirjutatud...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud 1970. aasta 19. juunil Washingtonis alla kirjutatud...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Patendikoostöölepingu (PCT) ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PPR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud 1970. aasta 19. juunil Washingtonis alla kirjutatud ning 1979. aasta 28. septembril parandatud ja 1984. aasta 3. veebruaril muudetud (PCT).",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud 1970. aasta 19. juunil Washingtonis alla kirjutatud ning 1979. aasta 28. septembril parandatud ja 1984. aasta 3. veebruaril muudetud (PCT).",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida juurdelisatud 1970. aasta 19. juunil Washingtonis alla kirjutatud ning 1979. aasta 28. septembril parandatud ja 1984. aasta 3. veebruaril muudetud (PCT).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PPR_default"
@@ -156,10 +192,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud 1970. aasta 19. juunil Washingtonis alla kirjutatud ning 1979. aasta 28. septembril parandatud ja 1984. aasta 3. veebruaril muudetud (PCT).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud 1970. aasta 19. juunil Washingtonis alla kirjutatud ning 1979. aasta 28. septembril parandatud ja 1984. aasta 3. veebruaril muudetud (PCT).",
       "estleg:parentProvision": {
         "@id": "estleg:PPR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:PPR_Par_2",
@@ -168,12 +206,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühineda käesoleva seaduse §-s 1 nimetatud patendikoostöölepingu alusel moodustat...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühineda käesoleva seaduse §-s 1 nimetatud patendikoostöölepingu alusel moodustat...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Patendikoostöölepingu (PCT) ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PPR_Map"
       },
-      "estleg:summary": "Ühineda käesoleva seaduse §-s 1 nimetatud patendikoostöölepingu alusel moodustatud rahvusvahelise organisatsiooni – Rahvusvahelise Patendikoostöö Liiduga.",
+      "estleg:summary": {
+        "@value": "Ühineda käesoleva seaduse §-s 1 nimetatud patendikoostöölepingu alusel moodustatud rahvusvahelise organisatsiooni – Rahvusvahelise Patendikoostöö Liiduga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda käesoleva seaduse §-s 1 nimetatud patendikoostöölepingu alusel moodustatud rahvusvahelise organisatsiooni – Rahvusvahelise Patendikoostöö Liiduga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PPR_default"
@@ -217,10 +261,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda käesoleva seaduse §-s 1 nimetatud patendikoostöölepingu alusel moodustatud rahvusvahelise organisatsiooni – Rahvusvahelise Patendikoostöö Liiduga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda käesoleva seaduse §-s 1 nimetatud patendikoostöölepingu alusel moodustatud rahvusvahelise organisatsiooni – Rahvusvahelise Patendikoostöö Liiduga.",
       "estleg:parentProvision": {
         "@id": "estleg:PPR_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:PPR_Par_1"

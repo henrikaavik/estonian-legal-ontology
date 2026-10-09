@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VSaarS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Püsiasustusega väikesaarte seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Püsiasustusega väikesaarte seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Püsiasustusega väikesaarte seadus",
-      "dcterms:title": [
-        {
-          "@value": "Püsiasustusega väikesaarte seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Permanently Inhabited Small Islands Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Püsiasustusega väikesaarte seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/106072023070.xml"
+        "@id": "https://www.riigiteataja.ee/akt/110022026016"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/110022026016/xml"
+      },
+      "estleg:globalId": "110022026016",
+      "eli:id_local": "110022026016",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "156273",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "59d05c5a1777971e6fd3c0f61ec90fdf18354ed1235207d8e5ea50f20f740d25",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2004-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -51,10 +67,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2024-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/508012024008"
@@ -160,14 +172,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU16_0632"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/508012024008"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_VSaarS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VSaarS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:VSaarS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Püsiasustusega väikesaarte seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Püsiasustusega väikesaarte seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VSaarS_1"
@@ -187,26 +225,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VSaarS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–4 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:VSaarS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_VSaarS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
@@ -226,12 +253,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–7 OMAVALITSUSKORRALDUSE ERISUSED",
-      "skos:prefLabel": "§5–7 OMAVALITSUSKORRALDUSE ERISUSED",
+      "rdfs:label": {
+        "@value": "§5–7 OMAVALITSUSKORRALDUSE ERISUSED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–7 OMAVALITSUSKORRALDUSE ERISUSED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VSaarS_TopicScheme"
       },
-      "estleg:provisionCount": 3
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Chapter_VSaarS_2",
@@ -239,7 +272,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – OMAVALITSUSKORRALDUSE ERISUSED",
+      "rdfs:label": {
+        "@value": "2. peatükk – OMAVALITSUSKORRALDUSE ERISUSED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
@@ -259,12 +295,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§8–12 TEENUSED JA INFRASTRUKTUUR",
-      "skos:prefLabel": "§8–12 TEENUSED JA INFRASTRUKTUUR",
+      "rdfs:label": {
+        "@value": "§8–12 TEENUSED JA INFRASTRUKTUUR",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§8–12 TEENUSED JA INFRASTRUKTUUR",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VSaarS_TopicScheme"
       },
-      "estleg:provisionCount": 5
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:Chapter_VSaarS_3",
@@ -272,7 +314,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – TEENUSED JA INFRASTRUKTUUR",
+      "rdfs:label": {
+        "@value": "3. peatükk – TEENUSED JA INFRASTRUKTUUR",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
@@ -292,12 +337,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§13–14 MAJANDUS JA LOODUSHOID",
-      "skos:prefLabel": "§13–14 MAJANDUS JA LOODUSHOID",
+      "rdfs:label": {
+        "@value": "§13–14 MAJANDUS JA LOODUSHOID",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§13–14 MAJANDUS JA LOODUSHOID",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VSaarS_TopicScheme"
       },
-      "estleg:provisionCount": 2
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:Chapter_VSaarS_4",
@@ -305,7 +356,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – MAJANDUS JA LOODUSHOID",
+      "rdfs:label": {
+        "@value": "4. peatükk – MAJANDUS JA LOODUSHOID",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
@@ -325,8 +379,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§14–16 LÕPPSÄTTED",
-      "skos:prefLabel": "§14–16 LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "§14–16 LÕPPSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§14–16 LÕPPSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VSaarS_TopicScheme"
       },
@@ -338,7 +398,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "5. peatükk – LÕPPSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
@@ -358,12 +421,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse toimimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse toimimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Käesolev seadus sätestab erisused, mis tulenevad püsiasustusega väikesaarte saareliste tingimuste eripärast ning ei ole sätestatud teiste seadustega.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus sätestab erisused, mis tulenevad püsiasustusega väikesaarte saareliste tingimuste eripärast ning ei ole sätestatud teiste seadustega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus sätestab erisused, mis tulenevad püsiasustusega väikesaarte saareliste tingimuste eripärast ning ei ole sätestatud teiste seadustega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_1"
@@ -388,10 +457,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus sätestab erisused, mis tulenevad püsiasustusega väikesaarte saareliste tingimuste eripärast ning ei ole sätestatud teiste seadustega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab erisused, mis tulenevad püsiasustusega väikesaarte saareliste tingimuste eripärast ning ei ole sätestatud teiste seadustega.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:VSaarS_Par_2",
@@ -400,13 +471,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduses kasutatavad mõisted",
+      "rdfs:label": {
+        "@value": "§ 2. Seaduses kasutatavad mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: saarvald – püsiasustusega väikesaart või saarterühma tervikuna haldav vald; saarelise osaga kohaliku omavalitsuse üksus – saarvaldade hulka mittekuuluv kohaliku omavalitsuse üksus, mille koosseisus on püsiasustusega väikesaari; püsiasustusega väikesaar (edaspidi väikesaar) – alla 100 km2 suurune saar, kus elab vähemalt viis elanikku; suursaared – Saaremaa, Hiiumaa ja Muhu. püsiasustus – alaliselt ja peamiselt väikesaarel elamine;",
-      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: saarvald – püsiasustusega väikesaart või saarterühma tervikuna haldav vald; saarelise osaga kohaliku omavalitsuse üksus – saarvaldade hulka mittekuuluv kohaliku omavalitsuse üksus, mille koosseisus on püsiasustusega väikesaari; püsiasustusega väikesaar (edaspidi väikesaar) – alla 100 km2 suurune saar, kus elab vähemalt viis elanikku; suursaared – Saaremaa, Hiiumaa ja Muhu. püsiasustus – alaliselt ja peamiselt väikesaarel elamine; püsielanik – isik, kes alaliselt ja peamiselt elab väikesaarel ja kelle elukoha andmed on kantud rahvastikuregistrisse väikesaarel asuva asustusüksuse täpsusega.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1) saarvald – püsiasustusega väikesaart või saarterühma tervikuna haldav vald; 2) saarelise osaga kohaliku omavalitsuse üksus – saarvaldade hulka mittekuuluv kohaliku omavalitsuse üksus, mille koosseisus on püsiasustusega väikesaari; 3) püsiasustusega väikesaar (edaspidi väikesaar) – alla 100 km² suurune saar, kus elab vähemalt viis elanikku; 4) suursaared – Saaremaa, Hiiumaa ja Muhu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1) saarvald – püsiasustusega väikesaart või saarterühma tervikuna haldav vald; 2) saarelise osaga kohaliku omavalitsuse üksus – saarvaldade hulka mittekuuluv kohaliku omavalitsuse üksus, mille koosseisus on püsiasustusega väikesaari; 3) püsiasustusega väikesaar (edaspidi väikesaar) – alla 100 km² suurune saar, kus elab vähemalt viis elanikku; 4) suursaared – Saaremaa, Hiiumaa ja Muhu. 5) püsiasustus – alaliselt ja peamiselt väikesaarel elamine; 6) püsielanik – isik, kelle rahvastikuregistrijärgne elukoht on väikesaarel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_1"
       },
@@ -470,10 +547,20 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: saarvald – püsiasustusega väikesaart või saarterühma tervikuna haldav vald; saarelise osaga kohaliku omavalitsuse üksus – saarvaldade hulka mittekuuluv kohaliku omavalitsuse üksus, mille koosseisus on püsiasustusega väikesaari; püsiasustusega väikesaar (edaspidi väikesaar) – alla 100 km2 suurune saar, kus elab vähemalt viis elanikku; suursaared – Saaremaa, Hiiumaa ja Muhu. püsiasustus – alaliselt ja peamiselt väikesaarel elamine; püsielanik – isik, kes alaliselt ja peamiselt elab väikesaarel ja kelle elukoha andmed on kantud rahvastikuregistrisse väikesaarel asuva asustusüksuse täpsusega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1) saarvald – püsiasustusega väikesaart või saarterühma tervikuna haldav vald; 2) saarelise osaga kohaliku omavalitsuse üksus – saarvaldade hulka mittekuuluv kohaliku omavalitsuse üksus, mille koosseisus on püsiasustusega väikesaari; 3) püsiasustusega väikesaar (edaspidi väikesaar) – alla 100 km² suurune saar, kus elab vähemalt viis elanikku; 4) suursaared – Saaremaa, Hiiumaa ja Muhu. 5) püsiasustus – alaliselt ja peamiselt väikesaarel elamine; 6) püsielanik – isik, kelle rahvastikuregistrijärgne elukoht on väikesaarel.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -502,12 +589,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2¹.",
-      "rdfs:label": "§ 2¹. Väikesaarte nimistu",
+      "rdfs:label": {
+        "@value": "§ 2¹. Väikesaarte nimistu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Väikesaarte nimistusse (edaspidi nimistu) kantakse väikesaared, millel elas eelneval kalendriaastal rahvastikuregistri andmetel püsivalt kokku vähemalt viis isikut. Väikesaare vastavust käesolevas lõikes nimetatud kriteeriumile kontrollitakse iga kalendrikuu esimese kuupäeva seisuga. (2) Kui nimistusse kuuluv väikesaar ei vasta kalendriaastal vähemalt kuue kuu jooksul käesoleva paragrahvi lõikes 1 sätestatule, arvatakse ta nimistust välja. (3) Nimistu kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Väikesaarte nimistusse (edaspidi nimistu) kantakse väikesaared, millel elas eelneval kalendriaastal rahvastikuregistri andmetel püsivalt kokku vähemalt viis isikut. Väikesaare vastavust käesolevas lõikes nimetatud kriteeriumile kontrollitakse iga kalendrikuu esimese kuupäeva seisuga. (2) Kui nimistusse kuuluv väikesaar ei vasta kalendriaastal vähemalt kuue kuu jooksul käesoleva paragrahvi lõikes 1 sätestatule, arvatakse ta nimistust välja. (3) Nimistu kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Väikesaarte nimistusse (edaspidi nimistu) kantakse väikesaared, millel elas eelneval kalendriaastal rahvastikuregistri andmetel püsivalt kokku vähemalt viis isikut. Väikesaare vastavust käesolevas lõikes nimetatud kriteeriumile kontrollitakse iga kalendrikuu esimese kuupäeva seisuga. (2) Kui nimistusse kuuluv väikesaar ei vasta kalendriaastal vähemalt kuue kuu jooksul käesoleva paragrahvi lõikes 1 sätestatule, arvatakse ta nimistust välja. (3) Nimistu kehtestab määrusega. (4) Vabariigi Valitsus kehtestab käesoleva paragrahvi lõigete 1 ja 2 alusel tehtud nimistu muudatused hiljemalt 1. veebruaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_1"
@@ -636,13 +729,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Riigi ja kohalike omavalitsuste eesmärgid",
+      "rdfs:label": {
+        "@value": "§ 3. Riigi ja kohalike omavalitsuste eesmärgid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Riigi ja kohalike omavalitsuste eesmärgid püsiasustusega väikesaarte haldamisel on: püsiasustuse taastamine, säilitamine ja arengusuutlikkuse toetamine; omavalitsusliku suutlikkuse toetamine ja osalusdemokraatia suurendamine; püsielanikele töökohtade ja toimetulekuvõimaluste loomine ning ettevõtluse toetamine; esmatähtsate avalike teenuste (politsei- ja päästeasutused, joogivesi, post- ja elektronside, elektrivarustus, transpordiühendus, alus-, põhi- ja keskharidus, sotsiaalabi) kättesaadavuse",
-      "estleg:legalText": "Riigi ja kohalike omavalitsuste eesmärgid püsiasustusega väikesaarte haldamisel on: püsiasustuse taastamine, säilitamine ja arengusuutlikkuse toetamine; omavalitsusliku suutlikkuse toetamine ja osalusdemokraatia suurendamine; püsielanikele töökohtade ja toimetulekuvõimaluste loomine ning ettevõtluse toetamine; esmatähtsate avalike teenuste (politsei- ja päästeasutused, joogivesi, post- ja elektronside, elektrivarustus, transpordiühendus, alus-, põhi- ja keskharidus, sotsiaalabi) kättesaadavuse tagamine; saarte elulaadi omapära ja rahvakultuuri järjepidevuse säilitamine; väikesaartele iseloomuliku maastikuilme ja looduskeskkonna säilitamine ja kaitsmine; püsielanike tegevuse ja huvide sidumine territoriaalmere ja riigipiiri kaitse ning keskkonnahoiu riiklike vajadustega.",
+      "estleg:summary": {
+        "@value": "Riigi ja kohalike omavalitsuste eesmärgid püsiasustusega väikesaarte haldamisel on: 1) püsiasustuse taastamine, säilitamine ja arengusuutlikkuse toetamine; 2) omavalitsusliku suutlikkuse toetamine ja osalusdemokraatia suurendamine; 3) püsielanikele töökohtade ja toimetulekuvõimaluste loomine ning ettevõtluse toetamine; 4) esmatähtsate avalike teenuste (politsei- ja päästeasutused, joogivesi, post- ja elektronside, elektrivarustus, transpordiühendus, alus-, põhi- ja keskharidus, sotsiaalabi)",
+        "@language": "et"
+      },
+      "estleg:legalText": "Riigi ja kohalike omavalitsuste eesmärgid püsiasustusega väikesaarte haldamisel on: 1) püsiasustuse taastamine, säilitamine ja arengusuutlikkuse toetamine; 2) omavalitsusliku suutlikkuse toetamine ja osalusdemokraatia suurendamine; 3) püsielanikele töökohtade ja toimetulekuvõimaluste loomine ning ettevõtluse toetamine; 4) esmatähtsate avalike teenuste (politsei- ja päästeasutused, joogivesi, post- ja elektronside, elektrivarustus, transpordiühendus, alus-, põhi- ja keskharidus, sotsiaalabi) kättesaadavuse tagamine; 5) saarte elulaadi omapära ja rahvakultuuri järjepidevuse säilitamine; 6) väikesaartele iseloomuliku maastikuilme ja looduskeskkonna säilitamine ja kaitsmine; 7) püsielanike tegevuse ja huvide sidumine territoriaalmere ja riigipiiri kaitse ning keskkonnahoiu riiklike vajadustega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_1"
       },
@@ -695,10 +794,21 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigi ja kohalike omavalitsuste eesmärgid püsiasustusega väikesaarte haldamisel on: püsiasustuse taastamine, säilitamine ja arengusuutlikkuse toetamine; omavalitsusliku suutlikkuse toetamine ja osalusdemokraatia suurendamine; püsielanikele töökohtade ja toimetulekuvõimaluste loomine ning ettevõtluse toetamine; esmatähtsate avalike teenuste (politsei- ja päästeasutused, joogivesi, post- ja elektronside, elektrivarustus, transpordiühendus, alus-, põhi- ja keskharidus, sotsiaalabi) kättesaadavuse tagamine; saarte elulaadi omapära ja rahvakultuuri järjepidevuse säilitamine; väikesaartele iseloomuliku maastikuilme ja looduskeskkonna säilitamine ja kaitsmine; püsielanike tegevuse ja huvide sidumine territoriaalmere ja riigipiiri kaitse ning keskkonnahoiu riiklike vajadustega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi ja kohalike omavalitsuste eesmärgid püsiasustusega väikesaarte haldamisel on: 1) püsiasustuse taastamine, säilitamine ja arengusuutlikkuse toetamine; 2) omavalitsusliku suutlikkuse toetamine ja osalusdemokraatia suurendamine; 3) püsielanikele töökohtade ja toimetulekuvõimaluste loomine ning ettevõtluse toetamine; 4) esmatähtsate avalike teenuste (politsei- ja päästeasutused, joogivesi, post- ja elektronside, elektrivarustus, transpordiühendus, alus-, põhi- ja keskharidus, sotsiaalabi) kättesaadavuse tagamine; 5) saarte elulaadi omapära ja rahvakultuuri järjepidevuse säilitamine; 6) väikesaartele iseloomuliku maastikuilme ja looduskeskkonna säilitamine ja kaitsmine; 7) püsielanike tegevuse ja huvide sidumine territoriaalmere ja riigipiiri kaitse ning keskkonnahoiu riiklike vajadustega.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -716,13 +826,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Väikesaarte komisjon",
+      "rdfs:label": {
+        "@value": "§ 4. Väikesaarte komisjon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Väikesaarte arenguga seonduvate küsimuste arutamiseks ja Vabariigi Valitsuse nõustamiseks väikesaartele suunatud regionaalpoliitika küsimustes moodustatakse väikesaarte komisjon (edaspidi komisjon). (2) Komisjoni pädevuses on: seisukoha esitamine Vabariigi Valitsusele väikesaarte arengut mõjutavate programmide ja arengukavade kohta; ettepanekute esitamine Vabariigi Valitsusele ja ministeeriumidele väikesaartele suunatud riiklike programmide algatamiseks ja finantseerimiseks; seisukoha",
-      "estleg:legalText": "(1) Väikesaarte arenguga seonduvate küsimuste arutamiseks ja Vabariigi Valitsuse nõustamiseks väikesaartele suunatud regionaalpoliitika küsimustes moodustatakse väikesaarte komisjon (edaspidi komisjon). (2) Komisjoni pädevuses on: seisukoha esitamine Vabariigi Valitsusele väikesaarte arengut mõjutavate programmide ja arengukavade kohta; ettepanekute esitamine Vabariigi Valitsusele ja ministeeriumidele väikesaartele suunatud riiklike programmide algatamiseks ja finantseerimiseks; seisukoha esitamine Vabariigi Valitsusele riigieelarve eelnõu kohta, lähtudes selle võimalikust mõjust väikesaarte arengule; ettepanekute esitamine Vabariigi Valitsusele seoses püsiasustuse taastamisega väikesaartel; ettepanekute esitamine Vabariigi Valitsusele väikesaarte liikluse ühendusteede ning nendega seotud sadamate ja sadamarajatiste määramiseks; riiklike investeeringute taotlemise koordineerimine väikesaartel; ettepanekute esitamine avaliku sektori töökohtade loomiseks väikesaartel; soovituste andmine väikesaartel tekkivate probleemide lahendamiseks ja vahendamine konfliktolukordades; muude põhimäärusega talle pandud ülesannete täitmine. (3) Komisjoni koosseisu kinnitab Vabariigi Valitsus korraldusega. Komisjoni koosseisu nimetatakse vähemalt üks esindaja iga väikesaarte nimistusse kantud saare kohta. (4) Komisjoni esimees on regionaalpoliitika eest vastutav minister. Komisjon valib oma liikmete hulgast aseesimehe, kes asendab esimeest tema äraolekul. Komisjoni tehnilise teenindamise tagab Regionaal- ja Põllumajandusministeerium. (5) Komisjon on otsustusvõimeline, kui kohal on vähemalt pool komisjoni koosseisust. Komisjon esitab oma ettepanekud ja seisukohad Vabariigi Valitsusele komisjoni esimehe kaudu. (6) Komisjon tegutseb põhimääruse alusel, mille kinnitab",
+      "estleg:summary": {
+        "@value": "(1) Väikesaarte arenguga seonduvate küsimuste arutamiseks ja Vabariigi Valitsuse nõustamiseks väikesaartele suunatud regionaalpoliitika küsimustes moodustatakse väikesaarte komisjon (edaspidi komisjon). (2) Komisjoni pädevuses on: 1) seisukoha esitamine Vabariigi Valitsusele väikesaarte arengut mõjutavate programmide ja arengukavade kohta; 2) ettepanekute esitamine Vabariigi Valitsusele ja ministeeriumidele väikesaartele suunatud riiklike programmide algatamiseks ja finantseerimiseks; 3)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Väikesaarte arenguga seonduvate küsimuste arutamiseks ja Vabariigi Valitsuse nõustamiseks väikesaartele suunatud regionaalpoliitika küsimustes moodustatakse väikesaarte komisjon (edaspidi komisjon). (2) Komisjoni pädevuses on: 1) seisukoha esitamine Vabariigi Valitsusele väikesaarte arengut mõjutavate programmide ja arengukavade kohta; 2) ettepanekute esitamine Vabariigi Valitsusele ja ministeeriumidele väikesaartele suunatud riiklike programmide algatamiseks ja finantseerimiseks; 3) seisukoha esitamine Vabariigi Valitsusele riigieelarve eelnõu kohta, lähtudes selle võimalikust mõjust väikesaarte arengule; 4) ettepanekute esitamine Vabariigi Valitsusele seoses püsiasustuse taastamisega väikesaartel; 5) ettepanekute esitamine Vabariigi Valitsusele väikesaarte liikluse ühendusteede ning nendega seotud sadamate ja sadamarajatiste määramiseks; 6) riiklike investeeringute taotlemise koordineerimine väikesaartel; 7) ettepanekute esitamine avaliku sektori töökohtade loomiseks väikesaartel; 8) soovituste andmine väikesaartel tekkivate probleemide lahendamiseks ja vahendamine konfliktolukordades; 9) muude põhimäärusega talle pandud ülesannete täitmine. (3) Komisjoni koosseisu kinnitab Vabariigi Valitsus korraldusega. Komisjoni koosseisu nimetatakse vähemalt üks esindaja iga väikesaarte nimistusse kantud saare kohta. (4) Komisjoni esimees on regionaalpoliitika eest vastutav minister. Komisjon valib oma liikmete hulgast aseesimehe, kes asendab esimeest tema äraolekul. Komisjoni tehnilise teenindamise tagab Regionaal- ja Põllumajandusministeerium. (5) Komisjon on otsustusvõimeline, kui kohal on vähemalt pool komisjoni koosseisust. Komisjon esitab oma ettepanekud ja seisukohad Vabariigi Valitsusele komisjoni esimehe kaudu. (6) Komisjon tegutseb põhimääruse alusel, mille kinnitab",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_1"
       },
@@ -835,11 +951,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Komisjoni pädevuses on: seisukoha esitamine Vabariigi Valitsusele väikesaarte arengut mõjutavate programmide ja arengukavade kohta; ettepanekute esitamine Vabariigi Valitsusele ja ministeeriumidele väikesaartele suunatud riiklike programmide algatamiseks ja finantseerimiseks; seisukoha esitamine Vabariigi Valitsusele riigieelarve eelnõu kohta, lähtudes selle võimalikust mõjust väikesaarte arengule; ettepanekute esitamine Vabariigi Valitsusele seoses püsiasustuse taastamisega väikesaartel; ettepanekute esitamine Vabariigi Valitsusele väikesaarte liikluse ühendusteede ning nendega seotud sadamate ja sadamarajatiste määramiseks; riiklike investeeringute taotlemise koordineerimine väikesaartel; ettepanekute esitamine avaliku sektori töökohtade loomiseks väikesaartel; soovituste andmine väikesaartel tekkivate probleemide lahendamiseks ja vahendamine konfliktolukordades; muude põhimäärusega talle pandud ülesannete täitmine.",
+      "estleg:legalText": "(2) Komisjoni pädevuses on: 1) seisukoha esitamine Vabariigi Valitsusele väikesaarte arengut mõjutavate programmide ja arengukavade kohta; 2) ettepanekute esitamine Vabariigi Valitsusele ja ministeeriumidele väikesaartele suunatud riiklike programmide algatamiseks ja finantseerimiseks; 3) seisukoha esitamine Vabariigi Valitsusele riigieelarve eelnõu kohta, lähtudes selle võimalikust mõjust väikesaarte arengule; 4) ettepanekute esitamine Vabariigi Valitsusele seoses püsiasustuse taastamisega väikesaartel; 5) ettepanekute esitamine Vabariigi Valitsusele väikesaarte liikluse ühendusteede ning nendega seotud sadamate ja sadamarajatiste määramiseks; 6) riiklike investeeringute taotlemise koordineerimine väikesaartel; 7) ettepanekute esitamine avaliku sektori töökohtade loomiseks väikesaartel; 8) soovituste andmine väikesaartel tekkivate probleemide lahendamiseks ja vahendamine konfliktolukordades; 9) muude põhimäärusega talle pandud ülesannete täitmine.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -968,13 +1095,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Üldkogu",
+      "rdfs:label": {
+        "@value": "§ 5. Üldkogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Üldkogu pädevuses on kooskõlastuse andmine väikesaare arengukavale,üldplaneeringule, maakasutuse üldistele põhimõtetele, transpordiühenduse arendamisele mandri või lähima suursaarega, üldkogu reglemendile ja saarevanema valimise korrale, samuti teistele saarvalla või saarelise osaga kohaliku omavalitsuse üksuse põhimääruses sätestatud küsimustele. (1¹) Saarvaldades ei ole üldkogu kokkukutsumine kohustuslik. (2) Üldkogule kutsutakse ja üldkogul omavad hääleõigust kõik vähemalt 15-aastased",
-      "estleg:legalText": "(1) Üldkogu pädevuses on kooskõlastuse andmine väikesaare arengukavale,üldplaneeringule, maakasutuse üldistele põhimõtetele, transpordiühenduse arendamisele mandri või lähima suursaarega, üldkogu reglemendile ja saarevanema valimise korrale, samuti teistele saarvalla või saarelise osaga kohaliku omavalitsuse üksuse põhimääruses sätestatud küsimustele. (1¹) Saarvaldades ei ole üldkogu kokkukutsumine kohustuslik. (2) Üldkogule kutsutakse ja üldkogul omavad hääleõigust kõik vähemalt 15-aastased väikesaare püsielanikud. (3) Esimese üldkogu kutsub kokku volikogu. (4) Üldkogu toimub vähemalt üks kord aastas. (5) Üldkogu on otsustusvõimeline, kui sellest võtavad osa vähemalt pooled väikesaare hääleõiguslikud püsielanikud. (6) Saarvallaks mitteoleva väikesaare üldkogu valib saarevanema. Saarevanem osaleb volikogu istungitel sõnaõigusega. (7) Üldkogu reglement ja saarevanema valimise kord sätestatakse kohaliku omavalitsuse üksuse põhimääruses.",
+      "estleg:summary": {
+        "@value": "(1) Üldkogu pädevuses on arvamuse avaldamine väikesaare arengukava, üldplaneeringu, maakasutuse üldiste põhimõtete, mandri või lähima suursaarega transpordiühenduse arendamise, üldkogu reglemendi ja saarevanema valimise korra, samuti saarvalla või saarelise osaga kohaliku omavalitsuse üksuse põhimääruses sätestatud teiste küsimuste kohta. (1¹) Saarvaldades ei ole üldkogu kokkukutsumine kohustuslik. (2) Üldkogule kutsutakse ja üldkogul omavad hääleõigust kõik vähemalt 15-aastased väikesaare",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Üldkogu pädevuses on arvamuse avaldamine väikesaare arengukava, üldplaneeringu, maakasutuse üldiste põhimõtete, mandri või lähima suursaarega transpordiühenduse arendamise, üldkogu reglemendi ja saarevanema valimise korra, samuti saarvalla või saarelise osaga kohaliku omavalitsuse üksuse põhimääruses sätestatud teiste küsimuste kohta. (1¹) Saarvaldades ei ole üldkogu kokkukutsumine kohustuslik. (2) Üldkogule kutsutakse ja üldkogul omavad hääleõigust kõik vähemalt 15-aastased väikesaare püsielanikud. (3) Esimese üldkogu kutsub kokku valla- või linnavalitsus. (4) Üldkogu toimub vähemalt üks kord aastas. (5) Üldkogu on otsustusvõimeline, kui sellest võtavad osa vähemalt pooled väikesaare hääleõiguslikud püsielanikud. (5¹) Kui kokku kutsutud üldkogul osaleb vähem hääleõiguslikke püsielanikke, kui käesoleva paragrahvi lõikes 5 sätestatud üldkogu otsustusvõimelisuseks nõutav, siis kutsutakse sama päevakorraga kokku uus üldkogu koosolek, mis on otsustusvõimeline osalejate arvust olenemata. (6) Saarvallaks mitteoleva väikesaare üldkogu valib saarevanema. Saarevanem osaleb volikogu istungitel sõnaõigusega. (7) Üldkogu reglement ja saarevanema valimise kord sätestatakse kohaliku omavalitsuse üksuse põhimääruses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_2"
       },
@@ -999,6 +1132,9 @@
         },
         {
           "@id": "estleg:VSaarS_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:VSaarS_Par_5_Lg_5_1"
         },
         {
           "@id": "estleg:VSaarS_Par_5_Lg_6"
@@ -1043,7 +1179,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Üldkogu pädevuses on kooskõlastuse andmine väikesaare arengukavale,üldplaneeringule, maakasutuse üldistele põhimõtetele, transpordiühenduse arendamisele mandri või lähima suursaarega, üldkogu reglemendile ja saarevanema valimise korrale, samuti teistele saarvalla või saarelise osaga kohaliku omavalitsuse üksuse põhimääruses sätestatud küsimustele.",
+      "estleg:legalText": "(1) Üldkogu pädevuses on arvamuse avaldamine väikesaare arengukava, üldplaneeringu, maakasutuse üldiste põhimõtete, mandri või lähima suursaarega transpordiühenduse arendamise, üldkogu reglemendi ja saarevanema valimise korra, samuti saarvalla või saarelise osaga kohaliku omavalitsuse üksuse põhimääruses sätestatud teiste küsimuste kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_5"
       },
@@ -1116,7 +1252,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Esimese üldkogu kutsub kokku volikogu.",
+      "estleg:legalText": "(3) Esimese üldkogu kutsub kokku valla- või linnavalitsus.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_5"
       },
@@ -1156,6 +1292,19 @@
         "@id": "estleg:VSaarS_Par_5"
       },
       "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:VSaarS_Par_5_Lg_5_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5¹",
+      "estleg:legalText": "(5¹) Kui kokku kutsutud üldkogul osaleb vähem hääleõiguslikke püsielanikke, kui käesoleva paragrahvi lõikes 5 sätestatud üldkogu otsustusvõimelisuseks nõutav, siis kutsutakse sama päevakorraga kokku uus üldkogu koosolek, mis on otsustusvõimeline osalejate arvust olenemata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VSaarS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5¹"
     },
     {
       "@id": "estleg:VSaarS_Par_5_Lg_6",
@@ -1219,12 +1368,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Osavalla ja linnaosa moodustamine",
+      "rdfs:label": {
+        "@value": "§ 6. Osavalla ja linnaosa moodustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Osavalla või linnaosa moodustamise ettepaneku tegemiseks on vajalik vähemalt poolte väikesaare hääleõiguslike püsielanike sooviavaldus. (2) Osavalla või linnaosa moodustamise taotlus esitatakse ning moodustamine otsustatakse kohaliku omavalitsuse korralduse seaduses sätestatud korras. Vajaduse korral korraldab volikogu selles küsimuses elanike küsitluse või kutsub kokku üldkogu.",
+      "estleg:summary": {
+        "@value": "(1) Osavalla või linnaosa moodustamise ettepaneku tegemiseks on vajalik vähemalt poolte väikesaare hääleõiguslike püsielanike sooviavaldus. (2) Osavalla või linnaosa moodustamise taotlus esitatakse ning moodustamine otsustatakse kohaliku omavalitsuse korralduse seaduses sätestatud korras. Vajaduse korral korraldab volikogu selles küsimuses elanike küsitluse või kutsub kokku üldkogu.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Osavalla või linnaosa moodustamise ettepaneku tegemiseks on vajalik vähemalt poolte väikesaare hääleõiguslike püsielanike sooviavaldus. (2) Osavalla või linnaosa moodustamise taotlus esitatakse ning moodustamine otsustatakse kohaliku omavalitsuse korralduse seaduses sätestatud korras. Vajaduse korral korraldab volikogu selles küsimuses elanike küsitluse või kutsub kokku üldkogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_2"
@@ -1312,12 +1467,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6¹.",
-      "rdfs:label": "§ 6¹. Erisused väikesaarel ühel aadressil elavate elanike korral",
+      "rdfs:label": {
+        "@value": "§ 6¹. Erisused väikesaarel ühel aadressil elavate elanike korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Kui väikesaare elanikud elavad rahvastikuregistri andmetel ühel aadressil, siis ei kohaldata käesoleva seaduse §-e 5 ja 6. (2) Kui väikesaare elanikud elavad ühel aadressil, kaasatakse nad väikesaart puudutavate küsimuste lahendamisse ja antakse võimalus arvamuse avaldamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Kui väikesaare elanikud elavad rahvastikuregistri andmetel ühel aadressil, siis ei kohaldata käesoleva seaduse §-e 5 ja 6. (2) Kui väikesaare elanikud elavad ühel aadressil, kaasatakse nad väikesaart puudutavate küsimuste lahendamisse ja antakse võimalus arvamuse avaldamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui väikesaare elanikud elavad rahvastikuregistri andmetel ühel aadressil, siis ei kohaldata käesoleva seaduse §-e 5 ja 6. (2) Kui väikesaare elanikud elavad ühel aadressil, kaasatakse nad väikesaart puudutavate küsimuste lahendamisse ja antakse võimalus arvamuse avaldamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_2"
@@ -1399,13 +1560,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Väikesaare arengu kavandamine saarelise osaga kohaliku omavalitsuse üksuses",
+      "rdfs:label": {
+        "@value": "§ 7. Väikesaare arengu kavandamine saarelise osaga kohaliku omavalitsuse üksuses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Saarelise osaga kohaliku omavalitsuse üksus kavandab käesoleva seaduse §-s 3 nimetatud eesmärkide saavutamiseks väikesaare või saarterühma arengu kas: kohaliku omavalitsuse üksuse arengukavas, milles nähakse ette väikesaare või väikesaarte kohta eraldi hetkeolukorra analüüs, strateegilised eesmärgid ja tegevused nende saavutamiseks, või väikesaare või väikesaarte arengukavas. (2) Saarelise osaga kohaliku omavalitsuse üksus esitab kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 29",
-      "estleg:legalText": "(1) Saarelise osaga kohaliku omavalitsuse üksus kavandab käesoleva seaduse §-s 3 nimetatud eesmärkide saavutamiseks väikesaare või saarterühma arengu kas: kohaliku omavalitsuse üksuse arengukavas, milles nähakse ette väikesaare või väikesaarte kohta eraldi hetkeolukorra analüüs, strateegilised eesmärgid ja tegevused nende saavutamiseks, või väikesaare või väikesaarte arengukavas. (2) Saarelise osaga kohaliku omavalitsuse üksus esitab kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 29 lõikes 3 nimetatud tegevusaruandes ülevaate arengukavas või muudes arengudokumentides aruandeaastaks kavandatud väikesaare või saarterühma arengueesmärkide täitmisest ja tegevuste elluviimisest.",
+      "estleg:summary": {
+        "@value": "Saarelise osaga kohaliku omavalitsuse üksus kavandab väikesaare või saarterühma arengu põhimõtted kohaliku omavalitsuse korralduse seaduse §-s 37 sätestatud valla või linna arengukavas või valla või linna territooriumiosa arengukavas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Saarelise osaga kohaliku omavalitsuse üksus kavandab väikesaare või saarterühma arengu põhimõtted kohaliku omavalitsuse korralduse seaduse §-s 37 sätestatud valla või linna arengukavas või valla või linna territooriumiosa arengukavas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_2"
       },
@@ -1415,9 +1582,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:VSaarS_Par_7_Lg_1"
-        },
-        {
-          "@id": "estleg:VSaarS_Par_7_Lg_2"
         }
       ],
       "estleg:targetGroup": [
@@ -1469,7 +1633,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Saarelise osaga kohaliku omavalitsuse üksus kavandab käesoleva seaduse §-s 3 nimetatud eesmärkide saavutamiseks väikesaare või saarterühma arengu kas: kohaliku omavalitsuse üksuse arengukavas, milles nähakse ette väikesaare või väikesaarte kohta eraldi hetkeolukorra analüüs, strateegilised eesmärgid ja tegevused nende saavutamiseks, või väikesaare või väikesaarte arengukavas.",
+      "estleg:legalText": "(1) Saarelise osaga kohaliku omavalitsuse üksus kavandab väikesaare või saarterühma arengu põhimõtted kohaliku omavalitsuse korralduse seaduse §-s 37 sätestatud valla või linna arengukavas või valla või linna territooriumiosa arengukavas.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_7"
       },
@@ -1495,51 +1659,25 @@
       ]
     },
     {
-      "@id": "estleg:VSaarS_Par_7_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Saarelise osaga kohaliku omavalitsuse üksus esitab kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 29 lõikes 3 nimetatud tegevusaruandes ülevaate arengukavas või muudes arengudokumentides aruandeaastaks kavandatud väikesaare või saarterühma arengueesmärkide täitmisest ja tegevuste elluviimisest.",
-      "estleg:parentProvision": {
-        "@id": "estleg:VSaarS_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 2",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:KOFS_Par_29_Lg_3"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ]
-    },
-    {
       "@id": "estleg:VSaarS_Par_8",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Transporditeenused",
+      "rdfs:label": {
+        "@value": "§ 8. Transporditeenused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Transporditeenus käesoleva seaduse mõistes on ühendus erinevat liiki transpordivahenditega väikesaare ja mandri või suursaare vahel. (2) Transporditeenust korraldatakse ühistranspordiseaduses sätestatud korras, lähtudes väikesaare püsielanike liikumisvajadusest. (3) Transpordiamet korraldab jääteede rajamise vastavalt ehitusseadustiku § 92 lõike 10 ja liiklusseaduse § 65 lõike 151 alusel kehtestatud nõuetele.",
-      "estleg:legalText": "(1) Transporditeenus käesoleva seaduse mõistes on ühendus erinevat liiki transpordivahenditega väikesaare ja mandri või suursaare vahel. (2) Transporditeenust korraldatakse ühistranspordiseaduses sätestatud korras, lähtudes väikesaare püsielanike liikumisvajadusest. (3) Transpordiamet korraldab jääteede rajamise vastavalt ehitusseadustiku § 92 lõike 10 ja liiklusseaduse § 65 lõike 151 alusel kehtestatud nõuetele.",
+      "estleg:summary": {
+        "@value": "(1) Transporditeenus käesoleva seaduse mõistes on ühendus erinevat liiki transpordivahenditega väikesaare ja mandri või suursaare vahel. (2) Transporditeenust korraldatakse ühistranspordiseaduses sätestatud korras, lähtudes väikesaare püsielanike liikumisvajadusest. (3) Transpordiamet korraldab jääteede rajamise vastavalt ehitusseadustiku § 92 lõike 10 ja liiklusseaduse § 65 lõike 15¹ alusel kehtestatud nõuetele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Transporditeenus käesoleva seaduse mõistes on ühendus erinevat liiki transpordivahenditega väikesaare ja mandri või suursaare vahel. (2) Transporditeenust korraldatakse ühistranspordiseaduses sätestatud korras, lähtudes väikesaare püsielanike liikumisvajadusest. (3) Transpordiamet korraldab jääteede rajamise vastavalt ehitusseadustiku § 92 lõike 10 ja liiklusseaduse § 65 lõike 15¹ alusel kehtestatud nõuetele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_3"
       },
@@ -1633,7 +1771,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Transpordiamet korraldab jääteede rajamise vastavalt ehitusseadustiku § 92 lõike 10 ja liiklusseaduse § 65 lõike 151 alusel kehtestatud nõuetele.",
+      "estleg:legalText": "(3) Transpordiamet korraldab jääteede rajamise vastavalt ehitusseadustiku § 92 lõike 10 ja liiklusseaduse § 65 lõike 15¹ alusel kehtestatud nõuetele.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_8"
       },
@@ -1674,13 +1812,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Sadamad ja veeteed",
+      "rdfs:label": {
+        "@value": "§ 9. Sadamad ja veeteed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 9. Sadamad ja veeteed",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_3"
       },
@@ -1703,12 +1846,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Sideteenused ja elektrienergiaga varustamine",
+      "rdfs:label": {
+        "@value": "§ 10. Sideteenused ja elektrienergiaga varustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Väikesaarel peab ööpäevaringselt olema elanike avalikus kasutuses avariiside, et telefoniühenduse katkemise korral edastada elutähtsaid teateid. (2) Riik peab tagama väikesaare varustamise elektrienergiaga. Asustuse eriiseloomust tulenevad lisakulutused kompenseeritakse Vabariigi Valitsuse kehtestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Väikesaarel peab ööpäevaringselt olema elanike avalikus kasutuses avariiside, et telefoniühenduse katkemise korral edastada elutähtsaid teateid. (2) Riik peab tagama väikesaare varustamise elektrienergiaga. Asustuse eriiseloomust tulenevad lisakulutused kompenseeritakse Vabariigi Valitsuse kehtestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Väikesaarel peab ööpäevaringselt olema elanike avalikus kasutuses avariiside, et telefoniühenduse katkemise korral edastada elutähtsaid teateid. (2) Riik peab tagama väikesaare varustamise elektrienergiaga. Asustuse eriiseloomust tulenevad lisakulutused kompenseeritakse Vabariigi Valitsuse kehtestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_3"
@@ -1812,12 +1961,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Politsei- ja päästeasutuste tegevuse koordineerimine",
+      "rdfs:label": {
+        "@value": "§ 11. Politsei- ja päästeasutuste tegevuse koordineerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Väikesaare politsei- ja päästeasutuste tegevuskava koostamisel kuulatakse ära väikesaare üldkogu arvamus.",
+      "estleg:summary": {
+        "@value": "Väikesaare politsei- ja päästeasutuste tegevuskava koostamisel kuulatakse ära väikesaare üldkogu arvamus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Väikesaare politsei- ja päästeasutuste tegevuskava koostamisel kuulatakse ära väikesaare üldkogu arvamus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_3"
@@ -1845,10 +2000,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Väikesaare politsei- ja päästeasutuste tegevuskava koostamisel kuulatakse ära väikesaare üldkogu arvamus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väikesaare politsei- ja päästeasutuste tegevuskava koostamisel kuulatakse ära väikesaare üldkogu arvamus.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_11"
-      }
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:VSaarS_Par_11_1",
@@ -1857,12 +2014,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
-      "rdfs:label": "§ 11¹. Saarevaht",
+      "rdfs:label": {
+        "@value": "§ 11¹. Saarevaht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Väikesaarel looduskaitseseaduse, muinsuskaitseseaduse, jäätmeseaduse ja teiste seaduste ning kohaliku omavalitsuse üksuse õigusaktide täitmise tagamiseks ja nimetatud õigusaktidest tulenevate nõuete rikkumisest teavitamiseks võib kohaliku omavalitsuse üksuse volikogu moodustada saarevahi ametikoha.",
+      "estleg:summary": {
+        "@value": "Väikesaarel looduskaitseseaduse, muinsuskaitseseaduse, jäätmeseaduse ja teiste seaduste ning kohaliku omavalitsuse üksuse õigusaktide täitmise tagamiseks ja nimetatud õigusaktidest tulenevate nõuete rikkumisest teavitamiseks võib kohaliku omavalitsuse üksuse volikogu moodustada saarevahi ametikoha.",
+        "@language": "et"
+      },
       "estleg:legalText": "Väikesaarel looduskaitseseaduse, muinsuskaitseseaduse, jäätmeseaduse ja teiste seaduste ning kohaliku omavalitsuse üksuse õigusaktide täitmise tagamiseks ja nimetatud õigusaktidest tulenevate nõuete rikkumisest teavitamiseks võib kohaliku omavalitsuse üksuse volikogu moodustada saarevahi ametikoha.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_3"
@@ -1907,10 +2070,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Väikesaarel looduskaitseseaduse, muinsuskaitseseaduse, jäätmeseaduse ja teiste seaduste ning kohaliku omavalitsuse üksuse õigusaktide täitmise tagamiseks ja nimetatud õigusaktidest tulenevate nõuete rikkumisest teavitamiseks võib kohaliku omavalitsuse üksuse volikogu moodustada saarevahi ametikoha.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väikesaarel looduskaitseseaduse, muinsuskaitseseaduse, jäätmeseaduse ja teiste seaduste ning kohaliku omavalitsuse üksuse õigusaktide täitmise tagamiseks ja nimetatud õigusaktidest tulenevate nõuete rikkumisest teavitamiseks võib kohaliku omavalitsuse üksuse volikogu moodustada saarevahi ametikoha.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_11_1"
       },
+      "rdfs:label": "§ 11¹ lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1936,13 +2101,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Püsiasustusega väikesaarte rahastamise erisus",
+      "rdfs:label": {
+        "@value": "§ 12. Püsiasustusega väikesaarte rahastamise erisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Püsiasustusega väikesaarte saarelisusest tingitud täiendav arvestuslik kuluvajadus võetakse arvesse riigieelarve seaduse § 47 lõikes 2 nimetatud tasandusfondi valemis kohaliku omavalitsuse üksuse tulusid mitte arvestades. (2) Kohaliku omavalitsuse üksusele arvestatakse käesoleva paragrahvi lõikes 1 nimetatud täiendav kuluvajadus väikesaare nimistusse arvamise aastale järgnevast eelarveaastast. (3) Kohaliku omavalitsuse üksusele käesoleva paragrahvi lõikes 1 nimetatud täiendava kuluvajaduse",
-      "estleg:legalText": "(1) Püsiasustusega väikesaarte saarelisusest tingitud täiendav arvestuslik kuluvajadus võetakse arvesse riigieelarve seaduse § 47 lõikes 2 nimetatud tasandusfondi valemis kohaliku omavalitsuse üksuse tulusid mitte arvestades. (2) Kohaliku omavalitsuse üksusele arvestatakse käesoleva paragrahvi lõikes 1 nimetatud täiendav kuluvajadus väikesaare nimistusse arvamise aastale järgnevast eelarveaastast. (3) Kohaliku omavalitsuse üksusele käesoleva paragrahvi lõikes 1 nimetatud täiendava kuluvajaduse arvestamine lõpetatakse väikesaare nimistust väljaarvamisele järgnevast eelarveaastast. ; § 12 lõikeid 2 ja 3 rakendatakse esmakordselt 2019. aastal kinnitatava väikesaarte nimistu suhtes.",
+      "estleg:summary": {
+        "@value": "(1) Püsiasustusega väikesaarte saarelisusest tingitud täiendav arvestuslik kuluvajadus võetakse arvesse riigieelarve seaduse § 47 lõikes 2 nimetatud tasandusfondi valemis kohaliku omavalitsuse üksuse tulusid mitte arvestades. (2) Kohaliku omavalitsuse üksusele arvestatakse käesoleva paragrahvi lõikes 1 nimetatud täiendav kuluvajadus väikesaare nimistusse arvamise aastale järgnevast eelarveaastast. (3) Kohaliku omavalitsuse üksusele käesoleva paragrahvi lõikes 1 nimetatud täiendava kuluvajaduse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Püsiasustusega väikesaarte saarelisusest tingitud täiendav arvestuslik kuluvajadus võetakse arvesse riigieelarve seaduse § 47 lõikes 2 nimetatud tasandusfondi valemis kohaliku omavalitsuse üksuse tulusid mitte arvestades. (2) Kohaliku omavalitsuse üksusele arvestatakse käesoleva paragrahvi lõikes 1 nimetatud täiendav kuluvajadus väikesaare nimistusse arvamise aastale järgnevast eelarveaastast. (3) Kohaliku omavalitsuse üksusele käesoleva paragrahvi lõikes 1 nimetatud täiendava kuluvajaduse arvestamine lõpetatakse väikesaare nimistust väljaarvamisele järgnevast eelarveaastast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_3"
       },
@@ -2068,7 +2239,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kohaliku omavalitsuse üksusele käesoleva paragrahvi lõikes 1 nimetatud täiendava kuluvajaduse arvestamine lõpetatakse väikesaare nimistust väljaarvamisele järgnevast eelarveaastast. ; § 12 lõikeid 2 ja 3 rakendatakse esmakordselt 2019. aastal kinnitatava väikesaarte nimistu suhtes.",
+      "estleg:legalText": "(3) Kohaliku omavalitsuse üksusele käesoleva paragrahvi lõikes 1 nimetatud täiendava kuluvajaduse arvestamine lõpetatakse väikesaare nimistust väljaarvamisele järgnevast eelarveaastast.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_12"
       },
@@ -2095,12 +2266,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Majandustegevuse toetamine saartel",
+      "rdfs:label": {
+        "@value": "§ 13. Majandustegevuse toetamine saartel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Riigi regionaalse arengu programmides tuleb ette näha vahendid majandustegevuse toetamiseks väikesaartel riiklike sihtotstarbeliste investeeringute, laenusoodustuste ja laenude garanteerimise kaudu.",
+      "estleg:summary": {
+        "@value": "Riigi regionaalse arengu programmides tuleb ette näha vahendid majandustegevuse toetamiseks väikesaartel riiklike sihtotstarbeliste investeeringute, laenusoodustuste ja laenude garanteerimise kaudu.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riigi regionaalse arengu programmides tuleb ette näha vahendid majandustegevuse toetamiseks väikesaartel riiklike sihtotstarbeliste investeeringute, laenusoodustuste ja laenude garanteerimise kaudu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_4"
@@ -2125,10 +2302,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigi regionaalse arengu programmides tuleb ette näha vahendid majandustegevuse toetamiseks väikesaartel riiklike sihtotstarbeliste investeeringute, laenusoodustuste ja laenude garanteerimise kaudu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi regionaalse arengu programmides tuleb ette näha vahendid majandustegevuse toetamiseks väikesaartel riiklike sihtotstarbeliste investeeringute, laenusoodustuste ja laenude garanteerimise kaudu.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_13"
-      }
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:VSaarS_Par_14",
@@ -2137,12 +2316,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Loodushoid",
+      "rdfs:label": {
+        "@value": "§ 14. Loodushoid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Riik toetab väikesaarte looduskeskkonna ja maastikuilme taastamisele, säilitamisele ja parandamisele suunatud tegevust riigieelarvest selleks ettenähtud programmide kaudu. (2) Käesoleva paragrahvi lõikes 1 nimetatud ülesannete täitmiseks korraldab tegevuskava koostamist, selles vajaduse korral muudatuste tegemist ja selle elluviimist Kliimaministeerium.",
+      "estleg:summary": {
+        "@value": "(1) Riik toetab väikesaarte looduskeskkonna ja maastikuilme taastamisele, säilitamisele ja parandamisele suunatud tegevust riigieelarvest selleks ettenähtud programmide kaudu. (2) Käesoleva paragrahvi lõikes 1 nimetatud ülesannete täitmiseks korraldab tegevuskava koostamist, selles vajaduse korral muudatuste tegemist ja selle elluviimist Kliimaministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riik toetab väikesaarte looduskeskkonna ja maastikuilme taastamisele, säilitamisele ja parandamisele suunatud tegevust riigieelarvest selleks ettenähtud programmide kaudu. (2) Käesoleva paragrahvi lõikes 1 nimetatud ülesannete täitmiseks korraldab tegevuskava koostamist, selles vajaduse korral muudatuste tegemist ja selle elluviimist Kliimaministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_4"
@@ -2210,13 +2395,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14¹.",
-      "rdfs:label": "§ 14¹. Kinnisasja ostueesõigus",
+      "rdfs:label": {
+        "@value": "§ 14¹. Kinnisasja ostueesõigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) Saarvallal või saarelise osaga kohaliku omavalitsuse üksusel on väikesaarel asuva kinnisasja ostueesõigus. (2) Kohalikul omavalitsusel ei ole ostueesõigust, kui asi võõrandatakse abikaasale, registreeritud elukaaslasele, alanejale sugulasele või vanemale, samuti vennale, õele ja nende alanejatele sugulastele. (3) Kohaliku omavalitsuse ühepoolse lihtkirjaliku avalduse alusel kantakse kinnistusraamatusse märkus selle kohta, et kinnistu on koormatud käesoleva paragrahvi lõikes 2 nimetatud",
-      "estleg:legalText": "(1) Saarvallal või saarelise osaga kohaliku omavalitsuse üksusel on väikesaarel asuva kinnisasja ostueesõigus. (2) Kohalikul omavalitsusel ei ole ostueesõigust, kui asi võõrandatakse abikaasale, registreeritud elukaaslasele, alanejale sugulasele või vanemale, samuti vennale, õele ja nende alanejatele sugulastele. (3) Kohaliku omavalitsuse ühepoolse lihtkirjaliku avalduse alusel kantakse kinnistusraamatusse märkus selle kohta, et kinnistu on koormatud käesoleva paragrahvi lõikes 2 nimetatud ostueesõigusega. Avalduses ja märkuse kandes tuleb viidata käesolevale paragrahvile. (4) Kui kinnistusraamatu kandest nähtub, et kinnisasi on koormatud ostueesõigusega käesoleva paragrahvi tähenduses, saadab notar poolte kulul viie tööpäeva jooksul pärast võõrandamislepingu tõestamist lepingu koopia ostueesõiguse teostamiseks võõrandatava kinnisasja asukohajärgsele kohalikule omavalitsusele.",
+      "estleg:summary": {
+        "@value": "(1) Saarvallal või saarelise osaga kohaliku omavalitsuse üksusel on väikesaarel asuva kinnisasja ostueesõigus. (2) Kohalikul omavalitsusel ei ole ostueesõigust, kui asi võõrandatakse abikaasale, registreeritud elukaaslasele, alanejale sugulasele või vanemale, samuti vennale, õele ja nende alanejatele sugulastele. (3) Kohaliku omavalitsuse ühepoolse lihtkirjaliku avalduse alusel kantakse kinnistusraamatusse märkus selle kohta, et kinnistu on koormatud käesoleva paragrahvi lõikes 1 nimetatud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Saarvallal või saarelise osaga kohaliku omavalitsuse üksusel on väikesaarel asuva kinnisasja ostueesõigus. (2) Kohalikul omavalitsusel ei ole ostueesõigust, kui asi võõrandatakse abikaasale, registreeritud elukaaslasele, alanejale sugulasele või vanemale, samuti vennale, õele ja nende alanejatele sugulastele. (3) Kohaliku omavalitsuse ühepoolse lihtkirjaliku avalduse alusel kantakse kinnistusraamatusse märkus selle kohta, et kinnistu on koormatud käesoleva paragrahvi lõikes 1 nimetatud ostueesõigusega. Avalduses ja märkuse kandes tuleb viidata käesolevale paragrahvile. (4) Kui kinnistusraamatu kandest nähtub, et kinnisasi on koormatud ostueesõigusega käesoleva paragrahvi tähenduses, saadab notar poolte kulul viie tööpäeva jooksul pärast võõrandamislepingu tõestamist lepingu koopia ostueesõiguse teostamiseks võõrandatava kinnisasja asukohajärgsele kohalikule omavalitsusele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_4"
       },
@@ -2325,7 +2516,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kohaliku omavalitsuse ühepoolse lihtkirjaliku avalduse alusel kantakse kinnistusraamatusse märkus selle kohta, et kinnistu on koormatud käesoleva paragrahvi lõikes 2 nimetatud ostueesõigusega. Avalduses ja märkuse kandes tuleb viidata käesolevale paragrahvile.",
+      "estleg:legalText": "(3) Kohaliku omavalitsuse ühepoolse lihtkirjaliku avalduse alusel kantakse kinnistusraamatusse märkus selle kohta, et kinnistu on koormatud käesoleva paragrahvi lõikes 1 nimetatud ostueesõigusega. Avalduses ja märkuse kandes tuleb viidata käesolevale paragrahvile.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_14_1"
       },
@@ -2380,18 +2571,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14².",
-      "rdfs:label": "§ 14². Käesoleva seaduse §-de 2",
+      "rdfs:label": {
+        "@value": "§ 14². Käesoleva seaduse §-de 2¹ ja 12 rakendamise erisus 2018. aastal",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "(1) 2018. aastal kinnitatavasse väikesaarte nimistusse arvatakse lisaks käesoleva seaduse §-s 21 sätestatud tingimustele vastavatele väikesaartele ka kõik käesoleva seaduse kuni 2018. aasta 1. jaanuarini kehtinud redaktsiooni § 2 punktis 3 nimetatud väikesaared. Alates 2019. aastast kinnitatakse nimistusse vaid käesoleva seaduse §-s 21 sätestatud tingimustele vastavad väikesaared. (2) Käesoleva seaduse § 12 lõikeid 2 ja 3 rakendatakse esmakordselt 2019.",
-      "estleg:legalText": "(1) 2018. aastal kinnitatavasse väikesaarte nimistusse arvatakse lisaks käesoleva seaduse §-s 21 sätestatud tingimustele vastavatele väikesaartele ka kõik käesoleva seaduse kuni 2018. aasta 1. jaanuarini kehtinud redaktsiooni § 2 punktis 3 nimetatud väikesaared. Alates 2019. aastast kinnitatakse nimistusse vaid käesoleva seaduse §-s 21 sätestatud tingimustele vastavad väikesaared. (2) Käesoleva seaduse § 12 lõikeid 2 ja 3 rakendatakse esmakordselt 2019. aastal kinnitatava väikesaarte nimistu suhtes.",
+      "estleg:summary": {
+        "@value": "(1) 2018. aastal kinnitatavasse väikesaarte nimistusse arvatakse lisaks käesoleva seaduse §-s 2¹ sätestatud tingimustele vastavatele väikesaartele ka kõik käesoleva seaduse kuni 2018. aasta 1. jaanuarini kehtinud redaktsiooni § 2 punktis 3 nimetatud väikesaared. Alates 2019. aastast kinnitatakse nimistusse vaid käesoleva seaduse §-s 2¹ sätestatud tingimustele vastavad väikesaared. (2) Käesoleva seaduse § 12 lõikeid 2 ja 3 rakendatakse esmakordselt 2019.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) 2018. aastal kinnitatavasse väikesaarte nimistusse arvatakse lisaks käesoleva seaduse §-s 2¹ sätestatud tingimustele vastavatele väikesaartele ka kõik käesoleva seaduse kuni 2018. aasta 1. jaanuarini kehtinud redaktsiooni § 2 punktis 3 nimetatud väikesaared. Alates 2019. aastast kinnitatakse nimistusse vaid käesoleva seaduse §-s 2¹ sätestatud tingimustele vastavad väikesaared. (2) Käesoleva seaduse § 12 lõikeid 2 ja 3 rakendatakse esmakordselt 2019. aastal kinnitatava väikesaarte nimistu suhtes.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VSaarS_4"
+        "@id": "estleg:Cluster_VSaarS_5"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_VSaarS_4"
+        "@id": "estleg:Chapter_VSaarS_5"
       },
       "estleg:hasSubsection": [
         {
@@ -2419,7 +2616,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) 2018. aastal kinnitatavasse väikesaarte nimistusse arvatakse lisaks käesoleva seaduse §-s 21 sätestatud tingimustele vastavatele väikesaartele ka kõik käesoleva seaduse kuni 2018. aasta 1. jaanuarini kehtinud redaktsiooni § 2 punktis 3 nimetatud väikesaared. Alates 2019. aastast kinnitatakse nimistusse vaid käesoleva seaduse §-s 21 sätestatud tingimustele vastavad väikesaared.",
+      "estleg:legalText": "(1) 2018. aastal kinnitatavasse väikesaarte nimistusse arvatakse lisaks käesoleva seaduse §-s 2¹ sätestatud tingimustele vastavatele väikesaartele ka kõik käesoleva seaduse kuni 2018. aasta 1. jaanuarini kehtinud redaktsiooni § 2 punktis 3 nimetatud väikesaared. Alates 2019. aastast kinnitatakse nimistusse vaid käesoleva seaduse §-s 2¹ sätestatud tingimustele vastavad väikesaared.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_14_2"
       },
@@ -2451,12 +2648,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Kohaliku omavalitsuse korralduse seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 15. Kohaliku omavalitsuse korralduse seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_5"
@@ -2489,12 +2692,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 16. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Püsiasustusega väikesaarte seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VSaarS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2004. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2004. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2004. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VSaarS_5"
@@ -2519,54 +2728,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2004. aasta 1. jaanuaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2004. aasta 1. jaanuaril.",
       "estleg:parentProvision": {
         "@id": "estleg:VSaarS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/508012024008",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:VSaarS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Permanently Inhabited Small Islands Act",
+        "@language": "en"
       }
-    },
-    {
-      "@id": "estleg:Citation_VSaarS_P_14_2_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VSaarS_Par_14_2"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 21"
-    },
-    {
-      "@id": "estleg:Citation_VSaarS_P_14_2_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VSaarS_Par_14_2"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 21"
-    },
-    {
-      "@id": "estleg:Citation_VSaarS_P_14_2_Lg_1_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VSaarS_Par_14_2_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 21"
-    },
-    {
-      "@id": "estleg:Citation_VSaarS_P_14_2_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VSaarS_Par_14_2_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 21"
     }
   ]
 }

@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EESTI_2_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesti Panga seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesti Panga seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesti Panga seadus",
-      "dcterms:title": [
-        {
-          "@value": "Eesti Panga seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Bank of Estonia (Eesti Pank) Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Eesti Panga seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/101032023045.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062026013"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062026013/xml"
+      },
+      "estleg:globalId": "130062026013",
+      "eli:id_local": "130062026013",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159205",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "47755bc4afe3d5f35b0d7f35351a0d45f9e648ca07c2f8d9a34c8dee03c39a2f",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1993-06-18",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-03-11",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -48,10 +64,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-03-11",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/504042023007"
@@ -244,14 +256,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU14_0767"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/504042023007"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_EESTI_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:EESTI_2_TopicScheme"
+      },
+      "estleg:provisionCount": 7
     },
     {
       "@id": "estleg:EESTI_2_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Eesti Panga seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Eesti Panga seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_EESTI_2_1"
@@ -277,26 +315,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_EESTI_2_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–5 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–5 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:EESTI_2_TopicScheme"
-      },
-      "estleg:provisionCount": 5
-    },
-    {
       "@id": "estleg:Chapter_EESTI_2_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
@@ -316,12 +343,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§6–13 EESTI PANGA JÄRELEVALVE- JA JUHTIMISORGANID NING NENDE PÄDEVUS",
-      "skos:prefLabel": "§6–13 EESTI PANGA JÄRELEVALVE- JA JUHTIMISORGANID NING NENDE PÄDEVUS",
+      "rdfs:label": {
+        "@value": "§6–13 EESTI PANGA JÄRELEVALVE- JA JUHTIMISORGANID NING NENDE PÄDEVUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§6–13 EESTI PANGA JÄRELEVALVE- JA JUHTIMISORGANID NING NENDE PÄDEVUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EESTI_2_TopicScheme"
       },
-      "estleg:provisionCount": 8
+      "estleg:provisionCount": 11
     },
     {
       "@id": "estleg:Chapter_EESTI_2_2",
@@ -329,7 +362,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – EESTI PANGA JÄRELEVALVE- JA JUHTIMISORGANID NING NENDE PÄDEVUS",
+      "rdfs:label": {
+        "@value": "2. peatükk – EESTI PANGA JÄRELEVALVE- JA JUHTIMISORGANID NING NENDE PÄDEVUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
@@ -349,12 +385,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§14–16 RAHAPOLIITIKA JA RAHARINGLUS",
-      "skos:prefLabel": "§14–16 RAHAPOLIITIKA JA RAHARINGLUS",
+      "rdfs:label": {
+        "@value": "§14–16 RAHAPOLIITIKA JA RAHARINGLUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§14–16 RAHAPOLIITIKA JA RAHARINGLUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EESTI_2_TopicScheme"
       },
-      "estleg:provisionCount": 3
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Chapter_EESTI_2_3",
@@ -362,7 +404,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – RAHAPOLIITIKA JA RAHARINGLUS",
+      "rdfs:label": {
+        "@value": "3. peatükk – RAHAPOLIITIKA JA RAHARINGLUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
@@ -382,12 +427,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§17–24 MAKROFINANTSJÄRELEVALVE JA MAKSESÜSTEEMIDE JÄRELEVAATAMINE",
-      "skos:prefLabel": "§17–24 MAKROFINANTSJÄRELEVALVE JA MAKSESÜSTEEMIDE JÄRELEVAATAMINE",
+      "rdfs:label": {
+        "@value": "§17–24 MAKROFINANTSJÄRELEVALVE JA MAKSESÜSTEEMIDE JÄRELEVAATAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§17–24 MAKROFINANTSJÄRELEVALVE JA MAKSESÜSTEEMIDE JÄRELEVAATAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EESTI_2_TopicScheme"
       },
-      "estleg:provisionCount": 7
+      "estleg:provisionCount": 10
     },
     {
       "@id": "estleg:Chapter_EESTI_2_4",
@@ -395,7 +446,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – MAKROFINANTSJÄRELEVALVE JA MAKSESÜSTEEMIDE JÄRELEVAATAMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – MAKROFINANTSJÄRELEVALVE JA MAKSESÜSTEEMIDE JÄRELEVAATAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
@@ -415,8 +469,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§25–31 EESTI PANGA VARA JA ARUANDLUS",
-      "skos:prefLabel": "§25–31 EESTI PANGA VARA JA ARUANDLUS",
+      "rdfs:label": {
+        "@value": "§25–31 EESTI PANGA VARA JA ARUANDLUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§25–31 EESTI PANGA VARA JA ARUANDLUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EESTI_2_TopicScheme"
       },
@@ -428,7 +488,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – EESTI PANGA VARA JA ARUANDLUS",
+      "rdfs:label": {
+        "@value": "5. peatükk – EESTI PANGA VARA JA ARUANDLUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
@@ -448,8 +511,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§32–37 LÕPPSÄTTED",
-      "skos:prefLabel": "§32–37 LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "§32–37 LÕPPSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§32–37 LÕPPSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EESTI_2_TopicScheme"
       },
@@ -461,7 +530,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "6. peatükk – LÕPPSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
@@ -481,8 +553,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§38–40 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§38–40 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§38–40 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§38–40 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EESTI_2_TopicScheme"
       },
@@ -494,7 +572,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "7. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
@@ -514,12 +595,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Eesti Panga õiguslikud alused",
+      "rdfs:label": {
+        "@value": "§ 1. Eesti Panga õiguslikud alused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Pank on Eesti Vabariigi keskpank ja Euroopa Keskpankade Süsteemi liige. Eesti Pank on 1919. aastal Eesti Vabariigi keskpangana asutatud Eesti Panga õigusjärglane. (2) Eesti Pank on juriidiline isik, tal on oma põhikiri, pitsat, vapp ja muu seadusega lubatud atribuutika. (3) Eesti Pank juhindub oma tegevuses Eesti Vabariigi põhiseadusest, Eesti Vabariigi põhiseaduse täiendamise seadusest, Euroopa Liidu toimimise lepingust, Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirjast,",
+      "estleg:summary": {
+        "@value": "(1) Eesti Pank on Eesti Vabariigi keskpank ja Euroopa Keskpankade Süsteemi liige. Eesti Pank on 1919. aastal Eesti Vabariigi keskpangana asutatud Eesti Panga õigusjärglane. (2) Eesti Pank on juriidiline isik, tal on oma põhikiri, pitsat, vapp ja muu seadusega lubatud atribuutika. (3) Eesti Pank juhindub oma tegevuses Eesti Vabariigi põhiseadusest, Eesti Vabariigi põhiseaduse täiendamise seadusest, Euroopa Liidu toimimise lepingust, Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirjast,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Pank on Eesti Vabariigi keskpank ja Euroopa Keskpankade Süsteemi liige. Eesti Pank on 1919. aastal Eesti Vabariigi keskpangana asutatud Eesti Panga õigusjärglane. (2) Eesti Pank on juriidiline isik, tal on oma põhikiri, pitsat, vapp ja muu seadusega lubatud atribuutika. (3) Eesti Pank juhindub oma tegevuses Eesti Vabariigi põhiseadusest, Eesti Vabariigi põhiseaduse täiendamise seadusest, Euroopa Liidu toimimise lepingust, Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirjast, Euroopa Keskpanga õigusaktidest, käesolevast seadusest, muudest seadustest ning oma põhikirjast. (4) Eesti Panga õiguslikku seisundit võib muuta ainult Eesti Panga seaduse muutmise seaduse kaudu. (5) Eesti Panga ülesannete täitmiseks annab Eesti Panga Nõukogu välja otsuseid ning Eesti Panga president määrusi ja käskkirju. (6) Eesti Pank ja selle allasutused registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registri selle registri põhimääruses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_1"
@@ -697,13 +784,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Eesti Panga eesmärk ja ülesanded",
+      "rdfs:label": {
+        "@value": "§ 2. Eesti Panga eesmärk ja ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) on hindade stabiilsuse säilitamine. Kooskõlas Euroopa Liidu toimimise lepinguga toetab Eesti Pank ka muude majanduspoliitiliste eesmärkide saavutamist. (2) Euroopa Ühenduse rahapoliitika kujundamisele kaasaaitamine ning Euroopa Keskpanga nõukogu poolt määratletud rahapoliitika elluviimine; ametlike välisvaluutareservide hoidmine ja juhtimine; finantssüsteemi stabiilsusele kaasaaitamine ja finantssüsteemi makrotasandi usaldatavusjärelevalve (edaspidi makrofinantsjärelevalve) teostamine;",
-      "estleg:legalText": "(1) on hindade stabiilsuse säilitamine. Kooskõlas Euroopa Liidu toimimise lepinguga toetab Eesti Pank ka muude majanduspoliitiliste eesmärkide saavutamist. (2) Euroopa Ühenduse rahapoliitika kujundamisele kaasaaitamine ning Euroopa Keskpanga nõukogu poolt määratletud rahapoliitika elluviimine; ametlike välisvaluutareservide hoidmine ja juhtimine; finantssüsteemi stabiilsusele kaasaaitamine ja finantssüsteemi makrotasandi usaldatavusjärelevalve (edaspidi makrofinantsjärelevalve) teostamine; raharingluse korraldamine, europangatähtede emiteerimisele kaasaaitamine ja euromüntide emiteerimine; Eesti maksebilansi koostamine; oma ülesannete täitmiseks vajaliku muud seadusega Eesti Pangale pandud ülesanded, mis ei ole vastuolus käesoleva paragrahvi lõikes 1 nimetatud eesmärkide ja käesoleva lõike punktides 1–7 nimetatud ülesannetega.",
+      "estleg:summary": {
+        "@value": "(1) on hindade stabiilsuse säilitamine. Kooskõlas Euroopa Liidu toimimise lepinguga toetab Eesti Pank ka muude majanduspoliitiliste eesmärkide saavutamist. (2) 1) Euroopa Ühenduse rahapoliitika kujundamisele kaasaaitamine ning Euroopa Keskpanga nõukogu poolt määratletud rahapoliitika elluviimine; 2) ametlike välisvaluutareservide hoidmine ja juhtimine; 3) finantssüsteemi stabiilsusele kaasaaitamine ja finantssüsteemi makrotasandi usaldatavusjärelevalve (edaspidi makrofinantsjärelevalve)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) on hindade stabiilsuse säilitamine. Kooskõlas Euroopa Liidu toimimise lepinguga toetab Eesti Pank ka muude majanduspoliitiliste eesmärkide saavutamist. (2) 1) Euroopa Ühenduse rahapoliitika kujundamisele kaasaaitamine ning Euroopa Keskpanga nõukogu poolt määratletud rahapoliitika elluviimine; 2) ametlike välisvaluutareservide hoidmine ja juhtimine; 3) finantssüsteemi stabiilsusele kaasaaitamine ja finantssüsteemi makrotasandi usaldatavusjärelevalve (edaspidi makrofinantsjärelevalve) teostamine; 4) 5) raharingluse korraldamine, europangatähtede emiteerimisele kaasaaitamine ja euromüntide emiteerimine; 6) Eesti maksebilansi koostamine; 7) oma ülesannete täitmiseks vajaliku 8) muud seadusega Eesti Pangale pandud ülesanded, mis ei ole vastuolus käesoleva paragrahvi lõikes 1 nimetatud eesmärkide ja käesoleva lõike punktides 1–7 nimetatud ülesannetega. (3) Eesti Panga püsivad kriisiülesanded on: 1) käesoleva paragrahvi lõike 2 punktides 1, 2 ja 5 sätestatud ülesanded; 2) Eesti Panga hallatavate maksesüsteemide toimimise tagamine; 3) finantssüsteemi stabiilsusele kaasaaitamine, sealhulgas finantskriiside lahendamisel osalemine; 4) elutähtsa teenuse toimepidevuse korraldaja ülesannete täitmine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_1"
       },
@@ -716,6 +809,9 @@
         },
         {
           "@id": "estleg:EESTI_2_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_2_Par_2_Lg_3"
         }
       ],
       "estleg:hasVersion": [
@@ -765,11 +861,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Euroopa Ühenduse rahapoliitika kujundamisele kaasaaitamine ning Euroopa Keskpanga nõukogu poolt määratletud rahapoliitika elluviimine; ametlike välisvaluutareservide hoidmine ja juhtimine; finantssüsteemi stabiilsusele kaasaaitamine ja finantssüsteemi makrotasandi usaldatavusjärelevalve (edaspidi makrofinantsjärelevalve) teostamine; raharingluse korraldamine, europangatähtede emiteerimisele kaasaaitamine ja euromüntide emiteerimine; Eesti maksebilansi koostamine; oma ülesannete täitmiseks vajaliku muud seadusega Eesti Pangale pandud ülesanded, mis ei ole vastuolus käesoleva paragrahvi lõikes 1 nimetatud eesmärkide ja käesoleva lõike punktides 1–7 nimetatud ülesannetega.",
+      "estleg:legalText": "(2) 1) Euroopa Ühenduse rahapoliitika kujundamisele kaasaaitamine ning Euroopa Keskpanga nõukogu poolt määratletud rahapoliitika elluviimine; 2) ametlike välisvaluutareservide hoidmine ja juhtimine; 3) finantssüsteemi stabiilsusele kaasaaitamine ja finantssüsteemi makrotasandi usaldatavusjärelevalve (edaspidi makrofinantsjärelevalve) teostamine; 4) 5) raharingluse korraldamine, europangatähtede emiteerimisele kaasaaitamine ja euromüntide emiteerimine; 6) Eesti maksebilansi koostamine; 7) oma ülesannete täitmiseks vajaliku 8) muud seadusega Eesti Pangale pandud ülesanded, mis ei ole vastuolus käesoleva paragrahvi lõikes 1 nimetatud eesmärkide ja käesoleva lõike punktides 1–7 nimetatud ülesannetega.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_2"
       },
       "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1024075_Map"
@@ -784,18 +890,43 @@
       "estleg:implementedByCount": 3
     },
     {
+      "@id": "estleg:EESTI_2_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eesti Panga püsivad kriisiülesanded on: 1) käesoleva paragrahvi lõike 2 punktides 1, 2 ja 5 sätestatud ülesanded; 2) Eesti Panga hallatavate maksesüsteemide toimimise tagamine; 3) finantssüsteemi stabiilsusele kaasaaitamine, sealhulgas finantskriiside lahendamisel osalemine; 4) elutähtsa teenuse toimepidevuse korraldaja ülesannete täitmine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_2_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
       "@id": "estleg:EESTI_2_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Eesti Panga sõltumatus",
+      "rdfs:label": {
+        "@value": "§ 3. Eesti Panga sõltumatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Pank tegutseb muudest riigiasutustest sõltumatult. Ta annab oma tegevusest aru Riigikogule, ei allu Vabariigi Valitsusele ega ühelegi teisele täidesaatvale riigivõimuasutusele ega kolmandatele isikutele. (1¹) Euroopa Keskpankade Süsteemi ülesannete täitmisel võivad Eesti Pank ja tema juhtimisorganite liikmed taotleda ja saada täitmiseks juhiseid vaid Euroopa Keskpangalt. (2) Eesti Pank ei vastuta riigi varaliste kohustiste eest ja riik ei vastuta Eesti Panga varaliste kohustiste eest.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Pank tegutseb muudest riigiasutustest sõltumatult. Ta annab oma tegevusest aru Riigikogule, ei allu Vabariigi Valitsusele ega ühelegi teisele täidesaatvale riigivõimuasutusele ega kolmandatele isikutele. (1¹) Euroopa Keskpankade Süsteemi ülesannete täitmisel võivad Eesti Pank ja tema juhtimisorganite liikmed taotleda ja saada täitmiseks juhiseid vaid Euroopa Keskpangalt. (2) Eesti Pank ei vastuta riigi varaliste kohustiste eest ja riik ei vastuta Eesti Panga varaliste kohustiste eest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Pank tegutseb muudest riigiasutustest sõltumatult. Ta annab oma tegevusest aru Riigikogule, ei allu Vabariigi Valitsusele ega ühelegi teisele täidesaatvale riigivõimuasutusele ega kolmandatele isikutele. (1¹) Euroopa Keskpankade Süsteemi ülesannete täitmisel võivad Eesti Pank ja tema juhtimisorganite liikmed taotleda ja saada täitmiseks juhiseid vaid Euroopa Keskpangalt. (2) Eesti Pank ei vastuta riigi varaliste kohustiste eest ja riik ei vastuta Eesti Panga varaliste kohustiste eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_1"
@@ -906,13 +1037,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Eesti Panga ja Vabariigi Valitsuse koostöö",
+      "rdfs:label": {
+        "@value": "§ 4. Eesti Panga ja Vabariigi Valitsuse koostöö",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Eesti Pank annab Vabariigi Valitsusele nõu majanduspoliitilistes küsimustes. Vabariigi Valitsus ei langeta olulisi majanduspoliitilisi otsuseid ilma Eesti Panga seisukohta ära kuulamata. (3) Eesti Pank esindab Eesti Vabariiki Rahvusvahelises Valuutafondis. Eesti Vabariigi seisukohad Rahvusvahelises Valuutafondis esitab Eesti Pank kooskõlastatult Rahandusministeeriumiga. Kooskõlastamise tingimused määratakse Eesti Panga ja Rahandusministeeriumi kirjalikus kokkuleppes.",
-      "estleg:legalText": "(1) Kehtetu - (2) Eesti Pank annab Vabariigi Valitsusele nõu majanduspoliitilistes küsimustes. Vabariigi Valitsus ei langeta olulisi majanduspoliitilisi otsuseid ilma Eesti Panga seisukohta ära kuulamata. (3) Eesti Pank esindab Eesti Vabariiki Rahvusvahelises Valuutafondis. Eesti Vabariigi seisukohad Rahvusvahelises Valuutafondis esitab Eesti Pank kooskõlastatult Rahandusministeeriumiga. Kooskõlastamise tingimused määratakse Eesti Panga ja Rahandusministeeriumi kirjalikus kokkuleppes. Muudes rahvusvahelistes organisatsioonides esindab Eesti Pank Eesti Vabariiki Vabariigi Valitsuse volitusel. (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(2) Eesti Pank annab Vabariigi Valitsusele nõu majanduspoliitilistes küsimustes. Vabariigi Valitsus ei langeta olulisi majanduspoliitilisi otsuseid ilma Eesti Panga seisukohta ära kuulamata. (3) Eesti Pank esindab Eesti Vabariiki Rahvusvahelises Valuutafondis. Eesti Vabariigi seisukohad Rahvusvahelises Valuutafondis esitab Eesti Pank kooskõlastatult Rahandusministeeriumiga. Kooskõlastamise tingimused määratakse Eesti Panga ja Rahandusministeeriumi kirjalikus kokkuleppes.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(2) Eesti Pank annab Vabariigi Valitsusele nõu majanduspoliitilistes küsimustes. Vabariigi Valitsus ei langeta olulisi majanduspoliitilisi otsuseid ilma Eesti Panga seisukohta ära kuulamata. (3) Eesti Pank esindab Eesti Vabariiki Rahvusvahelises Valuutafondis. Eesti Vabariigi seisukohad Rahvusvahelises Valuutafondis esitab Eesti Pank kooskõlastatult Rahandusministeeriumiga. Kooskõlastamise tingimused määratakse Eesti Panga ja Rahandusministeeriumi kirjalikus kokkuleppes. Muudes rahvusvahelistes organisatsioonides esindab Eesti Pank Eesti Vabariiki Vabariigi Valitsuse volitusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_1"
       },
@@ -921,16 +1058,10 @@
       },
       "estleg:hasSubsection": [
         {
-          "@id": "estleg:EESTI_2_Par_4_Lg_1"
-        },
-        {
           "@id": "estleg:EESTI_2_Par_4_Lg_2"
         },
         {
           "@id": "estleg:EESTI_2_Par_4_Lg_3"
-        },
-        {
-          "@id": "estleg:EESTI_2_Par_4_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -964,19 +1095,6 @@
           "@id": "estleg:Institution_rahandusministeerium"
         }
       ]
-    },
-    {
-      "@id": "estleg:EESTI_2_Par_4_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:EESTI_2_Par_4_Lg_2",
@@ -1036,31 +1154,24 @@
       ]
     },
     {
-      "@id": "estleg:EESTI_2_Par_4_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 4"
-    },
-    {
       "@id": "estleg:EESTI_2_Par_4_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
-      "rdfs:label": "§ 4¹. Finantsinspektsioon",
+      "rdfs:label": {
+        "@value": "§ 4¹. Finantsinspektsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga juures asuva asutusena tegutseb seaduse alusel loodud Finantsinspektsioon. (2) Finantsinspektsioonil on oma juhtimisorganid, eelarve ja aruandlus ning autonoomne pädevus riikliku finantsjärelevalve teostamisel ja finantskriisi lahendamisel. (3) Finantsinspektsioonil on õigus saada Eesti Pangalt oma ülesannete täitmiseks vajalikke andmeid.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga juures asuva asutusena tegutseb seaduse alusel loodud Finantsinspektsioon. (2) Finantsinspektsioonil on oma juhtimisorganid, eelarve ja aruandlus ning autonoomne pädevus riikliku finantsjärelevalve teostamisel ja finantskriisi lahendamisel. (3) Finantsinspektsioonil on õigus saada Eesti Pangalt oma ülesannete täitmiseks vajalikke andmeid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga juures asuva asutusena tegutseb seaduse alusel loodud Finantsinspektsioon. (2) Finantsinspektsioonil on oma juhtimisorganid, eelarve ja aruandlus ning autonoomne pädevus riikliku finantsjärelevalve teostamisel ja finantskriisi lahendamisel. (3) Finantsinspektsioonil on õigus saada Eesti Pangalt oma ülesannete täitmiseks vajalikke andmeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_1"
@@ -1184,12 +1295,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4².",
-      "rdfs:label": "§ 4². Eelarvenõukogu",
+      "rdfs:label": {
+        "@value": "§ 4². Eelarvenõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eelarvenõukogu on nõuandekogu, mille ülesanne on anda hinnang Eesti eelarvepoliitika aluseks olevatele majandusprognoosidele ning jälgida siseriiklike eelarvereeglite täitmist. Eelarvenõukogu on oma ülesande täitmisel sõltumatu ega võta vastu juhiseid Eesti Pangalt, Vabariigi Valitsuselt või muudelt avaliku või erasektori organitelt. (2) Eelarvenõukogu koosneb kuuest liikmest, kellel peab olema laitmatu reputatsioon, vähemalt magistrikraad või sellega võrdsustatud kraad majandusalal ning",
+      "estleg:summary": {
+        "@value": "(1) Eelarvenõukogu on nõuandekogu, mille ülesanne on anda hinnang Eesti eelarvepoliitika aluseks olevatele majandusprognoosidele ning jälgida siseriiklike eelarvereeglite täitmist. Eelarvenõukogu on oma ülesande täitmisel sõltumatu ega võta vastu juhiseid Eesti Pangalt, Vabariigi Valitsuselt või muudelt avaliku või erasektori organitelt. (2) Eelarvenõukogu koosneb kuuest liikmest, kellel peab olema laitmatu reputatsioon, vähemalt magistrikraad või sellega võrdsustatud kraad majandusalal ning",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eelarvenõukogu on nõuandekogu, mille ülesanne on anda hinnang Eesti eelarvepoliitika aluseks olevatele majandusprognoosidele ning jälgida siseriiklike eelarvereeglite täitmist. Eelarvenõukogu on oma ülesande täitmisel sõltumatu ega võta vastu juhiseid Eesti Pangalt, Vabariigi Valitsuselt või muudelt avaliku või erasektori organitelt. (2) Eelarvenõukogu koosneb kuuest liikmest, kellel peab olema laitmatu reputatsioon, vähemalt magistrikraad või sellega võrdsustatud kraad majandusalal ning eelarvenõukogu ülesannete täitmiseks vajalikud kogemused. (3) Eelarvenõukogu liikmed nimetab ja kutsub tagasi Eesti Panga presidendi ettepanekul Eesti Panga Nõukogu. Eelarvenõukogu liige nimetatakse viieks aastaks. Eelarvenõukogu liikme võib ennetähtaegselt tagasi kutsuda, kui ta astub ametisse või teenistusse või on osaline tegevuses, mis avaldab või võib avaldada negatiivset mõju eelarvenõukogu sõltumatusele. (4) Eelarvenõukogu põhikirja kinnitab Eesti Panga Nõukogu. Põhikirjaga võib täpsustada eelarvenõukogu töökorda, selle liikmetele esitatavaid nõudeid, liikmelisuse tekkimise ja lõppemise aluseid ning eelarvenõukogu või selle liikmete kulude katmise ja tasustamise reegleid. (5) Eelarvenõukogu hinnangud ja arvamused avaldatakse eelarvenõukogu kodulehel (6) Eelarvenõukogul on õigus saada ministeeriumitelt, valitsussektorisse kuuluvatelt asutustelt ja Eesti Pangalt oma ülesannete täitmiseks vajalikke andmeid. (7) Eesti Pank annab eelarvenõukogule tema ülesannete täitmiseks vajalikud vahendid. Eesti Panga nõudel hüvitab Vabariigi Valitsus Eesti Pangale seoses eelarvenõukogu tööga kantud otsesed kulud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_1"
@@ -1402,12 +1519,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Eesti Panga asukoht",
+      "rdfs:label": {
+        "@value": "§ 5. Eesti Panga asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Pank asub Tallinnas. (2) Eesti Pank võib avada iseseisvaid, oma põhikirja alusel tegutsevaid allasutusi ja esindusi nii Eestis kui ka välisriikides.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Pank asub Tallinnas. (2) Eesti Pank võib avada iseseisvaid, oma põhikirja alusel tegutsevaid allasutusi ja esindusi nii Eestis kui ka välisriikides.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Pank asub Tallinnas. (2) Eesti Pank võib avada iseseisvaid, oma põhikirja alusel tegutsevaid allasutusi ja esindusi nii Eestis kui ka välisriikides.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_1"
@@ -1476,12 +1599,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Eesti Panga Nõukogu",
+      "rdfs:label": {
+        "@value": "§ 6. Eesti Panga Nõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga järelevalveorgan on Eesti Panga Nõukogu, mis koosneb esimehest, Riigikogu fraktsioonide esindajatest ja valdkonna asjatundjatest. (2) Eesti Panga Nõukogu moodustamisel lähtutakse põhimõttest, et iga Riigikogu fraktsioon esitab ühe oma liikme ja nõukogu esimees esitab neli valdkonna asjatundjat.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga järelevalveorgan on Eesti Panga Nõukogu, mis koosneb esimehest, Riigikogu fraktsioonide esindajatest ja valdkonna asjatundjatest. (2) Eesti Panga Nõukogu moodustamisel lähtutakse põhimõttest, et iga Riigikogu fraktsioon esitab ühe oma liikme ja nõukogu esimees esitab neli valdkonna asjatundjat.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga järelevalveorgan on Eesti Panga Nõukogu, mis koosneb esimehest, Riigikogu fraktsioonide esindajatest ja valdkonna asjatundjatest. (2) Eesti Panga Nõukogu moodustamisel lähtutakse põhimõttest, et iga Riigikogu fraktsioon esitab ühe oma liikme ja nõukogu esimees esitab neli valdkonna asjatundjat.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
@@ -1593,12 +1722,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Eesti Panga Nõukogu esimees",
+      "rdfs:label": {
+        "@value": "§ 7. Eesti Panga Nõukogu esimees",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga Nõukogu esimehe nimetab viieks aastaks ametisse Riigikogu Vabariigi Presidendi ettepanekul. (1¹) Ametist tagasiastumisest teatab Eesti Panga Nõukogu esimees Vabariigi Presidendile vähemalt neli kuud ette. (1²) Eesti Panga Nõukogu esimehe võib ametisse nimetada kuni kaheks järjestikuseks ametiajaks. (2) Eesti Panga Nõukogu esimees peab olema Eesti kodanik, kellel on kõrgharidus ning nõukogu töös osalemiseks ja nõukogu juhtimiseks vajalikud teadmised ja kogemused ning kelle suhtes",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga Nõukogu esimehe nimetab viieks aastaks ametisse Riigikogu Vabariigi Presidendi ettepanekul. (1¹) Ametist tagasiastumisest teatab Eesti Panga Nõukogu esimees Vabariigi Presidendile vähemalt neli kuud ette. (1²) Eesti Panga Nõukogu esimehe võib ametisse nimetada kuni kaheks järjestikuseks ametiajaks. (2) Eesti Panga Nõukogu esimees peab olema Eesti kodanik, kellel on kõrgharidus ning nõukogu töös osalemiseks ja nõukogu juhtimiseks vajalikud teadmised ja kogemused ning kelle suhtes",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga Nõukogu esimehe nimetab viieks aastaks ametisse Riigikogu Vabariigi Presidendi ettepanekul. (1¹) Ametist tagasiastumisest teatab Eesti Panga Nõukogu esimees Vabariigi Presidendile vähemalt neli kuud ette. (1²) Eesti Panga Nõukogu esimehe võib ametisse nimetada kuni kaheks järjestikuseks ametiajaks. (2) Eesti Panga Nõukogu esimees peab olema Eesti kodanik, kellel on kõrgharidus ning nõukogu töös osalemiseks ja nõukogu juhtimiseks vajalikud teadmised ja kogemused ning kelle suhtes ei esine käesoleva seaduse § 12 lõikes 1 sätestatud aluseid. Eesti Panga Nõukogu esimeheks ei nimetata Eesti Panga presidenti ega valdkonna eest vastutavat ministrit. (3) Eesti Panga Nõukogu esimees korraldab nõukogu tegevust, juhatab nõukogu istungeid, kontrollib nõukogu otsuste täitmist, esindab Eesti Panga Nõukogu ja vastab talle Eesti Panga Nõukogu tegevuse kohta Riigikogus esitatavatele arupärimistele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
@@ -1842,13 +1977,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Eesti Panga Nõukogu liikmed",
+      "rdfs:label": {
+        "@value": "§ 8. Eesti Panga Nõukogu liikmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga Nõukogu liikmed nimetab Riigikogu rahanduskomisjoni ettepanekul. (1¹) Riigikogu fraktsioon esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel fraktsiooni registreerimisest arvates fraktsiooni Eesti Panga Nõukogus esindava Riigikogu liikme nime koos tema kirjaliku nõusoleku ja kirjaliku kinnitusega, et ta vastab käesolevas seaduses Eesti Panga Nõukogu liikmele sätestatud nõuetele. (1²) Eesti Panga Nõukogu esimees esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel",
-      "estleg:legalText": "(1) Eesti Panga Nõukogu liikmed nimetab Riigikogu rahanduskomisjoni ettepanekul. (1¹) Riigikogu fraktsioon esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel fraktsiooni registreerimisest arvates fraktsiooni Eesti Panga Nõukogus esindava Riigikogu liikme nime koos tema kirjaliku nõusoleku ja kirjaliku kinnitusega, et ta vastab käesolevas seaduses Eesti Panga Nõukogu liikmele sätestatud nõuetele. (1²) Eesti Panga Nõukogu esimees esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel tema ametisse nimetamise otsuse jõustumisest arvates valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaatide nimed koos nende kirjaliku nõusoleku ja kirjaliku kinnitusega, et nad vastavad käesolevas seaduses Eesti Panga Nõukogu liikmele sätestatud nõuetele. (1³) Kui Riigikogu fraktsioon ei ole esitanud oma kandidaati käesoleva paragrahvi lõikes 11 nimetatud tähtajaks ja viisil, jäetakse selle fraktsiooni esindaja Eesti Panga Nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaate käesoleva paragrahvi lõikes 12 nimetatud tähtajaks ja viisil või kui valdkonna asjatundjatest kandidaatide nimekiri ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjatest nõukogu liikmed Riigikogu rahanduskomisjoni ettepanekul. (2) Eesti Panga Nõukogu liikmed peavad olema Eesti kodanikud, kellel on kõrgharidus ning nõukogu töös osalemiseks vajalikud teadmised ja kogemused ning kelle suhtes ei esine käesoleva seaduse § 12 lõikes 1 sätestatud aluseid. (3) Eesti Panga Nõukogu liikmete hulka ei tohi kuuluda Vabariigi Valitsuse liikmed ja Eesti Panga töötajad. (4) Eesti Panga Nõukogu liige ei tohi töötada ühegi fondivalitseja, investeerimisfondi, investeerimisühingu, krediidiasutuse, kindlustusandja või muu finantsjärelevalve alla kuuluva subjekti juures ega kuuluda nende juhtimisorganitesse. (5) Eesti Panga Nõukogu valdkonna asjatundjast liikme volitused algavad tema nimetamise otsuse jõustumisel ja lõpevad Eesti Panga Nõukogu esimehe volituste lõppemisel. Riigikogu liikmest Eesti Panga Nõukogu liikme volitused algavad tema nõukogu liikmeks nimetamise otsuse jõustumisel ja kestavad kuni tema Riigikogu liikme volituste peatumise või lõppemiseni. (6) Eesti Panga Nõukogu liikme volitused lõpevad käesoleva paragrahvi lõikes 5 sätestatud ajal, tagasiastumisel, tagasikutsumisel käesoleva seaduse §-s 12 ettenähtud korras ja surma korral. (6¹) Ametist tagasiastumisest teatab nõukogu liige nõukogu esimehele vähemalt neli kuud ette. (7) Eesti Panga Nõukogu liikme tagasiastumisel, tagasikutsumisel käesoleva seaduse §-s 12 ettenähtud korras, surma korral, nimetamisel Vabariigi Valitsuse liikmeks või tööle asumisel Eesti Panka, nimetab Riigikogu talle asendusliikme. Riigikogu liikmest Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Riigikogu fraktsioon, kes tegi ettepaneku asendatava liikme nimetamiseks, käesoleva seaduse § 8 lõikes 11 nimetatud andmed ning valdkonna asjatundjast Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Eesti Panga Nõukogu esimees käesoleva seaduse § 8 lõikes 12 nimetatud andmed rahanduskomisjonile hiljemalt nelja kuu möödumisel asendusliikme nimetamise vajaduse ilmnemisest arvates. Kui Riigikogu fraktsioon ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil, jäetakse asendusliige nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil või kui kandidaat ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjast nõukogu liikmele asendusliikme Riigikogu rahanduskomisjoni ettepanekul. (8) Asendusliikme volitused lõpevad käesoleva seaduse § 8 lõikes 5 sätestatud korras. Vabariigi Valitsuse liikmeks nimetatud või Eesti Panka tööle asunud Eesti Panga Nõukogu liikme asendusliikme volitused lõpevad ka Eesti Panga Nõukogu liikme tagasiastumisel Eesti Panga Nõukogu liikmelisust välistavast ametist. (9) Eesti Panga Nõukogu liikme võib ametisse nimetada kuni kaheks järjestikuseks ametiajaks. (10) Eesti Panga Nõukogu esimehe volituste tähtaja lõppemisest kuni nõukogu uue esimehe volituste alguseni hoidub nõukogu vältimatu vajaduseta käesoleva seaduse § 9 lõike 2 punktides 2, 4, 5 ja 10 nimetatud otsuste tegemisest.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga Nõukogu liikmed nimetab Riigikogu rahanduskomisjoni ettepanekul. (1¹) Riigikogu fraktsioon esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel fraktsiooni registreerimisest arvates fraktsiooni Eesti Panga Nõukogus esindava Riigikogu liikme nime koos tema kirjaliku nõusoleku ja kirjaliku kinnitusega, et ta vastab käesolevas seaduses Eesti Panga Nõukogu liikmele sätestatud nõuetele. (1²) Eesti Panga Nõukogu esimees esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Panga Nõukogu liikmed nimetab Riigikogu rahanduskomisjoni ettepanekul. (1¹) Riigikogu fraktsioon esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel fraktsiooni registreerimisest arvates fraktsiooni Eesti Panga Nõukogus esindava Riigikogu liikme nime koos tema kirjaliku nõusoleku ja kirjaliku kinnitusega, et ta vastab käesolevas seaduses Eesti Panga Nõukogu liikmele sätestatud nõuetele. (1²) Eesti Panga Nõukogu esimees esitab rahanduskomisjonile hiljemalt nelja kuu möödumisel tema ametisse nimetamise otsuse jõustumisest arvates valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaatide nimed koos nende kirjaliku nõusoleku ja kirjaliku kinnitusega, et nad vastavad käesolevas seaduses Eesti Panga Nõukogu liikmele sätestatud nõuetele. (1³) Kui Riigikogu fraktsioon ei ole esitanud oma kandidaati käesoleva paragrahvi lõikes 1¹ nimetatud tähtajaks ja viisil, jäetakse selle fraktsiooni esindaja Eesti Panga Nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaate käesoleva paragrahvi lõikes 1² nimetatud tähtajaks ja viisil või kui valdkonna asjatundjatest kandidaatide nimekiri ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjatest nõukogu liikmed Riigikogu rahanduskomisjoni ettepanekul. (2) Eesti Panga Nõukogu liikmed peavad olema Eesti kodanikud, kellel on kõrgharidus ning nõukogu töös osalemiseks vajalikud teadmised ja kogemused ning kelle suhtes ei esine käesoleva seaduse § 12 lõikes 1 sätestatud aluseid. (3) Eesti Panga Nõukogu liikmete hulka ei tohi kuuluda Vabariigi Valitsuse liikmed ja Eesti Panga töötajad. (4) Eesti Panga Nõukogu liige ei tohi töötada ühegi fondivalitseja, investeerimisfondi, investeerimisühingu, krediidiasutuse, kindlustusandja või muu finantsjärelevalve alla kuuluva subjekti juures ega kuuluda nende juhtimisorganitesse. (5) Eesti Panga Nõukogu valdkonna asjatundjast liikme volitused algavad tema nimetamise otsuse jõustumisel ja lõpevad Eesti Panga Nõukogu esimehe volituste lõppemisel. Riigikogu liikmest Eesti Panga Nõukogu liikme volitused algavad tema nõukogu liikmeks nimetamise otsuse jõustumisel ja kestavad kuni tema Riigikogu liikme volituste peatumise või lõppemiseni. (6) Eesti Panga Nõukogu liikme volitused lõpevad käesoleva paragrahvi lõikes 5 sätestatud ajal, tagasiastumisel, tagasikutsumisel käesoleva seaduse §-s 12 ettenähtud korras ja surma korral. (6¹) Ametist tagasiastumisest teatab nõukogu liige nõukogu esimehele vähemalt neli kuud ette. (7) Eesti Panga Nõukogu liikme tagasiastumisel, tagasikutsumisel käesoleva seaduse §-s 12 ettenähtud korras, surma korral, nimetamisel Vabariigi Valitsuse liikmeks või tööle asumisel Eesti Panka, nimetab Riigikogu talle asendusliikme. Riigikogu liikmest Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Riigikogu fraktsioon, kes tegi ettepaneku asendatava liikme nimetamiseks, käesoleva seaduse § 8 lõikes 1¹ nimetatud andmed ning valdkonna asjatundjast Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Eesti Panga Nõukogu esimees käesoleva seaduse § 8 lõikes 1² nimetatud andmed rahanduskomisjonile hiljemalt nelja kuu möödumisel asendusliikme nimetamise vajaduse ilmnemisest arvates. Kui Riigikogu fraktsioon ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil, jäetakse asendusliige nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil või kui kandidaat ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjast nõukogu liikmele asendusliikme Riigikogu rahanduskomisjoni ettepanekul. (8) Asendusliikme volitused lõpevad käesoleva seaduse § 8 lõikes 5 sätestatud korras. Vabariigi Valitsuse liikmeks nimetatud või Eesti Panka tööle asunud Eesti Panga Nõukogu liikme asendusliikme volitused lõpevad ka Eesti Panga Nõukogu liikme tagasiastumisel Eesti Panga Nõukogu liikmelisust välistavast ametist. (9) Eesti Panga Nõukogu liikme võib ametisse nimetada kuni kaheks järjestikuseks ametiajaks. (10) Eesti Panga Nõukogu esimehe volituste tähtaja lõppemisest kuni nõukogu uue esimehe volituste alguseni hoidub nõukogu vältimatu vajaduseta käesoleva seaduse § 9 lõike 2 punktides 2, 4, 5 ja 10 nimetatud otsuste tegemisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
       },
@@ -2025,7 +2166,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1³",
-      "estleg:legalText": "(1³) Kui Riigikogu fraktsioon ei ole esitanud oma kandidaati käesoleva paragrahvi lõikes 11 nimetatud tähtajaks ja viisil, jäetakse selle fraktsiooni esindaja Eesti Panga Nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaate käesoleva paragrahvi lõikes 12 nimetatud tähtajaks ja viisil või kui valdkonna asjatundjatest kandidaatide nimekiri ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjatest nõukogu liikmed Riigikogu rahanduskomisjoni ettepanekul.",
+      "estleg:legalText": "(1³) Kui Riigikogu fraktsioon ei ole esitanud oma kandidaati käesoleva paragrahvi lõikes 1¹ nimetatud tähtajaks ja viisil, jäetakse selle fraktsiooni esindaja Eesti Panga Nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaate käesoleva paragrahvi lõikes 1² nimetatud tähtajaks ja viisil või kui valdkonna asjatundjatest kandidaatide nimekiri ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjatest nõukogu liikmed Riigikogu rahanduskomisjoni ettepanekul.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_8"
       },
@@ -2219,7 +2360,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Eesti Panga Nõukogu liikme tagasiastumisel, tagasikutsumisel käesoleva seaduse §-s 12 ettenähtud korras, surma korral, nimetamisel Vabariigi Valitsuse liikmeks või tööle asumisel Eesti Panka, nimetab Riigikogu talle asendusliikme. Riigikogu liikmest Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Riigikogu fraktsioon, kes tegi ettepaneku asendatava liikme nimetamiseks, käesoleva seaduse § 8 lõikes 11 nimetatud andmed ning valdkonna asjatundjast Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Eesti Panga Nõukogu esimees käesoleva seaduse § 8 lõikes 12 nimetatud andmed rahanduskomisjonile hiljemalt nelja kuu möödumisel asendusliikme nimetamise vajaduse ilmnemisest arvates. Kui Riigikogu fraktsioon ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil, jäetakse asendusliige nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil või kui kandidaat ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjast nõukogu liikmele asendusliikme Riigikogu rahanduskomisjoni ettepanekul.",
+      "estleg:legalText": "(7) Eesti Panga Nõukogu liikme tagasiastumisel, tagasikutsumisel käesoleva seaduse §-s 12 ettenähtud korras, surma korral, nimetamisel Vabariigi Valitsuse liikmeks või tööle asumisel Eesti Panka, nimetab Riigikogu talle asendusliikme. Riigikogu liikmest Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Riigikogu fraktsioon, kes tegi ettepaneku asendatava liikme nimetamiseks, käesoleva seaduse § 8 lõikes 1¹ nimetatud andmed ning valdkonna asjatundjast Eesti Panga Nõukogu liikme asendusliikme nimetamiseks esitab Eesti Panga Nõukogu esimees käesoleva seaduse § 8 lõikes 1² nimetatud andmed rahanduskomisjonile hiljemalt nelja kuu möödumisel asendusliikme nimetamise vajaduse ilmnemisest arvates. Kui Riigikogu fraktsioon ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil, jäetakse asendusliige nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud asendusliikme kandidaati käesolevas lõikes nimetatud tähtajaks ja viisil või kui kandidaat ei leia Riigikogu enamuse toetust, nimetab valdkonna asjatundjast nõukogu liikmele asendusliikme Riigikogu rahanduskomisjoni ettepanekul.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_8"
       },
@@ -2333,13 +2474,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Eesti Panga Nõukogu pädevus",
+      "rdfs:label": {
+        "@value": "§ 9. Eesti Panga Nõukogu pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga Nõukogu teostab järelevalvet Eesti Panga kogu tegevuse üle. (2) Eesti Panga Nõukogu ainupädevusse kuulub: kehtetu - ettepaneku tegemine Vabariigi Presidendile Eesti Panga presidendi ametissenimetamiseks; kehtetu - Eesti Panga asepresidentide, Eesti Panga iseseisvate allasutuste ja esinduste juhtide ning siseauditi osakonna juhataja ametisse nimetamine ja vabastamine, samuti Finantsinspektsiooni nõukogu ja eelarvenõukogu liikmete nimetamine ja tagasikutsumine Eesti Panga",
-      "estleg:legalText": "(1) Eesti Panga Nõukogu teostab järelevalvet Eesti Panga kogu tegevuse üle. (2) Eesti Panga Nõukogu ainupädevusse kuulub: kehtetu - ettepaneku tegemine Vabariigi Presidendile Eesti Panga presidendi ametissenimetamiseks; kehtetu - Eesti Panga asepresidentide, Eesti Panga iseseisvate allasutuste ja esinduste juhtide ning siseauditi osakonna juhataja ametisse nimetamine ja vabastamine, samuti Finantsinspektsiooni nõukogu ja eelarvenõukogu liikmete nimetamine ja tagasikutsumine Eesti Panga presidendi ettepanekul; Eesti Panga põhikirja, eelarvenõukogu põhikirja ning Eesti Panga iseseisvate allasutuste ja esinduste põhikirjade ning siseauditi osakonna põhimääruse kinnitamine; Eesti Panga eelarve täitmise järelevalve; Eesti Panga siseaudiitorite nimetamine ja siseauditi tööplaani kinnitamine; Eesti Panga sõltumatute audiitorite nimetamine käesoleva seaduse § 31 lõikes 1 sätestatud korras; presidendi ettepanekul Eesti Panga aastaaruande kinnitamine; otsuste tegemine uute euro müntide rahvusliku külje kujunduse ning meenemüntide nimiväärtuse ja kujunduse kohta Euroopa Liidu õigusaktidega sätestatud korras; Eesti Panga iseseisvate allasutuste asutamise, reorganiseerimise ja likvideerimise otsustamine Eesti Panga presidendi ettepanekul; Eesti Panga nimel Riigikogule esitatavate kirjalike ettepanekute ja muude dokumentide läbivaatamine ja heakskiitmine. (2¹) Eesti Panga Nõukogu saab Eesti Panga presidendilt regulaarselt informatsiooni Eesti majanduse, rahapoliitika, finantssektori olukorra ja Eesti Panga eelarve täitmise kohta. (3) Eesti Panga tegevust käsitlevate küsimuste lahendused vormistatakse Eesti Panga Nõukogu otsusena. (4) Eesti Panga Nõukogu istungid toimuvad vastavalt vajadusele, ent mitte harvem kui kaheksa korda aastas. (5) Eesti Panga Nõukogu istungid on kinnised, kui nõukogu esimees ei otsusta teisiti. Eesti Panga president ja asepresidendid võtavad nõukogu istungitest osa sõnaõigusega. Eesti Vabariigi valdkonna eest vastutav minister võib nõukogu istungitest osa võtta, arvestades Euroopa Liidu toimimise lepingu artiklis 130 sätestatut. (6) Eesti Panga Nõukogu võtab vastu otsuseid ja teeb avaldusi. Eesti Panga Nõukogu otsuste elluviimise eest vastutab Eesti Panga president. (7) Eesti Panga Nõukogu on otsustusvõimeline, kui istungist võtab osa üle poole nõukogu liikmetest. Esimehe äraolekul juhatab istungit kohalolijate hulgast valitud nõukogu liige. (8) Käesoleva paragrahvi 2.lõike punktides 2, 5, 6 ja 8 nimetatud küsimustes saab otsuseid vastu võtta ainult nõukogu koosseisu häälteenamusega. Muud otsused võetakse vastu istungist osavõtvate nõukogu liikmete häälteenamusega. Häälte võrdse jaotumise korral on otsustav nõukogu esimehe hääl. (9) Eesti Panga Nõukogu normatiivse iseloomuga otsused avaldatakse Riigi Teatajas.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga Nõukogu teostab järelevalvet Eesti Panga kogu tegevuse üle. (2) Eesti Panga Nõukogu ainupädevusse kuulub: 1) 2) ettepaneku tegemine Vabariigi Presidendile Eesti Panga presidendi ametissenimetamiseks; 3) 4) Eesti Panga asepresidentide, Eesti Panga iseseisvate allasutuste ja esinduste juhtide ning siseauditi osakonna juhataja ametisse nimetamine ja vabastamine, samuti Finantsinspektsiooni nõukogu ja eelarvenõukogu liikmete nimetamine ja tagasikutsumine Eesti Panga presidendi",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Panga Nõukogu teostab järelevalvet Eesti Panga kogu tegevuse üle. (2) Eesti Panga Nõukogu ainupädevusse kuulub: 1) 2) ettepaneku tegemine Vabariigi Presidendile Eesti Panga presidendi ametissenimetamiseks; 3) 4) Eesti Panga asepresidentide, Eesti Panga iseseisvate allasutuste ja esinduste juhtide ning siseauditi osakonna juhataja ametisse nimetamine ja vabastamine, samuti Finantsinspektsiooni nõukogu ja eelarvenõukogu liikmete nimetamine ja tagasikutsumine Eesti Panga presidendi ettepanekul; 5) Eesti Panga põhikirja, eelarvenõukogu põhikirja ning Eesti Panga iseseisvate allasutuste ja esinduste põhikirjade ning siseauditi osakonna põhimääruse kinnitamine; 6) Eesti Panga eelarve täitmise järelevalve; 7) Eesti Panga siseaudiitorite nimetamine ja siseauditi tööplaani kinnitamine; 7¹) Eesti Panga sõltumatute audiitorite nimetamine käesoleva seaduse § 31 lõikes 1 sätestatud korras; 8) presidendi ettepanekul Eesti Panga aastaaruande kinnitamine; 9) otsuste tegemine uute euro müntide rahvusliku külje kujunduse ning meenemüntide nimiväärtuse ja kujunduse kohta Euroopa Liidu õigusaktidega sätestatud korras; 10) Eesti Panga iseseisvate allasutuste asutamise, reorganiseerimise ja likvideerimise otsustamine Eesti Panga presidendi ettepanekul; 11) Eesti Panga nimel Riigikogule esitatavate kirjalike ettepanekute ja muude dokumentide läbivaatamine ja heakskiitmine. (2¹) Eesti Panga Nõukogu saab Eesti Panga presidendilt regulaarselt informatsiooni Eesti majanduse, rahapoliitika, finantssektori olukorra ja Eesti Panga eelarve täitmise kohta. (3) Eesti Panga tegevust käsitlevate küsimuste lahendused vormistatakse Eesti Panga Nõukogu otsusena. (4) Eesti Panga Nõukogu istungid toimuvad vastavalt vajadusele, ent mitte harvem kui kaheksa korda aastas. (5) Eesti Panga Nõukogu istungid on kinnised, kui nõukogu esimees ei otsusta teisiti. Eesti Panga president ja asepresidendid võtavad nõukogu istungitest osa sõnaõigusega. Eesti Vabariigi valdkonna eest vastutav minister võib nõukogu istungitest osa võtta, arvestades Euroopa Liidu toimimise lepingu artiklis 130 sätestatut. (6) Eesti Panga Nõukogu võtab vastu otsuseid ja teeb avaldusi. Eesti Panga Nõukogu otsuste elluviimise eest vastutab Eesti Panga president. (7) Eesti Panga Nõukogu on otsustusvõimeline, kui istungist võtab osa üle poole nõukogu liikmetest. Esimehe äraolekul juhatab istungit kohalolijate hulgast valitud nõukogu liige. (8) Käesoleva paragrahvi 2.lõike punktides 2, 5, 6 ja 8 nimetatud küsimustes saab otsuseid vastu võtta ainult nõukogu koosseisu häälteenamusega. Muud otsused võetakse vastu istungist osavõtvate nõukogu liikmete häälteenamusega. Häälte võrdse jaotumise korral on otsustav nõukogu esimehe hääl. (9) Eesti Panga Nõukogu normatiivse iseloomuga otsused avaldatakse Riigi Teatajas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
       },
@@ -2454,11 +2601,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Eesti Panga Nõukogu ainupädevusse kuulub: kehtetu - ettepaneku tegemine Vabariigi Presidendile Eesti Panga presidendi ametissenimetamiseks; kehtetu - Eesti Panga asepresidentide, Eesti Panga iseseisvate allasutuste ja esinduste juhtide ning siseauditi osakonna juhataja ametisse nimetamine ja vabastamine, samuti Finantsinspektsiooni nõukogu ja eelarvenõukogu liikmete nimetamine ja tagasikutsumine Eesti Panga presidendi ettepanekul; Eesti Panga põhikirja, eelarvenõukogu põhikirja ning Eesti Panga iseseisvate allasutuste ja esinduste põhikirjade ning siseauditi osakonna põhimääruse kinnitamine; Eesti Panga eelarve täitmise järelevalve; Eesti Panga siseaudiitorite nimetamine ja siseauditi tööplaani kinnitamine; Eesti Panga sõltumatute audiitorite nimetamine käesoleva seaduse § 31 lõikes 1 sätestatud korras; presidendi ettepanekul Eesti Panga aastaaruande kinnitamine; otsuste tegemine uute euro müntide rahvusliku külje kujunduse ning meenemüntide nimiväärtuse ja kujunduse kohta Euroopa Liidu õigusaktidega sätestatud korras; Eesti Panga iseseisvate allasutuste asutamise, reorganiseerimise ja likvideerimise otsustamine Eesti Panga presidendi ettepanekul; Eesti Panga nimel Riigikogule esitatavate kirjalike ettepanekute ja muude dokumentide läbivaatamine ja heakskiitmine.",
+      "estleg:legalText": "(2) Eesti Panga Nõukogu ainupädevusse kuulub: 1) 2) ettepaneku tegemine Vabariigi Presidendile Eesti Panga presidendi ametissenimetamiseks; 3) 4) Eesti Panga asepresidentide, Eesti Panga iseseisvate allasutuste ja esinduste juhtide ning siseauditi osakonna juhataja ametisse nimetamine ja vabastamine, samuti Finantsinspektsiooni nõukogu ja eelarvenõukogu liikmete nimetamine ja tagasikutsumine Eesti Panga presidendi ettepanekul; 5) Eesti Panga põhikirja, eelarvenõukogu põhikirja ning Eesti Panga iseseisvate allasutuste ja esinduste põhikirjade ning siseauditi osakonna põhimääruse kinnitamine; 6) Eesti Panga eelarve täitmise järelevalve; 7) Eesti Panga siseaudiitorite nimetamine ja siseauditi tööplaani kinnitamine; 7¹) Eesti Panga sõltumatute audiitorite nimetamine käesoleva seaduse § 31 lõikes 1 sätestatud korras; 8) presidendi ettepanekul Eesti Panga aastaaruande kinnitamine; 9) otsuste tegemine uute euro müntide rahvusliku külje kujunduse ning meenemüntide nimiväärtuse ja kujunduse kohta Euroopa Liidu õigusaktidega sätestatud korras; 10) Eesti Panga iseseisvate allasutuste asutamise, reorganiseerimise ja likvideerimise otsustamine Eesti Panga presidendi ettepanekul; 11) Eesti Panga nimel Riigikogule esitatavate kirjalike ettepanekute ja muude dokumentide läbivaatamine ja heakskiitmine.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_9"
       },
       "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "7¹",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2616,12 +2777,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Eesti Panga president ja asepresidendid",
+      "rdfs:label": {
+        "@value": "§ 10. Eesti Panga president ja asepresidendid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga presidendi nimetab seitsmeks aastaks ametisse Vabariigi President Eesti Panga Nõukogu ettepanekul. Eesti Panga presidenti ei või nimetada ametisse rohkem kui üheks järjestikuseks ametiajaks. (1¹) Ametist tagasiastumisest teatab Eesti Panga president Eesti Panga Nõukogule vähemalt neli kuud ette. (2) Eesti Panga president peab olema Eesti kodanik, kellel on kõrgharidus. Eesti Panga asepresident peab olema Eesti kodanik ja omama kõrgharidust.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga presidendi nimetab seitsmeks aastaks ametisse Vabariigi President Eesti Panga Nõukogu ettepanekul. Eesti Panga presidenti ei või nimetada ametisse rohkem kui üheks järjestikuseks ametiajaks. (1¹) Ametist tagasiastumisest teatab Eesti Panga president Eesti Panga Nõukogule vähemalt neli kuud ette. (2) Eesti Panga president peab olema Eesti kodanik, kellel on kõrgharidus. Eesti Panga asepresident peab olema Eesti kodanik ja omama kõrgharidust.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga presidendi nimetab seitsmeks aastaks ametisse Vabariigi President Eesti Panga Nõukogu ettepanekul. Eesti Panga presidenti ei või nimetada ametisse rohkem kui üheks järjestikuseks ametiajaks. (1¹) Ametist tagasiastumisest teatab Eesti Panga president Eesti Panga Nõukogule vähemalt neli kuud ette. (2) Eesti Panga president peab olema Eesti kodanik, kellel on kõrgharidus. Eesti Panga asepresident peab olema Eesti kodanik ja omama kõrgharidust. (2¹) Eesti Panga asepresidendid nimetab viieks aastaks ametisse Eesti Panga Nõukogu Eesti Panga presidendi ettepanekul. (3) Eesti Panga president ja asepresidendid on oma ülesannete täitmisel sõltumatud. Nad ei või olla muus ametis, teenistuses või osalised tegevuses, mis oma olemuselt piirab või võib piirata Eesti Panga iseseisvust, avaldab või võib avaldada negatiivset mõju Eesti Panga eesmärkide saavutamisele ning ülesannete täitmisele. (4) Eesti Panga presidendi äraolekul asendab teda asepresident, kellele Eesti Panga president annab oma volitused käskkirjaga ajutiselt üle. Kui asepresidendile volituste üleandmine ei ole võimalik, määrab presidendi asendaja asepresidentide seast Eesti Panga Nõukogu. Kui nõukogu ei ole määranud presidendi asendajat, asendab presidenti ealt vanim asepresidentidest. Panga presidendi asendajal on tema volituste kehtimise ajal kõik Eesti Panga presidendi volitused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
@@ -2841,13 +3008,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Eesti Panga presidendi pädevus",
+      "rdfs:label": {
+        "@value": "§ 11. Eesti Panga presidendi pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga presidendi ainupädevusse kuulub: panganduspoliitika kujundamine ning Eesti Panga tegevuse üldjuhtimine, samuti Euroopa Keskpankade Süsteemi ülesannete täitmise korraldamine; Eesti Panga Nõukogu otsuste täitmise korraldamine ja nende täitmise tagamiseks vajalike meetmete (sealhulgas sanktsioonide) rakendamine; kehtetu - Eesti Panga esindamine ilma eri volituseta kõigis küsimustes ja instantsides nii siseriigis kui välismaal; volituste andmine Eesti Panga esindamiseks kas teatud",
-      "estleg:legalText": "(1) Eesti Panga presidendi ainupädevusse kuulub: panganduspoliitika kujundamine ning Eesti Panga tegevuse üldjuhtimine, samuti Euroopa Keskpankade Süsteemi ülesannete täitmise korraldamine; Eesti Panga Nõukogu otsuste täitmise korraldamine ja nende täitmise tagamiseks vajalike meetmete (sealhulgas sanktsioonide) rakendamine; kehtetu - Eesti Panga esindamine ilma eri volituseta kõigis küsimustes ja instantsides nii siseriigis kui välismaal; volituste andmine Eesti Panga esindamiseks kas teatud puhkudel või teatud küsimustes; Eesti Panga Nõukogule ettepanekute tegemine Eesti Panga asepresidentide, siseauditi osakonna juhataja ja iseseisvate allasutuste juhtide ametisse nimetamiseks ning vabastamiseks, samuti Finantsinspektsiooni nõukogu ning eelarvenõukogu liikmete nimetamiseks ja tagasikutsumiseks; Eesti Panga eelarve kinnitamine. (1¹) Eesti Panga president esindab ametikoha järgselt Eesti Vabariiki Rahvusvahelise Valuutafondi aktsionäride nõukogus aktsionärina. (2) Eesti Panga president annab Eesti Panga tegevusest aru Riigikogule ja vastab Riigikogus temale Eesti Panga tegevuse kohta esitatud arupärimistele. (3) Kui Eesti Panga president ei ole nõus Eesti Panga Nõukogu otsusega, peab ta sellest hiljemalt kolme tööpäeva jooksul ette kandma Riigikogu esimehele ettepanekuga esitada Eesti Panga Nõukogu esimehele vastavas küsimuses arupärimine. (4) Eesti Panga president annab oma tegevusest regulaarselt aru Eesti Panga Nõukogule. (5) Eesti Panga president annab määrusi ja käskkirju. (6) Eesti Panga presidendi määrused avaldatakse Riigi Teatajas.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga presidendi ainupädevusse kuulub: 1) panganduspoliitika kujundamine ning Eesti Panga tegevuse üldjuhtimine, samuti Euroopa Keskpankade Süsteemi ülesannete täitmise korraldamine; 2) Eesti Panga Nõukogu otsuste täitmise korraldamine ja nende täitmise tagamiseks vajalike meetmete (sealhulgas sanktsioonide) rakendamine; 3) 4) Eesti Panga esindamine ilma eri volituseta kõigis küsimustes ja instantsides nii siseriigis kui välismaal; 5) volituste andmine Eesti Panga esindamiseks kas",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Panga presidendi ainupädevusse kuulub: 1) panganduspoliitika kujundamine ning Eesti Panga tegevuse üldjuhtimine, samuti Euroopa Keskpankade Süsteemi ülesannete täitmise korraldamine; 2) Eesti Panga Nõukogu otsuste täitmise korraldamine ja nende täitmise tagamiseks vajalike meetmete (sealhulgas sanktsioonide) rakendamine; 3) 4) Eesti Panga esindamine ilma eri volituseta kõigis küsimustes ja instantsides nii siseriigis kui välismaal; 5) volituste andmine Eesti Panga esindamiseks kas teatud puhkudel või teatud küsimustes; 6) Eesti Panga Nõukogule ettepanekute tegemine Eesti Panga asepresidentide, siseauditi osakonna juhataja ja iseseisvate allasutuste juhtide ametisse nimetamiseks ning vabastamiseks, samuti Finantsinspektsiooni nõukogu ning eelarvenõukogu liikmete nimetamiseks ja tagasikutsumiseks; 7) Eesti Panga eelarve kinnitamine. (1¹) Eesti Panga president esindab ametikoha järgselt Eesti Vabariiki Rahvusvahelise Valuutafondi aktsionäride nõukogus aktsionärina. (2) Eesti Panga president annab Eesti Panga tegevusest aru Riigikogule ja vastab Riigikogus temale Eesti Panga tegevuse kohta esitatud arupärimistele. (3) Kui Eesti Panga president ei ole nõus Eesti Panga Nõukogu otsusega, peab ta sellest hiljemalt kolme tööpäeva jooksul ette kandma Riigikogu esimehele ettepanekuga esitada Eesti Panga Nõukogu esimehele vastavas küsimuses arupärimine. (4) Eesti Panga president annab oma tegevusest regulaarselt aru Eesti Panga Nõukogule. (5) Eesti Panga president annab määrusi ja käskkirju. (6) Eesti Panga presidendi määrused avaldatakse Riigi Teatajas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
       },
@@ -2928,11 +3101,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eesti Panga presidendi ainupädevusse kuulub: panganduspoliitika kujundamine ning Eesti Panga tegevuse üldjuhtimine, samuti Euroopa Keskpankade Süsteemi ülesannete täitmise korraldamine; Eesti Panga Nõukogu otsuste täitmise korraldamine ja nende täitmise tagamiseks vajalike meetmete (sealhulgas sanktsioonide) rakendamine; kehtetu - Eesti Panga esindamine ilma eri volituseta kõigis küsimustes ja instantsides nii siseriigis kui välismaal; volituste andmine Eesti Panga esindamiseks kas teatud puhkudel või teatud küsimustes; Eesti Panga Nõukogule ettepanekute tegemine Eesti Panga asepresidentide, siseauditi osakonna juhataja ja iseseisvate allasutuste juhtide ametisse nimetamiseks ning vabastamiseks, samuti Finantsinspektsiooni nõukogu ning eelarvenõukogu liikmete nimetamiseks ja tagasikutsumiseks; Eesti Panga eelarve kinnitamine.",
+      "estleg:legalText": "(1) Eesti Panga presidendi ainupädevusse kuulub: 1) panganduspoliitika kujundamine ning Eesti Panga tegevuse üldjuhtimine, samuti Euroopa Keskpankade Süsteemi ülesannete täitmise korraldamine; 2) Eesti Panga Nõukogu otsuste täitmise korraldamine ja nende täitmise tagamiseks vajalike meetmete (sealhulgas sanktsioonide) rakendamine; 3) 4) Eesti Panga esindamine ilma eri volituseta kõigis küsimustes ja instantsides nii siseriigis kui välismaal; 5) volituste andmine Eesti Panga esindamiseks kas teatud puhkudel või teatud küsimustes; 6) Eesti Panga Nõukogule ettepanekute tegemine Eesti Panga asepresidentide, siseauditi osakonna juhataja ja iseseisvate allasutuste juhtide ametisse nimetamiseks ning vabastamiseks, samuti Finantsinspektsiooni nõukogu ning eelarvenõukogu liikmete nimetamiseks ja tagasikutsumiseks; 7) Eesti Panga eelarve kinnitamine.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_11"
       },
       "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3073,12 +3255,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
-      "rdfs:label": "§ 11¹. Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme juurdepääs riigisaladusele ja salastatud välisteabele",
+      "rdfs:label": {
+        "@value": "§ 11¹. Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme juurdepääs riigisaladusele ja salastatud välisteabele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga presidendil ning Eesti Panga Nõukogu esimehel ja liikmel on ametikohajärgne õigus juurdepääsuks riigisaladusele ja salastatud välisteabele Eesti Vabariigi põhiseaduse ja seadustega ning nende alusel antud õigusaktidega talle pandud ülesannete täitmiseks. (2) Kui välislepingu kohaselt on julgeolekukontrolli läbiviimine salastatud välisteabele juurdepääsu õiguse andmise kohustuslik eeltingimus, teostatakse julgeolekukontroll ka Eesti Panga presidendi ning Eesti Panga Nõukogu",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga presidendil ning Eesti Panga Nõukogu esimehel ja liikmel on ametikohajärgne õigus juurdepääsuks riigisaladusele ja salastatud välisteabele Eesti Vabariigi põhiseaduse ja seadustega ning nende alusel antud õigusaktidega talle pandud ülesannete täitmiseks. (2) Kui välislepingu kohaselt on julgeolekukontrolli läbiviimine salastatud välisteabele juurdepääsu õiguse andmise kohustuslik eeltingimus, teostatakse julgeolekukontroll ka Eesti Panga presidendi ning Eesti Panga Nõukogu",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga presidendil ning Eesti Panga Nõukogu esimehel ja liikmel on ametikohajärgne õigus juurdepääsuks riigisaladusele ja salastatud välisteabele Eesti Vabariigi põhiseaduse ja seadustega ning nende alusel antud õigusaktidega talle pandud ülesannete täitmiseks. (2) Kui välislepingu kohaselt on julgeolekukontrolli läbiviimine salastatud välisteabele juurdepääsu õiguse andmise kohustuslik eeltingimus, teostatakse julgeolekukontroll ka Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme suhtes, välja arvatud Eesti Panga Nõukogu liikmeks oleva Riigikogu liikme suhtes. (3) Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme julgeolekukontrolli teostab Kaitsepolitseiamet riigisaladuse ja salastatud välisteabe seaduses ettenähtud korras. (4) Käesoleva paragrahvi lõikes 2 nimetatud julgeolekukontrolli läbimiseks täidab Eesti Panga president, Eesti Panga Nõukogu esimees või liige riigisaladusele juurdepääsu loa taotleja ankeedi ja allkirjastab nõusoleku, millega lubab julgeolekukontrolli teostaval asutusel saada julgeolekukontrolli teostamise ajal enda kohta teavet füüsilistelt ja juriidilistelt isikutelt ning riigi- ja kohaliku omavalitsuse asutustelt ja organitelt, ning esitab need Kaitsepolitseiametile. (5) Kaitsepolitseiamet teostab Eesti Panga presidendi, Eesti Panga Nõukogu esimehe ja liikme julgeolekukontrolli kolme kuu jooksul arvates käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest. Salastatud välisteabe juurdepääsusertifikaat väljastatakse riigisaladuse ja salastatud välisteabe seaduses ettenähtud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
@@ -3273,13 +3461,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11².",
-      "rdfs:label": "§ 11². Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaatide julgeolekukontroll",
+      "rdfs:label": {
+        "@value": "§ 11². Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaatide julgeolekukontroll",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaadid peavad enne Eesti Panga presidendiks või Eesti Panga Nõukogu esimeheks või liikmeks nimetamist läbima julgeolekukontrolli, välja arvatud juhul, kui nad omavad kehtivat juurdepääsuluba täiesti salajase taseme riigisaladusele juurdepääsuks või kui nad on kandidaadiks saamise ajal ametikohal, millel on ametikohajärgne õigus juurdepääsuks kõigile riigisaladuse tasemetele.",
-      "estleg:legalText": "(1) Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaadid peavad enne Eesti Panga presidendiks või Eesti Panga Nõukogu esimeheks või liikmeks nimetamist läbima julgeolekukontrolli, välja arvatud juhul, kui nad omavad kehtivat juurdepääsuluba täiesti salajase taseme riigisaladusele juurdepääsuks või kui nad on kandidaadiks saamise ajal ametikohal, millel on ametikohajärgne õigus juurdepääsuks kõigile riigisaladuse tasemetele. (2) Eesti Panga Nõukogu esimehe kandidaadi staatuse omandab isik, kellele Vabariigi President on teinud ametisse kandideerimise ettepaneku ja kes on andnud kirjaliku nõusoleku kandideerimiseks. Eesti Panga Nõukogu liikme kandidaadi staatuse omandab isik, kellele Eesti Panga Nõukogu esimees on teinud ametisse kandideerimise ettepaneku ja kes on andnud kirjaliku nõusoleku kandideerimiseks. Eesti Panga presidendi kandidaadi staatuse omandab isik, kellele Eesti Panga Nõukogu on teinud ametisse kandideerimise ettepaneku ja kes on andnud kirjaliku nõusoleku kandideerimiseks. (3) Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaatide julgeolekukontrolli teostab Kaitsepolitseiamet julgeolekuasutuste seaduses ettenähtud korras. (4) Julgeolekukontrolli läbimiseks esitavad Eesti Panga presidendi ja Eesti Panga Nõukogu liikme kandidaadid Eesti Panga kaudu ning Eesti Panga Nõukogu esimehe kandidaat Vabariigi Presidendi Kantselei kaudu Kaitsepolitseiametile riigisaladusele juurdepääsu loa taotleja täidetud ankeedi ja kirjaliku nõusoleku, millega lubatakse julgeolekukontrolli teostaval asutusel saada julgeolekukontrolli teostamise ajal tema kohta teavet füüsilistelt ja juriidilistelt isikutelt ning riigi- ja kohaliku omavalitsuse asutustelt ja organitelt. (5) Kaitsepolitseiamet edastab Eesti Panga presidendi kandidaadi julgeolekukontrolli tulemusena kogutud andmed Eesti Panga Nõukogule, Eesti Panga Nõukogu esimehe kandidaadi kohta julgeolekukontrolli tulemusena kogutud andmed Vabariigi Presidendile ning Eesti Panga Nõukogu liikme kandidaadi kohta julgeolekukontrolli tulemusena kogutud andmed Eesti Panga Nõukogu esimehele kolme kuu jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest, lisades oma arvamuse kandidaadi vastavuse kohta riigisaladusele juurdepääsu loa saamise tingimustele. (6) Kui Eesti Panga Nõukogu esimehe või Eesti Panga presidendi volitused on lõppenud ennetähtaegselt, tuleb julgeolekukontroll Eesti Panga Nõukogu esimehe või Eesti Panga presidendi kandidaadi suhtes teostada ühe kuu jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest. Vabariigi Valitsuse julgeolekukomisjoni loal võib julgeolekukontrolli teostamise tähtaega pikendada ühe kuu võrra, kui esinevad riigisaladuse ja salastatud välisteabe seaduse § 33 lõike 4 punktis 1 või 2 nimetatud asjaolu või on ühe kuu jooksul võimalik punktis 3 või 4 nimetatud asjaolu ilmnemine. (7) Julgeolekukontrolli käigus kogutud andmetele tuginedes võib kandidaadi ametisse nimetada üheksa kuu jooksul alates ajast, kui julgeolekukontrolli teostanud asutus julgeolekukontrolli käigus kogutud teabe pädevale asutusele või põhiseaduslikule institutsioonile edastas. Nimetatud tähtajast hiljem võib kandidaadi ametisse nimetada pärast uue julgeolekukontrolli läbimist.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaadid peavad enne Eesti Panga presidendiks või Eesti Panga Nõukogu esimeheks või liikmeks nimetamist läbima julgeolekukontrolli, välja arvatud juhul, kui nad omavad kehtivat juurdepääsuluba täiesti salajase taseme riigisaladusele juurdepääsuks või kui nad on kandidaadiks saamise ajal ametikohal, millel on ametikohajärgne õigus juurdepääsuks kõigile riigisaladuse tasemetele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaadid peavad enne Eesti Panga presidendiks või Eesti Panga Nõukogu esimeheks või liikmeks nimetamist läbima julgeolekukontrolli, välja arvatud juhul, kui nad omavad kehtivat juurdepääsuluba täiesti salajase taseme riigisaladusele juurdepääsuks või kui nad on kandidaadiks saamise ajal ametikohal, millel on ametikohajärgne õigus juurdepääsuks kõigile riigisaladuse tasemetele. (2) Eesti Panga Nõukogu esimehe kandidaadi staatuse omandab isik, kellele Vabariigi President on teinud ametisse kandideerimise ettepaneku ja kes on andnud kirjaliku nõusoleku kandideerimiseks. Eesti Panga Nõukogu liikme kandidaadi staatuse omandab isik, kellele Eesti Panga Nõukogu esimees on teinud ametisse kandideerimise ettepaneku ja kes on andnud kirjaliku nõusoleku kandideerimiseks. Eesti Panga presidendi kandidaadi staatuse omandab isik, kellele Eesti Panga Nõukogu on teinud ametisse kandideerimise ettepaneku ja kes on andnud kirjaliku nõusoleku kandideerimiseks. (3) Eesti Panga presidendi ning Eesti Panga Nõukogu esimehe ja liikme kandidaatide julgeolekukontrolli teostab Kaitsepolitseiamet julgeolekuasutuste seaduses ettenähtud korras. (4) Julgeolekukontrolli läbimiseks esitavad Eesti Panga presidendi ja Eesti Panga Nõukogu liikme kandidaadid Eesti Panga kaudu ning Eesti Panga Nõukogu esimehe kandidaat Vabariigi Presidendi Kantselei kaudu Kaitsepolitseiametile riigisaladusele juurdepääsu loa taotleja täidetud ankeedi ja kirjaliku nõusoleku, millega lubatakse julgeolekukontrolli teostaval asutusel saada julgeolekukontrolli teostamise ajal tema kohta teavet füüsilistelt ja juriidilistelt isikutelt ning riigi- ja kohaliku omavalitsuse asutustelt ja organitelt. (5) Kaitsepolitseiamet edastab Eesti Panga presidendi kandidaadi julgeolekukontrolli tulemusena kogutud andmed Eesti Panga Nõukogule, Eesti Panga Nõukogu esimehe kandidaadi kohta julgeolekukontrolli tulemusena kogutud andmed Vabariigi Presidendile ning Eesti Panga Nõukogu liikme kandidaadi kohta julgeolekukontrolli tulemusena kogutud andmed Eesti Panga Nõukogu esimehele kolme kuu jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest, lisades oma arvamuse kandidaadi vastavuse kohta riigisaladusele juurdepääsu loa saamise tingimustele. (6) Kui Eesti Panga Nõukogu esimehe või Eesti Panga presidendi volitused on lõppenud ennetähtaegselt, tuleb julgeolekukontroll Eesti Panga Nõukogu esimehe või Eesti Panga presidendi kandidaadi suhtes teostada kolme kuu jooksul käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest arvates. Julgeolekukontrolli tegeva asutuse juhi loal võib julgeolekukontrolli tegemise tähtaega pikendada ühe kuu võrra, kui esineb riigisaladuse ja salastatud välisteabe seaduse § 33 lõike 4 punktis 1 või 2 nimetatud asjaolu või kui ühe kuu jooksul on võimalik sama lõike punktis 3 või 4 nimetatud asjaolu ilmnemine. Julgeolekukontrolli teostamise tähtaja pikendamisest teavitatakse Vabariigi Presidenti, asjaomaseid valitsuskomisjone ning Riigikogu julgeolekuasutuste järelevalve erikomisjoni. (7) Julgeolekukontrolli käigus kogutud andmetele tuginedes võib kandidaadi ametisse nimetada üheksa kuu jooksul alates ajast, kui julgeolekukontrolli teostanud asutus julgeolekukontrolli käigus kogutud teabe pädevale asutusele või põhiseaduslikule institutsioonile edastas. Nimetatud tähtajast hiljem võib kandidaadi ametisse nimetada pärast uue julgeolekukontrolli läbimist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
       },
@@ -3493,7 +3687,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kui Eesti Panga Nõukogu esimehe või Eesti Panga presidendi volitused on lõppenud ennetähtaegselt, tuleb julgeolekukontroll Eesti Panga Nõukogu esimehe või Eesti Panga presidendi kandidaadi suhtes teostada ühe kuu jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest. Vabariigi Valitsuse julgeolekukomisjoni loal võib julgeolekukontrolli teostamise tähtaega pikendada ühe kuu võrra, kui esinevad riigisaladuse ja salastatud välisteabe seaduse § 33 lõike 4 punktis 1 või 2 nimetatud asjaolu või on ühe kuu jooksul võimalik punktis 3 või 4 nimetatud asjaolu ilmnemine.",
+      "estleg:legalText": "(6) Kui Eesti Panga Nõukogu esimehe või Eesti Panga presidendi volitused on lõppenud ennetähtaegselt, tuleb julgeolekukontroll Eesti Panga Nõukogu esimehe või Eesti Panga presidendi kandidaadi suhtes teostada kolme kuu jooksul käesoleva paragrahvi lõikes 4 nimetatud dokumentide saamisest arvates. Julgeolekukontrolli tegeva asutuse juhi loal võib julgeolekukontrolli tegemise tähtaega pikendada ühe kuu võrra, kui esineb riigisaladuse ja salastatud välisteabe seaduse § 33 lõike 4 punktis 1 või 2 nimetatud asjaolu või kui ühe kuu jooksul on võimalik sama lõike punktis 3 või 4 nimetatud asjaolu ilmnemine. Julgeolekukontrolli teostamise tähtaja pikendamisest teavitatakse Vabariigi Presidenti, asjaomaseid valitsuskomisjone ning Riigikogu julgeolekuasutuste järelevalve erikomisjoni.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_11_2"
       },
@@ -3557,12 +3751,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11³.",
-      "rdfs:label": "§ 11³. Volituste pikenemine",
+      "rdfs:label": {
+        "@value": "§ 11³. Volituste pikenemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Kui Eesti Panga presidendi või Eesti Panga Nõukogu esimehe volituste tähtaja lõppemise ajaks ei ole ametisse nimetatud uut Eesti Panga presidenti või Eesti Panga Nõukogu esimeest, pikenevad ametisoleva isiku volitused kuni vastava ametisse nimetamise otsuse jõustumiseni. (2) Eesti Panga Nõukogu esimehe volituste tähtaja lõppemisel pikenevad valdkonna asjatundjatest nõukogu liikmete volitused kuni nende asemele nõukogu uute liikmete nimetamise otsuse jõustumiseni.",
+      "estleg:summary": {
+        "@value": "(1) Kui Eesti Panga presidendi või Eesti Panga Nõukogu esimehe volituste tähtaja lõppemise ajaks ei ole ametisse nimetatud uut Eesti Panga presidenti või Eesti Panga Nõukogu esimeest, pikenevad ametisoleva isiku volitused kuni vastava ametisse nimetamise otsuse jõustumiseni. (2) Eesti Panga Nõukogu esimehe volituste tähtaja lõppemisel pikenevad valdkonna asjatundjatest nõukogu liikmete volitused kuni nende asemele nõukogu uute liikmete nimetamise otsuse jõustumiseni.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui Eesti Panga presidendi või Eesti Panga Nõukogu esimehe volituste tähtaja lõppemise ajaks ei ole ametisse nimetatud uut Eesti Panga presidenti või Eesti Panga Nõukogu esimeest, pikenevad ametisoleva isiku volitused kuni vastava ametisse nimetamise otsuse jõustumiseni. (2) Eesti Panga Nõukogu esimehe volituste tähtaja lõppemisel pikenevad valdkonna asjatundjatest nõukogu liikmete volitused kuni nende asemele nõukogu uute liikmete nimetamise otsuse jõustumiseni. (3) Riigikogu koosseisu volituste lõppemisel pikenevad Riigikogu liikmetest Eesti Panga Nõukogu liikmete volitused Riigikogu uue koosseisu liikmete nõukogusse nimetamise otsuse jõustumiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
@@ -3682,13 +3882,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Tagasikutsumine",
+      "rdfs:label": {
+        "@value": "§ 12. Tagasikutsumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Riigikogu kutsub Eesti Panga Nõukogu esimehe või liikme viivitamata tagasi ja nimetab seaduses sätestatud korras nõukogu uue esimehe või liikme, kui: tema suhtes on jõustunud süüdimõistev kohtuotsus kriminaalasjas; tema suhtes on jõustunud pankrotimäärus, ärikeelu kohaldamine või seaduse alusel ettevõtjaks olemise õiguse äravõtmine; ta ei vasta käesolevas seaduses sätestatud nõuetele või on nendele nõuetele vastavuse kohta esitanud valeteavet; ta on jätnud Eesti Panga Nõukogu liikme",
-      "estleg:legalText": "(1) Riigikogu kutsub Eesti Panga Nõukogu esimehe või liikme viivitamata tagasi ja nimetab seaduses sätestatud korras nõukogu uue esimehe või liikme, kui: tema suhtes on jõustunud süüdimõistev kohtuotsus kriminaalasjas; tema suhtes on jõustunud pankrotimäärus, ärikeelu kohaldamine või seaduse alusel ettevõtjaks olemise õiguse äravõtmine; ta ei vasta käesolevas seaduses sätestatud nõuetele või on nendele nõuetele vastavuse kohta esitanud valeteavet; ta on jätnud Eesti Panga Nõukogu liikme kohustused olulisel määral täitmata, kahjustanud Eesti Panga huve või on muu mõjuv põhjus, millest tingituna nõukogu liige on sobimatu oma kohustusi täitma. (2) Käesoleva paragrahvi lõike 1 punktides 1 ja 2 nimetatud juhul lõpevad Eesti Panga Nõukogu esimehe ja nõukogu liikme volitused süüdimõistva kohtuotsuse või pankrotimääruse jõustumisest või ärikeelu kohaldamisest või ettevõtjaks olemise õiguse äravõtmisest arvates. Uue Eesti Panga Nõukogu esimehe nimetamise otsuse jõustumiseni täidab nõukogu esimehe ülesandeid vanim valdkonna asjatundjast nõukogu liige. (3) Riigikogu võib fraktsiooni esindaja Eesti Panga Nõukogust tagasi kutsuda, kui fraktsiooni esindaja lahkub fraktsioonist, ja nimetada fraktsiooni uue esindaja. (4) Eesti Panga presidendi ja asepresidendi võib tagasi kutsuda ainult Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirja artiklis 14.2 sätestatud alustel. (5) Kui on ilmnenud käesoleva paragrahvi lõikes 1 nimetatud asjaolu, teavitab Eesti Pank sellest viivitamata Riigikogu.",
+      "estleg:summary": {
+        "@value": "(1) Riigikogu kutsub Eesti Panga Nõukogu esimehe või liikme viivitamata tagasi ja nimetab seaduses sätestatud korras nõukogu uue esimehe või liikme, kui: 1) tema suhtes on jõustunud süüdimõistev kohtuotsus kriminaalasjas; 2) tema suhtes on jõustunud pankrotimäärus, ärikeelu kohaldamine või seaduse alusel ettevõtjaks olemise õiguse äravõtmine; 3) ta ei vasta käesolevas seaduses sätestatud nõuetele või on nendele nõuetele vastavuse kohta esitanud valeteavet; 4) ta on jätnud Eesti Panga Nõukogu",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigikogu kutsub Eesti Panga Nõukogu esimehe või liikme viivitamata tagasi ja nimetab seaduses sätestatud korras nõukogu uue esimehe või liikme, kui: 1) tema suhtes on jõustunud süüdimõistev kohtuotsus kriminaalasjas; 2) tema suhtes on jõustunud pankrotimäärus, ärikeelu kohaldamine või seaduse alusel ettevõtjaks olemise õiguse äravõtmine; 3) ta ei vasta käesolevas seaduses sätestatud nõuetele või on nendele nõuetele vastavuse kohta esitanud valeteavet; 4) ta on jätnud Eesti Panga Nõukogu liikme kohustused olulisel määral täitmata, kahjustanud Eesti Panga huve või on muu mõjuv põhjus, millest tingituna nõukogu liige on sobimatu oma kohustusi täitma. (2) Käesoleva paragrahvi lõike 1 punktides 1 ja 2 nimetatud juhul lõpevad Eesti Panga Nõukogu esimehe ja nõukogu liikme volitused süüdimõistva kohtuotsuse või pankrotimääruse jõustumisest või ärikeelu kohaldamisest või ettevõtjaks olemise õiguse äravõtmisest arvates. Uue Eesti Panga Nõukogu esimehe nimetamise otsuse jõustumiseni täidab nõukogu esimehe ülesandeid vanim valdkonna asjatundjast nõukogu liige. (3) Riigikogu võib fraktsiooni esindaja Eesti Panga Nõukogust tagasi kutsuda, kui fraktsiooni esindaja lahkub fraktsioonist, ja nimetada fraktsiooni uue esindaja. (4) Eesti Panga presidendi ja asepresidendi võib tagasi kutsuda ainult Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirja artiklis 14.2 sätestatud alustel. (5) Kui on ilmnenud käesoleva paragrahvi lõikes 1 nimetatud asjaolu, teavitab Eesti Pank sellest viivitamata Riigikogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
       },
@@ -3759,11 +3965,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Riigikogu kutsub Eesti Panga Nõukogu esimehe või liikme viivitamata tagasi ja nimetab seaduses sätestatud korras nõukogu uue esimehe või liikme, kui: tema suhtes on jõustunud süüdimõistev kohtuotsus kriminaalasjas; tema suhtes on jõustunud pankrotimäärus, ärikeelu kohaldamine või seaduse alusel ettevõtjaks olemise õiguse äravõtmine; ta ei vasta käesolevas seaduses sätestatud nõuetele või on nendele nõuetele vastavuse kohta esitanud valeteavet; ta on jätnud Eesti Panga Nõukogu liikme kohustused olulisel määral täitmata, kahjustanud Eesti Panga huve või on muu mõjuv põhjus, millest tingituna nõukogu liige on sobimatu oma kohustusi täitma.",
+      "estleg:legalText": "(1) Riigikogu kutsub Eesti Panga Nõukogu esimehe või liikme viivitamata tagasi ja nimetab seaduses sätestatud korras nõukogu uue esimehe või liikme, kui: 1) tema suhtes on jõustunud süüdimõistev kohtuotsus kriminaalasjas; 2) tema suhtes on jõustunud pankrotimäärus, ärikeelu kohaldamine või seaduse alusel ettevõtjaks olemise õiguse äravõtmine; 3) ta ei vasta käesolevas seaduses sätestatud nõuetele või on nendele nõuetele vastavuse kohta esitanud valeteavet; 4) ta on jätnud Eesti Panga Nõukogu liikme kohustused olulisel määral täitmata, kahjustanud Eesti Panga huve või on muu mõjuv põhjus, millest tingituna nõukogu liige on sobimatu oma kohustusi täitma.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_12"
       },
       "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3896,12 +4108,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Panga juhatus",
+      "rdfs:label": {
+        "@value": "§ 13. Panga juhatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga tegevust juhib Eesti Panga juhatus, kelle esimeheks on oma ametikoha järgi Eesti Panga president. Juhatus koosneb Eesti Panga presidendist ja asepresidentidest. (1¹) Juhatuse ülesandeks on Eesti Panga töö kavandamine ja korraldamine. Eesti Panga president võib juhatusele anda täiendavaid ülesandeid. Oma ülesannete täitmiseks võtab juhatus vastu otsuseid. (2) Eesti Panga juhatuse tööjaotuse ja töökorralduse alused sätestab Eesti Panga põhikiri.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga tegevust juhib Eesti Panga juhatus, kelle esimeheks on oma ametikoha järgi Eesti Panga president. Juhatus koosneb Eesti Panga presidendist ja asepresidentidest. (1¹) Juhatuse ülesandeks on Eesti Panga töö kavandamine ja korraldamine. Eesti Panga president võib juhatusele anda täiendavaid ülesandeid. Oma ülesannete täitmiseks võtab juhatus vastu otsuseid. (2) Eesti Panga juhatuse tööjaotuse ja töökorralduse alused sätestab Eesti Panga põhikiri.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga tegevust juhib Eesti Panga juhatus, kelle esimeheks on oma ametikoha järgi Eesti Panga president. Juhatus koosneb Eesti Panga presidendist ja asepresidentidest. (1¹) Juhatuse ülesandeks on Eesti Panga töö kavandamine ja korraldamine. Eesti Panga president võib juhatusele anda täiendavaid ülesandeid. Oma ülesannete täitmiseks võtab juhatus vastu otsuseid. (2) Eesti Panga juhatuse tööjaotuse ja töökorralduse alused sätestab Eesti Panga põhikiri.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_2"
@@ -3992,13 +4210,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Eesti Panga õigused",
+      "rdfs:label": {
+        "@value": "§ 14. Eesti Panga õigused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, on Eesti Pangal oma ülesannete täitmiseks õigus: võtta ja anda piisava tagatise olemasolu korral laenu; teha muid tehinguid raha-, väärtpaberi- ja välisvaluutaturul; omada aktsiaid ja muid osalusi ning kinnisvara; kehtestada rahaturgu reguleerivaid eeskirju ja seaduse alusel usaldatavusnormatiive; rakendada sanktsioone raharingluse kohta kehtestatud eeskirjade rikkujate suhtes, välja arvatud sanktsioonid, mida rakendab",
-      "estleg:legalText": "Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, on Eesti Pangal oma ülesannete täitmiseks õigus: võtta ja anda piisava tagatise olemasolu korral laenu; teha muid tehinguid raha-, väärtpaberi- ja välisvaluutaturul; omada aktsiaid ja muid osalusi ning kinnisvara; kehtestada rahaturgu reguleerivaid eeskirju ja seaduse alusel usaldatavusnormatiive; rakendada sanktsioone raharingluse kohta kehtestatud eeskirjade rikkujate suhtes, välja arvatud sanktsioonid, mida rakendab Euroopa Keskpank Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirja artikli 34.3 alusel; saada riigi- ja kohaliku omavalitsuse asutustelt ning muudelt isikutelt ja asutustelt oma ülesannete täitmiseks vajalikke andmeid; teha muid oma ülesannete täitmiseks vajalikke toiminguid.",
+      "estleg:summary": {
+        "@value": "Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, on Eesti Pangal oma ülesannete täitmiseks õigus: 1) võtta ja anda piisava tagatise olemasolu korral laenu; 2) 3) 4) teha muid tehinguid raha-, väärtpaberi- ja välisvaluutaturul; 5) 6) omada aktsiaid ja muid osalusi ning kinnisvara; 7) kehtestada rahaturgu reguleerivaid eeskirju ja seaduse alusel usaldatavusnormatiive; 8) 9) rakendada sanktsioone raharingluse kohta kehtestatud eeskirjade rikkujate suhtes, välja arvatud",
+        "@language": "et"
+      },
+      "estleg:legalText": "Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, on Eesti Pangal oma ülesannete täitmiseks õigus: 1) võtta ja anda piisava tagatise olemasolu korral laenu; 2) 3) 4) teha muid tehinguid raha-, väärtpaberi- ja välisvaluutaturul; 5) 6) omada aktsiaid ja muid osalusi ning kinnisvara; 7) kehtestada rahaturgu reguleerivaid eeskirju ja seaduse alusel usaldatavusnormatiive; 8) 9) rakendada sanktsioone raharingluse kohta kehtestatud eeskirjade rikkujate suhtes, välja arvatud sanktsioonid, mida rakendab Euroopa Keskpank Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirja artikli 34.3 alusel; 10) saada riigi- ja kohaliku omavalitsuse asutustelt ning muudelt isikutelt ja asutustelt oma ülesannete täitmiseks vajalikke andmeid; 11) teha muid oma ülesannete täitmiseks vajalikke toiminguid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_3"
       },
@@ -4156,10 +4380,25 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, on Eesti Pangal oma ülesannete täitmiseks õigus: võtta ja anda piisava tagatise olemasolu korral laenu; teha muid tehinguid raha-, väärtpaberi- ja välisvaluutaturul; omada aktsiaid ja muid osalusi ning kinnisvara; kehtestada rahaturgu reguleerivaid eeskirju ja seaduse alusel usaldatavusnormatiive; rakendada sanktsioone raharingluse kohta kehtestatud eeskirjade rikkujate suhtes, välja arvatud sanktsioonid, mida rakendab Euroopa Keskpank Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirja artikli 34.3 alusel; saada riigi- ja kohaliku omavalitsuse asutustelt ning muudelt isikutelt ja asutustelt oma ülesannete täitmiseks vajalikke andmeid; teha muid oma ülesannete täitmiseks vajalikke toiminguid.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, on Eesti Pangal oma ülesannete täitmiseks õigus: 1) võtta ja anda piisava tagatise olemasolu korral laenu; 2) 3) 4) teha muid tehinguid raha-, väärtpaberi- ja välisvaluutaturul; 5) 6) omada aktsiaid ja muid osalusi ning kinnisvara; 7) kehtestada rahaturgu reguleerivaid eeskirju ja seaduse alusel usaldatavusnormatiive; 8) 9) rakendada sanktsioone raharingluse kohta kehtestatud eeskirjade rikkujate suhtes, välja arvatud sanktsioonid, mida rakendab Euroopa Keskpank Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirja artikli 34.3 alusel; 10) saada riigi- ja kohaliku omavalitsuse asutustelt ning muudelt isikutelt ja asutustelt oma ülesannete täitmiseks vajalikke andmeid; 11) teha muid oma ülesannete täitmiseks vajalikke toiminguid.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_14"
       },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -4182,12 +4421,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14¹.",
-      "rdfs:label": "§ 14¹. Europangatähed ja euromündid",
+      "rdfs:label": {
+        "@value": "§ 14¹. Europangatähed ja euromündid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Euroopa Keskpanga loal on Eesti Pangal õigus emiteerida europangatähti. (2) Eesti Pangal on ainuõigus . Euromüntide emissioonimahu peab eelnevalt heaks kiitma Euroopa Keskpank. (3) Vigastatud ja rikutud europangatähti ja euromünte võtavad vastu ning asendavad uutega Eesti Pank ning tema volitatud krediidiasutused Euroopa Liidu õigusaktidega sätestatud korras. on õigus oma määrusega kehtestada täpsemad reeglid vigastatud ja rikutud europangatähtede ja euromüntide käitlemise kohta.",
+      "estleg:summary": {
+        "@value": "(1) Euroopa Keskpanga loal on Eesti Pangal õigus emiteerida europangatähti. (2) Eesti Pangal on ainuõigus . Euromüntide emissioonimahu peab eelnevalt heaks kiitma Euroopa Keskpank. (3) Vigastatud ja rikutud europangatähti ja euromünte võtavad vastu ning asendavad uutega Eesti Pank ning tema volitatud krediidiasutused Euroopa Liidu õigusaktidega sätestatud korras. on õigus oma määrusega kehtestada täpsemad reeglid vigastatud ja rikutud europangatähtede ja euromüntide käitlemise kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Euroopa Keskpanga loal on Eesti Pangal õigus emiteerida europangatähti. (2) Eesti Pangal on ainuõigus . Euromüntide emissioonimahu peab eelnevalt heaks kiitma Euroopa Keskpank. (3) Vigastatud ja rikutud europangatähti ja euromünte võtavad vastu ning asendavad uutega Eesti Pank ning tema volitatud krediidiasutused Euroopa Liidu õigusaktidega sätestatud korras. on õigus oma määrusega kehtestada täpsemad reeglid vigastatud ja rikutud europangatähtede ja euromüntide käitlemise kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_3"
@@ -4295,13 +4540,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Välisvaluutatehingute reguleerimine",
+      "rdfs:label": {
+        "@value": "§ 15. Välisvaluutatehingute reguleerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Välisvaluutatehingute korra määrab seadus. (2) Eesti Pank kehtestab seaduse alusel välisvaluuta Eestisse sisse- ja väljaveo, välisvaluutareservide moodustamise ja kasutamise eeskirjad. (3) krediidiasutustele ja muudele juriidilistele isikutele panganduslike välistehingute sooritamise tingimused ja eeskirjad. (4) Kehtetu - (5) Kehtetu -",
-      "estleg:legalText": "(1) Välisvaluutatehingute korra määrab seadus. (2) Eesti Pank kehtestab seaduse alusel välisvaluuta Eestisse sisse- ja väljaveo, välisvaluutareservide moodustamise ja kasutamise eeskirjad. (3) krediidiasutustele ja muudele juriidilistele isikutele panganduslike välistehingute sooritamise tingimused ja eeskirjad. (4) Kehtetu - (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Välisvaluutatehingute korra määrab seadus. (2) Eesti Pank kehtestab seaduse alusel välisvaluuta Eestisse sisse- ja väljaveo, välisvaluutareservide moodustamise ja kasutamise eeskirjad. (3) krediidiasutustele ja muudele juriidilistele isikutele panganduslike välistehingute sooritamise tingimused ja eeskirjad.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Välisvaluutatehingute korra määrab seadus. (2) Eesti Pank kehtestab seaduse alusel välisvaluuta Eestisse sisse- ja väljaveo, välisvaluutareservide moodustamise ja kasutamise eeskirjad. (3) krediidiasutustele ja muudele juriidilistele isikutele panganduslike välistehingute sooritamise tingimused ja eeskirjad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_3"
       },
@@ -4317,12 +4568,6 @@
         },
         {
           "@id": "estleg:EESTI_2_Par_15_Lg_3"
-        },
-        {
-          "@id": "estleg:EESTI_2_Par_15_Lg_4"
-        },
-        {
-          "@id": "estleg:EESTI_2_Par_15_Lg_5"
         }
       ],
       "estleg:targetGroup": [
@@ -4404,45 +4649,24 @@
       }
     },
     {
-      "@id": "estleg:EESTI_2_Par_15_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_15"
-      },
-      "rdfs:label": "§ 15 lg 4"
-    },
-    {
-      "@id": "estleg:EESTI_2_Par_15_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_15"
-      },
-      "rdfs:label": "§ 15 lg 5"
-    },
-    {
       "@id": "estleg:EESTI_2_Par_16",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Krediteerimise keeld",
+      "rdfs:label": {
+        "@value": "§ 16. Krediteerimise keeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 16. Krediteerimise keeld",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_3"
       },
@@ -4471,18 +4695,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17.",
+      "rdfs:label": {
+        "@value": "§ 17.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
+      "estleg:summary": "§ 17.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_EESTI_2_4"
-      },
-      "estleg:summary": "§ 17."
+      }
     },
     {
       "@id": "estleg:EESTI_2_Par_18",
@@ -4491,13 +4718,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
@@ -4517,12 +4749,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Krediidiasutuste korrespondent- ja reservikontod",
+      "rdfs:label": {
+        "@value": "§ 19. Krediidiasutuste korrespondent- ja reservikontod",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Eesti Pank hoiab krediidiasutuste korrespondent- ja kohustuslike reservide kontosid, jälgib nende saldode vastavust esitatavatele nõuetele ja, kui ilmneb neist kõrvalekaldumisi, võtab tarvitusele abinõud nende nõuete täitmise tagamiseks.",
+      "estleg:summary": {
+        "@value": "Eesti Pank hoiab krediidiasutuste korrespondent- ja kohustuslike reservide kontosid, jälgib nende saldode vastavust esitatavatele nõuetele ja, kui ilmneb neist kõrvalekaldumisi, võtab tarvitusele abinõud nende nõuete täitmise tagamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Pank hoiab krediidiasutuste korrespondent- ja kohustuslike reservide kontosid, jälgib nende saldode vastavust esitatavatele nõuetele ja, kui ilmneb neist kõrvalekaldumisi, võtab tarvitusele abinõud nende nõuete täitmise tagamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
@@ -4562,10 +4800,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti Pank hoiab krediidiasutuste korrespondent- ja kohustuslike reservide kontosid, jälgib nende saldode vastavust esitatavatele nõuetele ja, kui ilmneb neist kõrvalekaldumisi, võtab tarvitusele abinõud nende nõuete täitmise tagamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Pank hoiab krediidiasutuste korrespondent- ja kohustuslike reservide kontosid, jälgib nende saldode vastavust esitatavatele nõuetele ja, kui ilmneb neist kõrvalekaldumisi, võtab tarvitusele abinõud nende nõuete täitmise tagamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_19"
       },
+      "rdfs:label": "§ 19 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -4583,12 +4823,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19¹.",
-      "rdfs:label": "§ 19¹. Arveldused Eesti Pangas",
+      "rdfs:label": {
+        "@value": "§ 19¹. Arveldused Eesti Pangas",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Pank võib toimida maksesüsteemide, sealhulgas makse- ja arveldussüsteemide seaduses määratletud arveldussüsteemide korraldajana, kui see on tema ülesannete täitmiseks vajalik. Maksesüsteemide reeglid ja liitumistingimused kehtestab (2) Maksesüsteemiga, mida korraldab Eesti Pank, võivad osalejad liituda eeldusel, et nad täidavad maksesüsteemi reeglitega määratud liitumistingimusi ja sõlmivad asjakohase liitumislepingu.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Pank võib toimida maksesüsteemide, sealhulgas makse- ja arveldussüsteemide seaduses määratletud arveldussüsteemide korraldajana, kui see on tema ülesannete täitmiseks vajalik. Maksesüsteemide reeglid ja liitumistingimused kehtestab (2) Maksesüsteemiga, mida korraldab Eesti Pank, võivad osalejad liituda eeldusel, et nad täidavad maksesüsteemi reeglitega määratud liitumistingimusi ja sõlmivad asjakohase liitumislepingu.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Pank võib toimida maksesüsteemide, sealhulgas makse- ja arveldussüsteemide seaduses määratletud arveldussüsteemide korraldajana, kui see on tema ülesannete täitmiseks vajalik. Maksesüsteemide reeglid ja liitumistingimused kehtestab (2) Maksesüsteemiga, mida korraldab Eesti Pank, võivad osalejad liituda eeldusel, et nad täidavad maksesüsteemi reeglitega määratud liitumistingimusi ja sõlmivad asjakohase liitumislepingu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
@@ -4667,13 +4913,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 20.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 20.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
@@ -4693,13 +4944,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Andmete salastatus ja avaldatavus",
+      "rdfs:label": {
+        "@value": "§ 21. Andmete salastatus ja avaldatavus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Pank on kohustatud tagama pangasaladusi sisaldavate andmete salastatuse (konfidentsiaalsuse). (1¹) Eesti Pank tunnistab asutusesiseseks kasutamiseks teabe, mille avalikuks tulek võib kahjustada hindade stabiilsust või finantsstabiilsust, samuti teabe, millele on Euroopa Keskpankade Süsteemis kehtestatud juurdepääsupiirang. (2) Kehtetu - (3) Kehtetu - (4) Eesti Pangal on õigus avaldada oma käsutuses olevaid krediidiasutuste andmeid, mis ei sisalda pangasaladusi.",
-      "estleg:legalText": "(1) Eesti Pank on kohustatud tagama pangasaladusi sisaldavate andmete salastatuse (konfidentsiaalsuse). (1¹) Eesti Pank tunnistab asutusesiseseks kasutamiseks teabe, mille avalikuks tulek võib kahjustada hindade stabiilsust või finantsstabiilsust, samuti teabe, millele on Euroopa Keskpankade Süsteemis kehtestatud juurdepääsupiirang. (2) Kehtetu - (3) Kehtetu - (4) Eesti Pangal on õigus avaldada oma käsutuses olevaid krediidiasutuste andmeid, mis ei sisalda pangasaladusi. (5) Eesti Pank avaldab perioodiliselt andmeid oma tegevuse ning Eesti ja Euroopa Liidu majanduse kohta.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Pank on kohustatud tagama pangasaladusi sisaldavate andmete salastatuse (konfidentsiaalsuse). (1¹) Eesti Pank tunnistab asutusesiseseks kasutamiseks teabe, mille avalikuks tulek võib kahjustada hindade stabiilsust või finantsstabiilsust, samuti teabe, millele on Euroopa Keskpankade Süsteemis kehtestatud juurdepääsupiirang. (4) Eesti Pangal on õigus avaldada oma käsutuses olevaid krediidiasutuste andmeid, mis ei sisalda pangasaladusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Pank on kohustatud tagama pangasaladusi sisaldavate andmete salastatuse (konfidentsiaalsuse). (1¹) Eesti Pank tunnistab asutusesiseseks kasutamiseks teabe, mille avalikuks tulek võib kahjustada hindade stabiilsust või finantsstabiilsust, samuti teabe, millele on Euroopa Keskpankade Süsteemis kehtestatud juurdepääsupiirang. (4) Eesti Pangal on õigus avaldada oma käsutuses olevaid krediidiasutuste andmeid, mis ei sisalda pangasaladusi. (5) Eesti Pank avaldab perioodiliselt andmeid oma tegevuse ning Eesti ja Euroopa Liidu majanduse kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
@@ -4712,12 +4969,6 @@
         },
         {
           "@id": "estleg:EESTI_2_Par_21_Lg_1_1"
-        },
-        {
-          "@id": "estleg:EESTI_2_Par_21_Lg_2"
-        },
-        {
-          "@id": "estleg:EESTI_2_Par_21_Lg_3"
         },
         {
           "@id": "estleg:EESTI_2_Par_21_Lg_4"
@@ -4802,32 +5053,6 @@
       }
     },
     {
-      "@id": "estleg:EESTI_2_Par_21_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_21"
-      },
-      "rdfs:label": "§ 21 lg 2"
-    },
-    {
-      "@id": "estleg:EESTI_2_Par_21_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_21"
-      },
-      "rdfs:label": "§ 21 lg 3"
-    },
-    {
       "@id": "estleg:EESTI_2_Par_21_Lg_4",
       "@type": [
         "estleg:Subsection",
@@ -4872,18 +5097,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22.",
+      "rdfs:label": {
+        "@value": "§ 22.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
+      "estleg:summary": "§ 22.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_EESTI_2_4"
-      },
-      "estleg:summary": "§ 22."
+      }
     },
     {
       "@id": "estleg:EESTI_2_Par_24",
@@ -4892,13 +5120,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 24.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 24.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
@@ -4918,13 +5151,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24¹.",
-      "rdfs:label": "§ 24¹. Makrofinantsjärelevalve",
+      "rdfs:label": {
+        "@value": "§ 24¹. Makrofinantsjärelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Makrofinantsjärelevalve eesmärk on kaasa aidata finantssüsteemi kui terviku stabiilsuse tagamisele finantssüsteemi vastupanuvõime suurendamise ja süsteemsete riskide kuhjumise vähendamise kaudu, kindlustades finantssektori jätkusuutliku panuse majanduskasvu. (2) Makrofinantsjärelevalve teostamisel Eesti Pank: kogub makrofinantsjärelevalve teostamiseks vajalikku teavet; selgitab välja finantssüsteemi osalised ja finantsstruktuurid, mille tegevusel võib olla oluline mõju süsteemse riski",
-      "estleg:legalText": "(1) Makrofinantsjärelevalve eesmärk on kaasa aidata finantssüsteemi kui terviku stabiilsuse tagamisele finantssüsteemi vastupanuvõime suurendamise ja süsteemsete riskide kuhjumise vähendamise kaudu, kindlustades finantssektori jätkusuutliku panuse majanduskasvu. (2) Makrofinantsjärelevalve teostamisel Eesti Pank: kogub makrofinantsjärelevalve teostamiseks vajalikku teavet; selgitab välja finantssüsteemi osalised ja finantsstruktuurid, mille tegevusel võib olla oluline mõju süsteemse riski kujunemisele; tuvastab süsteemsed riskid ja hindab nende olulisust; koostab ja avaldab ülevaateid ja hinnanguid finantssüsteemi stabiilsuse ning riskide kohta; teeb makrofinantsjärelevalve teostamiseks vajalikku koostööd Rahandusministeeriumi ja Finantsinspektsiooniga; teeb muid toiminguid, mis on vajalikud käesoleva paragrahvi lõikes 1 nimetatud eesmärgi saavutamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Makrofinantsjärelevalve eesmärk on kaasa aidata finantssüsteemi kui terviku stabiilsuse tagamisele finantssüsteemi vastupanuvõime suurendamise ja süsteemsete riskide kuhjumise vähendamise kaudu, kindlustades finantssektori jätkusuutliku panuse majanduskasvu. (2) Makrofinantsjärelevalve teostamisel Eesti Pank: 1) kogub makrofinantsjärelevalve teostamiseks vajalikku teavet; 2) selgitab välja finantssüsteemi osalised ja finantsstruktuurid, mille tegevusel võib olla oluline mõju süsteemse riski",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Makrofinantsjärelevalve eesmärk on kaasa aidata finantssüsteemi kui terviku stabiilsuse tagamisele finantssüsteemi vastupanuvõime suurendamise ja süsteemsete riskide kuhjumise vähendamise kaudu, kindlustades finantssektori jätkusuutliku panuse majanduskasvu. (2) Makrofinantsjärelevalve teostamisel Eesti Pank: 1) kogub makrofinantsjärelevalve teostamiseks vajalikku teavet; 2) selgitab välja finantssüsteemi osalised ja finantsstruktuurid, mille tegevusel võib olla oluline mõju süsteemse riski kujunemisele; 3) tuvastab süsteemsed riskid ja hindab nende olulisust; 4) koostab ja avaldab ülevaateid ja hinnanguid finantssüsteemi stabiilsuse ning riskide kohta; 5) teeb makrofinantsjärelevalve teostamiseks vajalikku koostööd Rahandusministeeriumi ja Finantsinspektsiooniga; 6) 7) teeb muid toiminguid, mis on vajalikud käesoleva paragrahvi lõikes 1 nimetatud eesmärgi saavutamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
@@ -4983,11 +5222,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Makrofinantsjärelevalve teostamisel Eesti Pank: kogub makrofinantsjärelevalve teostamiseks vajalikku teavet; selgitab välja finantssüsteemi osalised ja finantsstruktuurid, mille tegevusel võib olla oluline mõju süsteemse riski kujunemisele; tuvastab süsteemsed riskid ja hindab nende olulisust; koostab ja avaldab ülevaateid ja hinnanguid finantssüsteemi stabiilsuse ning riskide kohta; teeb makrofinantsjärelevalve teostamiseks vajalikku koostööd Rahandusministeeriumi ja Finantsinspektsiooniga; teeb muid toiminguid, mis on vajalikud käesoleva paragrahvi lõikes 1 nimetatud eesmärgi saavutamiseks.",
+      "estleg:legalText": "(2) Makrofinantsjärelevalve teostamisel Eesti Pank: 1) kogub makrofinantsjärelevalve teostamiseks vajalikku teavet; 2) selgitab välja finantssüsteemi osalised ja finantsstruktuurid, mille tegevusel võib olla oluline mõju süsteemse riski kujunemisele; 3) tuvastab süsteemsed riskid ja hindab nende olulisust; 4) koostab ja avaldab ülevaateid ja hinnanguid finantssüsteemi stabiilsuse ning riskide kohta; 5) teeb makrofinantsjärelevalve teostamiseks vajalikku koostööd Rahandusministeeriumi ja Finantsinspektsiooniga; 6) 7) teeb muid toiminguid, mis on vajalikud käesoleva paragrahvi lõikes 1 nimetatud eesmärgi saavutamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_24_1"
       },
       "rdfs:label": "§ 24¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -5011,13 +5259,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24².",
-      "rdfs:label": "§ 24². Maksesüsteemide järelevaatamine",
+      "rdfs:label": {
+        "@value": "§ 24². Maksesüsteemide järelevaatamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Maksesüsteemide järelevaatamise eesmärk on kaasa aidata maksesüsteemide ülesehituse ja toimimise usaldusväärsuse tagamisele. (2) Maksesüsteemide järelevaatajana Eesti Pank: analüüsib maksesüsteemide ülesehitust ja toimimist; annab maksesüsteemide pidajatele juhiseid; kehtestab õigusaktides sätestatud juhtudel maksesüsteemide pidajate ning nende tegevuse ja ülesehituse kohta täpsemaid nõudeid; õigusaktides sätestatud juhtudel annab hinnanguid maksesüsteemide toimimise põhimõtete ja reeglite",
-      "estleg:legalText": "(1) Maksesüsteemide järelevaatamise eesmärk on kaasa aidata maksesüsteemide ülesehituse ja toimimise usaldusväärsuse tagamisele. (2) Maksesüsteemide järelevaatajana Eesti Pank: analüüsib maksesüsteemide ülesehitust ja toimimist; annab maksesüsteemide pidajatele juhiseid; kehtestab õigusaktides sätestatud juhtudel maksesüsteemide pidajate ning nende tegevuse ja ülesehituse kohta täpsemaid nõudeid; õigusaktides sätestatud juhtudel annab hinnanguid maksesüsteemide toimimise põhimõtete ja reeglite kohta; sõlmib õigusaktides sätestatud juhtudel kokkuleppeid järelevaatamise korraldamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Maksesüsteemide järelevaatamise eesmärk on kaasa aidata maksesüsteemide ülesehituse ja toimimise usaldusväärsuse tagamisele. (2) Maksesüsteemide järelevaatajana Eesti Pank: 1) analüüsib maksesüsteemide ülesehitust ja toimimist; 2) annab maksesüsteemide pidajatele juhiseid; 3) kehtestab õigusaktides sätestatud juhtudel maksesüsteemide pidajate ning nende tegevuse ja ülesehituse kohta täpsemaid nõudeid; 4) õigusaktides sätestatud juhtudel annab hinnanguid maksesüsteemide toimimise põhimõtete",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Maksesüsteemide järelevaatamise eesmärk on kaasa aidata maksesüsteemide ülesehituse ja toimimise usaldusväärsuse tagamisele. (2) Maksesüsteemide järelevaatajana Eesti Pank: 1) analüüsib maksesüsteemide ülesehitust ja toimimist; 2) annab maksesüsteemide pidajatele juhiseid; 3) kehtestab õigusaktides sätestatud juhtudel maksesüsteemide pidajate ning nende tegevuse ja ülesehituse kohta täpsemaid nõudeid; 4) õigusaktides sätestatud juhtudel annab hinnanguid maksesüsteemide toimimise põhimõtete ja reeglite kohta; 5) sõlmib õigusaktides sätestatud juhtudel kokkuleppeid järelevaatamise korraldamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_4"
       },
@@ -5061,11 +5315,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Maksesüsteemide järelevaatajana Eesti Pank: analüüsib maksesüsteemide ülesehitust ja toimimist; annab maksesüsteemide pidajatele juhiseid; kehtestab õigusaktides sätestatud juhtudel maksesüsteemide pidajate ning nende tegevuse ja ülesehituse kohta täpsemaid nõudeid; õigusaktides sätestatud juhtudel annab hinnanguid maksesüsteemide toimimise põhimõtete ja reeglite kohta; sõlmib õigusaktides sätestatud juhtudel kokkuleppeid järelevaatamise korraldamiseks.",
+      "estleg:legalText": "(2) Maksesüsteemide järelevaatajana Eesti Pank: 1) analüüsib maksesüsteemide ülesehitust ja toimimist; 2) annab maksesüsteemide pidajatele juhiseid; 3) kehtestab õigusaktides sätestatud juhtudel maksesüsteemide pidajate ning nende tegevuse ja ülesehituse kohta täpsemaid nõudeid; 4) õigusaktides sätestatud juhtudel annab hinnanguid maksesüsteemide toimimise põhimõtete ja reeglite kohta; 5) sõlmib õigusaktides sätestatud juhtudel kokkuleppeid järelevaatamise korraldamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_24_2"
       },
-      "rdfs:label": "§ 24² lg 2"
+      "rdfs:label": "§ 24² lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     },
     {
       "@id": "estleg:EESTI_2_Par_25",
@@ -5074,13 +5335,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Eesti Panga kapitalid ja fondid",
+      "rdfs:label": {
+        "@value": "§ 25. Eesti Panga kapitalid ja fondid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga omakapital koosneb: põhikapitalist; reservkapitalist; sihtkapitalidest ja -fondidest. (2) Eesti Panga põhikapitali suurus on 100 000 000 eurot. (3) Kehtetu -",
-      "estleg:legalText": "(1) Eesti Panga omakapital koosneb: põhikapitalist; reservkapitalist; sihtkapitalidest ja -fondidest. (2) Eesti Panga põhikapitali suurus on 100 000 000 eurot. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga omakapital koosneb: 1) põhikapitalist; 2) reservkapitalist; 3) sihtkapitalidest ja -fondidest. (2) Eesti Panga põhikapitali suurus on 100 000 000 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Panga omakapital koosneb: 1) põhikapitalist; 2) reservkapitalist; 3) sihtkapitalidest ja -fondidest. (2) Eesti Panga põhikapitali suurus on 100 000 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_5"
       },
@@ -5093,9 +5360,6 @@
         },
         {
           "@id": "estleg:EESTI_2_Par_25_Lg_2"
-        },
-        {
-          "@id": "estleg:EESTI_2_Par_25_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -5123,11 +5387,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eesti Panga omakapital koosneb: põhikapitalist; reservkapitalist; sihtkapitalidest ja -fondidest.",
+      "estleg:legalText": "(1) Eesti Panga omakapital koosneb: 1) põhikapitalist; 2) reservkapitalist; 3) sihtkapitalidest ja -fondidest.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_25"
       },
       "rdfs:label": "§ 25 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
@@ -5152,32 +5421,25 @@
       "rdfs:label": "§ 25 lg 2"
     },
     {
-      "@id": "estleg:EESTI_2_Par_25_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_25"
-      },
-      "rdfs:label": "§ 25 lg 3"
-    },
-    {
       "@id": "estleg:EESTI_2_Par_26",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Eesti Panga vara",
+      "rdfs:label": {
+        "@value": "§ 26. Eesti Panga vara",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (1¹) Eesti Vabariigile jagatud Rahvusvahelise Valuutafondi arveldusühikud kuuluvad Eesti Pangale. (2) Eesti Pank valdab, kasutab ja käsutab oma vara iseseisvalt. (3) Eesti Pangale kuulub ka kinnis- ja vallasvara, mis oli 1919. aastal Eesti Vabariigi keskpangana asutatud Eesti Panga omanduses ning 1940. aastal õigusvastaselt võõrandati. (4) Ametlike välisvaluutareservide hoidmine ja juhtimine toimub kooskõlas seaduste ja Eesti Panga põhikirja ning Euroopa Keskpanga nõukogu",
-      "estleg:legalText": "(1) Kehtetu - (1¹) Eesti Vabariigile jagatud Rahvusvahelise Valuutafondi arveldusühikud kuuluvad Eesti Pangale. (2) Eesti Pank valdab, kasutab ja käsutab oma vara iseseisvalt. (3) Eesti Pangale kuulub ka kinnis- ja vallasvara, mis oli 1919. aastal Eesti Vabariigi keskpangana asutatud Eesti Panga omanduses ning 1940. aastal õigusvastaselt võõrandati. (4) Ametlike välisvaluutareservide hoidmine ja juhtimine toimub kooskõlas seaduste ja Eesti Panga põhikirja ning Euroopa Keskpanga nõukogu suunistega.",
+      "estleg:summary": {
+        "@value": "(1¹) Eesti Vabariigile jagatud Rahvusvahelise Valuutafondi arveldusühikud kuuluvad Eesti Pangale. (2) Eesti Pank valdab, kasutab ja käsutab oma vara iseseisvalt. (3) Eesti Pangale kuulub ka kinnis- ja vallasvara, mis oli 1919. aastal Eesti Vabariigi keskpangana asutatud Eesti Panga omanduses ning 1940. aastal õigusvastaselt võõrandati. (4) Ametlike välisvaluutareservide hoidmine ja juhtimine toimub kooskõlas seaduste ja Eesti Panga põhikirja ning Euroopa Keskpanga nõukogu suunistega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1¹) Eesti Vabariigile jagatud Rahvusvahelise Valuutafondi arveldusühikud kuuluvad Eesti Pangale. (2) Eesti Pank valdab, kasutab ja käsutab oma vara iseseisvalt. (3) Eesti Pangale kuulub ka kinnis- ja vallasvara, mis oli 1919. aastal Eesti Vabariigi keskpangana asutatud Eesti Panga omanduses ning 1940. aastal õigusvastaselt võõrandati. (4) Ametlike välisvaluutareservide hoidmine ja juhtimine toimub kooskõlas seaduste ja Eesti Panga põhikirja ning Euroopa Keskpanga nõukogu suunistega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_5"
       },
@@ -5185,9 +5447,6 @@
         "@id": "estleg:Chapter_EESTI_2_5"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:EESTI_2_Par_26_Lg_1"
-        },
         {
           "@id": "estleg:EESTI_2_Par_26_Lg_1_1"
         },
@@ -5221,19 +5480,6 @@
           "@id": "estleg:EESTI_2_Par_26_v113032014014"
         }
       ]
-    },
-    {
-      "@id": "estleg:EESTI_2_Par_26_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_26"
-      },
-      "rdfs:label": "§ 26 lg 1"
     },
     {
       "@id": "estleg:EESTI_2_Par_26_Lg_1_1",
@@ -5294,12 +5540,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Eesti Panga reservkapital, sihtkapitalid ja -fondid",
+      "rdfs:label": {
+        "@value": "§ 27. Eesti Panga reservkapital, sihtkapitalid ja -fondid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Reservkapital, sihtkapitalid ja -fondid moodustatakse Eesti Panga kasumist ja põhikirjas ette nähtud muude sihtotstarbeliste summade laekumistest. (2) Reservkapitali võrdsustumisel põhikapitaliga otsustab Riigikogu, kas selle suurendamist jätkata või mitte. (3) Reservkapitali, sihtkapitalide ja -fondide moodustamise ja kasutamise kord määratakse kindlaks Eesti Panga põhikirjas.",
+      "estleg:summary": {
+        "@value": "(1) Reservkapital, sihtkapitalid ja -fondid moodustatakse Eesti Panga kasumist ja põhikirjas ette nähtud muude sihtotstarbeliste summade laekumistest. (2) Reservkapitali võrdsustumisel põhikapitaliga otsustab Riigikogu, kas selle suurendamist jätkata või mitte. (3) Reservkapitali, sihtkapitalide ja -fondide moodustamise ja kasutamise kord määratakse kindlaks Eesti Panga põhikirjas.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Reservkapital, sihtkapitalid ja -fondid moodustatakse Eesti Panga kasumist ja põhikirjas ette nähtud muude sihtotstarbeliste summade laekumistest. (2) Reservkapitali võrdsustumisel põhikapitaliga otsustab Riigikogu, kas selle suurendamist jätkata või mitte. (3) Reservkapitali, sihtkapitalide ja -fondide moodustamise ja kasutamise kord määratakse kindlaks Eesti Panga põhikirjas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_5"
@@ -5421,12 +5673,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Majandusaasta",
+      "rdfs:label": {
+        "@value": "§ 28. Majandusaasta",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Eesti Panga majandusaasta (finantsaasta) algab 1.jaanuarist ja lõpeb 31. detsembriga.",
+      "estleg:summary": {
+        "@value": "Eesti Panga majandusaasta (finantsaasta) algab 1.jaanuarist ja lõpeb 31. detsembriga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Panga majandusaasta (finantsaasta) algab 1.jaanuarist ja lõpeb 31. detsembriga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_5"
@@ -5454,10 +5712,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti Panga majandusaasta (finantsaasta) algab 1.jaanuarist ja lõpeb 31. detsembriga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Panga majandusaasta (finantsaasta) algab 1.jaanuarist ja lõpeb 31. detsembriga.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_28"
-      }
+      },
+      "rdfs:label": "§ 28 lg 1"
     },
     {
       "@id": "estleg:EESTI_2_Par_29",
@@ -5466,13 +5726,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Panga tulud ja kulud",
+      "rdfs:label": {
+        "@value": "§ 29. Panga tulud ja kulud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 29. Panga tulud ja kulud",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_5"
       },
@@ -5495,12 +5760,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Panga kasum ja kahjum",
+      "rdfs:label": {
+        "@value": "§ 30. Panga kasum ja kahjum",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga kasum (kahjum) moodustub tema tulude ja kulude vahena. (2) Aastakasumist suunatakse vähemalt 25% põhikapitali suurendamiseks kuni Riigikogu poolt määratud summani. (3) Vähemalt 25% aastakasumist suunatakse Eesti Panga Nõukogu otsusel reservkapitali täiendamiseks. (4) Pärast käesoleva paragrahvi 2. ja 3.lõikes nimetatud eraldiste tegemist võidakse osa kasumist suunata Eesti Panga Nõukogu otsusel Eesti Panga põhikirjas ette nähtud sihtkapitalide ja -fondide moodustamiseks ja",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga kasum (kahjum) moodustub tema tulude ja kulude vahena. (2) Aastakasumist suunatakse vähemalt 25% põhikapitali suurendamiseks kuni Riigikogu poolt määratud summani. (3) Vähemalt 25% aastakasumist suunatakse Eesti Panga Nõukogu otsusel reservkapitali täiendamiseks. (4) Pärast käesoleva paragrahvi 2. ja 3.lõikes nimetatud eraldiste tegemist võidakse osa kasumist suunata Eesti Panga Nõukogu otsusel Eesti Panga põhikirjas ette nähtud sihtkapitalide ja -fondide moodustamiseks ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga kasum (kahjum) moodustub tema tulude ja kulude vahena. (2) Aastakasumist suunatakse vähemalt 25% põhikapitali suurendamiseks kuni Riigikogu poolt määratud summani. (3) Vähemalt 25% aastakasumist suunatakse Eesti Panga Nõukogu otsusel reservkapitali täiendamiseks. (4) Pärast käesoleva paragrahvi 2. ja 3.lõikes nimetatud eraldiste tegemist võidakse osa kasumist suunata Eesti Panga Nõukogu otsusel Eesti Panga põhikirjas ette nähtud sihtkapitalide ja -fondide moodustamiseks ja täiendamiseks. (5) Käesoleva paragrahvi 2., 3. ja 4. lõikes märgitud eraldiste tegemisest ülejääv kasum kantakse riigieelarvesse. (6) Eesti Panga kahjum kaetakse reservkapitalist. Kui sellest ei piisa, võib Riigikogu loal kasutada selleks ka põhikapitali. (7) Eesti Pank riigi keskpangana ei maksa tulumaksu, välja arvatud erisoodustustelt tasutav tulumaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_5"
@@ -5695,12 +5966,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Eesti Panga tegevuse kontrollimine ja aastaaruanne",
+      "rdfs:label": {
+        "@value": "§ 31. Eesti Panga tegevuse kontrollimine ja aastaaruanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga Nõukogu nimetab Euroopa Keskpanga nõukogu soovitatud ja Euroopa Liidu Nõukogu heakskiidetud sõltumatud audiitorid, kelle ülesanne on kontrollida Eesti Panga tegevust majandusaasta jooksul ning kinnitada Eesti Panga koostatud aastaaruande õigsust. Riigikogu otsusel võidakse Eesti Panga tegevust kontrollida täiendavalt. (1¹) Eesti Panga audiitor auditeerib Finantsinspektsiooni tulude-kulude aastaaruande. (2) Eesti Panga aastaaruanne koostatakse vastavalt Euroopa Keskpankade",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga Nõukogu nimetab Euroopa Keskpanga nõukogu soovitatud ja Euroopa Liidu Nõukogu heakskiidetud sõltumatud audiitorid, kelle ülesanne on kontrollida Eesti Panga tegevust majandusaasta jooksul ning kinnitada Eesti Panga koostatud aastaaruande õigsust. Riigikogu otsusel võidakse Eesti Panga tegevust kontrollida täiendavalt. (1¹) Eesti Panga audiitor auditeerib Finantsinspektsiooni tulude-kulude aastaaruande. (2) Eesti Panga aastaaruanne koostatakse vastavalt Euroopa Keskpankade",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga Nõukogu nimetab Euroopa Keskpanga nõukogu soovitatud ja Euroopa Liidu Nõukogu heakskiidetud sõltumatud audiitorid, kelle ülesanne on kontrollida Eesti Panga tegevust majandusaasta jooksul ning kinnitada Eesti Panga koostatud aastaaruande õigsust. Riigikogu otsusel võidakse Eesti Panga tegevust kontrollida täiendavalt. (1¹) Eesti Panga audiitor auditeerib Finantsinspektsiooni tulude-kulude aastaaruande. (2) Eesti Panga aastaaruanne koostatakse vastavalt Euroopa Keskpankade Süsteemi ja Euroopa Keskpanga põhikirja artikli 26.4 alusel kehtestatud eeskirjadele. (3) Aastaaruande kinnitab Eesti Panga Nõukogu, kes seejärel esitab selle koos vandeaudiitori aruandega Riigikogule. Samaaegselt Eesti Panga aastaaruandega esitatakse Riigikogule Finantsinspektsiooni nõukogu poolt kinnitatud Finantsinspektsiooni aastaaruanne. Riigikogu kuulab ära Eesti Panga presidendi ettekande Eesti Panga aastaaruande kohta. (4) Aastaaruanne avaldatakse Riigi Teatajas ja Eesti Panga Aastaraamatus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_5"
@@ -5878,12 +6155,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Suhted teiste riikide keskpankadega ja välistehingud",
+      "rdfs:label": {
+        "@value": "§ 32. Suhted teiste riikide keskpankadega ja välistehingud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Eesti Pank suhtleb teiste riikide keskpankade ning muude rahaasutustega ning tal on õigus sooritada nendega käesolevas seaduses loetletud ülesannete täitmiseks vajalikke tehinguid.",
+      "estleg:summary": {
+        "@value": "Eesti Pank suhtleb teiste riikide keskpankade ning muude rahaasutustega ning tal on õigus sooritada nendega käesolevas seaduses loetletud ülesannete täitmiseks vajalikke tehinguid.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Pank suhtleb teiste riikide keskpankade ning muude rahaasutustega ning tal on õigus sooritada nendega käesolevas seaduses loetletud ülesannete täitmiseks vajalikke tehinguid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_6"
@@ -5915,10 +6198,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti Pank suhtleb teiste riikide keskpankade ning muude rahaasutustega ning tal on õigus sooritada nendega käesolevas seaduses loetletud ülesannete täitmiseks vajalikke tehinguid.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Pank suhtleb teiste riikide keskpankade ning muude rahaasutustega ning tal on õigus sooritada nendega käesolevas seaduses loetletud ülesannete täitmiseks vajalikke tehinguid.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_32"
       },
+      "rdfs:label": "§ 32 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -5934,13 +6219,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Pangandustehingud oma töötajatega",
+      "rdfs:label": {
+        "@value": "§ 33. Pangandustehingud oma töötajatega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Eesti Pangal on õigus anda oma töötajatele ja nõukogu liikmetele Eesti Panga presidendi kinnitatud tingimustel laenu.",
-      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Eesti Pangal on õigus anda oma töötajatele ja nõukogu liikmetele Eesti Panga presidendi kinnitatud tingimustel laenu.",
+      "estleg:summary": {
+        "@value": "(3) Eesti Pangal on õigus anda oma töötajatele ja nõukogu liikmetele Eesti Panga presidendi kinnitatud tingimustel laenu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(3) Eesti Pangal on õigus anda oma töötajatele ja nõukogu liikmetele Eesti Panga presidendi kinnitatud tingimustel laenu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_6"
       },
@@ -5948,12 +6239,6 @@
         "@id": "estleg:Chapter_EESTI_2_6"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:EESTI_2_Par_33_Lg_1"
-        },
-        {
-          "@id": "estleg:EESTI_2_Par_33_Lg_2"
-        },
         {
           "@id": "estleg:EESTI_2_Par_33_Lg_3"
         }
@@ -5978,32 +6263,6 @@
           "@id": "estleg:EESTI_2_Par_33_v109052014008"
         }
       ]
-    },
-    {
-      "@id": "estleg:EESTI_2_Par_33_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_33"
-      },
-      "rdfs:label": "§ 33 lg 1"
-    },
-    {
-      "@id": "estleg:EESTI_2_Par_33_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:EESTI_2_Par_33"
-      },
-      "rdfs:label": "§ 33 lg 2"
     },
     {
       "@id": "estleg:EESTI_2_Par_33_Lg_3",
@@ -6037,12 +6296,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Maksebilansi koostamine ja statistika kogumine",
+      "rdfs:label": {
+        "@value": "§ 34. Maksebilansi koostamine ja statistika kogumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, oma ülesannete täitmiseks vajaliku raha-, finants- ja maksebilansistatistika saamiseks ning avaldamiseks riikliku statistika seaduses sätestatud alustel ja korras. (2) Eesti Pangal on õigus saada tasuta kõigilt riigi- ja omavalitsusorganitelt ning Eesti territooriumil asuvatelt välismajandustehinguid sooritavatelt isikutelt Eesti maksebilansi koostamiseks vajalikke andmeid.",
+      "estleg:summary": {
+        "@value": "(1) Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, oma ülesannete täitmiseks vajaliku raha-, finants- ja maksebilansistatistika saamiseks ning avaldamiseks riikliku statistika seaduses sätestatud alustel ja korras. (2) Eesti Pangal on õigus saada tasuta kõigilt riigi- ja omavalitsusorganitelt ning Eesti territooriumil asuvatelt välismajandustehinguid sooritavatelt isikutelt Eesti maksebilansi koostamiseks vajalikke andmeid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Arvestades Euroopa Keskpanga ja Euroopa Keskpankade Süsteemi pädevust, oma ülesannete täitmiseks vajaliku raha-, finants- ja maksebilansistatistika saamiseks ning avaldamiseks riikliku statistika seaduses sätestatud alustel ja korras. (2) Eesti Pangal on õigus saada tasuta kõigilt riigi- ja omavalitsusorganitelt ning Eesti territooriumil asuvatelt välismajandustehinguid sooritavatelt isikutelt Eesti maksebilansi koostamiseks vajalikke andmeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_6"
@@ -6153,12 +6418,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Ametialase saladuse pidamise kohustus",
+      "rdfs:label": {
+        "@value": "§ 35. Ametialase saladuse pidamise kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Eesti Panga Nõukogu liikmed ja Eesti Panga teenistuses olevad isikud on kohustatud hoidma saladuses Eesti Panka, kõiki krediidiasutusi ja teisi juriidilisi isikuid puudutavaid andmeid, mille avalikustamine võib kahjustada kas Eesti majanduse või krediidiasutuste ja nende klientide majanduslikke huve. (2) Saladuse hoidmise kohustus kehtib andmete kohta, mis on Eesti Panga teenistuses olevatele isikutele saanud teatavaks üksnes nende pangas töötamise tõttu.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Panga Nõukogu liikmed ja Eesti Panga teenistuses olevad isikud on kohustatud hoidma saladuses Eesti Panka, kõiki krediidiasutusi ja teisi juriidilisi isikuid puudutavaid andmeid, mille avalikustamine võib kahjustada kas Eesti majanduse või krediidiasutuste ja nende klientide majanduslikke huve. (2) Saladuse hoidmise kohustus kehtib andmete kohta, mis on Eesti Panga teenistuses olevatele isikutele saanud teatavaks üksnes nende pangas töötamise tõttu.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Panga Nõukogu liikmed ja Eesti Panga teenistuses olevad isikud on kohustatud hoidma saladuses Eesti Panka, kõiki krediidiasutusi ja teisi juriidilisi isikuid puudutavaid andmeid, mille avalikustamine võib kahjustada kas Eesti majanduse või krediidiasutuste ja nende klientide majanduslikke huve. (2) Saladuse hoidmise kohustus kehtib andmete kohta, mis on Eesti Panga teenistuses olevatele isikutele saanud teatavaks üksnes nende pangas töötamise tõttu. Saladuse hoidmise kohustus jätkub ka pärast vastavate isikute lahkumist panga teenistusest. (3) Ametialase saladuse avaldamisel karistatakse süüdlasi vastavalt seadusele kas distsiplinaar- või kriminaalkorras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_6"
@@ -6272,12 +6543,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Osalemine ettevõtluses",
+      "rdfs:label": {
+        "@value": "§ 36. Osalemine ettevõtluses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Eesti Pank võib asutada ettevõtteid, mis on vajalikud tema ülesannete täitmiseks, ja osaleda niisuguste ettevõtete tegevuses.",
+      "estleg:summary": {
+        "@value": "Eesti Pank võib asutada ettevõtteid, mis on vajalikud tema ülesannete täitmiseks, ja osaleda niisuguste ettevõtete tegevuses.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Pank võib asutada ettevõtteid, mis on vajalikud tema ülesannete täitmiseks, ja osaleda niisuguste ettevõtete tegevuses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_6"
@@ -6314,10 +6591,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti Pank võib asutada ettevõtteid, mis on vajalikud tema ülesannete täitmiseks, ja osaleda niisuguste ettevõtete tegevuses.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Pank võib asutada ettevõtteid, mis on vajalikud tema ülesannete täitmiseks, ja osaleda niisuguste ettevõtete tegevuses.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_36"
       },
+      "rdfs:label": "§ 36 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -6338,12 +6617,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Õigusaktide kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 37. Õigusaktide kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_6"
@@ -6364,12 +6649,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Käesoleva seaduse § 8 6. lõike rakendamise erisus",
+      "rdfs:label": {
+        "@value": "§ 38. Käesoleva seaduse § 8 6. lõike rakendamise erisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "Kui Eesti Panga Nõukogu 1993. aastal ametisse nimetatud koosseisu volituste lõppemise tähtpäeva saabumise ajaks on Eesti Panga Nõukogu uus koosseis nimetamata, loetakse selle koosseisu liikmete volitused pikendatuks kuni uue koosseisu nimetamiseni, kuid mitte kauemaks kui kolmeks kuuks.",
+      "estleg:summary": {
+        "@value": "Kui Eesti Panga Nõukogu 1993. aastal ametisse nimetatud koosseisu volituste lõppemise tähtpäeva saabumise ajaks on Eesti Panga Nõukogu uus koosseis nimetamata, loetakse selle koosseisu liikmete volitused pikendatuks kuni uue koosseisu nimetamiseni, kuid mitte kauemaks kui kolmeks kuuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui Eesti Panga Nõukogu 1993. aastal ametisse nimetatud koosseisu volituste lõppemise tähtpäeva saabumise ajaks on Eesti Panga Nõukogu uus koosseis nimetamata, loetakse selle koosseisu liikmete volitused pikendatuks kuni uue koosseisu nimetamiseni, kuid mitte kauemaks kui kolmeks kuuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_7"
@@ -6400,10 +6691,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui Eesti Panga Nõukogu 1993. aastal ametisse nimetatud koosseisu volituste lõppemise tähtpäeva saabumise ajaks on Eesti Panga Nõukogu uus koosseis nimetamata, loetakse selle koosseisu liikmete volitused pikendatuks kuni uue koosseisu nimetamiseni, kuid mitte kauemaks kui kolmeks kuuks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui Eesti Panga Nõukogu 1993. aastal ametisse nimetatud koosseisu volituste lõppemise tähtpäeva saabumise ajaks on Eesti Panga Nõukogu uus koosseis nimetamata, loetakse selle koosseisu liikmete volitused pikendatuks kuni uue koosseisu nimetamiseni, kuid mitte kauemaks kui kolmeks kuuks.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_38"
-      }
+      },
+      "rdfs:label": "§ 38 lg 1"
     },
     {
       "@id": "estleg:EESTI_2_Par_39",
@@ -6412,13 +6705,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39. Käesoleva seaduse § 10 lõigete 1 ja 2",
+      "rdfs:label": {
+        "@value": "§ 39. Käesoleva seaduse § 10 lõigete 1 ja 2¹ rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 10 lõike 1 jõustumisel ametis olev president loetakse ametisse nimetatuks seitsmeks aastaks arvates tema ametisse nimetamise hetkest. (2) Käesoleva seaduse § 10 lõike 21 jõustumisel ametis olevad asepresidendid loetakse eelnimetatud sätte jõustumise hetkest arvates viieks aastaks ametisse nimetatuks.",
-      "estleg:legalText": "(1) Käesoleva seaduse § 10 lõike 1 jõustumisel ametis olev president loetakse ametisse nimetatuks seitsmeks aastaks arvates tema ametisse nimetamise hetkest. (2) Käesoleva seaduse § 10 lõike 21 jõustumisel ametis olevad asepresidendid loetakse eelnimetatud sätte jõustumise hetkest arvates viieks aastaks ametisse nimetatuks.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 10 lõike 1 jõustumisel ametis olev president loetakse ametisse nimetatuks seitsmeks aastaks arvates tema ametisse nimetamise hetkest. (2) Käesoleva seaduse § 10 lõike 2¹ jõustumisel ametis olevad asepresidendid loetakse eelnimetatud sätte jõustumise hetkest arvates viieks aastaks ametisse nimetatuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse § 10 lõike 1 jõustumisel ametis olev president loetakse ametisse nimetatuks seitsmeks aastaks arvates tema ametisse nimetamise hetkest. (2) Käesoleva seaduse § 10 lõike 2¹ jõustumisel ametis olevad asepresidendid loetakse eelnimetatud sätte jõustumise hetkest arvates viieks aastaks ametisse nimetatuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_7"
       },
@@ -6480,7 +6779,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva seaduse § 10 lõike 21 jõustumisel ametis olevad asepresidendid loetakse eelnimetatud sätte jõustumise hetkest arvates viieks aastaks ametisse nimetatuks.",
+      "estleg:legalText": "(2) Käesoleva seaduse § 10 lõike 2¹ jõustumisel ametis olevad asepresidendid loetakse eelnimetatud sätte jõustumise hetkest arvates viieks aastaks ametisse nimetatuks.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_39"
       },
@@ -6498,13 +6797,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40. Käesoleva seaduse 2020. aasta 2. aprillil vastuvõetud redaktsiooni rakendamise erisused",
+      "rdfs:label": {
+        "@value": "§ 40. Käesoleva seaduse 2020. aasta 2. aprillil vastuvõetud redaktsiooni rakendamise erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti Panga seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EESTI_2_Map"
       },
-      "estleg:summary": "(1) Enne käesoleva seaduse 2020. aasta 2. aprillil vastuvõetud redaktsiooni (edaspidi käesolev redaktsioon) jõustumist nimetatud Eesti Panga Nõukogu esimehe volitused lõpevad tema volituste tähtaja lõppemisel. Enne käesoleva redaktsiooni jõustumist nimetatud Eesti Panga Nõukogu liikmete volitused pikenevad vahetult käesoleva redaktsiooni jõustumise järel nimetatavate nõukogu asjatundjatest liikmete nimetamise otsuse jõustumiseni. (2) Käesolevas redaktsioonis sätestatut kohaldatakse Eesti Panga",
-      "estleg:legalText": "(1) Enne käesoleva seaduse 2020. aasta 2. aprillil vastuvõetud redaktsiooni (edaspidi käesolev redaktsioon) jõustumist nimetatud Eesti Panga Nõukogu esimehe volitused lõpevad tema volituste tähtaja lõppemisel. Enne käesoleva redaktsiooni jõustumist nimetatud Eesti Panga Nõukogu liikmete volitused pikenevad vahetult käesoleva redaktsiooni jõustumise järel nimetatavate nõukogu asjatundjatest liikmete nimetamise otsuse jõustumiseni. (2) Käesolevas redaktsioonis sätestatut kohaldatakse Eesti Panga Nõukogu esimehe ja liikmete suhtes, kes nimetatakse ametisse pärast käesoleva redaktsiooni jõustumist. Käesoleva redaktsiooni jõustumise ajal ametis olev Eesti Panga Nõukogu esimees loetakse ametisse nimetatuks esimeseks ametiajaks käesoleva seaduse § 7 lõike 12 tähenduses ja käesoleva redaktsiooni jõustumise ajal Eesti Panga Nõukogusse kuuluv liige loetakse nimetatuks esimeseks ametiajaks § 8 lõike 9 tähenduses. (3) Riigikogu fraktsioon esitab käesoleva seaduse § 8 lõikes 11 nimetatud andmed ja Eesti Panga Nõukogu esimees esitab lõikes 12 nimetatud andmed rahanduskomisjonile hiljemalt üks kuu pärast käesoleva redaktsiooni jõustumist. (4) Kui Riigikogu fraktsioon ei ole esitanud oma kandidaati käesoleva paragrahvi lõikes 3 nimetatud tähtajaks ja viisil, jäetakse selle fraktsiooni esindaja Eesti Panga Nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaate käesoleva paragrahvi lõikes 3 nimetatud ajaks või valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaatide nimekiri ei leia Riigikogu enamuse toetust, nimetab vastavad Eesti Panga Nõukogu liikmed Riigikogu rahanduskomisjoni ettepanekul.",
+      "estleg:summary": {
+        "@value": "(1) Enne käesoleva seaduse 2020. aasta 2. aprillil vastuvõetud redaktsiooni (edaspidi käesolev redaktsioon) jõustumist nimetatud Eesti Panga Nõukogu esimehe volitused lõpevad tema volituste tähtaja lõppemisel. Enne käesoleva redaktsiooni jõustumist nimetatud Eesti Panga Nõukogu liikmete volitused pikenevad vahetult käesoleva redaktsiooni jõustumise järel nimetatavate nõukogu asjatundjatest liikmete nimetamise otsuse jõustumiseni. (2) Käesolevas redaktsioonis sätestatut kohaldatakse Eesti Panga",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Enne käesoleva seaduse 2020. aasta 2. aprillil vastuvõetud redaktsiooni (edaspidi käesolev redaktsioon) jõustumist nimetatud Eesti Panga Nõukogu esimehe volitused lõpevad tema volituste tähtaja lõppemisel. Enne käesoleva redaktsiooni jõustumist nimetatud Eesti Panga Nõukogu liikmete volitused pikenevad vahetult käesoleva redaktsiooni jõustumise järel nimetatavate nõukogu asjatundjatest liikmete nimetamise otsuse jõustumiseni. (2) Käesolevas redaktsioonis sätestatut kohaldatakse Eesti Panga Nõukogu esimehe ja liikmete suhtes, kes nimetatakse ametisse pärast käesoleva redaktsiooni jõustumist. Käesoleva redaktsiooni jõustumise ajal ametis olev Eesti Panga Nõukogu esimees loetakse ametisse nimetatuks esimeseks ametiajaks käesoleva seaduse § 7 lõike 1² tähenduses ja käesoleva redaktsiooni jõustumise ajal Eesti Panga Nõukogusse kuuluv liige loetakse nimetatuks esimeseks ametiajaks § 8 lõike 9 tähenduses. (3) Riigikogu fraktsioon esitab käesoleva seaduse § 8 lõikes 1¹ nimetatud andmed ja Eesti Panga Nõukogu esimees esitab lõikes 1² nimetatud andmed rahanduskomisjonile hiljemalt üks kuu pärast käesoleva redaktsiooni jõustumist. (4) Kui Riigikogu fraktsioon ei ole esitanud oma kandidaati käesoleva paragrahvi lõikes 3 nimetatud tähtajaks ja viisil, jäetakse selle fraktsiooni esindaja Eesti Panga Nõukogusse nimetamata. Kui Eesti Panga Nõukogu esimees ei ole esitanud valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaate käesoleva paragrahvi lõikes 3 nimetatud ajaks või valdkonna asjatundjatest Eesti Panga Nõukogu liikmekandidaatide nimekiri ei leia Riigikogu enamuse toetust, nimetab vastavad Eesti Panga Nõukogu liikmed Riigikogu rahanduskomisjoni ettepanekul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_2_7"
       },
@@ -6569,7 +6874,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesolevas redaktsioonis sätestatut kohaldatakse Eesti Panga Nõukogu esimehe ja liikmete suhtes, kes nimetatakse ametisse pärast käesoleva redaktsiooni jõustumist. Käesoleva redaktsiooni jõustumise ajal ametis olev Eesti Panga Nõukogu esimees loetakse ametisse nimetatuks esimeseks ametiajaks käesoleva seaduse § 7 lõike 12 tähenduses ja käesoleva redaktsiooni jõustumise ajal Eesti Panga Nõukogusse kuuluv liige loetakse nimetatuks esimeseks ametiajaks § 8 lõike 9 tähenduses.",
+      "estleg:legalText": "(2) Käesolevas redaktsioonis sätestatut kohaldatakse Eesti Panga Nõukogu esimehe ja liikmete suhtes, kes nimetatakse ametisse pärast käesoleva redaktsiooni jõustumist. Käesoleva redaktsiooni jõustumise ajal ametis olev Eesti Panga Nõukogu esimees loetakse ametisse nimetatuks esimeseks ametiajaks käesoleva seaduse § 7 lõike 1² tähenduses ja käesoleva redaktsiooni jõustumise ajal Eesti Panga Nõukogusse kuuluv liige loetakse nimetatuks esimeseks ametiajaks § 8 lõike 9 tähenduses.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_40"
       },
@@ -6596,7 +6901,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Riigikogu fraktsioon esitab käesoleva seaduse § 8 lõikes 11 nimetatud andmed ja Eesti Panga Nõukogu esimees esitab lõikes 12 nimetatud andmed rahanduskomisjonile hiljemalt üks kuu pärast käesoleva redaktsiooni jõustumist.",
+      "estleg:legalText": "(3) Riigikogu fraktsioon esitab käesoleva seaduse § 8 lõikes 1¹ nimetatud andmed ja Eesti Panga Nõukogu esimees esitab lõikes 1² nimetatud andmed rahanduskomisjonile hiljemalt üks kuu pärast käesoleva redaktsiooni jõustumist.",
       "estleg:parentProvision": {
         "@id": "estleg:EESTI_2_Par_40"
       },
@@ -6649,6 +6954,22 @@
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/504042023007",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:EESTI_2_Map"
+      },
+      "rdfs:label": {
+        "@value": "Bank of Estonia (Eesti Pank) Act",
+        "@language": "en"
+      }
     }
   ]
 }

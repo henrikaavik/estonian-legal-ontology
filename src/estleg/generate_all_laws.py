@@ -25,16 +25,30 @@ from pathlib import Path
 
 import requests  # noqa: F401  -- tests monkeypatch ``requests.get``
 
+from estleg.backfill_rt_eli import (
+    ENRICHMENT_PREFERRED_FIELDS,
+    fetch_hash_row,
+    load_english_titles,
+    promote_english_expression,
+    stamp_map_root_doc,
+    stamp_rt_metadata,
+)
+from estleg.ensure_multipart_map_peeps import MULTIPART_MAPS
 from estleg.estleg_common import (
     CONTEXT,
+    FETCH_HASH_FILENAME,
+    act_prefix_from_iri,
     act_root_node,
+    ascii_iri_key,
     et_literal,
     mint_act_iri,
+    record_fetch_hashes,
     sanitize_id,
     save_json,
     sha256_hex,
     slugify,
 )
+from estleg.law_iri_pinning import PinTotals, pin_to_committed
 from estleg.law_structure import (  # noqa: F401 — re-exported for tests / generate_missing_parts
     _chapter_id_suffix,
     _division_id_suffix,
@@ -58,10 +72,12 @@ from estleg.law_structure import (  # noqa: F401 — re-exported for tests / gen
 from estleg.riigiteataja_common import (
     BASE_URL,
     SourceListFetchError,
+    build_xml_url,
     ct,
     fetch_acts,
     ln,
     new_page_stats,
+    redaction_rank,
 )
 from estleg.riigiteataja_common import (
     fetch_xml as common_fetch_xml,
@@ -76,6 +92,14 @@ NS = "https://w3id.org/estleg/"
 DEFAULT_KEHTIV = "2026-05-01"
 # #558: sha256 of the last fetched/cached RT XML, keyed by cache_name/slug.
 _CONTENT_HASHES: dict[str, str] = {}
+# #692: what that hash attests — the cache file it was taken from, its size
+# and the redaction (globaalID) inside it — keyed like ``_CONTENT_HASHES``.
+_FETCH_RECORDS: dict[str, dict] = {}
+# Offline replay: serve every act from data/riigiteataja/ and never touch the
+# network. A cache miss is a fetch failure (main sets this from --cache-only).
+CACHE_ONLY = False
+# Committed-IRI pinning totals for this run (law_iri_pinning), per kind.
+PIN_TOTALS = PinTotals()
 
 # Issue #601: ONE shared minimum-size threshold for the on-disk XML cache,
 # applied to BOTH the fresh-download floor and the cache-accept floor.
@@ -226,12 +250,21 @@ def get_all_laws(
         if not title:
             continue
         gid = str(law.get("globaalID", ""))
-        if title not in all_laws or gid > all_laws[title]["gid"]:
+        # #695: the newest redaction is the one whose validity starts last
+        # (kehtivus.algus), not the largest globaalID — RT ids are not
+        # chronological (231052021002 > 107052025017 as text and integer).
+        if title not in all_laws or redaction_rank(law) > redaction_rank(
+            all_laws[title]
+        ):
+            kehtivus = law.get("kehtivus") or {}
             all_laws[title] = {
                 "gid": gid,
                 "tid": str(law.get("terviktekstID", "")),
                 "url": law.get("url", ""),
-                "kehtivus": law.get("kehtivus", {}),
+                "kehtivus": kehtivus,
+                "kehtivusAlgus": (
+                    kehtivus.get("algus") if isinstance(kehtivus, dict) else None
+                ),
                 "lyhend": law.get("lyhend", ""),
             }
 
@@ -292,7 +325,73 @@ def _is_trustworthy_xml_root(root: ET.Element | None) -> bool:
     return root is not None and ln(root.tag).lower() not in _NON_ACT_ROOT_TAGS
 
 
-def _read_cached_rt_root(cache_name: str, tid: str | None) -> ET.Element | None:
+def xml_root_global_id(root: ET.Element | None) -> str | None:
+    """``<metaandmed><globaalID>`` of an RT act root, or None when absent.
+
+    Only the numeric RT act id counts. Some legacy RT II texts (five treaty
+    acts of 2010 in the 2026-10-09 snapshot) carry a document UUID there
+    instead; it is not the id the search API, the act page and
+    ``eli:id_local`` use, so it is reported as absent rather than compared.
+    """
+    if root is None:
+        return None
+    for child in root:
+        if ln(child.tag) != "metaandmed":
+            continue
+        for leaf in child:
+            if ln(leaf.tag) == "globaalID" and leaf.text and leaf.text.strip():
+                gid = leaf.text.strip()
+                return gid if gid.isdigit() else None
+    return None
+
+
+def _root_matches_redaction(root: ET.Element, expected_gid: str | None) -> bool:
+    """False when a cached root is a different redaction than the one asked for.
+
+    The cache file is keyed on the terviktekst *group* id, which every
+    redaction of an act shares (#692), so a cached file can hold an older
+    redaction. A root without a numeric globaalID (synthetic test XML, a
+    legacy UUID) is accepted.
+    """
+    if not expected_gid:
+        return True
+    found = xml_root_global_id(root)
+    return found is None or found == str(expected_gid)
+
+
+def _cache_rel(path: Path) -> str:
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def _remember_fetch(cache_name: str, payload: bytes, cache_path: Path, url: str) -> None:
+    digest = sha256_hex(payload)
+    _CONTENT_HASHES[cache_name] = digest
+    _FETCH_RECORDS[cache_name] = {
+        "sha256": digest,
+        "bytes": len(payload),
+        "cacheFile": _cache_rel(cache_path),
+        "fetchedFrom": build_xml_url(url) if url else "",
+    }
+
+
+def _cache_candidates(cache_name: str, tid: str | None) -> list[Path]:
+    candidates: list[Path] = []
+    if tid:
+        candidates.append(DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml")
+    candidates.append(DATA_DIR / f"{cache_name}.xml")
+    return candidates
+
+
+def _read_cached_rt_root(
+    cache_name: str,
+    tid: str | None,
+    gid: str | None = None,
+    *,
+    url: str = "",
+) -> ET.Element | None:
     """Return a parsed, validated RT act root from local cache, or None.
 
     Applies the shared ``MIN_XML_BYTES`` floor and ``_is_trustworthy_xml_root``
@@ -300,21 +399,18 @@ def _read_cached_rt_root(cache_name: str, tid: str | None) -> ET.Element | None:
     as a cache miss rather than trusted indefinitely. Mirrors ``fetch_xml``'s
     cache lookup: the tid-qualified file first, then the legacy slug-only file
     as a fallback (#165 fix 9) so the first tid-keyed run does not force a full
-    corpus refetch.
+    corpus refetch. With ``gid``, a cached file holding another redaction is a
+    miss (#692).
     """
-    candidates: list[Path] = []
-    if tid:
-        candidates.append(DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml")
-    candidates.append(DATA_DIR / f"{cache_name}.xml")
-    for cache_path in candidates:
+    for cache_path in _cache_candidates(cache_name, tid):
         if not (cache_path.exists() and cache_path.stat().st_size > MIN_XML_BYTES):
             continue
         try:
             root = ET.parse(str(cache_path)).getroot()
         except ET.ParseError:
             continue
-        if _is_trustworthy_xml_root(root):
-            _CONTENT_HASHES[cache_name] = sha256_hex(cache_path.read_bytes())
+        if _is_trustworthy_xml_root(root) and _root_matches_redaction(root, gid):
+            _remember_fetch(cache_name, cache_path.read_bytes(), cache_path, url)
             return root
     return None
 
@@ -324,26 +420,38 @@ def fetch_xml(
     cache_name: str,
     *,
     tid: str | None = None,
+    gid: str | None = None,
 ) -> ET.Element | None:
     """Fetch law XML via ``riigiteataja_common.fetch_xml`` (#466 / #296 / #389).
 
     Issue #165 fix 9: when ``tid`` is supplied, embed it in the cache
     filename and fall back to the legacy slug-only file.
     Issue #601: ``validate_root`` rejects HTML/error roots.
+    Issue #692: with ``gid`` (the redaction's globaalID), a cached file of
+    another redaction is refetched, and the hash recorded for ``cache_name``
+    is that of the file actually parsed.
     """
+    cached = _read_cached_rt_root(cache_name, tid, gid, url=url)
+    if cached is not None:
+        return cached
+    if CACHE_ONLY:
+        print(
+            f"    CACHE-ONLY: no cached XML for {cache_name!r} "
+            f"(tid={tid!r}, gid={gid!r}); not fetching"
+        )
+        return None
     primary = (
         f"{cache_name}__tid{sanitize_id(tid)}" if tid else cache_name
     )
-    fallback = cache_name if tid else None
 
     def _remember(payload: bytes) -> None:
-        _CONTENT_HASHES[cache_name] = sha256_hex(payload)
+        _remember_fetch(cache_name, payload, DATA_DIR / f"{primary}.xml", url)
 
     return common_fetch_xml(
         url,
         primary,
         cache_dir=DATA_DIR,
-        fallback_cache_name=fallback,
+        refresh=True,
         min_size=MIN_XML_BYTES,
         validate_root=_is_trustworthy_xml_root,
         on_bytes=_remember,
@@ -379,13 +487,28 @@ class PrefixAllocator:
         ``data/law_abbreviations.json`` — if a previously-allocated prefix
         clashes with another law, allocation raises rather than silently
         switching to a slug-based fallback.
+
+    Prefixes are compared AND returned in their transliterated (ASCII) form
+    (``ascii_iri_key``): every published IRI is ASCII since #445, so the
+    registry's raw ``TsÜS`` and a derived ``TsUS`` are the same IRI prefix and
+    must collide, and a raw ``JäätS`` must mint ``JaatS_Par_1`` like the corpus.
+
+    ``frozen`` maps a law title to the prefix its committed act IRI already
+    uses (``load_disk_prefix_map``). A frozen title keeps that prefix, and no
+    other title may take it: derived prefixes are order-dependent across
+    incremental runs, so without the freeze a refresh can swap IRIs between
+    sibling treaties.
     """
 
-    def __init__(self, registry: dict | None = None) -> None:
+    def __init__(
+        self,
+        registry: dict | None = None,
+        frozen: dict[str, str] | None = None,
+    ) -> None:
         # registry: {slug: {"abbrev": str, ...}}
         self._registry: dict = registry if registry is not None else _load_registry()
         self._registry_abbrev_owners: dict[str, str] = {
-            entry["abbrev"]: entry["title"]
+            _prefix_key(entry["abbrev"]): entry["title"]
             for entry in self._registry.values()
             if isinstance(entry, dict)
             and isinstance(entry.get("abbrev"), str)
@@ -393,6 +516,14 @@ class PrefixAllocator:
         }
         # used_prefixes: {prefix: title} — the law that currently owns this prefix
         self._used_prefixes: dict[str, str] = {}
+        self._frozen: dict[str, str] = {}
+        self._frozen_owners: dict[str, str] = {}
+        self.set_frozen(frozen or {})
+
+    def set_frozen(self, frozen: dict[str, str]) -> None:
+        """Replace the title -> committed-prefix freeze map."""
+        self._frozen = {t: _prefix_key(p) for t, p in frozen.items() if p}
+        self._frozen_owners = {p: t for t, p in sorted(self._frozen.items())}
 
     @property
     def used_prefixes(self) -> dict[str, str]:
@@ -402,10 +533,15 @@ class PrefixAllocator:
     def reset(self) -> None:
         self._used_prefixes.clear()
 
+    def _owner(self, candidate: str) -> str | None:
+        """Who holds ``candidate``: this run's claimant, else a frozen title."""
+        return self._used_prefixes.get(candidate) or self._frozen_owners.get(candidate)
+
     def allocate(self, abbreviation: str, slug: str, title: str) -> str:
         """Return a stable prefix for the (slug, title) pair.
 
         Order of resolution:
+          0. A title in the freeze map keeps its committed prefix.
           1. If the slug (with any ``_osaN`` suffix stripped) is in the
              static registry, use ``registry[base_slug]["abbrev"]``. The
              registry is the single source of truth for multi-claimant
@@ -421,10 +557,22 @@ class PrefixAllocator:
         registry = self._registry
         base_slug = re.sub(r"_osa\d+$", "", slug)
 
+        # 0. freeze — the committed IRI wins over every derivation
+        if title in self._frozen:
+            candidate = self._frozen[title]
+            owner = self._used_prefixes.get(candidate)
+            if owner is not None and owner != title:
+                raise PrefixCollisionError(
+                    f"Committed prefix {candidate!r} of {title!r} is already "
+                    f"claimed by {owner!r} in this run."
+                )
+            self._used_prefixes[candidate] = title
+            return candidate
+
         # 1. registry path — single source of truth for multi-claimant
         if base_slug in registry:
-            candidate = registry[base_slug]["abbrev"]
-            owner = self._used_prefixes.get(candidate)
+            candidate = _prefix_key(registry[base_slug]["abbrev"])
+            owner = self._owner(candidate)
             if owner is not None and owner != title:
                 raise PrefixCollisionError(
                     f"Registry-mandated prefix {candidate!r} for slug "
@@ -435,11 +583,11 @@ class PrefixAllocator:
             return candidate
 
         # 2. derive candidate from abbreviation or slug head
-        candidate = sanitize_id(abbreviation) if abbreviation else None
+        candidate = _prefix_key(sanitize_id(abbreviation)) if abbreviation else None
         if not candidate or len(candidate) <= 3:
-            candidate = sanitize_id(slug[:40])
+            candidate = _prefix_key(sanitize_id(slug[:40]))
 
-        owner = self._used_prefixes.get(candidate)
+        owner = self._owner(candidate)
         registry_owner = self._registry_abbrev_owners.get(candidate)
         if registry_owner is not None and registry_owner != title:
             owner = registry_owner
@@ -449,8 +597,8 @@ class PrefixAllocator:
 
         # 3. collision with a different title — try longer slug prefixes
         for length in (40, 50, 60, 70, 80, len(slug)):
-            attempt = sanitize_id(slug[:length])
-            attempt_owner = self._used_prefixes.get(attempt)
+            attempt = _prefix_key(sanitize_id(slug[:length]))
+            attempt_owner = self._owner(attempt)
             registry_attempt_owner = self._registry_abbrev_owners.get(attempt)
             if registry_attempt_owner is not None and registry_attempt_owner != title:
                 attempt_owner = registry_attempt_owner
@@ -462,10 +610,15 @@ class PrefixAllocator:
             f"Could not allocate a unique prefix for slug {slug!r} "
             f"(title {title!r}, abbreviation {abbreviation!r}); "
             f"candidate {candidate!r} is owned by "
-            f"{self._used_prefixes.get(candidate)!r}. "
+            f"{self._owner(candidate)!r}. "
             "Add this law to data/law_abbreviations.json with a stable "
             "abbreviation."
         )
+
+
+def _prefix_key(prefix: str) -> str:
+    """The IRI form of a prefix: Estonian letters transliterated (#445)."""
+    return ascii_iri_key(prefix)
 
 
 # Module-level default allocator used when ``generate_law_jsonld`` /
@@ -504,22 +657,27 @@ def _kehtiv_node(kehtiv: str | None) -> dict | None:
     return {"@value": kehtiv, "@type": "xsd:date"}
 
 
-def _stamp_terviktekst_id(node: dict, terviktekst_id: str | None) -> None:
-    """Stamp ``estleg:terviktekstId`` so tid-based staleness can fire (#341.1).
+def stamp_rt_root(
+    node: dict,
+    root: ET.Element | None,
+    *,
+    slug: str,
+    rt_url: str = "",
+    kehtiv: str | None = None,
+    terviktekst_id: str | None = None,
+    global_id: str | None = None,
+    act_root: bool = True,
+) -> dict:
+    """Stamp the RT metadata block on a law/stub/Part root (#692/#695/#707).
 
-    ``existing_law_is_stale`` compares this field to the current RT edition.
-    Without the stamp the branch is dead and missing-only never refreshes a
-    new terviktekst on an unchanged snapshot date.
+    See ``backfill_rt_eli.stamp_rt_metadata``; the content hash is the one
+    recorded for ``slug`` by this run's fetch.
     """
-    if terviktekst_id:
-        node["estleg:terviktekstId"] = str(terviktekst_id)
-
-
-def _stamp_content_hash(node: dict, slug: str) -> None:
-    """Attach ``estleg:contentHash`` from the last fetch/cache of *slug* (#558)."""
-    digest = _CONTENT_HASHES.get(slug)
-    if digest:
-        node["estleg:contentHash"] = digest
+    return stamp_rt_metadata(
+        node, root, rt_url=rt_url, kehtiv_value=_kehtiv_node(kehtiv),
+        terviktekst_id=terviktekst_id, global_id=global_id,
+        content_hash=_CONTENT_HASHES.get(slug), act_root=act_root,
+    )
 
 
 def _jsonld_id_values(value: object) -> list[str]:
@@ -628,6 +786,7 @@ def generate_law_jsonld(
     *,
     kehtiv: str | None = None,
     terviktekst_id: str | None = None,
+    global_id: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> dict:
     """Generate JSON-LD for a single law.
@@ -659,11 +818,6 @@ def generate_law_jsonld(
 
     ontology_id = mint_act_iri(prefix)
 
-    # Construct Riigi Teataja source URL
-    rt_source_url = ""
-    if rt_url:
-        rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
-
     ontology_node: dict = {
         "@id": ontology_id,
         "@type": ["estleg:Act", "estleg:Law", "schema:Legislation"],
@@ -672,13 +826,10 @@ def generate_law_jsonld(
         "dcterms:title": title,
         "estleg:contentStatus": "structuredBody",
     }
-    if rt_source_url:
-        ontology_node["dcterms:source"] = {"@id": rt_source_url}
-    kehtiv_value = _kehtiv_node(kehtiv)
-    if kehtiv_value is not None:
-        ontology_node["estleg:kehtiv"] = kehtiv_value
-        _stamp_terviktekst_id(ontology_node, terviktekst_id)
-    _stamp_content_hash(ontology_node, slug)
+    stamp_rt_root(
+        ontology_node, root, slug=slug, rt_url=rt_url, kehtiv=kehtiv,
+        terviktekst_id=terviktekst_id, global_id=global_id,
+    )
 
     graph: list[dict] = [ontology_node]
     _treaty_patterns = ("konventsiooni", "lepingu", "protokolli")
@@ -721,6 +872,7 @@ def generate_law_stub_jsonld(
     content_status: str = "noStructuredBody",
     kehtiv: str | None = None,
     terviktekst_id: str | None = None,
+    global_id: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> dict:
     """Generate an act-level representation for laws without paragraph nodes.
@@ -733,10 +885,7 @@ def generate_law_stub_jsonld(
     """
     prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
     # Issue #165 fix 5: rt_url may be None (or empty) for laws missing a
-    # Riigi Teataja link, so guard against ``None.startswith``.
-    rt_source_url = ""
-    if rt_url:
-        rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
+    # Riigi Teataja link; stamp_rt_root guards that.
     ontology_node: dict = {
         "@id": mint_act_iri(prefix),
         "@type": ["estleg:Act", "estleg:Law", "schema:Legislation"],
@@ -749,14 +898,22 @@ def generate_law_stub_jsonld(
             "the act is modeled at act level to preserve coverage."
         ),
     }
-    if rt_source_url:
-        ontology_node["dcterms:source"] = {"@id": rt_source_url}
-    kehtiv_value = _kehtiv_node(kehtiv)
-    if kehtiv_value is not None:
-        ontology_node["estleg:kehtiv"] = kehtiv_value
-        _stamp_terviktekst_id(ontology_node, terviktekst_id)
-    _stamp_content_hash(ontology_node, slug)
+    stamp_rt_root(
+        ontology_node, root, slug=slug, rt_url=rt_url or "", kehtiv=kehtiv,
+        terviktekst_id=terviktekst_id, global_id=global_id,
+    )
     return {"@context": CONTEXT, "@graph": [ontology_node]}
+
+
+def multipart_act_iri(prefix: str) -> str:
+    """The whole-act IRI a multipart law's Part roots and provisions point at.
+
+    ``ensure_multipart_map_peeps.MULTIPART_MAPS`` names the map peep for the
+    known multipart statutes (#379); their per-osa prefix does not always mint
+    it (``tsiviilkohtumenetluse_seadustik`` parts belong to ``TsMS_Map``).
+    """
+    entry = MULTIPART_MAPS.get(prefix) or MULTIPART_MAPS.get(ascii_iri_key(prefix))
+    return entry[0] if entry else mint_act_iri(prefix)
 
 
 def generate_multipart_law(
@@ -768,6 +925,7 @@ def generate_multipart_law(
     *,
     kehtiv: str | None = None,
     terviktekst_id: str | None = None,
+    global_id: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> list[tuple[str, dict]]:
     """Generate separate JSON-LD files for each osa (part) of a multi-part law.
@@ -776,13 +934,8 @@ def generate_multipart_law(
     on every per-osa ``owl:Ontology`` node.
     """
     prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
+    act_iri = multipart_act_iri(prefix)
     results = []
-    kehtiv_value = _kehtiv_node(kehtiv)
-
-    # Construct Riigi Teataja source URL
-    rt_source_url = ""
-    if rt_url:
-        rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
 
     for osa_el in root.iter():
         if ln(osa_el.tag) != "osa":
@@ -820,8 +973,8 @@ def generate_multipart_law(
         osa_ontology_node: dict = {
             "@id": ontology_id,
             "@type": ["estleg:Part", "schema:Legislation"],
-            "estleg:isPartOf": {"@id": mint_act_iri(prefix)},
-            "estleg:partOfAct": {"@id": mint_act_iri(prefix)},
+            "estleg:isPartOf": {"@id": act_iri},
+            "estleg:partOfAct": {"@id": act_iri},
             "rdfs:label": et_literal(
                 f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus"
             ),
@@ -829,12 +982,10 @@ def generate_multipart_law(
             "dcterms:title": title,
             "estleg:contentStatus": "structuredBody",
         }
-        if rt_source_url:
-            osa_ontology_node["dcterms:source"] = {"@id": rt_source_url}
-        if kehtiv_value is not None:
-            osa_ontology_node["estleg:kehtiv"] = kehtiv_value
-            _stamp_terviktekst_id(osa_ontology_node, terviktekst_id)
-        _stamp_content_hash(osa_ontology_node, slug)
+        stamp_rt_root(
+            osa_ontology_node, root, slug=slug, rt_url=rt_url, kehtiv=kehtiv,
+            terviktekst_id=terviktekst_id, global_id=global_id, act_root=False,
+        )
 
         graph: list[dict] = [osa_ontology_node]
         fallback_label = f"{title} Osa {osa_nr}"
@@ -865,7 +1016,7 @@ def generate_multipart_law(
             structural_ns=f"{prefix}_{osa_nr}",
             part_label=part_label,
             subsection_builder=build_subsections,
-            act_iri=mint_act_iri(prefix),
+            act_iri=act_iri,
         )
         filename = f"{slug}_osa{osa_nr}_peep.json"
         results.append((filename, {"@context": CONTEXT, "@graph": graph}))
@@ -894,15 +1045,21 @@ def existing_law_is_stale(
     existing_doc: dict,
     current_kehtiv: str | None,
     current_tid: str | None = None,
+    current_gid: str | None = None,
 ) -> bool:
     """Return True when an already-written law file is stale w.r.t. this run.
 
     Analogous to ``generate_regulations.existing_is_stale``. A file is
-    stale when, on its first ``owl:Ontology`` node:
+    stale when, on its act root:
       * the stored ``estleg:kehtiv`` snapshot date is missing or differs
         from the current run's ``current_kehtiv``, OR
       * a ``current_tid`` was supplied and the stored
-        ``estleg:terviktekstId`` differs from it.
+        ``estleg:terviktekstId`` is missing or differs from it (#692: a
+        file that cannot say which consolidation it holds is not current), OR
+      * a ``current_gid`` was supplied and the stored ``estleg:globalId`` is
+        missing or differs from it. The terviktekst id names the act's
+        consolidation *group*, shared by every redaction, so only the
+        globaalID detects a new redaction under the same ``--kehtiv``.
 
     Returns False when the document is unreadable / has no ontology node
     (the caller already treats those as "needs write"), or when neither
@@ -916,7 +1073,12 @@ def existing_law_is_stale(
 
     if current_tid:
         stored_tid = _stored_literal(ontology.get("estleg:terviktekstId"))
-        if stored_tid and stored_tid != str(current_tid):
+        if stored_tid is None or stored_tid != str(current_tid):
+            return True
+
+    if current_gid:
+        stored_gid = _stored_literal(ontology.get("estleg:globalId"))
+        if stored_gid is None or stored_gid != str(current_gid):
             return True
 
     if current_kehtiv:
@@ -1003,6 +1165,29 @@ _MERGE_BLOCKED_FIELDS = frozenset({
     # Generator-owned structural link. Keeping a stale value here can point
     # provisions at clusters that no longer exist after RT structure changes.
     "estleg:requestedCluster",
+    # #692/#695/#707: generator-owned RT identity. When the current XML no
+    # longer carries one of these (an act number dropped, a hash not
+    # computed), the old value describes another redaction and must not
+    # survive the regen.
+    "estleg:sourceXml",
+    "estleg:globalId",
+    "eli:id_local",
+    "estleg:terviktekstId",
+    "estleg:skeemiNimi",
+    "estleg:contentHash",
+    "estleg:issuer",
+    "estleg:actNumber",
+    # Generator-owned structure and text. A value the regenerated node no
+    # longer has (a § repealed in the new redaction keeps no text and no
+    # lõiked) describes the old redaction: carried over, ``hasSubsection``
+    # pointed at lõiked that no longer exist (483 phantom-typed Subsection
+    # targets after the 2026-10-09 refresh) and ``legalText`` kept repealed
+    # wording.
+    "estleg:legalText", "estleg:hasSubsection", "estleg:parentProvision",
+    "estleg:subsectionNumber", "estleg:itemNumber", "estleg:paragrahv",
+    "estleg:chapterNumber", "estleg:isPartOf", "estleg:hasPart", "estleg:partOfAct",
+    "estleg:provisionCount", "skos:inScheme", "skos:hasTopConcept", "skos:broader",
+    "skos:narrower",
 })
 
 
@@ -1015,7 +1200,10 @@ def _should_preserve_textless_summary(new_node: dict, existing_node: dict) -> bo
         types = [types]
     if "estleg:LegalProvision" not in types:
         return False
-    return "estleg:legalText" not in new_node
+    # Only a summary written for a node that never had text is curated. When
+    # the old node had text, its summary was derived from it; a § repealed in
+    # the new redaction must not keep a summary of the repealed wording.
+    return "estleg:legalText" not in new_node and "estleg:legalText" not in existing_node
 
 
 def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
@@ -1062,9 +1250,24 @@ def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
                 continue
             if key in _MERGE_BLOCKED_FIELDS:
                 continue
+            if key in ENRICHMENT_PREFERRED_FIELDS and value not in (None, "", {}, []):
+                # The RT dates are a fallback; the temporal / amendment-history
+                # passes own them once they have run (#695, #429).
+                new_node[key] = value
+                continue
             if key not in new_node:
                 new_node[key] = value
     return new_doc
+
+
+_ENGLISH_TITLES: dict[str, str] | None = None
+
+
+def _english_titles() -> dict[str, str]:
+    global _ENGLISH_TITLES
+    if _ENGLISH_TITLES is None:
+        _ENGLISH_TITLES = load_english_titles()
+    return _ENGLISH_TITLES
 
 
 def write_law_output(
@@ -1074,7 +1277,9 @@ def write_law_output(
     mode: str,
     expected_kehtiv: str | None = None,
     expected_tid: str | None = None,
+    expected_gid: str | None = None,
     preserve_enrichments: bool = True,
+    pin_iris: bool = True,
 ) -> str:
     """Write one law artifact and return a run-stat status key.
 
@@ -1089,20 +1294,31 @@ def write_law_output(
       * ``force`` — always rewrite (``forceRewritten``, or
         ``newlyGenerated`` when the file did not exist).
 
-    When ``preserve_enrichments`` is true (default), enrichment fields on
-    matching @id nodes in an existing file are merged onto ``doc`` before
-    writing. See ``merge_existing_enrichments``.
+    When ``pin_iris`` is true (default), the structural nodes of ``doc`` first
+    take the IRIs the file on disk already publishes (``law_iri_pinning``):
+    a regeneration must not rename a committed law/provision IRI
+    (docs/STABILITY.md). When ``preserve_enrichments`` is true (default),
+    enrichment fields on matching @id nodes in an existing file are then
+    merged onto ``doc`` before writing. See ``merge_existing_enrichments``.
     """
     if mode not in GENERATION_MODES:
         raise ValueError(f"Unsupported generation mode: {mode}")
 
     existed = out_path.exists()
+    if existed and pin_iris:
+        committed = _load_existing_doc(out_path)
+        if committed is not None:
+            doc, pin_stats = pin_to_committed(doc, committed)
+            PIN_TOTALS.record(out_path.name, pin_stats)
     if existed and preserve_enrichments:
         doc = merge_existing_enrichments(doc, out_path)
+    # #707: the (possibly merged) officialEnglishText becomes an
+    # eli:LegalExpression node, so a regen keeps it without a backfill pass.
+    promote_english_expression(doc, english_titles=_english_titles())
     if existed and mode == "missing-only":
         existing = _load_existing_doc(out_path)
         if existing is not None and not existing_law_is_stale(
-            existing, expected_kehtiv, expected_tid
+            existing, expected_kehtiv, expected_tid, expected_gid
         ):
             return "existingSkipped"
         save_json(out_path, doc)
@@ -1132,6 +1348,52 @@ def remove_obsolete_multipart_outputs(
         path.unlink()
         removed.append(path)
     return removed
+
+
+def stamp_multipart_map_root(
+    krr_dir: Path,
+    slug: str,
+    results: list[tuple[str, dict]],
+    root: ET.Element,
+    *,
+    rt_url: str = "",
+    kehtiv: str | None = None,
+    terviktekst_id: str | None = None,
+    global_id: str | None = None,
+) -> bool:
+    """Give the whole-act ``<slug>_map_peep.json`` root the RT block (#695).
+
+    The Part roots are rebuilt by ``generate_multipart_law``; the act itself
+    lives in the map peep (``ensure_multipart_map_peeps``, #379), which is
+    updated in place only when its ``@id`` is the act the parts point at.
+    Returns True when the file changed.
+    """
+    map_path = krr_dir / f"{slug}_map_peep.json"
+    map_doc = _load_existing_doc(map_path) if map_path.is_file() else None
+    if not isinstance(map_doc, dict) or not stamp_map_root_doc(
+        map_doc,
+        [doc for _name, doc in results],
+        root,
+        rt_url=rt_url,
+        kehtiv_value=_kehtiv_node(kehtiv),
+        terviktekst_id=terviktekst_id,
+        global_id=global_id,
+        content_hash=_CONTENT_HASHES.get(slug),
+        english_titles=_english_titles(),
+    ):
+        return False
+    save_json(map_path, map_doc)
+    return True
+
+
+def fetch_hash_rows(processed: dict[str, dict], *, kehtiv: str | None) -> dict[str, dict]:
+    """``fetch_content_hashes.json`` rows for the acts parsed this run (#692)."""
+    rows: dict[str, dict] = {}
+    for slug, info in sorted(processed.items()):
+        row = fetch_hash_row(_FETCH_RECORDS.get(slug), info, kehtiv=kehtiv)
+        if row:
+            rows[slug] = row
+    return rows
 
 
 def _cached_xml_root(cache_name: str, tid: str | None = None) -> ET.Element | None:
@@ -1263,7 +1525,10 @@ def load_law_list_from_manifest(manifest_path: Path) -> dict[str, dict]:
             "gid": "" if entry.get("globaalId") is None else str(entry.get("globaalId")),
             "tid": "" if entry.get("terviktekstId") is None else str(entry.get("terviktekstId")),
             "url": url,
-            "kehtivus": {},
+            "kehtivus": (
+                {"algus": entry["kehtivuseAlgus"]} if entry.get("kehtivuseAlgus") else {}
+            ),
+            "kehtivusAlgus": entry.get("kehtivuseAlgus"),
             "lyhend": entry.get("lyhend", ""),
         }
     if not all_laws:
@@ -1304,6 +1569,70 @@ def load_committed_slug_map(manifest_path: Path) -> dict[str, str]:
     return mapping
 
 
+def _root_title(root: dict | None) -> str | None:
+    if not isinstance(root, dict):
+        return None
+    for key in ("dc:source", "dcterms:title"):
+        value = root.get(key)
+        if isinstance(value, dict):
+            value = value.get("@value")
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def load_disk_slug_map(krr_dir: Path) -> dict[str, str]:
+    """``{title: slug}`` of the law peeps already on disk (#238 fallback).
+
+    Used when the committed manifest has no entry for a title (or there is no
+    manifest at all), so a refresh rewrites the file that exists instead of
+    writing a sibling under a re-derived slug (slugify once kept a trailing
+    ``_`` on 80-char stems: ``..._topeltmaksustamise__peep.json``). Whole-act
+    ``_map_peep.json`` files are not law outputs and are skipped. When several
+    files carry one title, a generator-written one (``estleg:kehtiv`` on its
+    root) wins, then the one whose slug is ``slugify(title)``.
+    """
+    candidates: dict[str, list[tuple[int, int, str]]] = {}
+    for path in sorted(krr_dir.glob("*_peep.json")):
+        if path.name.endswith("_map_peep.json"):
+            continue
+        root = act_root_node(_load_existing_doc(path) or {})
+        title = _root_title(root)
+        if not title:
+            continue
+        slug = _law_file_base_slug(path.name)
+        rank = (0 if "estleg:kehtiv" in root else 1, 0 if slug == slugify(title) else 1, slug)
+        candidates.setdefault(title, []).append(rank)
+    return {title: min(ranks)[2] for title, ranks in candidates.items()}
+
+
+def load_disk_prefix_map(
+    krr_dir: Path, slug_by_title: dict[str, str]
+) -> dict[str, str]:
+    """``{title: prefix}`` from the act IRI each law's on-disk peep already has.
+
+    Feeds ``PrefixAllocator(frozen=...)`` so a refresh keeps every committed
+    IRI. A single-file law contributes its ``<prefix>_Map`` root; a multipart
+    law the ``<prefix>_Osa<n>`` root of its first part. A file whose root
+    names another title is ignored.
+    """
+    frozen: dict[str, str] = {}
+    for title, slug in slug_by_title.items():
+        paths = [krr_dir / f"{slug}_peep.json", *sorted(krr_dir.glob(f"{slug}_osa*_peep.json"))]
+        for path in paths:
+            if not path.is_file():
+                continue
+            root = act_root_node(_load_existing_doc(path) or {})
+            if _root_title(root) != title:
+                continue
+            iri = root.get("@id") if isinstance(root, dict) else None
+            prefix = act_prefix_from_iri(iri) if isinstance(iri, str) else None
+            if prefix:
+                frozen[title] = prefix
+                break
+    return frozen
+
+
 # Laws that should be split by osa (large multi-part laws)
 MULTIPART_LAWS = {
     "Võlaõigusseadus",
@@ -1333,6 +1662,12 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--allow-partial", action="store_true", help="Allow source-list fetch failures and mark the run partial.")
+    parser.add_argument("--cache-only", action="store_true", help=(
+        "Never fetch: parse every act from data/riigiteataja/; a cache miss is a failed "
+        "fetch. With --from-manifest this is an offline replay."))
+    parser.add_argument("--no-pin-iris", action="store_true", help=(
+        "Write regenerated structural IRIs as minted instead of keeping the ones the "
+        "on-disk peep publishes. A committed IRI rename is MAJOR (docs/STABILITY.md)."))
     parser.add_argument("--limit", type=int, default=None, help="Process at most N law titles.")
     parser.add_argument(
         "--regen-state",
@@ -1387,6 +1722,8 @@ def _manifest_entry(
         "sourceUrl": source_url,
         "status": status,
     }
+    if info.get("kehtivusAlgus"):
+        entry["kehtivuseAlgus"] = info["kehtivusAlgus"]
     if reason:
         entry["reason"] = reason
     return entry
@@ -1691,6 +2028,17 @@ def main():
     # in-memory state from a previous run (in long-lived test
     # processes, REPL sessions, etc.) cannot bias prefix selection.
     _default_allocator.reset()
+    global CACHE_ONLY
+    CACHE_ONLY = bool(getattr(args, "cache_only", False))
+    if CACHE_ONLY:
+        print("Cache-only: every act is parsed from data/riigiteataja/; no fetches.")
+    pin_iris = not getattr(args, "no_pin_iris", False)
+    if not pin_iris:
+        print(
+            "WARNING: --no-pin-iris: regenerated structural IRIs are written "
+            "as minted and may rename committed law/provision IRIs (MAJOR)."
+        )
+    PIN_TOTALS.clear()
 
     # Step 1: Get the law list — either replayed from a manifest (#108)
     # or queried live from Riigi Teataja.
@@ -1728,10 +2076,16 @@ def main():
     # Freeze already-committed collision suffixes so a snapshot refresh never
     # drifts an existing output filename / IRI (#238). New colliders fall back
     # to a deterministic gid-ordered assignment inside build_law_slug_map.
-    committed_slug_by_title = load_committed_slug_map(KRR_DIR / MANIFEST_NAME)
+    committed_slug_by_title = {
+        **load_disk_slug_map(KRR_DIR),
+        **load_committed_slug_map(KRR_DIR / MANIFEST_NAME),
+    }
     slug_by_title = build_law_slug_map(
         all_laws, existing_slug_by_title=committed_slug_by_title
     )
+    # Keep every committed act IRI: derived prefixes depend on the order
+    # titles are allocated in, which differs between incremental runs.
+    _default_allocator.set_frozen(load_disk_prefix_map(KRR_DIR, slug_by_title))
     completed_slugs = prune_completed_regen_state(
         regen_state, all_laws, kehtiv=args.kehtiv, slug_by_title=slug_by_title
     )
@@ -1771,7 +2125,7 @@ def main():
             for path in _existing_paths(slug, title):
                 existing_doc = _load_existing_doc(path)
                 if existing_doc is not None and existing_law_is_stale(
-                    existing_doc, args.kehtiv, info.get("tid")
+                    existing_doc, args.kehtiv, info.get("tid"), info.get("gid")
                 ):
                     stale = True
                     break
@@ -1808,6 +2162,9 @@ def main():
         title: ("skipped", "completed in regen state")
         for title in resumed_completed_titles
     }
+    # Acts whose XML was parsed this run, for fetch_content_hashes.json (#692).
+    processed_acts: dict[str, dict] = {}
+    map_roots_stamped = 0
 
     for i, (title, info) in enumerate(sorted(to_generate.items()), 1):
         slug = info["slug"]
@@ -1819,7 +2176,10 @@ def main():
 
         # Fetch XML — pass tid so cache invalidates when RT publishes a
         # newer terviktekst edition (#165 fix 9).
-        root = fetch_xml(url, slug, tid=info.get("tid"))
+        root = fetch_xml(url, slug, tid=info.get("tid"), gid=info.get("gid"))
+        if root is not None:
+            xml_gid = xml_root_global_id(root)
+            processed_acts[slug] = {**info, "xmlGlobalId": xml_gid}
         if root is None:
             print("    SKIP: Could not fetch XML")
             failed += 1
@@ -1878,7 +2238,7 @@ def main():
                 continue
             doc = generate_law_stub_jsonld(
                 title, slug, root, abbreviation, rt_url=url,
-                kehtiv=args.kehtiv, terviktekst_id=info.get("tid"),
+                kehtiv=args.kehtiv, terviktekst_id=info.get("tid"), global_id=info.get("gid"),
             )
             status = write_law_output(
                 out_path,
@@ -1886,6 +2246,8 @@ def main():
                 mode=mode,
                 expected_kehtiv=args.kehtiv,
                 expected_tid=info.get("tid"),
+                expected_gid=info.get("gid"),
+                pin_iris=pin_iris,
             )
             run_counts[status] += 1
             if status != "existingSkipped":
@@ -1916,7 +2278,7 @@ def main():
             try:
                 results = generate_multipart_law(
                     title, slug, root, abbreviation, rt_url=url,
-                    kehtiv=args.kehtiv, terviktekst_id=info.get("tid"),
+                    kehtiv=args.kehtiv, terviktekst_id=info.get("tid"), global_id=info.get("gid"),
                 )
             except Exception as exc:  # noqa: BLE001
                 failed += 1
@@ -1948,6 +2310,8 @@ def main():
                         mode=mode,
                         expected_kehtiv=args.kehtiv,
                         expected_tid=info.get("tid"),
+                        expected_gid=info.get("gid"),
+                        pin_iris=pin_iris,
                     )
                     output_paths.append(out_path)
                     subsection_count += _subsection_count(doc)
@@ -1988,6 +2352,17 @@ def main():
                 warnings.append(warning)
                 print(f"    WARN: {warning}")
             multipart_generated_slugs.add(slug)
+            try:
+                if stamp_multipart_map_root(
+                    KRR_DIR, slug, results, root, rt_url=url,
+                    kehtiv=args.kehtiv, terviktekst_id=info.get("tid"), global_id=info.get("gid"),
+                ):
+                    map_roots_stamped += 1
+                    print(f"    Updated map root: {slug}_map_peep.json")
+            except Exception as exc:  # noqa: BLE001
+                warning = f"map root update failed: {exc}"
+                warnings.append(warning)
+                print(f"    WARN: {warning}")
             if subsection_count == 0 and any(
                 ln(el.tag) == "loige" for el in root.iter()
             ):
@@ -2009,7 +2384,7 @@ def main():
             # Single file
             doc = generate_law_jsonld(
                 title, slug, root, abbreviation, rt_url=url,
-                kehtiv=args.kehtiv, terviktekst_id=info.get("tid"),
+                kehtiv=args.kehtiv, terviktekst_id=info.get("tid"), global_id=info.get("gid"),
             )
             filename = f"{slug}_peep.json"
             out_path = KRR_DIR / filename
@@ -2019,6 +2394,8 @@ def main():
                 mode=mode,
                 expected_kehtiv=args.kehtiv,
                 expected_tid=info.get("tid"),
+                expected_gid=info.get("gid"),
+                pin_iris=pin_iris,
             )
             run_counts[status] += 1
             if status != "existingSkipped":
@@ -2083,7 +2460,7 @@ def main():
                     for part_path in sorted(KRR_DIR.glob(f"{slug}_osa*_peep.json")):
                         existing_doc = _load_existing_doc(part_path)
                         if existing_doc is not None and existing_law_is_stale(
-                            existing_doc, args.kehtiv, info.get("tid")
+                            existing_doc, args.kehtiv, info.get("tid"), info.get("gid")
                         ):
                             part_path.unlink()
                             run_counts["obsoleteMultipartRemoved"] += 1
@@ -2120,6 +2497,9 @@ def main():
     print(f"  Refreshed (refresh):         {run_counts['refreshed']}")
     print(f"  Force rewritten:             {run_counts['forceRewritten']}")
     print(f"  Obsolete multipart files removed: {run_counts['obsoleteMultipartRemoved']}")
+    print(f"  Multipart map roots updated: {map_roots_stamped}")
+    if pin_iris:
+        print(f"  IRI pinning:                 {PIN_TOTALS.summary()}")
     print(f"  Stub acts (no paragraphs):   {skipped}")
     print(f"  Failed (fetch errors):       {failed}")
     print(f"  Source-removed peep files:   {len(source_removed)}")
@@ -2139,18 +2519,21 @@ def main():
         # up-to-date file, in refresh/force it can't happen.
         return ("skipped", "existing file up to date" if mode == "missing-only" else None)
 
+    hash_rows = fetch_hash_rows(processed_acts, kehtiv=args.kehtiv)
     outputs_all = []
     for title, info in sorted(all_laws.items()):
         status, reason = _status_for(title)
-        outputs_all.append(
-            _manifest_entry(
-                title,
-                info,
-                slug_override=slug_by_title.get(title),
-                status=status,
-                reason=reason,
-            )
+        slug = slug_by_title.get(title)
+        entry = _manifest_entry(
+            title,
+            info,
+            slug_override=slug,
+            status=status,
+            reason=reason,
         )
+        if hash_rows.get(slug):
+            entry["contentHash"] = hash_rows[slug]["sha256"]
+        outputs_all.append(entry)
     outputs_generated = []
     for title, info in sorted(to_generate.items()):
         status, reason = _status_for(title)
@@ -2189,6 +2572,9 @@ def main():
             "refreshed": run_counts["refreshed"],
             "forceRewritten": run_counts["forceRewritten"],
             "obsoleteMultipartRemoved": run_counts["obsoleteMultipartRemoved"],
+            "mapRootsUpdated": map_roots_stamped,
+            "iriPinning": PIN_TOTALS.as_dict() if pin_iris else "disabled",
+            "xmlParsed": len(processed_acts),
             "failedFetches": failed,
             "partialAllowed": args.allow_partial,
             "sourceRemovedFromSnapshotCount": len(source_removed),
@@ -2201,6 +2587,8 @@ def main():
         "outputsAll": outputs_all,
     }
     save_json(KRR_DIR / MANIFEST_NAME, manifest)
+    if hash_rows:
+        record_fetch_hashes(hash_rows, path=KRR_DIR / FETCH_HASH_FILENAME)
 
 
 if __name__ == "__main__":

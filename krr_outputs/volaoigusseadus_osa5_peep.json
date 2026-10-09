@@ -5,34 +5,55 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:volaoigusseadus_Osa5",
       "@type": [
-        "estleg:Part"
+        "estleg:Part",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Võlaõigusseadus Osa 5 (TOETAMISLEPINGUD) §568–577 kaardistus",
+      "estleg:isPartOf": {
+        "@id": "estleg:volaoigusseadus_Map"
+      },
+      "estleg:partOfAct": {
+        "@id": "estleg:volaoigusseadus_Map"
+      },
+      "rdfs:label": {
+        "@value": "Võlaõigusseadus Osa 5 (TOETAMISLEPINGUD) §568–577 kaardistus",
+        "@language": "et"
+      },
       "dc:source": "Võlaõigusseadus",
-      "dcterms:title": [
-        {
-          "@value": "Võlaõigusseadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Law of Obligations Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Võlaõigusseadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/111112025016.xml"
+        "@id": "https://www.riigiteataja.ee/akt/120062026018"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/120062026018/xml"
+      },
+      "estleg:globalId": "120062026018",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "153569",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "9564213307e9778ac678e687e2c626ef2037e5be975552350cb0f07d08735d76",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-11-21",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -40,15 +61,8 @@
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-11-21",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/525112025001"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:volaoigusseadus_Map"
       },
       "estleg:affectedBy": [
         {
@@ -161,11 +175,37 @@
       ]
     },
     {
+      "@id": "estleg:Cluster_volaoigusseadus_5_28",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§568–571 ELURENDIS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§568–571 ELURENDIS",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:volaoigusseadus_Osa5_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_volaoigusseadus_5_Part"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
       "@id": "estleg:volaoigusseadus_Osa5_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Võlaõigusseadus Osa 5 (TOETAMISLEPINGUD) teemaskeem",
+      "rdfs:label": {
+        "@value": "Võlaõigusseadus Osa 5 (TOETAMISLEPINGUD) teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_volaoigusseadus_5_Part"
@@ -178,8 +218,14 @@
         "owl:NamedIndividual",
         "skos:Concept"
       ],
-      "rdfs:label": "Osa 5 (TOETAMISLEPINGUD)",
-      "skos:prefLabel": "Osa 5 (TOETAMISLEPINGUD)",
+      "rdfs:label": {
+        "@value": "Osa 5 (TOETAMISLEPINGUD)",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Osa 5 (TOETAMISLEPINGUD)",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:volaoigusseadus_Osa5_TopicScheme"
       },
@@ -193,29 +239,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_volaoigusseadus_5_28",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§568–571 ELURENDIS",
-      "skos:prefLabel": "§568–571 ELURENDIS",
-      "skos:inScheme": {
-        "@id": "estleg:volaoigusseadus_Osa5_TopicScheme"
-      },
-      "skos:broader": {
-        "@id": "estleg:Cluster_volaoigusseadus_5_Part"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_volaoigusseadus_5_28",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "28. peatükk – ELURENDIS",
+      "rdfs:label": {
+        "@value": "28. peatükk – ELURENDIS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "28",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
@@ -235,8 +267,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§572–577 ÜLALPIDAMISLEPING",
-      "skos:prefLabel": "§572–577 ÜLALPIDAMISLEPING",
+      "rdfs:label": {
+        "@value": "§572–577 ÜLALPIDAMISLEPING",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§572–577 ÜLALPIDAMISLEPING",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:volaoigusseadus_Osa5_TopicScheme"
       },
@@ -251,7 +289,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "29. peatükk – ÜLALPIDAMISLEPING",
+      "rdfs:label": {
+        "@value": "29. peatükk – ÜLALPIDAMISLEPING",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "29",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
@@ -271,12 +312,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 568.",
-      "rdfs:label": "§ 568. Elurendiselepingu mõiste",
+      "rdfs:label": {
+        "@value": "§ 568. Elurendiselepingu mõiste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "(1) Elurendiselepinguga kohustub üks isik (elurendise andja) maksma teisele lepingupoolele või kolmandale isikule (elurendise saaja) elurendise andja, elurendise saaja või muu isiku eluaja jooksul perioodiliselt teatud rahasumma või andma üle muid liigitunnustega piiritletud esemeid (elurendis). Eeldatakse, et elurendise maksmine on tasuta. (2) Käesolevas peatükis sätestatut kohaldatakse vastavalt ka seaduse või kohtuotsusega seatud elurendisele, kui seaduse või kohtuotsusega ei ole ette nähtud",
+      "estleg:summary": {
+        "@value": "(1) Elurendiselepinguga kohustub üks isik (elurendise andja) maksma teisele lepingupoolele või kolmandale isikule (elurendise saaja) elurendise andja, elurendise saaja või muu isiku eluaja jooksul perioodiliselt teatud rahasumma või andma üle muid liigitunnustega piiritletud esemeid (elurendis). Eeldatakse, et elurendise maksmine on tasuta. (2) Käesolevas peatükis sätestatut kohaldatakse vastavalt ka seaduse või kohtuotsusega seatud elurendisele, kui seaduse või kohtuotsusega ei ole ette nähtud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Elurendiselepinguga kohustub üks isik (elurendise andja) maksma teisele lepingupoolele või kolmandale isikule (elurendise saaja) elurendise andja, elurendise saaja või muu isiku eluaja jooksul perioodiliselt teatud rahasumma või andma üle muid liigitunnustega piiritletud esemeid (elurendis). Eeldatakse, et elurendise maksmine on tasuta. (2) Käesolevas peatükis sätestatut kohaldatakse vastavalt ka seaduse või kohtuotsusega seatud elurendisele, kui seaduse või kohtuotsusega ei ole ette nähtud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_28"
@@ -355,12 +402,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 569.",
-      "rdfs:label": "§ 569. Tähtaeg",
+      "rdfs:label": {
+        "@value": "§ 569. Tähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "(1) Eeldatakse, et elurendise leping on sõlmitud elurendise saaja eluajaks. (2) Elurendise andja või kolmanda isiku eluajaks seatud elurendis läheb elurendise saaja surma korral üle elurendise saaja pärijatele.",
+      "estleg:summary": {
+        "@value": "(1) Eeldatakse, et elurendise leping on sõlmitud elurendise saaja eluajaks. (2) Elurendise andja või kolmanda isiku eluajaks seatud elurendis läheb elurendise saaja surma korral üle elurendise saaja pärijatele.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eeldatakse, et elurendise leping on sõlmitud elurendise saaja eluajaks. (2) Elurendise andja või kolmanda isiku eluajaks seatud elurendis läheb elurendise saaja surma korral üle elurendise saaja pärijatele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_28"
@@ -433,12 +486,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 570.",
-      "rdfs:label": "§ 570. Vorm",
+      "rdfs:label": {
+        "@value": "§ 570. Vorm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "Elurendise leping peab olema sõlmitud kirjalikus vormis.",
+      "estleg:summary": {
+        "@value": "Elurendise leping peab olema sõlmitud kirjalikus vormis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Elurendise leping peab olema sõlmitud kirjalikus vormis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_28"
@@ -470,10 +529,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Elurendise leping peab olema sõlmitud kirjalikus vormis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Elurendise leping peab olema sõlmitud kirjalikus vormis.",
       "estleg:parentProvision": {
         "@id": "estleg:volaoigusseadus_Osa5_Par_570"
       },
+      "rdfs:label": "§ 570 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -489,12 +550,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 571.",
-      "rdfs:label": "§ 571. Rendise maksmine",
+      "rdfs:label": {
+        "@value": "§ 571. Rendise maksmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "(1) Rahaline elurendis tuleb maksta kolme kuu eest ette. Muud liiki kui rahaliselt elurendiselt tuleb tasuda mõistlikus ulatuses ette, kui seda võib elurendise olemusest tulenevalt mõistlikult eeldada. (2) Kui isik, kelle eluajaks elurendis on seatud, sureb enne selle ajavahemiku lõppu, mille eest elurendis ette maksti, ei saa makstud elurendist tagasi nõuda. (3) Kui käesoleva paragrahvi lõikes 2 nimetatud juhul ei ole elurendis veel makstud, tuleb elurendis maksta selle ajavahemiku eest",
+      "estleg:summary": {
+        "@value": "(1) Rahaline elurendis tuleb maksta kolme kuu eest ette. Muud liiki kui rahaliselt elurendiselt tuleb tasuda mõistlikus ulatuses ette, kui seda võib elurendise olemusest tulenevalt mõistlikult eeldada. (2) Kui isik, kelle eluajaks elurendis on seatud, sureb enne selle ajavahemiku lõppu, mille eest elurendis ette maksti, ei saa makstud elurendist tagasi nõuda. (3) Kui käesoleva paragrahvi lõikes 2 nimetatud juhul ei ole elurendis veel makstud, tuleb elurendis maksta selle ajavahemiku eest",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahaline elurendis tuleb maksta kolme kuu eest ette. Muud liiki kui rahaliselt elurendiselt tuleb tasuda mõistlikus ulatuses ette, kui seda võib elurendise olemusest tulenevalt mõistlikult eeldada. (2) Kui isik, kelle eluajaks elurendis on seatud, sureb enne selle ajavahemiku lõppu, mille eest elurendis ette maksti, ei saa makstud elurendist tagasi nõuda. (3) Kui käesoleva paragrahvi lõikes 2 nimetatud juhul ei ole elurendis veel makstud, tuleb elurendis maksta selle ajavahemiku eest elurendise saaja pärijatele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_28"
@@ -605,12 +672,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 572.",
-      "rdfs:label": "§ 572. Ülalpidamislepingu mõiste",
+      "rdfs:label": {
+        "@value": "§ 572. Ülalpidamislepingu mõiste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "(1) Ülalpidamislepinguga kohustub üks isik (ülalpeetav) andma teise isiku (ülalpidaja) omandisse või kasutusse vara või teatud esemed ja ülalpidaja kohustub ülalpeetavat viimase eluaja või muu kokkulepitud aja jooksul ülal pidama ja hooldama. (2) Kui vara või esemed peavad üle minema pärast ülalpeetava surma, kohaldatakse ülalpidamislepingule vastavalt pärimislepingu kohta sätestatut.",
+      "estleg:summary": {
+        "@value": "(1) Ülalpidamislepinguga kohustub üks isik (ülalpeetav) andma teise isiku (ülalpidaja) omandisse või kasutusse vara või teatud esemed ja ülalpidaja kohustub ülalpeetavat viimase eluaja või muu kokkulepitud aja jooksul ülal pidama ja hooldama. (2) Kui vara või esemed peavad üle minema pärast ülalpeetava surma, kohaldatakse ülalpidamislepingule vastavalt pärimislepingu kohta sätestatut.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ülalpidamislepinguga kohustub üks isik (ülalpeetav) andma teise isiku (ülalpidaja) omandisse või kasutusse vara või teatud esemed ja ülalpidaja kohustub ülalpeetavat viimase eluaja või muu kokkulepitud aja jooksul ülal pidama ja hooldama. (2) Kui vara või esemed peavad üle minema pärast ülalpeetava surma, kohaldatakse ülalpidamislepingule vastavalt pärimislepingu kohta sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_29"
@@ -706,12 +779,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 573.",
-      "rdfs:label": "§ 573. Ülalpidamislepingu vorm",
+      "rdfs:label": {
+        "@value": "§ 573. Ülalpidamislepingu vorm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "Ülalpidamisleping peab olema notariaalselt tõestatud.",
+      "estleg:summary": {
+        "@value": "Ülalpidamisleping peab olema notariaalselt tõestatud.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ülalpidamisleping peab olema notariaalselt tõestatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_29"
@@ -756,10 +835,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ülalpidamisleping peab olema notariaalselt tõestatud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ülalpidamisleping peab olema notariaalselt tõestatud.",
       "estleg:parentProvision": {
         "@id": "estleg:volaoigusseadus_Osa5_Par_573"
       },
+      "rdfs:label": "§ 573 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -780,12 +861,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 574.",
-      "rdfs:label": "§ 574. Ülalpidaja kohustused",
+      "rdfs:label": {
+        "@value": "§ 574. Ülalpidaja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "Ülalpidaja peab ülalpeetavat ülal pidama ja hooldama viisil, mida ülalpeetav võib mõistlikult oodata tema poolt üleantu väärtuse ning tema senise elukorralduse põhjal. Ülalpidaja peab ülalpeetavale tagama mõistliku eluaseme ning tema haiguse korral vajaliku hoolitsuse ja tervishoiuteenuse osutamise.",
+      "estleg:summary": {
+        "@value": "Ülalpidaja peab ülalpeetavat ülal pidama ja hooldama viisil, mida ülalpeetav võib mõistlikult oodata tema poolt üleantu väärtuse ning tema senise elukorralduse põhjal. Ülalpidaja peab ülalpeetavale tagama mõistliku eluaseme ning tema haiguse korral vajaliku hoolitsuse ja tervishoiuteenuse osutamise.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ülalpidaja peab ülalpeetavat ülal pidama ja hooldama viisil, mida ülalpeetav võib mõistlikult oodata tema poolt üleantu väärtuse ning tema senise elukorralduse põhjal. Ülalpidaja peab ülalpeetavale tagama mõistliku eluaseme ning tema haiguse korral vajaliku hoolitsuse ja tervishoiuteenuse osutamise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_29"
@@ -817,10 +904,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ülalpidaja peab ülalpeetavat ülal pidama ja hooldama viisil, mida ülalpeetav võib mõistlikult oodata tema poolt üleantu väärtuse ning tema senise elukorralduse põhjal. Ülalpidaja peab ülalpeetavale tagama mõistliku eluaseme ning tema haiguse korral vajaliku hoolitsuse ja tervishoiuteenuse osutamise.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ülalpidaja peab ülalpeetavat ülal pidama ja hooldama viisil, mida ülalpeetav võib mõistlikult oodata tema poolt üleantu väärtuse ning tema senise elukorralduse põhjal. Ülalpidaja peab ülalpeetavale tagama mõistliku eluaseme ning tema haiguse korral vajaliku hoolitsuse ja tervishoiuteenuse osutamise.",
       "estleg:parentProvision": {
         "@id": "estleg:volaoigusseadus_Osa5_Par_574"
       },
+      "rdfs:label": "§ 574 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -836,12 +925,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 575.",
-      "rdfs:label": "§ 575. Lepingust taganemine",
+      "rdfs:label": {
+        "@value": "§ 575. Lepingust taganemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "Ülalpeetav võib ülalpidamislepingust taganeda samadel alustel ja korras nagu kinkija kinkelepingust.",
+      "estleg:summary": {
+        "@value": "Ülalpeetav võib ülalpidamislepingust taganeda samadel alustel ja korras nagu kinkija kinkelepingust.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ülalpeetav võib ülalpidamislepingust taganeda samadel alustel ja korras nagu kinkija kinkelepingust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_29"
@@ -873,10 +968,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ülalpeetav võib ülalpidamislepingust taganeda samadel alustel ja korras nagu kinkija kinkelepingust.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ülalpeetav võib ülalpidamislepingust taganeda samadel alustel ja korras nagu kinkija kinkelepingust.",
       "estleg:parentProvision": {
         "@id": "estleg:volaoigusseadus_Osa5_Par_575"
       },
+      "rdfs:label": "§ 575 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -892,12 +989,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 576.",
-      "rdfs:label": "§ 576. Ülalpidaja surm",
+      "rdfs:label": {
+        "@value": "§ 576. Ülalpidaja surm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "Eeldatakse, et ülalpidamisleping ei lõpe ülalpidaja surmaga.",
+      "estleg:summary": {
+        "@value": "Eeldatakse, et ülalpidamisleping ei lõpe ülalpidaja surmaga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eeldatakse, et ülalpidamisleping ei lõpe ülalpidaja surmaga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_29"
@@ -922,10 +1025,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eeldatakse, et ülalpidamisleping ei lõpe ülalpidaja surmaga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eeldatakse, et ülalpidamisleping ei lõpe ülalpidaja surmaga.",
       "estleg:parentProvision": {
         "@id": "estleg:volaoigusseadus_Osa5_Par_576"
-      }
+      },
+      "rdfs:label": "§ 576 lg 1"
     },
     {
       "@id": "estleg:volaoigusseadus_Osa5_Par_577",
@@ -934,12 +1039,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 577.",
-      "rdfs:label": "§ 577. Nõuete loovutamise piirang",
+      "rdfs:label": {
+        "@value": "§ 577. Nõuete loovutamise piirang",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:volaoigusseadus_Map"
       },
-      "estleg:summary": "Ülalpidamislepingust tulenevat ülalpeetava ülalpidamise nõuet ei saa loovutada ega ülalpeetava ülalpidamise nõudele sissenõuet pöörata.",
+      "estleg:summary": {
+        "@value": "Ülalpidamislepingust tulenevat ülalpeetava ülalpidamise nõuet ei saa loovutada ega ülalpeetava ülalpidamise nõudele sissenõuet pöörata.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ülalpidamislepingust tulenevat ülalpeetava ülalpidamise nõuet ei saa loovutada ega ülalpeetava ülalpidamise nõudele sissenõuet pöörata.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_volaoigusseadus_5_29"
@@ -964,10 +1075,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ülalpidamislepingust tulenevat ülalpeetava ülalpidamise nõuet ei saa loovutada ega ülalpeetava ülalpidamise nõudele sissenõuet pöörata.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ülalpidamislepingust tulenevat ülalpeetava ülalpidamise nõuet ei saa loovutada ega ülalpeetava ülalpidamise nõudele sissenõuet pöörata.",
       "estleg:parentProvision": {
         "@id": "estleg:volaoigusseadus_Osa5_Par_577"
-      }
+      },
+      "rdfs:label": "§ 577 lg 1"
     }
   ]
 }

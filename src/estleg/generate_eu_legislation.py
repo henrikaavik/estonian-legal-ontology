@@ -25,6 +25,12 @@ from collections.abc import Iterable
 from datetime import datetime
 from pathlib import Path
 
+from estleg.ingest_overlay import (
+    IngestLayer,
+    add_replace_overlays_argument,
+    log_replace_overlays_mode,
+    prepare_write,
+)
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     CONTEXT,
@@ -621,12 +627,14 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
     safe_celex = sanitize_celex(item["celex"])
     title_et = item["title"][:500]
     title_en = (item.get("title_en") or "")[:500]
-    title_lit = {"@value": title_et, "@language": "et"}
+    # #697: every published EUR-Lex node carries its Estonian-only title as
+    # a plain string, so that stays the form. Language tags are emitted when
+    # an English title is present to tell the two apart (#510).
     node: dict = {
         "@id": f"estleg:EU_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
-        "rdfs:label": title_lit,
-        "dcterms:title": title_langstrings(title_et, title_en or None),
+        "rdfs:label": {"@value": title_et, "@language": "et"} if title_en else title_et,
+        "dcterms:title": title_langstrings(title_et, title_en) if title_en else title_et,
         "estleg:celexNumber": item["celex"],
         "estleg:euDocumentType": {"@id": f"estleg:EUDocType_{effective_type_id}"},
     }
@@ -738,6 +746,70 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
         stamp_official_subjects(node, item["eurovoc_ids"])
 
     return node
+
+
+# #697: what the EUR-Lex SPARQL ingest owns on the per-type peeps. Overlay
+# keys survive a re-fetch: ``estleg:transposedBy`` / ``transpositionStatus``
+# (generate_transposition_mapping), ``estleg:estoniaRelevant`` (#527 lens),
+# and EuroVoc subjects when CELLAR returns none this run (stamp_official_
+# subjects already replaces them when it does).
+EURLEX_INGEST_LAYER = IngestLayer(
+    name="generate_eu_legislation",
+    raw_keys=frozenset(
+        {
+            "rdfs:label",
+            "dc:description",
+            "dc:source",
+            "dcterms:title",
+            "dcterms:source",
+            "owl:sameAs",
+            "eli:id_local",
+            "estleg:celexNumber",
+            "estleg:euDocumentType",
+            "estleg:eurLexLink",
+            "estleg:eliIdentifier",
+            "estleg:documentDate",
+            "estleg:transpositionDeadline",
+            "estleg:inForce",
+            "estleg:euInstitution",
+        }
+    ),
+    raw_node_types=frozenset(
+        {"estleg:EULegislation", "owl:Ontology", "estleg:EUDocumentType"}
+    ),
+)
+
+
+def type_peep_header(doc_info: dict, item_count: int) -> dict:
+    """The ``owl:Ontology`` header node of one ``eurlex_<type>s_peep.json``."""
+    return {
+        "@id": mint_act_iri(f"EURlex_{doc_info['type_id']}s"),
+        "@type": ["owl:Ontology"],
+        "rdfs:label": f"EL {doc_info['label_et'].lower()} – kõik ({item_count})",
+        "dc:description": f"Euroopa Liidu {doc_info['label_et'].lower()} eesti keeles EUR-Lexist.",
+        "dc:source": "EUR-Lex – eur-lex.europa.eu",
+    }
+
+
+def build_type_doc(doc_info: dict, items: list[dict]) -> dict:
+    """Raw-layer peep for one EU document type from SPARQL rows (#697). Pure."""
+    graph: list[dict] = [type_peep_header(doc_info, len(items))]
+    for item in items:
+        node = legislation_to_node(item, doc_info["type_id"])
+        if node is not None:  # #394: skip dropped non-Regulation CELEX
+            graph.append(node)
+    return {"@context": CONTEXT, "@graph": graph}
+
+
+def write_type_peep(
+    out_path: Path, doc: dict, *, replace_overlays: bool = False
+) -> dict:
+    """Persist a per-type peep, keeping the existing overlay (#697)."""
+    merged, _report = prepare_write(
+        out_path, doc, EURLEX_INGEST_LAYER, replace_overlays=replace_overlays
+    )
+    save_json(out_path, merged)
+    return merged
 
 
 def _node_doc_type_id(node: dict) -> str | None:
@@ -1000,6 +1072,7 @@ def parse_args() -> argparse.Namespace:
             "transposition mapping and write EURLEX_INDEX.json lens counts."
         ),
     )
+    add_replace_overlays_argument(parser)
     return parser.parse_args()
 
 
@@ -1058,6 +1131,7 @@ def main():
             f"{stats['nodes']} nodes, {stats['files']} source files"
         )
         return
+    log_replace_overlays_mode(EURLEX_INGEST_LAYER, args.replace_overlays)
     print("=" * 60)
     print("Fetching EU legislation from EUR-Lex SPARQL endpoint")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
@@ -1106,26 +1180,11 @@ def main():
         all_legislation[doc_key] = items
         partial_types[doc_key] = was_partial
 
-        # Generate per-type file
-        graph: list[dict] = [
-            {
-                "@id": mint_act_iri(f"EURlex_{doc_info['type_id']}s"),
-                "@type": ["owl:Ontology"],
-                "rdfs:label": {"@value": f"EL {doc_info['label_et'].lower()} – kõik ({len(items)})", "@language": "et"},
-                "dc:description": {"@value": f"Euroopa Liidu {doc_info['label_et'].lower()} eesti keeles EUR-Lexist.", "@language": "et"},
-                "dc:source": "EUR-Lex – eur-lex.europa.eu",
-            },
-        ]
-
-        for item in items:
-            node = legislation_to_node(item, doc_info["type_id"])
-            if node is not None:  # #394: skip dropped non-Regulation CELEX
-                graph.append(node)
-
-        doc = {"@context": CONTEXT, "@graph": graph}
+        # Generate per-type file (#697: raw layer merged onto the overlay)
+        doc = build_type_doc(doc_info, items)
         out_path = EURLEX_DIR / f"eurlex_{doc_key}s_peep.json"
-        save_json(out_path, doc)
-        print(f"  Saved: {out_path.name} ({len(graph)} nodes)")
+        merged = write_type_peep(out_path, doc, replace_overlays=args.replace_overlays)
+        print(f"  Saved: {out_path.name} ({len(merged['@graph'])} nodes)")
 
         time.sleep(RATE_DELAY)
 

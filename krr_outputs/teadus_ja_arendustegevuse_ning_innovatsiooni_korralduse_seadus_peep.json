@@ -5,35 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TAIKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
-      "dcterms:title": [
-        {
-          "@value": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Organisation of Research and Development and Innovation Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072025001.xml"
+        "@id": "https://www.riigiteataja.ee/akt/112072025001"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/112072025001/xml"
+      },
+      "estleg:globalId": "112072025001",
+      "eli:id_local": "112072025001",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "1061417",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "41bd40b3711b92f227159a6f626f39fc6f1617e0a1d30734135c7dad3668544b",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2025-10-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -254,14 +266,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU26_0192"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/516102025001"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_TAIKS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–5 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–5 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:TAIKS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:TAIKS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_TAIKS_1"
@@ -287,26 +325,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_TAIKS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–5 Üldsätted",
-      "skos:prefLabel": "§1–5 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:TAIKS_TopicScheme"
-      },
-      "estleg:provisionCount": 5
-    },
-    {
       "@id": "estleg:Chapter_TAIKS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
@@ -326,8 +353,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§6–14 Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine",
-      "skos:prefLabel": "§6–14 Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine",
+      "rdfs:label": {
+        "@value": "§6–14 Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§6–14 Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TAIKS_TopicScheme"
       },
@@ -339,7 +372,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine",
+      "rdfs:label": {
+        "@value": "2. peatükk – Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
@@ -359,8 +395,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§15–19 Teadus- ja arendustegevuse kvaliteedi tagamine",
-      "skos:prefLabel": "§15–19 Teadus- ja arendustegevuse kvaliteedi tagamine",
+      "rdfs:label": {
+        "@value": "§15–19 Teadus- ja arendustegevuse kvaliteedi tagamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§15–19 Teadus- ja arendustegevuse kvaliteedi tagamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TAIKS_TopicScheme"
       },
@@ -372,7 +414,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Teadus- ja arendustegevuse kvaliteedi tagamine",
+      "rdfs:label": {
+        "@value": "3. peatükk – Teadus- ja arendustegevuse kvaliteedi tagamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
@@ -392,8 +437,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§20–25 Teadus- ja arendustegevuse ning innovatsiooni rahastamine",
-      "skos:prefLabel": "§20–25 Teadus- ja arendustegevuse ning innovatsiooni rahastamine",
+      "rdfs:label": {
+        "@value": "§20–25 Teadus- ja arendustegevuse ning innovatsiooni rahastamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§20–25 Teadus- ja arendustegevuse ning innovatsiooni rahastamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TAIKS_TopicScheme"
       },
@@ -405,7 +456,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Teadus- ja arendustegevuse ning innovatsiooni rahastamine",
+      "rdfs:label": {
+        "@value": "4. peatükk – Teadus- ja arendustegevuse ning innovatsiooni rahastamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
@@ -425,8 +479,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§26–28 Teaduseetika korraldus",
-      "skos:prefLabel": "§26–28 Teaduseetika korraldus",
+      "rdfs:label": {
+        "@value": "§26–28 Teaduseetika korraldus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§26–28 Teaduseetika korraldus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TAIKS_TopicScheme"
       },
@@ -438,7 +498,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Teaduseetika korraldus",
+      "rdfs:label": {
+        "@value": "5. peatükk – Teaduseetika korraldus",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
@@ -458,8 +521,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§29–29 Järelevalve",
-      "skos:prefLabel": "§29–29 Järelevalve",
+      "rdfs:label": {
+        "@value": "§29–29 Järelevalve",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§29–29 Järelevalve",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TAIKS_TopicScheme"
       },
@@ -471,7 +540,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – Järelevalve",
+      "rdfs:label": {
+        "@value": "6. peatükk – Järelevalve",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
@@ -491,8 +563,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§30–56 Rakendussätted",
-      "skos:prefLabel": "§30–56 Rakendussätted",
+      "rdfs:label": {
+        "@value": "§30–56 Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§30–56 Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TAIKS_TopicScheme"
       },
@@ -504,7 +582,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "7. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
@@ -524,12 +605,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimis- ja kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimis- ja kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Käesolevas seaduses sätestatakse teadus- ja arendustegevuse ning innovatsiooni riikliku korralduse, rahastamise ja järelevalve alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesolevas seaduses sätestatakse teadus- ja arendustegevuse ning innovatsiooni riikliku korralduse, rahastamise ja järelevalve alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolevas seaduses sätestatakse teadus- ja arendustegevuse ning innovatsiooni riikliku korralduse, rahastamise ja järelevalve alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_1"
@@ -601,12 +688,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Teadus- ja arendustegevus ning innovatsioon",
+      "rdfs:label": {
+        "@value": "§ 2. Teadus- ja arendustegevus ning innovatsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevus on uudne, loominguline, ettemääramatu tulemusega, süstemaatiline ning ülekantav või korratav uurimis- ja arendustöö, mille eesmärk on saada uusi teadmisi ja leida teadmistele uusi rakendusalasid ning mis jaguneb alusuuringuteks, rakendusuuringuteks ja eksperimentaalarenduseks. (2) Alusuuring on teoreetiline või katsetel põhinev uurimistöö uute teadmiste saamiseks nähtuste ja faktide põhialuste kohta, seadmata eesmärgiks saadud teadmiste rakendamist praktikas.",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevus on uudne, loominguline, ettemääramatu tulemusega, süstemaatiline ning ülekantav või korratav uurimis- ja arendustöö, mille eesmärk on saada uusi teadmisi ja leida teadmistele uusi rakendusalasid ning mis jaguneb alusuuringuteks, rakendusuuringuteks ja eksperimentaalarenduseks. (2) Alusuuring on teoreetiline või katsetel põhinev uurimistöö uute teadmiste saamiseks nähtuste ja faktide põhialuste kohta, seadmata eesmärgiks saadud teadmiste rakendamist praktikas.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadus- ja arendustegevus on uudne, loominguline, ettemääramatu tulemusega, süstemaatiline ning ülekantav või korratav uurimis- ja arendustöö, mille eesmärk on saada uusi teadmisi ja leida teadmistele uusi rakendusalasid ning mis jaguneb alusuuringuteks, rakendusuuringuteks ja eksperimentaalarenduseks. (2) Alusuuring on teoreetiline või katsetel põhinev uurimistöö uute teadmiste saamiseks nähtuste ja faktide põhialuste kohta, seadmata eesmärgiks saadud teadmiste rakendamist praktikas. (3) Rakendusuuring on uurimistöö uute teadmiste saamiseks otsese eesmärgiga rakendada saadud teadmisi praktikas. (4) Eksperimentaalarendus on süstemaatiline tegevus, mis põhineb alus- või rakendusuuringutest saadud teadmistel ja praktilisel kogemusel ning mille tulemusena luuakse uusi või täiustatakse olemasolevaid teenuseid, tooteid või protsesse. (5) Innovatsioon on teadus- ja arendustegevusel põhinev uus või senisega võrreldes oluliselt täiustatud toode, teenus või protsess, mis on kättesaadavaks tehtud või kasutusele võetud ning mille eesmärk on luua väärtust või saavutada konkurentsieelis ning aidata kaasa ettevõtja, organisatsiooni või laiemalt ühiskonna arengule ja suurendada tootlikkust, tõhusust ja tulemuslikkust, soodustades üldist majanduse ja heaolu kasvu. (6) Teadmussiire on teadmiste, võimete, tehnoloogia ja intellektuaalomandi jagamine teadus- ja arendustegevuse läbiviijate ning ühiskonna teiste osapoolte vahel eesmärgiga arendada uusi või täiustatud tooteid, protsesse ja teenuseid, mis toovad ühiskondlikku ja majanduslikku kasu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_1"
@@ -754,12 +847,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Teadus- ja arendustegevuse osalised",
+      "rdfs:label": {
+        "@value": "§ 3. Teadus- ja arendustegevuse osalised",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse osalised käesoleva seaduse mõttes on teadlased, teadus- ja arendusasutused, ülikoolid, rakenduskõrgkoolid ning teised osalised, kes kavandavad, viivad läbi, korraldavad, rahastavad, toetavad või hindavad teadus- ja arendustegevust või avaldavad teadus- ja arendustegevuse tulemusi. (2) Teadlane on spetsialist, kes loob teaduslike meetoditega uusi teadmisi, täiustab ja arendab kontseptsioone, teooriaid, mudeleid, instrumente ja tehnoloogiaid, tarkvara ja",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse osalised käesoleva seaduse mõttes on teadlased, teadus- ja arendusasutused, ülikoolid, rakenduskõrgkoolid ning teised osalised, kes kavandavad, viivad läbi, korraldavad, rahastavad, toetavad või hindavad teadus- ja arendustegevust või avaldavad teadus- ja arendustegevuse tulemusi. (2) Teadlane on spetsialist, kes loob teaduslike meetoditega uusi teadmisi, täiustab ja arendab kontseptsioone, teooriaid, mudeleid, instrumente ja tehnoloogiaid, tarkvara ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadus- ja arendustegevuse osalised käesoleva seaduse mõttes on teadlased, teadus- ja arendusasutused, ülikoolid, rakenduskõrgkoolid ning teised osalised, kes kavandavad, viivad läbi, korraldavad, rahastavad, toetavad või hindavad teadus- ja arendustegevust või avaldavad teadus- ja arendustegevuse tulemusi. (2) Teadlane on spetsialist, kes loob teaduslike meetoditega uusi teadmisi, täiustab ja arendab kontseptsioone, teooriaid, mudeleid, instrumente ja tehnoloogiaid, tarkvara ja töömeetodeid ning suurendab inimest, kultuuri, ühiskonda, tehnikat või loodust käsitlevate teadmiste hulka. Ülikoolis, rakenduskõrgkoolis, riigi või avalik-õiguslikus teadus- ja arendusasutuses akadeemilise töötaja ametikohal töötavale teadlasele kohaldatakse kõrgharidusseaduses akadeemiliste töötajate kohta sätestatut. (3) Teadus- ja arendusasutus on käesoleva seaduse kohaselt juriidiline isik või asutus, mille vähemalt ühe teadus- ja arendustegevuse valdkonna kohta on tehtud positiivne evalveerimisotsus käesoleva seaduse § 16 lõike 7 kohaselt, välja arvatud ülikool ja evalveeritud rakenduskõrgkool. (4) Ülikooli mõistet kasutatakse käesolevas seaduses kõrgharidusseaduse § 20 tähenduses. (5) Evalveeritud rakenduskõrgkool on käesoleva seaduse kohaselt rakenduskõrgkool, mille vähemalt ühe teadus- ja arendustegevuse valdkonna kohta on tehtud positiivne evalveerimisotsus käesoleva seaduse § 16 lõike 7 kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_1"
@@ -935,12 +1034,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Teaduseetika",
+      "rdfs:label": {
+        "@value": "§ 4. Teaduseetika",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teaduseetika määrab üldtunnustatud teaduseetika normid ja teaduseetilised väärtused, mille järgimine on kohustuslik kogu teadus- ja arendustegevuse vältel, sealhulgas teadus- ja arendustegevuse kavandamisel, meetodite valikul, läbiviimisel ja tulemuste avaldamisel. Teaduseetilised väärtused on teadus- ja arendustegevust suunavad põhiväärtused, mis on üldtunnustatud teaduseetika normide aluseks, kujundades nii teadlaste isiklikku käitumist kui ka asutuse eetilist kultuuri.",
+      "estleg:summary": {
+        "@value": "(1) Teaduseetika määrab üldtunnustatud teaduseetika normid ja teaduseetilised väärtused, mille järgimine on kohustuslik kogu teadus- ja arendustegevuse vältel, sealhulgas teadus- ja arendustegevuse kavandamisel, meetodite valikul, läbiviimisel ja tulemuste avaldamisel. Teaduseetilised väärtused on teadus- ja arendustegevust suunavad põhiväärtused, mis on üldtunnustatud teaduseetika normide aluseks, kujundades nii teadlaste isiklikku käitumist kui ka asutuse eetilist kultuuri.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teaduseetika määrab üldtunnustatud teaduseetika normid ja teaduseetilised väärtused, mille järgimine on kohustuslik kogu teadus- ja arendustegevuse vältel, sealhulgas teadus- ja arendustegevuse kavandamisel, meetodite valikul, läbiviimisel ja tulemuste avaldamisel. Teaduseetilised väärtused on teadus- ja arendustegevust suunavad põhiväärtused, mis on üldtunnustatud teaduseetika normide aluseks, kujundades nii teadlaste isiklikku käitumist kui ka asutuse eetilist kultuuri. Teaduseetika eesmärk on tagada teadus- ja arendustegevuse usaldusväärus, läbipaistvus ja osapoolte vastutus. (2) Üldtunnustatud teaduseetika normid on kokkuleppelised tegevuspõhimõtted, tavad, reeglid ja juhised, mis on sõnastatud teaduse heas tavas. Need normid suunavad teadlaste tegevust, omavahelisi suhteid ning teadlaste suhet ühiskonnaga laiemalt. (3) Teaduse hea tava on üldnimetus teadus- ja arendustegevuse osaliste erialastele või valdkondlikele kokkulepetele, milles sõnastatakse teadustööd suunavad põhimõtted, mida kõik teadus- ja arendustegevuse osalised ühiselt tunnustavad ja järgivad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_1"
@@ -1035,13 +1140,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Teadus- ja arendustegevuse põhimõtted",
+      "rdfs:label": {
+        "@value": "§ 5. Teadus- ja arendustegevuse põhimõtted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Teadus- ja arendustegevuse osalised lähtuvad teadus- ja arendustegevuses ning selle korraldamisel: akadeemilisest vabadusest, mille kohaselt on teadus- ja arendustegevuse tegijal õigus otsustada teadus- ja arendustegevuse sisu ja meetodite ning tulemuste levitamise üle, kui seda ei piira teised õigusaktid, muud kokkulepped või tingimused; üldtunnustatud teaduseetika normidest ja teaduse heast tavast; põhimõttest, et avalikest vahenditest rahastatud teadus- ja arendustegevuse tulemused ja andmed",
-      "estleg:legalText": "Teadus- ja arendustegevuse osalised lähtuvad teadus- ja arendustegevuses ning selle korraldamisel: akadeemilisest vabadusest, mille kohaselt on teadus- ja arendustegevuse tegijal õigus otsustada teadus- ja arendustegevuse sisu ja meetodite ning tulemuste levitamise üle, kui seda ei piira teised õigusaktid, muud kokkulepped või tingimused; üldtunnustatud teaduseetika normidest ja teaduse heast tavast; põhimõttest, et avalikest vahenditest rahastatud teadus- ja arendustegevuse tulemused ja andmed on kättesaadavad avalikkusele, välja arvatud kui avalikustamata jätmine on kooskõlas teiste õigusaktidega.",
+      "estleg:summary": {
+        "@value": "Teadus- ja arendustegevuse osalised lähtuvad teadus- ja arendustegevuses ning selle korraldamisel: 1) akadeemilisest vabadusest, mille kohaselt on teadus- ja arendustegevuse tegijal õigus otsustada teadus- ja arendustegevuse sisu ja meetodite ning tulemuste levitamise üle, kui seda ei piira teised õigusaktid, muud kokkulepped või tingimused; 2) üldtunnustatud teaduseetika normidest ja teaduse heast tavast; 3) põhimõttest, et avalikest vahenditest rahastatud teadus- ja arendustegevuse tulemused",
+        "@language": "et"
+      },
+      "estleg:legalText": "Teadus- ja arendustegevuse osalised lähtuvad teadus- ja arendustegevuses ning selle korraldamisel: 1) akadeemilisest vabadusest, mille kohaselt on teadus- ja arendustegevuse tegijal õigus otsustada teadus- ja arendustegevuse sisu ja meetodite ning tulemuste levitamise üle, kui seda ei piira teised õigusaktid, muud kokkulepped või tingimused; 2) üldtunnustatud teaduseetika normidest ja teaduse heast tavast; 3) põhimõttest, et avalikest vahenditest rahastatud teadus- ja arendustegevuse tulemused ja andmed on kättesaadavad avalikkusele, välja arvatud kui avalikustamata jätmine on kooskõlas teiste õigusaktidega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_1"
       },
@@ -1065,10 +1176,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Teadus- ja arendustegevuse osalised lähtuvad teadus- ja arendustegevuses ning selle korraldamisel: akadeemilisest vabadusest, mille kohaselt on teadus- ja arendustegevuse tegijal õigus otsustada teadus- ja arendustegevuse sisu ja meetodite ning tulemuste levitamise üle, kui seda ei piira teised õigusaktid, muud kokkulepped või tingimused; üldtunnustatud teaduseetika normidest ja teaduse heast tavast; põhimõttest, et avalikest vahenditest rahastatud teadus- ja arendustegevuse tulemused ja andmed on kättesaadavad avalikkusele, välja arvatud kui avalikustamata jätmine on kooskõlas teiste õigusaktidega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teadus- ja arendustegevuse osalised lähtuvad teadus- ja arendustegevuses ning selle korraldamisel: 1) akadeemilisest vabadusest, mille kohaselt on teadus- ja arendustegevuse tegijal õigus otsustada teadus- ja arendustegevuse sisu ja meetodite ning tulemuste levitamise üle, kui seda ei piira teised õigusaktid, muud kokkulepped või tingimused; 2) üldtunnustatud teaduseetika normidest ja teaduse heast tavast; 3) põhimõttest, et avalikest vahenditest rahastatud teadus- ja arendustegevuse tulemused ja andmed on kättesaadavad avalikkusele, välja arvatud kui avalikustamata jätmine on kooskõlas teiste õigusaktidega.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_5"
-      }
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:TAIKS_Par_6",
@@ -1077,13 +1195,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Vabariigi Valitsuse ülesanded",
+      "rdfs:label": {
+        "@value": "§ 6. Vabariigi Valitsuse ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Valitsus kujundab riiklikku teadus- ja arendustegevuse ning innovatsiooni poliitikat, mis arvestab Eesti eeldusi, tingimusi ja vajadusi. (2) Vabariigi Valitsus teadus- ja arendustegevuse ning innovatsiooni korraldamisel: tagab teadus- ja arendustegevuse ning innovatsioonisüsteemi tervikliku toimimise, lähtudes riigi strateegilistest eesmärkidest; esitab seisukoha valitsusasutuse hallatava riigiasutuse, mis põhitegevusena tegeleb teadus- ja arendustegevusega, ümberkorraldamise ja",
-      "estleg:legalText": "(1) Vabariigi Valitsus kujundab riiklikku teadus- ja arendustegevuse ning innovatsiooni poliitikat, mis arvestab Eesti eeldusi, tingimusi ja vajadusi. (2) Vabariigi Valitsus teadus- ja arendustegevuse ning innovatsiooni korraldamisel: tagab teadus- ja arendustegevuse ning innovatsioonisüsteemi tervikliku toimimise, lähtudes riigi strateegilistest eesmärkidest; esitab seisukoha valitsusasutuse hallatava riigiasutuse, mis põhitegevusena tegeleb teadus- ja arendustegevusega, ümberkorraldamise ja lõpetamise ettepaneku kohta, kuulates ära teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu seisukoha; otsustab Eesti riigi osalemise rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös; määrab silmapaistvate teadus- ja arendustöö tulemuste eest riiklikke teaduspreemiaid; moodustab riigi teaduspreemiate komisjoni, kinnitades teadus- ja arendustegevuse valdkonna eest vastutava ministri ettepanekul selle koosseisu; täidab teisi õigusaktidega pandud ülesandeid teadus- ja arendustegevuse ning innovatsiooni valdkonnas. (3) Käesoleva paragrahvi lõike 2 punktis 4 sätestatud riiklike teaduspreemiate põhimääruse, milles nähakse ette teaduspreemiate suurus, liigid, määramise tingimused ja kord ning punktis 5 sätestatud riigi teaduspreemiate komisjoni moodustamine, ülesanded ja töökord, kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Valitsus kujundab riiklikku teadus- ja arendustegevuse ning innovatsiooni poliitikat, mis arvestab Eesti eeldusi, tingimusi ja vajadusi. (2) Vabariigi Valitsus teadus- ja arendustegevuse ning innovatsiooni korraldamisel: 1) tagab teadus- ja arendustegevuse ning innovatsioonisüsteemi tervikliku toimimise, lähtudes riigi strateegilistest eesmärkidest; 2) esitab seisukoha valitsusasutuse hallatava riigiasutuse, mis põhitegevusena tegeleb teadus- ja arendustegevusega,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vabariigi Valitsus kujundab riiklikku teadus- ja arendustegevuse ning innovatsiooni poliitikat, mis arvestab Eesti eeldusi, tingimusi ja vajadusi. (2) Vabariigi Valitsus teadus- ja arendustegevuse ning innovatsiooni korraldamisel: 1) tagab teadus- ja arendustegevuse ning innovatsioonisüsteemi tervikliku toimimise, lähtudes riigi strateegilistest eesmärkidest; 2) esitab seisukoha valitsusasutuse hallatava riigiasutuse, mis põhitegevusena tegeleb teadus- ja arendustegevusega, ümberkorraldamise ja lõpetamise ettepaneku kohta, kuulates ära teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu seisukoha; 3) otsustab Eesti riigi osalemise rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös; 4) määrab silmapaistvate teadus- ja arendustöö tulemuste eest riiklikke teaduspreemiaid; 5) moodustab riigi teaduspreemiate komisjoni, kinnitades teadus- ja arendustegevuse valdkonna eest vastutava ministri ettepanekul selle koosseisu; 6) täidab teisi õigusaktidega pandud ülesandeid teadus- ja arendustegevuse ning innovatsiooni valdkonnas. (3) Käesoleva paragrahvi lõike 2 punktis 4 sätestatud riiklike teaduspreemiate põhimääruse, milles nähakse ette teaduspreemiate suurus, liigid, määramise tingimused ja kord ning punktis 5 sätestatud riigi teaduspreemiate komisjoni moodustamine, ülesanded ja töökord, kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
       },
@@ -1155,11 +1279,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Vabariigi Valitsus teadus- ja arendustegevuse ning innovatsiooni korraldamisel: tagab teadus- ja arendustegevuse ning innovatsioonisüsteemi tervikliku toimimise, lähtudes riigi strateegilistest eesmärkidest; esitab seisukoha valitsusasutuse hallatava riigiasutuse, mis põhitegevusena tegeleb teadus- ja arendustegevusega, ümberkorraldamise ja lõpetamise ettepaneku kohta, kuulates ära teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu seisukoha; otsustab Eesti riigi osalemise rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös; määrab silmapaistvate teadus- ja arendustöö tulemuste eest riiklikke teaduspreemiaid; moodustab riigi teaduspreemiate komisjoni, kinnitades teadus- ja arendustegevuse valdkonna eest vastutava ministri ettepanekul selle koosseisu; täidab teisi õigusaktidega pandud ülesandeid teadus- ja arendustegevuse ning innovatsiooni valdkonnas.",
+      "estleg:legalText": "(2) Vabariigi Valitsus teadus- ja arendustegevuse ning innovatsiooni korraldamisel: 1) tagab teadus- ja arendustegevuse ning innovatsioonisüsteemi tervikliku toimimise, lähtudes riigi strateegilistest eesmärkidest; 2) esitab seisukoha valitsusasutuse hallatava riigiasutuse, mis põhitegevusena tegeleb teadus- ja arendustegevusega, ümberkorraldamise ja lõpetamise ettepaneku kohta, kuulates ära teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu seisukoha; 3) otsustab Eesti riigi osalemise rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös; 4) määrab silmapaistvate teadus- ja arendustöö tulemuste eest riiklikke teaduspreemiaid; 5) moodustab riigi teaduspreemiate komisjoni, kinnitades teadus- ja arendustegevuse valdkonna eest vastutava ministri ettepanekul selle koosseisu; 6) täidab teisi õigusaktidega pandud ülesandeid teadus- ja arendustegevuse ning innovatsiooni valdkonnas.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_6"
       },
       "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1205,12 +1337,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu",
+      "rdfs:label": {
+        "@value": "§ 7. Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu on Vabariigi Valitsuse juures asuv nõuandev kogu, mis nõustab Vabariigi Valitsust ühiskonna toimetulekut ja heaolu toetava, majanduse konkurentsivõimet kasvatava ning eesti keele ja kultuuri kestlikkust väärtustava teadus- ja arendustegevuse ning innovatsiooni poliitika väljatöötamisel ja rakendamisel. (2) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu põhimääruse, milles nähakse ette selle tegevuse alused,",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu on Vabariigi Valitsuse juures asuv nõuandev kogu, mis nõustab Vabariigi Valitsust ühiskonna toimetulekut ja heaolu toetava, majanduse konkurentsivõimet kasvatava ning eesti keele ja kultuuri kestlikkust väärtustava teadus- ja arendustegevuse ning innovatsiooni poliitika väljatöötamisel ja rakendamisel. (2) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu põhimääruse, milles nähakse ette selle tegevuse alused,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu on Vabariigi Valitsuse juures asuv nõuandev kogu, mis nõustab Vabariigi Valitsust ühiskonna toimetulekut ja heaolu toetava, majanduse konkurentsivõimet kasvatava ning eesti keele ja kultuuri kestlikkust väärtustava teadus- ja arendustegevuse ning innovatsiooni poliitika väljatöötamisel ja rakendamisel. (2) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu põhimääruse, milles nähakse ette selle tegevuse alused, ülesanded ja töökord, kehtestab määrusega. (3) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu koosseisu kinnitab Vabariigi Valitsus korraldusega. (4) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu koosseisu kuuluvad peaminister, teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavad ministrid ning teised Vabariigi Valitsuse nimetatud liikmed. (5) Teadus- ja arendustegevuse ning innovatsiooni poliitika nõukogu esimees on peaminister.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
@@ -1402,12 +1540,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjon",
+      "rdfs:label": {
+        "@value": "§ 8. Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjon nõustab teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavaid ministreid poliitika ning valdkonna arengukava kavandamisel ja elluviimisel. (2) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjoni ülesanded, moodustamise korra ja töökorra kehtestab teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavate ministrite ühisel ettepanekul määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjon nõustab teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavaid ministreid poliitika ning valdkonna arengukava kavandamisel ja elluviimisel. (2) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjoni ülesanded, moodustamise korra ja töökorra kehtestab teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavate ministrite ühisel ettepanekul määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjon nõustab teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavaid ministreid poliitika ning valdkonna arengukava kavandamisel ja elluviimisel. (2) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjoni ülesanded, moodustamise korra ja töökorra kehtestab teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavate ministrite ühisel ettepanekul määrusega. (3) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjoni koosseisu kinnitab teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavate ministrite ettepanekul kuni kolmeks aastaks Vabariigi Valitsus korraldusega. (4) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjoni liikmed on teadus- ja arendustegevuse ning innovatsioonisüsteemi ning ettevõtlus- ja avaliku sektori esindajad. (5) Teadus- ja arendustegevuse ning innovatsiooni juhtkomisjoni tööd korraldavad teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavad ministeeriumid ühiselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
@@ -1558,13 +1702,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine ministeeriumis ja Riigikantseleis",
+      "rdfs:label": {
+        "@value": "§ 9. Teadus- ja arendustegevuse ning innovatsiooni riiklik korraldamine ministeeriumis ja Riigikantseleis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Ministeerium kavandab ja viib ellu oma valitsemisalale tarvilikku teadus- ja arendustegevust ning innovatsiooni, pidades silmas teadmistepõhise poliitika kujundamise põhimõtteid ning arvestades riigi ja valitsemisala strateegilisi sihte ning terviklikku toimimist. (2) Ministeerium teadus- ja arendustegevuse ning innovatsiooni elluviimisel: töötab välja teadus- ja arendustegevuse ning innovatsiooni tegevuskavad, mis toetavad valitsemisala poliitika eesmärke, ja korraldab nende elluviimist;",
-      "estleg:legalText": "(1) Ministeerium kavandab ja viib ellu oma valitsemisalale tarvilikku teadus- ja arendustegevust ning innovatsiooni, pidades silmas teadmistepõhise poliitika kujundamise põhimõtteid ning arvestades riigi ja valitsemisala strateegilisi sihte ning terviklikku toimimist. (2) Ministeerium teadus- ja arendustegevuse ning innovatsiooni elluviimisel: töötab välja teadus- ja arendustegevuse ning innovatsiooni tegevuskavad, mis toetavad valitsemisala poliitika eesmärke, ja korraldab nende elluviimist; korraldab oma valitsemisalale tarviliku teadus- ja arendustegevuse ning innovatsiooni rahastamist; korraldab valitsemisala osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja selle rahastamist; esitab oma valitsemisala teadus- ja arendustegevuse eelarve ning selle täitmise ülevaate teadus- ja arendustegevuse valdkonna eest vastutavale ministeeriumile; tagab teabe esitamise Eesti Teadusinfosüsteemi oma valitsemisalas rahastatud teadusuuringute kohta. (3) Haridus- ja Teadusministeerium (edaspidi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium): kavandab ja viib ellu riiklikku teadus- ja arendustegevuse poliitikat ning korraldab selle alusel teadus- ja arendustegevust ning selle rahastamist, välja arvatud käesoleva paragrahvi lõikes 5 sätestatud tegevustes; töötab välja ja esitab Vabariigi Valitsusele ettepanekuid teadus- ja arendustegevuse poliitika kujundamiseks; koordineerib ministeeriumite teadus- ja arendustegevust, lähtudes riigi strateegilistest eesmärkidest; korraldab teadus- ja arendusasutuste, ülikoolide ning rakenduskõrgkoolide teadus- ja arendustegevuse rahastamist riigieelarvest; toetab teadus- ja arendustegevuseks vajalike tugistruktuuride toimimist; koordineerib riiklikul tasandil rahvusvahelist teadus- ja arendustegevuse alast koostööd ning korraldab selle rahastamist; korraldab teadus- ja arendustegevuse kvaliteedi hindamist; korraldab teadus- ja arendustegevuse valdkonna riiklikke konkursse; tagab riikliku teaduseetika süsteemi toimimise; täidab teisi talle õigusaktidega pandud ülesandeid. (4) Käesoleva paragrahvi lõike 3 punktis 8 sätestatud riikliku konkursi tingimused ja korra kehtestab määrusega. (5) Majandus- ja Kommunikatsiooniministeerium (edaspidi innovatsiooni valdkonna eest vastutav ministeerium): kavandab ja viib ellu riiklikku ettevõtjatele suunatud innovatsioonipoliitikat ning kujundab ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosivat keskkonda; töötab välja ja esitab Vabariigi Valitsusele ettepanekuid ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosiva poliitika kujundamiseks; korraldab ettevõtjate teadus- ja arendustegevust ning innovatsiooni ja neid soodustava tugistruktuuri loomist, tegevusi ja toetamist riigieelarvest; korraldab äriühinguna tegutsevate eraõiguslike teadus- ja arendusasutuste teadus- ja arendustegevuse rahastamist riigieelarvest käesoleva seaduse § 21 kohaselt; koordineerib riiklikul tasandil ettevõtjate osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja korraldab selle rahastamist; täidab muid talle õigusaktidega pandud ülesandeid. (6) Teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavad ministeeriumid tagavad ühiselt teadus- ja arendustegevuse ning innovatsiooni poliitika tervikliku toimimise, sealhulgas korraldavad ühiselt teadus- ja arendustegevust ning innovatsiooni ning teadmussiiret teadus- ja arendusasutuste, kõrgkoolide, ettevõtjate ja avaliku sektori vahel. (7) Riigikantselei täidab teadus- ja arendustegevuse ning innovatsiooni valdkonnas järgmisi ülesandeid: koordineerib ministeeriumite üleselt innovatsioonitegevusi avalikus sektoris, lähtudes riigi strateegilistest eesmärkidest; kavandab ja viib ellu oma ülesannete täitmiseks vajalikku teadus- ja arendustegevust ning innovatsiooni.",
+      "estleg:summary": {
+        "@value": "(1) Ministeerium kavandab ja viib ellu oma valitsemisalale tarvilikku teadus- ja arendustegevust ning innovatsiooni, pidades silmas teadmistepõhise poliitika kujundamise põhimõtteid ning arvestades riigi ja valitsemisala strateegilisi sihte ning terviklikku toimimist. (2) Ministeerium teadus- ja arendustegevuse ning innovatsiooni elluviimisel: 1) töötab välja teadus- ja arendustegevuse ning innovatsiooni tegevuskavad, mis toetavad valitsemisala poliitika eesmärke, ja korraldab nende",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ministeerium kavandab ja viib ellu oma valitsemisalale tarvilikku teadus- ja arendustegevust ning innovatsiooni, pidades silmas teadmistepõhise poliitika kujundamise põhimõtteid ning arvestades riigi ja valitsemisala strateegilisi sihte ning terviklikku toimimist. (2) Ministeerium teadus- ja arendustegevuse ning innovatsiooni elluviimisel: 1) töötab välja teadus- ja arendustegevuse ning innovatsiooni tegevuskavad, mis toetavad valitsemisala poliitika eesmärke, ja korraldab nende elluviimist; 2) korraldab oma valitsemisalale tarviliku teadus- ja arendustegevuse ning innovatsiooni rahastamist; 3) korraldab valitsemisala osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja selle rahastamist; 4) esitab oma valitsemisala teadus- ja arendustegevuse eelarve ning selle täitmise ülevaate teadus- ja arendustegevuse valdkonna eest vastutavale ministeeriumile; 5) tagab teabe esitamise Eesti Teadusinfosüsteemi oma valitsemisalas rahastatud teadusuuringute kohta. (3) Haridus- ja Teadusministeerium (edaspidi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium): 1) kavandab ja viib ellu riiklikku teadus- ja arendustegevuse poliitikat ning korraldab selle alusel teadus- ja arendustegevust ning selle rahastamist, välja arvatud käesoleva paragrahvi lõikes 5 sätestatud tegevustes; 2) töötab välja ja esitab Vabariigi Valitsusele ettepanekuid teadus- ja arendustegevuse poliitika kujundamiseks; 3) koordineerib ministeeriumite teadus- ja arendustegevust, lähtudes riigi strateegilistest eesmärkidest; 4) korraldab teadus- ja arendusasutuste, ülikoolide ning rakenduskõrgkoolide teadus- ja arendustegevuse rahastamist riigieelarvest; 5) toetab teadus- ja arendustegevuseks vajalike tugistruktuuride toimimist; 6) koordineerib riiklikul tasandil rahvusvahelist teadus- ja arendustegevuse alast koostööd ning korraldab selle rahastamist; 7) korraldab teadus- ja arendustegevuse kvaliteedi hindamist; 8) korraldab teadus- ja arendustegevuse valdkonna riiklikke konkursse; 9) tagab riikliku teaduseetika süsteemi toimimise; 10) täidab teisi talle õigusaktidega pandud ülesandeid. (4) Käesoleva paragrahvi lõike 3 punktis 8 sätestatud riikliku konkursi tingimused ja korra kehtestab määrusega. (5) Majandus- ja Kommunikatsiooniministeerium (edaspidi innovatsiooni valdkonna eest vastutav ministeerium): 1) kavandab ja viib ellu riiklikku ettevõtjatele suunatud innovatsioonipoliitikat ning kujundab ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosivat keskkonda; 2) töötab välja ja esitab Vabariigi Valitsusele ettepanekuid ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosiva poliitika kujundamiseks; 3) korraldab ettevõtjate teadus- ja arendustegevust ning innovatsiooni ja neid soodustava tugistruktuuri loomist, tegevusi ja toetamist riigieelarvest; 4) korraldab äriühinguna tegutsevate eraõiguslike teadus- ja arendusasutuste teadus- ja arendustegevuse rahastamist riigieelarvest käesoleva seaduse § 21 kohaselt; 5) koordineerib riiklikul tasandil ettevõtjate osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja korraldab selle rahastamist; 6) täidab muid talle õigusaktidega pandud ülesandeid. (6) Teadus- ja arendustegevuse ning innovatsiooni valdkonna eest vastutavad ministeeriumid tagavad ühiselt teadus- ja arendustegevuse ning innovatsiooni poliitika tervikliku toimimise, sealhulgas korraldavad ühiselt teadus- ja arendustegevust ning innovatsiooni ning teadmussiiret teadus- ja arendusasutuste, kõrgkoolide, ettevõtjate ja avaliku sektori vahel. (7) Riigikantselei täidab teadus- ja arendustegevuse ning innovatsiooni valdkonnas järgmisi ülesandeid: 1) koordineerib ministeeriumite üleselt innovatsioonitegevusi avalikus sektoris, lähtudes riigi strateegilistest eesmärkidest; 2) kavandab ja viib ellu oma ülesannete täitmiseks vajalikku teadus- ja arendustegevust ning innovatsiooni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
       },
@@ -1652,11 +1802,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ministeerium teadus- ja arendustegevuse ning innovatsiooni elluviimisel: töötab välja teadus- ja arendustegevuse ning innovatsiooni tegevuskavad, mis toetavad valitsemisala poliitika eesmärke, ja korraldab nende elluviimist; korraldab oma valitsemisalale tarviliku teadus- ja arendustegevuse ning innovatsiooni rahastamist; korraldab valitsemisala osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja selle rahastamist; esitab oma valitsemisala teadus- ja arendustegevuse eelarve ning selle täitmise ülevaate teadus- ja arendustegevuse valdkonna eest vastutavale ministeeriumile; tagab teabe esitamise Eesti Teadusinfosüsteemi oma valitsemisalas rahastatud teadusuuringute kohta.",
+      "estleg:legalText": "(2) Ministeerium teadus- ja arendustegevuse ning innovatsiooni elluviimisel: 1) töötab välja teadus- ja arendustegevuse ning innovatsiooni tegevuskavad, mis toetavad valitsemisala poliitika eesmärke, ja korraldab nende elluviimist; 2) korraldab oma valitsemisalale tarviliku teadus- ja arendustegevuse ning innovatsiooni rahastamist; 3) korraldab valitsemisala osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja selle rahastamist; 4) esitab oma valitsemisala teadus- ja arendustegevuse eelarve ning selle täitmise ülevaate teadus- ja arendustegevuse valdkonna eest vastutavale ministeeriumile; 5) tagab teabe esitamise Eesti Teadusinfosüsteemi oma valitsemisalas rahastatud teadusuuringute kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1674,11 +1831,23 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Haridus- ja Teadusministeerium (edaspidi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium): kavandab ja viib ellu riiklikku teadus- ja arendustegevuse poliitikat ning korraldab selle alusel teadus- ja arendustegevust ning selle rahastamist, välja arvatud käesoleva paragrahvi lõikes 5 sätestatud tegevustes; töötab välja ja esitab Vabariigi Valitsusele ettepanekuid teadus- ja arendustegevuse poliitika kujundamiseks; koordineerib ministeeriumite teadus- ja arendustegevust, lähtudes riigi strateegilistest eesmärkidest; korraldab teadus- ja arendusasutuste, ülikoolide ning rakenduskõrgkoolide teadus- ja arendustegevuse rahastamist riigieelarvest; toetab teadus- ja arendustegevuseks vajalike tugistruktuuride toimimist; koordineerib riiklikul tasandil rahvusvahelist teadus- ja arendustegevuse alast koostööd ning korraldab selle rahastamist; korraldab teadus- ja arendustegevuse kvaliteedi hindamist; korraldab teadus- ja arendustegevuse valdkonna riiklikke konkursse; tagab riikliku teaduseetika süsteemi toimimise; täidab teisi talle õigusaktidega pandud ülesandeid.",
+      "estleg:legalText": "(3) Haridus- ja Teadusministeerium (edaspidi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium): 1) kavandab ja viib ellu riiklikku teadus- ja arendustegevuse poliitikat ning korraldab selle alusel teadus- ja arendustegevust ning selle rahastamist, välja arvatud käesoleva paragrahvi lõikes 5 sätestatud tegevustes; 2) töötab välja ja esitab Vabariigi Valitsusele ettepanekuid teadus- ja arendustegevuse poliitika kujundamiseks; 3) koordineerib ministeeriumite teadus- ja arendustegevust, lähtudes riigi strateegilistest eesmärkidest; 4) korraldab teadus- ja arendusasutuste, ülikoolide ning rakenduskõrgkoolide teadus- ja arendustegevuse rahastamist riigieelarvest; 5) toetab teadus- ja arendustegevuseks vajalike tugistruktuuride toimimist; 6) koordineerib riiklikul tasandil rahvusvahelist teadus- ja arendustegevuse alast koostööd ning korraldab selle rahastamist; 7) korraldab teadus- ja arendustegevuse kvaliteedi hindamist; 8) korraldab teadus- ja arendustegevuse valdkonna riiklikke konkursse; 9) tagab riikliku teaduseetika süsteemi toimimise; 10) täidab teisi talle õigusaktidega pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1733,11 +1902,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Majandus- ja Kommunikatsiooniministeerium (edaspidi innovatsiooni valdkonna eest vastutav ministeerium): kavandab ja viib ellu riiklikku ettevõtjatele suunatud innovatsioonipoliitikat ning kujundab ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosivat keskkonda; töötab välja ja esitab Vabariigi Valitsusele ettepanekuid ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosiva poliitika kujundamiseks; korraldab ettevõtjate teadus- ja arendustegevust ning innovatsiooni ja neid soodustava tugistruktuuri loomist, tegevusi ja toetamist riigieelarvest; korraldab äriühinguna tegutsevate eraõiguslike teadus- ja arendusasutuste teadus- ja arendustegevuse rahastamist riigieelarvest käesoleva seaduse § 21 kohaselt; koordineerib riiklikul tasandil ettevõtjate osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja korraldab selle rahastamist; täidab muid talle õigusaktidega pandud ülesandeid.",
+      "estleg:legalText": "(5) Majandus- ja Kommunikatsiooniministeerium (edaspidi innovatsiooni valdkonna eest vastutav ministeerium): 1) kavandab ja viib ellu riiklikku ettevõtjatele suunatud innovatsioonipoliitikat ning kujundab ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosivat keskkonda; 2) töötab välja ja esitab Vabariigi Valitsusele ettepanekuid ettevõtjate teadus- ja arendustegevust ning innovatsiooni soosiva poliitika kujundamiseks; 3) korraldab ettevõtjate teadus- ja arendustegevust ning innovatsiooni ja neid soodustava tugistruktuuri loomist, tegevusi ja toetamist riigieelarvest; 4) korraldab äriühinguna tegutsevate eraõiguslike teadus- ja arendusasutuste teadus- ja arendustegevuse rahastamist riigieelarvest käesoleva seaduse § 21 kohaselt; 5) koordineerib riiklikul tasandil ettevõtjate osalemist rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja korraldab selle rahastamist; 6) täidab muid talle õigusaktidega pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1796,11 +1973,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Riigikantselei täidab teadus- ja arendustegevuse ning innovatsiooni valdkonnas järgmisi ülesandeid: koordineerib ministeeriumite üleselt innovatsioonitegevusi avalikus sektoris, lähtudes riigi strateegilistest eesmärkidest; kavandab ja viib ellu oma ülesannete täitmiseks vajalikku teadus- ja arendustegevust ning innovatsiooni.",
+      "estleg:legalText": "(7) Riigikantselei täidab teadus- ja arendustegevuse ning innovatsiooni valdkonnas järgmisi ülesandeid: 1) koordineerib ministeeriumite üleselt innovatsioonitegevusi avalikus sektoris, lähtudes riigi strateegilistest eesmärkidest; 2) kavandab ja viib ellu oma ülesannete täitmiseks vajalikku teadus- ja arendustegevust ning innovatsiooni.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1818,13 +1999,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Teadus- ja arendustegevuse poliitika rakendusüksus",
+      "rdfs:label": {
+        "@value": "§ 10. Teadus- ja arendustegevuse poliitika rakendusüksus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse poliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada avalikes huvides riikliku teadus- ja arenduspoliitika elluviimist. (2) Teadus- ja arendustegevuse poliitika rakendusüksuses teostab riigi asutajaõigusi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium. (3) Teadus- ja arendustegevuse poliitika rakendusüksus: korraldab riiklike uurimistoetuste rahastamist käesoleva seaduse § 22 kohaselt; edendab teadlaste ning teadus- ja",
-      "estleg:legalText": "(1) Teadus- ja arendustegevuse poliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada avalikes huvides riikliku teadus- ja arenduspoliitika elluviimist. (2) Teadus- ja arendustegevuse poliitika rakendusüksuses teostab riigi asutajaõigusi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium. (3) Teadus- ja arendustegevuse poliitika rakendusüksus: korraldab riiklike uurimistoetuste rahastamist käesoleva seaduse § 22 kohaselt; edendab teadlaste ning teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide rahvusvahelist teadus- ja arendustegevuse alast koostööd; viib läbi teadus- ja arendustegevuse evalveerimist käesoleva seaduse §-de 15–17 kohaselt ja temaatilist hindamist § 18 kohaselt; nõustab vajaduse korral ministeeriume ja nende asutusi ministeeriumi valitsemisalale tarviliku teadus- ja arendustegevuse rahastamisel ja korraldab vajaduse korral teadus- ja arendustegevuse rahastamist; edendab teaduseetika valdkonda, moodustab teaduseetika komitee ja teaduseetika väärkäitumisjuhtumite menetlemise komisjoni ning korraldab nende tööd käesoleva seaduse §-de 26 ja 27 kohaselt; kogub, säilitab ja analüüsib teavet teadus- ja arendustegevuse kohta ning teeb selle kättesaadavaks; edendab teaduskommunikatsiooni; täidab teisi talle õigusaktidega pandud ülesandeid. (4) Teadus- ja arendustegevuse poliitika rakendusüksus on riiklike uurimistoetuste taotluste menetlemisel ning rahastamisotsuste tegemisel sõltumatu. (5) Teadus- ja arendustegevuse poliitika rakendusüksusel on teadus- ja arendustegevuse eri valdkondade tunnustatud teadlastest koosnev hindamisnõukogu, kes tagab riiklike uurimistoetuste taotluste asjatundliku ja sõltumatu hindamise korraldamise ja rahastusettepanekute tegemise ning nõustab rakendusüksust vajaduse korral muude ülesannete täitmisel. (6) Teadus- ja arendustegevuse poliitika rakendusüksuse hindamisnõukogu moodustamise korra ning töökorra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse poliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada avalikes huvides riikliku teadus- ja arenduspoliitika elluviimist. (2) Teadus- ja arendustegevuse poliitika rakendusüksuses teostab riigi asutajaõigusi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium. (3) Teadus- ja arendustegevuse poliitika rakendusüksus: 1) korraldab riiklike uurimistoetuste rahastamist käesoleva seaduse § 22 kohaselt; 2) edendab teadlaste ning teadus- ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Teadus- ja arendustegevuse poliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada avalikes huvides riikliku teadus- ja arenduspoliitika elluviimist. (2) Teadus- ja arendustegevuse poliitika rakendusüksuses teostab riigi asutajaõigusi teadus- ja arendustegevuse valdkonna eest vastutav ministeerium. (3) Teadus- ja arendustegevuse poliitika rakendusüksus: 1) korraldab riiklike uurimistoetuste rahastamist käesoleva seaduse § 22 kohaselt; 2) edendab teadlaste ning teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide rahvusvahelist teadus- ja arendustegevuse alast koostööd; 3) viib läbi teadus- ja arendustegevuse evalveerimist käesoleva seaduse §-de 15–17 kohaselt ja temaatilist hindamist § 18 kohaselt; 4) nõustab vajaduse korral ministeeriume ja nende asutusi ministeeriumi valitsemisalale tarviliku teadus- ja arendustegevuse rahastamisel ja korraldab vajaduse korral teadus- ja arendustegevuse rahastamist; 5) edendab teaduseetika valdkonda, moodustab teaduseetika komitee ja teaduseetika väärkäitumisjuhtumite menetlemise komisjoni ning korraldab nende tööd käesoleva seaduse §-de 26 ja 27 kohaselt; 6) kogub, säilitab ja analüüsib teavet teadus- ja arendustegevuse kohta ning teeb selle kättesaadavaks; 7) edendab teaduskommunikatsiooni; 8) täidab teisi talle õigusaktidega pandud ülesandeid. (4) Teadus- ja arendustegevuse poliitika rakendusüksus on riiklike uurimistoetuste taotluste menetlemisel ning rahastamisotsuste tegemisel sõltumatu. (5) Teadus- ja arendustegevuse poliitika rakendusüksusel on teadus- ja arendustegevuse eri valdkondade tunnustatud teadlastest koosnev hindamisnõukogu, kes tagab riiklike uurimistoetuste taotluste asjatundliku ja sõltumatu hindamise korraldamise ja rahastusettepanekute tegemise ning nõustab rakendusüksust vajaduse korral muude ülesannete täitmisel. (6) Teadus- ja arendustegevuse poliitika rakendusüksuse hindamisnõukogu moodustamise korra ning töökorra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
       },
@@ -1928,11 +2115,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Teadus- ja arendustegevuse poliitika rakendusüksus: korraldab riiklike uurimistoetuste rahastamist käesoleva seaduse § 22 kohaselt; edendab teadlaste ning teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide rahvusvahelist teadus- ja arendustegevuse alast koostööd; viib läbi teadus- ja arendustegevuse evalveerimist käesoleva seaduse §-de 15–17 kohaselt ja temaatilist hindamist § 18 kohaselt; nõustab vajaduse korral ministeeriume ja nende asutusi ministeeriumi valitsemisalale tarviliku teadus- ja arendustegevuse rahastamisel ja korraldab vajaduse korral teadus- ja arendustegevuse rahastamist; edendab teaduseetika valdkonda, moodustab teaduseetika komitee ja teaduseetika väärkäitumisjuhtumite menetlemise komisjoni ning korraldab nende tööd käesoleva seaduse §-de 26 ja 27 kohaselt; kogub, säilitab ja analüüsib teavet teadus- ja arendustegevuse kohta ning teeb selle kättesaadavaks; edendab teaduskommunikatsiooni; täidab teisi talle õigusaktidega pandud ülesandeid.",
+      "estleg:legalText": "(3) Teadus- ja arendustegevuse poliitika rakendusüksus: 1) korraldab riiklike uurimistoetuste rahastamist käesoleva seaduse § 22 kohaselt; 2) edendab teadlaste ning teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide rahvusvahelist teadus- ja arendustegevuse alast koostööd; 3) viib läbi teadus- ja arendustegevuse evalveerimist käesoleva seaduse §-de 15–17 kohaselt ja temaatilist hindamist § 18 kohaselt; 4) nõustab vajaduse korral ministeeriume ja nende asutusi ministeeriumi valitsemisalale tarviliku teadus- ja arendustegevuse rahastamisel ja korraldab vajaduse korral teadus- ja arendustegevuse rahastamist; 5) edendab teaduseetika valdkonda, moodustab teaduseetika komitee ja teaduseetika väärkäitumisjuhtumite menetlemise komisjoni ning korraldab nende tööd käesoleva seaduse §-de 26 ja 27 kohaselt; 6) kogub, säilitab ja analüüsib teavet teadus- ja arendustegevuse kohta ning teeb selle kättesaadavaks; 7) edendab teaduskommunikatsiooni; 8) täidab teisi talle õigusaktidega pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_10"
       },
       "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2039,13 +2236,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Innovatsioonipoliitika rakendusüksus",
+      "rdfs:label": {
+        "@value": "§ 11. Innovatsioonipoliitika rakendusüksus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Innovatsioonipoliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada ettevõtjate konkurentsivõime ning teadus- ja arendustegevuse ja innovatsiooni võimekuse suurendamist. (2) Innovatsioonipoliitika rakendusüksuses teostab riigi asutajaõigusi innovatsiooni valdkonna eest vastutav ministeerium. (3) Innovatsioonipoliitika rakendusüksus: toetab ettevõtjate teadus- ja arendus- ning innovatsioonitegevusi; toetab ettevõtjate rahvusvahelist teadus- ja arendustegevuse ning",
-      "estleg:legalText": "(1) Innovatsioonipoliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada ettevõtjate konkurentsivõime ning teadus- ja arendustegevuse ja innovatsiooni võimekuse suurendamist. (2) Innovatsioonipoliitika rakendusüksuses teostab riigi asutajaõigusi innovatsiooni valdkonna eest vastutav ministeerium. (3) Innovatsioonipoliitika rakendusüksus: toetab ettevõtjate teadus- ja arendus- ning innovatsioonitegevusi; toetab ettevõtjate rahvusvahelist teadus- ja arendustegevuse ning innovatsiooni alast koostööd; edendab ettevõtjate teadlikkust teadus- ja arendustegevusest ning innovatsioonist ning nendega tegelemise võimekust; toetab teadus- ja arendustegevuse ning innovatsiooni poliitikat ettevõtjate teadus- ja arendustegevuse ning innovatsiooni kohta informatsiooni kogumise, säilitamise, kättesaadavaks tegemise ja analüüsimisega; täidab teisi talle õigusaktidega pandud ülesandeid. (4) Innovatsioonipoliitika rakendusüksus on ettevõtjate teadus- ja arendustegevuse ning innovatsiooni toetuse taotluste menetlemisel ja rahastamisotsuste tegemisel sõltumatu.",
+      "estleg:summary": {
+        "@value": "(1) Innovatsioonipoliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada ettevõtjate konkurentsivõime ning teadus- ja arendustegevuse ja innovatsiooni võimekuse suurendamist. (2) Innovatsioonipoliitika rakendusüksuses teostab riigi asutajaõigusi innovatsiooni valdkonna eest vastutav ministeerium. (3) Innovatsioonipoliitika rakendusüksus: 1) toetab ettevõtjate teadus- ja arendus- ning innovatsioonitegevusi; 2) toetab ettevõtjate rahvusvahelist teadus- ja arendustegevuse ning",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Innovatsioonipoliitika rakendusüksus on juriidiline isik, mille eesmärk on toetada ettevõtjate konkurentsivõime ning teadus- ja arendustegevuse ja innovatsiooni võimekuse suurendamist. (2) Innovatsioonipoliitika rakendusüksuses teostab riigi asutajaõigusi innovatsiooni valdkonna eest vastutav ministeerium. (3) Innovatsioonipoliitika rakendusüksus: 1) toetab ettevõtjate teadus- ja arendus- ning innovatsioonitegevusi; 2) toetab ettevõtjate rahvusvahelist teadus- ja arendustegevuse ning innovatsiooni alast koostööd; 3) edendab ettevõtjate teadlikkust teadus- ja arendustegevusest ning innovatsioonist ning nendega tegelemise võimekust; 4) toetab teadus- ja arendustegevuse ning innovatsiooni poliitikat ettevõtjate teadus- ja arendustegevuse ning innovatsiooni kohta informatsiooni kogumise, säilitamise, kättesaadavaks tegemise ja analüüsimisega; 5) täidab teisi talle õigusaktidega pandud ülesandeid. (4) Innovatsioonipoliitika rakendusüksus on ettevõtjate teadus- ja arendustegevuse ning innovatsiooni toetuse taotluste menetlemisel ja rahastamisotsuste tegemisel sõltumatu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
       },
@@ -2138,11 +2341,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Innovatsioonipoliitika rakendusüksus: toetab ettevõtjate teadus- ja arendus- ning innovatsioonitegevusi; toetab ettevõtjate rahvusvahelist teadus- ja arendustegevuse ning innovatsiooni alast koostööd; edendab ettevõtjate teadlikkust teadus- ja arendustegevusest ning innovatsioonist ning nendega tegelemise võimekust; toetab teadus- ja arendustegevuse ning innovatsiooni poliitikat ettevõtjate teadus- ja arendustegevuse ning innovatsiooni kohta informatsiooni kogumise, säilitamise, kättesaadavaks tegemise ja analüüsimisega; täidab teisi talle õigusaktidega pandud ülesandeid.",
+      "estleg:legalText": "(3) Innovatsioonipoliitika rakendusüksus: 1) toetab ettevõtjate teadus- ja arendus- ning innovatsioonitegevusi; 2) toetab ettevõtjate rahvusvahelist teadus- ja arendustegevuse ning innovatsiooni alast koostööd; 3) edendab ettevõtjate teadlikkust teadus- ja arendustegevusest ning innovatsioonist ning nendega tegelemise võimekust; 4) toetab teadus- ja arendustegevuse ning innovatsiooni poliitikat ettevõtjate teadus- ja arendustegevuse ning innovatsiooni kohta informatsiooni kogumise, säilitamise, kättesaadavaks tegemise ja analüüsimisega; 5) täidab teisi talle õigusaktidega pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2188,13 +2398,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Rakendusuuringute keskus",
+      "rdfs:label": {
+        "@value": "§ 12. Rakendusuuringute keskus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Rakendusuuringute keskus on innovatsiooni valdkonna eest vastutava ministeeriumi vastutusalas tegutsev juriidiline isik, mille ülesanne on pakkuda ettevõtjatele rakendusuuringute ja eksperimentaalarenduse teenuseid Eesti majanduse teadmispõhise arengu ja uuenduslikkuse hüvanguks. (2) Rakendusuuringute keskus teeb ärilise eesmärgiga rakendusuuringuid ja eksperimentaalarendust ning nendega seotud tegevusi ning selleks: tagab teadus- ja arendustegevuseks vajaliku pädevuse ja taristu ning nende",
-      "estleg:legalText": "(1) Rakendusuuringute keskus on innovatsiooni valdkonna eest vastutava ministeeriumi vastutusalas tegutsev juriidiline isik, mille ülesanne on pakkuda ettevõtjatele rakendusuuringute ja eksperimentaalarenduse teenuseid Eesti majanduse teadmispõhise arengu ja uuenduslikkuse hüvanguks. (2) Rakendusuuringute keskus teeb ärilise eesmärgiga rakendusuuringuid ja eksperimentaalarendust ning nendega seotud tegevusi ning selleks: tagab teadus- ja arendustegevuseks vajaliku pädevuse ja taristu ning nende arendamise; osaleb rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja võrgustikes.",
+      "estleg:summary": {
+        "@value": "(1) Rakendusuuringute keskus on innovatsiooni valdkonna eest vastutava ministeeriumi vastutusalas tegutsev juriidiline isik, mille ülesanne on pakkuda ettevõtjatele rakendusuuringute ja eksperimentaalarenduse teenuseid Eesti majanduse teadmispõhise arengu ja uuenduslikkuse hüvanguks. (2) Rakendusuuringute keskus teeb ärilise eesmärgiga rakendusuuringuid ja eksperimentaalarendust ning nendega seotud tegevusi ning selleks: 1) tagab teadus- ja arendustegevuseks vajaliku pädevuse ja taristu ning",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rakendusuuringute keskus on innovatsiooni valdkonna eest vastutava ministeeriumi vastutusalas tegutsev juriidiline isik, mille ülesanne on pakkuda ettevõtjatele rakendusuuringute ja eksperimentaalarenduse teenuseid Eesti majanduse teadmispõhise arengu ja uuenduslikkuse hüvanguks. (2) Rakendusuuringute keskus teeb ärilise eesmärgiga rakendusuuringuid ja eksperimentaalarendust ning nendega seotud tegevusi ning selleks: 1) tagab teadus- ja arendustegevuseks vajaliku pädevuse ja taristu ning nende arendamise; 2) osaleb rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja võrgustikes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
       },
@@ -2259,11 +2475,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Rakendusuuringute keskus teeb ärilise eesmärgiga rakendusuuringuid ja eksperimentaalarendust ning nendega seotud tegevusi ning selleks: tagab teadus- ja arendustegevuseks vajaliku pädevuse ja taristu ning nende arendamise; osaleb rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja võrgustikes.",
+      "estleg:legalText": "(2) Rakendusuuringute keskus teeb ärilise eesmärgiga rakendusuuringuid ja eksperimentaalarendust ning nendega seotud tegevusi ning selleks: 1) tagab teadus- ja arendustegevuseks vajaliku pädevuse ja taristu ning nende arendamise; 2) osaleb rahvusvahelises teadus- ja arendustegevuse ning innovatsiooni alases koostöös ja võrgustikes.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_12"
       },
-      "rdfs:label": "§ 12 lg 2"
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:TAIKS_Par_13",
@@ -2272,12 +2492,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Eesti Teaduste Akadeemia",
+      "rdfs:label": {
+        "@value": "§ 13. Eesti Teaduste Akadeemia",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Eesti Teaduste Akadeemia on silmapaistvate teadlaste ja teiste loomeisikute ühendus, kelle ülesanne on arendada ja esindada Eesti teadust, aidata kaasa teadustulemuste rakendamisele Eesti huvides ning väärtustada teadust, teaduslikku mõtteviisi ja kultuuri Eestis. (2) Eesti Teaduste Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb Eesti Teaduste Akadeemia seaduse, käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Teaduste Akadeemia on silmapaistvate teadlaste ja teiste loomeisikute ühendus, kelle ülesanne on arendada ja esindada Eesti teadust, aidata kaasa teadustulemuste rakendamisele Eesti huvides ning väärtustada teadust, teaduslikku mõtteviisi ja kultuuri Eestis. (2) Eesti Teaduste Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb Eesti Teaduste Akadeemia seaduse, käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Teaduste Akadeemia on silmapaistvate teadlaste ja teiste loomeisikute ühendus, kelle ülesanne on arendada ja esindada Eesti teadust, aidata kaasa teadustulemuste rakendamisele Eesti huvides ning väärtustada teadust, teaduslikku mõtteviisi ja kultuuri Eestis. (2) Eesti Teaduste Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb Eesti Teaduste Akadeemia seaduse, käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
@@ -2356,13 +2582,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Eesti Teadusinfosüsteem",
+      "rdfs:label": {
+        "@value": "§ 14. Eesti Teadusinfosüsteem",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Eesti Teadusinfosüsteem (edaspidi infosüsteem) on andmekogu, mille eesmärk on: anda teadus- ja arendustegevuse korraldamisega seotud osalistele usaldusväärset teavet teadus- ja arendustegevuse statistikaks, poliitika kujundamiseks, rahastamisotsusteks ning strateegiliseks juhtimiseks; anda teadus- ja arendusasutustele, ülikoolidele ja rakenduskõrgkoolidele ning avalikkusele usaldusväärset teavet teadus- ja arendustegevuse ning selle läbiviijate kohta; tagada teadus- ja arendusasutuste,",
-      "estleg:legalText": "(1) Eesti Teadusinfosüsteem (edaspidi infosüsteem) on andmekogu, mille eesmärk on: anda teadus- ja arendustegevuse korraldamisega seotud osalistele usaldusväärset teavet teadus- ja arendustegevuse statistikaks, poliitika kujundamiseks, rahastamisotsusteks ning strateegiliseks juhtimiseks; anda teadus- ja arendusasutustele, ülikoolidele ja rakenduskõrgkoolidele ning avalikkusele usaldusväärset teavet teadus- ja arendustegevuse ning selle läbiviijate kohta; tagada teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevuse korraldamisega seotud asutuste tegevuse kavandamiseks ja rahastamiseks vajalikud andmed; tagada teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute tegevuse ning rahastamistaotluste hindamiseks vajalikud andmed ja töökeskkond; avalikustada teavet riigi rahastatud teadus- ja arendustegevuse kohta. (2) Infosüsteemis töödeldakse andmeid: teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute ning nende tegevuse kohta; teadus- ja arendustegevuse tulemuste ning väljundite kohta; teadustaristu ning sellega seotud aparatuuri ja teenuste kohta; teadus- ja arendustegevuse rahastamise programmide, taotluste ning nende menetlemise ja tulemuste kohta; teadus- ja arendustegevuse evalveerimise taotluste ning nende menetlemise ja tulemuste kohta; eetikakomitee hinnangu taotluste ning nende menetlemise ja tulemuste kohta. (3) Infosüsteemis töödeldakse järgmisi isikuandmeid: isiku üldandmed; töötamise andmed; teaduskraadi andmed; publikatsioonide ja tööstusomandi andmed; teaduskollektsiooniga seotuse andmed; doktori- ja magistriõppe lõputöö andmed, sealhulgas lõputöö juhendamise andmed; rahastamistaotluste ja projektidega seotuse andmed; eetikakomiteede hinnangutega seotud andmed. (4) Infosüsteemi kogutud andmeid, sealhulgas isikuandmeid, säilitatakse tähtajatult, kui põhimääruses ei ole sätestatud andmete säilitamise täpsemaid tingimusi. Rahvusarhiivi poolt arhiiviväärtuslikuks hinnatud andmed antakse üle Rahvusarhiivi arhiiviseaduses sätestatud korras. (5) Infosüsteemi vastutav töötleja on Haridus- ja Teadusministeerium. (6) Infosüsteemi põhimääruse kehtestab määrusega, milles sätestatakse: vastutava töötleja ja volitatud töötleja ülesanded; andmeandjad ja nendelt saadavad andmed, kogutavate andmete täpsem koosseis ja infosüsteemi kandmise kord; andmetele juurdepääsu ja andmete väljastamise kord; andmete ristkasutus; andmete säilitamise täpsemad tingimused; muud korralduslikud küsimused.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Teadusinfosüsteem (edaspidi infosüsteem) on andmekogu, mille eesmärk on: 1) anda teadus- ja arendustegevuse korraldamisega seotud osalistele usaldusväärset teavet teadus- ja arendustegevuse statistikaks, poliitika kujundamiseks, rahastamisotsusteks ning strateegiliseks juhtimiseks; 2) anda teadus- ja arendusasutustele, ülikoolidele ja rakenduskõrgkoolidele ning avalikkusele usaldusväärset teavet teadus- ja arendustegevuse ning selle läbiviijate kohta; 3) tagada teadus- ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti Teadusinfosüsteem (edaspidi infosüsteem) on andmekogu, mille eesmärk on: 1) anda teadus- ja arendustegevuse korraldamisega seotud osalistele usaldusväärset teavet teadus- ja arendustegevuse statistikaks, poliitika kujundamiseks, rahastamisotsusteks ning strateegiliseks juhtimiseks; 2) anda teadus- ja arendusasutustele, ülikoolidele ja rakenduskõrgkoolidele ning avalikkusele usaldusväärset teavet teadus- ja arendustegevuse ning selle läbiviijate kohta; 3) tagada teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevuse korraldamisega seotud asutuste tegevuse kavandamiseks ja rahastamiseks vajalikud andmed; 4) tagada teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute tegevuse ning rahastamistaotluste hindamiseks vajalikud andmed ja töökeskkond; 5) avalikustada teavet riigi rahastatud teadus- ja arendustegevuse kohta. (2) Infosüsteemis töödeldakse andmeid: 1) teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute ning nende tegevuse kohta; 2) teadus- ja arendustegevuse tulemuste ning väljundite kohta; 3) teadustaristu ning sellega seotud aparatuuri ja teenuste kohta; 4) teadus- ja arendustegevuse rahastamise programmide, taotluste ning nende menetlemise ja tulemuste kohta; 5) teadus- ja arendustegevuse evalveerimise taotluste ning nende menetlemise ja tulemuste kohta; 6) eetikakomitee hinnangu taotluste ning nende menetlemise ja tulemuste kohta. (3) Infosüsteemis töödeldakse järgmisi isikuandmeid: 1) isiku üldandmed; 2) töötamise andmed; 3) teaduskraadi andmed; 4) publikatsioonide ja tööstusomandi andmed; 5) teaduskollektsiooniga seotuse andmed; 6) doktori- ja magistriõppe lõputöö andmed, sealhulgas lõputöö juhendamise andmed; 7) rahastamistaotluste ja projektidega seotuse andmed; 8) eetikakomiteede hinnangutega seotud andmed. (4) Infosüsteemi kogutud andmeid, sealhulgas isikuandmeid, säilitatakse tähtajatult, kui põhimääruses ei ole sätestatud andmete säilitamise täpsemaid tingimusi. Rahvusarhiivi poolt arhiiviväärtuslikuks hinnatud andmed antakse üle Rahvusarhiivi arhiiviseaduses sätestatud korras. (5) Infosüsteemi vastutav töötleja on Haridus- ja Teadusministeerium. (6) Infosüsteemi põhimääruse kehtestab määrusega, milles sätestatakse: 1) vastutava töötleja ja volitatud töötleja ülesanded; 2) andmeandjad ja nendelt saadavad andmed, kogutavate andmete täpsem koosseis ja infosüsteemi kandmise kord; 3) andmetele juurdepääsu ja andmete väljastamise kord; 4) andmete ristkasutus; 5) andmete säilitamise täpsemad tingimused; 6) muud korralduslikud küsimused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_2"
       },
@@ -2419,11 +2651,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eesti Teadusinfosüsteem (edaspidi infosüsteem) on andmekogu, mille eesmärk on: anda teadus- ja arendustegevuse korraldamisega seotud osalistele usaldusväärset teavet teadus- ja arendustegevuse statistikaks, poliitika kujundamiseks, rahastamisotsusteks ning strateegiliseks juhtimiseks; anda teadus- ja arendusasutustele, ülikoolidele ja rakenduskõrgkoolidele ning avalikkusele usaldusväärset teavet teadus- ja arendustegevuse ning selle läbiviijate kohta; tagada teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevuse korraldamisega seotud asutuste tegevuse kavandamiseks ja rahastamiseks vajalikud andmed; tagada teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute tegevuse ning rahastamistaotluste hindamiseks vajalikud andmed ja töökeskkond; avalikustada teavet riigi rahastatud teadus- ja arendustegevuse kohta.",
+      "estleg:legalText": "(1) Eesti Teadusinfosüsteem (edaspidi infosüsteem) on andmekogu, mille eesmärk on: 1) anda teadus- ja arendustegevuse korraldamisega seotud osalistele usaldusväärset teavet teadus- ja arendustegevuse statistikaks, poliitika kujundamiseks, rahastamisotsusteks ning strateegiliseks juhtimiseks; 2) anda teadus- ja arendusasutustele, ülikoolidele ja rakenduskõrgkoolidele ning avalikkusele usaldusväärset teavet teadus- ja arendustegevuse ning selle läbiviijate kohta; 3) tagada teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevuse korraldamisega seotud asutuste tegevuse kavandamiseks ja rahastamiseks vajalikud andmed; 4) tagada teadus- ja arendusasutuste, ülikoolide ja rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute tegevuse ning rahastamistaotluste hindamiseks vajalikud andmed ja töökeskkond; 5) avalikustada teavet riigi rahastatud teadus- ja arendustegevuse kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_14"
       },
       "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2441,11 +2680,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Infosüsteemis töödeldakse andmeid: teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute ning nende tegevuse kohta; teadus- ja arendustegevuse tulemuste ning väljundite kohta; teadustaristu ning sellega seotud aparatuuri ja teenuste kohta; teadus- ja arendustegevuse rahastamise programmide, taotluste ning nende menetlemise ja tulemuste kohta; teadus- ja arendustegevuse evalveerimise taotluste ning nende menetlemise ja tulemuste kohta; eetikakomitee hinnangu taotluste ning nende menetlemise ja tulemuste kohta.",
+      "estleg:legalText": "(2) Infosüsteemis töödeldakse andmeid: 1) teadus- ja arendusasutuste, ülikoolide, rakenduskõrgkoolide ning teadus- ja arendustegevusega tegelevate isikute ning nende tegevuse kohta; 2) teadus- ja arendustegevuse tulemuste ning väljundite kohta; 3) teadustaristu ning sellega seotud aparatuuri ja teenuste kohta; 4) teadus- ja arendustegevuse rahastamise programmide, taotluste ning nende menetlemise ja tulemuste kohta; 5) teadus- ja arendustegevuse evalveerimise taotluste ning nende menetlemise ja tulemuste kohta; 6) eetikakomitee hinnangu taotluste ning nende menetlemise ja tulemuste kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_14"
       },
       "rdfs:label": "§ 14 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2468,11 +2715,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Infosüsteemis töödeldakse järgmisi isikuandmeid: isiku üldandmed; töötamise andmed; teaduskraadi andmed; publikatsioonide ja tööstusomandi andmed; teaduskollektsiooniga seotuse andmed; doktori- ja magistriõppe lõputöö andmed, sealhulgas lõputöö juhendamise andmed; rahastamistaotluste ja projektidega seotuse andmed; eetikakomiteede hinnangutega seotud andmed.",
+      "estleg:legalText": "(3) Infosüsteemis töödeldakse järgmisi isikuandmeid: 1) isiku üldandmed; 2) töötamise andmed; 3) teaduskraadi andmed; 4) publikatsioonide ja tööstusomandi andmed; 5) teaduskollektsiooniga seotuse andmed; 6) doktori- ja magistriõppe lõputöö andmed, sealhulgas lõputöö juhendamise andmed; 7) rahastamistaotluste ja projektidega seotuse andmed; 8) eetikakomiteede hinnangutega seotud andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_14"
       },
       "rdfs:label": "§ 14 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2530,11 +2787,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Infosüsteemi põhimääruse kehtestab määrusega, milles sätestatakse: vastutava töötleja ja volitatud töötleja ülesanded; andmeandjad ja nendelt saadavad andmed, kogutavate andmete täpsem koosseis ja infosüsteemi kandmise kord; andmetele juurdepääsu ja andmete väljastamise kord; andmete ristkasutus; andmete säilitamise täpsemad tingimused; muud korralduslikud küsimused.",
+      "estleg:legalText": "(6) Infosüsteemi põhimääruse kehtestab määrusega, milles sätestatakse: 1) vastutava töötleja ja volitatud töötleja ülesanded; 2) andmeandjad ja nendelt saadavad andmed, kogutavate andmete täpsem koosseis ja infosüsteemi kandmise kord; 3) andmetele juurdepääsu ja andmete väljastamise kord; 4) andmete ristkasutus; 5) andmete säilitamise täpsemad tingimused; 6) muud korralduslikud küsimused.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_14"
       },
       "rdfs:label": "§ 14 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2558,12 +2823,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Juriidilise isiku või asutuse teadus- ja arendustegevuse välishindamine",
+      "rdfs:label": {
+        "@value": "§ 15. Juriidilise isiku või asutuse teadus- ja arendustegevuse välishindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Juriidilise isiku või asutuse teadus- ja arendustegevuse välishindamine toimub evalveerimise käigus käesoleva paragrahvi lõikes 2 sätestatud tingimustel ning arvestades lõikes 5 sätestatut. (2) Evalveerimise tulemusena antakse hinnang juriidilise isiku või asutuse teadus- ja arendustegevuse valdkonna tasemele võrrelduna rahvusvaheliselt tunnustatud kriteeriumitega, võttes arvesse juriidilise isiku või asutuse asutaja seatud eesmärke teadus- ja arendustegevuse valdkonnas.",
+      "estleg:summary": {
+        "@value": "(1) Juriidilise isiku või asutuse teadus- ja arendustegevuse välishindamine toimub evalveerimise käigus käesoleva paragrahvi lõikes 2 sätestatud tingimustel ning arvestades lõikes 5 sätestatut. (2) Evalveerimise tulemusena antakse hinnang juriidilise isiku või asutuse teadus- ja arendustegevuse valdkonna tasemele võrrelduna rahvusvaheliselt tunnustatud kriteeriumitega, võttes arvesse juriidilise isiku või asutuse asutaja seatud eesmärke teadus- ja arendustegevuse valdkonnas.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Juriidilise isiku või asutuse teadus- ja arendustegevuse välishindamine toimub evalveerimise käigus käesoleva paragrahvi lõikes 2 sätestatud tingimustel ning arvestades lõikes 5 sätestatut. (2) Evalveerimise tulemusena antakse hinnang juriidilise isiku või asutuse teadus- ja arendustegevuse valdkonna tasemele võrrelduna rahvusvaheliselt tunnustatud kriteeriumitega, võttes arvesse juriidilise isiku või asutuse asutaja seatud eesmärke teadus- ja arendustegevuse valdkonnas. (3) Evalveerimise tulemused ning antud hinnangud ja soovitused on avalikud. (4) Evalveerimise taotlemise, korraldamise ja tulemuse kinnitamise täpsemad tingimused ning korra kehtestab määrusega. (5) Ülikooli või evalveeritud rakenduskõrgkooli teadus- ja arendustegevuse välishindamine toimub institutsionaalse akrediteerimise käigus kõrgharidusseaduse §-de 37 ja 38 kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_3"
@@ -2712,13 +2983,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Evalveerimise taotlemine ja läbiviimine",
+      "rdfs:label": {
+        "@value": "§ 16. Evalveerimise taotlemine ja läbiviimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Evalveerimist on õigus taotleda juriidilisel isikul ja asutusel, mis vastavad järgmistele tingimustele: juriidilise isiku või asutuse põhikirjas või põhimääruses nimetatud tegevus on alus- või rakendusuuringute või eksperimentaalarenduse või mitme nimetatu tegemine; juriidiline isik või asutus tagab loodud teadmiste leviku õpetamise, publitseerimise või teadmussiirde kaudu; juriidilises isikus või asutuses on käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks vajalikul hulgal teadus- ja",
-      "estleg:legalText": "(1) Evalveerimist on õigus taotleda juriidilisel isikul ja asutusel, mis vastavad järgmistele tingimustele: juriidilise isiku või asutuse põhikirjas või põhimääruses nimetatud tegevus on alus- või rakendusuuringute või eksperimentaalarenduse või mitme nimetatu tegemine; juriidiline isik või asutus tagab loodud teadmiste leviku õpetamise, publitseerimise või teadmussiirde kaudu; juriidilises isikus või asutuses on käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks vajalikul hulgal teadus- ja arendustegevusega tegelevaid töötajaid; juriidilise isiku või asutuse hooned, ruumid, sisustus ja muu vara on piisavad ning sobivad käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks. (2) Teadus- ja arendustegevuse valdkonna eest vastutav ministeerium tagastab juriidilise isiku või asutuse taotluse ning jätab selle läbi vaatamata, kui juriidiline isik või asutus ei vasta käesoleva paragrahvi lõikes 1 sätestatud tingimustele. (3) Evalveerimine toimub voorudena teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi kehtestatud tähtaegadel, kuid mitte harvem kui kord nelja aasta jooksul viimasest voorust arvates. (4) Evalveerimise kulud katab evalveerimist taotlev juriidiline isik või asutus, arvestades käesoleva paragrahvi lõikes 5 sätestatut. (5) Teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi valitsemisalas oleva asutuse ning avalik-õigusliku juriidilise isiku evalveerimise kulud katab ministeerium. (6) Teadus- ja arendustegevust evalveerib teadus- ja arendustegevuse poliitika rakendusüksuse poolt välisekspertidest moodustatud hindamiskomisjon, mille liikmed on oma valdkonna tunnustatud teadlased või eksperdid, kellel on teadus- ja arendustegevuse hindamise kogemus. (7) Teadus- ja arendustegevuse valdkonna eest vastutav minister, võttes aluseks käesoleva paragrahvi lõike 6 alusel moodustatud hindamiskomisjoni põhjendatud ettepanekud, teeb otsuse evalveerida juriidilise isiku või asutuse teadus- ja arendustegevus vastavas valdkonnas positiivselt või negatiivselt.",
+      "estleg:summary": {
+        "@value": "(1) Evalveerimist on õigus taotleda juriidilisel isikul ja asutusel, mis vastavad järgmistele tingimustele: 1) juriidilise isiku või asutuse põhikirjas või põhimääruses nimetatud tegevus on alus- või rakendusuuringute või eksperimentaalarenduse või mitme nimetatu tegemine; 2) juriidiline isik või asutus tagab loodud teadmiste leviku õpetamise, publitseerimise või teadmussiirde kaudu; 3) juriidilises isikus või asutuses on käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks vajalikul hulgal",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Evalveerimist on õigus taotleda juriidilisel isikul ja asutusel, mis vastavad järgmistele tingimustele: 1) juriidilise isiku või asutuse põhikirjas või põhimääruses nimetatud tegevus on alus- või rakendusuuringute või eksperimentaalarenduse või mitme nimetatu tegemine; 2) juriidiline isik või asutus tagab loodud teadmiste leviku õpetamise, publitseerimise või teadmussiirde kaudu; 3) juriidilises isikus või asutuses on käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks vajalikul hulgal teadus- ja arendustegevusega tegelevaid töötajaid; 4) juriidilise isiku või asutuse hooned, ruumid, sisustus ja muu vara on piisavad ning sobivad käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks. (2) Teadus- ja arendustegevuse valdkonna eest vastutav ministeerium tagastab juriidilise isiku või asutuse taotluse ning jätab selle läbi vaatamata, kui juriidiline isik või asutus ei vasta käesoleva paragrahvi lõikes 1 sätestatud tingimustele. (3) Evalveerimine toimub voorudena teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi kehtestatud tähtaegadel, kuid mitte harvem kui kord nelja aasta jooksul viimasest voorust arvates. (4) Evalveerimise kulud katab evalveerimist taotlev juriidiline isik või asutus, arvestades käesoleva paragrahvi lõikes 5 sätestatut. (5) Teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi valitsemisalas oleva asutuse ning avalik-õigusliku juriidilise isiku evalveerimise kulud katab ministeerium. (6) Teadus- ja arendustegevust evalveerib teadus- ja arendustegevuse poliitika rakendusüksuse poolt välisekspertidest moodustatud hindamiskomisjon, mille liikmed on oma valdkonna tunnustatud teadlased või eksperdid, kellel on teadus- ja arendustegevuse hindamise kogemus. (7) Teadus- ja arendustegevuse valdkonna eest vastutav minister, võttes aluseks käesoleva paragrahvi lõike 6 alusel moodustatud hindamiskomisjoni põhjendatud ettepanekud, teeb otsuse evalveerida juriidilise isiku või asutuse teadus- ja arendustegevus vastavas valdkonnas positiivselt või negatiivselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_3"
       },
@@ -2781,11 +3058,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Evalveerimist on õigus taotleda juriidilisel isikul ja asutusel, mis vastavad järgmistele tingimustele: juriidilise isiku või asutuse põhikirjas või põhimääruses nimetatud tegevus on alus- või rakendusuuringute või eksperimentaalarenduse või mitme nimetatu tegemine; juriidiline isik või asutus tagab loodud teadmiste leviku õpetamise, publitseerimise või teadmussiirde kaudu; juriidilises isikus või asutuses on käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks vajalikul hulgal teadus- ja arendustegevusega tegelevaid töötajaid; juriidilise isiku või asutuse hooned, ruumid, sisustus ja muu vara on piisavad ning sobivad käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks.",
+      "estleg:legalText": "(1) Evalveerimist on õigus taotleda juriidilisel isikul ja asutusel, mis vastavad järgmistele tingimustele: 1) juriidilise isiku või asutuse põhikirjas või põhimääruses nimetatud tegevus on alus- või rakendusuuringute või eksperimentaalarenduse või mitme nimetatu tegemine; 2) juriidiline isik või asutus tagab loodud teadmiste leviku õpetamise, publitseerimise või teadmussiirde kaudu; 3) juriidilises isikus või asutuses on käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks vajalikul hulgal teadus- ja arendustegevusega tegelevaid töötajaid; 4) juriidilise isiku või asutuse hooned, ruumid, sisustus ja muu vara on piisavad ning sobivad käesoleva lõike punktides 1 ja 2 nimetatud tegevusteks.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_16"
       },
       "rdfs:label": "§ 16 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -3017,13 +3300,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Evalveerimisotsuse kehtivus ja täiendav evalveerimine",
+      "rdfs:label": {
+        "@value": "§ 17. Evalveerimisotsuse kehtivus ja täiendav evalveerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 16 lõikes 7 nimetatud positiivne otsus kehtib kuni järgmise evalveerimisotsuse kinnitamiseni, kuid mitte kauem kui seitse aastat. (2) Ülikooli või evalveeritud rakenduskõrgkooli teadus- ja arendustegevuse valdkonna kohta tehtud evalveerimise positiivne otsus, mida on nimetatud käesoleva seaduse § 16 lõikes 7, jääb kehtima, kui ülikool või rakenduskõrgkool läbib institutsionaalse akrediteerimise tulemusega, mis vastab kõrgharidusseaduse § 38 lõike 3 punktile 1 või 2",
-      "estleg:legalText": "(1) Käesoleva seaduse § 16 lõikes 7 nimetatud positiivne otsus kehtib kuni järgmise evalveerimisotsuse kinnitamiseni, kuid mitte kauem kui seitse aastat. (2) Ülikooli või evalveeritud rakenduskõrgkooli teadus- ja arendustegevuse valdkonna kohta tehtud evalveerimise positiivne otsus, mida on nimetatud käesoleva seaduse § 16 lõikes 7, jääb kehtima, kui ülikool või rakenduskõrgkool läbib institutsionaalse akrediteerimise tulemusega, mis vastab kõrgharidusseaduse § 38 lõike 3 punktile 1 või 2 tingimusel, et teadus- ja arendustegevus on hinnatud nõuetele vastavaks. Otsus kehtib kuni institutsionaalse akrediteerimise otsuse kehtivusaja lõpuni. (3) Teadus- ja arendustegevuse valdkonna eest vastutav minister teeb teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile ettepaneku läbida evalveerimine teadus- ja arendustegevuse valdkonnas ning määrab selleks taotlemise tähtaja, kui: juriidilise isiku või asutuse teadus- ja arendustegevus ei vasta enam käesoleva seaduse § 16 lõikes 1 nimetatud tingimustele; ülikooli või evalveeritud rakenduskõrgkooli institutsionaalse akrediteerimise tulemus ei vasta käesoleva paragrahvi lõikes 2 nimetatud tingimustele; temaatilise hindamise tulemuste või asutuse teadus- ja arendustegevuse kohta kogutud andmete põhjal on selgunud, et juriidilise isiku või asutuse teadus- ja arendustegevuse tase ei vasta enam käesoleva seaduse § 16 lõikes 7 nimetatud positiivse otsuse aluseks olnud tasemele; teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool ühineb juriidilise isikuga või asutusega, mis ei ole evalveerimist käesoleva seaduse § 16 lõikes 7 nimetatud positiivse tulemusega läbinud, või kui teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool jaguneb ning teadus- ja arendustegevuse valdkonna eest vastutava ministri hinnangul on juriidilise isiku või asutuse teadus- ja arendustegevuse evalveerimine vastavas valdkonnas vajalik. (4) Kui toimub käesoleva paragrahvi lõike 3 punktis 4 sätestatud ühinemine või jagunemine, teavitab teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool sellest teadus- ja arendustegevuse valdkonna eest vastutavat ministrit. (5) Kui juriidiline isik või asutus ei taotle evalveerimist teadus- ja arendustegevuse valdkonna eest vastutava ministri määratud tähtaja jooksul või läbib selle käesoleva seaduse § 16 lõikes 7 nimetatud negatiivse tulemusega, tunnistab teadus- ja arendustegevuse valdkonna eest vastutav minister § 16 lõikes 7 nimetatud positiivse evalveerimise otsuse kehtetuks.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 16 lõikes 7 nimetatud positiivne otsus kehtib kuni järgmise evalveerimisotsuse kinnitamiseni, kuid mitte kauem kui seitse aastat. (2) Ülikooli või evalveeritud rakenduskõrgkooli teadus- ja arendustegevuse valdkonna kohta tehtud evalveerimise positiivne otsus, mida on nimetatud käesoleva seaduse § 16 lõikes 7, jääb kehtima, kui ülikool või rakenduskõrgkool läbib institutsionaalse akrediteerimise tulemusega, mis vastab kõrgharidusseaduse § 38 lõike 3 punktile 1 või 2",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse § 16 lõikes 7 nimetatud positiivne otsus kehtib kuni järgmise evalveerimisotsuse kinnitamiseni, kuid mitte kauem kui seitse aastat. (2) Ülikooli või evalveeritud rakenduskõrgkooli teadus- ja arendustegevuse valdkonna kohta tehtud evalveerimise positiivne otsus, mida on nimetatud käesoleva seaduse § 16 lõikes 7, jääb kehtima, kui ülikool või rakenduskõrgkool läbib institutsionaalse akrediteerimise tulemusega, mis vastab kõrgharidusseaduse § 38 lõike 3 punktile 1 või 2 tingimusel, et teadus- ja arendustegevus on hinnatud nõuetele vastavaks. Otsus kehtib kuni institutsionaalse akrediteerimise otsuse kehtivusaja lõpuni. (3) Teadus- ja arendustegevuse valdkonna eest vastutav minister teeb teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile ettepaneku läbida evalveerimine teadus- ja arendustegevuse valdkonnas ning määrab selleks taotlemise tähtaja, kui: 1) juriidilise isiku või asutuse teadus- ja arendustegevus ei vasta enam käesoleva seaduse § 16 lõikes 1 nimetatud tingimustele; 2) ülikooli või evalveeritud rakenduskõrgkooli institutsionaalse akrediteerimise tulemus ei vasta käesoleva paragrahvi lõikes 2 nimetatud tingimustele; 3) temaatilise hindamise tulemuste või asutuse teadus- ja arendustegevuse kohta kogutud andmete põhjal on selgunud, et juriidilise isiku või asutuse teadus- ja arendustegevuse tase ei vasta enam käesoleva seaduse § 16 lõikes 7 nimetatud positiivse otsuse aluseks olnud tasemele; 4) teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool ühineb juriidilise isikuga või asutusega, mis ei ole evalveerimist käesoleva seaduse § 16 lõikes 7 nimetatud positiivse tulemusega läbinud, või kui teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool jaguneb ning teadus- ja arendustegevuse valdkonna eest vastutava ministri hinnangul on juriidilise isiku või asutuse teadus- ja arendustegevuse evalveerimine vastavas valdkonnas vajalik. (4) Kui toimub käesoleva paragrahvi lõike 3 punktis 4 sätestatud ühinemine või jagunemine, teavitab teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool sellest teadus- ja arendustegevuse valdkonna eest vastutavat ministrit. (5) Kui juriidiline isik või asutus ei taotle evalveerimist teadus- ja arendustegevuse valdkonna eest vastutava ministri määratud tähtaja jooksul või läbib selle käesoleva seaduse § 16 lõikes 7 nimetatud negatiivse tulemusega, tunnistab teadus- ja arendustegevuse valdkonna eest vastutav minister § 16 lõikes 7 nimetatud positiivse evalveerimise otsuse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_3"
       },
@@ -3124,11 +3413,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Teadus- ja arendustegevuse valdkonna eest vastutav minister teeb teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile ettepaneku läbida evalveerimine teadus- ja arendustegevuse valdkonnas ning määrab selleks taotlemise tähtaja, kui: juriidilise isiku või asutuse teadus- ja arendustegevus ei vasta enam käesoleva seaduse § 16 lõikes 1 nimetatud tingimustele; ülikooli või evalveeritud rakenduskõrgkooli institutsionaalse akrediteerimise tulemus ei vasta käesoleva paragrahvi lõikes 2 nimetatud tingimustele; temaatilise hindamise tulemuste või asutuse teadus- ja arendustegevuse kohta kogutud andmete põhjal on selgunud, et juriidilise isiku või asutuse teadus- ja arendustegevuse tase ei vasta enam käesoleva seaduse § 16 lõikes 7 nimetatud positiivse otsuse aluseks olnud tasemele; teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool ühineb juriidilise isikuga või asutusega, mis ei ole evalveerimist käesoleva seaduse § 16 lõikes 7 nimetatud positiivse tulemusega läbinud, või kui teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool jaguneb ning teadus- ja arendustegevuse valdkonna eest vastutava ministri hinnangul on juriidilise isiku või asutuse teadus- ja arendustegevuse evalveerimine vastavas valdkonnas vajalik.",
+      "estleg:legalText": "(3) Teadus- ja arendustegevuse valdkonna eest vastutav minister teeb teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile ettepaneku läbida evalveerimine teadus- ja arendustegevuse valdkonnas ning määrab selleks taotlemise tähtaja, kui: 1) juriidilise isiku või asutuse teadus- ja arendustegevus ei vasta enam käesoleva seaduse § 16 lõikes 1 nimetatud tingimustele; 2) ülikooli või evalveeritud rakenduskõrgkooli institutsionaalse akrediteerimise tulemus ei vasta käesoleva paragrahvi lõikes 2 nimetatud tingimustele; 3) temaatilise hindamise tulemuste või asutuse teadus- ja arendustegevuse kohta kogutud andmete põhjal on selgunud, et juriidilise isiku või asutuse teadus- ja arendustegevuse tase ei vasta enam käesoleva seaduse § 16 lõikes 7 nimetatud positiivse otsuse aluseks olnud tasemele; 4) teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool ühineb juriidilise isikuga või asutusega, mis ei ole evalveerimist käesoleva seaduse § 16 lõikes 7 nimetatud positiivse tulemusega läbinud, või kui teadus- ja arendusasutus, ülikool või evalveeritud rakenduskõrgkool jaguneb ning teadus- ja arendustegevuse valdkonna eest vastutava ministri hinnangul on juriidilise isiku või asutuse teadus- ja arendustegevuse evalveerimine vastavas valdkonnas vajalik.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_17"
       },
       "rdfs:label": "§ 17 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3201,12 +3496,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Temaatiline hindamine",
+      "rdfs:label": {
+        "@value": "§ 18. Temaatiline hindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse valdkonna eest vastutaval ministril on õigus algatada iseseisvalt või teise ministeeriumi, teadus- ja arendusasutuse, ülikooli või evalveeritud rakenduskõrgkooli ettepanekul teadus- ja arendustegevuse taseme ja korralduslike aspektide temaatilisi hindamisi, et valmistada ette teaduspoliitilisi otsuseid ja meetmeid või hinnata nende mõju ja rakendamist ning anda teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele tagasisidet.",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse valdkonna eest vastutaval ministril on õigus algatada iseseisvalt või teise ministeeriumi, teadus- ja arendusasutuse, ülikooli või evalveeritud rakenduskõrgkooli ettepanekul teadus- ja arendustegevuse taseme ja korralduslike aspektide temaatilisi hindamisi, et valmistada ette teaduspoliitilisi otsuseid ja meetmeid või hinnata nende mõju ja rakendamist ning anda teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele tagasisidet.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadus- ja arendustegevuse valdkonna eest vastutaval ministril on õigus algatada iseseisvalt või teise ministeeriumi, teadus- ja arendusasutuse, ülikooli või evalveeritud rakenduskõrgkooli ettepanekul teadus- ja arendustegevuse taseme ja korralduslike aspektide temaatilisi hindamisi, et valmistada ette teaduspoliitilisi otsuseid ja meetmeid või hinnata nende mõju ja rakendamist ning anda teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele tagasisidet. (2) Temaatilise hindamise teema, osalejad ja täpsema korralduse kinnitab teadus- ja arendustegevuse valdkonna eest vastutav minister käskkirjaga. (3) Temaatilise hindamise kulud katab teadus- ja arendustegevuse valdkonna eest vastutav ministeerium, arvestades käesoleva paragrahvi lõikes 4 sätestatut. (4) Kui temaatiline hindamine tehakse konkreetse juriidilise isiku või asutuse huvides ning see ei ole riigi teaduspoliitika kujundamise seisukohalt määrava tähtsusega, kannab kulud juriidiline isik või asutus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_3"
@@ -3358,13 +3659,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Teadus- ja arendusasutuse, ülikooli ning evalveeritud rakenduskõrgkooli ülesanded ja kohustused teadus- ja arendustegevuses",
+      "rdfs:label": {
+        "@value": "§ 19. Teadus- ja arendusasutuse, ülikooli ning evalveeritud rakenduskõrgkooli ülesanded ja kohustused teadus- ja arendustegevuses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendusasutuse ülesanded avaliku hüve loomisel on: edendada teadust ning pakkuda ühiskonnale vajalikke teadus- ja arendustegevusel põhinevaid avalikke teenuseid; toetada ühiskonna ja majanduse arengut, teaduse rahvusvahelistumist ning eesti rahvuse, keele ja kultuuri püsimist ja arendamist. (2) Avalik hüve on hüve, mille tarbimine on avatud kõigile ühiskonna liikmetele ning mille tarbimine ühe isiku poolt ei vähenda teiste isikute tarbimiseks jäävat hüvise kogust.",
-      "estleg:legalText": "(1) Teadus- ja arendusasutuse ülesanded avaliku hüve loomisel on: edendada teadust ning pakkuda ühiskonnale vajalikke teadus- ja arendustegevusel põhinevaid avalikke teenuseid; toetada ühiskonna ja majanduse arengut, teaduse rahvusvahelistumist ning eesti rahvuse, keele ja kultuuri püsimist ja arendamist. (2) Avalik hüve on hüve, mille tarbimine on avatud kõigile ühiskonna liikmetele ning mille tarbimine ühe isiku poolt ei vähenda teiste isikute tarbimiseks jäävat hüvise kogust. (3) Ülikool lähtub teadus- ja arendustegevusega avaliku hüve loomisel kõrgharidusseaduse § 20 lõikes 2 sätestatud ülesannetest. (4) Evalveeritud rakenduskõrgkool lähtub teadus- ja arendustegevusega avaliku hüve loomisel kõrgharidusseaduse § 21 lõikes 2 sätestatud ülesannetest. (5) Teadus- ja arendusasutus, ülikool ning evalveeritud rakenduskõrgkool on kohustatud: tagama, et asutuse teadus- ja arendustegevus vastab üldtunnustatud teaduseetika normidele ning teaduse heale tavale ning looma vajalikud eeldused ja tingimused asutuses töötava teadlase teaduseetikaalase pädevuse arendamiseks; tagama, et teaduspublikatsioonid ja -andmed on leitavad, juurdepääsetavad, koostalitlusvõimelised ning taaskasutatavad, kui seda ei piira isikuandmete, intellektuaalomandi ega ärisaladuse kaitse ega teised õigusaktidest tulenevad piirangud; edastama käesoleva seaduse § 14 lõikes 2 nimetatud andmed infosüsteemi ja vastutama edastatavate andmete õigsuse eest. (6) Käesoleva paragrahvi lõike 5 punktis 1 nimetatud kohustuse täitmiseks võib teadus- ja arendusasutus, ülikool ja evalveeritud rakenduskõrgkool moodustada institutsionaalse eetikakomitee, kes annab hinnangu eetikakomitee moodustanud asutuse teadus- ja arendustegevuse eetilisuse kohta, vajaduse korral täidab isikuandmete kaitse seaduse § 6 lõikes 4 sätestatud ülesannet ning teisi asutuse antud ülesandeid.",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendusasutuse ülesanded avaliku hüve loomisel on: 1) edendada teadust ning pakkuda ühiskonnale vajalikke teadus- ja arendustegevusel põhinevaid avalikke teenuseid; 2) toetada ühiskonna ja majanduse arengut, teaduse rahvusvahelistumist ning eesti rahvuse, keele ja kultuuri püsimist ja arendamist. (2) Avalik hüve on hüve, mille tarbimine on avatud kõigile ühiskonna liikmetele ning mille tarbimine ühe isiku poolt ei vähenda teiste isikute tarbimiseks jäävat hüvise kogust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Teadus- ja arendusasutuse ülesanded avaliku hüve loomisel on: 1) edendada teadust ning pakkuda ühiskonnale vajalikke teadus- ja arendustegevusel põhinevaid avalikke teenuseid; 2) toetada ühiskonna ja majanduse arengut, teaduse rahvusvahelistumist ning eesti rahvuse, keele ja kultuuri püsimist ja arendamist. (2) Avalik hüve on hüve, mille tarbimine on avatud kõigile ühiskonna liikmetele ning mille tarbimine ühe isiku poolt ei vähenda teiste isikute tarbimiseks jäävat hüvise kogust. (3) Ülikool lähtub teadus- ja arendustegevusega avaliku hüve loomisel kõrgharidusseaduse § 20 lõikes 2 sätestatud ülesannetest. (4) Evalveeritud rakenduskõrgkool lähtub teadus- ja arendustegevusega avaliku hüve loomisel kõrgharidusseaduse § 21 lõikes 2 sätestatud ülesannetest. (5) Teadus- ja arendusasutus, ülikool ning evalveeritud rakenduskõrgkool on kohustatud: 1) tagama, et asutuse teadus- ja arendustegevus vastab üldtunnustatud teaduseetika normidele ning teaduse heale tavale ning looma vajalikud eeldused ja tingimused asutuses töötava teadlase teaduseetikaalase pädevuse arendamiseks; 2) tagama, et teaduspublikatsioonid ja -andmed on leitavad, juurdepääsetavad, koostalitlusvõimelised ning taaskasutatavad, kui seda ei piira isikuandmete, intellektuaalomandi ega ärisaladuse kaitse ega teised õigusaktidest tulenevad piirangud; 3) edastama käesoleva seaduse § 14 lõikes 2 nimetatud andmed infosüsteemi ja vastutama edastatavate andmete õigsuse eest. (6) Käesoleva paragrahvi lõike 5 punktis 1 nimetatud kohustuse täitmiseks võib teadus- ja arendusasutus, ülikool ja evalveeritud rakenduskõrgkool moodustada institutsionaalse eetikakomitee, kes annab hinnangu eetikakomitee moodustanud asutuse teadus- ja arendustegevuse eetilisuse kohta, vajaduse korral täidab isikuandmete kaitse seaduse § 6 lõikes 4 sätestatud ülesannet ning teisi asutuse antud ülesandeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_3"
       },
@@ -3416,11 +3723,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Teadus- ja arendusasutuse ülesanded avaliku hüve loomisel on: edendada teadust ning pakkuda ühiskonnale vajalikke teadus- ja arendustegevusel põhinevaid avalikke teenuseid; toetada ühiskonna ja majanduse arengut, teaduse rahvusvahelistumist ning eesti rahvuse, keele ja kultuuri püsimist ja arendamist.",
+      "estleg:legalText": "(1) Teadus- ja arendusasutuse ülesanded avaliku hüve loomisel on: 1) edendada teadust ning pakkuda ühiskonnale vajalikke teadus- ja arendustegevusel põhinevaid avalikke teenuseid; 2) toetada ühiskonna ja majanduse arengut, teaduse rahvusvahelistumist ning eesti rahvuse, keele ja kultuuri püsimist ja arendamist.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_19"
       },
-      "rdfs:label": "§ 19 lg 1"
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:TAIKS_Par_19_Lg_2",
@@ -3487,11 +3798,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Teadus- ja arendusasutus, ülikool ning evalveeritud rakenduskõrgkool on kohustatud: tagama, et asutuse teadus- ja arendustegevus vastab üldtunnustatud teaduseetika normidele ning teaduse heale tavale ning looma vajalikud eeldused ja tingimused asutuses töötava teadlase teaduseetikaalase pädevuse arendamiseks; tagama, et teaduspublikatsioonid ja -andmed on leitavad, juurdepääsetavad, koostalitlusvõimelised ning taaskasutatavad, kui seda ei piira isikuandmete, intellektuaalomandi ega ärisaladuse kaitse ega teised õigusaktidest tulenevad piirangud; edastama käesoleva seaduse § 14 lõikes 2 nimetatud andmed infosüsteemi ja vastutama edastatavate andmete õigsuse eest.",
+      "estleg:legalText": "(5) Teadus- ja arendusasutus, ülikool ning evalveeritud rakenduskõrgkool on kohustatud: 1) tagama, et asutuse teadus- ja arendustegevus vastab üldtunnustatud teaduseetika normidele ning teaduse heale tavale ning looma vajalikud eeldused ja tingimused asutuses töötava teadlase teaduseetikaalase pädevuse arendamiseks; 2) tagama, et teaduspublikatsioonid ja -andmed on leitavad, juurdepääsetavad, koostalitlusvõimelised ning taaskasutatavad, kui seda ei piira isikuandmete, intellektuaalomandi ega ärisaladuse kaitse ega teised õigusaktidest tulenevad piirangud; 3) edastama käesoleva seaduse § 14 lõikes 2 nimetatud andmed infosüsteemi ja vastutama edastatavate andmete õigsuse eest.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_19"
       },
       "rdfs:label": "§ 19 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -3548,13 +3864,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Teadus- ja arendustegevuse ning innovatsiooni riigieelarvelise rahastamise üldpõhimõtted",
+      "rdfs:label": {
+        "@value": "§ 20. Teadus- ja arendustegevuse ning innovatsiooni riigieelarvelise rahastamise üldpõhimõtted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse riigieelarvelise rahastamise eesmärk on: tagada avaliku hüvena pakutava teadus- ja arendustegevuse järjepidevus ning kvaliteet; maandada ettevõtjatele teadus- ja arendustegevusega kaasnevaid riske ning ületada turutõrked. (2) Innovatsiooni riigieelarvelise rahastamise eesmärk on aidata luua ja võtta kasutusele uusi tooteid, teenuseid ning protsesse, mis soodustavad majanduse ja ühiskonna arengut. (3) Teadus- ja arendustegevust ning innovatsiooni rahastatakse",
-      "estleg:legalText": "(1) Teadus- ja arendustegevuse riigieelarvelise rahastamise eesmärk on: tagada avaliku hüvena pakutava teadus- ja arendustegevuse järjepidevus ning kvaliteet; maandada ettevõtjatele teadus- ja arendustegevusega kaasnevaid riske ning ületada turutõrked. (2) Innovatsiooni riigieelarvelise rahastamise eesmärk on aidata luua ja võtta kasutusele uusi tooteid, teenuseid ning protsesse, mis soodustavad majanduse ja ühiskonna arengut. (3) Teadus- ja arendustegevust ning innovatsiooni rahastatakse riigieelarvest järgmiste rahastusvahendite kaudu: asutuse teadus- ja arendustegevuse toetus; riiklik uurimistoetus; teadus- ja arendustegevuse ning innovatsiooni sihttoetus; teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus; ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus; muudest õigusaktidest tulenevad vahendid. (4) Riigieelarvest eraldatud teadus- ja arendustegevuse vahendite kasutamisel tuleb toetuse saajal eristada raamatupidamises teadus- ja arendustegevusega seotud majandustegevus ja mittemajandustegevus, nende kulud ning rahastamine, välja arvatud juhul, kui toetus on antud kooskõlas komisjoni määrusega (EL) nr 651/2014 Euroopa Liidu toimimise lepingu artiklite 107 ja 108 kohaldamise kohta, millega teatavat liiki abi tunnistatakse siseturuga kokkusobivaks (ELT L 187, 26.06.2014, lk 1–78), või komisjoni määrusega (EL) 2023/2831, milles käsitletakse Euroopa Liidu toimimise lepingu artiklite 107 ja 108 kohaldamist vähese tähtsusega abi suhtes (ELT L, 2023/2831, 15.12.2023). (5) Mittemajandustegevusest saadav kasum tuleb toetuse saajal investeerida uuesti käesoleva seaduse § 16 lõike 1 punktides 1 ja 2 nimetatud tegevustesse. (6) Käesoleva paragrahvi lõike 3 punktides 1–5 nimetatud toetused nõutakse osaliselt või täielikult tagasi, kui toetuse saaja on rikkunud toetuse kasutamise tingimusi. (7) Käesoleva paragrahvi lõike 3 punktides 1–5 nimetatud toetuste tagasinõudmise korral on õigus toetuse saajalt nõuda viivist kuni 0,05 protsenti päevas iga toetuse tagasimaksmisega viivitatud kalendripäeva eest.",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse riigieelarvelise rahastamise eesmärk on: 1) tagada avaliku hüvena pakutava teadus- ja arendustegevuse järjepidevus ning kvaliteet; 2) maandada ettevõtjatele teadus- ja arendustegevusega kaasnevaid riske ning ületada turutõrked. (2) Innovatsiooni riigieelarvelise rahastamise eesmärk on aidata luua ja võtta kasutusele uusi tooteid, teenuseid ning protsesse, mis soodustavad majanduse ja ühiskonna arengut. (3) Teadus- ja arendustegevust ning innovatsiooni rahastatakse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Teadus- ja arendustegevuse riigieelarvelise rahastamise eesmärk on: 1) tagada avaliku hüvena pakutava teadus- ja arendustegevuse järjepidevus ning kvaliteet; 2) maandada ettevõtjatele teadus- ja arendustegevusega kaasnevaid riske ning ületada turutõrked. (2) Innovatsiooni riigieelarvelise rahastamise eesmärk on aidata luua ja võtta kasutusele uusi tooteid, teenuseid ning protsesse, mis soodustavad majanduse ja ühiskonna arengut. (3) Teadus- ja arendustegevust ning innovatsiooni rahastatakse riigieelarvest järgmiste rahastusvahendite kaudu: 1) asutuse teadus- ja arendustegevuse toetus; 2) riiklik uurimistoetus; 3) teadus- ja arendustegevuse ning innovatsiooni sihttoetus; 4) teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus; 5) ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus; 6) muudest õigusaktidest tulenevad vahendid. (4) Riigieelarvest eraldatud teadus- ja arendustegevuse vahendite kasutamisel tuleb toetuse saajal eristada raamatupidamises teadus- ja arendustegevusega seotud majandustegevus ja mittemajandustegevus, nende kulud ning rahastamine, välja arvatud juhul, kui toetus on antud kooskõlas komisjoni määrusega (EL) nr 651/2014 Euroopa Liidu toimimise lepingu artiklite 107 ja 108 kohaldamise kohta, millega teatavat liiki abi tunnistatakse siseturuga kokkusobivaks (ELT L 187, 26.06.2014, lk 1–78), või komisjoni määrusega (EL) 2023/2831, milles käsitletakse Euroopa Liidu toimimise lepingu artiklite 107 ja 108 kohaldamist vähese tähtsusega abi suhtes (ELT L, 2023/2831, 15.12.2023). (5) Mittemajandustegevusest saadav kasum tuleb toetuse saajal investeerida uuesti käesoleva seaduse § 16 lõike 1 punktides 1 ja 2 nimetatud tegevustesse. (6) Käesoleva paragrahvi lõike 3 punktides 1–5 nimetatud toetused nõutakse osaliselt või täielikult tagasi, kui toetuse saaja on rikkunud toetuse kasutamise tingimusi. (7) Käesoleva paragrahvi lõike 3 punktides 1–5 nimetatud toetuste tagasinõudmise korral on õigus toetuse saajalt nõuda viivist kuni 0,05 protsenti päevas iga toetuse tagasimaksmisega viivitatud kalendripäeva eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_4"
       },
@@ -3609,11 +3931,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Teadus- ja arendustegevuse riigieelarvelise rahastamise eesmärk on: tagada avaliku hüvena pakutava teadus- ja arendustegevuse järjepidevus ning kvaliteet; maandada ettevõtjatele teadus- ja arendustegevusega kaasnevaid riske ning ületada turutõrked.",
+      "estleg:legalText": "(1) Teadus- ja arendustegevuse riigieelarvelise rahastamise eesmärk on: 1) tagada avaliku hüvena pakutava teadus- ja arendustegevuse järjepidevus ning kvaliteet; 2) maandada ettevõtjatele teadus- ja arendustegevusega kaasnevaid riske ning ületada turutõrked.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_20"
       },
       "rdfs:label": "§ 20 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3644,11 +3970,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Teadus- ja arendustegevust ning innovatsiooni rahastatakse riigieelarvest järgmiste rahastusvahendite kaudu: asutuse teadus- ja arendustegevuse toetus; riiklik uurimistoetus; teadus- ja arendustegevuse ning innovatsiooni sihttoetus; teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus; ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus; muudest õigusaktidest tulenevad vahendid.",
+      "estleg:legalText": "(3) Teadus- ja arendustegevust ning innovatsiooni rahastatakse riigieelarvest järgmiste rahastusvahendite kaudu: 1) asutuse teadus- ja arendustegevuse toetus; 2) riiklik uurimistoetus; 3) teadus- ja arendustegevuse ning innovatsiooni sihttoetus; 4) teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus; 5) ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus; 6) muudest õigusaktidest tulenevad vahendid.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_20"
       },
       "rdfs:label": "§ 20 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3771,13 +4105,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Asutuse teadus- ja arendustegevuse toetus",
+      "rdfs:label": {
+        "@value": "§ 21. Asutuse teadus- ja arendustegevuse toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Asutuse teadus- ja arendustegevuse toetus on teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele nende teadus- ja arendustegevuse eesmärkide täitmiseks ning avaliku hüve loomiseks ettenähtud riigieelarveline toetus. (2) Asutuse teadus- ja arendustegevuse toetuse eelarve jaguneb vähemalt 70 protsendi ulatuses baasrahastuseks ja kuni 30 protsendi ulatuses tulemusrahastuseks. (3) Käesoleva paragrahvi lõikes 2 nimetatud baasrahastuse määramisel leitakse iga asutuse",
-      "estleg:legalText": "(1) Asutuse teadus- ja arendustegevuse toetus on teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele nende teadus- ja arendustegevuse eesmärkide täitmiseks ning avaliku hüve loomiseks ettenähtud riigieelarveline toetus. (2) Asutuse teadus- ja arendustegevuse toetuse eelarve jaguneb vähemalt 70 protsendi ulatuses baasrahastuseks ja kuni 30 protsendi ulatuses tulemusrahastuseks. (3) Käesoleva paragrahvi lõikes 2 nimetatud baasrahastuse määramisel leitakse iga asutuse osakaal, arvestades teadus- ja arendustegevuse toetust, mis on talle toetuse määramise kalendriaastale eelneva kolme kalendriaasta jooksul eraldatud, ning samal perioodil eraldatud teadus- ja arendustegevuse toetuse kogumahtu. (4) Käesoleva paragrahvi lõikes 2 nimetatud tulemusrahastamisel võetakse arvesse järgmisi tulemusnäitajaid: teadus- ja arendustegevuse kvaliteedi ning tulemuslikkuse näitajad, sealhulgas avaldatud eelretsenseeritud publikatsioonide ning intellektuaalomandiga seotud näitajad; teadlaste järelkasvu näitajad, sealhulgas kaitstud doktorikraadide näitajad; ühiskonna arengu toetamise ja teadmussiirde näitajad, sealhulgas teadus- ja arendustegevuse teenuste osutamise eest ja toetustena saadud tuludega seotud näitajad. (5) Teadus- ja arendustegevuse või innovatsiooni valdkonna eest vastutava ministri otsusel võib käesoleva paragrahvi lõikes 3 nimetatud osakaalu kujundamisel arvesse võtta: asutusele eraldatud siht- ja süsteemitoetust; asutuse ümberkorraldamise või liitmise tulemusel toimunud muutusi. (6) Riigi ja avalik-õiguslikele ning mittetulundusühingu ja sihtasutusena tegutsevatele teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele eraldatakse asutuse teadus- ja arendustegevuse toetust teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi eelarvest. (7) Äriühingutena tegutsevatele eraõiguslikele teadus- ja arendusasutustele eraldatakse asutuse teadus- ja arendustegevuse toetust innovatsiooni valdkonna eest vastutava ministeeriumi eelarvest. (8) Teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi eelarvest eraldatavast toetuse kogumahust vähemalt 5 protsenti eraldatakse rahvusteaduste toetamiseks riigi ja avalik-õiguslikes teadus- ja arendusasutustes, ülikoolides ning evalveeritud rakenduskõrgkoolides. (9) Rahvusteadused on Eesti ajalugu, folkloristika, keeleteadus, kunstiteadus, sealhulgas muusika- ja teatriteadus, kirjandusteadus ning teised teadused, mille uurimistulemustel on otsene mõju eestlaste enesemääratlusele ning mis aitavad kujundada ja säilitada eestlaste identiteeti. (10) Asutuse teadus- ja arendustegevuse toetuse iga-aastase jaotuse riigi ja avalik-õiguslike ning mittetulundusühingu ja sihtasutusena tegutsevate teadus- ja arendusasutuste, ülikoolide ja evalveeritud rakenduskõrgkoolide vahel kinnitab teadus- ja arendustegevuse valdkonna eest vastutav minister käskkirjaga. (11) Äriühingutena tegutsevate eraõiguslike teadus- ja arendusasutuste teadus- ja arendustegevuse toetuse iga-aastase jaotuse kinnitab innovatsiooni valdkonna eest vastutav minister käskkirjaga. (12) Ülikoolile ja juriidilise isikuna tegutsevale teadus- ja arendusasutusele eraldatakse teadus- ja arendustegevuse toetus lepinguga. (13) Asutuse teadus- ja arendustegevuse toetuse eraldamise ning toetuse tagasinõudmise täpsemad tingimused ja korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Asutuse teadus- ja arendustegevuse toetus on teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele nende teadus- ja arendustegevuse eesmärkide täitmiseks ning avaliku hüve loomiseks ettenähtud riigieelarveline toetus. (2) Asutuse teadus- ja arendustegevuse toetuse eelarve jaguneb vähemalt 70 protsendi ulatuses baasrahastuseks ja kuni 30 protsendi ulatuses tulemusrahastuseks. (3) Käesoleva paragrahvi lõikes 2 nimetatud baasrahastuse määramisel leitakse iga asutuse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Asutuse teadus- ja arendustegevuse toetus on teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele nende teadus- ja arendustegevuse eesmärkide täitmiseks ning avaliku hüve loomiseks ettenähtud riigieelarveline toetus. (2) Asutuse teadus- ja arendustegevuse toetuse eelarve jaguneb vähemalt 70 protsendi ulatuses baasrahastuseks ja kuni 30 protsendi ulatuses tulemusrahastuseks. (3) Käesoleva paragrahvi lõikes 2 nimetatud baasrahastuse määramisel leitakse iga asutuse osakaal, arvestades teadus- ja arendustegevuse toetust, mis on talle toetuse määramise kalendriaastale eelneva kolme kalendriaasta jooksul eraldatud, ning samal perioodil eraldatud teadus- ja arendustegevuse toetuse kogumahtu. (4) Käesoleva paragrahvi lõikes 2 nimetatud tulemusrahastamisel võetakse arvesse järgmisi tulemusnäitajaid: 1) teadus- ja arendustegevuse kvaliteedi ning tulemuslikkuse näitajad, sealhulgas avaldatud eelretsenseeritud publikatsioonide ning intellektuaalomandiga seotud näitajad; 2) teadlaste järelkasvu näitajad, sealhulgas kaitstud doktorikraadide näitajad; 3) ühiskonna arengu toetamise ja teadmussiirde näitajad, sealhulgas teadus- ja arendustegevuse teenuste osutamise eest ja toetustena saadud tuludega seotud näitajad. (5) Teadus- ja arendustegevuse või innovatsiooni valdkonna eest vastutava ministri otsusel võib käesoleva paragrahvi lõikes 3 nimetatud osakaalu kujundamisel arvesse võtta: 1) asutusele eraldatud siht- ja süsteemitoetust; 2) asutuse ümberkorraldamise või liitmise tulemusel toimunud muutusi. (6) Riigi ja avalik-õiguslikele ning mittetulundusühingu ja sihtasutusena tegutsevatele teadus- ja arendusasutustele, ülikoolidele ja evalveeritud rakenduskõrgkoolidele eraldatakse asutuse teadus- ja arendustegevuse toetust teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi eelarvest. (7) Äriühingutena tegutsevatele eraõiguslikele teadus- ja arendusasutustele eraldatakse asutuse teadus- ja arendustegevuse toetust innovatsiooni valdkonna eest vastutava ministeeriumi eelarvest. (8) Teadus- ja arendustegevuse valdkonna eest vastutava ministeeriumi eelarvest eraldatavast toetuse kogumahust vähemalt 5 protsenti eraldatakse rahvusteaduste toetamiseks riigi ja avalik-õiguslikes teadus- ja arendusasutustes, ülikoolides ning evalveeritud rakenduskõrgkoolides. (9) Rahvusteadused on Eesti ajalugu, folkloristika, keeleteadus, kunstiteadus, sealhulgas muusika- ja teatriteadus, kirjandusteadus ning teised teadused, mille uurimistulemustel on otsene mõju eestlaste enesemääratlusele ning mis aitavad kujundada ja säilitada eestlaste identiteeti. (10) Asutuse teadus- ja arendustegevuse toetuse iga-aastase jaotuse riigi ja avalik-õiguslike ning mittetulundusühingu ja sihtasutusena tegutsevate teadus- ja arendusasutuste, ülikoolide ja evalveeritud rakenduskõrgkoolide vahel kinnitab teadus- ja arendustegevuse valdkonna eest vastutav minister käskkirjaga. (11) Äriühingutena tegutsevate eraõiguslike teadus- ja arendusasutuste teadus- ja arendustegevuse toetuse iga-aastase jaotuse kinnitab innovatsiooni valdkonna eest vastutav minister käskkirjaga. (12) Ülikoolile ja juriidilise isikuna tegutsevale teadus- ja arendusasutusele eraldatakse teadus- ja arendustegevuse toetus lepinguga. (13) Asutuse teadus- ja arendustegevuse toetuse eraldamise ning toetuse tagasinõudmise täpsemad tingimused ja korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_4"
       },
@@ -3927,11 +4267,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 2 nimetatud tulemusrahastamisel võetakse arvesse järgmisi tulemusnäitajaid: teadus- ja arendustegevuse kvaliteedi ning tulemuslikkuse näitajad, sealhulgas avaldatud eelretsenseeritud publikatsioonide ning intellektuaalomandiga seotud näitajad; teadlaste järelkasvu näitajad, sealhulgas kaitstud doktorikraadide näitajad; ühiskonna arengu toetamise ja teadmussiirde näitajad, sealhulgas teadus- ja arendustegevuse teenuste osutamise eest ja toetustena saadud tuludega seotud näitajad.",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 2 nimetatud tulemusrahastamisel võetakse arvesse järgmisi tulemusnäitajaid: 1) teadus- ja arendustegevuse kvaliteedi ning tulemuslikkuse näitajad, sealhulgas avaldatud eelretsenseeritud publikatsioonide ning intellektuaalomandiga seotud näitajad; 2) teadlaste järelkasvu näitajad, sealhulgas kaitstud doktorikraadide näitajad; 3) ühiskonna arengu toetamise ja teadmussiirde näitajad, sealhulgas teadus- ja arendustegevuse teenuste osutamise eest ja toetustena saadud tuludega seotud näitajad.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_21"
       },
-      "rdfs:label": "§ 21 lg 4"
+      "rdfs:label": "§ 21 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:TAIKS_Par_21_Lg_5",
@@ -3940,11 +4285,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Teadus- ja arendustegevuse või innovatsiooni valdkonna eest vastutava ministri otsusel võib käesoleva paragrahvi lõikes 3 nimetatud osakaalu kujundamisel arvesse võtta: asutusele eraldatud siht- ja süsteemitoetust; asutuse ümberkorraldamise või liitmise tulemusel toimunud muutusi.",
+      "estleg:legalText": "(5) Teadus- ja arendustegevuse või innovatsiooni valdkonna eest vastutava ministri otsusel võib käesoleva paragrahvi lõikes 3 nimetatud osakaalu kujundamisel arvesse võtta: 1) asutusele eraldatud siht- ja süsteemitoetust; 2) asutuse ümberkorraldamise või liitmise tulemusel toimunud muutusi.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_21"
       },
       "rdfs:label": "§ 21 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -4155,12 +4504,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Riiklik uurimistoetus",
+      "rdfs:label": {
+        "@value": "§ 22. Riiklik uurimistoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Riiklik uurimistoetus on konkurentsipõhine toetus teadus- ja arendusasutuses, ülikoolis või evalveeritud rakenduskõrgkoolis töötava doktorikraadiga teadlase juhitud kõrgetasemelise teadus- ja arendustegevuse projekti elluviimiseks. (2) Riikliku uurimistoetuse väljaandmist korraldab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Riikliku uurimistoetuse teadus- ja arendustegevuse projektide valik toimub rahvusvaheliselt tunnustatud hindamiskriteeriumite alusel, tagades kõigi",
+      "estleg:summary": {
+        "@value": "(1) Riiklik uurimistoetus on konkurentsipõhine toetus teadus- ja arendusasutuses, ülikoolis või evalveeritud rakenduskõrgkoolis töötava doktorikraadiga teadlase juhitud kõrgetasemelise teadus- ja arendustegevuse projekti elluviimiseks. (2) Riikliku uurimistoetuse väljaandmist korraldab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Riikliku uurimistoetuse teadus- ja arendustegevuse projektide valik toimub rahvusvaheliselt tunnustatud hindamiskriteeriumite alusel, tagades kõigi",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riiklik uurimistoetus on konkurentsipõhine toetus teadus- ja arendusasutuses, ülikoolis või evalveeritud rakenduskõrgkoolis töötava doktorikraadiga teadlase juhitud kõrgetasemelise teadus- ja arendustegevuse projekti elluviimiseks. (2) Riikliku uurimistoetuse väljaandmist korraldab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Riikliku uurimistoetuse teadus- ja arendustegevuse projektide valik toimub rahvusvaheliselt tunnustatud hindamiskriteeriumite alusel, tagades kõigi teadusvaldkondade võrdse kohtlemise ja otsustusprotsessi sõltumatuse. (4) Riikliku uurimistoetuse taotlemise, taotluse hindamise, toetuse määramise ning toetuse tagasinõudmise täpsemad tingimused ja korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_4"
@@ -4279,12 +4634,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Teadus- ja arendustegevuse ning innovatsiooni sihttoetus",
+      "rdfs:label": {
+        "@value": "§ 23. Teadus- ja arendustegevuse ning innovatsiooni sihttoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse ning innovatsiooni sihttoetus on isikule või asutusele riigi eesmärkide täitmiseks määratav teadus- ja arendustegevuse või innovatsiooni toetus. (2) Sihttoetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega. (3) Valdkonna eest vastutav minister võib halduslepinguga volitada ministeeriumi valitsemisala vahendite arvelt sihttoetuse eraldamise haldusülesannet täitma teadus- ja arendustegevuse poliitika rakendusüksuse,",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse ning innovatsiooni sihttoetus on isikule või asutusele riigi eesmärkide täitmiseks määratav teadus- ja arendustegevuse või innovatsiooni toetus. (2) Sihttoetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega. (3) Valdkonna eest vastutav minister võib halduslepinguga volitada ministeeriumi valitsemisala vahendite arvelt sihttoetuse eraldamise haldusülesannet täitma teadus- ja arendustegevuse poliitika rakendusüksuse,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadus- ja arendustegevuse ning innovatsiooni sihttoetus on isikule või asutusele riigi eesmärkide täitmiseks määratav teadus- ja arendustegevuse või innovatsiooni toetus. (2) Sihttoetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega. (3) Valdkonna eest vastutav minister võib halduslepinguga volitada ministeeriumi valitsemisala vahendite arvelt sihttoetuse eraldamise haldusülesannet täitma teadus- ja arendustegevuse poliitika rakendusüksuse, kohaldamata halduskoostöö seaduse § 5 lõikeid 2 ja 3, § 6 lõikeid 1 ja 2 ning § 14 lõiget 1. Sellise halduslepingu sõlmimisele ei kohaldata halduskoostöö seaduse § 13 ega § 14 lõiget 3.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_4"
@@ -4425,12 +4786,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus",
+      "rdfs:label": {
+        "@value": "§ 24. Teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus on juriidilistele isikutele ja asutustele teadus- ja arendustegevuse ning innovatsioonisüsteemi institutsionaalseks ja tehniliseks toimimiseks ning teadus- ja arendustegevuse ning innovatsiooni mõju kasvatamiseks antav toetus. (2) Teadus- ja arendustegevuse valdkonna süsteemitoetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega. (3) Innovatsiooni valdkonna süsteemitoetuse eraldamise ja",
+      "estleg:summary": {
+        "@value": "(1) Teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus on juriidilistele isikutele ja asutustele teadus- ja arendustegevuse ning innovatsioonisüsteemi institutsionaalseks ja tehniliseks toimimiseks ning teadus- ja arendustegevuse ning innovatsiooni mõju kasvatamiseks antav toetus. (2) Teadus- ja arendustegevuse valdkonna süsteemitoetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega. (3) Innovatsiooni valdkonna süsteemitoetuse eraldamise ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadus- ja arendustegevuse ning innovatsiooni süsteemitoetus on juriidilistele isikutele ja asutustele teadus- ja arendustegevuse ning innovatsioonisüsteemi institutsionaalseks ja tehniliseks toimimiseks ning teadus- ja arendustegevuse ning innovatsiooni mõju kasvatamiseks antav toetus. (2) Teadus- ja arendustegevuse valdkonna süsteemitoetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega. (3) Innovatsiooni valdkonna süsteemitoetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_4"
@@ -4531,12 +4898,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus",
+      "rdfs:label": {
+        "@value": "§ 25. Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus on Eesti ettevõtjatele antav konkurentsipõhine riigieelarveline toetus ühiskonna ja majanduse arengu vajadustest lähtuva teadus- ja arendustegevuse ning sellega kaasnevate tegevuste toetamiseks. (2) Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus on Eesti ettevõtjatele antav konkurentsipõhine riigieelarveline toetus ühiskonna ja majanduse arengu vajadustest lähtuva teadus- ja arendustegevuse ning sellega kaasnevate tegevuste toetamiseks. (2) Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetus on Eesti ettevõtjatele antav konkurentsipõhine riigieelarveline toetus ühiskonna ja majanduse arengu vajadustest lähtuva teadus- ja arendustegevuse ning sellega kaasnevate tegevuste toetamiseks. (2) Ettevõtja teadus- ja arendustegevuse ning innovatsiooni toetuse eraldamise ja toetuse tagasinõudmise täpsemad tingimused ning korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_4"
@@ -4618,12 +4991,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Teaduseetika komitee",
+      "rdfs:label": {
+        "@value": "§ 26. Teaduseetika komitee",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teaduseetika komitee on sõltumatu eri valdkonna ekspertidest koosnev kogu, mille tegevuse eesmärk on anda hinnang teadus- ja arendustegevuse eetilisusele ja vajaduse korral täita isikuandmete kaitse seaduse § 6 lõikes 4 sätestatud ülesannet ning tagada teadusuuringusse kaasatud isikute õiguste, ohutuse ja heaolu kaitse. (2) Teaduseetika komitee moodustab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Teadus- ja arendustegevuse poliitika rakendusüksus võib moodustada teaduseetika",
+      "estleg:summary": {
+        "@value": "(1) Teaduseetika komitee on sõltumatu eri valdkonna ekspertidest koosnev kogu, mille tegevuse eesmärk on anda hinnang teadus- ja arendustegevuse eetilisusele ja vajaduse korral täita isikuandmete kaitse seaduse § 6 lõikes 4 sätestatud ülesannet ning tagada teadusuuringusse kaasatud isikute õiguste, ohutuse ja heaolu kaitse. (2) Teaduseetika komitee moodustab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Teadus- ja arendustegevuse poliitika rakendusüksus võib moodustada teaduseetika",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teaduseetika komitee on sõltumatu eri valdkonna ekspertidest koosnev kogu, mille tegevuse eesmärk on anda hinnang teadus- ja arendustegevuse eetilisusele ja vajaduse korral täita isikuandmete kaitse seaduse § 6 lõikes 4 sätestatud ülesannet ning tagada teadusuuringusse kaasatud isikute õiguste, ohutuse ja heaolu kaitse. (2) Teaduseetika komitee moodustab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Teadus- ja arendustegevuse poliitika rakendusüksus võib moodustada teaduseetika komitee valdkondlikke või regionaalseid alamkomiteesid, millel on õigus anda iseseisvalt käesoleva paragrahvi lõikes 1 nimetatud hinnangut ning otsustada oma tegevuse üle. (4) Teaduseetika komitee annab hinnangu teadus- ja arendustegevuse eetilisusele osas, mis ei ole reguleeritud teiste seadustega. (5) Teaduseetika komitee teenused, sealhulgas hinnangu andmine teadus- ja arendustegevuse ning selle eetilisuse kohta, võivad olla tasulised. (6) Teaduseetika komitee teenuse tasu ühe teenuse osutamise eest ei tohi olla suurem kui 3000 eurot. Tasu suuruse kehtestamisel lähtutakse teaduseetika komitee hinnangu andmisega kaasnevatest kuludest. (7) Teaduseetika komitee moodustamise korra ja taotluste menetlemise tingimused, samuti käesoleva paragrahvi lõikes 5 nimetatud tasuliste teenuste loetelu, tasude suuruse ning tasu küsimise korra kehtestab määrusega. (8) Teaduseetika komitee täidab teisi talle õigusaktidega pandud ülesandeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_5"
@@ -4898,12 +5277,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Teaduseetika väärkäitumisjuhtumite menetlemise komisjon",
+      "rdfs:label": {
+        "@value": "§ 27. Teaduseetika väärkäitumisjuhtumite menetlemise komisjon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Teaduseetika väärkäitumisjuhtumite menetlemise komisjon on sõltumatu teaduseetika rikkumise kahtlusele ja vajaduse korral rikkumiskahtluse menetlemisele hinnangut andev kogu, mille tegevuse eesmärk on tagada teadus- ja arendustegevuse vastavus üldtunnustatud teaduseetika normidele ja teaduse heale tavale. (2) Teaduseetika väärkäitumisjuhtumite menetlemise komisjoni moodustab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Teaduseetika väärkäitumisjuhtumite menetlemise komisjon võib",
+      "estleg:summary": {
+        "@value": "(1) Teaduseetika väärkäitumisjuhtumite menetlemise komisjon on sõltumatu teaduseetika rikkumise kahtlusele ja vajaduse korral rikkumiskahtluse menetlemisele hinnangut andev kogu, mille tegevuse eesmärk on tagada teadus- ja arendustegevuse vastavus üldtunnustatud teaduseetika normidele ja teaduse heale tavale. (2) Teaduseetika väärkäitumisjuhtumite menetlemise komisjoni moodustab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Teaduseetika väärkäitumisjuhtumite menetlemise komisjon võib",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teaduseetika väärkäitumisjuhtumite menetlemise komisjon on sõltumatu teaduseetika rikkumise kahtlusele ja vajaduse korral rikkumiskahtluse menetlemisele hinnangut andev kogu, mille tegevuse eesmärk on tagada teadus- ja arendustegevuse vastavus üldtunnustatud teaduseetika normidele ja teaduse heale tavale. (2) Teaduseetika väärkäitumisjuhtumite menetlemise komisjoni moodustab teadus- ja arendustegevuse poliitika rakendusüksus. (3) Teaduseetika väärkäitumisjuhtumite menetlemise komisjon võib teaduseetika rikkumise kahtlusest teadasaamise korral algatada hinnangu andmise menetluse, teavitades sellest osapooli. Menetluse algatamisel on komisjonil õigus küsida osapooltelt juhtumiga seotud dokumente ja teavet. (4) Teaduseetika väärkäitumisjuhtumite menetlemise komisjon annab teaduseetika rikkumise kahtluse kohta hinnangu ning teeb selle osapooltele teatavaks. Teaduseetika väärkäitumisjuhtumite menetlemise komisjonil on teaduseetika väärkäitumisjuhtumi tuvastamisel õigus teha teadus- ja arendustegevuse valdkonna eest vastutavale ministeeriumile ettepanek järelevalve algatamiseks käesoleva seaduse §-s 29 sätestatud tingimustel, teavitades sellest osapooli. (5) Teaduseetika väärkäitumisjuhtumite menetlemise komisjoni teenused, sealhulgas hinnangu andmine teaduseetika rikkumise kahtlusele ja rikkumiskahtluse menetlemisele, võivad olla tasulised. (6) Teaduseetika väärkäitumisjuhtumite menetlemise komisjoni teenuse tasu ühe teenuse osutamise eest ei tohi olla suurem kui 3000 eurot. Tasu suuruse kehtestamisel lähtutakse komisjoni hinnangu andmisega kaasnevatest kuludest. (7) Teaduseetika väärkäitumisjuhtumite menetlemise komisjoni moodustamise korra ja hinnangute andmise korra, samuti käesoleva paragrahvi lõikes 5 nimetatud tasuliste teenuste loetelu, tasude suuruse ning tasu küsimise korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_5"
@@ -5093,12 +5478,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Alla 18-aastase isiku kaasamine teadusuuringusse",
+      "rdfs:label": {
+        "@value": "§ 28. Alla 18-aastase isiku kaasamine teadusuuringusse",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Alla 18-aastase isiku osalemiseks teadusuuringus annab isiku eeldatavat tahet arvestades nõusoleku tema seaduslik esindaja, arvestades käesoleva paragrahvi lõigetes 2–4 sätestatut. Alla 18-aastast isikut tuleb teavitada teadusuuringu asjaoludest tema arusaamisvõime kohaselt. (2) Kui käesoleva paragrahvi lõikes 1 nimetatud seadusliku esindaja nõusolek alla 18-aastase isiku osalemiseks teadusuuringus ilmselgelt kahjustab isiku huve või isik ei soovi teadusuuringus osaleda, on nõusolek kehtetu.",
+      "estleg:summary": {
+        "@value": "(1) Alla 18-aastase isiku osalemiseks teadusuuringus annab isiku eeldatavat tahet arvestades nõusoleku tema seaduslik esindaja, arvestades käesoleva paragrahvi lõigetes 2–4 sätestatut. Alla 18-aastast isikut tuleb teavitada teadusuuringu asjaoludest tema arusaamisvõime kohaselt. (2) Kui käesoleva paragrahvi lõikes 1 nimetatud seadusliku esindaja nõusolek alla 18-aastase isiku osalemiseks teadusuuringus ilmselgelt kahjustab isiku huve või isik ei soovi teadusuuringus osaleda, on nõusolek kehtetu.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Alla 18-aastase isiku osalemiseks teadusuuringus annab isiku eeldatavat tahet arvestades nõusoleku tema seaduslik esindaja, arvestades käesoleva paragrahvi lõigetes 2–4 sätestatut. Alla 18-aastast isikut tuleb teavitada teadusuuringu asjaoludest tema arusaamisvõime kohaselt. (2) Kui käesoleva paragrahvi lõikes 1 nimetatud seadusliku esindaja nõusolek alla 18-aastase isiku osalemiseks teadusuuringus ilmselgelt kahjustab isiku huve või isik ei soovi teadusuuringus osaleda, on nõusolek kehtetu. (3) Teadusuuringu tegija peab võtma 7–17-aastase isiku osalemiseks teadusuuringus teadva nõusoleku nii 7–17-aastaselt isikult kui ka tema seaduslikult esindajalt, välja arvatud käesoleva paragrahvi lõikes 4 nimetatud juhul. (4) 15–17-aastane isik võib anda iseseisvalt, ilma seadusliku esindaja nõusolekuta, teadva nõusoleku teadusuuringus osalemiseks ja sel eesmärgil oma isikuandmete töötlemiseks, tingimusel et isik on võimeline aru saama teadusuuringu asjaoludest, teadusuuring ei ole füüsiliselt sekkuv ning vaimselt sekkuva teadusuuringu kohta on käesoleva seaduse või muu seaduse alusel moodustatud eetikakomitee andnud hinnangu, et teadusuuring vastab teaduseetika põhimõtetele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_5"
@@ -5242,13 +5633,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Riiklik ja haldusjärelevalve",
+      "rdfs:label": {
+        "@value": "§ 29. Riiklik ja haldusjärelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "(1) Haridus- ja Teadusministeerium teeb riiklikku või haldusjärelevalvet teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli ning teadus- ja arendustegevuse poliitika rakendusüksuse tegevuse üle käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete täitmisel. (2) Majandus- ja Kommunikatsiooniministeerium teeb riiklikku või haldusjärelevalvet innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse tegevuse üle käesoleva seaduse ja selle alusel",
-      "estleg:legalText": "(1) Haridus- ja Teadusministeerium teeb riiklikku või haldusjärelevalvet teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli ning teadus- ja arendustegevuse poliitika rakendusüksuse tegevuse üle käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete täitmisel. (2) Majandus- ja Kommunikatsiooniministeerium teeb riiklikku või haldusjärelevalvet innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse tegevuse üle käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete täitmisel. (3) Haridus- ja Teadusministeeriumil on käesoleva paragrahvi lõikes 1 ning Majandus- ja Kommunikatsiooniministeeriumil lõikes 2 sätestatud volituste piires järelevalveks õigus: tutvuda teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli, teadus- ja arendustegevuse poliitika rakendusüksuse, innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse käsutuses olevate tõendite ja andmetega, mille alusel on võimalik teha kindlaks järelevalveasutuse ülesannete täitmiseks olulised asjaolud, ning saada dokumentidest ärakirju või väljavõtteid; teha ettekirjutusi käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete rikkumise lõpetamiseks, edasiste rikkumiste ärahoidmiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks; kaasata järelevalvesse eksperte. (4) Haridus- ja Teadusministeerium ning Majandus- ja Kommunikatsiooniministeerium võib käesolevas paragrahvis sätestatud riikliku järelevalve tegemiseks kohaldada korrakaitseseaduse §-des 30 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ning korras.",
+      "estleg:summary": {
+        "@value": "(1) Haridus- ja Teadusministeerium teeb riiklikku või haldusjärelevalvet teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli ning teadus- ja arendustegevuse poliitika rakendusüksuse tegevuse üle käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete täitmisel. (2) Majandus- ja Kommunikatsiooniministeerium teeb riiklikku või haldusjärelevalvet innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse tegevuse üle käesoleva seaduse ja selle alusel",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Haridus- ja Teadusministeerium teeb riiklikku või haldusjärelevalvet teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli ning teadus- ja arendustegevuse poliitika rakendusüksuse tegevuse üle käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete täitmisel. (2) Majandus- ja Kommunikatsiooniministeerium teeb riiklikku või haldusjärelevalvet innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse tegevuse üle käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete täitmisel. (3) Haridus- ja Teadusministeeriumil on käesoleva paragrahvi lõikes 1 ning Majandus- ja Kommunikatsiooniministeeriumil lõikes 2 sätestatud volituste piires järelevalveks õigus: 1) tutvuda teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli, teadus- ja arendustegevuse poliitika rakendusüksuse, innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse käsutuses olevate tõendite ja andmetega, mille alusel on võimalik teha kindlaks järelevalveasutuse ülesannete täitmiseks olulised asjaolud, ning saada dokumentidest ärakirju või väljavõtteid; 2) teha ettekirjutusi käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete rikkumise lõpetamiseks, edasiste rikkumiste ärahoidmiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks; 3) kaasata järelevalvesse eksperte. (4) Haridus- ja Teadusministeerium ning Majandus- ja Kommunikatsiooniministeerium võib käesolevas paragrahvis sätestatud riikliku järelevalve tegemiseks kohaldada korrakaitseseaduse §-des 30 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ning korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_6"
       },
@@ -5358,11 +5755,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Haridus- ja Teadusministeeriumil on käesoleva paragrahvi lõikes 1 ning Majandus- ja Kommunikatsiooniministeeriumil lõikes 2 sätestatud volituste piires järelevalveks õigus: tutvuda teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli, teadus- ja arendustegevuse poliitika rakendusüksuse, innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse käsutuses olevate tõendite ja andmetega, mille alusel on võimalik teha kindlaks järelevalveasutuse ülesannete täitmiseks olulised asjaolud, ning saada dokumentidest ärakirju või väljavõtteid; teha ettekirjutusi käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete rikkumise lõpetamiseks, edasiste rikkumiste ärahoidmiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks; kaasata järelevalvesse eksperte.",
+      "estleg:legalText": "(3) Haridus- ja Teadusministeeriumil on käesoleva paragrahvi lõikes 1 ning Majandus- ja Kommunikatsiooniministeeriumil lõikes 2 sätestatud volituste piires järelevalveks õigus: 1) tutvuda teadus- ja arendusasutuse, ülikooli, evalveeritud rakenduskõrgkooli, teadus- ja arendustegevuse poliitika rakendusüksuse, innovatsioonipoliitika rakendusüksuse ning rakendusuuringute keskuse käsutuses olevate tõendite ja andmetega, mille alusel on võimalik teha kindlaks järelevalveasutuse ülesannete täitmiseks olulised asjaolud, ning saada dokumentidest ärakirju või väljavõtteid; 2) teha ettekirjutusi käesoleva seaduse ja selle alusel kehtestatud õigusaktidega sätestatud nõuete rikkumise lõpetamiseks, edasiste rikkumiste ärahoidmiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks; 3) kaasata järelevalvesse eksperte.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_29"
       },
       "rdfs:label": "§ 29 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -5421,12 +5823,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. 2025. aasta evalveerimise positiivse tulemuse kehtivus",
+      "rdfs:label": {
+        "@value": "§ 30. 2025. aasta evalveerimise positiivse tulemuse kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "2025. aasta korralise evalveerimise positiivne otsus kehtib kuni otsuses nimetatud tähtajani või kuni asutuse järgmise evalveerimisotsuse kinnitamiseni.",
+      "estleg:summary": {
+        "@value": "2025. aasta korralise evalveerimise positiivne otsus kehtib kuni otsuses nimetatud tähtajani või kuni asutuse järgmise evalveerimisotsuse kinnitamiseni.",
+        "@language": "et"
+      },
       "estleg:legalText": "2025. aasta korralise evalveerimise positiivne otsus kehtib kuni otsuses nimetatud tähtajani või kuni asutuse järgmise evalveerimisotsuse kinnitamiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5460,10 +5868,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "2025. aasta korralise evalveerimise positiivne otsus kehtib kuni otsuses nimetatud tähtajani või kuni asutuse järgmise evalveerimisotsuse kinnitamiseni.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) 2025. aasta korralise evalveerimise positiivne otsus kehtib kuni otsuses nimetatud tähtajani või kuni asutuse järgmise evalveerimisotsuse kinnitamiseni.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_30"
       },
+      "rdfs:label": "§ 30 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -5481,12 +5891,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Asutuse teadus- ja arendustegevuse toetuse baasrahastuse arvestamine aastatel 2026–2028",
+      "rdfs:label": {
+        "@value": "§ 31. Asutuse teadus- ja arendustegevuse toetuse baasrahastuse arvestamine aastatel 2026–2028",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse §-s 21 sätestatud asutuse teadus- ja arendustegevuse toetuse baasrahastuse arvestamisel aastateks 2026–2028 võetakse aluseks teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile asutuse teadus- ja arendustegevuse toetuse määramise kalendriaastale eelneva kolme kalendriaasta jooksul eraldatud sama liiki toetus ja baasfinantseerimine osakaaluna samal perioodil teadus- ja arendusasutustele, ülikoolidele või evalveeritud rakenduskõrgkoolidele eraldatud",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse §-s 21 sätestatud asutuse teadus- ja arendustegevuse toetuse baasrahastuse arvestamisel aastateks 2026–2028 võetakse aluseks teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile asutuse teadus- ja arendustegevuse toetuse määramise kalendriaastale eelneva kolme kalendriaasta jooksul eraldatud sama liiki toetus ja baasfinantseerimine osakaaluna samal perioodil teadus- ja arendusasutustele, ülikoolidele või evalveeritud rakenduskõrgkoolidele eraldatud",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse §-s 21 sätestatud asutuse teadus- ja arendustegevuse toetuse baasrahastuse arvestamisel aastateks 2026–2028 võetakse aluseks teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile asutuse teadus- ja arendustegevuse toetuse määramise kalendriaastale eelneva kolme kalendriaasta jooksul eraldatud sama liiki toetus ja baasfinantseerimine osakaaluna samal perioodil teadus- ja arendusasutustele, ülikoolidele või evalveeritud rakenduskõrgkoolidele eraldatud asutuse teadus- ja arendustegevuse toetuse ja baasfinantseerimise kogumahust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5530,10 +5946,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse §-s 21 sätestatud asutuse teadus- ja arendustegevuse toetuse baasrahastuse arvestamisel aastateks 2026–2028 võetakse aluseks teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile asutuse teadus- ja arendustegevuse toetuse määramise kalendriaastale eelneva kolme kalendriaasta jooksul eraldatud sama liiki toetus ja baasfinantseerimine osakaaluna samal perioodil teadus- ja arendusasutustele, ülikoolidele või evalveeritud rakenduskõrgkoolidele eraldatud asutuse teadus- ja arendustegevuse toetuse ja baasfinantseerimise kogumahust.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 21 sätestatud asutuse teadus- ja arendustegevuse toetuse baasrahastuse arvestamisel aastateks 2026–2028 võetakse aluseks teadus- ja arendusasutusele, ülikoolile või evalveeritud rakenduskõrgkoolile asutuse teadus- ja arendustegevuse toetuse määramise kalendriaastale eelneva kolme kalendriaasta jooksul eraldatud sama liiki toetus ja baasfinantseerimine osakaaluna samal perioodil teadus- ja arendusasutustele, ülikoolidele või evalveeritud rakenduskõrgkoolidele eraldatud asutuse teadus- ja arendustegevuse toetuse ja baasfinantseerimise kogumahust.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_31"
       },
+      "rdfs:label": "§ 31 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -5556,12 +5974,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Rahvusteaduste rahastamine asutuse teadus- ja arendustegevuse toetusele üleminekul",
+      "rdfs:label": {
+        "@value": "§ 32. Rahvusteaduste rahastamine asutuse teadus- ja arendustegevuse toetusele üleminekul",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Asutuse teadus- ja arendustegevuse toetusele üleminekul tagatakse rahvusteaduste rahastamise osakaal viie protsendi ulatuses asutuse teadus- ja arendustegevuse toetuse kogumahust kolme aasta jooksul.",
+      "estleg:summary": {
+        "@value": "Asutuse teadus- ja arendustegevuse toetusele üleminekul tagatakse rahvusteaduste rahastamise osakaal viie protsendi ulatuses asutuse teadus- ja arendustegevuse toetuse kogumahust kolme aasta jooksul.",
+        "@language": "et"
+      },
       "estleg:legalText": "Asutuse teadus- ja arendustegevuse toetusele üleminekul tagatakse rahvusteaduste rahastamise osakaal viie protsendi ulatuses asutuse teadus- ja arendustegevuse toetuse kogumahust kolme aasta jooksul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5598,10 +6022,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Asutuse teadus- ja arendustegevuse toetusele üleminekul tagatakse rahvusteaduste rahastamise osakaal viie protsendi ulatuses asutuse teadus- ja arendustegevuse toetuse kogumahust kolme aasta jooksul.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asutuse teadus- ja arendustegevuse toetusele üleminekul tagatakse rahvusteaduste rahastamise osakaal viie protsendi ulatuses asutuse teadus- ja arendustegevuse toetuse kogumahust kolme aasta jooksul.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_32"
       },
+      "rdfs:label": "§ 32 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -5622,12 +6048,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Enne 2025. aasta 1. oktoobrit määratud uurimistoetus",
+      "rdfs:label": {
+        "@value": "§ 33. Enne 2025. aasta 1. oktoobrit määratud uurimistoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Enne käesoleva seaduse jõustumist esitatud uurimistoetuse taotlusele ja määratud uurimistoetusele kohaldatakse toetuse taotlemise ajal kehtinud tingimusi ja korda kuni otsuses määratud uurimistoetuse perioodi lõpuni.",
+      "estleg:summary": {
+        "@value": "Enne käesoleva seaduse jõustumist esitatud uurimistoetuse taotlusele ja määratud uurimistoetusele kohaldatakse toetuse taotlemise ajal kehtinud tingimusi ja korda kuni otsuses määratud uurimistoetuse perioodi lõpuni.",
+        "@language": "et"
+      },
       "estleg:legalText": "Enne käesoleva seaduse jõustumist esitatud uurimistoetuse taotlusele ja määratud uurimistoetusele kohaldatakse toetuse taotlemise ajal kehtinud tingimusi ja korda kuni otsuses määratud uurimistoetuse perioodi lõpuni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5657,10 +6089,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Enne käesoleva seaduse jõustumist esitatud uurimistoetuse taotlusele ja määratud uurimistoetusele kohaldatakse toetuse taotlemise ajal kehtinud tingimusi ja korda kuni otsuses määratud uurimistoetuse perioodi lõpuni.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist esitatud uurimistoetuse taotlusele ja määratud uurimistoetusele kohaldatakse toetuse taotlemise ajal kehtinud tingimusi ja korda kuni otsuses määratud uurimistoetuse perioodi lõpuni.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_33"
-      }
+      },
+      "rdfs:label": "§ 33 lg 1"
     },
     {
       "@id": "estleg:TAIKS_Par_34",
@@ -5669,12 +6103,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Enne 2025. aasta 1. oktoobrit moodustatud hindamisnõukogu volitused",
+      "rdfs:label": {
+        "@value": "§ 34. Enne 2025. aasta 1. oktoobrit moodustatud hindamisnõukogu volitused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Enne 2025. aasta 1. oktoobrit moodustatud hindamisnõukogu volitused lõpevad 2026. aasta 4. veebruaril.",
+      "estleg:summary": {
+        "@value": "Enne 2025. aasta 1. oktoobrit moodustatud hindamisnõukogu volitused lõpevad 2026. aasta 4. veebruaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Enne 2025. aasta 1. oktoobrit moodustatud hindamisnõukogu volitused lõpevad 2026. aasta 4. veebruaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5699,10 +6139,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Enne 2025. aasta 1. oktoobrit moodustatud hindamisnõukogu volitused lõpevad 2026. aasta 4. veebruaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne 2025. aasta 1. oktoobrit moodustatud hindamisnõukogu volitused lõpevad 2026. aasta 4. veebruaril.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_34"
-      }
+      },
+      "rdfs:label": "§ 34 lg 1"
     },
     {
       "@id": "estleg:TAIKS_Par_35",
@@ -5711,18 +6153,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 35. Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 35. Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
       },
-      "estleg:summary": "§ 35. Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse muutmine",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1045688_Par_4"
@@ -5736,13 +6181,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Autoriõiguse seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 36. Autoriõiguse seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Autoriõiguse seaduse § 171 lõikes 2 asendatakse tekstiosa „teadus- ja arendustegevuse korralduse seaduse § 3 1. lõikes nimetatud juriidiline isik” tekstiosaga „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 16 lõikes 1 sätestatud tingimustele vastav juriidiline isik või asutus”.",
-      "estleg:legalText": "Autoriõiguse seaduse § 171 lõikes 2 asendatakse tekstiosa „teadus- ja arendustegevuse korralduse seaduse § 3 1. lõikes nimetatud juriidiline isik” tekstiosaga „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 16 lõikes 1 sätestatud tingimustele vastav juriidiline isik või asutus”.",
+      "estleg:summary": {
+        "@value": "Autoriõiguse seaduse § 17¹ lõikes 2 asendatakse tekstiosa „teadus- ja arendustegevuse korralduse seaduse § 3 1. lõikes nimetatud juriidiline isik” tekstiosaga „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 16 lõikes 1 sätestatud tingimustele vastav juriidiline isik või asutus”.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Autoriõiguse seaduse § 17¹ lõikes 2 asendatakse tekstiosa „teadus- ja arendustegevuse korralduse seaduse § 3 1. lõikes nimetatud juriidiline isik” tekstiosaga „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 16 lõikes 1 sätestatud tingimustele vastav juriidiline isik või asutus”.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
@@ -5787,12 +6238,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Eesti Kunstiakadeemia seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 37. Eesti Kunstiakadeemia seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Eesti Kunstiakadeemia seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Eesti Kunstiakadeemia seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Kunstiakadeemia seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5818,12 +6275,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Eesti Maaülikooli seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 38. Eesti Maaülikooli seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Eesti Maaülikooli seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Eesti Maaülikooli seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Maaülikooli seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5849,12 +6312,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39. Eesti Muusika- ja Teatriakadeemia seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 39. Eesti Muusika- ja Teatriakadeemia seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Eesti Muusika- ja Teatriakadeemia seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Eesti Muusika- ja Teatriakadeemia seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Muusika- ja Teatriakadeemia seaduse § 5 lõike 1 punkt 2 tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5880,12 +6349,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40. Eesti Teaduste Akadeemia seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 40. Eesti Teaduste Akadeemia seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Eesti Teaduste Akadeemia seaduse § 3 lõikes 1 asendatakse sõnad „teadus- ja arendustegevuse korralduse seaduse” sõnadega „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse”.",
+      "estleg:summary": {
+        "@value": "Eesti Teaduste Akadeemia seaduse § 3 lõikes 1 asendatakse sõnad „teadus- ja arendustegevuse korralduse seaduse” sõnadega „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse”.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti Teaduste Akadeemia seaduse § 3 lõikes 1 asendatakse sõnad „teadus- ja arendustegevuse korralduse seaduse” sõnadega „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse”.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5911,18 +6386,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41. Isikuandmete kaitse seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 41. Isikuandmete kaitse seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 41. Isikuandmete kaitse seaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 41. Isikuandmete kaitse seaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_42",
@@ -5931,12 +6409,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
-      "rdfs:label": "§ 42. Keemilise ja Bioloogilise Füüsika Instituudi seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 42. Keemilise ja Bioloogilise Füüsika Instituudi seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Keemilise ja Bioloogilise Füüsika Instituudi seaduse § 2 lõikes 2 asendatakse sõnad „teadus- ja arendustegevuse korralduse seaduse (RT I 1997, 30, 471)” sõnadega „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse”.",
+      "estleg:summary": {
+        "@value": "Keemilise ja Bioloogilise Füüsika Instituudi seaduse § 2 lõikes 2 asendatakse sõnad „teadus- ja arendustegevuse korralduse seaduse (RT I 1997, 30, 471)” sõnadega „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse”.",
+        "@language": "et"
+      },
       "estleg:legalText": "Keemilise ja Bioloogilise Füüsika Instituudi seaduse § 2 lõikes 2 asendatakse sõnad „teadus- ja arendustegevuse korralduse seaduse (RT I 1997, 30, 471)” sõnadega „teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse”.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -5962,18 +6446,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
-      "rdfs:label": "§ 43. Kõrgharidusseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 43. Kõrgharidusseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 43. Kõrgharidusseaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 43. Kõrgharidusseaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_44",
@@ -5982,13 +6469,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
-      "rdfs:label": "§ 44. Looduskaitseseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 44. Looduskaitseseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Looduskaitseseaduse § 683 punkt 1 tunnistatakse kehtetuks.",
-      "estleg:legalText": "Looduskaitseseaduse § 683 punkt 1 tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Looduskaitseseaduse § 68³ punkt 1 tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Looduskaitseseaduse § 68³ punkt 1 tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
@@ -6008,18 +6501,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45. Maakatastriseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 45. Maakatastriseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 45. Maakatastriseaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 45. Maakatastriseaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_46",
@@ -6028,18 +6524,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
-      "rdfs:label": "§ 46. Muinsuskaitseseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 46. Muinsuskaitseseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 46. Muinsuskaitseseaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 46. Muinsuskaitseseaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_47",
@@ -6048,18 +6547,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
-      "rdfs:label": "§ 47. Muuseumiseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 47. Muuseumiseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 47. Muuseumiseaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 47. Muuseumiseaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_48",
@@ -6068,18 +6570,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
-      "rdfs:label": "§ 48. Meditsiiniseadme seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 48. Meditsiiniseadme seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 48. Meditsiiniseadme seaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 48. Meditsiiniseadme seaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_49",
@@ -6088,18 +6593,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
-      "rdfs:label": "§ 49. Ravimiseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 49. Ravimiseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 49. Ravimiseaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 49. Ravimiseaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_50",
@@ -6108,18 +6616,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 50.",
-      "rdfs:label": "§ 50. Riigihangete seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 50. Riigihangete seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 50. Riigihangete seaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 50. Riigihangete seaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_51",
@@ -6128,18 +6639,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 51.",
-      "rdfs:label": "§ 51. Tallinna Tehnikaülikooli seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 51. Tallinna Tehnikaülikooli seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 51. Tallinna Tehnikaülikooli seaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 51. Tallinna Tehnikaülikooli seaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_52",
@@ -6148,18 +6662,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52.",
-      "rdfs:label": "§ 52. Tartu Ülikooli seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 52. Tartu Ülikooli seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 52. Tartu Ülikooli seaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 52. Tartu Ülikooli seaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_53",
@@ -6168,18 +6685,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 53.",
-      "rdfs:label": "§ 53. Tulumaksuseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 53. Tulumaksuseaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 53. Tulumaksuseaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 53. Tulumaksuseaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_54",
@@ -6188,18 +6708,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54.",
-      "rdfs:label": "§ 54. Välismaalaste seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 54. Välismaalaste seaduse muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
+      "estleg:summary": "§ 54. Välismaalaste seaduse muutmine",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TAIKS_7"
-      },
-      "estleg:summary": "§ 54. Välismaalaste seaduse muutmine"
+      }
     },
     {
       "@id": "estleg:TAIKS_Par_55",
@@ -6208,12 +6731,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 55.",
-      "rdfs:label": "§ 55. Teadus- ja arendustegevuse korralduse seaduse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 55. Teadus- ja arendustegevuse korralduse seaduse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Teadus- ja arendustegevuse korralduse seadus tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Teadus- ja arendustegevuse korralduse seadus tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Teadus- ja arendustegevuse korralduse seadus tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -6234,12 +6763,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 56.",
-      "rdfs:label": "§ 56. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 56. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Teadus- ja arendustegevuse ning innovatsiooni korralduse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TAIKS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2025. aasta 1. oktoobril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2025. aasta 1. oktoobril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2025. aasta 1. oktoobril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAIKS_7"
@@ -6264,34 +6799,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2025. aasta 1. oktoobril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2025. aasta 1. oktoobril.",
       "estleg:parentProvision": {
         "@id": "estleg:TAIKS_Par_56"
+      },
+      "rdfs:label": "§ 56 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/516102025001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:TAIKS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Organisation of Research and Development and Innovation Act",
+        "@language": "en"
       }
-    },
-    {
-      "@id": "estleg:Citation_TAIKS_P_36_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TAIKS_Par_36"
-      },
-      "estleg:citationDetail": "autoriõiguse seadus",
-      "estleg:citationText": "Autoriõiguse seaduse § 171 lõikes 2"
-    },
-    {
-      "@id": "estleg:Citation_TAIKS_P_44_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TAIKS_Par_44"
-      },
-      "estleg:citationDetail": "LKS",
-      "estleg:citationText": "Looduskaitseseaduse § 683"
     }
   ]
 }

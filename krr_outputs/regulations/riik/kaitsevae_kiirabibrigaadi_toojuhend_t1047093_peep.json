@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kaitseväe kiirabibrigaadi tööjuhend (määrus)",
+      "rdfs:label": {
+        "@value": "Kaitseväe kiirabibrigaadi tööjuhend (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kaitseväe kiirabibrigaadi tööjuhend",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2019-05-31",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2019-05-28",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -81,7 +83,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2162"
         }
-      ]
+      ],
+      "dcterms:title": "Kaitseväe kiirabibrigaadi tööjuhend",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1047093_Par_1",
@@ -90,13 +98,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Terminid",
+      "rdfs:label": {
+        "@value": "§ 1. Terminid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kiirabibrigaadi tööjuhend",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047093_Map"
       },
-      "estleg:summary": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) Kaitseväe kiirabibrigaad (edaspidi kiirabibrigaad) – erakorralise meditsiini alase ettevalmistusega isikute rühm, kes osutab Kaitseväe kiirabiteenust ja kes vastab tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 4 alusel kehtestatud nõuetele; 2 2) käsuandja – Kaitseväe väljaõppe või ürituse korraldamise eest vastutav väeliigi või struktuuriüksuse ülem, tema määratud vastutav isik või muu isik, kelle käsutusse on kiirabibrigaad",
-      "estleg:legalText": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) Kaitseväe kiirabibrigaad (edaspidi kiirabibrigaad) – erakorralise meditsiini alase ettevalmistusega isikute rühm, kes osutab Kaitseväe kiirabiteenust ja kes vastab tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 4 alusel kehtestatud nõuetele; 2 2) käsuandja – Kaitseväe väljaõppe või ürituse korraldamise eest vastutav väeliigi või struktuuriüksuse ülem, tema määratud vastutav isik või muu isik, kelle käsutusse on kiirabibrigaad määratud; 3 3) väljasõit – kiirabibrigaadi tegevus väljasõidukäsu saamisest kuni patsiendile abi osutamise lõpetamiseni või käsuandja määratud asukohta saabumiseni; 4 4) Kaitseväe meditsiinikeskus – Kaitseväe struktuuriüksuse meditsiinikeskus, kus on kiirabibrigaadi alaline paiknemiskoht vajalike ruumide ja tingimustega kiirabibrigaadi liikmetele ning Kaitseväe kiirabisõidukitele. Määruses kasutatakse termineid järgmises tähenduses: Kaitseväe kiirabibrigaad (edaspidi kiirabibrigaad) – erakorralise meditsiini alase ettevalmistusega isikute rühm, kes osutab Kaitseväe kiirabiteenust ja kes vastab tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 4 alusel kehtestatud nõuetele; käsuandja – Kaitseväe väljaõppe või ürituse korraldamise eest vastutav väeliigi või struktuuriüksuse ülem, tema määratud vastutav isik või muu isik, kelle käsutusse on kiirabibrigaad määratud; väljasõit – kiirabibrigaadi tegevus väljasõidukäsu saamisest kuni patsiendile abi osutamise lõpetamiseni või käsuandja määratud asukohta saabumiseni; Kaitseväe meditsiinikeskus – Kaitseväe struktuuriüksuse meditsiinikeskus, kus on kiirabibrigaadi alaline paiknemiskoht vajalike ruumide ja tingimustega kiirabibrigaadi liikmetele ning Kaitseväe kiirabisõidukitele.",
+      "estleg:summary": {
+        "@value": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) Kaitseväe kiirabibrigaad (edaspidi kiirabibrigaad) – erakorralise meditsiini alase ettevalmistusega isikute rühm, kes osutab Kaitseväe kiirabiteenust ja kes vastab tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 4 alusel kehtestatud nõuetele; 2 2) käsuandja – Kaitseväe väljaõppe või ürituse korraldamise eest vastutav väeliigi või struktuuriüksuse ülem, tema määratud vastutav isik või muu isik, kelle käsutusse on…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) Kaitseväe kiirabibrigaad (edaspidi kiirabibrigaad) – erakorralise meditsiini alase ettevalmistusega isikute rühm, kes osutab Kaitseväe kiirabiteenust ja kes vastab tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 4 alusel kehtestatud nõuetele; 2 2) käsuandja – Kaitseväe väljaõppe või ürituse korraldamise eest vastutav väeliigi või struktuuriüksuse ülem, tema määratud vastutav isik või muu isik, kelle käsutusse on kiirabibrigaad määratud; 3 3) väljasõit – kiirabibrigaadi tegevus väljasõidukäsu saamisest kuni patsiendile abi osutamise lõpetamiseni või käsuandja määratud asukohta saabumiseni; 4 4) Kaitseväe meditsiinikeskus – Kaitseväe struktuuriüksuse meditsiinikeskus, kus on kiirabibrigaadi alaline paiknemiskoht vajalike ruumide ja tingimustega kiirabibrigaadi liikmetele ning Kaitseväe kiirabisõidukitele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -118,6 +132,30 @@
         {
           "@id": "estleg:Reg_1047093_Par_1_v1047093"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047093_Par_1_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruses kasutatakse termineid järgmises tähenduses: 1) Kaitseväe kiirabibrigaad (edaspidi kiirabibrigaad) – erakorralise meditsiini alase ettevalmistusega isikute rühm, kes osutab Kaitseväe kiirabiteenust ja kes vastab tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 4 alusel kehtestatud nõuetele; 2) käsuandja – Kaitseväe väljaõppe või ürituse korraldamise eest vastutav väeliigi või struktuuriüksuse ülem, tema määratud vastutav isik või muu isik, kelle käsutusse on kiirabibrigaad määratud; 3) väljasõit – kiirabibrigaadi tegevus väljasõidukäsu saamisest kuni patsiendile abi osutamise lõpetamiseni või käsuandja määratud asukohta saabumiseni; 4) Kaitseväe meditsiinikeskus – Kaitseväe struktuuriüksuse meditsiinikeskus, kus on kiirabibrigaadi alaline paiknemiskoht vajalike ruumide ja tingimustega kiirabibrigaadi liikmetele ning Kaitseväe kiirabisõidukitele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -127,13 +165,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseväe kiirabiteenuse osutamise juhud",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseväe kiirabiteenuse osutamise juhud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kiirabibrigaadi tööjuhend",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047093_Map"
       },
-      "estleg:summary": "1 (1) Kiirabibrigaad tegutseb järgmistel juhtudel: 1 1) kõrgendatud riskiastmega sõjaväelisel väljaõppel; 2 2) Kaitseväe osalusega avalikel üritustel; 3 3) rahvusvahelise sõjalise koostöö raames korraldatavatel õppustel; 4 4) muudel õigusaktides sätestatud juhtudel. Kiirabibrigaad tegutseb järgmistel juhtudel: kõrgendatud riskiastmega sõjaväelisel väljaõppel; Kaitseväe osalusega avalikel üritustel; rahvusvahelise sõjalise koostöö raames korraldatavatel õppustel; muudel õigusaktides sätestatud ju",
-      "estleg:legalText": "1 (1) Kiirabibrigaad tegutseb järgmistel juhtudel: 1 1) kõrgendatud riskiastmega sõjaväelisel väljaõppel; 2 2) Kaitseväe osalusega avalikel üritustel; 3 3) rahvusvahelise sõjalise koostöö raames korraldatavatel õppustel; 4 4) muudel õigusaktides sätestatud juhtudel. Kiirabibrigaad tegutseb järgmistel juhtudel: kõrgendatud riskiastmega sõjaväelisel väljaõppel; Kaitseväe osalusega avalikel üritustel; rahvusvahelise sõjalise koostöö raames korraldatavatel õppustel; muudel õigusaktides sätestatud juhtudel. 2 (2) Kiirabibrigaad juhindub tegutsemises käsuandjalt saadud käskudest, tervishoiuteenuste korraldamise seaduse § 17 lõike 2 alusel kehtestatud kiirabi, haiglate, pääste- ja politseiasutuste ning Terviseameti kiirabialase koostöö korrast (edaspidi koostöö kord), välja arvatud koostöö korra §-st 4, ning teistest seadustest ja seaduse alusel antud õigusaktidest. Kiirabibrigaad juhindub tegutsemises käsuandjalt saadud käskudest, tervishoiuteenuste korraldamise seaduse § 17 lõike 2 alusel kehtestatud kiirabi, haiglate, pääste- ja politseiasutuste ning Terviseameti kiirabialase koostöö korrast (edaspidi koostöö kord), välja arvatud koostöö korra §-st 4, ning teistest seadustest ja seaduse alusel antud õigusaktidest. 3 (3) Avalikul üritusel juhindub kiirabibrigaad lisaks käesoleva paragrahvi lõikes 2 sätestatule avaliku ürituse juhi või Häirekeskuse korraldustest ning koostöö korra §-st 4. Kaitsevägi võib kiirabibrigaadi vajaduse korral avalikult ürituselt tagasi kutsuda. Avalikul üritusel juhindub kiirabibrigaad lisaks käesoleva paragrahvi lõikes 2 sätestatule avaliku ürituse juhi või Häirekeskuse korraldustest ning koostöö korra §-st 4. Kaitsevägi võib kiirabibrigaadi vajaduse korral avalikult ürituselt tagasi kutsuda.",
+      "estleg:summary": {
+        "@value": "1 (1) Kiirabibrigaad tegutseb järgmistel juhtudel: 1 1) kõrgendatud riskiastmega sõjaväelisel väljaõppel; 2 2) Kaitseväe osalusega avalikel üritustel; 3 3) rahvusvahelise sõjalise koostöö raames korraldatavatel õppustel; 4 4) muudel õigusaktides sätestatud juhtudel. 2 (2) Kiirabibrigaad juhindub tegutsemises käsuandjalt saadud käskudest, tervishoiuteenuste korraldamise seaduse § 17 lõike 2 alusel kehtestatud kiirabi, haiglate, pääste- ja politseiasutuste ning Terviseameti kiirabialase koostöö…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kiirabibrigaad tegutseb järgmistel juhtudel: 1 1) kõrgendatud riskiastmega sõjaväelisel väljaõppel; 2 2) Kaitseväe osalusega avalikel üritustel; 3 3) rahvusvahelise sõjalise koostöö raames korraldatavatel õppustel; 4 4) muudel õigusaktides sätestatud juhtudel. 2 (2) Kiirabibrigaad juhindub tegutsemises käsuandjalt saadud käskudest, tervishoiuteenuste korraldamise seaduse § 17 lõike 2 alusel kehtestatud kiirabi, haiglate, pääste- ja politseiasutuste ning Terviseameti kiirabialase koostöö korrast (edaspidi koostöö kord), välja arvatud koostöö korra §-st 4, ning teistest seadustest ja seaduse alusel antud õigusaktidest. 3 (3) Avalikul üritusel juhindub kiirabibrigaad lisaks käesoleva paragrahvi lõikes 2 sätestatule avaliku ürituse juhi või Häirekeskuse korraldustest ning koostöö korra §-st 4. Kaitsevägi võib kiirabibrigaadi vajaduse korral avalikult ürituselt tagasi kutsuda.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -152,7 +196,63 @@
         {
           "@id": "estleg:Institution_terviseamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047093_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1047093_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1047093_Par_2_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiirabibrigaad tegutseb järgmistel juhtudel: 1) kõrgendatud riskiastmega sõjaväelisel väljaõppel; 2) Kaitseväe osalusega avalikel üritustel; 3) rahvusvahelise sõjalise koostöö raames korraldatavatel õppustel; 4) muudel õigusaktides sätestatud juhtudel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kiirabibrigaad juhindub tegutsemises käsuandjalt saadud käskudest, tervishoiuteenuste korraldamise seaduse § 17 lõike 2 alusel kehtestatud kiirabi, haiglate, pääste- ja politseiasutuste ning Terviseameti kiirabialase koostöö korrast (edaspidi koostöö kord), välja arvatud koostöö korra §-st 4, ning teistest seadustest ja seaduse alusel antud õigusaktidest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Avalikul üritusel juhindub kiirabibrigaad lisaks käesoleva paragrahvi lõikes 2 sätestatule avaliku ürituse juhi või Häirekeskuse korraldustest ning koostöö korra §-st 4. Kaitsevägi võib kiirabibrigaadi vajaduse korral avalikult ürituselt tagasi kutsuda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:Reg_1047093_Par_3",
@@ -161,13 +261,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kiirabibrigaadi liikmete õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 3. Kiirabibrigaadi liikmete õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kiirabibrigaadi tööjuhend",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047093_Map"
       },
-      "estleg:summary": "Kiirabibrigaadi juhil ja liikmetel on Kaitseväe kiirabiteenuse osutamisel tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 3 alusel kehtestatud määruse §-s 9 sätestatud õigused ja kohustused, arvestades käesolevast määrusest tulenevaid erisusi.",
-      "estleg:legalText": "Kiirabibrigaadi juhil ja liikmetel on Kaitseväe kiirabiteenuse osutamisel tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 3 alusel kehtestatud määruse §-s 9 sätestatud õigused ja kohustused, arvestades käesolevast määrusest tulenevaid erisusi. Kiirabibrigaadi juhil ja liikmetel on Kaitseväe kiirabiteenuse osutamisel tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 3 alusel kehtestatud määruse §-s 9 sätestatud õigused ja kohustused, arvestades käesolevast määrusest tulenevaid erisusi.",
+      "estleg:summary": {
+        "@value": "Kiirabibrigaadi juhil ja liikmetel on Kaitseväe kiirabiteenuse osutamisel tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 3 alusel kehtestatud määruse §-s 9 sätestatud õigused ja kohustused, arvestades käesolevast määrusest tulenevaid erisusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kiirabibrigaadi juhil ja liikmetel on Kaitseväe kiirabiteenuse osutamisel tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 3 alusel kehtestatud määruse §-s 9 sätestatud õigused ja kohustused, arvestades käesolevast määrusest tulenevaid erisusi.",
       "estleg:references": [
         {
           "@id": "estleg:TTKS_Par_17_Lg_3"
@@ -177,7 +283,26 @@
         {
           "@id": "estleg:Reg_1047093_Par_3_v1047093"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047093_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiirabibrigaadi juhil ja liikmetel on Kaitseväe kiirabiteenuse osutamisel tervishoiuteenuste korraldamise seaduse § 17 lõike 3 punkti 3 alusel kehtestatud määruse §-s 9 sätestatud õigused ja kohustused, arvestades käesolevast määrusest tulenevaid erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": "3"
     },
     {
       "@id": "estleg:Reg_1047093_Par_4",
@@ -186,13 +311,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kiirabibrigaadi tegevus",
+      "rdfs:label": {
+        "@value": "§ 4. Kiirabibrigaadi tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kiirabibrigaadi tööjuhend",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047093_Map"
       },
-      "estleg:summary": "1 (1) Kiirabibrigaad on valmisolekus vastavalt käsuandja käskudele. Kiirabibrigaad on valmisolekus vastavalt käsuandja käskudele. 2 (2) Valmisoleku tagamiseks kiirabibrigaad: 1 1) kannab Kaitseväe vormiriietust või käsuandjalt saadud käsust lähtudes muud ettenähtud tööriietust; 2 2) kontrollib varustuse olemasolu ja töökorras olekut; 3 3) on sidevahendite kaudu pidevas ühenduses käsus määratud isikuga. Valmisoleku tagamiseks kiirabibrigaad: kannab Kaitseväe vormiriietust või käsuandjalt saadud k",
-      "estleg:legalText": "1 (1) Kiirabibrigaad on valmisolekus vastavalt käsuandja käskudele. Kiirabibrigaad on valmisolekus vastavalt käsuandja käskudele. 2 (2) Valmisoleku tagamiseks kiirabibrigaad: 1 1) kannab Kaitseväe vormiriietust või käsuandjalt saadud käsust lähtudes muud ettenähtud tööriietust; 2 2) kontrollib varustuse olemasolu ja töökorras olekut; 3 3) on sidevahendite kaudu pidevas ühenduses käsus määratud isikuga. Valmisoleku tagamiseks kiirabibrigaad: kannab Kaitseväe vormiriietust või käsuandjalt saadud käsust lähtudes muud ettenähtud tööriietust; kontrollib varustuse olemasolu ja töökorras olekut; on sidevahendite kaudu pidevas ühenduses käsus määratud isikuga. 3 (3) Väljasõidukäsu saamisel kiirabibrigaad: 1 1) alustab tegevust vastavalt käsuandjalt saadud käskudele; 2 2) vajaduse korral palub täiendavat abi Häirekeskuselt; 3 3) teavitab käsuandjat kiirabibrigaadi sündmuskohale saabumisest ja sealt lahkumisest ning saabumisest haiglasse. Väljasõidukäsu saamisel kiirabibrigaad: alustab tegevust vastavalt käsuandjalt saadud käskudele; vajaduse korral palub täiendavat abi Häirekeskuselt; teavitab käsuandjat kiirabibrigaadi sündmuskohale saabumisest ja sealt lahkumisest ning saabumisest haiglasse. 4 (4) Sündmuskohale saabumisel alustab kiirabibrigaad tegevust patsiendile abi osutamiseks ning vajaduse korral tagab kiirabi osutamise jätkuvuse ka patsiendi transportimisel. Sündmuskohale saabumisel alustab kiirabibrigaad tegevust patsiendile abi osutamiseks ning vajaduse korral tagab kiirabi osutamise jätkuvuse ka patsiendi transportimisel. 5 (5) Pärast väljasõidu lõpetamist või patsiendi üleandmist teavitab kiirabibrigaad käsuandjat: 1 1) lahkumisest sündmuskohalt või haiglast; 2 2) tegutsemisvalmidusest või vajadusest teha ettevalmistusi järgmiseks väljasõiduks; 3 3) saabumisest tagasi käsuandja määratud asukohta. Pärast väljasõidu lõpetamist või patsiendi üleandmist teavitab kiirabibrigaad käsuandjat: lahkumisest sündmuskohalt või haiglast; tegutsemisvalmidusest või vajadusest teha ettevalmistusi järgmiseks väljasõiduks; saabumisest tagasi käsuandja määratud asukohta. 6 (6) Kaitseväe meditsiinikeskusesse või mujale käsuandja määratud asukohta tagasi saabumisel kiirabibrigaad: 1 1) kontrollib kasutusel olnud varustust ja vajaduse korral täiendab seda; 2 2) puhastab kasutusel olnud varustuse ja vajaduse korral desinfitseerib seda; 3 3) vahetab saastunud tööriided uute vastu vastavalt kehtestatud sisekorrale; 4 4) teavitab käsuandjat valmisolekust minna järgmisele väljasõidule. Kaitseväe meditsiinikeskusesse või mujale käsuandja määratud asukohta tagasi saabumisel kiirabibrigaad: kontrollib kasutusel olnud varustust ja vajaduse korral täiendab seda; puhastab kasutusel olnud varustuse ja vajaduse korral desinfitseerib seda; vahetab saastunud tööriided uute vastu vastavalt kehtestatud sisekorrale; teavitab käsuandjat valmisolekust minna järgmisele väljasõidule.",
+      "estleg:summary": {
+        "@value": "1 (1) Kiirabibrigaad on valmisolekus vastavalt käsuandja käskudele. 2 (2) Valmisoleku tagamiseks kiirabibrigaad: 1 1) kannab Kaitseväe vormiriietust või käsuandjalt saadud käsust lähtudes muud ettenähtud tööriietust; 2 2) kontrollib varustuse olemasolu ja töökorras olekut; 3 3) on sidevahendite kaudu pidevas ühenduses käsus määratud isikuga. 3 (3) Väljasõidukäsu saamisel kiirabibrigaad: 1 1) alustab tegevust vastavalt käsuandjalt saadud käskudele; 2 2) vajaduse korral palub täiendavat abi…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kiirabibrigaad on valmisolekus vastavalt käsuandja käskudele. 2 (2) Valmisoleku tagamiseks kiirabibrigaad: 1 1) kannab Kaitseväe vormiriietust või käsuandjalt saadud käsust lähtudes muud ettenähtud tööriietust; 2 2) kontrollib varustuse olemasolu ja töökorras olekut; 3 3) on sidevahendite kaudu pidevas ühenduses käsus määratud isikuga. 3 (3) Väljasõidukäsu saamisel kiirabibrigaad: 1 1) alustab tegevust vastavalt käsuandjalt saadud käskudele; 2 2) vajaduse korral palub täiendavat abi Häirekeskuselt; 3 3) teavitab käsuandjat kiirabibrigaadi sündmuskohale saabumisest ja sealt lahkumisest ning saabumisest haiglasse. 4 (4) Sündmuskohale saabumisel alustab kiirabibrigaad tegevust patsiendile abi osutamiseks ning vajaduse korral tagab kiirabi osutamise jätkuvuse ka patsiendi transportimisel. 5 (5) Pärast väljasõidu lõpetamist või patsiendi üleandmist teavitab kiirabibrigaad käsuandjat: 1 1) lahkumisest sündmuskohalt või haiglast; 2 2) tegutsemisvalmidusest või vajadusest teha ettevalmistusi järgmiseks väljasõiduks; 3 3) saabumisest tagasi käsuandja määratud asukohta. 6 (6) Kaitseväe meditsiinikeskusesse või mujale käsuandja määratud asukohta tagasi saabumisel kiirabibrigaad: 1 1) kontrollib kasutusel olnud varustust ja vajaduse korral täiendab seda; 2 2) puhastab kasutusel olnud varustuse ja vajaduse korral desinfitseerib seda; 3 3) vahetab saastunud tööriided uute vastu vastavalt kehtestatud sisekorrale; 4 4) teavitab käsuandjat valmisolekust minna järgmisele väljasõidule.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -206,6 +337,125 @@
         {
           "@id": "estleg:Reg_1047093_Par_4_v1047093"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047093_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1047093_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1047093_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1047093_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1047093_Par_4_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1047093_Par_4_Lg_6"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiirabibrigaad on valmisolekus vastavalt käsuandja käskudele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valmisoleku tagamiseks kiirabibrigaad: 1) kannab Kaitseväe vormiriietust või käsuandjalt saadud käsust lähtudes muud ettenähtud tööriietust; 2) kontrollib varustuse olemasolu ja töökorras olekut; 3) on sidevahendite kaudu pidevas ühenduses käsus määratud isikuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väljasõidukäsu saamisel kiirabibrigaad: 1) alustab tegevust vastavalt käsuandjalt saadud käskudele; 2) vajaduse korral palub täiendavat abi Häirekeskuselt; 3) teavitab käsuandjat kiirabibrigaadi sündmuskohale saabumisest ja sealt lahkumisest ning saabumisest haiglasse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Sündmuskohale saabumisel alustab kiirabibrigaad tegevust patsiendile abi osutamiseks ning vajaduse korral tagab kiirabi osutamise jätkuvuse ka patsiendi transportimisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Pärast väljasõidu lõpetamist või patsiendi üleandmist teavitab kiirabibrigaad käsuandjat: 1) lahkumisest sündmuskohalt või haiglast; 2) tegutsemisvalmidusest või vajadusest teha ettevalmistusi järgmiseks väljasõiduks; 3) saabumisest tagasi käsuandja määratud asukohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_4_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kaitseväe meditsiinikeskusesse või mujale käsuandja määratud asukohta tagasi saabumisel kiirabibrigaad: 1) kontrollib kasutusel olnud varustust ja vajaduse korral täiendab seda; 2) puhastab kasutusel olnud varustuse ja vajaduse korral desinfitseerib seda; 3) vahetab saastunud tööriided uute vastu vastavalt kehtestatud sisekorrale; 4) teavitab käsuandjat valmisolekust minna järgmisele väljasõidule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -215,13 +465,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 5. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kiirabibrigaadi tööjuhend",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047093_Map"
       },
-      "estleg:summary": "Kaitseministri 7. detsembri 2012. a määrus nr 13 „Kaitseväe kiirabibrigaadi tööjuhend” tunnistatakse kehtetuks.",
-      "estleg:legalText": "Kaitseministri 7. detsembri 2012. a määrus nr 13 „Kaitseväe kiirabibrigaadi tööjuhend” tunnistatakse kehtetuks. Kaitseministri 7. detsembri 2012. a määrus nr 13 „Kaitseväe kiirabibrigaadi tööjuhend” tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Kaitseministri 7. detsembri 2012. a määrus nr 13 „Kaitseväe kiirabibrigaadi tööjuhend” tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseministri 7. detsembri 2012. a määrus nr 13 „Kaitseväe kiirabibrigaadi tööjuhend” tunnistatakse kehtetuks.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1047093_Par_5_v1047093"
@@ -230,6 +486,11 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kaitseminister"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047093_Par_5_Lg_1"
         }
       ]
     },
@@ -243,6 +504,19 @@
         "@id": "estleg:KAITSE_2_Par_35"
       },
       "estleg:citationText": "Määrus kehtestatakse Kaitseväe korralduse seaduse § 35"
+    },
+    {
+      "@id": "estleg:Reg_1047093_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseministri 7. detsembri 2012. a määrus nr 13 „Kaitseväe kiirabibrigaadi tööjuhend” tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047093_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -41,18 +48,13 @@
         }
       ],
       "estleg:entryIntoForce": {
-        "@value": "2009-08-10",
+        "@value": "2020-02-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2020-01-03",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2009-08-07",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_337179_1212c32f29"
@@ -90,7 +92,17 @@
         {
           "@id": "http://eurovoc.europa.eu/517"
         }
-      ]
+      ],
+      "dcterms:title": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2026-12-31",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_337179_Annex_1",
@@ -98,7 +110,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Eraldusmärgi kujutis\n\t\t\t\n\t\t\t\t\n\t\t\t\t\tRT I\n\t\t\t\t\t2020-01-22\n\t\t\t\t\t1\n\t\t\t\t\t122012020001\n\t\t\t\t\n\t\t\t\t2020-02-01",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -107,7 +122,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -117,13 +135,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Käesoleva määrusega sätestatakse maa-, haldus- ja ringkonnakohtu kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord.",
-      "estleg:legalText": "Käesoleva määrusega sätestatakse maa-, haldus- ja ringkonnakohtu kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord. Käesoleva määrusega sätestatakse maa-, haldus- ja ringkonnakohtu kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord.",
+      "estleg:summary": {
+        "@value": "Käesoleva määrusega sätestatakse maa-, haldus- ja ringkonnakohtu kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva määrusega sätestatakse maa-, haldus- ja ringkonnakohtu kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -142,7 +166,25 @@
         {
           "@id": "estleg:Institution_ringkonnakohus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määrusega sätestatakse maa-, haldus- ja ringkonnakohtu kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_2",
@@ -151,13 +193,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kohtuniku ametiriietus",
+      "rdfs:label": {
+        "@value": "§ 2. Kohtuniku ametiriietus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Maa-, haldus- ja ringkonnakohtu kohtuniku ametiriietuseks on talaar, millele on lisatud žaboo. Maa-, haldus- ja ringkonnakohtu kohtuniku ametiriietuseks on talaar, millele on lisatud žaboo. 2 (2) Ringkonnakohtu kohtunik kannab lisaks talaarile ja žaboole õlalinti. Ringkonnakohtu kohtunik kannab lisaks talaarile ja žaboole õlalinti.",
-      "estleg:legalText": "1 (1) Maa-, haldus- ja ringkonnakohtu kohtuniku ametiriietuseks on talaar, millele on lisatud žaboo. Maa-, haldus- ja ringkonnakohtu kohtuniku ametiriietuseks on talaar, millele on lisatud žaboo. 2 (2) Ringkonnakohtu kohtunik kannab lisaks talaarile ja žaboole õlalinti. Ringkonnakohtu kohtunik kannab lisaks talaarile ja žaboole õlalinti.",
+      "estleg:summary": {
+        "@value": "1 (1) Maa-, haldus- ja ringkonnakohtu kohtuniku ametiriietuseks on talaar, millele on lisatud žaboo. 2 (2) Ringkonnakohtu kohtunik kannab lisaks talaarile ja žaboole õlalinti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Maa-, haldus- ja ringkonnakohtu kohtuniku ametiriietuseks on talaar, millele on lisatud žaboo. 2 (2) Ringkonnakohtu kohtunik kannab lisaks talaarile ja žaboole õlalinti.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -176,7 +224,41 @@
         {
           "@id": "estleg:Institution_ringkonnakohus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maa-, haldus- ja ringkonnakohtu kohtuniku ametiriietuseks on talaar, millele on lisatud žaboo.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ringkonnakohtu kohtunik kannab lisaks talaarile ja žaboole õlalinti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_337179_Par_3",
@@ -185,13 +267,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Talaar",
+      "rdfs:label": {
+        "@value": "§ 3. Talaar",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Talaar valmistatakse mustast villasest kergest riidest. Talaar valmistatakse mustast villasest kergest riidest. 2 (2) Talaaril on kinnine kahekordne mahakeeratud krae. Krae laius on taga 5 cm ja ees 7 cm. Krae nurkade vahe on 10 cm. Talaaril on kinnine kahekordne mahakeeratud krae. Krae laius on taga 5 cm ja ees 7 cm. Krae nurkade vahe on 10 cm. 3 (3) Talaaril on rinnal 13 nööpi, millest kolm ülemist on kinnitamisnööbid, kolm alumist peidetud kinnitamisnööbid ning ülejäänud ilunööbid. Nööb",
-      "estleg:legalText": "1 (1) Talaar valmistatakse mustast villasest kergest riidest. Talaar valmistatakse mustast villasest kergest riidest. 2 (2) Talaaril on kinnine kahekordne mahakeeratud krae. Krae laius on taga 5 cm ja ees 7 cm. Krae nurkade vahe on 10 cm. Talaaril on kinnine kahekordne mahakeeratud krae. Krae laius on taga 5 cm ja ees 7 cm. Krae nurkade vahe on 10 cm. 3 (3) Talaaril on rinnal 13 nööpi, millest kolm ülemist on kinnitamisnööbid, kolm alumist peidetud kinnitamisnööbid ning ülejäänud ilunööbid. Nööbid ulatuvad poole talaarini. Nööbi läbimõõt on 2 cm. Talaaril on rinnal 13 nööpi, millest kolm ülemist on kinnitamisnööbid, kolm alumist peidetud kinnitamisnööbid ning ülejäänud ilunööbid. Nööbid ulatuvad poole talaarini. Nööbi läbimõõt on 2 cm. 4 (4) Talaari käis on alt 13 cm laiuselt pealekeeratud otsaga, mis kinnitatakse kahe nööbiga käise külge. Käise allääre ümbermõõt on 80 cm. Talaari käis on alt 13 cm laiuselt pealekeeratud otsaga, mis kinnitatakse kahe nööbiga käise külge. Käise allääre ümbermõõt on 80 cm. 5 (5) Talaari õlapealis on sile, taga kraest arvates 20 cm pikk, ja ees kaelaaugust arvates 16 cm pikk. Õlapealisest jookseb allapoole üks kahe poolega volt kummalgi hõlmal ja kaks volti taga. Voldi laius on 1/3 õlapealise veere laiusest. Talaari õlapealis on sile, taga kraest arvates 20 cm pikk, ja ees kaelaaugust arvates 16 cm pikk. Õlapealisest jookseb allapoole üks kahe poolega volt kummalgi hõlmal ja kaks volti taga. Voldi laius on 1/3 õlapealise veere laiusest. 6 (6) Talaari allääre kõrgus maast on 15–25 cm. Talaari allääre kõrgus maast on 15–25 cm.",
+      "estleg:summary": {
+        "@value": "1 (1) Talaar valmistatakse mustast villasest kergest riidest. 2 (2) Talaaril on kinnine kahekordne mahakeeratud krae. Krae laius on taga 5 cm ja ees 7 cm. Krae nurkade vahe on 10 cm. 3 (3) Talaaril on rinnal 13 nööpi, millest kolm ülemist on kinnitamisnööbid, kolm alumist peidetud kinnitamisnööbid ning ülejäänud ilunööbid. Nööbid ulatuvad poole talaarini. Nööbi läbimõõt on 2 cm. 4 (4) Talaari käis on alt 13 cm laiuselt pealekeeratud otsaga, mis kinnitatakse kahe nööbiga käise külge.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Talaar valmistatakse mustast villasest kergest riidest. 2 (2) Talaaril on kinnine kahekordne mahakeeratud krae. Krae laius on taga 5 cm ja ees 7 cm. Krae nurkade vahe on 10 cm. 3 (3) Talaaril on rinnal 13 nööpi, millest kolm ülemist on kinnitamisnööbid, kolm alumist peidetud kinnitamisnööbid ning ülejäänud ilunööbid. Nööbid ulatuvad poole talaarini. Nööbi läbimõõt on 2 cm. 4 (4) Talaari käis on alt 13 cm laiuselt pealekeeratud otsaga, mis kinnitatakse kahe nööbiga käise külge. Käise allääre ümbermõõt on 80 cm. 5 (5) Talaari õlapealis on sile, taga kraest arvates 20 cm pikk, ja ees kaelaaugust arvates 16 cm pikk. Õlapealisest jookseb allapoole üks kahe poolega volt kummalgi hõlmal ja kaks volti taga. Voldi laius on 1/3 õlapealise veere laiusest. 6 (6) Talaari allääre kõrgus maast on 15–25 cm.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -205,7 +293,105 @@
         {
           "@id": "estleg:Reg_337179_Par_3_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_3_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Talaar valmistatakse mustast villasest kergest riidest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Talaaril on kinnine kahekordne mahakeeratud krae. Krae laius on taga 5 cm ja ees 7 cm. Krae nurkade vahe on 10 cm.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Talaaril on rinnal 13 nööpi, millest kolm ülemist on kinnitamisnööbid, kolm alumist peidetud kinnitamisnööbid ning ülejäänud ilunööbid. Nööbid ulatuvad poole talaarini. Nööbi läbimõõt on 2 cm.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Talaari käis on alt 13 cm laiuselt pealekeeratud otsaga, mis kinnitatakse kahe nööbiga käise külge. Käise allääre ümbermõõt on 80 cm.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Talaari õlapealis on sile, taga kraest arvates 20 cm pikk, ja ees kaelaaugust arvates 16 cm pikk. Õlapealisest jookseb allapoole üks kahe poolega volt kummalgi hõlmal ja kaks volti taga. Voldi laius on 1/3 õlapealise veere laiusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Talaari allääre kõrgus maast on 15–25 cm.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 6"
     },
     {
       "@id": "estleg:Reg_337179_Par_4",
@@ -214,18 +400,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Žaboo",
+      "rdfs:label": {
+        "@value": "§ 4. Žaboo",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Žaboo on valge plisseeritud siidrinnaesine, mis on 25 cm pikk ja 17 voldiga. Žaboo laius on üleval 6 cm ja all 20 cm. Žaboo kinnitatakse talaari krae alla kahe nööbiga.",
-      "estleg:legalText": "Žaboo on valge plisseeritud siidrinnaesine, mis on 25 cm pikk ja 17 voldiga. Žaboo laius on üleval 6 cm ja all 20 cm. Žaboo kinnitatakse talaari krae alla kahe nööbiga. Žaboo on valge plisseeritud siidrinnaesine, mis on 25 cm pikk ja 17 voldiga. Žaboo laius on üleval 6 cm ja all 20 cm. Žaboo kinnitatakse talaari krae alla kahe nööbiga.",
+      "estleg:summary": {
+        "@value": "Žaboo on valge plisseeritud siidrinnaesine, mis on 25 cm pikk ja 17 voldiga. Žaboo laius on üleval 6 cm ja all 20 cm. Žaboo kinnitatakse talaari krae alla kahe nööbiga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Žaboo on valge plisseeritud siidrinnaesine, mis on 25 cm pikk ja 17 voldiga. Žaboo laius on üleval 6 cm ja all 20 cm. Žaboo kinnitatakse talaari krae alla kahe nööbiga.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_4_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Žaboo on valge plisseeritud siidrinnaesine, mis on 25 cm pikk ja 17 voldiga. Žaboo laius on üleval 6 cm ja all 20 cm. Žaboo kinnitatakse talaari krae alla kahe nööbiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_5",
@@ -234,18 +444,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Õlalint",
+      "rdfs:label": {
+        "@value": "§ 5. Õlalint",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Õlalint on hõbehallist puuvillasest riidest ja seda kantakse üle vasaku õla. Õlalindi pikkus ilma narmasteta mõõdetuna on õlalt selja taha 31 cm ja õlalt rinna peale 56 cm. Õlalindi laius on õla peal 5 cm ning ees all 11 cm. Taga moodustab õlalint kolm volti kogulaiusega 20 cm. Õlalint kinnitatakse talaari õlapealise külge takjakinnisega. Õlalint on hõbehallist puuvillasest riidest ja seda kantakse üle vasaku õla. Õlalindi pikkus ilma narmasteta mõõdetuna on õlalt selja taha 31 cm ja õlalt",
-      "estleg:legalText": "1 (1) Õlalint on hõbehallist puuvillasest riidest ja seda kantakse üle vasaku õla. Õlalindi pikkus ilma narmasteta mõõdetuna on õlalt selja taha 31 cm ja õlalt rinna peale 56 cm. Õlalindi laius on õla peal 5 cm ning ees all 11 cm. Taga moodustab õlalint kolm volti kogulaiusega 20 cm. Õlalint kinnitatakse talaari õlapealise külge takjakinnisega. Õlalint on hõbehallist puuvillasest riidest ja seda kantakse üle vasaku õla. Õlalindi pikkus ilma narmasteta mõõdetuna on õlalt selja taha 31 cm ja õlalt rinna peale 56 cm. Õlalindi laius on õla peal 5 cm ning ees all 11 cm. Taga moodustab õlalint kolm volti kogulaiusega 20 cm. Õlalint kinnitatakse talaari õlapealise külge takjakinnisega. 2 (2) Keset õlga on õlalindil 4 cm läbimõõduga rosett. Õlalindi otstes on 7 cm pikkused kuldnarmad. Õlalindi eesosal õlast 24 cm allpool on suure riigivapi kujutis lindi laiuses. Keset õlga on õlalindil 4 cm läbimõõduga rosett. Õlalindi otstes on 7 cm pikkused kuldnarmad. Õlalindi eesosal õlast 24 cm allpool on suure riigivapi kujutis lindi laiuses.",
+      "estleg:summary": {
+        "@value": "1 (1) Õlalint on hõbehallist puuvillasest riidest ja seda kantakse üle vasaku õla. Õlalindi pikkus ilma narmasteta mõõdetuna on õlalt selja taha 31 cm ja õlalt rinna peale 56 cm. Õlalindi laius on õla peal 5 cm ning ees all 11 cm. Taga moodustab õlalint kolm volti kogulaiusega 20 cm. Õlalint kinnitatakse talaari õlapealise külge takjakinnisega. 2 (2) Keset õlga on õlalindil 4 cm läbimõõduga rosett. Õlalindi otstes on 7 cm pikkused kuldnarmad.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õlalint on hõbehallist puuvillasest riidest ja seda kantakse üle vasaku õla. Õlalindi pikkus ilma narmasteta mõõdetuna on õlalt selja taha 31 cm ja õlalt rinna peale 56 cm. Õlalindi laius on õla peal 5 cm ning ees all 11 cm. Taga moodustab õlalint kolm volti kogulaiusega 20 cm. Õlalint kinnitatakse talaari õlapealise külge takjakinnisega. 2 (2) Keset õlga on õlalindil 4 cm läbimõõduga rosett. Õlalindi otstes on 7 cm pikkused kuldnarmad. Õlalindi eesosal õlast 24 cm allpool on suure riigivapi kujutis lindi laiuses.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_5_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_5_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õlalint on hõbehallist puuvillasest riidest ja seda kantakse üle vasaku õla. Õlalindi pikkus ilma narmasteta mõõdetuna on õlalt selja taha 31 cm ja õlalt rinna peale 56 cm. Õlalindi laius on õla peal 5 cm ning ees all 11 cm. Taga moodustab õlalint kolm volti kogulaiusega 20 cm. Õlalint kinnitatakse talaari õlapealise külge takjakinnisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Keset õlga on õlalindil 4 cm läbimõõduga rosett. Õlalindi otstes on 7 cm pikkused kuldnarmad. Õlalindi eesosal õlast 24 cm allpool on suure riigivapi kujutis lindi laiuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
     },
     {
       "@id": "estleg:Reg_337179_Par_6",
@@ -254,17 +504,53 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Kohtukordniku ametiriietus",
+      "rdfs:label": {
+        "@value": "§ 6. Kohtukordniku ametiriietus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Kohtukordniku ametiriietusse kuuluvad: 1 1) pintsak; 2 2) püksid; 3 3) naiste vest; 4 4) seelik; 5 5) särk; 6 6) lips; 7 7) kingad; 8 8) vöörihm; 9 9) ametitunnused; 10 10) eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01 Kohtukordniku ametiriietusse kuuluvad: pintsak; püksid; naiste vest; seelik; särk; lips; kingad; vöörihm; ametitunnused; eraldusmärk.",
-      "estleg:legalText": "Kohtukordniku ametiriietusse kuuluvad: 1 1) pintsak; 2 2) püksid; 3 3) naiste vest; 4 4) seelik; 5 5) särk; 6 6) lips; 7 7) kingad; 8 8) vöörihm; 9 9) ametitunnused; 10 10) eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01 Kohtukordniku ametiriietusse kuuluvad: pintsak; püksid; naiste vest; seelik; särk; lips; kingad; vöörihm; ametitunnused; eraldusmärk.",
+      "estleg:summary": {
+        "@value": "Kohtukordniku ametiriietusse kuuluvad: 1 1) pintsak; 2 2) püksid; 3 3) naiste vest; 4 4) seelik; 5 5) särk; 6 6) lips; 7 7) kingad; 8 8) vöörihm; 9 9) ametitunnused; 10 10) eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kohtukordniku ametiriietusse kuuluvad: 1 1) pintsak; 2 2) püksid; 3 3) naiste vest; 4 4) seelik; 5 5) särk; 6 6) lips; 7 7) kingad; 8 8) vöörihm; 9 9) ametitunnused; 10 10) eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_6_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_6_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohtukordniku ametiriietusse kuuluvad: 1) pintsak; 2) püksid; 3) naiste vest; 4) seelik; 5) särk; 6) lips; 7) kingad; 8) vöörihm; 9) ametitunnused; 10) eraldusmärk.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
       ]
     },
     {
@@ -274,18 +560,122 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Pintsak",
+      "rdfs:label": {
+        "@value": "§ 7. Pintsak",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Pintsak on tumesinisest poolvillasest kangast, kergelt taljesse töödeldud, klassikalise lõikega. Pintsak on tumesinisest poolvillasest kangast, kergelt taljesse töödeldud, klassikalise lõikega. 2 (2) Pintsak on üherealine, suletav eest kahe nööbiga. Pintsak on üherealine, suletav eest kahe nööbiga. 3 (3) Pintsaku esihõlmadel on kaks horisontaalset klapiga küljetaskut ja üks kaldsuunaline liistuga rinnatasku. Pintsaku esihõlmadel on kaks horisontaalset klapiga küljetaskut ja üks kaldsuunali",
-      "estleg:legalText": "1 (1) Pintsak on tumesinisest poolvillasest kangast, kergelt taljesse töödeldud, klassikalise lõikega. Pintsak on tumesinisest poolvillasest kangast, kergelt taljesse töödeldud, klassikalise lõikega. 2 (2) Pintsak on üherealine, suletav eest kahe nööbiga. Pintsak on üherealine, suletav eest kahe nööbiga. 3 (3) Pintsaku esihõlmadel on kaks horisontaalset klapiga küljetaskut ja üks kaldsuunaline liistuga rinnatasku. Pintsaku esihõlmadel on kaks horisontaalset klapiga küljetaskut ja üks kaldsuunaline liistuga rinnatasku. 4 (4) Varrukate allääres on lõhikud ja kolm nööpi. Varrukate allääres on lõhikud ja kolm nööpi. 5 (5) Pintsak on töödeldud voodrile. Pintsak on töödeldud voodrile. 6 (6) Pintsaku vasakul hõlmal rinnatasku liistu all on eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01 Pintsaku vasakul hõlmal rinnatasku liistu all on eraldusmärk.",
+      "estleg:summary": {
+        "@value": "1 (1) Pintsak on tumesinisest poolvillasest kangast, kergelt taljesse töödeldud, klassikalise lõikega. 2 (2) Pintsak on üherealine, suletav eest kahe nööbiga. 3 (3) Pintsaku esihõlmadel on kaks horisontaalset klapiga küljetaskut ja üks kaldsuunaline liistuga rinnatasku. 4 (4) Varrukate allääres on lõhikud ja kolm nööpi. 5 (5) Pintsak on töödeldud voodrile. 6 (6) Pintsaku vasakul hõlmal rinnatasku liistu all on eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pintsak on tumesinisest poolvillasest kangast, kergelt taljesse töödeldud, klassikalise lõikega. 2 (2) Pintsak on üherealine, suletav eest kahe nööbiga. 3 (3) Pintsaku esihõlmadel on kaks horisontaalset klapiga küljetaskut ja üks kaldsuunaline liistuga rinnatasku. 4 (4) Varrukate allääres on lõhikud ja kolm nööpi. 5 (5) Pintsak on töödeldud voodrile. 6 (6) Pintsaku vasakul hõlmal rinnatasku liistu all on eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_7_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_7_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_7_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pintsak on tumesinisest poolvillasest kangast, kergelt taljesse töödeldud, klassikalise lõikega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Pintsak on üherealine, suletav eest kahe nööbiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Pintsaku esihõlmadel on kaks horisontaalset klapiga küljetaskut ja üks kaldsuunaline liistuga rinnatasku.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Varrukate allääres on lõhikud ja kolm nööpi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Pintsak on töödeldud voodrile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_7_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Pintsaku vasakul hõlmal rinnatasku liistu all on eraldusmärk.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 6"
     },
     {
       "@id": "estleg:Reg_337179_Par_8",
@@ -294,18 +684,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Püksid",
+      "rdfs:label": {
+        "@value": "§ 8. Püksid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Püksid on tumesinisest poolvillasest kangast klassikalised sirgelõikelised pikad viigipüksid. Püksid on tumesinisest poolvillasest kangast klassikalised sirgelõikelised pikad viigipüksid. 2 (2) Meeste viigipükstel on kaks sissetöödeldud küljetaskut ja nööbitav tagatasku ning rihma-aasadega värvel. Meeste viigipükstel on kaks sissetöödeldud küljetaskut ja nööbitav tagatasku ning rihma-aasadega värvel. 3 (3) Naiste viigipükstel on kaks sissetöödeldud küljetaskut ja rihma-aasadega värvel. Tas",
-      "estleg:legalText": "1 (1) Püksid on tumesinisest poolvillasest kangast klassikalised sirgelõikelised pikad viigipüksid. Püksid on tumesinisest poolvillasest kangast klassikalised sirgelõikelised pikad viigipüksid. 2 (2) Meeste viigipükstel on kaks sissetöödeldud küljetaskut ja nööbitav tagatasku ning rihma-aasadega värvel. Meeste viigipükstel on kaks sissetöödeldud küljetaskut ja nööbitav tagatasku ning rihma-aasadega värvel. 3 (3) Naiste viigipükstel on kaks sissetöödeldud küljetaskut ja rihma-aasadega värvel. Tasku kohal on värvli vahel lahtine avarusvolt. Naiste viigipükstel on kaks sissetöödeldud küljetaskut ja rihma-aasadega värvel. Tasku kohal on värvli vahel lahtine avarusvolt.",
+      "estleg:summary": {
+        "@value": "1 (1) Püksid on tumesinisest poolvillasest kangast klassikalised sirgelõikelised pikad viigipüksid. 2 (2) Meeste viigipükstel on kaks sissetöödeldud küljetaskut ja nööbitav tagatasku ning rihma-aasadega värvel. 3 (3) Naiste viigipükstel on kaks sissetöödeldud küljetaskut ja rihma-aasadega värvel. Tasku kohal on värvli vahel lahtine avarusvolt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Püksid on tumesinisest poolvillasest kangast klassikalised sirgelõikelised pikad viigipüksid. 2 (2) Meeste viigipükstel on kaks sissetöödeldud küljetaskut ja nööbitav tagatasku ning rihma-aasadega värvel. 3 (3) Naiste viigipükstel on kaks sissetöödeldud küljetaskut ja rihma-aasadega värvel. Tasku kohal on värvli vahel lahtine avarusvolt.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_8_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_8_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Püksid on tumesinisest poolvillasest kangast klassikalised sirgelõikelised pikad viigipüksid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Meeste viigipükstel on kaks sissetöödeldud küljetaskut ja nööbitav tagatasku ning rihma-aasadega värvel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Naiste viigipükstel on kaks sissetöödeldud küljetaskut ja rihma-aasadega värvel. Tasku kohal on värvli vahel lahtine avarusvolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
     },
     {
       "@id": "estleg:Reg_337179_Par_9",
@@ -314,13 +760,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Naiste vest",
+      "rdfs:label": {
+        "@value": "§ 9. Naiste vest",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Vest on tumesinisest poolvillasest kangast, lahtise nurkkaelusega, üherealine, kergelt taljesse töödeldud. Vest on voodriga ja suletav eest nelja väikese nööbiga. Esihõlmadel on kaks sissetöödeldud, liistkinnisega taskut, mis on suletavad väikese nööbiga. Vesti vasakul hõlmal rinnatasku liistu all on eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01",
-      "estleg:legalText": "Vest on tumesinisest poolvillasest kangast, lahtise nurkkaelusega, üherealine, kergelt taljesse töödeldud. Vest on voodriga ja suletav eest nelja väikese nööbiga. Esihõlmadel on kaks sissetöödeldud, liistkinnisega taskut, mis on suletavad väikese nööbiga. Vesti vasakul hõlmal rinnatasku liistu all on eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01 Vest on tumesinisest poolvillasest kangast, lahtise nurkkaelusega, üherealine, kergelt taljesse töödeldud. Vest on voodriga ja suletav eest nelja väikese nööbiga. Esihõlmadel on kaks sissetöödeldud, liistkinnisega taskut, mis on suletavad väikese nööbiga. Vesti vasakul hõlmal rinnatasku liistu all on eraldusmärk.",
+      "estleg:summary": {
+        "@value": "Vest on tumesinisest poolvillasest kangast, lahtise nurkkaelusega, üherealine, kergelt taljesse töödeldud. Vest on voodriga ja suletav eest nelja väikese nööbiga. Esihõlmadel on kaks sissetöödeldud, liistkinnisega taskut, mis on suletavad väikese nööbiga. Vesti vasakul hõlmal rinnatasku liistu all on eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vest on tumesinisest poolvillasest kangast, lahtise nurkkaelusega, üherealine, kergelt taljesse töödeldud. Vest on voodriga ja suletav eest nelja väikese nööbiga. Esihõlmadel on kaks sissetöödeldud, liistkinnisega taskut, mis on suletavad väikese nööbiga. Vesti vasakul hõlmal rinnatasku liistu all on eraldusmärk. RT I 2020-01-22 1 122012020001 2020-02-01",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_339866_Par_11"
@@ -330,7 +782,25 @@
         {
           "@id": "estleg:Reg_337179_Par_9_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_9_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vest on tumesinisest poolvillasest kangast, lahtise nurkkaelusega, üherealine, kergelt taljesse töödeldud. Vest on voodriga ja suletav eest nelja väikese nööbiga. Esihõlmadel on kaks sissetöödeldud, liistkinnisega taskut, mis on suletavad väikese nööbiga. Vesti vasakul hõlmal rinnatasku liistu all on eraldusmärk.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_10",
@@ -339,18 +809,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Seelik",
+      "rdfs:label": {
+        "@value": "§ 10. Seelik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Seelik on tumesinine, poolvillasest kangast, sirgelõikeline, värvliga. Seelikul on kaks sissetöödeldud küljetaskut. Tasku kohal on värvli vahel lahtine avarusvolt. Seeliku tagakeskõmbluse allosas on lahtine volt. Seelik ulatub põlveõndlani.",
-      "estleg:legalText": "Seelik on tumesinine, poolvillasest kangast, sirgelõikeline, värvliga. Seelikul on kaks sissetöödeldud küljetaskut. Tasku kohal on värvli vahel lahtine avarusvolt. Seeliku tagakeskõmbluse allosas on lahtine volt. Seelik ulatub põlveõndlani. Seelik on tumesinine, poolvillasest kangast, sirgelõikeline, värvliga. Seelikul on kaks sissetöödeldud küljetaskut. Tasku kohal on värvli vahel lahtine avarusvolt. Seeliku tagakeskõmbluse allosas on lahtine volt. Seelik ulatub põlveõndlani.",
+      "estleg:summary": {
+        "@value": "Seelik on tumesinine, poolvillasest kangast, sirgelõikeline, värvliga. Seelikul on kaks sissetöödeldud küljetaskut. Tasku kohal on värvli vahel lahtine avarusvolt. Seeliku tagakeskõmbluse allosas on lahtine volt. Seelik ulatub põlveõndlani.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Seelik on tumesinine, poolvillasest kangast, sirgelõikeline, värvliga. Seelikul on kaks sissetöödeldud küljetaskut. Tasku kohal on värvli vahel lahtine avarusvolt. Seeliku tagakeskõmbluse allosas on lahtine volt. Seelik ulatub põlveõndlani.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_10_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_10_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seelik on tumesinine, poolvillasest kangast, sirgelõikeline, värvliga. Seelikul on kaks sissetöödeldud küljetaskut. Tasku kohal on värvli vahel lahtine avarusvolt. Seeliku tagakeskõmbluse allosas on lahtine volt. Seelik ulatub põlveõndlani.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_11",
@@ -359,18 +853,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Särk",
+      "rdfs:label": {
+        "@value": "§ 11. Särk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Särk on helesinisest puuvillasest või segakiust riidest, eest nööbitav, kõva nurkkraega, kahe pealeõmmeldud, nööbiga suletava rinnataskuga, pikkade või lühikeste käistega.",
-      "estleg:legalText": "Särk on helesinisest puuvillasest või segakiust riidest, eest nööbitav, kõva nurkkraega, kahe pealeõmmeldud, nööbiga suletava rinnataskuga, pikkade või lühikeste käistega. Särk on helesinisest puuvillasest või segakiust riidest, eest nööbitav, kõva nurkkraega, kahe pealeõmmeldud, nööbiga suletava rinnataskuga, pikkade või lühikeste käistega.",
+      "estleg:summary": {
+        "@value": "Särk on helesinisest puuvillasest või segakiust riidest, eest nööbitav, kõva nurkkraega, kahe pealeõmmeldud, nööbiga suletava rinnataskuga, pikkade või lühikeste käistega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Särk on helesinisest puuvillasest või segakiust riidest, eest nööbitav, kõva nurkkraega, kahe pealeõmmeldud, nööbiga suletava rinnataskuga, pikkade või lühikeste käistega.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_11_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_11_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Särk on helesinisest puuvillasest või segakiust riidest, eest nööbitav, kõva nurkkraega, kahe pealeõmmeldud, nööbiga suletava rinnataskuga, pikkade või lühikeste käistega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_12",
@@ -379,18 +897,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Lips",
+      "rdfs:label": {
+        "@value": "§ 12. Lips",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Lips on tagant kummiga, tumesinisest elastikriidest, teravnurkse 80 mm laiuse alumise otsaga.",
-      "estleg:legalText": "Lips on tagant kummiga, tumesinisest elastikriidest, teravnurkse 80 mm laiuse alumise otsaga. Lips on tagant kummiga, tumesinisest elastikriidest, teravnurkse 80 mm laiuse alumise otsaga.",
+      "estleg:summary": {
+        "@value": "Lips on tagant kummiga, tumesinisest elastikriidest, teravnurkse 80 mm laiuse alumise otsaga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Lips on tagant kummiga, tumesinisest elastikriidest, teravnurkse 80 mm laiuse alumise otsaga.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_12_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_12_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lips on tagant kummiga, tumesinisest elastikriidest, teravnurkse 80 mm laiuse alumise otsaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_13",
@@ -399,13 +941,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Vöörihm",
+      "rdfs:label": {
+        "@value": "§ 13. Vöörihm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Vöörihm on mustast nahast, ühe keelega ning metallpandlaga.",
-      "estleg:legalText": "Vöörihm on mustast nahast, ühe keelega ning metallpandlaga. Vöörihm on mustast nahast, ühe keelega ning metallpandlaga.",
+      "estleg:summary": {
+        "@value": "Vöörihm on mustast nahast, ühe keelega ning metallpandlaga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vöörihm on mustast nahast, ühe keelega ning metallpandlaga.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1039968_Par_15"
@@ -418,7 +966,25 @@
         {
           "@id": "estleg:Reg_337179_Par_13_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_13_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vöörihm on mustast nahast, ühe keelega ning metallpandlaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_14",
@@ -427,13 +993,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Kingad",
+      "rdfs:label": {
+        "@value": "§ 14. Kingad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Meeste kingad on mustast nahast, paksema talla ja madala kontsaga ning pealt kinnised. Meeste kingad on mustast nahast, paksema talla ja madala kontsaga ning pealt kinnised. 2 (2) Naiste kingad on mustast nahast, paksema talla ja madala või poolkõrge kontsaga ning pealt poolkinnised. Naiste kingad on mustast nahast, paksema talla ja madala või poolkõrge kontsaga ning pealt poolkinnised.",
-      "estleg:legalText": "1 (1) Meeste kingad on mustast nahast, paksema talla ja madala kontsaga ning pealt kinnised. Meeste kingad on mustast nahast, paksema talla ja madala kontsaga ning pealt kinnised. 2 (2) Naiste kingad on mustast nahast, paksema talla ja madala või poolkõrge kontsaga ning pealt poolkinnised. Naiste kingad on mustast nahast, paksema talla ja madala või poolkõrge kontsaga ning pealt poolkinnised.",
+      "estleg:summary": {
+        "@value": "1 (1) Meeste kingad on mustast nahast, paksema talla ja madala kontsaga ning pealt kinnised. 2 (2) Naiste kingad on mustast nahast, paksema talla ja madala või poolkõrge kontsaga ning pealt poolkinnised.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Meeste kingad on mustast nahast, paksema talla ja madala kontsaga ning pealt kinnised. 2 (2) Naiste kingad on mustast nahast, paksema talla ja madala või poolkõrge kontsaga ning pealt poolkinnised.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1022953_Par_27"
@@ -452,7 +1024,41 @@
         {
           "@id": "estleg:Reg_337179_Par_14_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_14_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Meeste kingad on mustast nahast, paksema talla ja madala kontsaga ning pealt kinnised.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Naiste kingad on mustast nahast, paksema talla ja madala või poolkõrge kontsaga ning pealt poolkinnised.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
     },
     {
       "@id": "estleg:Reg_337179_Par_15",
@@ -461,18 +1067,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Ametitunnused",
+      "rdfs:label": {
+        "@value": "§ 15. Ametitunnused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "Kohtukordniku ametiriietusel kasutatavateks ametitunnusteks on pildiga töötõend ja nimesilt.",
-      "estleg:legalText": "Kohtukordniku ametiriietusel kasutatavateks ametitunnusteks on pildiga töötõend ja nimesilt. Kohtukordniku ametiriietusel kasutatavateks ametitunnusteks on pildiga töötõend ja nimesilt.",
+      "estleg:summary": {
+        "@value": "Kohtukordniku ametiriietusel kasutatavateks ametitunnusteks on pildiga töötõend ja nimesilt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kohtukordniku ametiriietusel kasutatavateks ametitunnusteks on pildiga töötõend ja nimesilt.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_337179_Par_15_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_15_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohtukordniku ametiriietusel kasutatavateks ametitunnusteks on pildiga töötõend ja nimesilt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
     },
     {
       "@id": "estleg:Reg_337179_Par_15_15",
@@ -480,14 +1110,20 @@
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
-      "estleg:paragrahv": "§ 15¹.",
-      "rdfs:label": "§ 15¹. Eraldusmärk",
+      "estleg:paragrahv": "§ 15<sup>1</sup>.",
+      "rdfs:label": {
+        "@value": "§ 15<sup>1</sup>. Eraldusmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Kohtukordniku ametiriietusel kasutatavaks eraldusmärgiks on üherealine horisontaallogo (lisa). Kohtukordniku ametiriietusel kasutatavaks eraldusmärgiks on üherealine horisontaallogo (lisa). 2 (2) Üherealise horisontaallogo taust on rahvusvahelise „Pantone Textile” värvitabeli järgi beež (Pantone 4685). Horisontaallogo mõõdud on 3×7,5 cm. Üherealise horisontaallogo taust on rahvusvahelise „Pantone Textile” värvitabeli järgi beež (Pantone 4685). Horisontaallogo mõõdud on 3×7,5 cm. 3 (3) Üher",
-      "estleg:legalText": "1 (1) Kohtukordniku ametiriietusel kasutatavaks eraldusmärgiks on üherealine horisontaallogo (lisa). Kohtukordniku ametiriietusel kasutatavaks eraldusmärgiks on üherealine horisontaallogo (lisa). 2 (2) Üherealise horisontaallogo taust on rahvusvahelise „Pantone Textile” värvitabeli järgi beež (Pantone 4685). Horisontaallogo mõõdud on 3×7,5 cm. Üherealise horisontaallogo taust on rahvusvahelise „Pantone Textile” värvitabeli järgi beež (Pantone 4685). Horisontaallogo mõõdud on 3×7,5 cm. 3 (3) Üherealisel horisontaallogol on kohtute vapp mõõtudega 2,1×2,5 cm. Vapil on pruunide (Pantone 476) tasakaalus kaalude taustal esitatud kolme sinise (Pantone 285) sammuva ja otsevaatava lõviga kuldne (Pantone 131) riigivapp. Üherealisel horisontaallogol on kohtute vapp mõõtudega 2,1×2,5 cm. Vapil on pruunide (Pantone 476) tasakaalus kaalude taustal esitatud kolme sinise (Pantone 285) sammuva ja otsevaatava lõviga kuldne (Pantone 131) riigivapp. 4 (4) Ühetaolisel horisontaallogol on pruunide (Pantone 476) trükitähtedega 0,6 cm kõrgune kiri „KOHUS”, mille kirjastiil on „Adobe Jenson Bold”. Ühetaolisel horisontaallogol on pruunide (Pantone 476) trükitähtedega 0,6 cm kõrgune kiri „KOHUS”, mille kirjastiil on „Adobe Jenson Bold”. 5 (5) Üherealine horisontaallogo on ääristatud 1 mm laiuse pruuni (Pantone 476) raamiga. RT I 2020-01-22 1 122012020001 2020-02-01 Üherealine horisontaallogo on ääristatud 1 mm laiuse pruuni (Pantone 476) raamiga.",
+      "estleg:summary": {
+        "@value": "1 (1) Kohtukordniku ametiriietusel kasutatavaks eraldusmärgiks on üherealine horisontaallogo (lisa). 2 (2) Üherealise horisontaallogo taust on rahvusvahelise „Pantone Textile” värvitabeli järgi beež (Pantone 4685). Horisontaallogo mõõdud on 3×7,5 cm. 3 (3) Üherealisel horisontaallogol on kohtute vapp mõõtudega 2,1×2,5 cm. Vapil on pruunide (Pantone 476) tasakaalus kaalude taustal esitatud kolme sinise (Pantone 285) sammuva ja otsevaatava lõviga kuldne (Pantone 131) riigivapp.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kohtukordniku ametiriietusel kasutatavaks eraldusmärgiks on üherealine horisontaallogo (lisa). 2 (2) Üherealise horisontaallogo taust on rahvusvahelise „Pantone Textile” värvitabeli järgi beež (Pantone 4685). Horisontaallogo mõõdud on 3×7,5 cm. 3 (3) Üherealisel horisontaallogol on kohtute vapp mõõtudega 2,1×2,5 cm. Vapil on pruunide (Pantone 476) tasakaalus kaalude taustal esitatud kolme sinise (Pantone 285) sammuva ja otsevaatava lõviga kuldne (Pantone 131) riigivapp. 4 (4) Ühetaolisel horisontaallogol on pruunide (Pantone 476) trükitähtedega 0,6 cm kõrgune kiri „KOHUS”, mille kirjastiil on „Adobe Jenson Bold”. 5 (5) Üherealine horisontaallogo on ääristatud 1 mm laiuse pruuni (Pantone 476) raamiga. RT I 2020-01-22 1 122012020001 2020-02-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -506,7 +1142,89 @@
         {
           "@id": "estleg:Institution_kohus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_15_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_15_15_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_15_15_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_15_15_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_15_15_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_15_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohtukordniku ametiriietusel kasutatavaks eraldusmärgiks on üherealine horisontaallogo (lisa).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_15_15"
+      },
+      "rdfs:label": "§ 15<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_15_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Üherealise horisontaallogo taust on rahvusvahelise „Pantone Textile” värvitabeli järgi beež (Pantone 4685). Horisontaallogo mõõdud on 3×7,5 cm.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_15_15"
+      },
+      "rdfs:label": "§ 15<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_15_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Üherealisel horisontaallogol on kohtute vapp mõõtudega 2,1×2,5 cm. Vapil on pruunide (Pantone 476) tasakaalus kaalude taustal esitatud kolme sinise (Pantone 285) sammuva ja otsevaatava lõviga kuldne (Pantone 131) riigivapp.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_15_15"
+      },
+      "rdfs:label": "§ 15<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_15_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ühetaolisel horisontaallogol on pruunide (Pantone 476) trükitähtedega 0,6 cm kõrgune kiri „KOHUS”, mille kirjastiil on „Adobe Jenson Bold”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_15_15"
+      },
+      "rdfs:label": "§ 15<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_15_15_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Üherealine horisontaallogo on ääristatud 1 mm laiuse pruuni (Pantone 476) raamiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_15_15"
+      },
+      "rdfs:label": "§ 15<sup>1</sup> lg 5"
     },
     {
       "@id": "estleg:Reg_337179_Par_16",
@@ -515,13 +1233,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Kohtukordniku ametiriietuse kandmise üldnõuded",
+      "rdfs:label": {
+        "@value": "§ 16. Kohtukordniku ametiriietuse kandmise üldnõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Kohtukordnik kannab ametikohustuste täitmise ajal ainult käesoleva määrusega ettenähtud ametiriietust. Katseajal lähtub kohtukordnik riietumisel käesoleva määrusega ettenähtud kohtukordniku ametiriietuse üldisest kirjeldusest. Kohtukordnik kannab ametikohustuste täitmise ajal ainult käesoleva määrusega ettenähtud ametiriietust. Katseajal lähtub kohtukordnik riietumisel käesoleva määrusega ettenähtud kohtukordniku ametiriietuse üldisest kirjeldusest. 2 (2) Kohtukordniku ametiriietust hoitak",
-      "estleg:legalText": "1 (1) Kohtukordnik kannab ametikohustuste täitmise ajal ainult käesoleva määrusega ettenähtud ametiriietust. Katseajal lähtub kohtukordnik riietumisel käesoleva määrusega ettenähtud kohtukordniku ametiriietuse üldisest kirjeldusest. Kohtukordnik kannab ametikohustuste täitmise ajal ainult käesoleva määrusega ettenähtud ametiriietust. Katseajal lähtub kohtukordnik riietumisel käesoleva määrusega ettenähtud kohtukordniku ametiriietuse üldisest kirjeldusest. 2 (2) Kohtukordniku ametiriietust hoitakse väljaspool tööaega kohtus. Kohtukordniku ametiriietust hoitakse väljaspool tööaega kohtus. 3 (3) Kohtukordnik võib kanda ametiriietust väljaspool tööaega ainult kohtudirektori loal. Kohtukordnik võib kanda ametiriietust väljaspool tööaega ainult kohtudirektori loal. 4 (4) Kohtukordnik kannab ametikohustusi täites ametiriietusele lisaks paremal pool rinnas pildiga töötõendit või nimesilti. Kohtukordnik kannab ametikohustusi täites ametiriietusele lisaks paremal pool rinnas pildiga töötõendit või nimesilti. 5 (5) Pükste peal kantakse vöörihma. Pükste peal kantakse vöörihma. 6 (6) Särki kantakse pükste või seeliku sees. Särki kantakse pükste või seeliku sees. 7 (7) Lips kuulub nii meeste kui naiste vormiriietuse juurde. Lips kuulub nii meeste kui naiste vormiriietuse juurde. 8 (8) Lipsu kantakse koos pintsaku või vestiga nii pikkade kui ka lühikeste käistega särgiga, ilma pintsakuta vaid pikkade käistega särgiga. Lipsu kantakse koos pintsaku või vestiga nii pikkade kui ka lühikeste käistega särgiga, ilma pintsakuta vaid pikkade käistega särgiga.",
+      "estleg:summary": {
+        "@value": "1 (1) Kohtukordnik kannab ametikohustuste täitmise ajal ainult käesoleva määrusega ettenähtud ametiriietust. Katseajal lähtub kohtukordnik riietumisel käesoleva määrusega ettenähtud kohtukordniku ametiriietuse üldisest kirjeldusest. 2 (2) Kohtukordniku ametiriietust hoitakse väljaspool tööaega kohtus. 3 (3) Kohtukordnik võib kanda ametiriietust väljaspool tööaega ainult kohtudirektori loal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kohtukordnik kannab ametikohustuste täitmise ajal ainult käesoleva määrusega ettenähtud ametiriietust. Katseajal lähtub kohtukordnik riietumisel käesoleva määrusega ettenähtud kohtukordniku ametiriietuse üldisest kirjeldusest. 2 (2) Kohtukordniku ametiriietust hoitakse väljaspool tööaega kohtus. 3 (3) Kohtukordnik võib kanda ametiriietust väljaspool tööaega ainult kohtudirektori loal. 4 (4) Kohtukordnik kannab ametikohustusi täites ametiriietusele lisaks paremal pool rinnas pildiga töötõendit või nimesilti. 5 (5) Pükste peal kantakse vöörihma. 6 (6) Särki kantakse pükste või seeliku sees. 7 (7) Lips kuulub nii meeste kui naiste vormiriietuse juurde. 8 (8) Lipsu kantakse koos pintsaku või vestiga nii pikkade kui ka lühikeste käistega särgiga, ilma pintsakuta vaid pikkade käistega särgiga.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -535,7 +1259,137 @@
         {
           "@id": "estleg:Reg_337179_Par_16_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_16_Lg_8"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohtukordnik kannab ametikohustuste täitmise ajal ainult käesoleva määrusega ettenähtud ametiriietust. Katseajal lähtub kohtukordnik riietumisel käesoleva määrusega ettenähtud kohtukordniku ametiriietuse üldisest kirjeldusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohtukordniku ametiriietust hoitakse väljaspool tööaega kohtus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kohtukordnik võib kanda ametiriietust väljaspool tööaega ainult kohtudirektori loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kohtukordnik kannab ametikohustusi täites ametiriietusele lisaks paremal pool rinnas pildiga töötõendit või nimesilti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Pükste peal kantakse vöörihma.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Särki kantakse pükste või seeliku sees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Lips kuulub nii meeste kui naiste vormiriietuse juurde.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 7"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_16_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Lipsu kantakse koos pintsaku või vestiga nii pikkade kui ka lühikeste käistega särgiga, ilma pintsakuta vaid pikkade käistega särgiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 8"
     },
     {
       "@id": "estleg:Reg_337179_Par_17",
@@ -544,13 +1398,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Kohtukordniku ametiriietuse eest hoolitsemine",
+      "rdfs:label": {
+        "@value": "§ 17. Kohtukordniku ametiriietuse eest hoolitsemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Ametiriietuse korrasoleku ja pesemise eest vastutab ametiriietuse kasutaja. Ametiriietuse korrasoleku ja pesemise eest vastutab ametiriietuse kasutaja. 2 (2) Ametiriietuse keemilise puhastamise korraldab ja selle vajaduse ning sageduse määrab kohtudirektor või tema volitatud isik. Ametiriietuse keemilise puhastamise korraldab ja selle vajaduse ning sageduse määrab kohtudirektor või tema volitatud isik. 3 (3) Kasutaja süül erandkorras keemilist puhastust vajavate riietusesemete puhastuse ko",
-      "estleg:legalText": "1 (1) Ametiriietuse korrasoleku ja pesemise eest vastutab ametiriietuse kasutaja. Ametiriietuse korrasoleku ja pesemise eest vastutab ametiriietuse kasutaja. 2 (2) Ametiriietuse keemilise puhastamise korraldab ja selle vajaduse ning sageduse määrab kohtudirektor või tema volitatud isik. Ametiriietuse keemilise puhastamise korraldab ja selle vajaduse ning sageduse määrab kohtudirektor või tema volitatud isik. 3 (3) Kasutaja süül erandkorras keemilist puhastust vajavate riietusesemete puhastuse korraldab kasutaja. Kasutaja süül erandkorras keemilist puhastust vajavate riietusesemete puhastuse korraldab kasutaja. 4 (4) Kui ametiriietusse kuuluv riietusese kaob või muutub kasutuskõlbmatuks kasutaja süül, hüvitab kasutaja kohtule kas kaotatud või kasutuskõlbmatu ametiriietuse maksumuse või asemele antava uue riietuseseme maksumuse. Kui ametiriietusse kuuluv riietusese kaob või muutub kasutuskõlbmatuks kasutaja süül, hüvitab kasutaja kohtule kas kaotatud või kasutuskõlbmatu ametiriietuse maksumuse või asemele antava uue riietuseseme maksumuse.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametiriietuse korrasoleku ja pesemise eest vastutab ametiriietuse kasutaja. 2 (2) Ametiriietuse keemilise puhastamise korraldab ja selle vajaduse ning sageduse määrab kohtudirektor või tema volitatud isik. 3 (3) Kasutaja süül erandkorras keemilist puhastust vajavate riietusesemete puhastuse korraldab kasutaja. 4 (4) Kui ametiriietusse kuuluv riietusese kaob või muutub kasutuskõlbmatuks kasutaja süül, hüvitab kasutaja kohtule kas kaotatud või kasutuskõlbmatu ametiriietuse maksumuse või…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametiriietuse korrasoleku ja pesemise eest vastutab ametiriietuse kasutaja. 2 (2) Ametiriietuse keemilise puhastamise korraldab ja selle vajaduse ning sageduse määrab kohtudirektor või tema volitatud isik. 3 (3) Kasutaja süül erandkorras keemilist puhastust vajavate riietusesemete puhastuse korraldab kasutaja. 4 (4) Kui ametiriietusse kuuluv riietusese kaob või muutub kasutuskõlbmatuks kasutaja süül, hüvitab kasutaja kohtule kas kaotatud või kasutuskõlbmatu ametiriietuse maksumuse või asemele antava uue riietuseseme maksumuse.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -567,7 +1427,73 @@
         {
           "@id": "estleg:Reg_337179_Par_17_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_17_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_17_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_17_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiriietuse korrasoleku ja pesemise eest vastutab ametiriietuse kasutaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametiriietuse keemilise puhastamise korraldab ja selle vajaduse ning sageduse määrab kohtudirektor või tema volitatud isik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_17_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kasutaja süül erandkorras keemilist puhastust vajavate riietusesemete puhastuse korraldab kasutaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_17_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui ametiriietusse kuuluv riietusese kaob või muutub kasutuskõlbmatuks kasutaja süül, hüvitab kasutaja kohtule kas kaotatud või kasutuskõlbmatu ametiriietuse maksumuse või asemele antava uue riietuseseme maksumuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 4"
     },
     {
       "@id": "estleg:Reg_337179_Par_18",
@@ -576,13 +1502,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Kohtukordniku ametiriietuse tagastamine",
+      "rdfs:label": {
+        "@value": "§ 18. Kohtukordniku ametiriietuse tagastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "1 (1) Ametiriietuse kasutaja tagastab ametiriietuse kohtule, kui riietusese asendatakse või kui kasutaja vabastatakse teenistusest. Ametiriietuse kasutaja tagastab ametiriietuse kohtule, kui riietusese asendatakse või kui kasutaja vabastatakse teenistusest. 2 (2) Kui ametiriietuse kasutaja jätab teenistusest vabastamisel ametiriietuse tagastamata, nõutakse temalt sisse ametiriietuse soetusmaksumus. Kui ametiriietuse kasutaja jätab teenistusest vabastamisel ametiriietuse tagastamata, nõutakse tem",
-      "estleg:legalText": "1 (1) Ametiriietuse kasutaja tagastab ametiriietuse kohtule, kui riietusese asendatakse või kui kasutaja vabastatakse teenistusest. Ametiriietuse kasutaja tagastab ametiriietuse kohtule, kui riietusese asendatakse või kui kasutaja vabastatakse teenistusest. 2 (2) Kui ametiriietuse kasutaja jätab teenistusest vabastamisel ametiriietuse tagastamata, nõutakse temalt sisse ametiriietuse soetusmaksumus. Kui ametiriietuse kasutaja jätab teenistusest vabastamisel ametiriietuse tagastamata, nõutakse temalt sisse ametiriietuse soetusmaksumus. 3 (3) Kohtule tagastatud riietuseseme edasise kasutamise kõlbulikkuse otsustab kohtudirektor või tema volitatud kohtuteenistuja. Kohtule tagastatud riietuseseme edasise kasutamise kõlbulikkuse otsustab kohtudirektor või tema volitatud kohtuteenistuja.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametiriietuse kasutaja tagastab ametiriietuse kohtule, kui riietusese asendatakse või kui kasutaja vabastatakse teenistusest. 2 (2) Kui ametiriietuse kasutaja jätab teenistusest vabastamisel ametiriietuse tagastamata, nõutakse temalt sisse ametiriietuse soetusmaksumus. 3 (3) Kohtule tagastatud riietuseseme edasise kasutamise kõlbulikkuse otsustab kohtudirektor või tema volitatud kohtuteenistuja.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametiriietuse kasutaja tagastab ametiriietuse kohtule, kui riietusese asendatakse või kui kasutaja vabastatakse teenistusest. 2 (2) Kui ametiriietuse kasutaja jätab teenistusest vabastamisel ametiriietuse tagastamata, nõutakse temalt sisse ametiriietuse soetusmaksumus. 3 (3) Kohtule tagastatud riietuseseme edasise kasutamise kõlbulikkuse otsustab kohtudirektor või tema volitatud kohtuteenistuja.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -599,7 +1531,57 @@
         {
           "@id": "estleg:Reg_337179_Par_18_v337179"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_337179_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_18_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_337179_Par_18_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiriietuse kasutaja tagastab ametiriietuse kohtule, kui riietusese asendatakse või kui kasutaja vabastatakse teenistusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui ametiriietuse kasutaja jätab teenistusest vabastamisel ametiriietuse tagastamata, nõutakse temalt sisse ametiriietuse soetusmaksumus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_337179_Par_18_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kohtule tagastatud riietuseseme edasise kasutamise kõlbulikkuse otsustab kohtudirektor või tema volitatud kohtuteenistuja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_337179_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 3"
     },
     {
       "@id": "estleg:Reg_337179_Par_19",
@@ -608,12 +1590,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Määruste kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 19. Määruste kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuniku ja kohtukordniku ametiriietuse kirjeldus ning kohtukordniku ametiriietuse kandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_337179_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {

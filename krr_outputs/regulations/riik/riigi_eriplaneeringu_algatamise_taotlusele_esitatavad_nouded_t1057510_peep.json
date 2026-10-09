@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Riigi eriplaneeringu algatamise taotlusele esitatavad nõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Riigi eriplaneeringu algatamise taotlusele esitatavad nõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Riigi eriplaneeringu algatamise taotlusele esitatavad nõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2023-10-09",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2023-10-06",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -70,7 +72,13 @@
         {
           "@id": "http://eurovoc.europa.eu/5050"
         }
-      ]
+      ],
+      "dcterms:title": "Riigi eriplaneeringu algatamise taotlusele esitatavad nõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1057510_Par_1",
@@ -79,13 +87,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi eriplaneeringu algatamise taotlusele esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1057510_Map"
       },
-      "estleg:summary": "Määrus sätestab riigi eriplaneeringu algatamise taotlusele esitatavad nõuded, mis esitatakse Regionaal- ja Põllumajandusministeeriumile.",
-      "estleg:legalText": "Määrus sätestab riigi eriplaneeringu algatamise taotlusele esitatavad nõuded, mis esitatakse Regionaal- ja Põllumajandusministeeriumile. Määrus sätestab riigi eriplaneeringu algatamise taotlusele esitatavad nõuded, mis esitatakse Regionaal- ja Põllumajandusministeeriumile.",
+      "estleg:summary": {
+        "@value": "Määrus sätestab riigi eriplaneeringu algatamise taotlusele esitatavad nõuded, mis esitatakse Regionaal- ja Põllumajandusministeeriumile.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus sätestab riigi eriplaneeringu algatamise taotlusele esitatavad nõuded, mis esitatakse Regionaal- ja Põllumajandusministeeriumile.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1057510_Par_1_v1057510"
@@ -95,7 +109,25 @@
         {
           "@id": "estleg:Institution_regionaal_ja_pollumajandusministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1057510_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1057510_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus sätestab riigi eriplaneeringu algatamise taotlusele esitatavad nõuded, mis esitatakse Regionaal- ja Põllumajandusministeeriumile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057510_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1057510_Par_2",
@@ -104,13 +136,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Nõuded riigi eriplaneeringu algatamise taotlusele",
+      "rdfs:label": {
+        "@value": "§ 2. Nõuded riigi eriplaneeringu algatamise taotlusele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riigi eriplaneeringu algatamise taotlusele esitatavad nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1057510_Map"
       },
-      "estleg:summary": "1 (1) Riigi eriplaneeringu algatamise taotluses esitatakse järgmised andmed: 1 1) taotleja nimi, registrikood ja kontaktandmed; 2 2) planeeringu koostamise vajadus koos põhjendustega; 3 3) planeeringu koostamise eesmärk; 4 4) kavandatava ehitise vastavus riigi strateegilistest arengudokumentidest lähtuvatele eesmärkidele; 5 5) kavandatava ehitise ja seda teenindavate ehitiste kasutamise otstarve, sellega seotud tegevuse kirjeldus ja ehitise toimimise tagamise eelduseks vajalikud tingimused; 6 6)",
-      "estleg:legalText": "1 (1) Riigi eriplaneeringu algatamise taotluses esitatakse järgmised andmed: 1 1) taotleja nimi, registrikood ja kontaktandmed; 2 2) planeeringu koostamise vajadus koos põhjendustega; 3 3) planeeringu koostamise eesmärk; 4 4) kavandatava ehitise vastavus riigi strateegilistest arengudokumentidest lähtuvatele eesmärkidele; 5 5) kavandatava ehitise ja seda teenindavate ehitiste kasutamise otstarve, sellega seotud tegevuse kirjeldus ja ehitise toimimise tagamise eelduseks vajalikud tingimused; 6 6) planeeringuala kirjeldus ja ruumiandmed, sealhulgas selle asukoht, suurus ja piir; 7 7) kavandatava ehitisega eeldatavasti kaasnevate asjakohaste majanduslike, kultuuriliste, sotsiaalsete ja looduskeskkonnale avalduvate mõjude kirjeldus; 8 8) planeeringu koostamiseks teadaolevate vajalike uuringute ja analüüside nimekiri koos kirjeldusega; 9 9) planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside eeldatav eelarve; 10 10) nõusolek planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside kulude kandmise lepingu sõlmimiseks; 11 11) vajaduse korral riski- ja finantsanalüüs; 12 12) vajaduse korral muu asjakohane teave. Riigi eriplaneeringu algatamise taotluses esitatakse järgmised andmed: taotleja nimi, registrikood ja kontaktandmed; planeeringu koostamise vajadus koos põhjendustega; planeeringu koostamise eesmärk; kavandatava ehitise vastavus riigi strateegilistest arengudokumentidest lähtuvatele eesmärkidele; kavandatava ehitise ja seda teenindavate ehitiste kasutamise otstarve, sellega seotud tegevuse kirjeldus ja ehitise toimimise tagamise eelduseks vajalikud tingimused; planeeringuala kirjeldus ja ruumiandmed, sealhulgas selle asukoht, suurus ja piir; kavandatava ehitisega eeldatavasti kaasnevate asjakohaste majanduslike, kultuuriliste, sotsiaalsete ja looduskeskkonnale avalduvate mõjude kirjeldus; planeeringu koostamiseks teadaolevate vajalike uuringute ja analüüside nimekiri koos kirjeldusega; planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside eeldatav eelarve; nõusolek planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside kulude kandmise lepingu sõlmimiseks; vajaduse korral riski- ja finantsanalüüs; vajaduse korral muu asjakohane teave. 2 (2) Juhul kui riigi eriplaneeringu koostamise taotluse esitaja ei ole valitsusasutus, esitatakse lisaks käesoleva paragrahvi lõikes 1 loetletud andmetele planeeringu koostamise ja sellega kavandatu elluviimise, sealhulgas käigushoidmise, tagamiseks: 1 1) juriidilise isiku puhul andmed taotleja omandistruktuuri, tegeliku kasusaaja, majandustegevuse sisu, majandusvõimekuse, rahastamisallika ja teistes riikides tegutsemise kohta; 2 2) füüsilise isiku puhul andmed taotleja rahastamisallika kohta; 3 3) kaasrahastaja olemasolu korral punktides 1−2 nimetatud andmed ka kaasrahastaja kohta. Juhul kui riigi eriplaneeringu koostamise taotluse esitaja ei ole valitsusasutus, esitatakse lisaks käesoleva paragrahvi lõikes 1 loetletud andmetele planeeringu koostamise ja sellega kavandatu elluviimise, sealhulgas käigushoidmise, tagamiseks: juriidilise isiku puhul andmed taotleja omandistruktuuri, tegeliku kasusaaja, majandustegevuse sisu, majandusvõimekuse, rahastamisallika ja teistes riikides tegutsemise kohta; füüsilise isiku puhul andmed taotleja rahastamisallika kohta; kaasrahastaja olemasolu korral punktides 1−2 nimetatud andmed ka kaasrahastaja kohta.",
+      "estleg:summary": {
+        "@value": "1 (1) Riigi eriplaneeringu algatamise taotluses esitatakse järgmised andmed: 1 1) taotleja nimi, registrikood ja kontaktandmed; 2 2) planeeringu koostamise vajadus koos põhjendustega; 3 3) planeeringu koostamise eesmärk; 4 4) kavandatava ehitise vastavus riigi strateegilistest arengudokumentidest lähtuvatele eesmärkidele; 5 5) kavandatava ehitise ja seda teenindavate ehitiste kasutamise otstarve, sellega seotud tegevuse kirjeldus ja ehitise toimimise tagamise eelduseks vajalikud tingimused; 6…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Riigi eriplaneeringu algatamise taotluses esitatakse järgmised andmed: 1 1) taotleja nimi, registrikood ja kontaktandmed; 2 2) planeeringu koostamise vajadus koos põhjendustega; 3 3) planeeringu koostamise eesmärk; 4 4) kavandatava ehitise vastavus riigi strateegilistest arengudokumentidest lähtuvatele eesmärkidele; 5 5) kavandatava ehitise ja seda teenindavate ehitiste kasutamise otstarve, sellega seotud tegevuse kirjeldus ja ehitise toimimise tagamise eelduseks vajalikud tingimused; 6 6) planeeringuala kirjeldus ja ruumiandmed, sealhulgas selle asukoht, suurus ja piir; 7 7) kavandatava ehitisega eeldatavasti kaasnevate asjakohaste majanduslike, kultuuriliste, sotsiaalsete ja looduskeskkonnale avalduvate mõjude kirjeldus; 8 8) planeeringu koostamiseks teadaolevate vajalike uuringute ja analüüside nimekiri koos kirjeldusega; 9 9) planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside eeldatav eelarve; 10 10) nõusolek planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside kulude kandmise lepingu sõlmimiseks; 11 11) vajaduse korral riski- ja finantsanalüüs; 12 12) vajaduse korral muu asjakohane teave. 2 (2) Juhul kui riigi eriplaneeringu koostamise taotluse esitaja ei ole valitsusasutus, esitatakse lisaks käesoleva paragrahvi lõikes 1 loetletud andmetele planeeringu koostamise ja sellega kavandatu elluviimise, sealhulgas käigushoidmise, tagamiseks: 1 1) juriidilise isiku puhul andmed taotleja omandistruktuuri, tegeliku kasusaaja, majandustegevuse sisu, majandusvõimekuse, rahastamisallika ja teistes riikides tegutsemise kohta; 2 2) füüsilise isiku puhul andmed taotleja rahastamisallika kohta; 3 3) kaasrahastaja olemasolu korral punktides 1−2 nimetatud andmed ka kaasrahastaja kohta.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -127,6 +165,14 @@
         {
           "@id": "estleg:Reg_1057510_Par_2_v1057510"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1057510_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1057510_Par_2_Lg_2"
+        }
       ]
     },
     {
@@ -140,6 +186,51 @@
       },
       "estleg:citationDetail": "lg 6 p 2",
       "estleg:citationText": "Määrus kehtestatakse planeerimisseaduse § 3 lõike 6 punkti 2"
+    },
+    {
+      "@id": "estleg:Reg_1057510_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi eriplaneeringu algatamise taotluses esitatakse järgmised andmed: 1) taotleja nimi, registrikood ja kontaktandmed; 2) planeeringu koostamise vajadus koos põhjendustega; 3) planeeringu koostamise eesmärk; 4) kavandatava ehitise vastavus riigi strateegilistest arengudokumentidest lähtuvatele eesmärkidele; 5) kavandatava ehitise ja seda teenindavate ehitiste kasutamise otstarve, sellega seotud tegevuse kirjeldus ja ehitise toimimise tagamise eelduseks vajalikud tingimused; 6) planeeringuala kirjeldus ja ruumiandmed, sealhulgas selle asukoht, suurus ja piir; 7) kavandatava ehitisega eeldatavasti kaasnevate asjakohaste majanduslike, kultuuriliste, sotsiaalsete ja looduskeskkonnale avalduvate mõjude kirjeldus; 8) planeeringu koostamiseks teadaolevate vajalike uuringute ja analüüside nimekiri koos kirjeldusega; 9) planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside eeldatav eelarve; 10) nõusolek planeeringu koostamise tellimise ja planeerimisseaduses sätestatud mõjude hindamise, sealhulgas selle raames koostatavate uuringute ja analüüside kulude kandmise lepingu sõlmimiseks; 11) vajaduse korral riski- ja finantsanalüüs; 12) vajaduse korral muu asjakohane teave.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057510_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1057510_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juhul kui riigi eriplaneeringu koostamise taotluse esitaja ei ole valitsusasutus, esitatakse lisaks käesoleva paragrahvi lõikes 1 loetletud andmetele planeeringu koostamise ja sellega kavandatu elluviimise, sealhulgas käigushoidmise, tagamiseks: 1) juriidilise isiku puhul andmed taotleja omandistruktuuri, tegeliku kasusaaja, majandustegevuse sisu, majandusvõimekuse, rahastamisallika ja teistes riikides tegutsemise kohta; 2) füüsilise isiku puhul andmed taotleja rahastamisallika kohta; 3) kaasrahastaja olemasolu korral punktides 1−2 nimetatud andmed ka kaasrahastaja kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1057510_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     }
   ]
 }

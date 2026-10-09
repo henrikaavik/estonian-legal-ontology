@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kohtuekspertiisi infosüsteemi põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Kohtuekspertiisi infosüsteemi põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1058871",
       "estleg:preambleText": "Määrus kehtestatakse kohtuekspertiisiseaduse § 16 lõike 8 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2024-05-20",
+        "@value": "2025-01-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2024-12-11",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2024-05-17",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1058871_35e73cbd3b"
@@ -116,7 +118,13 @@
         {
           "@id": "estleg:Institution_justiitsministeerium"
         }
-      ]
+      ],
+      "dcterms:title": "Kohtuekspertiisi infosüsteemi põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1058871_Par_1",
@@ -125,13 +133,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Infosüsteemi asutamine ja nimetus",
+      "rdfs:label": {
+        "@value": "§ 1. Infosüsteemi asutamine ja nimetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Määrusega asutatakse andmekogu ametliku nimetusega kohtuekspertiisi infosüsteem (edaspidi infosüsteem). Määrusega asutatakse andmekogu ametliku nimetusega kohtuekspertiisi infosüsteem (edaspidi infosüsteem). 2 (2) Infosüsteemi ametlik lühend on KEIS. Infosüsteemi ametlik lühend on KEIS. 3 (3) Infosüsteemi ingliskeelne nimetus on forensic examinations database. Infosüsteemi ingliskeelne nimetus on forensic examinations database.",
-      "estleg:legalText": "1 (1) Määrusega asutatakse andmekogu ametliku nimetusega kohtuekspertiisi infosüsteem (edaspidi infosüsteem). Määrusega asutatakse andmekogu ametliku nimetusega kohtuekspertiisi infosüsteem (edaspidi infosüsteem). 2 (2) Infosüsteemi ametlik lühend on KEIS. Infosüsteemi ametlik lühend on KEIS. 3 (3) Infosüsteemi ingliskeelne nimetus on forensic examinations database. Infosüsteemi ingliskeelne nimetus on forensic examinations database.",
+      "estleg:summary": {
+        "@value": "1 (1) Määrusega asutatakse andmekogu ametliku nimetusega kohtuekspertiisi infosüsteem (edaspidi infosüsteem). 2 (2) Infosüsteemi ametlik lühend on KEIS. 3 (3) Infosüsteemi ingliskeelne nimetus on forensic examinations database.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määrusega asutatakse andmekogu ametliku nimetusega kohtuekspertiisi infosüsteem (edaspidi infosüsteem). 2 (2) Infosüsteemi ametlik lühend on KEIS. 3 (3) Infosüsteemi ingliskeelne nimetus on forensic examinations database.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1040583_Par_1"
@@ -153,7 +167,57 @@
         {
           "@id": "estleg:Reg_1058871_Par_1_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_1_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega asutatakse andmekogu ametliku nimetusega kohtuekspertiisi infosüsteem (edaspidi infosüsteem).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi ametlik lühend on KEIS.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Infosüsteemi ingliskeelne nimetus on forensic examinations database.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:Reg_1058871_Par_2",
@@ -162,13 +226,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Infosüsteemi ülesehitus",
+      "rdfs:label": {
+        "@value": "§ 2. Infosüsteemi ülesehitus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "Infosüsteem koosneb järgmistest andmestikest: 1 1) põhiandmestik; 2 2) kohtuekspertiisiseaduse § 12 alusel tehtavate tasuliste ekspertiiside andmestik; 3 3) registrite ja võrdlusnäidiste kogude andmestik. Infosüsteem koosneb järgmistest andmestikest: põhiandmestik; kohtuekspertiisiseaduse § 12 alusel tehtavate tasuliste ekspertiiside andmestik; registrite ja võrdlusnäidiste kogude andmestik.",
-      "estleg:legalText": "Infosüsteem koosneb järgmistest andmestikest: 1 1) põhiandmestik; 2 2) kohtuekspertiisiseaduse § 12 alusel tehtavate tasuliste ekspertiiside andmestik; 3 3) registrite ja võrdlusnäidiste kogude andmestik. Infosüsteem koosneb järgmistest andmestikest: põhiandmestik; kohtuekspertiisiseaduse § 12 alusel tehtavate tasuliste ekspertiiside andmestik; registrite ja võrdlusnäidiste kogude andmestik.",
+      "estleg:summary": {
+        "@value": "Infosüsteem koosneb järgmistest andmestikest: 1 1) põhiandmestik; 2 2) kohtuekspertiisiseaduse § 12 alusel tehtavate tasuliste ekspertiiside andmestik; 3 3) registrite ja võrdlusnäidiste kogude andmestik.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Infosüsteem koosneb järgmistest andmestikest: 1 1) põhiandmestik; 2 2) kohtuekspertiisiseaduse § 12 alusel tehtavate tasuliste ekspertiiside andmestik; 3 3) registrite ja võrdlusnäidiste kogude andmestik.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1057454_Par_2"
@@ -188,6 +258,29 @@
         {
           "@id": "estleg:Reg_1058871_Par_2_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_2_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteem koosneb järgmistest andmestikest: 1) põhiandmestik; 2) kohtuekspertiisiseaduse § 12 alusel tehtavate tasuliste ekspertiiside andmestik; 3) registrite ja võrdlusnäidiste kogude andmestik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -197,13 +290,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Infosüsteemi andmete kaitse, turvameetmed ja turbeaste",
+      "rdfs:label": {
+        "@value": "§ 3. Infosüsteemi andmete kaitse, turvameetmed ja turbeaste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Kaitstakse infosüsteemi andmete: 1 1) käideldavust, tagades andmete kasutatavuse ja õigeaegse kättesaadavuse selleks õigustatud isikutele; 2 2) terviklust, välistades andmete tahtmatu või tahtliku muutmise; 3 3) konfidentsiaalsust, tagades andmete kättesaadavuse üksnes õigustatud isikutele. Kaitstakse infosüsteemi andmete: käideldavust, tagades andmete kasutatavuse ja õigeaegse kättesaadavuse selleks õigustatud isikutele; terviklust, välistades andmete tahtmatu või tahtliku muutmise; konfi",
-      "estleg:legalText": "1 (1) Kaitstakse infosüsteemi andmete: 1 1) käideldavust, tagades andmete kasutatavuse ja õigeaegse kättesaadavuse selleks õigustatud isikutele; 2 2) terviklust, välistades andmete tahtmatu või tahtliku muutmise; 3 3) konfidentsiaalsust, tagades andmete kättesaadavuse üksnes õigustatud isikutele. Kaitstakse infosüsteemi andmete: käideldavust, tagades andmete kasutatavuse ja õigeaegse kättesaadavuse selleks õigustatud isikutele; terviklust, välistades andmete tahtmatu või tahtliku muutmise; konfidentsiaalsust, tagades andmete kättesaadavuse üksnes õigustatud isikutele. 2 (2) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1 1) käideldavus – K2; 2 2) terviklus – T2; 3 3) konfidentsiaalsus – S2. Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: käideldavus – K2; terviklus – T2; konfidentsiaalsus – S2. 3 (3) Infosüsteemi turbeaste on keskmine (M). Infosüsteemi turbeaste on keskmine (M).",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitstakse infosüsteemi andmete: 1 1) käideldavust, tagades andmete kasutatavuse ja õigeaegse kättesaadavuse selleks õigustatud isikutele; 2 2) terviklust, välistades andmete tahtmatu või tahtliku muutmise; 3 3) konfidentsiaalsust, tagades andmete kättesaadavuse üksnes õigustatud isikutele. 2 (2) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1 1) käideldavus – K2; 2 2) terviklus – T2; 3 3) konfidentsiaalsus – S2. 3 (3) Infosüsteemi turbeaste on keskmine (M).",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitstakse infosüsteemi andmete: 1 1) käideldavust, tagades andmete kasutatavuse ja õigeaegse kättesaadavuse selleks õigustatud isikutele; 2 2) terviklust, välistades andmete tahtmatu või tahtliku muutmise; 3 3) konfidentsiaalsust, tagades andmete kättesaadavuse üksnes õigustatud isikutele. 2 (2) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1 1) käideldavus – K2; 2 2) terviklus – T2; 3 3) konfidentsiaalsus – S2. 3 (3) Infosüsteemi turbeaste on keskmine (M).",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1053211_Par_3"
@@ -225,7 +324,67 @@
         {
           "@id": "estleg:Reg_1058871_Par_3_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_3_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitstakse infosüsteemi andmete: 1) käideldavust, tagades andmete kasutatavuse ja õigeaegse kättesaadavuse selleks õigustatud isikutele; 2) terviklust, välistades andmete tahtmatu või tahtliku muutmise; 3) konfidentsiaalsust, tagades andmete kättesaadavuse üksnes õigustatud isikutele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1) käideldavus – K2; 2) terviklus – T2; 3) konfidentsiaalsus – S2.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Infosüsteemi turbeaste on keskmine (M).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:Reg_1058871_Par_4",
@@ -234,13 +393,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Infosüsteemi vastutav töötleja ja volitatud töötlejad",
+      "rdfs:label": {
+        "@value": "§ 4. Infosüsteemi vastutav töötleja ja volitatud töötlejad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemi vastutav töötleja on Justiits- ja Digiministeerium. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes Infosüsteemi vastutav töötleja on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes 2 (2) Infosüsteemi v",
-      "estleg:legalText": "1 (1) Infosüsteemi vastutav töötleja on Justiits- ja Digiministeerium. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes Infosüsteemi vastutav töötleja on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes 2 (2) Infosüsteemi volitatud töötlejad on: 1 1) Eesti Kohtuekspertiisi Instituut (edaspidi EKEI); 2 2) Registrite ja Infosüsteemide Keskus (edaspidi RIK). Infosüsteemi volitatud töötlejad on: Eesti Kohtuekspertiisi Instituut (edaspidi EKEI); Registrite ja Infosüsteemide Keskus (edaspidi RIK). 3 (3) Justiits- ja Digiministeerium vastutava töötlejana: RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes 1 1) korraldab koostöös volitatud töötlejatega infosüsteemi arenduste väljatöötamist; 2 2) määrab infosüsteemi haldaja või serveri alustaristu teenuse pakkuja; 3 3) annab täpsemaid juhiseid ja korraldusi volitatud töötlejatele; 4 4) täidab muid vastutava töötleja ülesandeid. Justiits- ja Digiministeerium vastutava töötlejana: , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes korraldab koostöös volitatud töötlejatega infosüsteemi arenduste väljatöötamist; määrab infosüsteemi haldaja või serveri alustaristu teenuse pakkuja; annab täpsemaid juhiseid ja korraldusi volitatud töötlejatele; täidab muid vastutava töötleja ülesandeid. 4 (4) Oma pädevuse piires EKEI ja RIK volitatud töötlejatena: 1 1) vastutavad infosüsteemis tehtavate toimingute õiguspärasuse ja seaduslikkuse eest; 2 2) teavitavad infosüsteemis andmete töötlemisel avastatud rikkumisest kohe vastutavat töötlejat ning võtavad viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; 3 3) teevad vastutavale töötlejale ettepanekuid infosüsteemi arendamiseks; 4 4) tagavad, et infosüsteemis teeb toiminguid vaid selleks õigustatud isik. Oma pädevuse piires EKEI ja RIK volitatud töötlejatena: vastutavad infosüsteemis tehtavate toimingute õiguspärasuse ja seaduslikkuse eest; teavitavad infosüsteemis andmete töötlemisel avastatud rikkumisest kohe vastutavat töötlejat ning võtavad viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; teevad vastutavale töötlejale ettepanekuid infosüsteemi arendamiseks; tagavad, et infosüsteemis teeb toiminguid vaid selleks õigustatud isik. 5 (5) Lisaks lõikes 4 sätestatud ülesannetele on EKEI kontaktpunkt andmesubjekti jaoks isikuandmete töötlemisel ning tagab ja korraldab vastuste andmise ja andmete väljastamise seotud osalistele. Lisaks lõikes 4 sätestatud ülesannetele on EKEI kontaktpunkt andmesubjekti jaoks isikuandmete töötlemisel ning tagab ja korraldab vastuste andmise ja andmete väljastamise seotud osalistele. 6 (6) Lisaks lõikes 4 sätestatud ülesannetele tagab RIK oma pädevuse piires: 1 1) infosüsteemi pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt; 2 2) infosüsteemi võimekuse vahetada andmeid teiste andmekogudega; 3 3) infosüsteemi kantud andmete nõuetekohase säilimise ja korraldab varukoopiate tegemise; 4 4) andmete infosüsteemi sisestamise, muutmise ja kustutamise, otsingute tegemise ja andmetega tutvumise võimaluse ainult selleks õigustatud isikutele; 5 5) infosüsteemi andmete turvalisuse, sealhulgas käideldavuse, tervikluse ja konfidentsiaalsuse säilitamiseks turvanõuetele vastavad organisatsioonilised, füüsilised ja infotehnoloogilised turvameetmed, mida rakendab järjepidevalt; 6 6) kasutajatoe ja intsidentide käsitlemise; 7 7) koostöös vastutava ja teise volitatud töötlejaga arendus- ja hooldustööde tegemise, kaasates vajaduse korral selleks väliseid partnereid. Lisaks lõikes 4 sätestatud ülesannetele tagab RIK oma pädevuse piires: infosüsteemi pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt; infosüsteemi võimekuse vahetada andmeid teiste andmekogudega; infosüsteemi kantud andmete nõuetekohase säilimise ja korraldab varukoopiate tegemise; andmete infosüsteemi sisestamise, muutmise ja kustutamise, otsingute tegemise ja andmetega tutvumise võimaluse ainult selleks õigustatud isikutele; infosüsteemi andmete turvalisuse, sealhulgas käideldavuse, tervikluse ja konfidentsiaalsuse säilitamiseks turvanõuetele vastavad organisatsioonilised, füüsilised ja infotehnoloogilised turvameetmed, mida rakendab järjepidevalt; kasutajatoe ja intsidentide käsitlemise; koostöös vastutava ja teise volitatud töötlejaga arendus- ja hooldustööde tegemise, kaasates vajaduse korral selleks väliseid partnereid.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemi vastutav töötleja on Justiits- ja Digiministeerium. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes 2 (2) Infosüsteemi volitatud töötlejad on: 1 1) Eesti Kohtuekspertiisi Instituut (edaspidi EKEI); 2 2) Registrite ja Infosüsteemide Keskus (edaspidi RIK).",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemi vastutav töötleja on Justiits- ja Digiministeerium. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes 2 (2) Infosüsteemi volitatud töötlejad on: 1 1) Eesti Kohtuekspertiisi Instituut (edaspidi EKEI); 2 2) Registrite ja Infosüsteemide Keskus (edaspidi RIK). 3 (3) Justiits- ja Digiministeerium vastutava töötlejana: RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes 1 1) korraldab koostöös volitatud töötlejatega infosüsteemi arenduste väljatöötamist; 2 2) määrab infosüsteemi haldaja või serveri alustaristu teenuse pakkuja; 3 3) annab täpsemaid juhiseid ja korraldusi volitatud töötlejatele; 4 4) täidab muid vastutava töötleja ülesandeid. 4 (4) Oma pädevuse piires EKEI ja RIK volitatud töötlejatena: 1 1) vastutavad infosüsteemis tehtavate toimingute õiguspärasuse ja seaduslikkuse eest; 2 2) teavitavad infosüsteemis andmete töötlemisel avastatud rikkumisest kohe vastutavat töötlejat ning võtavad viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; 3 3) teevad vastutavale töötlejale ettepanekuid infosüsteemi arendamiseks; 4 4) tagavad, et infosüsteemis teeb toiminguid vaid selleks õigustatud isik. 5 (5) Lisaks lõikes 4 sätestatud ülesannetele on EKEI kontaktpunkt andmesubjekti jaoks isikuandmete töötlemisel ning tagab ja korraldab vastuste andmise ja andmete väljastamise seotud osalistele. 6 (6) Lisaks lõikes 4 sätestatud ülesannetele tagab RIK oma pädevuse piires: 1 1) infosüsteemi pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt; 2 2) infosüsteemi võimekuse vahetada andmeid teiste andmekogudega; 3 3) infosüsteemi kantud andmete nõuetekohase säilimise ja korraldab varukoopiate tegemise; 4 4) andmete infosüsteemi sisestamise, muutmise ja kustutamise, otsingute tegemise ja andmetega tutvumise võimaluse ainult selleks õigustatud isikutele; 5 5) infosüsteemi andmete turvalisuse, sealhulgas käideldavuse, tervikluse ja konfidentsiaalsuse säilitamiseks turvanõuetele vastavad organisatsioonilised, füüsilised ja infotehnoloogilised turvameetmed, mida rakendab järjepidevalt; 6 6) kasutajatoe ja intsidentide käsitlemise; 7 7) koostöös vastutava ja teise volitatud töötlejaga arendus- ja hooldustööde tegemise, kaasates vajaduse korral selleks väliseid partnereid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -288,7 +453,130 @@
           "@id": "estleg:Institution_justiitsministeerium"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_4_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_4_Lg_6"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi vastutav töötleja on Justiits- ja Digiministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi volitatud töötlejad on: 1) Eesti Kohtuekspertiisi Instituut (edaspidi EKEI); 2) Registrite ja Infosüsteemide Keskus (edaspidi RIK).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Justiits- ja Digiministeerium vastutava töötlejana: 1) korraldab koostöös volitatud töötlejatega infosüsteemi arenduste väljatöötamist; 2) määrab infosüsteemi haldaja või serveri alustaristu teenuse pakkuja; 3) annab täpsemaid juhiseid ja korraldusi volitatud töötlejatele; 4) täidab muid vastutava töötleja ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Oma pädevuse piires EKEI ja RIK volitatud töötlejatena: 1) vastutavad infosüsteemis tehtavate toimingute õiguspärasuse ja seaduslikkuse eest; 2) teavitavad infosüsteemis andmete töötlemisel avastatud rikkumisest kohe vastutavat töötlejat ning võtavad viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; 3) teevad vastutavale töötlejale ettepanekuid infosüsteemi arendamiseks; 4) tagavad, et infosüsteemis teeb toiminguid vaid selleks õigustatud isik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Lisaks lõikes 4 sätestatud ülesannetele on EKEI kontaktpunkt andmesubjekti jaoks isikuandmete töötlemisel ning tagab ja korraldab vastuste andmise ja andmete väljastamise seotud osalistele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_4_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Lisaks lõikes 4 sätestatud ülesannetele tagab RIK oma pädevuse piires: 1) infosüsteemi pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt; 2) infosüsteemi võimekuse vahetada andmeid teiste andmekogudega; 3) infosüsteemi kantud andmete nõuetekohase säilimise ja korraldab varukoopiate tegemise; 4) andmete infosüsteemi sisestamise, muutmise ja kustutamise, otsingute tegemise ja andmetega tutvumise võimaluse ainult selleks õigustatud isikutele; 5) infosüsteemi andmete turvalisuse, sealhulgas käideldavuse, tervikluse ja konfidentsiaalsuse säilitamiseks turvanõuetele vastavad organisatsioonilised, füüsilised ja infotehnoloogilised turvameetmed, mida rakendab järjepidevalt; 6) kasutajatoe ja intsidentide käsitlemise; 7) koostöös vastutava ja teise volitatud töötlejaga arendus- ja hooldustööde tegemise, kaasates vajaduse korral selleks väliseid partnereid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
     },
     {
       "@id": "estleg:Reg_1058871_Par_5",
@@ -297,13 +585,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Menetlusasjas määratava ekspertiisi ja iseseisva eksperdiarvamusena vormistatava uuringu kohta infosüsteemi kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 5. Menetlusasjas määratava ekspertiisi ja iseseisva eksperdiarvamusena vormistatava uuringu kohta infosüsteemi kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Menetlusasjas määratud ekspertiisi kohta kantakse infosüsteemi: 1 1) menetlusasja number, tüüp ja registreerimisnumber; 2 2) ekspertiisi määramise ja infosüsteemis registreerimise kuupäev ning soovitav ekspertiisi valmimise kuupäev; 3 3) märge ekspertiisi prioriteetsuse kohta; 4 4) ekspertiisi liik; 5 5) ekspertiisiks vajalikud lähteandmed; 6 6) ekspertiisiülesanne; 7 7) menetluse liik; 8 8) süüteomenetluse korral süüteo kvalifikatsioon; 9 9) ekspertiisi määranud asutuse nimi, määruse koos",
-      "estleg:legalText": "1 (1) Menetlusasjas määratud ekspertiisi kohta kantakse infosüsteemi: 1 1) menetlusasja number, tüüp ja registreerimisnumber; 2 2) ekspertiisi määramise ja infosüsteemis registreerimise kuupäev ning soovitav ekspertiisi valmimise kuupäev; 3 3) märge ekspertiisi prioriteetsuse kohta; 4 4) ekspertiisi liik; 5 5) ekspertiisiks vajalikud lähteandmed; 6 6) ekspertiisiülesanne; 7 7) menetluse liik; 8 8) süüteomenetluse korral süüteo kvalifikatsioon; 9 9) ekspertiisi määranud asutuse nimi, määruse koostaja ees- ja perekonnanimi, ametikoht, telefoninumber ja e-posti aadress. Menetlusasjas määratud ekspertiisi kohta kantakse infosüsteemi: menetlusasja number, tüüp ja registreerimisnumber; ekspertiisi määramise ja infosüsteemis registreerimise kuupäev ning soovitav ekspertiisi valmimise kuupäev; märge ekspertiisi prioriteetsuse kohta; ekspertiisi liik; ekspertiisiks vajalikud lähteandmed; ekspertiisiülesanne; menetluse liik; süüteomenetluse korral süüteo kvalifikatsioon; ekspertiisi määranud asutuse nimi, määruse koostaja ees- ja perekonnanimi, ametikoht, telefoninumber ja e-posti aadress. 2 (2) Ekspertiisimäärus kantakse infosüsteemi failina. Ekspertiisimäärus kantakse infosüsteemi failina. 3 (3) Kohtuekspertiisiseaduse § 2 lõikes 3 nimetatud iseseisva eksperdiarvamusena vormistatud uuringule (edaspidi uuring) kohaldatakse käesoleva paragrahvi lõigetes 1 ja 2 ekspertiisi kohta sätestatut. Kohtuekspertiisiseaduse § 2 lõikes 3 nimetatud iseseisva eksperdiarvamusena vormistatud uuringule (edaspidi uuring) kohaldatakse käesoleva paragrahvi lõigetes 1 ja 2 ekspertiisi kohta sätestatut.",
+      "estleg:summary": {
+        "@value": "1 (1) Menetlusasjas määratud ekspertiisi kohta kantakse infosüsteemi: 1 1) menetlusasja number, tüüp ja registreerimisnumber; 2 2) ekspertiisi määramise ja infosüsteemis registreerimise kuupäev ning soovitav ekspertiisi valmimise kuupäev; 3 3) märge ekspertiisi prioriteetsuse kohta; 4 4) ekspertiisi liik; 5 5) ekspertiisiks vajalikud lähteandmed; 6 6) ekspertiisiülesanne; 7 7) menetluse liik; 8 8) süüteomenetluse korral süüteo kvalifikatsioon; 9 9) ekspertiisi määranud asutuse nimi, määruse…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Menetlusasjas määratud ekspertiisi kohta kantakse infosüsteemi: 1 1) menetlusasja number, tüüp ja registreerimisnumber; 2 2) ekspertiisi määramise ja infosüsteemis registreerimise kuupäev ning soovitav ekspertiisi valmimise kuupäev; 3 3) märge ekspertiisi prioriteetsuse kohta; 4 4) ekspertiisi liik; 5 5) ekspertiisiks vajalikud lähteandmed; 6 6) ekspertiisiülesanne; 7 7) menetluse liik; 8 8) süüteomenetluse korral süüteo kvalifikatsioon; 9 9) ekspertiisi määranud asutuse nimi, määruse koostaja ees- ja perekonnanimi, ametikoht, telefoninumber ja e-posti aadress. 2 (2) Ekspertiisimäärus kantakse infosüsteemi failina. 3 (3) Kohtuekspertiisiseaduse § 2 lõikes 3 nimetatud iseseisva eksperdiarvamusena vormistatud uuringule (edaspidi uuring) kohaldatakse käesoleva paragrahvi lõigetes 1 ja 2 ekspertiisi kohta sätestatut.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -317,7 +611,68 @@
         {
           "@id": "estleg:Reg_1058871_Par_5_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_5_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Menetlusasjas määratud ekspertiisi kohta kantakse infosüsteemi: 1) menetlusasja number, tüüp ja registreerimisnumber; 2) ekspertiisi määramise ja infosüsteemis registreerimise kuupäev ning soovitav ekspertiisi valmimise kuupäev; 3) märge ekspertiisi prioriteetsuse kohta; 4) ekspertiisi liik; 5) ekspertiisiks vajalikud lähteandmed; 6) ekspertiisiülesanne; 7) menetluse liik; 8) süüteomenetluse korral süüteo kvalifikatsioon; 9) ekspertiisi määranud asutuse nimi, määruse koostaja ees- ja perekonnanimi, ametikoht, telefoninumber ja e-posti aadress.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ekspertiisimäärus kantakse infosüsteemi failina.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kohtuekspertiisiseaduse § 2 lõikes 3 nimetatud iseseisva eksperdiarvamusena vormistatud uuringule (edaspidi uuring) kohaldatakse käesoleva paragrahvi lõigetes 1 ja 2 ekspertiisi kohta sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
     },
     {
       "@id": "estleg:Reg_1058871_Par_6",
@@ -326,13 +681,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Tasulise ekspertiisi tellija ja tellimuse kohta infosüsteemi kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 6. Tasulise ekspertiisi tellija ja tellimuse kohta infosüsteemi kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Tasulise ekspertiisi tellija kohta kantakse infosüsteemi: 1 1) ees- ja perekonnanimi; 2 2) juriidilise isiku nimi, kui ekspertiisi tellija on juriidiline isik; 3 3) isikukood või registrikood; 4 4) kontaktandmetena telefoninumber ja e-posti aadress. Tasulise ekspertiisi tellija kohta kantakse infosüsteemi: ees- ja perekonnanimi; juriidilise isiku nimi, kui ekspertiisi tellija on juriidiline isik; isikukood või registrikood; kontaktandmetena telefoninumber ja e-posti aadress. 2 (2) Tasulise",
-      "estleg:legalText": "1 (1) Tasulise ekspertiisi tellija kohta kantakse infosüsteemi: 1 1) ees- ja perekonnanimi; 2 2) juriidilise isiku nimi, kui ekspertiisi tellija on juriidiline isik; 3 3) isikukood või registrikood; 4 4) kontaktandmetena telefoninumber ja e-posti aadress. Tasulise ekspertiisi tellija kohta kantakse infosüsteemi: ees- ja perekonnanimi; juriidilise isiku nimi, kui ekspertiisi tellija on juriidiline isik; isikukood või registrikood; kontaktandmetena telefoninumber ja e-posti aadress. 2 (2) Tasulise ekspertiisi tellimuse kohta kantakse infosüsteemi § 5 lõike 1 punktides 1 ja 4 nimetatud andmed ning tellimus § 5 lõikes 2 nimetatud kujul. Tasulise ekspertiisi tellimuse kohta kantakse infosüsteemi § 5 lõike 1 punktides 1 ja 4 nimetatud andmed ning tellimus § 5 lõikes 2 nimetatud kujul.",
+      "estleg:summary": {
+        "@value": "1 (1) Tasulise ekspertiisi tellija kohta kantakse infosüsteemi: 1 1) ees- ja perekonnanimi; 2 2) juriidilise isiku nimi, kui ekspertiisi tellija on juriidiline isik; 3 3) isikukood või registrikood; 4 4) kontaktandmetena telefoninumber ja e-posti aadress. 2 (2) Tasulise ekspertiisi tellimuse kohta kantakse infosüsteemi § 5 lõike 1 punktides 1 ja 4 nimetatud andmed ning tellimus § 5 lõikes 2 nimetatud kujul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tasulise ekspertiisi tellija kohta kantakse infosüsteemi: 1 1) ees- ja perekonnanimi; 2 2) juriidilise isiku nimi, kui ekspertiisi tellija on juriidiline isik; 3 3) isikukood või registrikood; 4 4) kontaktandmetena telefoninumber ja e-posti aadress. 2 (2) Tasulise ekspertiisi tellimuse kohta kantakse infosüsteemi § 5 lõike 1 punktides 1 ja 4 nimetatud andmed ning tellimus § 5 lõikes 2 nimetatud kujul.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -357,7 +718,47 @@
         {
           "@id": "estleg:Reg_1058871_Par_6_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_6_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tasulise ekspertiisi tellija kohta kantakse infosüsteemi: 1) ees- ja perekonnanimi; 2) juriidilise isiku nimi, kui ekspertiisi tellija on juriidiline isik; 3) isikukood või registrikood; 4) kontaktandmetena telefoninumber ja e-posti aadress.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tasulise ekspertiisi tellimuse kohta kantakse infosüsteemi § 5 lõike 1 punktides 1 ja 4 nimetatud andmed ning tellimus § 5 lõikes 2 nimetatud kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:Reg_1058871_Par_7",
@@ -366,13 +767,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Ekspertiisi või uuringuga seotud isikute kohta infosüsteemi kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 7. Ekspertiisi või uuringuga seotud isikute kohta infosüsteemi kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Ekspertiisi või uuringuga seotud isikute kohta kantakse infosüsteemi: 1 1) isiku seos ekspertiisi või uuringuga; 2 2) ees- ja perekonnanimi; 3 3) isikukood või selle puudumise korral sünniaeg; 4 4) telefoninumber ja e-posti aadress, kui need on teada; 5 5) tuvastamata surnud isiku puhul tema leidmise andmed. Ekspertiisi või uuringuga seotud isikute kohta kantakse infosüsteemi: isiku seos ekspertiisi või uuringuga; ees- ja perekonnanimi; isikukood või selle puudumise korral sünniaeg; telefo",
-      "estleg:legalText": "1 (1) Ekspertiisi või uuringuga seotud isikute kohta kantakse infosüsteemi: 1 1) isiku seos ekspertiisi või uuringuga; 2 2) ees- ja perekonnanimi; 3 3) isikukood või selle puudumise korral sünniaeg; 4 4) telefoninumber ja e-posti aadress, kui need on teada; 5 5) tuvastamata surnud isiku puhul tema leidmise andmed. Ekspertiisi või uuringuga seotud isikute kohta kantakse infosüsteemi: isiku seos ekspertiisi või uuringuga; ees- ja perekonnanimi; isikukood või selle puudumise korral sünniaeg; telefoninumber ja e-posti aadress, kui need on teada; tuvastamata surnud isiku puhul tema leidmise andmed. 2 (2) Kui ekspertiisi või uuringuga on seotud juriidiline isik, kantakse lisaks juriidilise isiku esindaja kohta lõike 1 punktides 1–4 nimetatud andmetele registrisse ka juriidilise isiku nimi ja registrikood. Kui ekspertiisi või uuringuga on seotud juriidiline isik, kantakse lisaks juriidilise isiku esindaja kohta lõike 1 punktides 1–4 nimetatud andmetele registrisse ka juriidilise isiku nimi ja registrikood.",
+      "estleg:summary": {
+        "@value": "1 (1) Ekspertiisi või uuringuga seotud isikute kohta kantakse infosüsteemi: 1 1) isiku seos ekspertiisi või uuringuga; 2 2) ees- ja perekonnanimi; 3 3) isikukood või selle puudumise korral sünniaeg; 4 4) telefoninumber ja e-posti aadress, kui need on teada; 5 5) tuvastamata surnud isiku puhul tema leidmise andmed. 2 (2) Kui ekspertiisi või uuringuga on seotud juriidiline isik, kantakse lisaks juriidilise isiku esindaja kohta lõike 1 punktides 1–4 nimetatud andmetele registrisse ka juriidilise…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ekspertiisi või uuringuga seotud isikute kohta kantakse infosüsteemi: 1 1) isiku seos ekspertiisi või uuringuga; 2 2) ees- ja perekonnanimi; 3 3) isikukood või selle puudumise korral sünniaeg; 4 4) telefoninumber ja e-posti aadress, kui need on teada; 5 5) tuvastamata surnud isiku puhul tema leidmise andmed. 2 (2) Kui ekspertiisi või uuringuga on seotud juriidiline isik, kantakse lisaks juriidilise isiku esindaja kohta lõike 1 punktides 1–4 nimetatud andmetele registrisse ka juriidilise isiku nimi ja registrikood.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -394,7 +801,48 @@
         {
           "@id": "estleg:Reg_1058871_Par_7_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_7_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ekspertiisi või uuringuga seotud isikute kohta kantakse infosüsteemi: 1) isiku seos ekspertiisi või uuringuga; 2) ees- ja perekonnanimi; 3) isikukood või selle puudumise korral sünniaeg; 4) telefoninumber ja e-posti aadress, kui need on teada; 5) tuvastamata surnud isiku puhul tema leidmise andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui ekspertiisi või uuringuga on seotud juriidiline isik, kantakse lisaks juriidilise isiku esindaja kohta lõike 1 punktides 1–4 nimetatud andmetele registrisse ka juriidilise isiku nimi ja registrikood.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:Reg_1058871_Par_8",
@@ -403,18 +851,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta infosüsteemi kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 8. Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta infosüsteemi kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta kantakse infosüsteemi nende tüüp, nimetus või kirjeldus, staatus, seisund ja registreerimisnumber. Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta kantakse infosüsteemi nende tüüp, nimetus või kirjeldus, staatus, seisund ja registreerimisnumber. 2 (2) Kui materjal, asitõend või võrdlusmaterjal on elektrooniliselt esitatud dokument, foto, video- või helisalvest",
-      "estleg:legalText": "1 (1) Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta kantakse infosüsteemi nende tüüp, nimetus või kirjeldus, staatus, seisund ja registreerimisnumber. Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta kantakse infosüsteemi nende tüüp, nimetus või kirjeldus, staatus, seisund ja registreerimisnumber. 2 (2) Kui materjal, asitõend või võrdlusmaterjal on elektrooniliselt esitatud dokument, foto, video- või helisalvestis, kantakse see infosüsteemi failina. Paberkandjal esitatud dokumendid digiteeritakse võimaluse korral. Kui esitatud dokumenti, foto, video- või helisalvestist ei kanta infosüsteemi failina, töödeldakse seda esitatud kujul. Kui materjal, asitõend või võrdlusmaterjal on elektrooniliselt esitatud dokument, foto, video- või helisalvestis, kantakse see infosüsteemi failina. Paberkandjal esitatud dokumendid digiteeritakse võimaluse korral. Kui esitatud dokumenti, foto, video- või helisalvestist ei kanta infosüsteemi failina, töödeldakse seda esitatud kujul.",
+      "estleg:summary": {
+        "@value": "1 (1) Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta kantakse infosüsteemi nende tüüp, nimetus või kirjeldus, staatus, seisund ja registreerimisnumber. 2 (2) Kui materjal, asitõend või võrdlusmaterjal on elektrooniliselt esitatud dokument, foto, video- või helisalvestis, kantakse see infosüsteemi failina. Paberkandjal esitatud dokumendid digiteeritakse võimaluse korral.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta kantakse infosüsteemi nende tüüp, nimetus või kirjeldus, staatus, seisund ja registreerimisnumber. 2 (2) Kui materjal, asitõend või võrdlusmaterjal on elektrooniliselt esitatud dokument, foto, video- või helisalvestis, kantakse see infosüsteemi failina. Paberkandjal esitatud dokumendid digiteeritakse võimaluse korral. Kui esitatud dokumenti, foto, video- või helisalvestist ei kanta infosüsteemi failina, töödeldakse seda esitatud kujul.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1058871_Par_8_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_8_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ekspertiisiks või uuringuks esitatud materjalide, asitõendite ning võrdlusmaterjali kohta kantakse infosüsteemi nende tüüp, nimetus või kirjeldus, staatus, seisund ja registreerimisnumber.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui materjal, asitõend või võrdlusmaterjal on elektrooniliselt esitatud dokument, foto, video- või helisalvestis, kantakse see infosüsteemi failina. Paberkandjal esitatud dokumendid digiteeritakse võimaluse korral. Kui esitatud dokumenti, foto, video- või helisalvestist ei kanta infosüsteemi failina, töödeldakse seda esitatud kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_1058871_Par_9",
@@ -423,13 +911,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Ekspertiisi või uuringu tegemise, tulemuste väljastamise ja tegija kohta infosüsteemi kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 9. Ekspertiisi või uuringu tegemise, tulemuste väljastamise ja tegija kohta infosüsteemi kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Ekspertiisi või uuringu tegemise ja tulemuste väljastamise kohta kantakse infosüsteemi: 1 1) ekspertiisi või uuringu liik; 2 2) tasulise ekspertiisi puhul märge selle kohta; 3 3) ekspertiisi või uuringu hind; 4 4) ekspertiisi või uuringu valmimise ja tulemuste väljastamise kuupäev; 5 5) väljastatava ekspertiisiakti või muu dokumendi number; 6 6) väljastamise viis; 7 7) väljastaja ees ja perekonnanimi ning töökoht. Ekspertiisi või uuringu tegemise ja tulemuste väljastamise kohta kantakse in",
-      "estleg:legalText": "1 (1) Ekspertiisi või uuringu tegemise ja tulemuste väljastamise kohta kantakse infosüsteemi: 1 1) ekspertiisi või uuringu liik; 2 2) tasulise ekspertiisi puhul märge selle kohta; 3 3) ekspertiisi või uuringu hind; 4 4) ekspertiisi või uuringu valmimise ja tulemuste väljastamise kuupäev; 5 5) väljastatava ekspertiisiakti või muu dokumendi number; 6 6) väljastamise viis; 7 7) väljastaja ees ja perekonnanimi ning töökoht. Ekspertiisi või uuringu tegemise ja tulemuste väljastamise kohta kantakse infosüsteemi: ekspertiisi või uuringu liik; tasulise ekspertiisi puhul märge selle kohta; ekspertiisi või uuringu hind; ekspertiisi või uuringu valmimise ja tulemuste väljastamise kuupäev; väljastatava ekspertiisiakti või muu dokumendi number; väljastamise viis; väljastaja ees ja perekonnanimi ning töökoht. 2 (2) Ekspertiisi või uuringu tegija kohta kantakse infosüsteemi: 1 1) ekspertiisi või uuringu teinud eksperdi ees- ja perekonnanimi ning kontaktandmetena telefoninumber ja e-posti aadress; 2 2) ekspertiisi või uuringu tegemise juures viibinud isikute kohta kantakse infosüsteemi vajaduse korral ees- ja perekonnanimi ning punktis 1 nimetatud kontaktandmed ja seos ekspertiisi või uuringu tegemisega või tehakse vastav märge ekspertiisiakti. Ekspertiisi või uuringu tegija kohta kantakse infosüsteemi: ekspertiisi või uuringu teinud eksperdi ees- ja perekonnanimi ning kontaktandmetena telefoninumber ja e-posti aadress; ekspertiisi või uuringu tegemise juures viibinud isikute kohta kantakse infosüsteemi vajaduse korral ees- ja perekonnanimi ning punktis 1 nimetatud kontaktandmed ja seos ekspertiisi või uuringu tegemisega või tehakse vastav märge ekspertiisiakti. 3 (3) Ekspertiisi või uuringu tegemise käigus koostatud dokumendid, fotod, video- ja helisalvestised kantakse infosüsteemi failina või töödeldakse neid § 8 lõikes 2 sätestatud kujul. Ekspertiisi või uuringu tegemise käigus koostatud dokumendid, fotod, video- ja helisalvestised kantakse infosüsteemi failina või töödeldakse neid § 8 lõikes 2 sätestatud kujul. 4 (4) Ekspertiisi- või uuringuakt kantakse infosüsteemi failina. Ekspertiisi- või uuringuakt kantakse infosüsteemi failina.",
+      "estleg:summary": {
+        "@value": "1 (1) Ekspertiisi või uuringu tegemise ja tulemuste väljastamise kohta kantakse infosüsteemi: 1 1) ekspertiisi või uuringu liik; 2 2) tasulise ekspertiisi puhul märge selle kohta; 3 3) ekspertiisi või uuringu hind; 4 4) ekspertiisi või uuringu valmimise ja tulemuste väljastamise kuupäev; 5 5) väljastatava ekspertiisiakti või muu dokumendi number; 6 6) väljastamise viis; 7 7) väljastaja ees ja perekonnanimi ning töökoht.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ekspertiisi või uuringu tegemise ja tulemuste väljastamise kohta kantakse infosüsteemi: 1 1) ekspertiisi või uuringu liik; 2 2) tasulise ekspertiisi puhul märge selle kohta; 3 3) ekspertiisi või uuringu hind; 4 4) ekspertiisi või uuringu valmimise ja tulemuste väljastamise kuupäev; 5 5) väljastatava ekspertiisiakti või muu dokumendi number; 6 6) väljastamise viis; 7 7) väljastaja ees ja perekonnanimi ning töökoht. 2 (2) Ekspertiisi või uuringu tegija kohta kantakse infosüsteemi: 1 1) ekspertiisi või uuringu teinud eksperdi ees- ja perekonnanimi ning kontaktandmetena telefoninumber ja e-posti aadress; 2 2) ekspertiisi või uuringu tegemise juures viibinud isikute kohta kantakse infosüsteemi vajaduse korral ees- ja perekonnanimi ning punktis 1 nimetatud kontaktandmed ja seos ekspertiisi või uuringu tegemisega või tehakse vastav märge ekspertiisiakti. 3 (3) Ekspertiisi või uuringu tegemise käigus koostatud dokumendid, fotod, video- ja helisalvestised kantakse infosüsteemi failina või töödeldakse neid § 8 lõikes 2 sätestatud kujul. 4 (4) Ekspertiisi- või uuringuakt kantakse infosüsteemi failina.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -443,7 +937,86 @@
         {
           "@id": "estleg:Reg_1058871_Par_9_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_9_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ekspertiisi või uuringu tegemise ja tulemuste väljastamise kohta kantakse infosüsteemi: 1) ekspertiisi või uuringu liik; 2) tasulise ekspertiisi puhul märge selle kohta; 3) ekspertiisi või uuringu hind; 4) ekspertiisi või uuringu valmimise ja tulemuste väljastamise kuupäev; 5) väljastatava ekspertiisiakti või muu dokumendi number; 6) väljastamise viis; 7) väljastaja ees ja perekonnanimi ning töökoht.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ekspertiisi või uuringu tegija kohta kantakse infosüsteemi: 1) ekspertiisi või uuringu teinud eksperdi ees- ja perekonnanimi ning kontaktandmetena telefoninumber ja e-posti aadress; 2) ekspertiisi või uuringu tegemise juures viibinud isikute kohta kantakse infosüsteemi vajaduse korral ees- ja perekonnanimi ning punktis 1 nimetatud kontaktandmed ja seos ekspertiisi või uuringu tegemisega või tehakse vastav märge ekspertiisiakti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ekspertiisi või uuringu tegemise käigus koostatud dokumendid, fotod, video- ja helisalvestised kantakse infosüsteemi failina või töödeldakse neid § 8 lõikes 2 sätestatud kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ekspertiisi- või uuringuakt kantakse infosüsteemi failina.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
     },
     {
       "@id": "estleg:Reg_1058871_Par_10",
@@ -452,17 +1025,45 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Registrite ja võrdlusnäidiste kogude kohta infosüsteemi kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 10. Registrite ja võrdlusnäidiste kogude kohta infosüsteemi kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "Registrite ja võrdlusnäidiste kogude kohta kantakse infosüsteemi: 1 1) nimetus; 2 2) registri või koguga seotud info. Registrite ja võrdlusnäidiste kogude kohta kantakse infosüsteemi: nimetus; registri või koguga seotud info.",
-      "estleg:legalText": "Registrite ja võrdlusnäidiste kogude kohta kantakse infosüsteemi: 1 1) nimetus; 2 2) registri või koguga seotud info. Registrite ja võrdlusnäidiste kogude kohta kantakse infosüsteemi: nimetus; registri või koguga seotud info.",
+      "estleg:summary": {
+        "@value": "Registrite ja võrdlusnäidiste kogude kohta kantakse infosüsteemi: 1 1) nimetus; 2 2) registri või koguga seotud info.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registrite ja võrdlusnäidiste kogude kohta kantakse infosüsteemi: 1 1) nimetus; 2 2) registri või koguga seotud info.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1058871_Par_10_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_10_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrite ja võrdlusnäidiste kogude kohta kantakse infosüsteemi: 1) nimetus; 2) registri või koguga seotud info.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -472,13 +1073,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Andmete infosüsteemi kandmise viis ja tähtaeg",
+      "rdfs:label": {
+        "@value": "§ 11. Andmete infosüsteemi kandmise viis ja tähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Andmed kantakse infosüsteemi: 1 1) infosüsteemide andmevahetuskihi X-tee kaudu või muul turvalisel elektroonilist andmevahetust võimaldaval viisil või 2 2) selleks õigustatud EKEI töötaja poolt. Andmed kantakse infosüsteemi: infosüsteemide andmevahetuskihi X-tee kaudu või muul turvalisel elektroonilist andmevahetust võimaldaval viisil või selleks õigustatud EKEI töötaja poolt. 2 (2) Paragrahvides 5 ja 6 nimetatud andmed kantakse infosüsteemi kolme tööpäeva jooksul lõikes 3 nimetatud alusdo",
-      "estleg:legalText": "1 (1) Andmed kantakse infosüsteemi: 1 1) infosüsteemide andmevahetuskihi X-tee kaudu või muul turvalisel elektroonilist andmevahetust võimaldaval viisil või 2 2) selleks õigustatud EKEI töötaja poolt. Andmed kantakse infosüsteemi: infosüsteemide andmevahetuskihi X-tee kaudu või muul turvalisel elektroonilist andmevahetust võimaldaval viisil või selleks õigustatud EKEI töötaja poolt. 2 (2) Paragrahvides 5 ja 6 nimetatud andmed kantakse infosüsteemi kolme tööpäeva jooksul lõikes 3 nimetatud alusdokumentide saabumisest arvates. Paragrahvides 5 ja 6 nimetatud andmed kantakse infosüsteemi kolme tööpäeva jooksul lõikes 3 nimetatud alusdokumentide saabumisest arvates. 3 (3) Andmete infosüsteemi kandmise alusdokumendid on: 1 1) ekspertiisimäärus; 2 2) uuringutaotlus; 3 3) tellimus või leping või mõlemad tasulise ekspertiisi korral; 4 4) muu asjakohane dokument. Andmete infosüsteemi kandmise alusdokumendid on: ekspertiisimäärus; uuringutaotlus; tellimus või leping või mõlemad tasulise ekspertiisi korral; muu asjakohane dokument. 4 (4) Alusdokumente töödeldakse elektrooniliselt. Paberkandjal saabunud alusdokument digiteeritakse. Alusdokumente töödeldakse elektrooniliselt. Paberkandjal saabunud alusdokument digiteeritakse.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmed kantakse infosüsteemi: 1 1) infosüsteemide andmevahetuskihi X-tee kaudu või muul turvalisel elektroonilist andmevahetust võimaldaval viisil või 2 2) selleks õigustatud EKEI töötaja poolt. 2 (2) Paragrahvides 5 ja 6 nimetatud andmed kantakse infosüsteemi kolme tööpäeva jooksul lõikes 3 nimetatud alusdokumentide saabumisest arvates. 3 (3) Andmete infosüsteemi kandmise alusdokumendid on: 1 1) ekspertiisimäärus; 2 2) uuringutaotlus; 3 3) tellimus või leping või mõlemad tasulise…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmed kantakse infosüsteemi: 1 1) infosüsteemide andmevahetuskihi X-tee kaudu või muul turvalisel elektroonilist andmevahetust võimaldaval viisil või 2 2) selleks õigustatud EKEI töötaja poolt. 2 (2) Paragrahvides 5 ja 6 nimetatud andmed kantakse infosüsteemi kolme tööpäeva jooksul lõikes 3 nimetatud alusdokumentide saabumisest arvates. 3 (3) Andmete infosüsteemi kandmise alusdokumendid on: 1 1) ekspertiisimäärus; 2 2) uuringutaotlus; 3 3) tellimus või leping või mõlemad tasulise ekspertiisi korral; 4 4) muu asjakohane dokument. 4 (4) Alusdokumente töödeldakse elektrooniliselt. Paberkandjal saabunud alusdokument digiteeritakse.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -497,7 +1104,83 @@
         {
           "@id": "estleg:Reg_1058871_Par_11_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_11_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmed kantakse infosüsteemi: 1) infosüsteemide andmevahetuskihi X-tee kaudu või muul turvalisel elektroonilist andmevahetust võimaldaval viisil või 2) selleks õigustatud EKEI töötaja poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Paragrahvides 5 ja 6 nimetatud andmed kantakse infosüsteemi kolme tööpäeva jooksul lõikes 3 nimetatud alusdokumentide saabumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmete infosüsteemi kandmise alusdokumendid on: 1) ekspertiisimäärus; 2) uuringutaotlus; 3) tellimus või leping või mõlemad tasulise ekspertiisi korral; 4) muu asjakohane dokument.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Alusdokumente töödeldakse elektrooniliselt. Paberkandjal saabunud alusdokument digiteeritakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
     },
     {
       "@id": "estleg:Reg_1058871_Par_12",
@@ -506,13 +1189,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Andmevahetus riigi infosüsteemi kuuluvate andmekogudega",
+      "rdfs:label": {
+        "@value": "§ 12. Andmevahetus riigi infosüsteemi kuuluvate andmekogudega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteem kasutab menetlusasutustega andmete ja dokumentide elektrooniliseks vahetamiseks e-toimiku menetlemise infosüsteemi menetlusseadustikes sätestatud nõuete kohaselt. Infosüsteem kasutab menetlusasutustega andmete ja dokumentide elektrooniliseks vahetamiseks e-toimiku menetlemise infosüsteemi menetlusseadustikes sätestatud nõuete kohaselt. 2 (2) Infosüsteem kasutab andmeallikana Eesti rahvastikuregistrit, kust on õigus saada §-des 6 ja 7 nimetatud isikute kohta järgmisi andmeid: 1 ",
-      "estleg:legalText": "1 (1) Infosüsteem kasutab menetlusasutustega andmete ja dokumentide elektrooniliseks vahetamiseks e-toimiku menetlemise infosüsteemi menetlusseadustikes sätestatud nõuete kohaselt. Infosüsteem kasutab menetlusasutustega andmete ja dokumentide elektrooniliseks vahetamiseks e-toimiku menetlemise infosüsteemi menetlusseadustikes sätestatud nõuete kohaselt. 2 (2) Infosüsteem kasutab andmeallikana Eesti rahvastikuregistrit, kust on õigus saada §-des 6 ja 7 nimetatud isikute kohta järgmisi andmeid: 1 1) isiku nimi, sugu, isikukood või sünniaeg ning surmaaeg salvestatava infona; 2 2) andmed isiku perekonnaseisu kohta ning isiku vanemate, abikaasa, registreeritud elukaaslase ja lapse andmed esitlusinfona; 3 3) isikut tõendavate dokumentide andmed esitlusinfona. Infosüsteem kasutab andmeallikana Eesti rahvastikuregistrit, kust on õigus saada §-des 6 ja 7 nimetatud isikute kohta järgmisi andmeid: isiku nimi, sugu, isikukood või sünniaeg ning surmaaeg salvestatava infona; andmed isiku perekonnaseisu kohta ning isiku vanemate, abikaasa, registreeritud elukaaslase ja lapse andmed esitlusinfona; isikut tõendavate dokumentide andmed esitlusinfona. 3 (3) Infosüsteem kasutab andmeallikana äriregistrit, kust on õigus saada juriidilise isiku nimi ja registrikood salvestatava infona. Infosüsteem kasutab andmeallikana äriregistrit, kust on õigus saada juriidilise isiku nimi ja registrikood salvestatava infona.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteem kasutab menetlusasutustega andmete ja dokumentide elektrooniliseks vahetamiseks e-toimiku menetlemise infosüsteemi menetlusseadustikes sätestatud nõuete kohaselt. 2 (2) Infosüsteem kasutab andmeallikana Eesti rahvastikuregistrit, kust on õigus saada §-des 6 ja 7 nimetatud isikute kohta järgmisi andmeid: 1 1) isiku nimi, sugu, isikukood või sünniaeg ning surmaaeg salvestatava infona; 2 2) andmed isiku perekonnaseisu kohta ning isiku vanemate, abikaasa, registreeritud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteem kasutab menetlusasutustega andmete ja dokumentide elektrooniliseks vahetamiseks e-toimiku menetlemise infosüsteemi menetlusseadustikes sätestatud nõuete kohaselt. 2 (2) Infosüsteem kasutab andmeallikana Eesti rahvastikuregistrit, kust on õigus saada §-des 6 ja 7 nimetatud isikute kohta järgmisi andmeid: 1 1) isiku nimi, sugu, isikukood või sünniaeg ning surmaaeg salvestatava infona; 2 2) andmed isiku perekonnaseisu kohta ning isiku vanemate, abikaasa, registreeritud elukaaslase ja lapse andmed esitlusinfona; 3 3) isikut tõendavate dokumentide andmed esitlusinfona. 3 (3) Infosüsteem kasutab andmeallikana äriregistrit, kust on õigus saada juriidilise isiku nimi ja registrikood salvestatava infona.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -532,7 +1221,62 @@
         {
           "@id": "estleg:Reg_1058871_Par_12_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_12_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteem kasutab menetlusasutustega andmete ja dokumentide elektrooniliseks vahetamiseks e-toimiku menetlemise infosüsteemi menetlusseadustikes sätestatud nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteem kasutab andmeallikana Eesti rahvastikuregistrit, kust on õigus saada §-des 6 ja 7 nimetatud isikute kohta järgmisi andmeid: 1) isiku nimi, sugu, isikukood või sünniaeg ning surmaaeg salvestatava infona; 2) andmed isiku perekonnaseisu kohta ning isiku vanemate, abikaasa, registreeritud elukaaslase ja lapse andmed esitlusinfona; 3) isikut tõendavate dokumentide andmed esitlusinfona.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Infosüsteem kasutab andmeallikana äriregistrit, kust on õigus saada juriidilise isiku nimi ja registrikood salvestatava infona.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
     },
     {
       "@id": "estleg:Reg_1058871_Par_13",
@@ -541,13 +1285,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Andmete õigsuse tagamine",
+      "rdfs:label": {
+        "@value": "§ 13. Andmete õigsuse tagamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemile esitatud andmete õigsuse eest vastutab andmete esitaja. Infosüsteemile esitatud andmete õigsuse eest vastutab andmete esitaja. 2 (2) Infosüsteemi kantud andmete muutumise korral esitab andmete esitaja vajaduse korral EKEI-le uued andmed, mille alusel tehakse parandus. Infosüsteemi kantud andmete muutumise korral esitab andmete esitaja vajaduse korral EKEI-le uued andmed, mille alusel tehakse parandus. 3 (3) Infosüsteemi kantud andmete õigsuse kontrollimiseks ja andmete tervi",
-      "estleg:legalText": "1 (1) Infosüsteemile esitatud andmete õigsuse eest vastutab andmete esitaja. Infosüsteemile esitatud andmete õigsuse eest vastutab andmete esitaja. 2 (2) Infosüsteemi kantud andmete muutumise korral esitab andmete esitaja vajaduse korral EKEI-le uued andmed, mille alusel tehakse parandus. Infosüsteemi kantud andmete muutumise korral esitab andmete esitaja vajaduse korral EKEI-le uued andmed, mille alusel tehakse parandus. 3 (3) Infosüsteemi kantud andmete õigsuse kontrollimiseks ja andmete tervikluse tagamiseks on EKEI-l õigus teha andmete esitajale täpsustavaid päringuid. Infosüsteemi kantud andmete õigsuse kontrollimiseks ja andmete tervikluse tagamiseks on EKEI-l õigus teha andmete esitajale täpsustavaid päringuid. 4 (4) Kui andmeid ei edastata infosüsteemide vahendusel, parandab EKEI ebaõiged andmed pärast õigete andmete saamist. Kui andmeid ei edastata infosüsteemide vahendusel, parandab EKEI ebaõiged andmed pärast õigete andmete saamist.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemile esitatud andmete õigsuse eest vastutab andmete esitaja. 2 (2) Infosüsteemi kantud andmete muutumise korral esitab andmete esitaja vajaduse korral EKEI-le uued andmed, mille alusel tehakse parandus. 3 (3) Infosüsteemi kantud andmete õigsuse kontrollimiseks ja andmete tervikluse tagamiseks on EKEI-l õigus teha andmete esitajale täpsustavaid päringuid. 4 (4) Kui andmeid ei edastata infosüsteemide vahendusel, parandab EKEI ebaõiged andmed pärast õigete andmete saamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemile esitatud andmete õigsuse eest vastutab andmete esitaja. 2 (2) Infosüsteemi kantud andmete muutumise korral esitab andmete esitaja vajaduse korral EKEI-le uued andmed, mille alusel tehakse parandus. 3 (3) Infosüsteemi kantud andmete õigsuse kontrollimiseks ja andmete tervikluse tagamiseks on EKEI-l õigus teha andmete esitajale täpsustavaid päringuid. 4 (4) Kui andmeid ei edastata infosüsteemide vahendusel, parandab EKEI ebaõiged andmed pärast õigete andmete saamist.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:AUDIIT_Par_155"
@@ -566,7 +1316,73 @@
         {
           "@id": "estleg:Reg_1058871_Par_13_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_13_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemile esitatud andmete õigsuse eest vastutab andmete esitaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi kantud andmete muutumise korral esitab andmete esitaja vajaduse korral EKEI-le uued andmed, mille alusel tehakse parandus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Infosüsteemi kantud andmete õigsuse kontrollimiseks ja andmete tervikluse tagamiseks on EKEI-l õigus teha andmete esitajale täpsustavaid päringuid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui andmeid ei edastata infosüsteemide vahendusel, parandab EKEI ebaõiged andmed pärast õigete andmete saamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
     },
     {
       "@id": "estleg:Reg_1058871_Par_14",
@@ -575,13 +1391,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Andmete logimine",
+      "rdfs:label": {
+        "@value": "§ 14. Andmete logimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemi kasutamise õiguspärasust kontrollitakse vastutava töötleja poolt tarkvaraliste ja organisatsiooniliste meetmetega. Isikuandmete töötlemise toimingud logitakse isikuandmete kaitse seaduse § 36 kohaselt. Infosüsteemi kasutamise õiguspärasust kontrollitakse vastutava töötleja poolt tarkvaraliste ja organisatsiooniliste meetmetega. Isikuandmete töötlemise toimingud logitakse isikuandmete kaitse seaduse § 36 kohaselt. 2 (2) Logiandmeid säilitatakse kümme aastat päringu või kande te",
-      "estleg:legalText": "1 (1) Infosüsteemi kasutamise õiguspärasust kontrollitakse vastutava töötleja poolt tarkvaraliste ja organisatsiooniliste meetmetega. Isikuandmete töötlemise toimingud logitakse isikuandmete kaitse seaduse § 36 kohaselt. Infosüsteemi kasutamise õiguspärasust kontrollitakse vastutava töötleja poolt tarkvaraliste ja organisatsiooniliste meetmetega. Isikuandmete töötlemise toimingud logitakse isikuandmete kaitse seaduse § 36 kohaselt. 2 (2) Logiandmeid säilitatakse kümme aastat päringu või kande tegemisest arvates. Logiandmeid säilitatakse kümme aastat päringu või kande tegemisest arvates. 3 (3) Tasuliste ekspertiisidega seotud andmestiku logiandmeid säilitatakse üks aasta kohtuekspertiisiseaduse § 16 lõikes 7 nimetatud tähtaja möödumisest arvates. Tasuliste ekspertiisidega seotud andmestiku logiandmeid säilitatakse üks aasta kohtuekspertiisiseaduse § 16 lõikes 7 nimetatud tähtaja möödumisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemi kasutamise õiguspärasust kontrollitakse vastutava töötleja poolt tarkvaraliste ja organisatsiooniliste meetmetega. Isikuandmete töötlemise toimingud logitakse isikuandmete kaitse seaduse § 36 kohaselt. 2 (2) Logiandmeid säilitatakse kümme aastat päringu või kande tegemisest arvates. 3 (3) Tasuliste ekspertiisidega seotud andmestiku logiandmeid säilitatakse üks aasta kohtuekspertiisiseaduse § 16 lõikes 7 nimetatud tähtaja möödumisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemi kasutamise õiguspärasust kontrollitakse vastutava töötleja poolt tarkvaraliste ja organisatsiooniliste meetmetega. Isikuandmete töötlemise toimingud logitakse isikuandmete kaitse seaduse § 36 kohaselt. 2 (2) Logiandmeid säilitatakse kümme aastat päringu või kande tegemisest arvates. 3 (3) Tasuliste ekspertiisidega seotud andmestiku logiandmeid säilitatakse üks aasta kohtuekspertiisiseaduse § 16 lõikes 7 nimetatud tähtaja möödumisest arvates.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -614,7 +1436,57 @@
         {
           "@id": "estleg:Reg_1058871_Par_14_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_14_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi kasutamise õiguspärasust kontrollitakse vastutava töötleja poolt tarkvaraliste ja organisatsiooniliste meetmetega. Isikuandmete töötlemise toimingud logitakse isikuandmete kaitse seaduse § 36 kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Logiandmeid säilitatakse kümme aastat päringu või kande tegemisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tasuliste ekspertiisidega seotud andmestiku logiandmeid säilitatakse üks aasta kohtuekspertiisiseaduse § 16 lõikes 7 nimetatud tähtaja möödumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
     },
     {
       "@id": "estleg:Reg_1058871_Par_15",
@@ -623,18 +1495,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Ekspertiiside ja uuringute üle arvestuse pidamine",
+      "rdfs:label": {
+        "@value": "§ 15. Ekspertiiside ja uuringute üle arvestuse pidamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Ekspertiiside ja uuringute üle peetakse arvestust infotehnoloogiliselt. Ekspertiiside ja uuringute üle peetakse arvestust infotehnoloogiliselt. 2 (2) Lõikes 1 nimetatud arvestusandmeid avaldatakse ainult isikustamata kujul ja õigusaktides ettenähtud juhul. Lõikes 1 nimetatud arvestusandmeid avaldatakse ainult isikustamata kujul ja õigusaktides ettenähtud juhul.",
-      "estleg:legalText": "1 (1) Ekspertiiside ja uuringute üle peetakse arvestust infotehnoloogiliselt. Ekspertiiside ja uuringute üle peetakse arvestust infotehnoloogiliselt. 2 (2) Lõikes 1 nimetatud arvestusandmeid avaldatakse ainult isikustamata kujul ja õigusaktides ettenähtud juhul. Lõikes 1 nimetatud arvestusandmeid avaldatakse ainult isikustamata kujul ja õigusaktides ettenähtud juhul.",
+      "estleg:summary": {
+        "@value": "1 (1) Ekspertiiside ja uuringute üle peetakse arvestust infotehnoloogiliselt. 2 (2) Lõikes 1 nimetatud arvestusandmeid avaldatakse ainult isikustamata kujul ja õigusaktides ettenähtud juhul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ekspertiiside ja uuringute üle peetakse arvestust infotehnoloogiliselt. 2 (2) Lõikes 1 nimetatud arvestusandmeid avaldatakse ainult isikustamata kujul ja õigusaktides ettenähtud juhul.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1058871_Par_15_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_15_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ekspertiiside ja uuringute üle peetakse arvestust infotehnoloogiliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõikes 1 nimetatud arvestusandmeid avaldatakse ainult isikustamata kujul ja õigusaktides ettenähtud juhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
     },
     {
       "@id": "estleg:Reg_1058871_Par_16",
@@ -643,13 +1555,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Juurdepääs infosüsteemi andmetele",
+      "rdfs:label": {
+        "@value": "§ 16. Juurdepääs infosüsteemi andmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Otsejuurdepääs infosüsteemi andmetele on ainult selleks õigustatud EKEI töötajatel. Otsejuurdepääs infosüsteemi andmetele on ainult selleks õigustatud EKEI töötajatel. 2 (2) RIK-il on juurdepääs infosüsteemi andmetele ainult § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks. RIK-il on juurdepääs infosüsteemi andmetele ainult § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks. 3 (3) Infosüsteemile juurdepääsu taotlus esitatakse EKEI direktorile või tema volitatud töötajale, kes edastab r",
-      "estleg:legalText": "1 (1) Otsejuurdepääs infosüsteemi andmetele on ainult selleks õigustatud EKEI töötajatel. Otsejuurdepääs infosüsteemi andmetele on ainult selleks õigustatud EKEI töötajatel. 2 (2) RIK-il on juurdepääs infosüsteemi andmetele ainult § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks. RIK-il on juurdepääs infosüsteemi andmetele ainult § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks. 3 (3) Infosüsteemile juurdepääsu taotlus esitatakse EKEI direktorile või tema volitatud töötajale, kes edastab rahuldatud taotluse RIK-ile, kes tagab infosüsteemile vajaliku juurdepääsu. Infosüsteemile juurdepääsu taotlus esitatakse EKEI direktorile või tema volitatud töötajale, kes edastab rahuldatud taotluse RIK-ile, kes tagab infosüsteemile vajaliku juurdepääsu.",
+      "estleg:summary": {
+        "@value": "1 (1) Otsejuurdepääs infosüsteemi andmetele on ainult selleks õigustatud EKEI töötajatel. 2 (2) RIK-il on juurdepääs infosüsteemi andmetele ainult § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks. 3 (3) Infosüsteemile juurdepääsu taotlus esitatakse EKEI direktorile või tema volitatud töötajale, kes edastab rahuldatud taotluse RIK-ile, kes tagab infosüsteemile vajaliku juurdepääsu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Otsejuurdepääs infosüsteemi andmetele on ainult selleks õigustatud EKEI töötajatel. 2 (2) RIK-il on juurdepääs infosüsteemi andmetele ainult § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks. 3 (3) Infosüsteemile juurdepääsu taotlus esitatakse EKEI direktorile või tema volitatud töötajale, kes edastab rahuldatud taotluse RIK-ile, kes tagab infosüsteemile vajaliku juurdepääsu.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -671,7 +1589,57 @@
         {
           "@id": "estleg:Reg_1058871_Par_16_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_16_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Otsejuurdepääs infosüsteemi andmetele on ainult selleks õigustatud EKEI töötajatel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) RIK-il on juurdepääs infosüsteemi andmetele ainult § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Infosüsteemile juurdepääsu taotlus esitatakse EKEI direktorile või tema volitatud töötajale, kes edastab rahuldatud taotluse RIK-ile, kes tagab infosüsteemile vajaliku juurdepääsu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
     },
     {
       "@id": "estleg:Reg_1058871_Par_17",
@@ -680,13 +1648,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Juurdepääsu ulatus",
+      "rdfs:label": {
+        "@value": "§ 17. Juurdepääsu ulatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) EKEI ja RIK-i selleks õigustatud töötajatel on õigus juurde pääseda oma ülesannete täitmiseks infosüsteemi: 1 1) põhiandmestikule; 2 2) tasuliste ekspertiiside andmestikule; 3 3) registrite ja võrdlusnäidiste kogude andmestikule. EKEI ja RIK-i selleks õigustatud töötajatel on õigus juurde pääseda oma ülesannete täitmiseks infosüsteemi: põhiandmestikule; tasuliste ekspertiiside andmestikule; registrite ja võrdlusnäidiste kogude andmestikule. 2 (2) RIK-i töötajatel on õigus isikuandmeid tööd",
-      "estleg:legalText": "1 (1) EKEI ja RIK-i selleks õigustatud töötajatel on õigus juurde pääseda oma ülesannete täitmiseks infosüsteemi: 1 1) põhiandmestikule; 2 2) tasuliste ekspertiiside andmestikule; 3 3) registrite ja võrdlusnäidiste kogude andmestikule. EKEI ja RIK-i selleks õigustatud töötajatel on õigus juurde pääseda oma ülesannete täitmiseks infosüsteemi: põhiandmestikule; tasuliste ekspertiiside andmestikule; registrite ja võrdlusnäidiste kogude andmestikule. 2 (2) RIK-i töötajatel on õigus isikuandmeid töödelda ainult juhul, kui see on vältimatu § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks. RIK-i töötajatel on õigus isikuandmeid töödelda ainult juhul, kui see on vältimatu § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) EKEI ja RIK-i selleks õigustatud töötajatel on õigus juurde pääseda oma ülesannete täitmiseks infosüsteemi: 1 1) põhiandmestikule; 2 2) tasuliste ekspertiiside andmestikule; 3 3) registrite ja võrdlusnäidiste kogude andmestikule. 2 (2) RIK-i töötajatel on õigus isikuandmeid töödelda ainult juhul, kui see on vältimatu § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) EKEI ja RIK-i selleks õigustatud töötajatel on õigus juurde pääseda oma ülesannete täitmiseks infosüsteemi: 1 1) põhiandmestikule; 2 2) tasuliste ekspertiiside andmestikule; 3 3) registrite ja võrdlusnäidiste kogude andmestikule. 2 (2) RIK-i töötajatel on õigus isikuandmeid töödelda ainult juhul, kui see on vältimatu § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -708,7 +1682,46 @@
         {
           "@id": "estleg:Reg_1058871_Par_17_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_17_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) EKEI ja RIK-i selleks õigustatud töötajatel on õigus juurde pääseda oma ülesannete täitmiseks infosüsteemi: 1) põhiandmestikule; 2) tasuliste ekspertiiside andmestikule; 3) registrite ja võrdlusnäidiste kogude andmestikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) RIK-i töötajatel on õigus isikuandmeid töödelda ainult juhul, kui see on vältimatu § 4 lõigetes 4 ja 6 nimetatud ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
     },
     {
       "@id": "estleg:Reg_1058871_Par_18",
@@ -717,13 +1730,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Andmete väljastamine infosüsteemist",
+      "rdfs:label": {
+        "@value": "§ 18. Andmete väljastamine infosüsteemist",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Andmed väljastatakse ainult selleks õigustatud isikule seaduses sätestatud juhul. Andmed väljastatakse ainult selleks õigustatud isikule seaduses sätestatud juhul. 2 (2) Ekspertiisi või uuringuga seotud isikule ja tasulise ekspertiisi tellijale väljastatakse andmed kohtuekspertiisiseaduse §-s 5 või muus seaduses sätestatud juhtudel ja korras. Ekspertiisi või uuringuga seotud isikule ja tasulise ekspertiisi tellijale väljastatakse andmed kohtuekspertiisiseaduse §-s 5 või muus seaduses sätes",
-      "estleg:legalText": "1 (1) Andmed väljastatakse ainult selleks õigustatud isikule seaduses sätestatud juhul. Andmed väljastatakse ainult selleks õigustatud isikule seaduses sätestatud juhul. 2 (2) Ekspertiisi või uuringuga seotud isikule ja tasulise ekspertiisi tellijale väljastatakse andmed kohtuekspertiisiseaduse §-s 5 või muus seaduses sätestatud juhtudel ja korras. Ekspertiisi või uuringuga seotud isikule ja tasulise ekspertiisi tellijale väljastatakse andmed kohtuekspertiisiseaduse §-s 5 või muus seaduses sätestatud juhtudel ja korras. 3 (3) Andmed väljastatakse elektrooniliselt või kokkuleppel andmete saajaga muul viisil. Andmed väljastatakse elektrooniliselt või kokkuleppel andmete saajaga muul viisil. 4 (4) EKEI peab arvestust selle üle, kellele, mis eesmärgil, millal, kuidas ja missuguseid andmeid väljastati. EKEI peab arvestust selle üle, kellele, mis eesmärgil, millal, kuidas ja missuguseid andmeid väljastati.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmed väljastatakse ainult selleks õigustatud isikule seaduses sätestatud juhul. 2 (2) Ekspertiisi või uuringuga seotud isikule ja tasulise ekspertiisi tellijale väljastatakse andmed kohtuekspertiisiseaduse §-s 5 või muus seaduses sätestatud juhtudel ja korras. 3 (3) Andmed väljastatakse elektrooniliselt või kokkuleppel andmete saajaga muul viisil. 4 (4) EKEI peab arvestust selle üle, kellele, mis eesmärgil, millal, kuidas ja missuguseid andmeid väljastati.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmed väljastatakse ainult selleks õigustatud isikule seaduses sätestatud juhul. 2 (2) Ekspertiisi või uuringuga seotud isikule ja tasulise ekspertiisi tellijale väljastatakse andmed kohtuekspertiisiseaduse §-s 5 või muus seaduses sätestatud juhtudel ja korras. 3 (3) Andmed väljastatakse elektrooniliselt või kokkuleppel andmete saajaga muul viisil. 4 (4) EKEI peab arvestust selle üle, kellele, mis eesmärgil, millal, kuidas ja missuguseid andmeid väljastati.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -742,7 +1761,73 @@
         {
           "@id": "estleg:Reg_1058871_Par_18_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_18_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_18_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_18_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmed väljastatakse ainult selleks õigustatud isikule seaduses sätestatud juhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ekspertiisi või uuringuga seotud isikule ja tasulise ekspertiisi tellijale väljastatakse andmed kohtuekspertiisiseaduse §-s 5 või muus seaduses sätestatud juhtudel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_18_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmed väljastatakse elektrooniliselt või kokkuleppel andmete saajaga muul viisil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_18_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) EKEI peab arvestust selle üle, kellele, mis eesmärgil, millal, kuidas ja missuguseid andmeid väljastati.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 4"
     },
     {
       "@id": "estleg:Reg_1058871_Par_19",
@@ -751,13 +1836,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Ekspertiiside ja uuringutega seotud andmete säilitamise aeg ja andmete kustutamine",
+      "rdfs:label": {
+        "@value": "§ 19. Ekspertiiside ja uuringutega seotud andmete säilitamise aeg ja andmete kustutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemi kantud menetlusasjas tehtavate ekspertiiside ja uuringute andmeid säilitatakse, need arhiveeritakse ja kustutatakse kohtuekspertiisiseaduse § 16 lõikes 6 sätestatu kohaselt. Infosüsteemi kantud menetlusasjas tehtavate ekspertiiside ja uuringute andmeid säilitatakse, need arhiveeritakse ja kustutatakse kohtuekspertiisiseaduse § 16 lõikes 6 sätestatu kohaselt. 2 (2) Infosüsteemi kantud tasuliste ekspertiiside andmeid säilitatakse kohtuekspertiisiseaduse § 16 lõikes 7 sätestatud ",
-      "estleg:legalText": "1 (1) Infosüsteemi kantud menetlusasjas tehtavate ekspertiiside ja uuringute andmeid säilitatakse, need arhiveeritakse ja kustutatakse kohtuekspertiisiseaduse § 16 lõikes 6 sätestatu kohaselt. Infosüsteemi kantud menetlusasjas tehtavate ekspertiiside ja uuringute andmeid säilitatakse, need arhiveeritakse ja kustutatakse kohtuekspertiisiseaduse § 16 lõikes 6 sätestatu kohaselt. 2 (2) Infosüsteemi kantud tasuliste ekspertiiside andmeid säilitatakse kohtuekspertiisiseaduse § 16 lõikes 7 sätestatud tähtaja jooksul, mille järel need kustutatakse. Infosüsteemi kantud tasuliste ekspertiiside andmeid säilitatakse kohtuekspertiisiseaduse § 16 lõikes 7 sätestatud tähtaja jooksul, mille järel need kustutatakse.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemi kantud menetlusasjas tehtavate ekspertiiside ja uuringute andmeid säilitatakse, need arhiveeritakse ja kustutatakse kohtuekspertiisiseaduse § 16 lõikes 6 sätestatu kohaselt. 2 (2) Infosüsteemi kantud tasuliste ekspertiiside andmeid säilitatakse kohtuekspertiisiseaduse § 16 lõikes 7 sätestatud tähtaja jooksul, mille järel need kustutatakse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemi kantud menetlusasjas tehtavate ekspertiiside ja uuringute andmeid säilitatakse, need arhiveeritakse ja kustutatakse kohtuekspertiisiseaduse § 16 lõikes 6 sätestatu kohaselt. 2 (2) Infosüsteemi kantud tasuliste ekspertiiside andmeid säilitatakse kohtuekspertiisiseaduse § 16 lõikes 7 sätestatud tähtaja jooksul, mille järel need kustutatakse.",
       "estleg:references": [
         {
           "@id": "estleg:KOHTUE_Par_16_Lg_6"
@@ -770,7 +1861,41 @@
         {
           "@id": "estleg:Reg_1058871_Par_19_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_19_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi kantud menetlusasjas tehtavate ekspertiiside ja uuringute andmeid säilitatakse, need arhiveeritakse ja kustutatakse kohtuekspertiisiseaduse § 16 lõikes 6 sätestatu kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi kantud tasuliste ekspertiiside andmeid säilitatakse kohtuekspertiisiseaduse § 16 lõikes 7 sätestatud tähtaja jooksul, mille järel need kustutatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
     },
     {
       "@id": "estleg:Reg_1058871_Par_20",
@@ -779,13 +1904,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Ekspertiisiks või uuringuks esitatud paberdokumendi hävitamine",
+      "rdfs:label": {
+        "@value": "§ 20. Ekspertiisiks või uuringuks esitatud paberdokumendi hävitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "Kui § 11 lõikes 3 nimetatud dokument digiteeritakse, võib paberdokumendi hävitada, kui õigusaktides ei ole sätestatud teisiti. Kui paberdokumenti ei hävitata, säilitatakse seda sama kaua kui digiteeritud ja infosüsteemi kantud dokumenti.",
-      "estleg:legalText": "Kui § 11 lõikes 3 nimetatud dokument digiteeritakse, võib paberdokumendi hävitada, kui õigusaktides ei ole sätestatud teisiti. Kui paberdokumenti ei hävitata, säilitatakse seda sama kaua kui digiteeritud ja infosüsteemi kantud dokumenti. Kui § 11 lõikes 3 nimetatud dokument digiteeritakse, võib paberdokumendi hävitada, kui õigusaktides ei ole sätestatud teisiti. Kui paberdokumenti ei hävitata, säilitatakse seda sama kaua kui digiteeritud ja infosüsteemi kantud dokumenti.",
+      "estleg:summary": {
+        "@value": "Kui § 11 lõikes 3 nimetatud dokument digiteeritakse, võib paberdokumendi hävitada, kui õigusaktides ei ole sätestatud teisiti. Kui paberdokumenti ei hävitata, säilitatakse seda sama kaua kui digiteeritud ja infosüsteemi kantud dokumenti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kui § 11 lõikes 3 nimetatud dokument digiteeritakse, võib paberdokumendi hävitada, kui õigusaktides ei ole sätestatud teisiti. Kui paberdokumenti ei hävitata, säilitatakse seda sama kaua kui digiteeritud ja infosüsteemi kantud dokumenti.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -797,7 +1928,25 @@
         {
           "@id": "estleg:Reg_1058871_Par_20_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_20_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui § 11 lõikes 3 nimetatud dokument digiteeritakse, võib paberdokumendi hävitada, kui õigusaktides ei ole sätestatud teisiti. Kui paberdokumenti ei hävitata, säilitatakse seda sama kaua kui digiteeritud ja infosüsteemi kantud dokumenti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
     },
     {
       "@id": "estleg:Reg_1058871_Par_21",
@@ -806,18 +1955,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Registrite ja võrdlusnäidiste kogude andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 21. Registrite ja võrdlusnäidiste kogude andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "Registrite ja võrdlusnäidiste kogude andmestikke säilitatakse vajaduse möödumiseni, kui õigusaktides ei ole sätestatud teisiti.",
-      "estleg:legalText": "Registrite ja võrdlusnäidiste kogude andmestikke säilitatakse vajaduse möödumiseni, kui õigusaktides ei ole sätestatud teisiti. Registrite ja võrdlusnäidiste kogude andmestikke säilitatakse vajaduse möödumiseni, kui õigusaktides ei ole sätestatud teisiti.",
+      "estleg:summary": {
+        "@value": "Registrite ja võrdlusnäidiste kogude andmestikke säilitatakse vajaduse möödumiseni, kui õigusaktides ei ole sätestatud teisiti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registrite ja võrdlusnäidiste kogude andmestikke säilitatakse vajaduse möödumiseni, kui õigusaktides ei ole sätestatud teisiti.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1058871_Par_21_v1058871"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_21_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrite ja võrdlusnäidiste kogude andmestikke säilitatakse vajaduse möödumiseni, kui õigusaktides ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
     },
     {
       "@id": "estleg:Reg_1058871_Par_22",
@@ -826,13 +1999,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmete töötlemine",
+      "rdfs:label": {
+        "@value": "§ 22. Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmete töötlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kohtuekspertiisi infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1058871_Map"
       },
-      "estleg:summary": "Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmed loetakse kohtuekspertiisiseaduse §-s 16 sätestatud kohtuekspertiisi infosüsteemi osaks ja neile kohaldatakse kohtuekspertiisiseaduse §-s 16 ning käesolevas määruses sätestatut, kui muudest õigusaktidest ei tulene teisiti.",
-      "estleg:legalText": "Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmed loetakse kohtuekspertiisiseaduse §-s 16 sätestatud kohtuekspertiisi infosüsteemi osaks ja neile kohaldatakse kohtuekspertiisiseaduse §-s 16 ning käesolevas määruses sätestatut, kui muudest õigusaktidest ei tulene teisiti. Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmed loetakse kohtuekspertiisiseaduse §-s 16 sätestatud kohtuekspertiisi infosüsteemi osaks ja neile kohaldatakse kohtuekspertiisiseaduse §-s 16 ning käesolevas määruses sätestatut, kui muudest õigusaktidest ei tulene teisiti.",
+      "estleg:summary": {
+        "@value": "Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmed loetakse kohtuekspertiisiseaduse §-s 16 sätestatud kohtuekspertiisi infosüsteemi osaks ja neile kohaldatakse kohtuekspertiisiseaduse §-s 16 ning käesolevas määruses sätestatut, kui muudest õigusaktidest ei tulene teisiti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmed loetakse kohtuekspertiisiseaduse §-s 16 sätestatud kohtuekspertiisi infosüsteemi osaks ja neile kohaldatakse kohtuekspertiisiseaduse §-s 16 ning käesolevas määruses sätestatut, kui muudest õigusaktidest ei tulene teisiti.",
       "estleg:references": [
         {
           "@id": "estleg:KOHTUE_Par_16"
@@ -841,6 +2020,11 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1058871_Par_22_v1058871"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1058871_Par_22_Lg_1"
         }
       ]
     },
@@ -855,6 +2039,19 @@
       },
       "estleg:citationDetail": "lg 8",
       "estleg:citationText": "Määrus kehtestatakse kohtuekspertiisiseaduse § 16 lõike 8"
+    },
+    {
+      "@id": "estleg:Reg_1058871_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne 1. septembrit 2023. a kohtuekspertiisi infosüsteemi kantud andmed loetakse kohtuekspertiisiseaduse §-s 16 sätestatud kohtuekspertiisi infosüsteemi osaks ja neile kohaldatakse kohtuekspertiisiseaduse §-s 16 ning käesolevas määruses sätestatut, kui muudest õigusaktidest ei tulene teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1058871_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
     }
   ]
 }

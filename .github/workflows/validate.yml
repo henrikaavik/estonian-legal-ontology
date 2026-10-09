@@ -373,6 +373,14 @@ jobs:
         if: ${{ !cancelled() }}
         run: python3 scripts/check_text_fidelity.py --coverage
 
+      # #698: offline (~1 s, no corpus). Validates every eval/gold_sets/*.json
+      # against item.schema.json and fails when a layer with enough
+      # adjudicated items falls below its floor in eval/accuracy_floors.json.
+      # Layers with too few adjudicated items are reported, not failed.
+      - name: Gold-set accuracy floors (#698)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/eval_harness.py --gold-set eval/gold_sets --floors eval/accuracy_floors.json --gate
+
       # #702: docs/VALIDATION_REPORT.md and docs/DUPLICATE_IDS_REPORT.md used
       # to be maintained by hand, and both drifted into publishing false
       # statements (a "PASSED / 0 errors" conformance claim against a red gate,

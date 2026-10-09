@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:POKKSPU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus",
       "dcterms:title": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/26224.xml"
+        "@id": "https://www.riigiteataja.ee/akt/26224"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/26224/xml"
+      },
+      "estleg:globalId": "26224",
+      "eli:id_local": "26224",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "152691",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "42f623cee124ccf8b34ee5178a685ed166c3c54593f2421b7715d3a95bc491b7",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -53,30 +74,39 @@
       ]
     },
     {
-      "@id": "estleg:POKKSPU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_POKKSPU_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_POKKSPU_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–4 Lepingu sätted",
-      "skos:prefLabel": "§1–4 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–4 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:POKKSPU_TopicScheme"
       },
       "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:POKKSPU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_POKKSPU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:POKKSPU_Par_1",
@@ -85,12 +115,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud piiriülese õhusaaste kauglevi konventsiooniga./78108, mis...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud , mis on koostatud 1979. aasta 13. novembril Genfis.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POKKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1979. aasta 13. novembril Genfis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud , mis on koostatud 1979. aasta 13. novembril Genfis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1979. aasta 13. novembril Genfis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POKKSPU_default"
@@ -129,10 +165,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1979. aasta 13. novembril Genfis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud , mis on koostatud 1979. aasta 13. novembril Genfis.",
       "estleg:parentProvision": {
         "@id": "estleg:POKKSPU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:POKKSPU_Par_2",
@@ -141,12 +179,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühineda juurdelisatud piiriülese õhusaaste kauglevi konventsiooni protokolliga v...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühineda juurdelisatud , mis on koostatud 1985. aasta 8. juulil Helsingis.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POKKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1985. aasta 8. juulil Helsingis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud , mis on koostatud 1985. aasta 8. juulil Helsingis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1985. aasta 8. juulil Helsingis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POKKSPU_default"
@@ -182,10 +226,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1985. aasta 8. juulil Helsingis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud , mis on koostatud 1985. aasta 8. juulil Helsingis.",
       "estleg:parentProvision": {
         "@id": "estleg:POKKSPU_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:POKKSPU_Par_3",
@@ -194,12 +240,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Ühineda juurdelisatud piiriülese õhusaaste kauglevi konventsiooni protokolliga l...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Ühineda juurdelisatud , mis on koostatud 1988. aasta 31. oktoobril Sofias.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POKKSPU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on koostatud 1988. aasta 31. oktoobril Sofias.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud , mis on koostatud 1988. aasta 31. oktoobril Sofias.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1988. aasta 31. oktoobril Sofias.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POKKSPU_default"
@@ -235,10 +287,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1988. aasta 31. oktoobril Sofias.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud , mis on koostatud 1988. aasta 31. oktoobril Sofias.",
       "estleg:parentProvision": {
         "@id": "estleg:POKKSPU_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:POKKSPU_Par_4",
@@ -247,12 +301,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [1(1)Ühineda juurdelisatud piiriülese õhusaaste kauglevi konventsiooni protokolli...]",
+      "rdfs:label": {
+        "@value": "§ 4. [(1) Ühineda juurdelisatud , mis on koostatud 1991. aasta 18. novembril Genfis. (...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piiriülese õhusaaste kauglevi konventsiooni ning selle protokollidega ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POKKSPU_Map"
       },
-      "estleg:summary": "(1) Ühineda juurdelisatud , mis on koostatud 1991. aasta 18. novembril Genfis. (2) Ühinemisel teatada, et vastavalt piiriülese õhusaaste kauglevi konventsiooni protokolli lenduvate orgaaniliste ühendite heitkoguse või nende piiriüleste voogude vähendamise kohta artikli 2 lõike 2 punktile a valis Eesti Vabariik oma siseriikliku lenduvate orgaaniliste ühendite heitkoguse vähendamise vähemalt 30 protsendi võrra 1999. aasta 31. detsembriks, võttes aluseks 1990. aasta taseme.",
+      "estleg:summary": {
+        "@value": "(1) Ühineda juurdelisatud , mis on koostatud 1991. aasta 18. novembril Genfis. (2) Ühinemisel teatada, et vastavalt piiriülese õhusaaste kauglevi konventsiooni protokolli lenduvate orgaaniliste ühendite heitkoguse või nende piiriüleste voogude vähendamise kohta artikli 2 lõike 2 punktile a valis Eesti Vabariik oma siseriikliku lenduvate orgaaniliste ühendite heitkoguse vähendamise vähemalt 30 protsendi võrra 1999. aasta 31. detsembriks, võttes aluseks 1990. aasta taseme.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ühineda juurdelisatud , mis on koostatud 1991. aasta 18. novembril Genfis. (2) Ühinemisel teatada, et vastavalt piiriülese õhusaaste kauglevi konventsiooni protokolli lenduvate orgaaniliste ühendite heitkoguse või nende piiriüleste voogude vähendamise kohta artikli 2 lõike 2 punktile a valis Eesti Vabariik oma siseriikliku lenduvate orgaaniliste ühendite heitkoguse vähendamise vähemalt 30 protsendi võrra 1999. aasta 31. detsembriks, võttes aluseks 1990. aasta taseme.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POKKSPU_default"

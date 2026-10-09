@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Politseiametniku toitlustamise tingimused, ulatus ja kord (määrus)",
+      "rdfs:label": {
+        "@value": "Politseiametniku toitlustamise tingimused, ulatus ja kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Politseiametniku toitlustamise tingimused, ulatus ja kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2022-07-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-06-11",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -76,7 +78,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2464"
         }
-      ]
+      ],
+      "dcterms:title": "Politseiametniku toitlustamise tingimused, ulatus ja kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054308_Par_1",
@@ -85,13 +93,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Politseiametniku toitlustamise tingimused, ulatus ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054308_Map"
       },
-      "estleg:summary": "1 (1) Määrusega kehtestatakse politseiametniku toitlustamise tingimused, ulatus ja kord. Määrusega kehtestatakse politseiametniku toitlustamise tingimused, ulatus ja kord. 2 (2) Määruses politseiametniku kohta sätestatut kohaldatakse ka: 1 1) Politsei- ja Piirivalveameti ning Kaitsepolitseiameti ametnikule ja töötajale, kes ei ole politseiametnikud; 2 2) kaasatud füüsilisele isikule; 3 3) ametiabi andjale. Määruses politseiametniku kohta sätestatut kohaldatakse ka: Politsei- ja Piirivalveameti n",
-      "estleg:legalText": "1 (1) Määrusega kehtestatakse politseiametniku toitlustamise tingimused, ulatus ja kord. Määrusega kehtestatakse politseiametniku toitlustamise tingimused, ulatus ja kord. 2 (2) Määruses politseiametniku kohta sätestatut kohaldatakse ka: 1 1) Politsei- ja Piirivalveameti ning Kaitsepolitseiameti ametnikule ja töötajale, kes ei ole politseiametnikud; 2 2) kaasatud füüsilisele isikule; 3 3) ametiabi andjale. Määruses politseiametniku kohta sätestatut kohaldatakse ka: Politsei- ja Piirivalveameti ning Kaitsepolitseiameti ametnikule ja töötajale, kes ei ole politseiametnikud; kaasatud füüsilisele isikule; ametiabi andjale.",
+      "estleg:summary": {
+        "@value": "1 (1) Määrusega kehtestatakse politseiametniku toitlustamise tingimused, ulatus ja kord. 2 (2) Määruses politseiametniku kohta sätestatut kohaldatakse ka: 1 1) Politsei- ja Piirivalveameti ning Kaitsepolitseiameti ametnikule ja töötajale, kes ei ole politseiametnikud; 2 2) kaasatud füüsilisele isikule; 3 3) ametiabi andjale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määrusega kehtestatakse politseiametniku toitlustamise tingimused, ulatus ja kord. 2 (2) Määruses politseiametniku kohta sätestatut kohaldatakse ka: 1 1) Politsei- ja Piirivalveameti ning Kaitsepolitseiameti ametnikule ja töötajale, kes ei ole politseiametnikud; 2 2) kaasatud füüsilisele isikule; 3 3) ametiabi andjale.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -116,6 +130,45 @@
         {
           "@id": "estleg:Institution_kaitsepolitseiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054308_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054308_Par_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054308_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse politseiametniku toitlustamise tingimused, ulatus ja kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054308_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054308_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Määruses politseiametniku kohta sätestatut kohaldatakse ka: 1) Politsei- ja Piirivalveameti ning Kaitsepolitseiameti ametnikule ja töötajale, kes ei ole politseiametnikud; 2) kaasatud füüsilisele isikule; 3) ametiabi andjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054308_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -125,13 +178,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Toitlustamise tingimused ja kord",
+      "rdfs:label": {
+        "@value": "§ 2. Toitlustamise tingimused ja kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Politseiametniku toitlustamise tingimused, ulatus ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054308_Map"
       },
-      "estleg:summary": "1 (1) Politseiametnikule võimaldatakse vajaduse korral toitlustamine järgmistel juhtudel: 1 1) riigi julgeoleku tagamisel; 2 2) riigikaitse vajaduse korral; 3 3) inimelu päästmisel, päästetöödel ja inimese otsingul; 4 4) loodusõnnetuse, tulekahju, avarii või katastroofi ennetamisel või selle tagajärgede kõrvaldamisel; 5 5) sellise edasilükkamatu teenistusülesande täitmisel, mida ei ole selle iseärasuste tõttu võimalik katkestada või lõpetada; 6 6) massilise korratuse ärahoidmisel ja lõpetamisel;",
-      "estleg:legalText": "1 (1) Politseiametnikule võimaldatakse vajaduse korral toitlustamine järgmistel juhtudel: 1 1) riigi julgeoleku tagamisel; 2 2) riigikaitse vajaduse korral; 3 3) inimelu päästmisel, päästetöödel ja inimese otsingul; 4 4) loodusõnnetuse, tulekahju, avarii või katastroofi ennetamisel või selle tagajärgede kõrvaldamisel; 5 5) sellise edasilükkamatu teenistusülesande täitmisel, mida ei ole selle iseärasuste tõttu võimalik katkestada või lõpetada; 6 6) massilise korratuse ärahoidmisel ja lõpetamisel; 7 7) hädaolukorra lahendamise õppusel osalemisel. Politseiametnikule võimaldatakse vajaduse korral toitlustamine järgmistel juhtudel: riigi julgeoleku tagamisel; riigikaitse vajaduse korral; inimelu päästmisel, päästetöödel ja inimese otsingul; loodusõnnetuse, tulekahju, avarii või katastroofi ennetamisel või selle tagajärgede kõrvaldamisel; sellise edasilükkamatu teenistusülesande täitmisel, mida ei ole selle iseärasuste tõttu võimalik katkestada või lõpetada; massilise korratuse ärahoidmisel ja lõpetamisel; hädaolukorra lahendamise õppusel osalemisel. 2 (2) Toitlustamine võimaldatakse juhul, kui politseiametnikul ei ole võimalik teenistusülesande täitmise kohast ülesande eripära tõttu lahkuda või peab olema tagatud ülesande katkematu täitmine ja kui: 1 1) käesoleva paragrahvi lõike 1 punktides 1‒6 nimetatud sündmust lahendatakse järjestikku üle nelja tunni; 2 2) hädaolukorra lahendamise õppus kestab järjestikku üle kuue tunni. Toitlustamine võimaldatakse juhul, kui politseiametnikul ei ole võimalik teenistusülesande täitmise kohast ülesande eripära tõttu lahkuda või peab olema tagatud ülesande katkematu täitmine ja kui: käesoleva paragrahvi lõike 1 punktides 1‒6 nimetatud sündmust lahendatakse järjestikku üle nelja tunni; hädaolukorra lahendamise õppus kestab järjestikku üle kuue tunni. 3 (3) Politseiametniku toitlustamiseks võib osta valmistoitu, kasutada kuivtoidupakke, tellida toitlustusteenust või valmistada toitu teenistusülesande täitmise kohas. Toitlustamisviisi valikul arvestatakse teenistusülesande iseloomu ja selle täitmise kohta ning toitlustamise korraldamise võimalusi. Politseiametniku toitlustamiseks võib osta valmistoitu, kasutada kuivtoidupakke, tellida toitlustusteenust või valmistada toitu teenistusülesande täitmise kohas. Toitlustamisviisi valikul arvestatakse teenistusülesande iseloomu ja selle täitmise kohta ning toitlustamise korraldamise võimalusi.",
+      "estleg:summary": {
+        "@value": "1 (1) Politseiametnikule võimaldatakse vajaduse korral toitlustamine järgmistel juhtudel: 1 1) riigi julgeoleku tagamisel; 2 2) riigikaitse vajaduse korral; 3 3) inimelu päästmisel, päästetöödel ja inimese otsingul; 4 4) loodusõnnetuse, tulekahju, avarii või katastroofi ennetamisel või selle tagajärgede kõrvaldamisel; 5 5) sellise edasilükkamatu teenistusülesande täitmisel, mida ei ole selle iseärasuste tõttu võimalik katkestada või lõpetada; 6 6) massilise korratuse ärahoidmisel ja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Politseiametnikule võimaldatakse vajaduse korral toitlustamine järgmistel juhtudel: 1 1) riigi julgeoleku tagamisel; 2 2) riigikaitse vajaduse korral; 3 3) inimelu päästmisel, päästetöödel ja inimese otsingul; 4 4) loodusõnnetuse, tulekahju, avarii või katastroofi ennetamisel või selle tagajärgede kõrvaldamisel; 5 5) sellise edasilükkamatu teenistusülesande täitmisel, mida ei ole selle iseärasuste tõttu võimalik katkestada või lõpetada; 6 6) massilise korratuse ärahoidmisel ja lõpetamisel; 7 7) hädaolukorra lahendamise õppusel osalemisel. 2 (2) Toitlustamine võimaldatakse juhul, kui politseiametnikul ei ole võimalik teenistusülesande täitmise kohast ülesande eripära tõttu lahkuda või peab olema tagatud ülesande katkematu täitmine ja kui: 1 1) käesoleva paragrahvi lõike 1 punktides 1‒6 nimetatud sündmust lahendatakse järjestikku üle nelja tunni; 2 2) hädaolukorra lahendamise õppus kestab järjestikku üle kuue tunni. 3 (3) Politseiametniku toitlustamiseks võib osta valmistoitu, kasutada kuivtoidupakke, tellida toitlustusteenust või valmistada toitu teenistusülesande täitmise kohas. Toitlustamisviisi valikul arvestatakse teenistusülesande iseloomu ja selle täitmise kohta ning toitlustamise korraldamise võimalusi.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:POLITS_Par_77"
@@ -141,7 +200,70 @@
         {
           "@id": "estleg:Reg_1054308_Par_2_v1054308"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054308_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054308_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054308_Par_2_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054308_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Politseiametnikule võimaldatakse vajaduse korral toitlustamine järgmistel juhtudel: 1) riigi julgeoleku tagamisel; 2) riigikaitse vajaduse korral; 3) inimelu päästmisel, päästetöödel ja inimese otsingul; 4) loodusõnnetuse, tulekahju, avarii või katastroofi ennetamisel või selle tagajärgede kõrvaldamisel; 5) sellise edasilükkamatu teenistusülesande täitmisel, mida ei ole selle iseärasuste tõttu võimalik katkestada või lõpetada; 6) massilise korratuse ärahoidmisel ja lõpetamisel; 7) hädaolukorra lahendamise õppusel osalemisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054308_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054308_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Toitlustamine võimaldatakse juhul, kui politseiametnikul ei ole võimalik teenistusülesande täitmise kohast ülesande eripära tõttu lahkuda või peab olema tagatud ülesande katkematu täitmine ja kui: 1) käesoleva paragrahvi lõike 1 punktides 1‒6 nimetatud sündmust lahendatakse järjestikku üle nelja tunni; 2) hädaolukorra lahendamise õppus kestab järjestikku üle kuue tunni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054308_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054308_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Politseiametniku toitlustamiseks võib osta valmistoitu, kasutada kuivtoidupakke, tellida toitlustusteenust või valmistada toitu teenistusülesande täitmise kohas. Toitlustamisviisi valikul arvestatakse teenistusülesande iseloomu ja selle täitmise kohta ning toitlustamise korraldamise võimalusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054308_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:Reg_1054308_Par_3",
@@ -150,13 +272,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Toitlustamise maksumus",
+      "rdfs:label": {
+        "@value": "§ 3. Toitlustamise maksumus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Politseiametniku toitlustamise tingimused, ulatus ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054308_Map"
       },
-      "estleg:summary": "Politseiametniku toitlustamise arvestusliku maksumuse piirmäär on 30 eurot 24 tunni kohta ilma joogivee hinnata. Kui politseiametniku toitlustamiseks kasutatakse kuivtoidupakke, võib maksumuse piirmäära suurendada kuni 100 protsenti.",
-      "estleg:legalText": "Politseiametniku toitlustamise arvestusliku maksumuse piirmäär on 30 eurot 24 tunni kohta ilma joogivee hinnata. Kui politseiametniku toitlustamiseks kasutatakse kuivtoidupakke, võib maksumuse piirmäära suurendada kuni 100 protsenti. Politseiametniku toitlustamise arvestusliku maksumuse piirmäär on 30 eurot 24 tunni kohta ilma joogivee hinnata. Kui politseiametniku toitlustamiseks kasutatakse kuivtoidupakke, võib maksumuse piirmäära suurendada kuni 100 protsenti.",
+      "estleg:summary": {
+        "@value": "Politseiametniku toitlustamise arvestusliku maksumuse piirmäär on 30 eurot 24 tunni kohta ilma joogivee hinnata. Kui politseiametniku toitlustamiseks kasutatakse kuivtoidupakke, võib maksumuse piirmäära suurendada kuni 100 protsenti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Politseiametniku toitlustamise arvestusliku maksumuse piirmäär on 30 eurot 24 tunni kohta ilma joogivee hinnata. Kui politseiametniku toitlustamiseks kasutatakse kuivtoidupakke, võib maksumuse piirmäära suurendada kuni 100 protsenti.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -168,7 +296,25 @@
         {
           "@id": "estleg:Reg_1054308_Par_3_v1054308"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054308_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054308_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Politseiametniku toitlustamise arvestusliku maksumuse piirmäär on 30 eurot 24 tunni kohta ilma joogivee hinnata. Kui politseiametniku toitlustamiseks kasutatakse kuivtoidupakke, võib maksumuse piirmäära suurendada kuni 100 protsenti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054308_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1054308_Par_4",
@@ -177,16 +323,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Politseiametniku toitlustamise tingimused, ulatus ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054308_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. juulil 2022. aastal.",
-      "estleg:legalText": "Määrus jõustub 1. juulil 2022. aastal. Määrus jõustub 1. juulil 2022. aastal.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. juulil 2022. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. juulil 2022. aastal.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054308_Par_4_v1054308"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054308_Par_4_Lg_1"
         }
       ]
     },
@@ -200,6 +357,19 @@
         "@id": "estleg:POLITS_Par_72"
       },
       "estleg:citationText": "Määrus kehtestatakse politsei ja piirivalve seaduse § 72"
+    },
+    {
+      "@id": "estleg:Reg_1054308_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. juulil 2022. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054308_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     }
   ]
 }

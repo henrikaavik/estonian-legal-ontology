@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Välismaalase piisava õppekeeleoskuse tõendamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Välismaalase piisava õppekeeleoskuse tõendamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Välismaalase piisava õppekeeleoskuse tõendamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -35,11 +42,6 @@
         "@value": "2010-10-17",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2010-10-14",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -65,7 +67,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2162"
         }
-      ]
+      ],
+      "dcterms:title": "Välismaalase piisava õppekeeleoskuse tõendamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_346587_Par_1",
@@ -74,18 +82,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välismaalase piisava õppekeeleoskuse tõendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346587_Map"
       },
-      "estleg:summary": "Määrusega reguleeritakse piisava õppekeeleoskuse tõendamise kord kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba taotlevatele välismaalastele.",
-      "estleg:legalText": "Määrusega reguleeritakse piisava õppekeeleoskuse tõendamise kord kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba taotlevatele välismaalastele. Määrusega reguleeritakse piisava õppekeeleoskuse tõendamise kord kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba taotlevatele välismaalastele.",
+      "estleg:summary": {
+        "@value": "Määrusega reguleeritakse piisava õppekeeleoskuse tõendamise kord kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba taotlevatele välismaalastele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega reguleeritakse piisava õppekeeleoskuse tõendamise kord kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba taotlevatele välismaalastele.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_346587_Par_1_v346587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346587_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega reguleeritakse piisava õppekeeleoskuse tõendamise kord kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba taotlevatele välismaalastele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_346587_Par_2",
@@ -94,13 +126,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Õppekeeleoskuse tõendamine",
+      "rdfs:label": {
+        "@value": "§ 2. Õppekeeleoskuse tõendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välismaalase piisava õppekeeleoskuse tõendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346587_Map"
       },
-      "estleg:summary": "1(1)Õppeasutus teeb avalikult kättesaadavaks andmed institutsioonide kohta, mille välja antud keeleoskust tõendavate dokumentidega on välismaalasel õppeasutusele võimalik oma õppekeeleoskust tõendada. Õppeasutus teeb avalikult kättesaadavaks andmed institutsioonide kohta, mille välja antud keeleoskust tõendavate dokumentidega on välismaalasel õppeasutusele võimalik oma õppekeeleoskust tõendada. 2(2)Õppeasutus teeb avalikult kättesaadavaks andmed õppeasutuses kõrgharidustaseme õppekavadele kehtes",
-      "estleg:legalText": "1(1)Õppeasutus teeb avalikult kättesaadavaks andmed institutsioonide kohta, mille välja antud keeleoskust tõendavate dokumentidega on välismaalasel õppeasutusele võimalik oma õppekeeleoskust tõendada. Õppeasutus teeb avalikult kättesaadavaks andmed institutsioonide kohta, mille välja antud keeleoskust tõendavate dokumentidega on välismaalasel õppeasutusele võimalik oma õppekeeleoskust tõendada. 2(2)Õppeasutus teeb avalikult kättesaadavaks andmed õppeasutuses kõrgharidustaseme õppekavadele kehtestatud õppekeeleoskuse miinimumnõuete kohta käesoleva paragrahvi lõikes 1 nimetatud institutsioonide hindamissüsteeme arvestades. Õppeasutus teeb avalikult kättesaadavaks andmed õppeasutuses kõrgharidustaseme õppekavadele kehtestatud õppekeeleoskuse miinimumnõuete kohta käesoleva paragrahvi lõikes 1 nimetatud institutsioonide hindamissüsteeme arvestades. 3(3)Õppeasutus, mille kõrgharidustaseme õppekaval õppimiseks välismaalane esmakordselt tähtajalist elamisluba taotleb, esitab Politsei- ja Piirivalveametile järgmised andmed õppekeeleoskuse tõendamiseks:11)andmed õppekeele kohta õppekaval, millel õppimiseks elamisluba taotletakse;22)andmed õppekaval õppekeeleoskusele esitatavate miinimumnõuete kohta;33)hinnang välismaalase õppekeeleoskuse kohta käesoleva paragrahvi lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades. Õppeasutus, mille kõrgharidustaseme õppekaval õppimiseks välismaalane esmakordselt tähtajalist elamisluba taotleb, esitab Politsei- ja Piirivalveametile järgmised andmed õppekeeleoskuse tõendamiseks: andmed õppekeele kohta õppekaval, millel õppimiseks elamisluba taotletakse; andmed õppekaval õppekeeleoskusele esitatavate miinimumnõuete kohta; hinnang välismaalase õppekeeleoskuse kohta käesoleva paragrahvi lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades. 4(4)Kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba pikendades ei pea õppekeeleoskust tõendama juhul, kui:11)eelnevalt samal õppekaval õppimiseks tähtajalist elamisluba taotledes on õppekeeleoskus käesolevas määruses sätestatud korras tõendatud;22)esmakordne tähtajaline elamisluba õppimiseks õppekaval, millel õppimiseks tähtajalise elamisloa pikendamist taotletakse, on välja antud enne käesoleva määruse jõustumist. Kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba pikendades ei pea õppekeeleoskust tõendama juhul, kui: eelnevalt samal õppekaval õppimiseks tähtajalist elamisluba taotledes on õppekeeleoskus käesolevas määruses sätestatud korras tõendatud; esmakordne tähtajaline elamisluba õppimiseks õppekaval, millel õppimiseks tähtajalise elamisloa pikendamist taotletakse, on välja antud enne käesoleva määruse jõustumist.",
+      "estleg:summary": {
+        "@value": "1(1)Õppeasutus teeb avalikult kättesaadavaks andmed institutsioonide kohta, mille välja antud keeleoskust tõendavate dokumentidega on välismaalasel õppeasutusele võimalik oma õppekeeleoskust tõendada. 2(2)Õppeasutus teeb avalikult kättesaadavaks andmed õppeasutuses kõrgharidustaseme õppekavadele kehtestatud õppekeeleoskuse miinimumnõuete kohta käesoleva paragrahvi lõikes 1 nimetatud institutsioonide hindamissüsteeme arvestades.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Õppeasutus teeb avalikult kättesaadavaks andmed institutsioonide kohta, mille välja antud keeleoskust tõendavate dokumentidega on välismaalasel õppeasutusele võimalik oma õppekeeleoskust tõendada. 2(2)Õppeasutus teeb avalikult kättesaadavaks andmed õppeasutuses kõrgharidustaseme õppekavadele kehtestatud õppekeeleoskuse miinimumnõuete kohta käesoleva paragrahvi lõikes 1 nimetatud institutsioonide hindamissüsteeme arvestades. 3(3)Õppeasutus, mille kõrgharidustaseme õppekaval õppimiseks välismaalane esmakordselt tähtajalist elamisluba taotleb, esitab Politsei- ja Piirivalveametile järgmised andmed õppekeeleoskuse tõendamiseks:11)andmed õppekeele kohta õppekaval, millel õppimiseks elamisluba taotletakse;22)andmed õppekaval õppekeeleoskusele esitatavate miinimumnõuete kohta;33)hinnang välismaalase õppekeeleoskuse kohta käesoleva paragrahvi lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades. 4(4)Kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba pikendades ei pea õppekeeleoskust tõendama juhul, kui:11)eelnevalt samal õppekaval õppimiseks tähtajalist elamisluba taotledes on õppekeeleoskus käesolevas määruses sätestatud korras tõendatud;22)esmakordne tähtajaline elamisluba õppimiseks õppekaval, millel õppimiseks tähtajalise elamisloa pikendamist taotletakse, on välja antud enne käesoleva määruse jõustumist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -122,6 +160,81 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346587_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346587_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_346587_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_346587_Par_2_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õppeasutus teeb avalikult kättesaadavaks andmed institutsioonide kohta, mille välja antud keeleoskust tõendavate dokumentidega on välismaalasel õppeasutusele võimalik oma õppekeeleoskust tõendada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õppeasutus teeb avalikult kättesaadavaks andmed õppeasutuses kõrgharidustaseme õppekavadele kehtestatud õppekeeleoskuse miinimumnõuete kohta käesoleva paragrahvi lõikes 1 nimetatud institutsioonide hindamissüsteeme arvestades.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Õppeasutus, mille kõrgharidustaseme õppekaval õppimiseks välismaalane esmakordselt tähtajalist elamisluba taotleb, esitab Politsei- ja Piirivalveametile järgmised andmed õppekeeleoskuse tõendamiseks: 1) andmed õppekeele kohta õppekaval, millel õppimiseks elamisluba taotletakse; 2) andmed õppekaval õppekeeleoskusele esitatavate miinimumnõuete kohta; 3) hinnang välismaalase õppekeeleoskuse kohta käesoleva paragrahvi lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kõrgharidustaseme õppekava alusel õppimiseks tähtajalist elamisluba pikendades ei pea õppekeeleoskust tõendama juhul, kui: 1) eelnevalt samal õppekaval õppimiseks tähtajalist elamisluba taotledes on õppekeeleoskus käesolevas määruses sätestatud korras tõendatud; 2) esmakordne tähtajaline elamisluba õppimiseks õppekaval, millel õppimiseks tähtajalise elamisloa pikendamist taotletakse, on välja antud enne käesoleva määruse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -131,13 +244,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Riigikeelt süvendatult õppima asuva välismaalase õppekeeleoskuse tõendamine",
+      "rdfs:label": {
+        "@value": "§ 3. Riigikeelt süvendatult õppima asuva välismaalase õppekeeleoskuse tõendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välismaalase piisava õppekeeleoskuse tõendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346587_Map"
       },
-      "estleg:summary": "1(1)Juhul kui välismaalane asub vahetult pärast tähtajalise elamisloa esmakordset taotlemist kuni üheks aastaks süvendatult õppima riigikeelt «Ülikooliseaduse» §-s 561 või «Rakenduskõrgkooli seaduse» §-s 321 toodud korras, esitab õppeasutus Politsei- ja Piirivalveametile järgmised andmed:11)andmed keele kohta, mille kaudu riigikeele süvaõpe toimub;22)andmed käesoleva lõike punktis 1 nimetatud keele oskusele esitatavate miinimumnõuete kohta;33)andmed välismaalase käesoleva lõike punktis 1 nimetat",
-      "estleg:legalText": "1(1)Juhul kui välismaalane asub vahetult pärast tähtajalise elamisloa esmakordset taotlemist kuni üheks aastaks süvendatult õppima riigikeelt «Ülikooliseaduse» §-s 561 või «Rakenduskõrgkooli seaduse» §-s 321 toodud korras, esitab õppeasutus Politsei- ja Piirivalveametile järgmised andmed:11)andmed keele kohta, mille kaudu riigikeele süvaõpe toimub;22)andmed käesoleva lõike punktis 1 nimetatud keele oskusele esitatavate miinimumnõuete kohta;33)andmed välismaalase käesoleva lõike punktis 1 nimetatud keele oskuse kohta käesoleva määruse § 2 lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades;44)juhul, kui õppekeel pärast riigikeele süvaõppe lõpetamist ei ole eesti keel, andmed õppekeele kohta, milles hakkab toimuma õpe pärast seda. Juhul kui välismaalane asub vahetult pärast tähtajalise elamisloa esmakordset taotlemist kuni üheks aastaks süvendatult õppima riigikeelt «Ülikooliseaduse» §-s 561 või «Rakenduskõrgkooli seaduse» §-s 321 toodud korras, esitab õppeasutus Politsei- ja Piirivalveametile järgmised andmed: andmed keele kohta, mille kaudu riigikeele süvaõpe toimub; andmed käesoleva lõike punktis 1 nimetatud keele oskusele esitatavate miinimumnõuete kohta; andmed välismaalase käesoleva lõike punktis 1 nimetatud keele oskuse kohta käesoleva määruse § 2 lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades; juhul, kui õppekeel pärast riigikeele süvaõppe lõpetamist ei ole eesti keel, andmed õppekeele kohta, milles hakkab toimuma õpe pärast seda. 2(2)Käesoleva paragrahvi lõike 1 punktis 4 nimetatud juhul esitab õppeasutus õppekeeleoskuse kohta andmed käesoleva määruse §-s 2 kehtestatud korras, kui välismaalane taotleb tähtajalise elamisloa pikendamist pärast riigikeele süvaõppe lõpetamist. Käesoleva paragrahvi lõike 1 punktis 4 nimetatud juhul esitab õppeasutus õppekeeleoskuse kohta andmed käesoleva määruse §-s 2 kehtestatud korras, kui välismaalane taotleb tähtajalise elamisloa pikendamist pärast riigikeele süvaõppe lõpetamist.",
+      "estleg:summary": {
+        "@value": "1(1)Juhul kui välismaalane asub vahetult pärast tähtajalise elamisloa esmakordset taotlemist kuni üheks aastaks süvendatult õppima riigikeelt «Ülikooliseaduse» §-s 561 või «Rakenduskõrgkooli seaduse» §-s 321 toodud korras, esitab õppeasutus Politsei- ja Piirivalveametile järgmised andmed:11)andmed keele kohta, mille kaudu riigikeele süvaõpe toimub;22)andmed käesoleva lõike punktis 1 nimetatud keele oskusele esitatavate miinimumnõuete kohta;33)andmed välismaalase käesoleva lõike punktis 1…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Juhul kui välismaalane asub vahetult pärast tähtajalise elamisloa esmakordset taotlemist kuni üheks aastaks süvendatult õppima riigikeelt «Ülikooliseaduse» §-s 561 või «Rakenduskõrgkooli seaduse» §-s 321 toodud korras, esitab õppeasutus Politsei- ja Piirivalveametile järgmised andmed:11)andmed keele kohta, mille kaudu riigikeele süvaõpe toimub;22)andmed käesoleva lõike punktis 1 nimetatud keele oskusele esitatavate miinimumnõuete kohta;33)andmed välismaalase käesoleva lõike punktis 1 nimetatud keele oskuse kohta käesoleva määruse § 2 lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades;44)juhul, kui õppekeel pärast riigikeele süvaõppe lõpetamist ei ole eesti keel, andmed õppekeele kohta, milles hakkab toimuma õpe pärast seda. 2(2)Käesoleva paragrahvi lõike 1 punktis 4 nimetatud juhul esitab õppeasutus õppekeeleoskuse kohta andmed käesoleva määruse §-s 2 kehtestatud korras, kui välismaalane taotleb tähtajalise elamisloa pikendamist pärast riigikeele süvaõppe lõpetamist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -159,7 +278,48 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346587_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346587_Par_3_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juhul kui välismaalane asub vahetult pärast tähtajalise elamisloa esmakordset taotlemist kuni üheks aastaks süvendatult õppima riigikeelt «Ülikooliseaduse» §-s 56¹ või «Rakenduskõrgkooli seaduse» §-s 32¹ toodud korras, esitab õppeasutus Politsei- ja Piirivalveametile järgmised andmed: 1) andmed keele kohta, mille kaudu riigikeele süvaõpe toimub; 2) andmed käesoleva lõike punktis 1 nimetatud keele oskusele esitatavate miinimumnõuete kohta; 3) andmed välismaalase käesoleva lõike punktis 1 nimetatud keele oskuse kohta käesoleva määruse § 2 lõikes 2 nimetatud hindamissüsteeme ja käesoleva lõike punktis 2 nimetatud miinimumnõudeid arvestades; 4) juhul, kui õppekeel pärast riigikeele süvaõppe lõpetamist ei ole eesti keel, andmed õppekeele kohta, milles hakkab toimuma õpe pärast seda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõike 1 punktis 4 nimetatud juhul esitab õppeasutus õppekeeleoskuse kohta andmed käesoleva määruse §-s 2 kehtestatud korras, kui välismaalane taotleb tähtajalise elamisloa pikendamist pärast riigikeele süvaõppe lõpetamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": "4"
     },
     {
       "@id": "estleg:Reg_346587_Par_4",
@@ -168,13 +328,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Õppekeeleoskuse tõendamine haridust tõendavate dokumentidega",
+      "rdfs:label": {
+        "@value": "§ 4. Õppekeeleoskuse tõendamine haridust tõendavate dokumentidega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välismaalase piisava õppekeeleoskuse tõendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346587_Map"
       },
-      "estleg:summary": "1(1)Juhul kui välismaalane on omandanud põhi-, kesk-, keskeri- või kõrghariduse õppekeeles, mille oskust tähtajalise elamisloa taotlemisel tõendatakse, loetakse õppekeeleoskuse tõendamiseks piisavaks selle riigi tunnustatud haridust tõendavad dokumendid, kus haridus omandati. Juhul kui välismaalane on omandanud põhi-, kesk-, keskeri- või kõrghariduse õppekeeles, mille oskust tähtajalise elamisloa taotlemisel tõendatakse, loetakse õppekeeleoskuse tõendamiseks piisavaks selle riigi tunnustatud har",
-      "estleg:legalText": "1(1)Juhul kui välismaalane on omandanud põhi-, kesk-, keskeri- või kõrghariduse õppekeeles, mille oskust tähtajalise elamisloa taotlemisel tõendatakse, loetakse õppekeeleoskuse tõendamiseks piisavaks selle riigi tunnustatud haridust tõendavad dokumendid, kus haridus omandati. Juhul kui välismaalane on omandanud põhi-, kesk-, keskeri- või kõrghariduse õppekeeles, mille oskust tähtajalise elamisloa taotlemisel tõendatakse, loetakse õppekeeleoskuse tõendamiseks piisavaks selle riigi tunnustatud haridust tõendavad dokumendid, kus haridus omandati. 2(2)Käesoleva paragrahvi lõikes 1 nimetatud juhul esitab õppeasutus Politsei- ja Piirivalveametile andmed vastavat haridust tõendava dokumendi kohta ning selgitused, millisel alusel välismaalase õppekeeleoskus on piisavaks loetud.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Minister Tõnis LUKAS</b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Kantsler Janar HOLM</b> </td> </tr> </tbody></table> Käesoleva paragrahvi lõikes 1 nimetatud juhul esitab õppeasutus Politsei- ja Piirivalveametile andmed vastavat haridust tõendava dokumendi kohta ning selgitused, millisel alusel välismaalase õppekeeleoskus on piisavaks loetud.",
+      "estleg:summary": {
+        "@value": "1(1)Juhul kui välismaalane on omandanud põhi-, kesk-, keskeri- või kõrghariduse õppekeeles, mille oskust tähtajalise elamisloa taotlemisel tõendatakse, loetakse õppekeeleoskuse tõendamiseks piisavaks selle riigi tunnustatud haridust tõendavad dokumendid, kus haridus omandati. 2(2)Käesoleva paragrahvi lõikes 1 nimetatud juhul esitab õppeasutus Politsei- ja Piirivalveametile andmed vastavat haridust tõendava dokumendi kohta ning selgitused, millisel alusel välismaalase õppekeeleoskus on piisavaks…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Juhul kui välismaalane on omandanud põhi-, kesk-, keskeri- või kõrghariduse õppekeeles, mille oskust tähtajalise elamisloa taotlemisel tõendatakse, loetakse õppekeeleoskuse tõendamiseks piisavaks selle riigi tunnustatud haridust tõendavad dokumendid, kus haridus omandati. 2(2)Käesoleva paragrahvi lõikes 1 nimetatud juhul esitab õppeasutus Politsei- ja Piirivalveametile andmed vastavat haridust tõendava dokumendi kohta ning selgitused, millisel alusel välismaalase õppekeeleoskus on piisavaks loetud.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Minister Tõnis LUKAS</b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Kantsler Janar HOLM</b> </td> </tr> </tbody></table>",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -196,7 +362,41 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346587_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346587_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juhul kui välismaalane on omandanud põhi-, kesk-, keskeri- või kõrghariduse õppekeeles, mille oskust tähtajalise elamisloa taotlemisel tõendatakse, loetakse õppekeeleoskuse tõendamiseks piisavaks selle riigi tunnustatud haridust tõendavad dokumendid, kus haridus omandati.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346587_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud juhul esitab õppeasutus Politsei- ja Piirivalveametile andmed vastavat haridust tõendava dokumendi kohta ning selgitused, millisel alusel välismaalase õppekeeleoskus on piisavaks loetud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346587_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     }
   ]
 }

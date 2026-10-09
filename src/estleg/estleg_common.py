@@ -367,6 +367,11 @@ PUBLIC_LOAD_SUBDIRS: tuple[str, ...] = (
     # validate_all treat its untyped join nodes as a sidecar surface rather than
     # as duplicate @ids.
     "eurovoc",
+    # #707: identity bridges. ``bridges/act_iri_v2_sameas.jsonld`` maps every
+    # legacy act IRI (pre-#445 ``_Map_<year>`` / non-ASCII) to the current one
+    # with owl:sameAs. Load surface only, not combined: the legacy IRIs are
+    # aliases, not corpus nodes, and would add ~14k nodes to the flagship file.
+    "bridges",
 )
 
 PUBLIC_LOAD_JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
@@ -2388,6 +2393,33 @@ def record_fetch_hash(
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return dest
+
+
+def record_fetch_hashes(rows: dict[str, dict], *, path: Path | None = None) -> Path:
+    """Merge many fetch-hash rows into the manifest in one write (#692).
+
+    ``rows`` maps a key (the law output slug) to its full row; a row replaces
+    the stored one for that key wholesale, so a stale field from an earlier
+    redaction cannot survive. Keys not in ``rows`` are kept (a missing-only
+    run attests only what it fetched). Keys are written sorted, so a re-run
+    over unchanged sources is byte-identical.
+    """
+    dest = path if path is not None else KRR_DIR / FETCH_HASH_FILENAME
+    payload: dict = {}
+    if dest.is_file():
+        try:
+            loaded = json.loads(dest.read_text(encoding="utf-8"))
+            if isinstance(loaded, dict):
+                payload = loaded
+        except json.JSONDecodeError:
+            payload = {}
+    payload.update(rows)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(
+        json.dumps(dict(sorted(payload.items())), ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
     return dest

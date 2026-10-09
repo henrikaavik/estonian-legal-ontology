@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:UKKKR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus",
       "dcterms:title": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/24911.xml"
+        "@id": "https://www.riigiteataja.ee/akt/24911"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/24911/xml"
+      },
+      "estleg:globalId": "24911",
+      "eli:id_local": "24911",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "151742",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "870f3d66ca20ab2f5d96c34dd0515700910596a819643da33d1a64c110476977",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -53,30 +74,39 @@
       ]
     },
     {
-      "@id": "estleg:UKKKR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_UKKKR_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_UKKKR_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:UKKKR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:UKKKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_UKKKR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:UKKKR_Par_1",
@@ -85,12 +115,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud kultuuriväärtuste ebaseadusliku sisseveo, väljaveo...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud , mis on vastu võetud 1970. aasta 14. novembril Par...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UKKKR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on vastu võetud 1970. aasta 14. novembril Pariisis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud , mis on vastu võetud 1970. aasta 14. novembril Pariisis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1970. aasta 14. novembril Pariisis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UKKKR_default"
@@ -112,10 +148,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1970. aasta 14. novembril Pariisis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud , mis on vastu võetud 1970. aasta 14. novembril Pariisis.",
       "estleg:parentProvision": {
         "@id": "estleg:UKKKR_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:UKKKR_Par_2",
@@ -124,12 +162,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ratifitseerida juurdelisatud ülemaailmse kultuuri- ja looduspärandi kaitse konve...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ratifitseerida juurdelisatud , mis on vastu võetud 1972. aasta 16. novembril Par...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "UNESCO kultuuripärandi kaitse konventsioonide ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UKKKR_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on vastu võetud 1972. aasta 16. novembril Pariisis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud , mis on vastu võetud 1972. aasta 16. novembril Pariisis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1972. aasta 16. novembril Pariisis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UKKKR_default"
@@ -177,10 +221,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1972. aasta 16. novembril Pariisis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud , mis on vastu võetud 1972. aasta 16. novembril Pariisis.",
       "estleg:parentProvision": {
         "@id": "estleg:UKKKR_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

@@ -80,7 +80,52 @@ Amendment nodes are **merged** into combined. Version forward-edges are
 EuroVoc writes `eurovoc/eurovoc_overlay.jsonld` by default; `--write-peeps`
 opts into the legacy in-place path. Deontic, target-group, and some similarity
 passes still mutate peeps. Combined merges selected overlay directories at
-build time; full separation of the peep-mutating passes remains open (#697).
+build time. A re-ingest no longer deletes what those passes wrote on a peep:
+see the next section.
+
+## Raw layer vs overlay layer (#697)
+
+A peep holds two layers. The **raw layer** is what one ingest generator reads
+from its upstream source. The **overlay layer** is everything later enrichment
+passes add to the same nodes or the same file: court→law links, full text,
+EuroVoc, transposition edges, deontic and target-group tags, similarity
+nodes. Each ingest generator declares its raw layer as an `IngestLayer` in
+`src/estleg/ingest_overlay.py` and writes through `prepare_write`:
+
+| Ingest (writer) | Raw keys it owns | Overlay that survives a refresh (committed corpus, 2026-10-09) |
+|---|---|---|
+| `generate_court_decisions` (`write_year_peep`) | label, `caseNumber`, `decisionType`, `decisionDate`, `ecliIdentifier`, `summary`, `decisionLink`, `rikObjectId`, `rikosUrl`, `personalDataScreened`, map-node `dc:*` | `legalText` 10,940 · `judge` 10,833 · `chamber` 9,786 · `interpretsLaw` 9,339 · `interpretsVersion` / `interpretationOutdated` 9,156 · `earliestSupersedingDate` 8,122 · 5,567 `Citation` nodes |
+| `generate_eu_legislation` (`write_type_peep`) | label, `dcterms:title`, `celexNumber`, `euDocumentType`, `eurLexLink`, `dcterms:source`, `owl:sameAs`, `eli:id_local`, `eliIdentifier`, `documentDate`, `transpositionDeadline`, `inForce`, `euInstitution` | `transpositionStatus` 2,627 · `transposedBy` 235 · `estoniaRelevant` 235 |
+| `generate_eu_court_decisions` (`write_category_peep`) | label, `dcterms:title`, `celexNumber`, `euCourtDecisionType`, `euCourt`, `eurLexLink`, `dcterms:source`, `owl:sameAs`, `ecliIdentifier`, `euCaseNumber`, `documentDate` | `interpretsEULaw` 5,361 (+ its `derivationMethod`) |
+| `generate_regulations` (`write_regulation_output`) | act metadata read from the XML, provision / subsection / annex structure and text, `contentStatus`, and the act temporal keys that `extract_temporal_data` re-derives from the same XML (`temporalStatus`, `entryIntoForce`, `repealDate` …) | 32 enrichment keys (`targetGroup`, `normativeType`, `dcterms:subject`, `issuedUnder`, `hasVersion`, `competentAuthority` …), `estleg:KovProvision` typing, 135,563 `Similarity` / `Citation` nodes |
+| `generate_all_laws` (`merge_existing_enrichments`) | structural keys in `_MERGE_BLOCKED_FIELDS` | every other key (pre-#697 mechanism, same rule) |
+
+The rule on rewrite:
+
+- A key the new build emits wins (the raw value is re-read).
+- A **raw** key the new build no longer emits is dropped, because the source
+  no longer says it.
+- Every other key on an existing node is overlay and is kept, in its
+  published position.
+- A node whose type the ingest owns and which the new build no longer emits
+  is dropped. Every other existing node is overlay and is kept after the node
+  it followed.
+- Keys both layers write are merged explicitly. `derivationMethod` and
+  `rdfs:seeAlso` are a value union. A court `personalDataMaskedCount` keeps
+  the larger count. An enricher's refinement of a court `CaseType_Other`
+  survives. The court `referencedLaw` is a seed key: the ingest sets it on a
+  new node, and the #596 normaliser owns it afterwards.
+- A value that is JSON-LD-equal to the published one (same set, other order,
+  or a scalar versus a one-element array) keeps the published form. The
+  published `@context` is kept while it defines every prefix in use.
+
+So an unchanged re-ingest is byte-identical to the committed peep.
+`tests/test_ingest_regeneration_697.py` proves this for a Riigikohus year, an
+EUR-Lex peep and a CURIA peep, using rows derived from the raw fields only.
+
+`--replace-overlays` on each ingest is the explicit opt-out. It writes the raw
+build as-is and logs, per file, the overlay it discards. Laws keep
+`merge_existing_enrichments`, which follows the same rule without the opt-out.
 
 ## Pipeline
 
@@ -154,6 +199,13 @@ Keep new consumer paths aligned with the three load surfaces above.
 ## What not to change without a MAJOR version
 
 - Slash namespace and underscore local names.
+- The Riigikohus decision IRI `estleg:RK_<sanitize(caseNumber)>` (#697). A
+  second document with the same `caseNumber` is
+  `estleg:RK_<sanitize(caseNumber)>_<sanitize(rikObjectId)>`, frozen per
+  document in `data/rk_iri_collisions.json` (121 entries). Re-minting either
+  form, or editing an allowlist entry, is MAJOR. New collisions are appended.
+- EU node IRIs `estleg:EU_<CELEX>` / `estleg:EUCJ_<CELEX>` minted from the
+  source CELEX; a CELEX correction never re-mints the `@id`.
 - `estleg:partOfAct` as the act⇄provision join (not `sourceAct` literals).
 - `MunicipalRegulation` as a sibling of `NationalRegulation`, not a subclass.
 - Drafts as `ProposedAmendment`, not effected `AmendmentEvent`.

@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:PISTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Puuetega inimeste sotsiaaltoetuste seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Puuetega inimeste sotsiaaltoetuste seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Puuetega inimeste sotsiaaltoetuste seadus",
-      "dcterms:title": [
-        {
-          "@value": "Puuetega inimeste sotsiaaltoetuste seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Social Benefits for Disabled Persons Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/121052026012.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062026020"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062026020/xml"
+      },
+      "estleg:globalId": "130062026020",
+      "eli:id_local": "130062026020",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159387",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f15a1d9037d127946845cf39747c59391f520360ec6d8e666561b4fa0d4f3940",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2026-10-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-05-22",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -48,10 +64,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-05-22",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/501062026003"
@@ -220,14 +232,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU13_0106"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/501062026003"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_PISTS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:PISTS_TopicScheme"
+      },
+      "estleg:provisionCount": 12
     },
     {
       "@id": "estleg:PISTS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Puuetega inimeste sotsiaaltoetuste seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Puuetega inimeste sotsiaaltoetuste seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_PISTS_1"
@@ -241,26 +279,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_PISTS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–5 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–5 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:PISTS_TopicScheme"
-      },
-      "estleg:provisionCount": 5
-    },
-    {
       "@id": "estleg:Chapter_PISTS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
@@ -280,12 +307,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§6–14 TOETUSED",
-      "skos:prefLabel": "§6–14 TOETUSED",
+      "rdfs:label": {
+        "@value": "§6–14 TOETUSED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§6–14 TOETUSED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PISTS_TopicScheme"
       },
-      "estleg:provisionCount": 9
+      "estleg:provisionCount": 11
     },
     {
       "@id": "estleg:Chapter_PISTS_2",
@@ -293,7 +326,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – TOETUSED",
+      "rdfs:label": {
+        "@value": "2. peatükk – TOETUSED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
@@ -313,12 +349,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§15–26 RAKENDAMISE KORD",
-      "skos:prefLabel": "§15–26 RAKENDAMISE KORD",
+      "rdfs:label": {
+        "@value": "§15–26 RAKENDAMISE KORD",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§15–26 RAKENDAMISE KORD",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PISTS_TopicScheme"
       },
-      "estleg:provisionCount": 12
+      "estleg:provisionCount": 19
     },
     {
       "@id": "estleg:Chapter_PISTS_3",
@@ -326,7 +368,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – RAKENDAMISE KORD",
+      "rdfs:label": {
+        "@value": "3. peatükk – RAKENDAMISE KORD",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
@@ -346,12 +391,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala ja eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala ja eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab puuetega inimeste sotsiaaltoetuste liigid, nende saamise tingimused, nende suurused ning määramise ja maksmise korra. (2) Käesoleva seaduse eesmärk on puuetega inimeste iseseisva toimetuleku, sotsiaalse integratsiooni ja võrdsete võimaluste toetamine ning õppimise ja töötamise soodustamine puudest tingitud lisakulude osalise hüvitamise kaudu. (3) Käesolevas seaduses ettenähtud sotsiaalkaitsele kohaldatakse sotsiaalseadustiku üldosa seaduse sätteid, arvestades",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab puuetega inimeste sotsiaaltoetuste liigid, nende saamise tingimused, nende suurused ning määramise ja maksmise korra. (2) Käesoleva seaduse eesmärk on puuetega inimeste iseseisva toimetuleku, sotsiaalse integratsiooni ja võrdsete võimaluste toetamine ning õppimise ja töötamise soodustamine puudest tingitud lisakulude osalise hüvitamise kaudu. (3) Käesolevas seaduses ettenähtud sotsiaalkaitsele kohaldatakse sotsiaalseadustiku üldosa seaduse sätteid, arvestades",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab puuetega inimeste sotsiaaltoetuste liigid, nende saamise tingimused, nende suurused ning määramise ja maksmise korra. (2) Käesoleva seaduse eesmärk on puuetega inimeste iseseisva toimetuleku, sotsiaalse integratsiooni ja võrdsete võimaluste toetamine ning õppimise ja töötamise soodustamine puudest tingitud lisakulude osalise hüvitamise kaudu. (3) Käesolevas seaduses ettenähtud sotsiaalkaitsele kohaldatakse sotsiaalseadustiku üldosa seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
@@ -447,13 +498,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mõisted",
+      "rdfs:label": {
+        "@value": "§ 2. Mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, mis koostoimes erinevate suhtumuslike ja keskkondlike takistustega tõkestab ühiskonnaelus osalemist teistega võrdsetel alustel. (1¹) Käesoleva seaduse alusel tuvastatakse kuni 16-aastasel lapsel ning vanaduspensioniealisel inimesel lähtuvalt kõrvalabi, juhendamise või järelevalve vajadusest sügav, raske või keskmine puude raskusaste.",
-      "estleg:legalText": "(1) Puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, mis koostoimes erinevate suhtumuslike ja keskkondlike takistustega tõkestab ühiskonnaelus osalemist teistega võrdsetel alustel. (1¹) Käesoleva seaduse alusel tuvastatakse kuni 16-aastasel lapsel ning vanaduspensioniealisel inimesel lähtuvalt kõrvalabi, juhendamise või järelevalve vajadusest sügav, raske või keskmine puude raskusaste. Käesoleva lõike mõistes on puudel järgmised raskusastmed: sügav puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik pidevat kõrvalabi, juhendamist või järelevalvet ööpäevaringselt; raske puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik kõrvalabi, juhendamist või järelevalvet igal ööpäeval; keskmine puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik regulaarset kõrvalabi või juhendamist väljaspool oma elamiskohta vähemalt korra nädalas. (2) Kõrvalabi või juhendamine on abi osutamine inimesele, kes ei tule iseseisvalt toime söömise, ravitoimingute, hügieenitoimingute, riietumise, liikumise või suhtlemisega. Järelevalve on ohutuse tagamine inimese suhtes, kes oma tegevuse või tegevusetusega võib tekitada kahju iseenda või teiste inimeste elule, tervisele või varale. (2¹) Käesoleva seaduse alusel tuvastatakse 16-aastasel kuni vanaduspensioniealisel inimesel (edaspidi tööealine inimene) lähtuvalt igapäevastest tegutsemis- ja ühiskonnaelus osalemise piirangutest sügava, raske või keskmise raskusastmega puue. Käesoleva lõike mõistes on puudel järgmised raskusastmed: sügav puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on täielikult takistatud; raske puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on piiratud; keskmine puue on inimesel, kellel igapäevases tegutsemises või ühiskonnaelus osalemises esineb raskusi. (2²) Kehtetu - (3) Mõistet «töötamine» kasutatakse käesolevas seaduses riikliku pensionikindlustuse seaduse tähenduses.",
+      "estleg:summary": {
+        "@value": "(1) Puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, mis koostoimes erinevate suhtumuslike ja keskkondlike takistustega tõkestab ühiskonnaelus osalemist teistega võrdsetel alustel. (1¹) Käesoleva seaduse alusel tuvastatakse kuni 16-aastasel lapsel ning vanaduspensioniealisel inimesel lähtuvalt kõrvalabi, juhendamise või järelevalve vajadusest sügav, raske või keskmine puude raskusaste.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, mis koostoimes erinevate suhtumuslike ja keskkondlike takistustega tõkestab ühiskonnaelus osalemist teistega võrdsetel alustel. (1¹) Käesoleva seaduse alusel tuvastatakse kuni 16-aastasel lapsel ning vanaduspensioniealisel inimesel lähtuvalt kõrvalabi, juhendamise või järelevalve vajadusest sügav, raske või keskmine puude raskusaste. Käesoleva lõike mõistes on puudel järgmised raskusastmed: 1) sügav puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik pidevat kõrvalabi, juhendamist või järelevalvet ööpäevaringselt; 2) raske puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik kõrvalabi, juhendamist või järelevalvet igal ööpäeval; 3) keskmine puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik regulaarset kõrvalabi või juhendamist väljaspool oma elamiskohta vähemalt korra nädalas. (2) Kõrvalabi või juhendamine on abi osutamine inimesele, kes ei tule iseseisvalt toime söömise, ravitoimingute, hügieenitoimingute, riietumise, liikumise või suhtlemisega. Järelevalve on ohutuse tagamine inimese suhtes, kes oma tegevuse või tegevusetusega võib tekitada kahju iseenda või teiste inimeste elule, tervisele või varale. (2¹) Käesoleva seaduse alusel tuvastatakse 16-aastasel kuni vanaduspensioniealisel inimesel (edaspidi tööealine inimene) lähtuvalt igapäevastest tegutsemis- ja ühiskonnaelus osalemise piirangutest sügava, raske või keskmise raskusastmega puue. Käesoleva lõike mõistes on puudel järgmised raskusastmed: 1) sügav puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on täielikult takistatud; 2) raske puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on piiratud; 3) keskmine puue on inimesel, kellel igapäevases tegutsemises või ühiskonnaelus osalemises esineb raskusi. (3) Mõistet «töötamine» kasutatakse käesolevas seaduses riikliku pensionikindlustuse seaduse tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -472,9 +529,6 @@
         },
         {
           "@id": "estleg:PISTS_Par_2_Lg_2_1"
-        },
-        {
-          "@id": "estleg:PISTS_Par_2_Lg_2_2"
         },
         {
           "@id": "estleg:PISTS_Par_2_Lg_3"
@@ -813,11 +867,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Käesoleva seaduse alusel tuvastatakse kuni 16-aastasel lapsel ning vanaduspensioniealisel inimesel lähtuvalt kõrvalabi, juhendamise või järelevalve vajadusest sügav, raske või keskmine puude raskusaste. Käesoleva lõike mõistes on puudel järgmised raskusastmed: sügav puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik pidevat kõrvalabi, juhendamist või järelevalvet ööpäevaringselt; raske puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik kõrvalabi, juhendamist või järelevalvet igal ööpäeval; keskmine puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik regulaarset kõrvalabi või juhendamist väljaspool oma elamiskohta vähemalt korra nädalas.",
+      "estleg:legalText": "(1¹) Käesoleva seaduse alusel tuvastatakse kuni 16-aastasel lapsel ning vanaduspensioniealisel inimesel lähtuvalt kõrvalabi, juhendamise või järelevalve vajadusest sügav, raske või keskmine puude raskusaste. Käesoleva lõike mõistes on puudel järgmised raskusastmed: 1) sügav puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik pidevat kõrvalabi, juhendamist või järelevalvet ööpäevaringselt; 2) raske puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik kõrvalabi, juhendamist või järelevalvet igal ööpäeval; 3) keskmine puue on inimese anatoomilise, füsioloogilise või psüühilise struktuuri või funktsiooni kaotus või kõrvalekalle, millest tingituna vajab isik regulaarset kõrvalabi või juhendamist väljaspool oma elamiskohta vähemalt korra nädalas.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1¹",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -863,24 +922,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2¹",
-      "estleg:legalText": "(2¹) Käesoleva seaduse alusel tuvastatakse 16-aastasel kuni vanaduspensioniealisel inimesel (edaspidi tööealine inimene) lähtuvalt igapäevastest tegutsemis- ja ühiskonnaelus osalemise piirangutest sügava, raske või keskmise raskusastmega puue. Käesoleva lõike mõistes on puudel järgmised raskusastmed: sügav puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on täielikult takistatud; raske puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on piiratud; keskmine puue on inimesel, kellel igapäevases tegutsemises või ühiskonnaelus osalemises esineb raskusi.",
+      "estleg:legalText": "(2¹) Käesoleva seaduse alusel tuvastatakse 16-aastasel kuni vanaduspensioniealisel inimesel (edaspidi tööealine inimene) lähtuvalt igapäevastest tegutsemis- ja ühiskonnaelus osalemise piirangutest sügava, raske või keskmise raskusastmega puue. Käesoleva lõike mõistes on puudel järgmised raskusastmed: 1) sügav puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on täielikult takistatud; 2) raske puue on inimesel, kellel igapäevane tegutsemine või ühiskonnaelus osalemine on piiratud; 3) keskmine puue on inimesel, kellel igapäevases tegutsemises või ühiskonnaelus osalemises esineb raskusi.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2¹"
-    },
-    {
-      "@id": "estleg:PISTS_Par_2_Lg_2_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2²",
-      "estleg:legalText": "(2²) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 2²"
+      "rdfs:label": "§ 2 lg 2¹",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:PISTS_Par_2_Lg_3",
@@ -902,13 +953,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2¹.",
-      "rdfs:label": "§ 2¹. Rehabilitatsiooniplaani koostamine",
+      "rdfs:label": {
+        "@value": "§ 2¹. Rehabilitatsiooniplaani koostamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 2¹. Rehabilitatsiooniplaani koostamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -958,13 +1014,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2².",
-      "rdfs:label": "§ 2². Puude raskusastme tuvastamise taotlemine",
+      "rdfs:label": {
+        "@value": "§ 2². Puude raskusastme tuvastamise taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puude raskusastme tuvastamiseks esitatakse taotlus Sotsiaalkindlustusametile. (2) Isik võib esitada puude raskusastme tuvastamise taotluse Eesti Töötukassa (edaspidi töötukassa) kaudu, kui taotlus esitatakse koos töövõimetoetuse seaduse alusel töötukassale esitatava töövõime hindamise taotlusega. (3) kehtestab määrusega tööealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad: puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja sugu",
-      "estleg:legalText": "(1) Puude raskusastme tuvastamiseks esitatakse taotlus Sotsiaalkindlustusametile. (2) Isik võib esitada puude raskusastme tuvastamise taotluse Eesti Töötukassa (edaspidi töötukassa) kaudu, kui taotlus esitatakse koos töövõimetoetuse seaduse alusel töötukassale esitatava töövõime hindamise taotlusega. (3) kehtestab määrusega tööealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad: puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, andmed hariduse ja töötamise, abivahendite ja kõrvalise abi kasutamise ning rehabilitatsiooni kohta; töövõimet välistavate seisundite loetelu ning isiku kehalist ja vaimset võimekust iseloomustavate valdkondade loetelu. (4) kehtestab määrusega lapse ja vanaduspensioniealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, andmed õppimise või töötamise, terviseseisundist tingitud kõrvalabi, juhendamise ja järelevalve vajaduse, elutingimuste ning terviseseisundi muutuste kohta. (5) Puude raskusastme taotluse esitamise päevaks loetakse päev, millal taotlus esitatakse Sotsiaalkindlustusametile või käesoleva paragrahvi lõikes 2 sätestatud juhul töötukassale. Kui puude raskusastme tuvastamise taotlus saadetakse posti teel, loetakse taotluse esitamise päevaks lähtekoha postitempli kuupäev.",
+      "estleg:summary": {
+        "@value": "(1) Puude raskusastme tuvastamiseks esitatakse taotlus Sotsiaalkindlustusametile. (2) Isik võib esitada puude raskusastme tuvastamise taotluse Eesti Töötukassa (edaspidi töötukassa) kaudu, kui taotlus esitatakse koos töövõimetoetuse seaduse alusel töötukassale esitatava töövõime hindamise taotlusega. (3) kehtestab määrusega tööealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad: 1) puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puude raskusastme tuvastamiseks esitatakse taotlus Sotsiaalkindlustusametile. (2) Isik võib esitada puude raskusastme tuvastamise taotluse Eesti Töötukassa (edaspidi töötukassa) kaudu, kui taotlus esitatakse koos töövõimetoetuse seaduse alusel töötukassale esitatava töövõime hindamise taotlusega. (3) kehtestab määrusega tööealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad: 1) puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, andmed hariduse ja töötamise, abivahendite ja kõrvalise abi kasutamise ning rehabilitatsiooni kohta; 2) töövõimet välistavate seisundite loetelu ning isiku kehalist ja vaimset võimekust iseloomustavate valdkondade loetelu. (4) kehtestab määrusega lapse ja vanaduspensioniealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, andmed õppimise või töötamise, terviseseisundist tingitud kõrvalabi, juhendamise ja järelevalve vajaduse, elutingimuste ning terviseseisundi muutuste kohta. (5) Puude raskusastme taotluse esitamise päevaks loetakse päev, millal taotlus esitatakse Sotsiaalkindlustusametile või käesoleva paragrahvi lõikes 2 sätestatud juhul töötukassale. Kui puude raskusastme tuvastamise taotlus saadetakse posti teel, loetakse taotluse esitamise päevaks lähtekoha postitempli kuupäev.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -1108,11 +1170,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) kehtestab määrusega tööealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad: puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, andmed hariduse ja töötamise, abivahendite ja kõrvalise abi kasutamise ning rehabilitatsiooni kohta; töövõimet välistavate seisundite loetelu ning isiku kehalist ja vaimset võimekust iseloomustavate valdkondade loetelu.",
+      "estleg:legalText": "(3) kehtestab määrusega tööealise inimese puude raskusastme tuvastamise taotlusele kantavate andmete loetelu, milles sisalduvad: 1) puude raskusastme tuvastamist taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, andmed hariduse ja töötamise, abivahendite ja kõrvalise abi kasutamise ning rehabilitatsiooni kohta; 2) töövõimet välistavate seisundite loetelu ning isiku kehalist ja vaimset võimekust iseloomustavate valdkondade loetelu.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2_2"
       },
       "rdfs:label": "§ 2² lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1170,13 +1236,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2³.",
-      "rdfs:label": "§ 2³. Puude raskusastme tuvastamine",
+      "rdfs:label": {
+        "@value": "§ 2³. Puude raskusastme tuvastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puude raskusastme tuvastab Sotsiaalkindlustusamet, kaasates vajaduse korral arstiõppe läbinud isikuid. (2) Sotsiaalkindlustusametil on puude raskusastme tuvastamiseks isiku nõusolekul juurdepääs tervise infosüsteemi andmeid esitanud arsti ees- ja perekonnanimele. (3) Arstiõppe läbinud isikul on isiku nõusolekul juurdepääs järgmistele tervise infosüsteemis olevatele puude raskusastme tuvastamiseks vajalikele andmetele: andmed andmete esitaja kohta; andmed ambulatoorsete visiitide ja haiglas",
-      "estleg:legalText": "(1) Puude raskusastme tuvastab Sotsiaalkindlustusamet, kaasates vajaduse korral arstiõppe läbinud isikuid. (2) Sotsiaalkindlustusametil on puude raskusastme tuvastamiseks isiku nõusolekul juurdepääs tervise infosüsteemi andmeid esitanud arsti ees- ja perekonnanimele. (3) Arstiõppe läbinud isikul on isiku nõusolekul juurdepääs järgmistele tervise infosüsteemis olevatele puude raskusastme tuvastamiseks vajalikele andmetele: andmed andmete esitaja kohta; andmed ambulatoorsete visiitide ja haiglas viibimise kohta; andmed ravimite kohta. (4) Kui käesoleva paragrahvi lõikes 3 sätestatud andmed tervise infosüsteemis puuduvad või need on puude raskusastme tuvastamiseks ebapiisavad, edastab isiku pere- või eriarst puuduvad andmed tervise infosüsteemi ja teavitab sellest Sotsiaalkindlustusametit või edastab terviseseisundit kirjeldavad andmed Sotsiaalkindlustusametile 15 päeva jooksul Sotsiaalkindlustusametilt asjakohase taotluse saamisest arvates. (5) Puude raskusastme tuvastamiseks vajalike tervise infosüsteemi andmete loetelu ja päringute perioodid kehtestab määrusega. (6) Puude raskusastme tuvastamisel võetakse arvesse järgmist: terviseseisund; tegevusvõime; kõrvalabi, juhendamise ja järelevalve vajadus, mis on suurem inimese eakohasest abivajadusest; kõrvalabi ja juhendamise vajadus, mis esineb inimesel tehniliste abivahendite kasutamisele vaatamata; elukeskkond; rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevused. (7) Kui tööealine isik taotleb samal ajal puude raskusastme tuvastamist ning töövõime hindamist, kasutatakse puude raskusastme tuvastamiseks töövõime hindamise käigus koostatud eksperdiarvamust (edaspidi eksperdiarvamus) ja töötukassa antud töövõime hindamise otsust. (8) Kui tööealine isik taotleb puude raskusastme tuvastamist ning töötukassa on tema töövõimet hinnanud puude raskusastme tuvastamise taotluse esitamisele eelneva kuue kuu jooksul, kasutatakse puude raskusastme tuvastamiseks eksperdiarvamust ja töötukassa antud töövõime hindamise otsust. (8¹) Puudega lapse seisundi muutumise kohta info saamisel on Sotsiaalkindlustusametil kohustus lapse abivajadust uuesti hinnata. Kohustus teavitada Sotsiaalkindlustusametit puudega lapse seisundi muutumisest on igal isikul, kellel on vastav teave olemas. (9) Puude raskusastme tuvastamise tingimused ja korra kehtestab määrusega. (10) Puude raskusastme tuvastamise päevaks loetakse käesoleva seaduse § 22 lõikes 5 sätestatud päev.",
+      "estleg:summary": {
+        "@value": "(1) Puude raskusastme tuvastab Sotsiaalkindlustusamet, kaasates vajaduse korral arstiõppe läbinud isikuid. (2) Sotsiaalkindlustusametil on puude raskusastme tuvastamiseks isiku nõusolekul juurdepääs tervise infosüsteemi andmeid esitanud arsti ees- ja perekonnanimele. (3) Arstiõppe läbinud isikul on isiku nõusolekul juurdepääs järgmistele tervise infosüsteemis olevatele puude raskusastme tuvastamiseks vajalikele andmetele: 1) andmed andmete esitaja kohta; 2) andmed ambulatoorsete visiitide ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puude raskusastme tuvastab Sotsiaalkindlustusamet, kaasates vajaduse korral arstiõppe läbinud isikuid. (2) Sotsiaalkindlustusametil on puude raskusastme tuvastamiseks isiku nõusolekul juurdepääs tervise infosüsteemi andmeid esitanud arsti ees- ja perekonnanimele. (3) Arstiõppe läbinud isikul on isiku nõusolekul juurdepääs järgmistele tervise infosüsteemis olevatele puude raskusastme tuvastamiseks vajalikele andmetele: 1) andmed andmete esitaja kohta; 2) andmed ambulatoorsete visiitide ja haiglas viibimise kohta; 3) andmed ravimite kohta. (4) Kui käesoleva paragrahvi lõikes 3 sätestatud andmed tervise infosüsteemis puuduvad või need on puude raskusastme tuvastamiseks ebapiisavad, edastab isiku pere- või eriarst puuduvad andmed tervise infosüsteemi ja teavitab sellest Sotsiaalkindlustusametit või edastab terviseseisundit kirjeldavad andmed Sotsiaalkindlustusametile 15 päeva jooksul Sotsiaalkindlustusametilt asjakohase taotluse saamisest arvates. (5) Puude raskusastme tuvastamiseks vajalike tervise infosüsteemi andmete loetelu ja päringute perioodid kehtestab määrusega. (6) Puude raskusastme tuvastamisel võetakse arvesse järgmist: 1) terviseseisund; 2) tegevusvõime; 3) kõrvalabi, juhendamise ja järelevalve vajadus, mis on suurem inimese eakohasest abivajadusest; 4) kõrvalabi ja juhendamise vajadus, mis esineb inimesel tehniliste abivahendite kasutamisele vaatamata; 5) elukeskkond; 6) rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevused. (7) Kui tööealine isik taotleb samal ajal puude raskusastme tuvastamist ning töövõime hindamist, kasutatakse puude raskusastme tuvastamiseks töövõime hindamise käigus koostatud eksperdiarvamust (edaspidi eksperdiarvamus) ja töötukassa antud töövõime hindamise otsust. (8) Kui tööealine isik taotleb puude raskusastme tuvastamist ning töötukassa on tema töövõimet hinnanud puude raskusastme tuvastamise taotluse esitamisele eelneva kuue kuu jooksul, kasutatakse puude raskusastme tuvastamiseks eksperdiarvamust ja töötukassa antud töövõime hindamise otsust. (8¹) Puudega lapse seisundi muutumise kohta info saamisel on Sotsiaalkindlustusametil kohustus lapse abivajadust uuesti hinnata. Kohustus teavitada Sotsiaalkindlustusametit puudega lapse seisundi muutumisest on igal isikul, kellel on vastav teave olemas. (9) Puude raskusastme tuvastamise tingimused ja korra kehtestab määrusega. (10) Puude raskusastme tuvastamise päevaks loetakse käesoleva seaduse § 2² lõikes 5 sätestatud päev.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -1311,11 +1383,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Arstiõppe läbinud isikul on isiku nõusolekul juurdepääs järgmistele tervise infosüsteemis olevatele puude raskusastme tuvastamiseks vajalikele andmetele: andmed andmete esitaja kohta; andmed ambulatoorsete visiitide ja haiglas viibimise kohta; andmed ravimite kohta.",
+      "estleg:legalText": "(3) Arstiõppe läbinud isikul on isiku nõusolekul juurdepääs järgmistele tervise infosüsteemis olevatele puude raskusastme tuvastamiseks vajalikele andmetele: 1) andmed andmete esitaja kohta; 2) andmed ambulatoorsete visiitide ja haiglas viibimise kohta; 3) andmed ravimite kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2_3"
       },
       "rdfs:label": "§ 2³ lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1373,11 +1450,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Puude raskusastme tuvastamisel võetakse arvesse järgmist: terviseseisund; tegevusvõime; kõrvalabi, juhendamise ja järelevalve vajadus, mis on suurem inimese eakohasest abivajadusest; kõrvalabi ja juhendamise vajadus, mis esineb inimesel tehniliste abivahendite kasutamisele vaatamata; elukeskkond; rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevused.",
+      "estleg:legalText": "(6) Puude raskusastme tuvastamisel võetakse arvesse järgmist: 1) terviseseisund; 2) tegevusvõime; 3) kõrvalabi, juhendamise ja järelevalve vajadus, mis on suurem inimese eakohasest abivajadusest; 4) kõrvalabi ja juhendamise vajadus, mis esineb inimesel tehniliste abivahendite kasutamisele vaatamata; 5) elukeskkond; 6) rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevused.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2_3"
       },
-      "rdfs:label": "§ 2³ lg 6"
+      "rdfs:label": "§ 2³ lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
     },
     {
       "@id": "estleg:PISTS_Par_2_3_Lg_7",
@@ -1470,7 +1555,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "10",
-      "estleg:legalText": "(10) Puude raskusastme tuvastamise päevaks loetakse käesoleva seaduse § 22 lõikes 5 sätestatud päev.",
+      "estleg:legalText": "(10) Puude raskusastme tuvastamise päevaks loetakse käesoleva seaduse § 2² lõikes 5 sätestatud päev.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2_3"
       },
@@ -1488,13 +1573,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2⁴.",
-      "rdfs:label": "§ 2⁴. Puude raskusastme otsuse tegemise tähtaeg ja puude raskusastme kestus",
+      "rdfs:label": {
+        "@value": "§ 2⁴. Puude raskusastme otsuse tegemise tähtaeg ja puude raskusastme kestus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Sotsiaalkindlustusamet teeb puude raskusastme tuvastamise või tuvastamata jätmise otsuse 30 tööpäeva jooksul ekspertiisiks piisavate andmete saamise päevast arvates. (2) Kui puude raskusastme tuvastamiseks kasutatakse eksperdiarvamust ja töötukassa antud töövõime hindamise otsust, teeb Sotsiaalkindlustusamet puude raskusastme tuvastamise otsuse 30 tööpäeva jooksul eksperdiarvamuse ja töötukassa tehtud töövõime hindamise otsuse saamise päevast arvates.",
-      "estleg:legalText": "(1) Sotsiaalkindlustusamet teeb puude raskusastme tuvastamise või tuvastamata jätmise otsuse 30 tööpäeva jooksul ekspertiisiks piisavate andmete saamise päevast arvates. (2) Kui puude raskusastme tuvastamiseks kasutatakse eksperdiarvamust ja töötukassa antud töövõime hindamise otsust, teeb Sotsiaalkindlustusamet puude raskusastme tuvastamise otsuse 30 tööpäeva jooksul eksperdiarvamuse ja töötukassa tehtud töövõime hindamise otsuse saamise päevast arvates. (2¹) Kui puude raskusastme tuvastamiseks kasutatakse eksperdiarvamust ja töötukassa antud töövõime hindamise otsust ning isik on puude raskusastme tuvastamise taotluse esitanud korduvekspertiisi tähtajal, kuid puude raskusastme tuvastamise otsust ei ole tehtud enne senise puude raskusastme tuvastamise otsuse kestuse lõppu, pikendab Sotsiaalkindlustusamet puude raskusastme tuvastamise otsuse kestust kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni. (3) Puude raskusaste tuvastatakse: vanaduspensioniealisele puudega inimesele kestusega kuus kuud, üks aasta, kaks aastat, kolm aastat või viis aastat; tööealisele puudega inimesele kestusega kuni viis aastat, kuid mitte kauemaks kui vanaduspensionieani; lapsele kestusega kuus kuud, üks aasta, kaks aastat või kolm aastat, kuid mitte kauemaks kui 16-aastaseks saamiseni. (4) Kui tööealisel inimesel on tuvastatud puuduv töövõime töövõimetoetuse seaduse § 8 lõike 2 alusel kuni vanaduspensionieani, võib puude raskusastme tuvastada kuni vanaduspensionieani. (5) Kui lapsel on muutumatu või progresseeruv püsiv seisund, mis ei ole kompenseeritav ravi, ravimite, abivahendite või teenustega, võib puude raskusastme tuvastada kestusega kuni 16-aastaseks saamiseni. (5¹) Kui vanaduspensioniealisel inimesel on muutumatu või progresseeruv püsiv seisund, mis ei ole kompenseeritav ravi, ravimite, abivahendite või teenustega, võib puude raskusastme tuvastada eluajaks. (6) Käesoleva paragrahvi lõikes 5 nimetatud muutumatu ja progresseeruva püsiva seisundiga laste ning lõikes 51 nimetatud vanaduspensioniealiste inimeste puude raskusastme tuvastamise täpsustatud tingimused ja korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Sotsiaalkindlustusamet teeb puude raskusastme tuvastamise või tuvastamata jätmise otsuse 30 tööpäeva jooksul ekspertiisiks piisavate andmete saamise päevast arvates. (2) Kui puude raskusastme tuvastamiseks kasutatakse eksperdiarvamust ja töötukassa antud töövõime hindamise otsust, teeb Sotsiaalkindlustusamet puude raskusastme tuvastamise otsuse 30 tööpäeva jooksul eksperdiarvamuse ja töötukassa tehtud töövõime hindamise otsuse saamise päevast arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Sotsiaalkindlustusamet teeb puude raskusastme tuvastamise või tuvastamata jätmise otsuse 30 tööpäeva jooksul ekspertiisiks piisavate andmete saamise päevast arvates. (2) Kui puude raskusastme tuvastamiseks kasutatakse eksperdiarvamust ja töötukassa antud töövõime hindamise otsust, teeb Sotsiaalkindlustusamet puude raskusastme tuvastamise otsuse 30 tööpäeva jooksul eksperdiarvamuse ja töötukassa tehtud töövõime hindamise otsuse saamise päevast arvates. (2¹) Kui puude raskusastme tuvastamiseks kasutatakse eksperdiarvamust ja töötukassa antud töövõime hindamise otsust ning isik on puude raskusastme tuvastamise taotluse esitanud korduvekspertiisi tähtajal, kuid puude raskusastme tuvastamise otsust ei ole tehtud enne senise puude raskusastme tuvastamise otsuse kestuse lõppu, pikendab Sotsiaalkindlustusamet puude raskusastme tuvastamise otsuse kestust kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni. (3) Puude raskusaste tuvastatakse: 1) vanaduspensioniealisele puudega inimesele kestusega kuus kuud, üks aasta, kaks aastat, kolm aastat või viis aastat; 2) tööealisele puudega inimesele kestusega kuni viis aastat, kuid mitte kauemaks kui vanaduspensionieani; 3) lapsele kestusega kuus kuud, üks aasta, kaks aastat või kolm aastat, kuid mitte kauemaks kui 16-aastaseks saamiseni. (4) Kui tööealisel inimesel on tuvastatud puuduv töövõime töövõimetoetuse seaduse § 8 lõike 2 alusel kuni vanaduspensionieani, võib puude raskusastme tuvastada kuni vanaduspensionieani. (5) Kui lapsel on muutumatu või progresseeruv püsiv seisund, mis ei ole kompenseeritav ravi, ravimite, abivahendite või teenustega, võib puude raskusastme tuvastada kestusega kuni 16-aastaseks saamiseni. (5¹) Kui vanaduspensioniealisel inimesel on muutumatu või progresseeruv püsiv seisund, mis ei ole kompenseeritav ravi, ravimite, abivahendite või teenustega, võib puude raskusastme tuvastada eluajaks. (6) Käesoleva paragrahvi lõikes 5 nimetatud muutumatu ja progresseeruva püsiva seisundiga laste ning lõikes 5¹ nimetatud vanaduspensioniealiste inimeste puude raskusastme tuvastamise täpsustatud tingimused ja korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -1632,11 +1723,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Puude raskusaste tuvastatakse: vanaduspensioniealisele puudega inimesele kestusega kuus kuud, üks aasta, kaks aastat, kolm aastat või viis aastat; tööealisele puudega inimesele kestusega kuni viis aastat, kuid mitte kauemaks kui vanaduspensionieani; lapsele kestusega kuus kuud, üks aasta, kaks aastat või kolm aastat, kuid mitte kauemaks kui 16-aastaseks saamiseni.",
+      "estleg:legalText": "(3) Puude raskusaste tuvastatakse: 1) vanaduspensioniealisele puudega inimesele kestusega kuus kuud, üks aasta, kaks aastat, kolm aastat või viis aastat; 2) tööealisele puudega inimesele kestusega kuni viis aastat, kuid mitte kauemaks kui vanaduspensionieani; 3) lapsele kestusega kuus kuud, üks aasta, kaks aastat või kolm aastat, kuid mitte kauemaks kui 16-aastaseks saamiseni.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2_4"
       },
-      "rdfs:label": "§ 2⁴ lg 3"
+      "rdfs:label": "§ 2⁴ lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:PISTS_Par_2_4_Lg_4",
@@ -1710,7 +1806,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Käesoleva paragrahvi lõikes 5 nimetatud muutumatu ja progresseeruva püsiva seisundiga laste ning lõikes 51 nimetatud vanaduspensioniealiste inimeste puude raskusastme tuvastamise täpsustatud tingimused ja korra kehtestab määrusega.",
+      "estleg:legalText": "(6) Käesoleva paragrahvi lõikes 5 nimetatud muutumatu ja progresseeruva püsiva seisundiga laste ning lõikes 5¹ nimetatud vanaduspensioniealiste inimeste puude raskusastme tuvastamise täpsustatud tingimused ja korra kehtestab määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_2_4"
       },
@@ -1723,12 +1819,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2⁵.",
-      "rdfs:label": "§ 2⁵. Puudega isiku kaart",
+      "rdfs:label": {
+        "@value": "§ 2⁵. Puudega isiku kaart",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Sotsiaalkindlustusamet väljastab isiku soovi korral pensionitunnistust mitteomavale puudega isikule puudega isiku kaardi, mis tõendab puude raskusastet, puude liiki ja kestust. Puudega isiku kaart kehtib koos isikut tõendava dokumendiga isikut tõendavate dokumentide seaduse §-de 2 või 4 tähenduses. (2) Puudega isiku kaardile kantavate andmete loetelu ja väljastamise korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Sotsiaalkindlustusamet väljastab isiku soovi korral pensionitunnistust mitteomavale puudega isikule puudega isiku kaardi, mis tõendab puude raskusastet, puude liiki ja kestust. Puudega isiku kaart kehtib koos isikut tõendava dokumendiga isikut tõendavate dokumentide seaduse §-de 2 või 4 tähenduses. (2) Puudega isiku kaardile kantavate andmete loetelu ja väljastamise korra kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Sotsiaalkindlustusamet väljastab isiku soovi korral pensionitunnistust mitteomavale puudega isikule puudega isiku kaardi, mis tõendab puude raskusastet, puude liiki ja kestust. Puudega isiku kaart kehtib koos isikut tõendava dokumendiga isikut tõendavate dokumentide seaduse §-de 2 või 4 tähenduses. (2) Puudega isiku kaardile kantavate andmete loetelu ja väljastamise korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
@@ -1838,12 +1940,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2⁶.",
-      "rdfs:label": "§ 2⁶. Terviseseisundist tingitud püsiva toevajadusega lapsel puude raskusastme tuvastamine",
+      "rdfs:label": {
+        "@value": "§ 2⁶. Terviseseisundist tingitud püsiva toevajadusega lapsel puude raskusastme tuvastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Kui lapsel on terviseseisundist tingitud püsiv toevajadus, mille kohta on kantud andmed tervise infosüsteemi, ja kohaliku omavalitsuse üksus on edastanud lapse kohta andmed Sotsiaalkindlustusametile puude raskusastme tuvastamiseks, algatab Sotsiaalkindlustusamet puude raskusastme tuvastamise. (2) Lapsel terviseseisundist tingitud püsivat toevajadust põhjustavate seisundite loetelu kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Kui lapsel on terviseseisundist tingitud püsiv toevajadus, mille kohta on kantud andmed tervise infosüsteemi, ja kohaliku omavalitsuse üksus on edastanud lapse kohta andmed Sotsiaalkindlustusametile puude raskusastme tuvastamiseks, algatab Sotsiaalkindlustusamet puude raskusastme tuvastamise. (2) Lapsel terviseseisundist tingitud püsivat toevajadust põhjustavate seisundite loetelu kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui lapsel on terviseseisundist tingitud püsiv toevajadus, mille kohta on kantud andmed tervise infosüsteemi, ja kohaliku omavalitsuse üksus on edastanud lapse kohta andmed Sotsiaalkindlustusametile puude raskusastme tuvastamiseks, algatab Sotsiaalkindlustusamet puude raskusastme tuvastamise. (2) Lapsel terviseseisundist tingitud püsivat toevajadust põhjustavate seisundite loetelu kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
@@ -1932,13 +2040,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Puuetega inimeste sotsiaaltoetuste subjekt",
+      "rdfs:label": {
+        "@value": "§ 3. Puuetega inimeste sotsiaaltoetuste subjekt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puuetega inimeste sotsiaaltoetusi määratakse ja makstakse keskmisest, raskest või sügavast puudest tingitud lisakulude hüvitamiseks ning käesoleva seaduse § 6 lõikes 11 sätestatud juhul puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks järgmistele isikutele: Eesti alaline elanik; tähtajalise elamisloa või elamisõiguse alusel Eestis elav välismaalane; lühiajaliseks Eestis töötamiseks antud pikaajalise viisa alusel Eestis viibiv ja töötav välismaalane.",
-      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetusi määratakse ja makstakse keskmisest, raskest või sügavast puudest tingitud lisakulude hüvitamiseks ning käesoleva seaduse § 6 lõikes 11 sätestatud juhul puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks järgmistele isikutele: Eesti alaline elanik; tähtajalise elamisloa või elamisõiguse alusel Eestis elav välismaalane; lühiajaliseks Eestis töötamiseks antud pikaajalise viisa alusel Eestis viibiv ja töötav välismaalane. (2) Eestis viibival rahvusvahelise kaitse saajal on puuetega inimeste sotsiaaltoetuste saamise õigus Eesti alalise elanikuga võrdsetel alustel. (3) Kui Eesti Vabariigi poolt sõlmitud välisleping sisaldab puuetega inimeste sotsiaaltoetuste määramiseks ja maksmiseks käesolevast seadusest erinevaid sätteid, kohaldatakse välislepingut.",
+      "estleg:summary": {
+        "@value": "(1) Puuetega inimeste sotsiaaltoetusi määratakse ja makstakse keskmisest, raskest või sügavast puudest tingitud lisakulude hüvitamiseks ning käesoleva seaduse § 6 lõikes 1¹ sätestatud juhul puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks järgmistele isikutele: 1) Eesti alaline elanik; 2) tähtajalise elamisloa või elamisõiguse alusel Eestis elav välismaalane; 3) lühiajaliseks Eestis töötamiseks antud pikaajalise viisa alusel Eestis viibiv ja töötav välismaalane.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetusi määratakse ja makstakse keskmisest, raskest või sügavast puudest tingitud lisakulude hüvitamiseks ning käesoleva seaduse § 6 lõikes 1¹ sätestatud juhul puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks järgmistele isikutele: 1) Eesti alaline elanik; 2) tähtajalise elamisloa või elamisõiguse alusel Eestis elav välismaalane; 3) lühiajaliseks Eestis töötamiseks antud pikaajalise viisa alusel Eestis viibiv ja töötav välismaalane. (3) Kui Eesti Vabariigi poolt sõlmitud välisleping sisaldab puuetega inimeste sotsiaaltoetuste määramiseks ja maksmiseks käesolevast seadusest erinevaid sätteid, kohaldatakse välislepingut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -1948,9 +2062,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:PISTS_Par_3_Lg_1"
-        },
-        {
-          "@id": "estleg:PISTS_Par_3_Lg_2"
         },
         {
           "@id": "estleg:PISTS_Par_3_Lg_3"
@@ -2003,11 +2114,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetusi määratakse ja makstakse keskmisest, raskest või sügavast puudest tingitud lisakulude hüvitamiseks ning käesoleva seaduse § 6 lõikes 11 sätestatud juhul puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks järgmistele isikutele: Eesti alaline elanik; tähtajalise elamisloa või elamisõiguse alusel Eestis elav välismaalane; lühiajaliseks Eestis töötamiseks antud pikaajalise viisa alusel Eestis viibiv ja töötav välismaalane.",
+      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetusi määratakse ja makstakse keskmisest, raskest või sügavast puudest tingitud lisakulude hüvitamiseks ning käesoleva seaduse § 6 lõikes 1¹ sätestatud juhul puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks järgmistele isikutele: 1) Eesti alaline elanik; 2) tähtajalise elamisloa või elamisõiguse alusel Eestis elav välismaalane; 3) lühiajaliseks Eestis töötamiseks antud pikaajalise viisa alusel Eestis viibiv ja töötav välismaalane.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_3"
       },
       "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2022,28 +2138,6 @@
           "@id": "estleg:PISTS_Par_6"
         }
       ]
-    },
-    {
-      "@id": "estleg:PISTS_Par_3_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Eestis viibival rahvusvahelise kaitse saajal on puuetega inimeste sotsiaaltoetuste saamise õigus Eesti alalise elanikuga võrdsetel alustel.",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_3"
-      },
-      "rdfs:label": "§ 3 lg 2",
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      }
     },
     {
       "@id": "estleg:PISTS_Par_3_Lg_3",
@@ -2065,13 +2159,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Puuetega inimeste sotsiaaltoetuste liigid",
+      "rdfs:label": {
+        "@value": "§ 4. Puuetega inimeste sotsiaaltoetuste liigid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Käesolev seadus kehtestab järgmised puuetega inimeste sotsiaaltoetused: puudega lapse toetus; puudega tööealise inimese toetus; puudega vanaduspensioniealise inimese toetus; kehtetu - puudega vanema toetus; õppetoetus; kehtetu - kehtetu - täienduskoolitustoetus.",
-      "estleg:legalText": "Käesolev seadus kehtestab järgmised puuetega inimeste sotsiaaltoetused: puudega lapse toetus; puudega tööealise inimese toetus; puudega vanaduspensioniealise inimese toetus; kehtetu - puudega vanema toetus; õppetoetus; kehtetu - kehtetu - täienduskoolitustoetus.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus kehtestab järgmised puuetega inimeste sotsiaaltoetused: 1) puudega lapse toetus; 2) puudega tööealise inimese toetus; 3) puudega vanaduspensioniealise inimese toetus; 4) 5) puudega vanema toetus; 6) õppetoetus; 7) 8) 9) täienduskoolitustoetus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev seadus kehtestab järgmised puuetega inimeste sotsiaaltoetused: 1) puudega lapse toetus; 2) puudega tööealise inimese toetus; 3) puudega vanaduspensioniealise inimese toetus; 4) 5) puudega vanema toetus; 6) õppetoetus; 7) 8) 9) täienduskoolitustoetus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -2129,10 +2229,23 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus kehtestab järgmised puuetega inimeste sotsiaaltoetused: puudega lapse toetus; puudega tööealise inimese toetus; puudega vanaduspensioniealise inimese toetus; kehtetu - puudega vanema toetus; õppetoetus; kehtetu - kehtetu - täienduskoolitustoetus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus kehtestab järgmised puuetega inimeste sotsiaaltoetused: 1) puudega lapse toetus; 2) puudega tööealise inimese toetus; 3) puudega vanaduspensioniealise inimese toetus; 4) 5) puudega vanema toetus; 6) õppetoetus; 7) 8) 9) täienduskoolitustoetus.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2150,13 +2263,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Puuetega inimeste sotsiaaltoetuste määr",
+      "rdfs:label": {
+        "@value": "§ 5. Puuetega inimeste sotsiaaltoetuste määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 5. Puuetega inimeste sotsiaaltoetuste määr",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -2182,13 +2300,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5¹.",
-      "rdfs:label": "§ 5¹. Puude raskusastme kestuse pikendamine erakorralise olukorra ajal",
+      "rdfs:label": {
+        "@value": "§ 5¹. Puude raskusastme kestuse pikendamine erakorralise olukorra ajal",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Hädaolukorra, eriolukorra, erakorralise seisukorra või sõjaseisukorra ajal võib Sotsiaalkindlustusamet valdkonna eest vastutava ministri ettepanekul pikendada isiku puude raskusastme kestust, kui puude raskusastme tuvastamine on hädaolukorra, eriolukorra, erakorralise seisukorra või sõjaseisukorra tõttu objektiivsetel põhjustel oluliselt takistatud ja puude raskusastme kestuse pikendamine on vajalik puudega inimesele tema sotsiaalsete tagatiste säilimiseks kuni hädaolukorrast, eriolukorrast,",
-      "estleg:legalText": "Hädaolukorra, eriolukorra, erakorralise seisukorra või sõjaseisukorra ajal võib Sotsiaalkindlustusamet valdkonna eest vastutava ministri ettepanekul pikendada isiku puude raskusastme kestust, kui puude raskusastme tuvastamine on hädaolukorra, eriolukorra, erakorralise seisukorra või sõjaseisukorra tõttu objektiivsetel põhjustel oluliselt takistatud ja puude raskusastme kestuse pikendamine on vajalik puudega inimesele tema sotsiaalsete tagatiste säilimiseks kuni hädaolukorrast, eriolukorrast, erakorralisest seisukorrast või sõjaseisukorrast tingitud ümberkorralduse vajaduse äralangemiseni. ; eriolukorra ajal võib Sotsiaalkindlustusamet käesolevas paragrahvis sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
+      "estleg:summary": {
+        "@value": "Kriisiolukorra ajal võib Sotsiaalkindlustusamet valdkonna eest vastutava ministri ettepanekul pikendada isiku puude raskusastme kestust, kui puude raskusastme tuvastamine on kriisiolukorra tõttu objektiivsetel põhjustel oluliselt takistatud ja pikendamine on vajalik puudega inimesele tema sotsiaalsete tagatiste säilimiseks, kuni kriisiolukorrast tingitud ümberkorralduse vajadus on ära langenud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kriisiolukorra ajal võib Sotsiaalkindlustusamet valdkonna eest vastutava ministri ettepanekul pikendada isiku puude raskusastme kestust, kui puude raskusastme tuvastamine on kriisiolukorra tõttu objektiivsetel põhjustel oluliselt takistatud ja pikendamine on vajalik puudega inimesele tema sotsiaalsete tagatiste säilimiseks, kuni kriisiolukorrast tingitud ümberkorralduse vajadus on ära langenud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_1"
       },
@@ -2234,10 +2358,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Hädaolukorra, eriolukorra, erakorralise seisukorra või sõjaseisukorra ajal võib Sotsiaalkindlustusamet valdkonna eest vastutava ministri ettepanekul pikendada isiku puude raskusastme kestust, kui puude raskusastme tuvastamine on hädaolukorra, eriolukorra, erakorralise seisukorra või sõjaseisukorra tõttu objektiivsetel põhjustel oluliselt takistatud ja puude raskusastme kestuse pikendamine on vajalik puudega inimesele tema sotsiaalsete tagatiste säilimiseks kuni hädaolukorrast, eriolukorrast, erakorralisest seisukorrast või sõjaseisukorrast tingitud ümberkorralduse vajaduse äralangemiseni. ; eriolukorra ajal võib Sotsiaalkindlustusamet käesolevas paragrahvis sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kriisiolukorra ajal võib Sotsiaalkindlustusamet valdkonna eest vastutava ministri ettepanekul pikendada isiku puude raskusastme kestust, kui puude raskusastme tuvastamine on kriisiolukorra tõttu objektiivsetel põhjustel oluliselt takistatud ja pikendamine on vajalik puudega inimesele tema sotsiaalsete tagatiste säilimiseks, kuni kriisiolukorrast tingitud ümberkorralduse vajadus on ära langenud.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_5_1"
       },
+      "rdfs:label": "§ 5¹ lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2263,13 +2389,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Puudega lapse toetus",
+      "rdfs:label": {
+        "@value": "§ 6. Puudega lapse toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puudega lapse toetust makstakse igakuiselt keskmise, raske või sügava puudega lapsele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaanis ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (1¹) Käesoleva seaduse tähenduses on käesoleva paragrahvi lõikes 1 nimetatud puudega lapse toetusele õigus ka harvikhaiguse diagnoosiga lapsel, kellel ei ole tuvastatud puude raskusastet, ning toetust makstakse puude",
-      "estleg:legalText": "(1) Puudega lapse toetust makstakse igakuiselt keskmise, raske või sügava puudega lapsele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaanis ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (1¹) Käesoleva seaduse tähenduses on käesoleva paragrahvi lõikes 1 nimetatud puudega lapse toetusele õigus ka harvikhaiguse diagnoosiga lapsel, kellel ei ole tuvastatud puude raskusastet, ning toetust makstakse puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks, kui puude väljakujunemine oleks ennetuseta vältimatu. (2) Puudega lapse toetust makstakse kuni lapse 16-aastaseks saamiseni. (3) Puudega lapse toetus makstakse lapse, vanema või eestkostja arvelduskontole. (4) Kehtetu - (5) Puudega lapse toetust makstakse järgmistes suurustes: sügava puudega lapsele – 270 eurot; raske puudega lapsele ja käesoleva paragrahvi lõikes 11 nimetatud lapsele – 180 eurot; keskmise puudega lapsele – 139 eurot. (6) kehtestab määrusega nende harvikhaiguste loetelu, mille puhul makstakse käesoleva paragrahvi lõikes 11 sätestatud juhul puudega lapse toetust. (7) Käesoleva paragrahvi lõikes 6 nimetatud loetelu täiendatakse arstliku ekspertiisikomisjoni ettepanekul ning peale konsulteerimist huvigruppidega.",
+      "estleg:summary": {
+        "@value": "(1) Puudega lapse toetust makstakse igakuiselt keskmise, raske või sügava puudega lapsele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaanis ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (1¹) Käesoleva seaduse tähenduses on käesoleva paragrahvi lõikes 1 nimetatud puudega lapse toetusele õigus ka harvikhaiguse diagnoosiga lapsel, kellel ei ole tuvastatud puude raskusastet, ning toetust makstakse puude",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puudega lapse toetust makstakse igakuiselt keskmise, raske või sügava puudega lapsele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaanis ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (1¹) Käesoleva seaduse tähenduses on käesoleva paragrahvi lõikes 1 nimetatud puudega lapse toetusele õigus ka harvikhaiguse diagnoosiga lapsel, kellel ei ole tuvastatud puude raskusastet, ning toetust makstakse puude ennetamiseks ja sellest tingitud lisakulude hüvitamiseks, kui puude väljakujunemine oleks ennetuseta vältimatu. (2) Puudega lapse toetust makstakse kuni lapse 16-aastaseks saamiseni. (3) Puudega lapse toetus makstakse lapse, vanema või eestkostja arvelduskontole. (5) Puudega lapse toetust makstakse järgmistes suurustes: 1) sügava puudega lapsele – 270 eurot; 2) raske puudega lapsele ja käesoleva paragrahvi lõikes 1¹ nimetatud lapsele – 180 eurot; 3) keskmise puudega lapsele – 139 eurot. (6) kehtestab määrusega nende harvikhaiguste loetelu, mille puhul makstakse käesoleva paragrahvi lõikes 1¹ sätestatud juhul puudega lapse toetust. (7) Käesoleva paragrahvi lõikes 6 nimetatud loetelu täiendatakse arstliku ekspertiisikomisjoni ettepanekul ning peale konsulteerimist huvigruppidega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -2288,9 +2420,6 @@
         },
         {
           "@id": "estleg:PISTS_Par_6_Lg_3"
-        },
-        {
-          "@id": "estleg:PISTS_Par_6_Lg_4"
         },
         {
           "@id": "estleg:PISTS_Par_6_Lg_5"
@@ -2427,30 +2556,22 @@
       }
     },
     {
-      "@id": "estleg:PISTS_Par_6_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_6"
-      },
-      "rdfs:label": "§ 6 lg 4"
-    },
-    {
       "@id": "estleg:PISTS_Par_6_Lg_5",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Puudega lapse toetust makstakse järgmistes suurustes: sügava puudega lapsele – 270 eurot; raske puudega lapsele ja käesoleva paragrahvi lõikes 11 nimetatud lapsele – 180 eurot; keskmise puudega lapsele – 139 eurot.",
+      "estleg:legalText": "(5) Puudega lapse toetust makstakse järgmistes suurustes: 1) sügava puudega lapsele – 270 eurot; 2) raske puudega lapsele ja käesoleva paragrahvi lõikes 1¹ nimetatud lapsele – 180 eurot; 3) keskmise puudega lapsele – 139 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_6"
       },
-      "rdfs:label": "§ 6 lg 5"
+      "rdfs:label": "§ 6 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:PISTS_Par_6_Lg_6",
@@ -2459,7 +2580,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) kehtestab määrusega nende harvikhaiguste loetelu, mille puhul makstakse käesoleva paragrahvi lõikes 11 sätestatud juhul puudega lapse toetust.",
+      "estleg:legalText": "(6) kehtestab määrusega nende harvikhaiguste loetelu, mille puhul makstakse käesoleva paragrahvi lõikes 1¹ sätestatud juhul puudega lapse toetust.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_6"
       },
@@ -2491,13 +2612,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Puudega tööealise inimese toetus",
+      "rdfs:label": {
+        "@value": "§ 7. Puudega tööealise inimese toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puudega tööealise inimese toetust makstakse igakuiselt puudega tööealisele inimesele puudest tingitud lisakulude hüvitamiseks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega tööealise inimese toetust makstakse järgmistes suurustes: sügava puudega tööealisele inimesele – 100 eurot; raske puudega tööealisele inimesele – 50 eurot; keskmise puudega tööealisele inimesele vastavalt valdkonnale, milles funktsiooni kaotus või",
-      "estleg:legalText": "(1) Puudega tööealise inimese toetust makstakse igakuiselt puudega tööealisele inimesele puudest tingitud lisakulude hüvitamiseks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega tööealise inimese toetust makstakse järgmistes suurustes: sügava puudega tööealisele inimesele – 100 eurot; raske puudega tööealisele inimesele – 50 eurot; keskmise puudega tööealisele inimesele vastavalt valdkonnale, milles funktsiooni kaotus või kõrvalekalle esineb, – 29–42 eurot. (2¹) Keskmise puudega tööealise inimese toetuse maksmise täpsemad tingimused ja suurused kehtestab määrusega. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Puudega tööealise inimese toetust makstakse igakuiselt puudega tööealisele inimesele puudest tingitud lisakulude hüvitamiseks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega tööealise inimese toetust makstakse järgmistes suurustes: 1) sügava puudega tööealisele inimesele – 100 eurot; 2) raske puudega tööealisele inimesele – 50 eurot; 3) keskmise puudega tööealisele inimesele vastavalt valdkonnale, milles funktsiooni kaotus või",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puudega tööealise inimese toetust makstakse igakuiselt puudega tööealisele inimesele puudest tingitud lisakulude hüvitamiseks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega tööealise inimese toetust makstakse järgmistes suurustes: 1) sügava puudega tööealisele inimesele – 100 eurot; 2) raske puudega tööealisele inimesele – 50 eurot; 3) keskmise puudega tööealisele inimesele vastavalt valdkonnale, milles funktsiooni kaotus või kõrvalekalle esineb, – 29–42 eurot. (2¹) Keskmise puudega tööealise inimese toetuse maksmise täpsemad tingimused ja suurused kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -2513,9 +2640,6 @@
         },
         {
           "@id": "estleg:PISTS_Par_7_Lg_2_1"
-        },
-        {
-          "@id": "estleg:PISTS_Par_7_Lg_3"
         }
       ],
       "estleg:referencedBy": [
@@ -2577,11 +2701,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Puudega tööealise inimese toetust makstakse järgmistes suurustes: sügava puudega tööealisele inimesele – 100 eurot; raske puudega tööealisele inimesele – 50 eurot; keskmise puudega tööealisele inimesele vastavalt valdkonnale, milles funktsiooni kaotus või kõrvalekalle esineb, – 29–42 eurot.",
+      "estleg:legalText": "(2) Puudega tööealise inimese toetust makstakse järgmistes suurustes: 1) sügava puudega tööealisele inimesele – 100 eurot; 2) raske puudega tööealisele inimesele – 50 eurot; 3) keskmise puudega tööealisele inimesele vastavalt valdkonnale, milles funktsiooni kaotus või kõrvalekalle esineb, – 29–42 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 2"
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:PISTS_Par_7_Lg_2_1",
@@ -2597,32 +2726,25 @@
       "rdfs:label": "§ 7 lg 2¹"
     },
     {
-      "@id": "estleg:PISTS_Par_7_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 3"
-    },
-    {
       "@id": "estleg:PISTS_Par_7_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Puudega vanaduspensioniealise inimese toetus",
+      "rdfs:label": {
+        "@value": "§ 7¹. Puudega vanaduspensioniealise inimese toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puudega vanaduspensioniealise inimese toetust makstakse igakuiselt keskmise, raske või sügava puudega vanaduspensioniealisele inimesele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega vanaduspensioniealise inimese toetust makstakse järgmistes suurustes: sügava puudega vanaduspensioniealisele inimesele – 41 eurot;",
-      "estleg:legalText": "(1) Puudega vanaduspensioniealise inimese toetust makstakse igakuiselt keskmise, raske või sügava puudega vanaduspensioniealisele inimesele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega vanaduspensioniealise inimese toetust makstakse järgmistes suurustes: sügava puudega vanaduspensioniealisele inimesele – 41 eurot; raske puudega vanaduspensioniealisele inimesele – 27 eurot; keskmise puudega vanaduspensioniealisele inimesele – 13 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Puudega vanaduspensioniealise inimese toetust makstakse igakuiselt keskmise, raske või sügava puudega vanaduspensioniealisele inimesele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega vanaduspensioniealise inimese toetust makstakse järgmistes suurustes: 1) sügava puudega vanaduspensioniealisele inimesele – 41",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puudega vanaduspensioniealise inimese toetust makstakse igakuiselt keskmise, raske või sügava puudega vanaduspensioniealisele inimesele puudest tingitud lisakulude hüvitamiseks ja rehabilitatsiooniplaani olemasolu korral selles ettenähtud tegevusteks, välja arvatud ravikindlustuse ja riigieelarve muudest vahenditest finantseeritavateks tegevusteks. (2) Puudega vanaduspensioniealise inimese toetust makstakse järgmistes suurustes: 1) sügava puudega vanaduspensioniealisele inimesele – 41 eurot; 2) raske puudega vanaduspensioniealisele inimesele – 27 eurot; 3) keskmise puudega vanaduspensioniealisele inimesele – 13 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -2666,11 +2788,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Puudega vanaduspensioniealise inimese toetust makstakse järgmistes suurustes: sügava puudega vanaduspensioniealisele inimesele – 41 eurot; raske puudega vanaduspensioniealisele inimesele – 27 eurot; keskmise puudega vanaduspensioniealisele inimesele – 13 eurot.",
+      "estleg:legalText": "(2) Puudega vanaduspensioniealise inimese toetust makstakse järgmistes suurustes: 1) sügava puudega vanaduspensioniealisele inimesele – 41 eurot; 2) raske puudega vanaduspensioniealisele inimesele – 27 eurot; 3) keskmise puudega vanaduspensioniealisele inimesele – 13 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_7_1"
       },
-      "rdfs:label": "§ 7¹ lg 2"
+      "rdfs:label": "§ 7¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:PISTS_Par_8",
@@ -2679,13 +2806,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Hooldajatoetus",
+      "rdfs:label": {
+        "@value": "§ 8. Hooldajatoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 8. Hooldajatoetus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -2737,12 +2869,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Puudega vanema toetus",
+      "rdfs:label": {
+        "@value": "§ 9. Puudega vanema toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Last üksi kasvatavale puudega vanemale, hoolduspere vanemale või eestkostjale või ühele puudega vanematest makstakse kuni 16-aastase lapse ja põhikoolis, gümnaasiumis, kutseõppeasutuse või rakenduskõrgkooli kutseõppe tasemeõppes õppiva või Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja arvatud keskhariduseta kuni 19-aastase lapse kasvatamisel igakuiselt puudega vanema toetust 19,18 eurot.",
+      "estleg:summary": {
+        "@value": "Last üksi kasvatavale puudega vanemale, hoolduspere vanemale või eestkostjale või ühele puudega vanematest makstakse kuni 16-aastase lapse ja põhikoolis, gümnaasiumis, kutseõppeasutuse või rakenduskõrgkooli kutseõppe tasemeõppes õppiva või Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja arvatud keskhariduseta kuni 19-aastase lapse kasvatamisel igakuiselt puudega vanema toetust 19,18 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "Last üksi kasvatavale puudega vanemale, hoolduspere vanemale või eestkostjale või ühele puudega vanematest makstakse kuni 16-aastase lapse ja põhikoolis, gümnaasiumis, kutseõppeasutuse või rakenduskõrgkooli kutseõppe tasemeõppes õppiva või Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja arvatud keskhariduseta kuni 19-aastase lapse kasvatamisel igakuiselt puudega vanema toetust 19,18 eurot. Kui laps saab 19-aastaseks, makstakse puudega vanema toetust jooksva õppeaasta lõpuni või õpilase kooli nimekirjast väljaarvamiseni või täienduskoolituse kursuse lõppemiseni või õpilase täienduskoolituse kursuse nimekirjast väljaarvamiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
@@ -2821,10 +2959,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Last üksi kasvatavale puudega vanemale, hoolduspere vanemale või eestkostjale või ühele puudega vanematest makstakse kuni 16-aastase lapse ja põhikoolis, gümnaasiumis, kutseõppeasutuse või rakenduskõrgkooli kutseõppe tasemeõppes õppiva või Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja arvatud keskhariduseta kuni 19-aastase lapse kasvatamisel igakuiselt puudega vanema toetust 19,18 eurot. Kui laps saab 19-aastaseks, makstakse puudega vanema toetust jooksva õppeaasta lõpuni või õpilase kooli nimekirjast väljaarvamiseni või täienduskoolituse kursuse lõppemiseni või õpilase täienduskoolituse kursuse nimekirjast väljaarvamiseni.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Last üksi kasvatavale puudega vanemale, hoolduspere vanemale või eestkostjale või ühele puudega vanematest makstakse kuni 16-aastase lapse ja põhikoolis, gümnaasiumis, kutseõppeasutuse või rakenduskõrgkooli kutseõppe tasemeõppes õppiva või Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja arvatud keskhariduseta kuni 19-aastase lapse kasvatamisel igakuiselt puudega vanema toetust 19,18 eurot. Kui laps saab 19-aastaseks, makstakse puudega vanema toetust jooksva õppeaasta lõpuni või õpilase kooli nimekirjast väljaarvamiseni või täienduskoolituse kursuse lõppemiseni või õpilase täienduskoolituse kursuse nimekirjast väljaarvamiseni.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2850,12 +2990,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Õppetoetus",
+      "rdfs:label": {
+        "@value": "§ 10. Õppetoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Mittetöötavale puudega õppurile, kes õpib gümnaasiumi 10.–12. klassis, kutseõppeasutuses või kõrgkoolis või on arvatud Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja ja kellel on puudest tingituna õppetööga seotud lisakulutusi, makstakse igakuiselt, välja arvatud juuli- ja augustikuu, õppetoetust. (2) Õppetoetust makstakse vastavalt isiku tegelikele lisakulutustele, kuid mitte vähem kui 6,39 eurot ega rohkem kui 25,57 eurot",
+      "estleg:summary": {
+        "@value": "(1) Mittetöötavale puudega õppurile, kes õpib gümnaasiumi 10.–12. klassis, kutseõppeasutuses või kõrgkoolis või on arvatud Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja ja kellel on puudest tingituna õppetööga seotud lisakulutusi, makstakse igakuiselt, välja arvatud juuli- ja augustikuu, õppetoetust. (2) Õppetoetust makstakse vastavalt isiku tegelikele lisakulutustele, kuid mitte vähem kui 6,39 eurot ega rohkem kui 25,57 eurot",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Mittetöötavale puudega õppurile, kes õpib gümnaasiumi 10.–12. klassis, kutseõppeasutuses või kõrgkoolis või on arvatud Haridus- ja Teadusministeeriumi hallatava riigiasutuse statsionaarse õppega täienduskoolituse kursuse nimekirja ja kellel on puudest tingituna õppetööga seotud lisakulutusi, makstakse igakuiselt, välja arvatud juuli- ja augustikuu, õppetoetust. (2) Õppetoetust makstakse vastavalt isiku tegelikele lisakulutustele, kuid mitte vähem kui 6,39 eurot ega rohkem kui 25,57 eurot kuus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
@@ -2963,13 +3109,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10¹.",
-      "rdfs:label": "§ 10¹. Töötamistoetus",
+      "rdfs:label": {
+        "@value": "§ 10¹. Töötamistoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 10¹. Töötamistoetus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -2995,13 +3146,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Rehabilitatsioonitoetus",
+      "rdfs:label": {
+        "@value": "§ 11. Rehabilitatsioonitoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 11. Rehabilitatsioonitoetus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -3035,12 +3191,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Täienduskoolitustoetus",
+      "rdfs:label": {
+        "@value": "§ 12. Täienduskoolitustoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Täienduskoolitustoetust makstakse töötava puudega inimese täienduskoolituseks tööalase enesetäiendamise eesmärgil ja tasemeõppeks. (2) Täienduskoolitustoetust makstakse tegelike koolituskulude osaliseks hüvitamiseks kuni 613,68 eurot kolme kalendriaasta jooksul, arvates toetuse esmakordsest määramisest.",
+      "estleg:summary": {
+        "@value": "(1) Täienduskoolitustoetust makstakse töötava puudega inimese täienduskoolituseks tööalase enesetäiendamise eesmärgil ja tasemeõppeks. (2) Täienduskoolitustoetust makstakse tegelike koolituskulude osaliseks hüvitamiseks kuni 613,68 eurot kolme kalendriaasta jooksul, arvates toetuse esmakordsest määramisest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Täienduskoolitustoetust makstakse töötava puudega inimese täienduskoolituseks tööalase enesetäiendamise eesmärgil ja tasemeõppeks. (2) Täienduskoolitustoetust makstakse tegelike koolituskulude osaliseks hüvitamiseks kuni 613,68 eurot kolme kalendriaasta jooksul, arvates toetuse esmakordsest määramisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
@@ -3112,13 +3274,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Transporditoetus",
+      "rdfs:label": {
+        "@value": "§ 13. Transporditoetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 13. Transporditoetus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -3138,13 +3305,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Telefoni kasutamise toetus",
+      "rdfs:label": {
+        "@value": "§ 14. Telefoni kasutamise toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 14. Telefoni kasutamise toetus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_2"
       },
@@ -3164,13 +3336,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Andmed",
+      "rdfs:label": {
+        "@value": "§ 15. Andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Andmed puuetega inimeste sotsiaaltoetuste määramise ja maksmise kohta kantakse sotsiaalkaitse infosüsteemi. (2) Andmed õppetoetuse ja täienduskoolitustoetuse taotleja ning saaja töötamise kohta kantakse sotsiaalkaitse infosüsteemi maksukorralduse seaduse §-s 251 sätestatud töötamise registrist.",
-      "estleg:legalText": "(1) Andmed puuetega inimeste sotsiaaltoetuste määramise ja maksmise kohta kantakse sotsiaalkaitse infosüsteemi. (2) Andmed õppetoetuse ja täienduskoolitustoetuse taotleja ning saaja töötamise kohta kantakse sotsiaalkaitse infosüsteemi maksukorralduse seaduse §-s 251 sätestatud töötamise registrist.",
+      "estleg:summary": {
+        "@value": "(1) Andmed puuetega inimeste sotsiaaltoetuste määramise ja maksmise kohta kantakse sotsiaalkaitse infosüsteemi. (2) Andmed õppetoetuse ja täienduskoolitustoetuse taotleja ning saaja töötamise kohta kantakse sotsiaalkaitse infosüsteemi maksukorralduse seaduse §-s 25¹ sätestatud töötamise registrist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Andmed puuetega inimeste sotsiaaltoetuste määramise ja maksmise kohta kantakse sotsiaalkaitse infosüsteemi. (2) Andmed õppetoetuse ja täienduskoolitustoetuse taotleja ning saaja töötamise kohta kantakse sotsiaalkaitse infosüsteemi maksukorralduse seaduse §-s 25¹ sätestatud töötamise registrist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -3229,7 +3407,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Andmed õppetoetuse ja täienduskoolitustoetuse taotleja ning saaja töötamise kohta kantakse sotsiaalkaitse infosüsteemi maksukorralduse seaduse §-s 251 sätestatud töötamise registrist.",
+      "estleg:legalText": "(2) Andmed õppetoetuse ja täienduskoolitustoetuse taotleja ning saaja töötamise kohta kantakse sotsiaalkaitse infosüsteemi maksukorralduse seaduse §-s 25¹ sätestatud töötamise registrist.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_15"
       },
@@ -3251,13 +3429,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Puuetega inimeste sotsiaaltoetuste taotlemine",
+      "rdfs:label": {
+        "@value": "§ 16. Puuetega inimeste sotsiaaltoetuste taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Taotlus puuetega inimeste sotsiaaltoetuste määramiseks esitatakse Sotsiaalkindlustusametile. (1¹) Käesoleva seaduse § 22 lõikes 2 sätestatud juhul võib taotluse puuetega inimeste sotsiaaltoetuste määramiseks koos puude raskusastme tuvastamise taotlusega esitada Sotsiaalkindlustusametile töötukassa kaudu. (2) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalikud põhidokumendid on: toetuse taotlus, milles sisalduvad toetust taotleva isiku nimi, sünniaeg ja sugu või isikukood,",
-      "estleg:legalText": "(1) Taotlus puuetega inimeste sotsiaaltoetuste määramiseks esitatakse Sotsiaalkindlustusametile. (1¹) Käesoleva seaduse § 22 lõikes 2 sätestatud juhul võib taotluse puuetega inimeste sotsiaaltoetuste määramiseks koos puude raskusastme tuvastamise taotlusega esitada Sotsiaalkindlustusametile töötukassa kaudu. (2) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalikud põhidokumendid on: toetuse taotlus, milles sisalduvad toetust taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, pangakonto number ja toetuse liik ning puudega lapse toetuse taotlemisel lapse nimi, sünniaeg ja sugu või isikukood; kehtetu - isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokument. (3) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalike täiendavate dokumentide loetelu ja taotluse andmete loetelu kehtestab (3¹) Taotluse puuetega inimeste sotsiaaltoetuste määramiseks võib esitada ka koos puude raskusastme tuvastamise taotlusega. (4) Puuetega inimeste sotsiaaltoetuste taotlemise päevaks loetakse päev, millal Sotsiaalkindlustusamet võtab vastu taotluse. (4¹) Käesoleva paragrahvi lõikes 11 sätestatud juhul loetakse puuetega inimeste sotsiaaltoetuste taotlemise päevaks päev, millal taotlus esitati töötukassale. (5) Kui puuetega inimeste sotsiaaltoetuste taotlus on saadetud posti teel, loetakse toetuse taotlemise päevaks taotluse lähtekohas postitamise kuupäev. (6) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Taotlus puuetega inimeste sotsiaaltoetuste määramiseks esitatakse Sotsiaalkindlustusametile. (1¹) Käesoleva seaduse § 2² lõikes 2 sätestatud juhul võib taotluse puuetega inimeste sotsiaaltoetuste määramiseks koos puude raskusastme tuvastamise taotlusega esitada Sotsiaalkindlustusametile töötukassa kaudu. (2) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalikud põhidokumendid on: 1) toetuse taotlus, milles sisalduvad toetust taotleva isiku nimi, sünniaeg ja sugu või isikukood,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Taotlus puuetega inimeste sotsiaaltoetuste määramiseks esitatakse Sotsiaalkindlustusametile. (1¹) Käesoleva seaduse § 2² lõikes 2 sätestatud juhul võib taotluse puuetega inimeste sotsiaaltoetuste määramiseks koos puude raskusastme tuvastamise taotlusega esitada Sotsiaalkindlustusametile töötukassa kaudu. (2) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalikud põhidokumendid on: 1) toetuse taotlus, milles sisalduvad toetust taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, pangakonto number ja toetuse liik ning puudega lapse toetuse taotlemisel lapse nimi, sünniaeg ja sugu või isikukood; 2) 3) isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokument. (3) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalike täiendavate dokumentide loetelu ja taotluse andmete loetelu kehtestab (3¹) Taotluse puuetega inimeste sotsiaaltoetuste määramiseks võib esitada ka koos puude raskusastme tuvastamise taotlusega. (4) Puuetega inimeste sotsiaaltoetuste taotlemise päevaks loetakse päev, millal Sotsiaalkindlustusamet võtab vastu taotluse. (4¹) Käesoleva paragrahvi lõikes 1¹ sätestatud juhul loetakse puuetega inimeste sotsiaaltoetuste taotlemise päevaks päev, millal taotlus esitati töötukassale. (5) Kui puuetega inimeste sotsiaaltoetuste taotlus on saadetud posti teel, loetakse toetuse taotlemise päevaks taotluse lähtekohas postitamise kuupäev.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -3288,9 +3472,6 @@
         },
         {
           "@id": "estleg:PISTS_Par_16_Lg_5"
-        },
-        {
-          "@id": "estleg:PISTS_Par_16_Lg_6"
         }
       ],
       "estleg:targetGroup": [
@@ -3365,7 +3546,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Käesoleva seaduse § 22 lõikes 2 sätestatud juhul võib taotluse puuetega inimeste sotsiaaltoetuste määramiseks koos puude raskusastme tuvastamise taotlusega esitada Sotsiaalkindlustusametile töötukassa kaudu.",
+      "estleg:legalText": "(1¹) Käesoleva seaduse § 2² lõikes 2 sätestatud juhul võib taotluse puuetega inimeste sotsiaaltoetuste määramiseks koos puude raskusastme tuvastamise taotlusega esitada Sotsiaalkindlustusametile töötukassa kaudu.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_16"
       },
@@ -3395,11 +3576,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalikud põhidokumendid on: toetuse taotlus, milles sisalduvad toetust taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, pangakonto number ja toetuse liik ning puudega lapse toetuse taotlemisel lapse nimi, sünniaeg ja sugu või isikukood; kehtetu - isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokument.",
+      "estleg:legalText": "(2) Puuetega inimeste sotsiaaltoetuste taotlemiseks vajalikud põhidokumendid on: 1) toetuse taotlus, milles sisalduvad toetust taotleva isiku nimi, sünniaeg ja sugu või isikukood, kontaktandmed, pangakonto number ja toetuse liik ning puudega lapse toetuse taotlemisel lapse nimi, sünniaeg ja sugu või isikukood; 2) 3) isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokument.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_16"
       },
       "rdfs:label": "§ 16 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3485,7 +3671,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4¹",
-      "estleg:legalText": "(4¹) Käesoleva paragrahvi lõikes 11 sätestatud juhul loetakse puuetega inimeste sotsiaaltoetuste taotlemise päevaks päev, millal taotlus esitati töötukassale.",
+      "estleg:legalText": "(4¹) Käesoleva paragrahvi lõikes 1¹ sätestatud juhul loetakse puuetega inimeste sotsiaaltoetuste taotlemise päevaks päev, millal taotlus esitati töötukassale.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_16"
       },
@@ -3505,32 +3691,25 @@
       "rdfs:label": "§ 16 lg 5"
     },
     {
-      "@id": "estleg:PISTS_Par_16_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_16"
-      },
-      "rdfs:label": "§ 16 lg 6"
-    },
-    {
       "@id": "estleg:PISTS_Par_17",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Puuetega inimeste sotsiaaltoetuste määramine",
+      "rdfs:label": {
+        "@value": "§ 17. Puuetega inimeste sotsiaaltoetuste määramine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puuetega inimeste sotsiaaltoetused määrab ja nende suuruse otsustab Sotsiaalkindlustusamet. Puuetega inimeste sotsiaaltoetuste määramise ja väljamaksmise korra ning tähtajad kehtestab määrusega. (2) Käesoleva seaduse §-des 6–71 nimetatud puuetega inimeste sotsiaaltoetused määratakse puude raskusastme tuvastamise päevast, kui toetuse taotlemise avaldus on esitatud hiljemalt kolme kuu jooksul vastava otsuse tegemisest arvates. (3) Käesoleva seaduse §-des 6–71 sätestatud puuetega inimeste",
-      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetused määrab ja nende suuruse otsustab Sotsiaalkindlustusamet. Puuetega inimeste sotsiaaltoetuste määramise ja väljamaksmise korra ning tähtajad kehtestab määrusega. (2) Käesoleva seaduse §-des 6–71 nimetatud puuetega inimeste sotsiaaltoetused määratakse puude raskusastme tuvastamise päevast, kui toetuse taotlemise avaldus on esitatud hiljemalt kolme kuu jooksul vastava otsuse tegemisest arvates. (3) Käesoleva seaduse §-des 6–71 sätestatud puuetega inimeste sotsiaaltoetuste hilisemal taotlemisel määratakse igakuine toetus tagantjärele, kuid mitte rohkem kui taotlemisele eelneva kolme kuu eest. (4) Käesoleva seaduse §-des 9–12 sätestatud puuetega inimeste sotsiaaltoetused määratakse toetuse taotlemise avalduse esitamise päevast, kuid mitte varem kui toetusele õiguse tekkimise päevast. (5) Puuetega inimeste sotsiaaltoetused määratakse ajaks, mil isik vastab käesolevas seaduses sätestatud toetuste saamise tingimustele.",
+      "estleg:summary": {
+        "@value": "(1) Puuetega inimeste sotsiaaltoetused määrab ja nende suuruse otsustab Sotsiaalkindlustusamet. Puuetega inimeste sotsiaaltoetuste määramise ja väljamaksmise korra ning tähtajad kehtestab määrusega. (2) Käesoleva seaduse §-des 6–7¹ nimetatud puuetega inimeste sotsiaaltoetused määratakse puude raskusastme tuvastamise päevast, kui toetuse taotlemise avaldus on esitatud hiljemalt kolme kuu jooksul vastava otsuse tegemisest arvates. (3) Käesoleva seaduse §-des 6–7¹ sätestatud puuetega inimeste",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetused määrab ja nende suuruse otsustab Sotsiaalkindlustusamet. Puuetega inimeste sotsiaaltoetuste määramise ja väljamaksmise korra ning tähtajad kehtestab määrusega. (2) Käesoleva seaduse §-des 6–7¹ nimetatud puuetega inimeste sotsiaaltoetused määratakse puude raskusastme tuvastamise päevast, kui toetuse taotlemise avaldus on esitatud hiljemalt kolme kuu jooksul vastava otsuse tegemisest arvates. (3) Käesoleva seaduse §-des 6–7¹ sätestatud puuetega inimeste sotsiaaltoetuste hilisemal taotlemisel määratakse igakuine toetus tagantjärele, kuid mitte rohkem kui taotlemisele eelneva kolme kuu eest. (4) Käesoleva seaduse §-des 9–12 sätestatud puuetega inimeste sotsiaaltoetused määratakse toetuse taotlemise avalduse esitamise päevast, kuid mitte varem kui toetusele õiguse tekkimise päevast. (5) Puuetega inimeste sotsiaaltoetused määratakse ajaks, mil isik vastab käesolevas seaduses sätestatud toetuste saamise tingimustele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -3636,7 +3815,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva seaduse §-des 6–71 nimetatud puuetega inimeste sotsiaaltoetused määratakse puude raskusastme tuvastamise päevast, kui toetuse taotlemise avaldus on esitatud hiljemalt kolme kuu jooksul vastava otsuse tegemisest arvates.",
+      "estleg:legalText": "(2) Käesoleva seaduse §-des 6–7¹ nimetatud puuetega inimeste sotsiaaltoetused määratakse puude raskusastme tuvastamise päevast, kui toetuse taotlemise avaldus on esitatud hiljemalt kolme kuu jooksul vastava otsuse tegemisest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_17"
       },
@@ -3649,7 +3828,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva seaduse §-des 6–71 sätestatud puuetega inimeste sotsiaaltoetuste hilisemal taotlemisel määratakse igakuine toetus tagantjärele, kuid mitte rohkem kui taotlemisele eelneva kolme kuu eest.",
+      "estleg:legalText": "(3) Käesoleva seaduse §-des 6–7¹ sätestatud puuetega inimeste sotsiaaltoetuste hilisemal taotlemisel määratakse igakuine toetus tagantjärele, kuid mitte rohkem kui taotlemisele eelneva kolme kuu eest.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_17"
       },
@@ -3711,13 +3890,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Piirangud puuetega inimeste sotsiaaltoetuste maksmisel",
+      "rdfs:label": {
+        "@value": "§ 18. Piirangud puuetega inimeste sotsiaaltoetuste maksmisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 18. Piirangud puuetega inimeste sotsiaaltoetuste maksmisel",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -3743,13 +3927,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmise peatamine, jätkamine ja lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 19. Puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmise peatamine, jätkamine ja lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Sotsiaalkindlustusamet peatab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmise, kui laps eraldatakse perest. (2) Kehtetu - (3) Sotsiaalkindlustusamet jätkab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmist lapse vanemale, kui käesoleva paragrahvi lõikes 1 nimetatud põhjus on ära langenud.",
-      "estleg:legalText": "(1) Sotsiaalkindlustusamet peatab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmise, kui laps eraldatakse perest. (2) Kehtetu - (3) Sotsiaalkindlustusamet jätkab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmist lapse vanemale, kui käesoleva paragrahvi lõikes 1 nimetatud põhjus on ära langenud. (4) Sotsiaalkindlustusamet lõpetab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud tööealise inimese toetuse maksmise vanemale, kui vanemalt on perekonnaseaduse § 135 alusel hooldusõigus ära võetud või kui tema alaealisele lapsele määratakse eestkostja või laps suunatakse asendushooldusele sotsiaalhoolekande seaduse § 459 lõike 1 alusel. (5) Sotsiaalkindlustusamet maksab puudega lapse toetust, puudega vanema toetust ja alla 18-aastasele isikule määratud tööealise inimese toetust käesoleva paragrahvi lõikes 4 sätestatud juhtudel teisele taotlejale käesolevas seaduses sätestatud tingimustel tagantjärele, kuid mitte rohkem kui vastava taotluse esitamise kuule eelnenud kuue kalendrikuu eest.",
+      "estleg:summary": {
+        "@value": "(1) Sotsiaalkindlustusamet peatab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmise, kui laps eraldatakse perest. (3) Sotsiaalkindlustusamet jätkab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmist lapse vanemale, kui käesoleva paragrahvi lõikes 1 nimetatud põhjus on ära langenud. (4) Sotsiaalkindlustusamet lõpetab puudega lapse toetuse,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Sotsiaalkindlustusamet peatab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmise, kui laps eraldatakse perest. (3) Sotsiaalkindlustusamet jätkab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud puudega tööealise inimese toetuse maksmist lapse vanemale, kui käesoleva paragrahvi lõikes 1 nimetatud põhjus on ära langenud. (4) Sotsiaalkindlustusamet lõpetab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud tööealise inimese toetuse maksmise vanemale, kui vanemalt on perekonnaseaduse § 135 alusel hooldusõigus ära võetud või kui tema alaealisele lapsele määratakse eestkostja või laps suunatakse asendushooldusele sotsiaalhoolekande seaduse § 45⁹ lõike 1 alusel. (5) Sotsiaalkindlustusamet maksab puudega lapse toetust, puudega vanema toetust ja alla 18-aastasele isikule määratud tööealise inimese toetust käesoleva paragrahvi lõikes 4 sätestatud juhtudel teisele taotlejale käesolevas seaduses sätestatud tingimustel tagantjärele, kuid mitte rohkem kui vastava taotluse esitamise kuule eelnenud kuue kalendrikuu eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -3759,9 +3949,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:PISTS_Par_19_Lg_1"
-        },
-        {
-          "@id": "estleg:PISTS_Par_19_Lg_2"
         },
         {
           "@id": "estleg:PISTS_Par_19_Lg_3"
@@ -3843,19 +4030,6 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:PISTS_Par_19_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_19"
-      },
-      "rdfs:label": "§ 19 lg 2"
-    },
-    {
       "@id": "estleg:PISTS_Par_19_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -3889,7 +4063,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Sotsiaalkindlustusamet lõpetab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud tööealise inimese toetuse maksmise vanemale, kui vanemalt on perekonnaseaduse § 135 alusel hooldusõigus ära võetud või kui tema alaealisele lapsele määratakse eestkostja või laps suunatakse asendushooldusele sotsiaalhoolekande seaduse § 459 lõike 1 alusel.",
+      "estleg:legalText": "(4) Sotsiaalkindlustusamet lõpetab puudega lapse toetuse, puudega vanema toetuse ja alla 18-aastasele isikule määratud tööealise inimese toetuse maksmise vanemale, kui vanemalt on perekonnaseaduse § 135 alusel hooldusõigus ära võetud või kui tema alaealisele lapsele määratakse eestkostja või laps suunatakse asendushooldusele sotsiaalhoolekande seaduse § 45⁹ lõike 1 alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_19"
       },
@@ -3954,13 +4128,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Muudatused puuetega inimeste sotsiaaltoetuste maksmisel",
+      "rdfs:label": {
+        "@value": "§ 20. Muudatused puuetega inimeste sotsiaaltoetuste maksmisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puuetega inimeste sotsiaaltoetuste maksmine lõpetatakse, peatatakse või nende suurus arvutatakse ümber, kui toetust saav inimene on niivõrd paranenud, et see muudab käesolevas seaduses sätestatud puuetega inimeste sotsiaaltoetuste saamise õigust või saadava toetuse suurust. (1¹) Puuetega inimeste sotsiaaltoetust makstakse inimesele varem määratud suuruses kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni, kui Sotsiaalkindlustusamet on pikendanud kehtiva puude",
-      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetuste maksmine lõpetatakse, peatatakse või nende suurus arvutatakse ümber, kui toetust saav inimene on niivõrd paranenud, et see muudab käesolevas seaduses sätestatud puuetega inimeste sotsiaaltoetuste saamise õigust või saadava toetuse suurust. (1¹) Puuetega inimeste sotsiaaltoetust makstakse inimesele varem määratud suuruses kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni, kui Sotsiaalkindlustusamet on pikendanud kehtiva puude raskusastme tuvastamise otsuse kestust käesoleva seaduse § 24 lõikes 21 sätestatud juhul. (2) Kehtetu - (2¹) Puuetega inimeste sotsiaaltoetuste maksmine peatatakse süüdimõistetud toetuse saaja vanglas või arestimajas vangistuse kandmise ajaks. (2²) Kehtetu - (2³) Kui isiku suhtes on tõkendina kasutatud vahi alla võtmist, peatatakse vahi all oleku ajaks puuetega inimeste sotsiaaltoetuste maksmine. Sotsiaaltoetus makstakse isikule tagantjärele välja pärast kohtuotsuse jõustumist juhul, kui isik mõisteti õigeks või teda ei karistatud vangistusega. (3) Kehtetu - (4) Kehtetu - (5) Puudest tingitud lisakuludeks ei loeta vanglas või arestimajas viibiva isiku majutus- ja toitlustamiskulusid ning kulusid, mis kaetakse riigi või kohaliku omavalitsuse eelarvest, kaasa arvatud vangla või arestimaja üldiste teenustega seotud kulusid. (6) Kehtetu - (7) Puuetega inimeste sotsiaaltoetuste saaja on kohustatud kümne päeva jooksul teatama Sotsiaalkindlustusametile kirjalikult asjaoludest, mis toovad kaasa puuetega inimeste sotsiaaltoetuste maksmise lõpetamise, peatamise või suuruse muutuse. (8) Kui valla- või linnavalitsus teavitab Sotsiaalkindlustusametit asjaoludest, mis mõjutavad perehüvitiste seaduse alusel perehüvitiste maksmise peatamist, jätkamist või lõpetamist, siis võetakse puuetega inimeste sotsiaaltoetuste maksmisel need asjaolud arvesse ning Sotsiaalkindlustusamet otsustab käesoleva seaduse alusel puuetega inimeste sotsiaaltoetuste peatamise, jätkamise või lõpetamise.",
+      "estleg:summary": {
+        "@value": "(1) Puuetega inimeste sotsiaaltoetuste maksmine lõpetatakse, peatatakse või nende suurus arvutatakse ümber, kui toetust saav inimene on niivõrd paranenud, et see muudab käesolevas seaduses sätestatud puuetega inimeste sotsiaaltoetuste saamise õigust või saadava toetuse suurust. (1¹) Puuetega inimeste sotsiaaltoetust makstakse inimesele varem määratud suuruses kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni, kui Sotsiaalkindlustusamet on pikendanud kehtiva puude",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetuste maksmine lõpetatakse, peatatakse või nende suurus arvutatakse ümber, kui toetust saav inimene on niivõrd paranenud, et see muudab käesolevas seaduses sätestatud puuetega inimeste sotsiaaltoetuste saamise õigust või saadava toetuse suurust. (1¹) Puuetega inimeste sotsiaaltoetust makstakse inimesele varem määratud suuruses kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni, kui Sotsiaalkindlustusamet on pikendanud kehtiva puude raskusastme tuvastamise otsuse kestust käesoleva seaduse § 2⁴ lõikes 2¹ sätestatud juhul. (2¹) Puuetega inimeste sotsiaaltoetuste maksmine peatatakse süüdimõistetud toetuse saaja vanglas või arestimajas vangistuse kandmise ajaks. (2³) Kui isiku suhtes on tõkendina kasutatud vahi alla võtmist, peatatakse vahi all oleku ajaks puuetega inimeste sotsiaaltoetuste maksmine. Sotsiaaltoetus makstakse isikule tagantjärele välja pärast kohtuotsuse jõustumist juhul, kui isik mõisteti õigeks või teda ei karistatud vangistusega. (5) Puudest tingitud lisakuludeks ei loeta vanglas või arestimajas viibiva isiku majutus- ja toitlustamiskulusid ning kulusid, mis kaetakse riigi või kohaliku omavalitsuse eelarvest, kaasa arvatud vangla või arestimaja üldiste teenustega seotud kulusid. (7) Puuetega inimeste sotsiaaltoetuste saaja on kohustatud kümne päeva jooksul teatama Sotsiaalkindlustusametile kirjalikult asjaoludest, mis toovad kaasa puuetega inimeste sotsiaaltoetuste maksmise lõpetamise, peatamise või suuruse muutuse. (8) Kui valla- või linnavalitsus teavitab Sotsiaalkindlustusametit asjaoludest, mis mõjutavad perehüvitiste seaduse alusel perehüvitiste maksmise peatamist, jätkamist või lõpetamist, siis võetakse puuetega inimeste sotsiaaltoetuste maksmisel need asjaolud arvesse ning Sotsiaalkindlustusamet otsustab käesoleva seaduse alusel puuetega inimeste sotsiaaltoetuste peatamise, jätkamise või lõpetamise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -3975,28 +4155,13 @@
           "@id": "estleg:PISTS_Par_20_Lg_1_1"
         },
         {
-          "@id": "estleg:PISTS_Par_20_Lg_2"
-        },
-        {
           "@id": "estleg:PISTS_Par_20_Lg_2_1"
-        },
-        {
-          "@id": "estleg:PISTS_Par_20_Lg_2_2"
         },
         {
           "@id": "estleg:PISTS_Par_20_Lg_2_3"
         },
         {
-          "@id": "estleg:PISTS_Par_20_Lg_3"
-        },
-        {
-          "@id": "estleg:PISTS_Par_20_Lg_4"
-        },
-        {
           "@id": "estleg:PISTS_Par_20_Lg_5"
-        },
-        {
-          "@id": "estleg:PISTS_Par_20_Lg_6"
         },
         {
           "@id": "estleg:PISTS_Par_20_Lg_7"
@@ -4087,7 +4252,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Puuetega inimeste sotsiaaltoetust makstakse inimesele varem määratud suuruses kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni, kui Sotsiaalkindlustusamet on pikendanud kehtiva puude raskusastme tuvastamise otsuse kestust käesoleva seaduse § 24 lõikes 21 sätestatud juhul.",
+      "estleg:legalText": "(1¹) Puuetega inimeste sotsiaaltoetust makstakse inimesele varem määratud suuruses kuni uue puude raskusastme tuvastamise või mittetuvastamise otsuse tegemiseni, kui Sotsiaalkindlustusamet on pikendanud kehtiva puude raskusastme tuvastamise otsuse kestust käesoleva seaduse § 2⁴ lõikes 2¹ sätestatud juhul.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_20"
       },
@@ -4102,19 +4267,6 @@
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
       ]
-    },
-    {
-      "@id": "estleg:PISTS_Par_20_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 2"
     },
     {
       "@id": "estleg:PISTS_Par_20_Lg_2_1",
@@ -4139,19 +4291,6 @@
       }
     },
     {
-      "@id": "estleg:PISTS_Par_20_Lg_2_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2²",
-      "estleg:legalText": "(2²) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 2²"
-    },
-    {
       "@id": "estleg:PISTS_Par_20_Lg_2_3",
       "@type": [
         "estleg:Subsection",
@@ -4172,32 +4311,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       }
-    },
-    {
-      "@id": "estleg:PISTS_Par_20_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 3"
-    },
-    {
-      "@id": "estleg:PISTS_Par_20_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 4"
     },
     {
       "@id": "estleg:PISTS_Par_20_Lg_5",
@@ -4225,19 +4338,6 @@
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ]
-    },
-    {
-      "@id": "estleg:PISTS_Par_20_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 6"
     },
     {
       "@id": "estleg:PISTS_Par_20_Lg_7",
@@ -4299,12 +4399,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20¹.",
-      "rdfs:label": "§ 20¹. Sotsiaaltoetuse ümberarvutamise tähtajad",
+      "rdfs:label": {
+        "@value": "§ 20¹. Sotsiaaltoetuse ümberarvutamise tähtajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puuetega inimeste sotsiaaltoetuste suurendamist tingivate asjaolude tekkimisel arvutatakse toetus ümber vastava avalduse ja vajalike dokumentide esitamise päevast, kui avaldus ja vajalikud dokumendid on esitatud ühe kuu jooksul, arvates toetuste suurendamist tingivate asjaolude tekkimisest. Hilisemal avalduse ja vajalike dokumentide esitamisel arvutatakse toetus ümber vastava avalduse ja vajalike dokumentide esitamise kuule järgneva kuu esimesest kuupäevast.",
+      "estleg:summary": {
+        "@value": "(1) Puuetega inimeste sotsiaaltoetuste suurendamist tingivate asjaolude tekkimisel arvutatakse toetus ümber vastava avalduse ja vajalike dokumentide esitamise päevast, kui avaldus ja vajalikud dokumendid on esitatud ühe kuu jooksul, arvates toetuste suurendamist tingivate asjaolude tekkimisest. Hilisemal avalduse ja vajalike dokumentide esitamisel arvutatakse toetus ümber vastava avalduse ja vajalike dokumentide esitamise kuule järgneva kuu esimesest kuupäevast.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetuste suurendamist tingivate asjaolude tekkimisel arvutatakse toetus ümber vastava avalduse ja vajalike dokumentide esitamise päevast, kui avaldus ja vajalikud dokumendid on esitatud ühe kuu jooksul, arvates toetuste suurendamist tingivate asjaolude tekkimisest. Hilisemal avalduse ja vajalike dokumentide esitamisel arvutatakse toetus ümber vastava avalduse ja vajalike dokumentide esitamise kuule järgneva kuu esimesest kuupäevast. (2) Puuetega inimeste sotsiaaltoetuste vähendamist tingivate asjaolude tekkimisel arvutatakse toetus ümber nende asjaolude tekkimise kuule järgneva kuu esimesest kuupäevast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
@@ -4359,13 +4465,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Kulude katmine",
+      "rdfs:label": {
+        "@value": "§ 21. Kulude katmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Kulutused käesoleva seadusega sätestatud puuetega inimeste sotsiaaltoetusteks kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (2) Puuetega inimeste sotsiaaltoetuste määramise ja maksmisega ning arstliku ekspertiisiga seotud kulutused kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (jõustumine muudetud - RT I, 17.12.2015, 1) (3) Kui isik taotleb puude raskusastme tuvastamisega samaaegselt töövõime hindamist, kaetakse arstliku ekspertiisiga seotud kulutused",
-      "estleg:legalText": "(1) Kulutused käesoleva seadusega sätestatud puuetega inimeste sotsiaaltoetusteks kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (2) Puuetega inimeste sotsiaaltoetuste määramise ja maksmisega ning arstliku ekspertiisiga seotud kulutused kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (jõustumine muudetud - RT I, 17.12.2015, 1) (3) Kui isik taotleb puude raskusastme tuvastamisega samaaegselt töövõime hindamist, kaetakse arstliku ekspertiisiga seotud kulutused Sotsiaalkindlustusameti eelarvest juhul, kui isikul on tuvastatud töövõimet välistav seisund töövõimetoetuse seaduse tähenduses.",
+      "estleg:summary": {
+        "@value": "(1) Kulutused käesoleva seadusega sätestatud puuetega inimeste sotsiaaltoetusteks kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (2) Puuetega inimeste sotsiaaltoetuste määramise ja maksmisega ning arstliku ekspertiisiga seotud kulutused kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (3) Kui isik taotleb puude raskusastme tuvastamisega samaaegselt töövõime hindamist, kaetakse arstliku ekspertiisiga seotud kulutused Sotsiaalkindlustusameti eelarvest juhul, kui isikul",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kulutused käesoleva seadusega sätestatud puuetega inimeste sotsiaaltoetusteks kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (2) Puuetega inimeste sotsiaaltoetuste määramise ja maksmisega ning arstliku ekspertiisiga seotud kulutused kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (3) Kui isik taotleb puude raskusastme tuvastamisega samaaegselt töövõime hindamist, kaetakse arstliku ekspertiisiga seotud kulutused Sotsiaalkindlustusameti eelarvest juhul, kui isikul on tuvastatud töövõimet välistav seisund töövõimetoetuse seaduse tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -4434,7 +4546,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Puuetega inimeste sotsiaaltoetuste määramise ja maksmisega ning arstliku ekspertiisiga seotud kulutused kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu. (jõustumine muudetud - RT I, 17.12.2015, 1)",
+      "estleg:legalText": "(2) Puuetega inimeste sotsiaaltoetuste määramise ja maksmisega ning arstliku ekspertiisiga seotud kulutused kaetakse riigieelarvest Sotsiaalministeeriumi eelarve kaudu.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_21"
       },
@@ -4479,13 +4591,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Puuetega inimeste sotsiaaltoetuste maksmine",
+      "rdfs:label": {
+        "@value": "§ 22. Puuetega inimeste sotsiaaltoetuste maksmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse alusel saadavat rahalist hüvitist makstakse iga kuu jooksva kuu eest sotsiaalseadustiku üldosa seaduse §-s 28 sätestatud korras. (1¹) Sotsiaalkindlustusameti otsusel makstakse käesoleva seaduse §-s 12 sätestatud toetus toetusesaajale teenust osutanud asutusele. (jõustumine muudetud - RT I, 17.12.2015, 1) (2) Kehtetu - (3) Kehtetu - (3¹) Sotsiaalkindlustusametile esitatud põhjendatud taotluse alusel makstakse puuetega inimeste sotsiaaltoetusi maksja kulul posti teel",
-      "estleg:legalText": "(1) Käesoleva seaduse alusel saadavat rahalist hüvitist makstakse iga kuu jooksva kuu eest sotsiaalseadustiku üldosa seaduse §-s 28 sätestatud korras. (1¹) Sotsiaalkindlustusameti otsusel makstakse käesoleva seaduse §-s 12 sätestatud toetus toetusesaajale teenust osutanud asutusele. (jõustumine muudetud - RT I, 17.12.2015, 1) (2) Kehtetu - (3) Kehtetu - (3¹) Sotsiaalkindlustusametile esitatud põhjendatud taotluse alusel makstakse puuetega inimeste sotsiaaltoetusi maksja kulul posti teel kojukandega isikule, kellel on liikumistakistus või kes elab hajaasustusalal ja kellele pangateenus on raskesti kättesaadav ning kes on: sügava puudega isik, kellel on tuvastatud osaline või puuduv töövõime või (jõustumine muudetud - RT I, 17.12.2015, 1) kehtetu - (jõustumine muudetud - RT I, 17.12.2015, 1) vanaduspensioniealine isik. (3²) Sotsiaalkindlustusamet teeb käesoleva paragrahvi lõikes 31 nimetatud taotluse alusel otsuse kuni üheaastase kehtivusajaga. Sotsiaalkindlustusamet võib lõikes 31 nimetatud taotluse alusel otsuse teha pikema kehtivusajaga, kui selleks tuleneb vajadus põhjuste iseloomust, millele tuginedes Sotsiaalkindlustusamet lõikes 31 nimetatud taotluse alusel otsuse teeb. Sotsiaalkindlustusamet teeb lõikes 31 nimetatud taotluse alusel otsuse 10 tööpäeva jooksul vastava taotluse esitamisest arvates. (4) Kui posti teel makstav puuetega inimeste sotsiaaltoetus on välja võtmata vähemalt kaks kuud, peatatakse sotsiaaltoetuse maksmine. Pärast vastava avalduse ja isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokumendi esitamist makstakse sotsiaaltoetus tagantjärele välja. (5) Puuetega inimeste sotsiaaltoetuste maksmisel ümardatakse summa sendi täpsusega. (6) Kehtetu - (7) Kehtetu - (8) Kehtetu - (9) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse alusel saadavat rahalist hüvitist makstakse iga kuu jooksva kuu eest sotsiaalseadustiku üldosa seaduse §-s 28 sätestatud korras. (1¹) Sotsiaalkindlustusameti otsusel makstakse käesoleva seaduse §-s 12 sätestatud toetus toetusesaajale teenust osutanud asutusele. (3¹) Sotsiaalkindlustusametile esitatud põhjendatud taotluse alusel makstakse puuetega inimeste sotsiaaltoetusi maksja kulul posti teel kojukandega isikule, kellel on liikumistakistus või kes elab hajaasustusalal ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse alusel saadavat rahalist hüvitist makstakse iga kuu jooksva kuu eest sotsiaalseadustiku üldosa seaduse §-s 28 sätestatud korras. (1¹) Sotsiaalkindlustusameti otsusel makstakse käesoleva seaduse §-s 12 sätestatud toetus toetusesaajale teenust osutanud asutusele. (3¹) Sotsiaalkindlustusametile esitatud põhjendatud taotluse alusel makstakse puuetega inimeste sotsiaaltoetusi maksja kulul posti teel kojukandega isikule, kellel on liikumistakistus või kes elab hajaasustusalal ja kellele pangateenus on raskesti kättesaadav ning kes on: 1) sügava puudega isik, kellel on tuvastatud osaline või puuduv töövõime või 2) 3) vanaduspensioniealine isik. (3²) Sotsiaalkindlustusamet teeb käesoleva paragrahvi lõikes 3¹ nimetatud taotluse alusel otsuse kuni üheaastase kehtivusajaga. Sotsiaalkindlustusamet võib lõikes 3¹ nimetatud taotluse alusel otsuse teha pikema kehtivusajaga, kui selleks tuleneb vajadus põhjuste iseloomust, millele tuginedes Sotsiaalkindlustusamet lõikes 3¹ nimetatud taotluse alusel otsuse teeb. Sotsiaalkindlustusamet teeb lõikes 3¹ nimetatud taotluse alusel otsuse 10 tööpäeva jooksul vastava taotluse esitamisest arvates. (4) Kui posti teel makstav puuetega inimeste sotsiaaltoetus on välja võtmata vähemalt kaks kuud, peatatakse sotsiaaltoetuse maksmine. Pärast vastava avalduse ja isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokumendi esitamist makstakse sotsiaaltoetus tagantjärele välja. (5) Puuetega inimeste sotsiaaltoetuste maksmisel ümardatakse summa sendi täpsusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -4500,12 +4618,6 @@
           "@id": "estleg:PISTS_Par_22_Lg_1_1"
         },
         {
-          "@id": "estleg:PISTS_Par_22_Lg_2"
-        },
-        {
-          "@id": "estleg:PISTS_Par_22_Lg_3"
-        },
-        {
           "@id": "estleg:PISTS_Par_22_Lg_3_1"
         },
         {
@@ -4516,18 +4628,6 @@
         },
         {
           "@id": "estleg:PISTS_Par_22_Lg_5"
-        },
-        {
-          "@id": "estleg:PISTS_Par_22_Lg_6"
-        },
-        {
-          "@id": "estleg:PISTS_Par_22_Lg_7"
-        },
-        {
-          "@id": "estleg:PISTS_Par_22_Lg_8"
-        },
-        {
-          "@id": "estleg:PISTS_Par_22_Lg_9"
         }
       ],
       "estleg:targetGroup": [
@@ -4644,7 +4744,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Sotsiaalkindlustusameti otsusel makstakse käesoleva seaduse §-s 12 sätestatud toetus toetusesaajale teenust osutanud asutusele. (jõustumine muudetud - RT I, 17.12.2015, 1)",
+      "estleg:legalText": "(1¹) Sotsiaalkindlustusameti otsusel makstakse käesoleva seaduse §-s 12 sätestatud toetus toetusesaajale teenust osutanud asutusele.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_22"
       },
@@ -4665,51 +4765,22 @@
       ]
     },
     {
-      "@id": "estleg:PISTS_Par_22_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_22"
-      },
-      "rdfs:label": "§ 22 lg 2",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:PISTS_Par_16"
-        },
-        {
-          "@id": "estleg:PISTS_Par_16_Lg_1_1"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:PISTS_Par_22_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_22"
-      },
-      "rdfs:label": "§ 22 lg 3"
-    },
-    {
       "@id": "estleg:PISTS_Par_22_Lg_3_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3¹",
-      "estleg:legalText": "(3¹) Sotsiaalkindlustusametile esitatud põhjendatud taotluse alusel makstakse puuetega inimeste sotsiaaltoetusi maksja kulul posti teel kojukandega isikule, kellel on liikumistakistus või kes elab hajaasustusalal ja kellele pangateenus on raskesti kättesaadav ning kes on: sügava puudega isik, kellel on tuvastatud osaline või puuduv töövõime või (jõustumine muudetud - RT I, 17.12.2015, 1) kehtetu - (jõustumine muudetud - RT I, 17.12.2015, 1) vanaduspensioniealine isik.",
+      "estleg:legalText": "(3¹) Sotsiaalkindlustusametile esitatud põhjendatud taotluse alusel makstakse puuetega inimeste sotsiaaltoetusi maksja kulul posti teel kojukandega isikule, kellel on liikumistakistus või kes elab hajaasustusalal ja kellele pangateenus on raskesti kättesaadav ning kes on: 1) sügava puudega isik, kellel on tuvastatud osaline või puuduv töövõime või 2) 3) vanaduspensioniealine isik.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_22"
       },
       "rdfs:label": "§ 22 lg 3¹",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4732,7 +4803,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3²",
-      "estleg:legalText": "(3²) Sotsiaalkindlustusamet teeb käesoleva paragrahvi lõikes 31 nimetatud taotluse alusel otsuse kuni üheaastase kehtivusajaga. Sotsiaalkindlustusamet võib lõikes 31 nimetatud taotluse alusel otsuse teha pikema kehtivusajaga, kui selleks tuleneb vajadus põhjuste iseloomust, millele tuginedes Sotsiaalkindlustusamet lõikes 31 nimetatud taotluse alusel otsuse teeb. Sotsiaalkindlustusamet teeb lõikes 31 nimetatud taotluse alusel otsuse 10 tööpäeva jooksul vastava taotluse esitamisest arvates.",
+      "estleg:legalText": "(3²) Sotsiaalkindlustusamet teeb käesoleva paragrahvi lõikes 3¹ nimetatud taotluse alusel otsuse kuni üheaastase kehtivusajaga. Sotsiaalkindlustusamet võib lõikes 3¹ nimetatud taotluse alusel otsuse teha pikema kehtivusajaga, kui selleks tuleneb vajadus põhjuste iseloomust, millele tuginedes Sotsiaalkindlustusamet lõikes 3¹ nimetatud taotluse alusel otsuse teeb. Sotsiaalkindlustusamet teeb lõikes 3¹ nimetatud taotluse alusel otsuse 10 tööpäeva jooksul vastava taotluse esitamisest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_22"
       },
@@ -4797,70 +4868,24 @@
       ]
     },
     {
-      "@id": "estleg:PISTS_Par_22_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_22"
-      },
-      "rdfs:label": "§ 22 lg 6"
-    },
-    {
-      "@id": "estleg:PISTS_Par_22_Lg_7",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_22"
-      },
-      "rdfs:label": "§ 22 lg 7"
-    },
-    {
-      "@id": "estleg:PISTS_Par_22_Lg_8",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "8",
-      "estleg:legalText": "(8) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_22"
-      },
-      "rdfs:label": "§ 22 lg 8"
-    },
-    {
-      "@id": "estleg:PISTS_Par_22_Lg_9",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "9",
-      "estleg:legalText": "(9) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:PISTS_Par_22"
-      },
-      "rdfs:label": "§ 22 lg 9"
-    },
-    {
       "@id": "estleg:PISTS_Par_23",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Vaidluste lahendamine",
+      "rdfs:label": {
+        "@value": "§ 23. Vaidluste lahendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud otsusega, on tal õigus esitada vaie Sotsiaalkindlustusametile sotsiaalseadustiku üldosa seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud otsusega, on tal õigus esitada vaie Sotsiaalkindlustusametile sotsiaalseadustiku üldosa seaduses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud otsusega, on tal õigus esitada vaie Sotsiaalkindlustusametile sotsiaalseadustiku üldosa seaduses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
@@ -4938,10 +4963,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud otsusega, on tal õigus esitada vaie Sotsiaalkindlustusametile sotsiaalseadustiku üldosa seaduses sätestatud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud otsusega, on tal õigus esitada vaie Sotsiaalkindlustusametile sotsiaalseadustiku üldosa seaduses sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_23"
       },
+      "rdfs:label": "§ 23 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4974,12 +5001,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Puuetega inimeste sotsiaaltoetusteks liigselt makstud summad",
+      "rdfs:label": {
+        "@value": "§ 24. Puuetega inimeste sotsiaaltoetusteks liigselt makstud summad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse alusel puuetega inimeste sotsiaaltoetusteks liigselt makstud summad makstakse tagasi vabatahtlikult, nõutakse tagasi või tehakse tasaarvestus sotsiaalseadustiku üldosa seaduses sätestatud korras. (2) Kui isik ei maksa alusetult saadud sotsiaaltoetusi tagasi, võidakse talle liigselt makstud summad Sotsiaalkindlustusameti otsuse alusel igakuiselt makstavatest sotsiaaltoetustega tasaarvestada. Tasaarvestatav osa ei või ületada 20 protsenti isikule määratud toetuste summast.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse alusel puuetega inimeste sotsiaaltoetusteks liigselt makstud summad makstakse tagasi vabatahtlikult, nõutakse tagasi või tehakse tasaarvestus sotsiaalseadustiku üldosa seaduses sätestatud korras. (2) Kui isik ei maksa alusetult saadud sotsiaaltoetusi tagasi, võidakse talle liigselt makstud summad Sotsiaalkindlustusameti otsuse alusel igakuiselt makstavatest sotsiaaltoetustega tasaarvestada. Tasaarvestatav osa ei või ületada 20 protsenti isikule määratud toetuste summast.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse alusel puuetega inimeste sotsiaaltoetusteks liigselt makstud summad makstakse tagasi vabatahtlikult, nõutakse tagasi või tehakse tasaarvestus sotsiaalseadustiku üldosa seaduses sätestatud korras. (2) Kui isik ei maksa alusetult saadud sotsiaaltoetusi tagasi, võidakse talle liigselt makstud summad Sotsiaalkindlustusameti otsuse alusel igakuiselt makstavatest sotsiaaltoetustega tasaarvestada. Tasaarvestatav osa ei või ületada 20 protsenti isikule määratud toetuste summast. (3) Kui puuetega inimeste sotsiaaltoetuste maksmine lõpetatakse enne liigselt makstud summade täielikku tasaarvestamist, nõutakse isikult alusetult makstud summad tagasi sotsiaalseadustiku üldosa seaduses sätestatud korras. (4) Kui Sotsiaalkindlustusamet teeb isikule ettekirjutuse sundtäitmise algatamise kohta tagasinõude täitmata jätmise kohustuse korral, ent puuduvad andmed isiku aadressi kohta, või kui isik ei ela teadaoleval aadressil ja tema tegelik viibimiskoht ei ole teada ning ettekirjutust ei ole võimalik sotsiaalseadustiku üldosa seaduses sätestatud viisil teatavaks teha, avaldatakse ettekirjutuse resolutiivosa ametlikus väljaandes Ametlikud Teadaanded.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
@@ -5136,13 +5169,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24¹.",
-      "rdfs:label": "§ 24¹. Puudega täiskasvanu toetuse maksmine",
+      "rdfs:label": {
+        "@value": "§ 24¹. Puudega täiskasvanu toetuse maksmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 24¹. Puudega täiskasvanu toetuse maksmine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -5165,13 +5203,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24².",
-      "rdfs:label": "§ 24². Puudega täiskasvanu toetuse või puudega tööealise inimese toetuse maksmine",
+      "rdfs:label": {
+        "@value": "§ 24². Puudega täiskasvanu toetuse või puudega tööealise inimese toetuse maksmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 24². Puudega täiskasvanu toetuse või puudega tööealise inimese toetuse maksmine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -5194,13 +5237,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24³.",
-      "rdfs:label": "§ 24³. Töötamistoetuse maksmine",
+      "rdfs:label": {
+        "@value": "§ 24³. Töötamistoetuse maksmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 24³. Töötamistoetuse maksmine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -5223,12 +5271,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Muudatused varasemates õigusaktides",
+      "rdfs:label": {
+        "@value": "§ 25. Muudatused varasemates õigusaktides",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
@@ -5255,13 +5309,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25¹.",
-      "rdfs:label": "§ 25¹. Puuetega inimeste sotsiaaltoetuste väljamaksmine",
+      "rdfs:label": {
+        "@value": "§ 25¹. Puuetega inimeste sotsiaaltoetuste väljamaksmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Puuetega inimeste sotsiaaltoetuste väljamaksmine § 22 lõigetes 1 ja 31 sätestatud korras toimub alates 2009. aasta 1. veebruarist. (2) Kuni 2009. aasta 1. veebruarini makstakse puuetega inimeste sotsiaaltoetused elukohajärgse pensioniameti kaudu vastavalt toetusesaaja soovile tema arvelduskontole või posti teel maksja kulul. (3) Enne 2009. aasta 1. veebruari määratud puuetega inimeste sotsiaaltoetused makstakse alates 2009. aasta 1. veebruarist välja käesoleva seaduse §-s 22 sätestatud",
-      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetuste väljamaksmine § 22 lõigetes 1 ja 31 sätestatud korras toimub alates 2009. aasta 1. veebruarist. (2) Kuni 2009. aasta 1. veebruarini makstakse puuetega inimeste sotsiaaltoetused elukohajärgse pensioniameti kaudu vastavalt toetusesaaja soovile tema arvelduskontole või posti teel maksja kulul. (3) Enne 2009. aasta 1. veebruari määratud puuetega inimeste sotsiaaltoetused makstakse alates 2009. aasta 1. veebruarist välja käesoleva seaduse §-s 22 sätestatud korras. (4) Kui toetuse saaja ei ole Sotsiaalkindlustusametile teatanud oma arvelduskonto numbrit ega teinud või edastanud § 22 lõike 1 kohast avaldust ja seetõttu ei ole käesoleva seaduse §-s 22 sätestatud korras võimalik toetust maksta, peatatakse alates 2009. aasta 1. veebruarist toetuse maksmine. Pärast vastava avalduse ja isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokumendi esitamist makstakse toetus välja tagantjärele. (5) Käesoleva seaduse § 22 lõigetes 31 ja 32 sätestatud tingimustel ja korras makstakse puuetega inimeste sotsiaaltoetusi ka sügava puudega töövõimetuspensionärile ja sügava puudega püsivalt töövõimetuks tunnistatud rahvapensioni saavale isikule. (jõustumine muudetud - RT I, 17.12.2015, 1) (6) Sotsiaalkindlustusamet määrab rehabilitatsioonitoetuse isikule, kes kandis kuni 2015. aasta 31. detsembrini rehabilitatsioonikulusid ja oli puuetega inimeste sotsiaaltoetuste seaduse kuni 2015. aasta 31. detsembrini kehtinud redaktsiooni kohaselt õigustatud saama rehabilitatsioonitoetust ning kes esitab taotluse hiljemalt 2016. aasta 30. juunil.",
+      "estleg:summary": {
+        "@value": "(1) Puuetega inimeste sotsiaaltoetuste väljamaksmine § 22 lõigetes 1 ja 3¹ sätestatud korras toimub alates 2009. aasta 1. veebruarist. (2) Kuni 2009. aasta 1. veebruarini makstakse puuetega inimeste sotsiaaltoetused elukohajärgse pensioniameti kaudu vastavalt toetusesaaja soovile tema arvelduskontole või posti teel maksja kulul. (3) Enne 2009. aasta 1. veebruari määratud puuetega inimeste sotsiaaltoetused makstakse alates 2009. aasta 1. veebruarist välja käesoleva seaduse §-s 22 sätestatud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetuste väljamaksmine § 22 lõigetes 1 ja 3¹ sätestatud korras toimub alates 2009. aasta 1. veebruarist. (2) Kuni 2009. aasta 1. veebruarini makstakse puuetega inimeste sotsiaaltoetused elukohajärgse pensioniameti kaudu vastavalt toetusesaaja soovile tema arvelduskontole või posti teel maksja kulul. (3) Enne 2009. aasta 1. veebruari määratud puuetega inimeste sotsiaaltoetused makstakse alates 2009. aasta 1. veebruarist välja käesoleva seaduse §-s 22 sätestatud korras. (4) Kui toetuse saaja ei ole Sotsiaalkindlustusametile teatanud oma arvelduskonto numbrit ega teinud või edastanud § 22 lõike 1 kohast avaldust ja seetõttu ei ole käesoleva seaduse §-s 22 sätestatud korras võimalik toetust maksta, peatatakse alates 2009. aasta 1. veebruarist toetuse maksmine. Pärast vastava avalduse ja isikut tõendavate dokumentide seaduse § 2 lõikes 2 või §-s 4 sätestatud dokumendi esitamist makstakse toetus välja tagantjärele. (5) Käesoleva seaduse § 22 lõigetes 3¹ ja 3² sätestatud tingimustel ja korras makstakse puuetega inimeste sotsiaaltoetusi ka sügava puudega töövõimetuspensionärile ja sügava puudega püsivalt töövõimetuks tunnistatud rahvapensioni saavale isikule. (6) Sotsiaalkindlustusamet määrab rehabilitatsioonitoetuse isikule, kes kandis kuni 2015. aasta 31. detsembrini rehabilitatsioonikulusid ja oli puuetega inimeste sotsiaaltoetuste seaduse kuni 2015. aasta 31. detsembrini kehtinud redaktsiooni kohaselt õigustatud saama rehabilitatsioonitoetust ning kes esitab taotluse hiljemalt 2016. aasta 30. juunil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -5343,7 +5403,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetuste väljamaksmine § 22 lõigetes 1 ja 31 sätestatud korras toimub alates 2009. aasta 1. veebruarist.",
+      "estleg:legalText": "(1) Puuetega inimeste sotsiaaltoetuste väljamaksmine § 22 lõigetes 1 ja 3¹ sätestatud korras toimub alates 2009. aasta 1. veebruarist.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_25_1"
       },
@@ -5427,7 +5487,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Käesoleva seaduse § 22 lõigetes 31 ja 32 sätestatud tingimustel ja korras makstakse puuetega inimeste sotsiaaltoetusi ka sügava puudega töövõimetuspensionärile ja sügava puudega püsivalt töövõimetuks tunnistatud rahvapensioni saavale isikule. (jõustumine muudetud - RT I, 17.12.2015, 1)",
+      "estleg:legalText": "(5) Käesoleva seaduse § 22 lõigetes 3¹ ja 3² sätestatud tingimustel ja korras makstakse puuetega inimeste sotsiaaltoetusi ka sügava puudega töövõimetuspensionärile ja sügava puudega püsivalt töövõimetuks tunnistatud rahvapensioni saavale isikule.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_25_1"
       },
@@ -5482,13 +5542,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25².",
-      "rdfs:label": "§ 25². Käesoleva seaduse § 5",
+      "rdfs:label": {
+        "@value": "§ 25². Käesoleva seaduse § 5¹ rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Vabariigi Valitsuse 2020. aasta 12. märtsil väljakuulutatud eriolukorra ajal võib Sotsiaalkindlustusamet käesoleva seaduse §-s 51 sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
-      "estleg:legalText": "Vabariigi Valitsuse 2020. aasta 12. märtsil väljakuulutatud eriolukorra ajal võib Sotsiaalkindlustusamet käesoleva seaduse §-s 51 sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsuse 2020. aasta 12. märtsil väljakuulutatud eriolukorra ajal võib Sotsiaalkindlustusamet käesoleva seaduse §-s 5¹ sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vabariigi Valitsuse 2020. aasta 12. märtsil väljakuulutatud eriolukorra ajal võib Sotsiaalkindlustusamet käesoleva seaduse §-s 5¹ sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -5543,10 +5609,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Valitsuse 2020. aasta 12. märtsil väljakuulutatud eriolukorra ajal võib Sotsiaalkindlustusamet käesoleva seaduse §-s 51 sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsuse 2020. aasta 12. märtsil väljakuulutatud eriolukorra ajal võib Sotsiaalkindlustusamet käesoleva seaduse §-s 5¹ sätestatud võimalust isiku puude raskusastme kestuse pikendamiseks rakendada tagasiulatuvalt 2020. aasta 12. märtsist.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_25_2"
       },
+      "rdfs:label": "§ 25² lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -5575,13 +5643,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25³.",
-      "rdfs:label": "§ 25³. Mootorsõidukimaksust tuleneva mõju leevendamise toetus",
+      "rdfs:label": {
+        "@value": "§ 25³. Mootorsõidukimaksust tuleneva mõju leevendamise toetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 25³. Mootorsõidukimaksust tuleneva mõju leevendamise toetus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -5604,13 +5677,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 26. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Puuetega inimeste sotsiaaltoetuste seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PISTS_Map"
       },
-      "estleg:summary": "(1) Isikule, kellele enne käesoleva seaduse jõustumist oli määratud kas invaliidsuspension lapsinvaliidile kehtestatud määras või ülalpidamistoetus lapsinvaliidi kasvatamise eest või invaliidistunud üksikvanema lapse toetus ja kellel selle asemel tekib käesoleva seaduse alusel õigus saada puuetega inimeste sotsiaaltoetusi, arvutatakse varasem pension või toetus puuetega inimeste sotsiaaltoetusteks ümber. Kui ümberarvutatud toetus osutub väiksemaks varemmakstud pensionist või toetusest,",
-      "estleg:legalText": "(1) Isikule, kellele enne käesoleva seaduse jõustumist oli määratud kas invaliidsuspension lapsinvaliidile kehtestatud määras või ülalpidamistoetus lapsinvaliidi kasvatamise eest või invaliidistunud üksikvanema lapse toetus ja kellel selle asemel tekib käesoleva seaduse alusel õigus saada puuetega inimeste sotsiaaltoetusi, arvutatakse varasem pension või toetus puuetega inimeste sotsiaaltoetusteks ümber. Kui ümberarvutatud toetus osutub väiksemaks varemmakstud pensionist või toetusest, makstakse puuetega inimeste sotsiaaltoetusi endise pensioni või toetuse suuruses varem määratud tähtaja lõpuni või uue arstliku ekspertiisini. (2) Käesolev seadus jõustub 2000. aasta 1. jaanuaril. (3) Käesoleva seaduse § 7, § 8 lõike 1 punkt 2, lõike 2 punktid 2 ja 3 ning §-d 11 ja 12 jõustuvad 2001. aasta 1. jaanuaril. (4) Kuni 2001. aasta 1. jaanuarini makstakse hooldajatoetust käesoleva seaduse § 8 lõike 1 punkti 1 alusel § 8 lõike 2 punktis 1 kehtestatud suuruses 3–18-aastast keskmise, raske või sügava puudega last kasvatavale ühele mittetöötavale vanemale. (5) Puudega inimesel, kellele oli määratud puuetega inimeste sotsiaaltoetus enne 2001. aasta 1. jaanuari ja kellel ei teki õigust saada puuetega inimeste sotsiaaltoetust pärast 2001. aasta 1. jaanuari, makstakse sotsiaaltoetust endises suuruses kuni määratud tähtajani, välja arvatud transporditoetus ja telefoni kasutamise toetus, mille maksmine lõpetatakse 16-aastase ja vanema inimese toetuse määramise päevast. (6) Isikule, kellele olid määratud puuetega inimeste sotsiaaltoetused, välja arvatud puudega lapse toetus, transporditoetus ja telefoni kasutamise toetus enne 2002. aasta 1. jaanuari, jätkatakse nende toetuste maksmist endistel alustel ja endistes suurustes kuni määratud tähtajani. (7) Puudega lapse toetus arvutatakse ümber 2002. aasta 1. jaanuarist kehtiva seaduse alusel. Kui ümberarvutatud toetus osutub väiksemaks kui varem makstud puudega lapse toetuse ning transporditoetuse ja telefoni kasutamise toetuse summa, makstakse puudega lapse toetust nende toetuste kogusummas kuni määratud tähtajani. (8) 18-aastase ja vanema isiku hooldajale või eestkostjale Sotsiaalkindlustusameti kaudu määratud hooldajatoetuse määramise otsus tunnistatakse kehtetuks. Sotsiaalkindlustusamet teatab kirjalikult hooldajatoetuse saajale ja valla- või linnavalitsusele, kelle halduspiirkonnas hooldajatoetuse saaja elab, hooldajatoetuse määramise otsuse kehtetuks tunnistamisest. (9) Puudega lapse vanemale või võõrasvanemale Sotsiaalkindlustusameti kaudu määratud hooldajatoetuse määramise otsus tunnistatakse kehtetuks. Sotsiaalkindlustusamet teatab kirjalikult hooldajatoetuse saajale ja hooldajatoetuse saaja rahvastikuregistrijärgsele valla- või linnavalitsusele hooldajatoetuse määramise otsuse kehtetuks tunnistamisest. (10) Isikule, kes on esitanud ekspertiisitaotluse puude raskusastme ja lisakulude tuvastamiseks enne käesoleva seaduse § 22 lõigetes 11 ja 12 sätestatud tingimuste jõustumist, kohaldatakse menetlust, mis kehtis taotluse esitamise ajal. (11) Käesoleva seaduse 2016. aasta 1. jaanuaril jõustunud redaktsiooni koos rakendusaktidega kohaldatakse isikule, kes ei ole esitanud töövõime hindamise taotlust koos puude raskusastme tuvastamise taotlusega enne 2017. aasta 1. jaanuari.",
+      "estleg:summary": {
+        "@value": "(1) Isikule, kellele enne käesoleva seaduse jõustumist oli määratud kas invaliidsuspension lapsinvaliidile kehtestatud määras või ülalpidamistoetus lapsinvaliidi kasvatamise eest või invaliidistunud üksikvanema lapse toetus ja kellel selle asemel tekib käesoleva seaduse alusel õigus saada puuetega inimeste sotsiaaltoetusi, arvutatakse varasem pension või toetus puuetega inimeste sotsiaaltoetusteks ümber. Kui ümberarvutatud toetus osutub väiksemaks varemmakstud pensionist või toetusest,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Isikule, kellele enne käesoleva seaduse jõustumist oli määratud kas invaliidsuspension lapsinvaliidile kehtestatud määras või ülalpidamistoetus lapsinvaliidi kasvatamise eest või invaliidistunud üksikvanema lapse toetus ja kellel selle asemel tekib käesoleva seaduse alusel õigus saada puuetega inimeste sotsiaaltoetusi, arvutatakse varasem pension või toetus puuetega inimeste sotsiaaltoetusteks ümber. Kui ümberarvutatud toetus osutub väiksemaks varemmakstud pensionist või toetusest, makstakse puuetega inimeste sotsiaaltoetusi endise pensioni või toetuse suuruses varem määratud tähtaja lõpuni või uue arstliku ekspertiisini. (2) Käesolev seadus jõustub 2000. aasta 1. jaanuaril. (3) Käesoleva seaduse § 7, § 8 lõike 1 punkt 2, lõike 2 punktid 2 ja 3 ning §-d 11 ja 12 jõustuvad 2001. aasta 1. jaanuaril. (4) Kuni 2001. aasta 1. jaanuarini makstakse hooldajatoetust käesoleva seaduse § 8 lõike 1 punkti 1 alusel § 8 lõike 2 punktis 1 kehtestatud suuruses 3–18-aastast keskmise, raske või sügava puudega last kasvatavale ühele mittetöötavale vanemale. (5) Puudega inimesel, kellele oli määratud puuetega inimeste sotsiaaltoetus enne 2001. aasta 1. jaanuari ja kellel ei teki õigust saada puuetega inimeste sotsiaaltoetust pärast 2001. aasta 1. jaanuari, makstakse sotsiaaltoetust endises suuruses kuni määratud tähtajani, välja arvatud transporditoetus ja telefoni kasutamise toetus, mille maksmine lõpetatakse 16-aastase ja vanema inimese toetuse määramise päevast. (6) Isikule, kellele olid määratud puuetega inimeste sotsiaaltoetused, välja arvatud puudega lapse toetus, transporditoetus ja telefoni kasutamise toetus enne 2002. aasta 1. jaanuari, jätkatakse nende toetuste maksmist endistel alustel ja endistes suurustes kuni määratud tähtajani. (7) Puudega lapse toetus arvutatakse ümber 2002. aasta 1. jaanuarist kehtiva seaduse alusel. Kui ümberarvutatud toetus osutub väiksemaks kui varem makstud puudega lapse toetuse ning transporditoetuse ja telefoni kasutamise toetuse summa, makstakse puudega lapse toetust nende toetuste kogusummas kuni määratud tähtajani. (8) 18-aastase ja vanema isiku hooldajale või eestkostjale Sotsiaalkindlustusameti kaudu määratud hooldajatoetuse määramise otsus tunnistatakse kehtetuks. Sotsiaalkindlustusamet teatab kirjalikult hooldajatoetuse saajale ja valla- või linnavalitsusele, kelle halduspiirkonnas hooldajatoetuse saaja elab, hooldajatoetuse määramise otsuse kehtetuks tunnistamisest. (9) Puudega lapse vanemale või võõrasvanemale Sotsiaalkindlustusameti kaudu määratud hooldajatoetuse määramise otsus tunnistatakse kehtetuks. Sotsiaalkindlustusamet teatab kirjalikult hooldajatoetuse saajale ja hooldajatoetuse saaja rahvastikuregistrijärgsele valla- või linnavalitsusele hooldajatoetuse määramise otsuse kehtetuks tunnistamisest. (10) Isikule, kes on esitanud ekspertiisitaotluse puude raskusastme ja lisakulude tuvastamiseks enne käesoleva seaduse § 2² lõigetes 1¹ ja 1² sätestatud tingimuste jõustumist, kohaldatakse menetlust, mis kehtis taotluse esitamise ajal. (11) Käesoleva seaduse 2016. aasta 1. jaanuaril jõustunud redaktsiooni koos rakendusaktidega kohaldatakse isikule, kes ei ole esitanud töövõime hindamise taotlust koos puude raskusastme tuvastamise taotlusega enne 2017. aasta 1. jaanuari.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PISTS_3"
       },
@@ -5910,7 +5989,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "10",
-      "estleg:legalText": "(10) Isikule, kes on esitanud ekspertiisitaotluse puude raskusastme ja lisakulude tuvastamiseks enne käesoleva seaduse § 22 lõigetes 11 ja 12 sätestatud tingimuste jõustumist, kohaldatakse menetlust, mis kehtis taotluse esitamise ajal.",
+      "estleg:legalText": "(10) Isikule, kes on esitanud ekspertiisitaotluse puude raskusastme ja lisakulude tuvastamiseks enne käesoleva seaduse § 2² lõigetes 1¹ ja 1² sätestatud tingimuste jõustumist, kohaldatakse menetlust, mis kehtis taotluse esitamise ajal.",
       "estleg:parentProvision": {
         "@id": "estleg:PISTS_Par_26"
       },
@@ -5953,106 +6032,20 @@
       }
     },
     {
-      "@id": "estleg:Citation_PISTS_P_15_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/501062026003",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_15"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationDetail": "MKS",
-      "estleg:citationText": "maksukorralduse seaduse §-s 251"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_15_Lg_2_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_15_Lg_2"
+      "eli:realizes": {
+        "@id": "estleg:PISTS_Map"
       },
-      "estleg:citationDetail": "MKS",
-      "estleg:citationText": "maksukorralduse seaduse §-s 251"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_17_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_17"
-      },
-      "estleg:citationText": "Käesoleva seaduse §-des 6–71"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_17_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_17"
-      },
-      "estleg:citationText": "Käesoleva seaduse §-des 6–71"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_17_Lg_2_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_17_Lg_2"
-      },
-      "estleg:citationText": "Käesoleva seaduse §-des 6–71"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_17_Lg_3_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_17_Lg_3"
-      },
-      "estleg:citationText": "Käesoleva seaduse §-des 6–71"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_19_Lg_4_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_19_Lg_4"
-      },
-      "estleg:citationDetail": "SHS",
-      "estleg:citationText": "sotsiaalhoolekande seaduse § 459 lõike 1"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_25_2_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_25_2"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 51"
-    },
-    {
-      "@id": "estleg:Citation_PISTS_P_25_2_Lg_1_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:PISTS_Par_25_2_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 51"
+      "rdfs:label": {
+        "@value": "Social Benefits for Disabled Persons Act",
+        "@language": "en"
+      }
     }
   ]
 }

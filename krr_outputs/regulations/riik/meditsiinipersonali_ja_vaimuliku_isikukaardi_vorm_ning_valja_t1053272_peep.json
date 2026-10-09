@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -44,11 +51,6 @@
         "@value": "2022-01-07",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-01-04",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -84,7 +86,13 @@
         {
           "@id": "http://eurovoc.europa.eu/217"
         }
-      ]
+      ],
+      "dcterms:title": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1053272_Annex_1",
@@ -92,7 +100,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Meditsiinipersonali ja vaimuliku isikukaardi kujutise näidis",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -101,7 +112,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -111,18 +125,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053272_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse haavatute ja haigete ravimise ning hooldamisega tegeleva meditsiinipersonali (edaspidi meedik) ja vaimuliku isikukaardi (edaspidi isikukaart) vorm ning väljaandmise kord.",
-      "estleg:legalText": "Määrusega kehtestatakse haavatute ja haigete ravimise ning hooldamisega tegeleva meditsiinipersonali (edaspidi meedik) ja vaimuliku isikukaardi (edaspidi isikukaart) vorm ning väljaandmise kord. Määrusega kehtestatakse haavatute ja haigete ravimise ning hooldamisega tegeleva meditsiinipersonali (edaspidi meedik) ja vaimuliku isikukaardi (edaspidi isikukaart) vorm ning väljaandmise kord.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse haavatute ja haigete ravimise ning hooldamisega tegeleva meditsiinipersonali (edaspidi meedik) ja vaimuliku isikukaardi (edaspidi isikukaart) vorm ning väljaandmise kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse haavatute ja haigete ravimise ning hooldamisega tegeleva meditsiinipersonali (edaspidi meedik) ja vaimuliku isikukaardi (edaspidi isikukaart) vorm ning väljaandmise kord.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053272_Par_1_v1053272"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053272_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse haavatute ja haigete ravimise ning hooldamisega tegeleva meditsiinipersonali (edaspidi meedik) ja vaimuliku isikukaardi (edaspidi isikukaart) vorm ning väljaandmise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1053272_Par_2",
@@ -131,13 +169,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Isikukaardi väljastamine",
+      "rdfs:label": {
+        "@value": "§ 2. Isikukaardi väljastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053272_Map"
       },
-      "estleg:summary": "1 (1) Isikukaart väljastatakse Kaitseväe meedikule ja vaimulikule ühe kuu jooksul ameti- või töökohale asumisest. Isikukaart väljastatakse Kaitseväe meedikule ja vaimulikule ühe kuu jooksul ameti- või töökohale asumisest. 2 (2) Isikukaart väljastatakse Kaitseliidu meedikule ja vaimulikule kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal teenistuskohustuste täitmisele asumisel. Isikukaart väljastatakse Kaitseliidu meedikule ja vaimulikule kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal teeni",
-      "estleg:legalText": "1 (1) Isikukaart väljastatakse Kaitseväe meedikule ja vaimulikule ühe kuu jooksul ameti- või töökohale asumisest. Isikukaart väljastatakse Kaitseväe meedikule ja vaimulikule ühe kuu jooksul ameti- või töökohale asumisest. 2 (2) Isikukaart väljastatakse Kaitseliidu meedikule ja vaimulikule kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal teenistuskohustuste täitmisele asumisel. Isikukaart väljastatakse Kaitseliidu meedikule ja vaimulikule kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal teenistuskohustuste täitmisele asumisel. 3 (3) Isikukaart väljastatakse teistele punase risti nimetuse ja embleemi seaduse § 6 lõikes 2 nimetatud isikutele kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal asjaomase isiku või asutuse taotlusel. Isikukaart väljastatakse teistele punase risti nimetuse ja embleemi seaduse § 6 lõikes 2 nimetatud isikutele kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal asjaomase isiku või asutuse taotlusel. 4 (4) Väljastatud isikukaartide üle peab arvestust Kaitsevägi. Väljastatud isikukaartide üle peab arvestust Kaitsevägi.",
+      "estleg:summary": {
+        "@value": "1 (1) Isikukaart väljastatakse Kaitseväe meedikule ja vaimulikule ühe kuu jooksul ameti- või töökohale asumisest. 2 (2) Isikukaart väljastatakse Kaitseliidu meedikule ja vaimulikule kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal teenistuskohustuste täitmisele asumisel. 3 (3) Isikukaart väljastatakse teistele punase risti nimetuse ja embleemi seaduse § 6 lõikes 2 nimetatud isikutele kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal asjaomase isiku või asutuse taotlusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isikukaart väljastatakse Kaitseväe meedikule ja vaimulikule ühe kuu jooksul ameti- või töökohale asumisest. 2 (2) Isikukaart väljastatakse Kaitseliidu meedikule ja vaimulikule kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal teenistuskohustuste täitmisele asumisel. 3 (3) Isikukaart väljastatakse teistele punase risti nimetuse ja embleemi seaduse § 6 lõikes 2 nimetatud isikutele kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal asjaomase isiku või asutuse taotlusel. 4 (4) Väljastatud isikukaartide üle peab arvestust Kaitsevägi.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -154,7 +198,73 @@
         {
           "@id": "estleg:Reg_1053272_Par_2_v1053272"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053272_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaart väljastatakse Kaitseväe meedikule ja vaimulikule ühe kuu jooksul ameti- või töökohale asumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isikukaart väljastatakse Kaitseliidu meedikule ja vaimulikule kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal teenistuskohustuste täitmisele asumisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Isikukaart väljastatakse teistele punase risti nimetuse ja embleemi seaduse § 6 lõikes 2 nimetatud isikutele kõrgendatud kaitsevalmiduse ja sõjaseisukorra ajal asjaomase isiku või asutuse taotlusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Väljastatud isikukaartide üle peab arvestust Kaitsevägi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1053272_Par_3",
@@ -163,13 +273,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Isikukaardi kehtivus",
+      "rdfs:label": {
+        "@value": "§ 3. Isikukaardi kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053272_Map"
       },
-      "estleg:summary": "1 (1) Isikukaart väljastatakse teenistus-, tööülesannete või teenistuskohustuste täitmise ajaks, kuid mitte kauem kui viieks aastaks. Isikukaart väljastatakse teenistus-, tööülesannete või teenistuskohustuste täitmise ajaks, kuid mitte kauem kui viieks aastaks. 2 (2) Kaitsevägi võib isikukaardi kehtetuks tunnistada, kui ilmnevad asjaolud, mis oleksid välistanud isikule isikukaardi väljastamise. Kaitsevägi võib isikukaardi kehtetuks tunnistada, kui ilmnevad asjaolud, mis oleksid välistanud isikul",
-      "estleg:legalText": "1 (1) Isikukaart väljastatakse teenistus-, tööülesannete või teenistuskohustuste täitmise ajaks, kuid mitte kauem kui viieks aastaks. Isikukaart väljastatakse teenistus-, tööülesannete või teenistuskohustuste täitmise ajaks, kuid mitte kauem kui viieks aastaks. 2 (2) Kaitsevägi võib isikukaardi kehtetuks tunnistada, kui ilmnevad asjaolud, mis oleksid välistanud isikule isikukaardi väljastamise. Kaitsevägi võib isikukaardi kehtetuks tunnistada, kui ilmnevad asjaolud, mis oleksid välistanud isikule isikukaardi väljastamise.",
+      "estleg:summary": {
+        "@value": "1 (1) Isikukaart väljastatakse teenistus-, tööülesannete või teenistuskohustuste täitmise ajaks, kuid mitte kauem kui viieks aastaks. 2 (2) Kaitsevägi võib isikukaardi kehtetuks tunnistada, kui ilmnevad asjaolud, mis oleksid välistanud isikule isikukaardi väljastamise.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isikukaart väljastatakse teenistus-, tööülesannete või teenistuskohustuste täitmise ajaks, kuid mitte kauem kui viieks aastaks. 2 (2) Kaitsevägi võib isikukaardi kehtetuks tunnistada, kui ilmnevad asjaolud, mis oleksid välistanud isikule isikukaardi väljastamise.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -186,7 +302,41 @@
         {
           "@id": "estleg:Reg_1053272_Par_3_v1053272"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053272_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_3_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaart väljastatakse teenistus-, tööülesannete või teenistuskohustuste täitmise ajaks, kuid mitte kauem kui viieks aastaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsevägi võib isikukaardi kehtetuks tunnistada, kui ilmnevad asjaolud, mis oleksid välistanud isikule isikukaardi väljastamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:Reg_1053272_Par_4",
@@ -195,18 +345,90 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Isikukaardi vorm",
+      "rdfs:label": {
+        "@value": "§ 4. Isikukaardi vorm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053272_Map"
       },
-      "estleg:summary": "1 (1) Isikukaart on ümarate nurkadega plastikust kaart mõõtmetega 85,5 × 54 millimeetrit. Isikukaart on ümarate nurkadega plastikust kaart mõõtmetega 85,5 × 54 millimeetrit. 2 (2) Isikukaardil on valge taust, millel jooksevad paremalt vasakule diagonaalsed helesinised triibud. Isikukaardil on valge taust, millel jooksevad paremalt vasakule diagonaalsed helesinised triibud. 3 (3) Isikukaart ja selle kanded trükitakse printeriga. Kirjed trükitakse musta värviga, kui käesolevas määruses ei sätestat",
-      "estleg:legalText": "1 (1) Isikukaart on ümarate nurkadega plastikust kaart mõõtmetega 85,5 × 54 millimeetrit. Isikukaart on ümarate nurkadega plastikust kaart mõõtmetega 85,5 × 54 millimeetrit. 2 (2) Isikukaardil on valge taust, millel jooksevad paremalt vasakule diagonaalsed helesinised triibud. Isikukaardil on valge taust, millel jooksevad paremalt vasakule diagonaalsed helesinised triibud. 3 (3) Isikukaart ja selle kanded trükitakse printeriga. Kirjed trükitakse musta värviga, kui käesolevas määruses ei sätestata teisiti. Isikukaart ja selle kanded trükitakse printeriga. Kirjed trükitakse musta värviga, kui käesolevas määruses ei sätestata teisiti. 4 (4) Isikukaardi kujutise näidis on esitatud määruse lisas „Meditsiinipersonali ja vaimuliku isikukaardi kujutise näidis”. Isikukaardi kujutise näidis on esitatud määruse lisas „Meditsiinipersonali ja vaimuliku isikukaardi kujutise näidis”.",
+      "estleg:summary": {
+        "@value": "1 (1) Isikukaart on ümarate nurkadega plastikust kaart mõõtmetega 85,5 × 54 millimeetrit. 2 (2) Isikukaardil on valge taust, millel jooksevad paremalt vasakule diagonaalsed helesinised triibud. 3 (3) Isikukaart ja selle kanded trükitakse printeriga. Kirjed trükitakse musta värviga, kui käesolevas määruses ei sätestata teisiti. 4 (4) Isikukaardi kujutise näidis on esitatud määruse lisas „Meditsiinipersonali ja vaimuliku isikukaardi kujutise näidis”.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isikukaart on ümarate nurkadega plastikust kaart mõõtmetega 85,5 × 54 millimeetrit. 2 (2) Isikukaardil on valge taust, millel jooksevad paremalt vasakule diagonaalsed helesinised triibud. 3 (3) Isikukaart ja selle kanded trükitakse printeriga. Kirjed trükitakse musta värviga, kui käesolevas määruses ei sätestata teisiti. 4 (4) Isikukaardi kujutise näidis on esitatud määruse lisas „Meditsiinipersonali ja vaimuliku isikukaardi kujutise näidis”.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053272_Par_4_v1053272"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053272_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_4_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaart on ümarate nurkadega plastikust kaart mõõtmetega 85,5 × 54 millimeetrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isikukaardil on valge taust, millel jooksevad paremalt vasakule diagonaalsed helesinised triibud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Isikukaart ja selle kanded trükitakse printeriga. Kirjed trükitakse musta värviga, kui käesolevas määruses ei sätestata teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Isikukaardi kujutise näidis on esitatud määruse lisas „Meditsiinipersonali ja vaimuliku isikukaardi kujutise näidis”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
     },
     {
       "@id": "estleg:Reg_1053272_Par_5",
@@ -215,18 +437,114 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Isikukaardi esikülje kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 5. Isikukaardi esikülje kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053272_Map"
       },
-      "estleg:summary": "1 (1) Isikukaardi esikülje ülaserva trükitakse kirjed „Selle tunnistuse esitaja on kaitstud 1949. aasta 12. augusti Genfi konventsiooni haavatud ja haigete sõjaväelaste olukorra parandamise kohta maismaal alusel kui” ja „The bearer of this card is protected by the Geneva Convention for the Amelioration of the Condition of the Wounded and Sick in Armed Forces of August 12, 1949, in his/her capacity as”. Isikukaardi esikülje ülaserva trükitakse kirjed „Selle tunnistuse esitaja on kaitstud 1949. aa",
-      "estleg:legalText": "1 (1) Isikukaardi esikülje ülaserva trükitakse kirjed „Selle tunnistuse esitaja on kaitstud 1949. aasta 12. augusti Genfi konventsiooni haavatud ja haigete sõjaväelaste olukorra parandamise kohta maismaal alusel kui” ja „The bearer of this card is protected by the Geneva Convention for the Amelioration of the Condition of the Wounded and Sick in Armed Forces of August 12, 1949, in his/her capacity as”. Isikukaardi esikülje ülaserva trükitakse kirjed „Selle tunnistuse esitaja on kaitstud 1949. aasta 12. augusti Genfi konventsiooni haavatud ja haigete sõjaväelaste olukorra parandamise kohta maismaal alusel kui” ja „The bearer of this card is protected by the Geneva Convention for the Amelioration of the Condition of the Wounded and Sick in Armed Forces of August 12, 1949, in his/her capacity as”. 2 (2) Isikukaardi esiküljele kantakse isikukaardi kandja kohta järgmised andmed: 1 1) ametinimetus „kaplan / chaplain” või „meedik / medical personnel”; 2 2) perekonnanimi / surname; 3 3) eesnimi / first name; 4 4) selle olemasolul auaste / rank; 5 5) sugu / sex; 6 6) sünniaeg / date of birth. Isikukaardi esiküljele kantakse isikukaardi kandja kohta järgmised andmed: ametinimetus „kaplan / chaplain” või „meedik / medical personnel”; perekonnanimi / surname; eesnimi / first name; selle olemasolul auaste / rank; sugu / sex; sünniaeg / date of birth. 3 (3) Ametinimetusest paremale poole trükitakse punaselt suurtähtedega kirje „PUNASE RISTI KAART”. Ametinimetusest paremale poole trükitakse punaselt suurtähtedega kirje „PUNASE RISTI KAART”. 4 (4) Isikukaardi esikülje vasakusse alumisse nurka trükitakse isikukaardi kandja peakatteta otsevaates fotokujutis mõõtmetega 25 × 33 millimeetrit. Kaitseväe ja Kaitseliidu meedik ja vaimulik võivad kanda fotol kaitseväelase vormiriietust. Isikukaardi esikülje vasakusse alumisse nurka trükitakse isikukaardi kandja peakatteta otsevaates fotokujutis mõõtmetega 25 × 33 millimeetrit. Kaitseväe ja Kaitseliidu meedik ja vaimulik võivad kanda fotol kaitseväelase vormiriietust. 5 (5) Isikukaardi esikülje paremasse alumisse nurka trükitakse punase risti embleem mõõtmetega 15 × 15 millimeetrit. Isikukaardi esikülje paremasse alumisse nurka trükitakse punase risti embleem mõõtmetega 15 × 15 millimeetrit.",
+      "estleg:summary": {
+        "@value": "1 (1) Isikukaardi esikülje ülaserva trükitakse kirjed „Selle tunnistuse esitaja on kaitstud 1949. aasta 12. augusti Genfi konventsiooni haavatud ja haigete sõjaväelaste olukorra parandamise kohta maismaal alusel kui” ja „The bearer of this card is protected by the Geneva Convention for the Amelioration of the Condition of the Wounded and Sick in Armed Forces of August 12, 1949, in his/her capacity as”.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isikukaardi esikülje ülaserva trükitakse kirjed „Selle tunnistuse esitaja on kaitstud 1949. aasta 12. augusti Genfi konventsiooni haavatud ja haigete sõjaväelaste olukorra parandamise kohta maismaal alusel kui” ja „The bearer of this card is protected by the Geneva Convention for the Amelioration of the Condition of the Wounded and Sick in Armed Forces of August 12, 1949, in his/her capacity as”. 2 (2) Isikukaardi esiküljele kantakse isikukaardi kandja kohta järgmised andmed: 1 1) ametinimetus „kaplan / chaplain” või „meedik / medical personnel”; 2 2) perekonnanimi / surname; 3 3) eesnimi / first name; 4 4) selle olemasolul auaste / rank; 5 5) sugu / sex; 6 6) sünniaeg / date of birth. 3 (3) Ametinimetusest paremale poole trükitakse punaselt suurtähtedega kirje „PUNASE RISTI KAART”. 4 (4) Isikukaardi esikülje vasakusse alumisse nurka trükitakse isikukaardi kandja peakatteta otsevaates fotokujutis mõõtmetega 25 × 33 millimeetrit. Kaitseväe ja Kaitseliidu meedik ja vaimulik võivad kanda fotol kaitseväelase vormiriietust. 5 (5) Isikukaardi esikülje paremasse alumisse nurka trükitakse punase risti embleem mõõtmetega 15 × 15 millimeetrit.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053272_Par_5_v1053272"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053272_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_5_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaardi esikülje ülaserva trükitakse kirjed „Selle tunnistuse esitaja on kaitstud 1949. aasta 12. augusti Genfi konventsiooni haavatud ja haigete sõjaväelaste olukorra parandamise kohta maismaal alusel kui” ja „The bearer of this card is protected by the Geneva Convention for the Amelioration of the Condition of the Wounded and Sick in Armed Forces of August 12, 1949, in his/her capacity as”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isikukaardi esiküljele kantakse isikukaardi kandja kohta järgmised andmed: 1) ametinimetus „kaplan / chaplain” või „meedik / medical personnel”; 2) perekonnanimi / surname; 3) eesnimi / first name; 4) selle olemasolul auaste / rank; 5) sugu / sex; 6) sünniaeg / date of birth.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ametinimetusest paremale poole trükitakse punaselt suurtähtedega kirje „PUNASE RISTI KAART”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Isikukaardi esikülje vasakusse alumisse nurka trükitakse isikukaardi kandja peakatteta otsevaates fotokujutis mõõtmetega 25 × 33 millimeetrit. Kaitseväe ja Kaitseliidu meedik ja vaimulik võivad kanda fotol kaitseväelase vormiriietust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Isikukaardi esikülje paremasse alumisse nurka trükitakse punase risti embleem mõõtmetega 15 × 15 millimeetrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
     },
     {
       "@id": "estleg:Reg_1053272_Par_6",
@@ -235,13 +553,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Isikukaardi tagakülje kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 6. Isikukaardi tagakülje kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Meditsiinipersonali ja vaimuliku isikukaardi vorm ning väljaandmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053272_Map"
       },
-      "estleg:summary": "1 (1) Isikukaardi tagakülje vasakusse ülemisse nurka trükitakse väike riigivapp ja suurtähtedega kirje „Estonian Defence Forces”. Isikukaardi tagakülje vasakusse ülemisse nurka trükitakse väike riigivapp ja suurtähtedega kirje „Estonian Defence Forces”. 2 (2) Isikukaardi tagaküljele kantakse järgmised andmed: 1 1) allkiri / signature; 2 2) tunnistuse nr / identity card no; 3 3) kehtiv kuni / date of expiry. Isikukaardi tagaküljele kantakse järgmised andmed: allkiri / signature; tunnistuse nr / i",
-      "estleg:legalText": "1 (1) Isikukaardi tagakülje vasakusse ülemisse nurka trükitakse väike riigivapp ja suurtähtedega kirje „Estonian Defence Forces”. Isikukaardi tagakülje vasakusse ülemisse nurka trükitakse väike riigivapp ja suurtähtedega kirje „Estonian Defence Forces”. 2 (2) Isikukaardi tagaküljele kantakse järgmised andmed: 1 1) allkiri / signature; 2 2) tunnistuse nr / identity card no; 3 3) kehtiv kuni / date of expiry. Isikukaardi tagaküljele kantakse järgmised andmed: allkiri / signature; tunnistuse nr / identity card no; kehtiv kuni / date of expiry. 3 (3) Isikukaardi tagakülje paremasse ülemisse nurka trükitakse punase risti embleem mõõtmetega 19 × 19 millimeetrit. Isikukaardi tagakülje paremasse ülemisse nurka trükitakse punase risti embleem mõõtmetega 19 × 19 millimeetrit.",
+      "estleg:summary": {
+        "@value": "1 (1) Isikukaardi tagakülje vasakusse ülemisse nurka trükitakse väike riigivapp ja suurtähtedega kirje „Estonian Defence Forces”. 2 (2) Isikukaardi tagaküljele kantakse järgmised andmed: 1 1) allkiri / signature; 2 2) tunnistuse nr / identity card no; 3 3) kehtiv kuni / date of expiry. 3 (3) Isikukaardi tagakülje paremasse ülemisse nurka trükitakse punase risti embleem mõõtmetega 19 × 19 millimeetrit.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isikukaardi tagakülje vasakusse ülemisse nurka trükitakse väike riigivapp ja suurtähtedega kirje „Estonian Defence Forces”. 2 (2) Isikukaardi tagaküljele kantakse järgmised andmed: 1 1) allkiri / signature; 2 2) tunnistuse nr / identity card no; 3 3) kehtiv kuni / date of expiry. 3 (3) Isikukaardi tagakülje paremasse ülemisse nurka trükitakse punase risti embleem mõõtmetega 19 × 19 millimeetrit.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -254,6 +578,17 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053272_Par_6_v1053272"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053272_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1053272_Par_6_Lg_3"
         }
       ]
     },
@@ -268,6 +603,50 @@
       },
       "estleg:citationDetail": "lg 5",
       "estleg:citationText": "Määrus kehtestatakse punase risti nimetuse ja embleemi seaduse § 7 lõike 5"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaardi tagakülje vasakusse ülemisse nurka trükitakse väike riigivapp ja suurtähtedega kirje „Estonian Defence Forces”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isikukaardi tagaküljele kantakse järgmised andmed: 1) allkiri / signature; 2) tunnistuse nr / identity card no; 3) kehtiv kuni / date of expiry.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053272_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Isikukaardi tagakülje paremasse ülemisse nurka trükitakse punase risti embleem mõõtmetega 19 × 19 millimeetrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053272_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
     }
   ]
 }

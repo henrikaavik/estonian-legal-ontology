@@ -5,34 +5,55 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:AOS_Osa5",
       "@type": [
-        "estleg:Part"
+        "estleg:Part",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Asjaõigusseadus Osa 5 (REAALKOORMATISED) §229–240 kaardistus",
+      "estleg:isPartOf": {
+        "@id": "estleg:AOS_Map"
+      },
+      "estleg:partOfAct": {
+        "@id": "estleg:AOS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Asjaõigusseadus Osa 5 (REAALKOORMATISED) §229–240 kaardistus",
+        "@language": "et"
+      },
       "dc:source": "Asjaõigusseadus",
-      "dcterms:title": [
-        {
-          "@value": "Asjaõigusseadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Law of Property Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Asjaõigusseadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/128012026007.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062026005"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062026005/xml"
+      },
+      "estleg:globalId": "130062026005",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159211",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "67c080436e4e563d6d706849cffd2527682c22032bc029665b5a2493599522f6",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1993-12-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-02-07",
         "@type": "xsd:date"
       },
       "estleg:harmonisedWith": [
@@ -45,15 +66,8 @@
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-02-07",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/505022026001"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:AOS_Map"
       },
       "estleg:affectedBy": [
         {
@@ -88,11 +102,37 @@
       ]
     },
     {
+      "@id": "estleg:Cluster_AOS_5_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§229–236 MÕISTE, TEKKIMINE, LÕPPEMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§229–236 MÕISTE, TEKKIMINE, LÕPPEMINE",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa5_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_AOS_5_Part"
+      },
+      "estleg:provisionCount": 8
+    },
+    {
       "@id": "estleg:AOS_Osa5_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Asjaõigusseadus Osa 5 (REAALKOORMATISED) teemaskeem",
+      "rdfs:label": {
+        "@value": "Asjaõigusseadus Osa 5 (REAALKOORMATISED) teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_AOS_5_Part"
@@ -105,8 +145,14 @@
         "owl:NamedIndividual",
         "skos:Concept"
       ],
-      "rdfs:label": "Osa 5 (REAALKOORMATISED)",
-      "skos:prefLabel": "Osa 5 (REAALKOORMATISED)",
+      "rdfs:label": {
+        "@value": "Osa 5 (REAALKOORMATISED)",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Osa 5 (REAALKOORMATISED)",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AOS_Osa5_TopicScheme"
       },
@@ -120,29 +166,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_AOS_5_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§229–236 MÕISTE, TEKKIMINE, LÕPPEMINE",
-      "skos:prefLabel": "§229–236 MÕISTE, TEKKIMINE, LÕPPEMINE",
-      "skos:inScheme": {
-        "@id": "estleg:AOS_Osa5_TopicScheme"
-      },
-      "skos:broader": {
-        "@id": "estleg:Cluster_AOS_5_Part"
-      },
-      "estleg:provisionCount": 8
-    },
-    {
       "@id": "estleg:Chapter_AOS_5_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – MÕISTE, TEKKIMINE, LÕPPEMINE",
+      "rdfs:label": {
+        "@value": "1. peatükk – MÕISTE, TEKKIMINE, LÕPPEMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
@@ -162,8 +194,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§237–240 SISU",
-      "skos:prefLabel": "§237–240 SISU",
+      "rdfs:label": {
+        "@value": "§237–240 SISU",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§237–240 SISU",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:AOS_Osa5_TopicScheme"
       },
@@ -178,7 +216,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – SISU",
+      "rdfs:label": {
+        "@value": "2. peatükk – SISU",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
@@ -198,13 +239,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 229.",
-      "rdfs:label": "§ 229. Reaalkoormatise mõiste",
+      "rdfs:label": {
+        "@value": "§ 229. Reaalkoormatise mõiste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Kinnisasja võib koormata selliselt, et kinnisasja igakordne omanik peab tasuma isikule, kelle kasuks reaalkoormatis on seatud, perioodilisi makseid rahas või natuuras või tegema teatud tegusid. (2) Reaalkoormatist võib seada ka teise kinnisasja igakordse omaniku kasuks. (3) Kehtetu -",
-      "estleg:legalText": "(1) Kinnisasja võib koormata selliselt, et kinnisasja igakordne omanik peab tasuma isikule, kelle kasuks reaalkoormatis on seatud, perioodilisi makseid rahas või natuuras või tegema teatud tegusid. (2) Reaalkoormatist võib seada ka teise kinnisasja igakordse omaniku kasuks. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Kinnisasja võib koormata selliselt, et kinnisasja igakordne omanik peab tasuma isikule, kelle kasuks reaalkoormatis on seatud, perioodilisi makseid rahas või natuuras või tegema teatud tegusid. (2) Reaalkoormatist võib seada ka teise kinnisasja igakordse omaniku kasuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kinnisasja võib koormata selliselt, et kinnisasja igakordne omanik peab tasuma isikule, kelle kasuks reaalkoormatis on seatud, perioodilisi makseid rahas või natuuras või tegema teatud tegusid. (2) Reaalkoormatist võib seada ka teise kinnisasja igakordse omaniku kasuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
       },
@@ -217,9 +264,6 @@
         },
         {
           "@id": "estleg:AOS_Osa5_Par_229_Lg_2"
-        },
-        {
-          "@id": "estleg:AOS_Osa5_Par_229_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -319,31 +363,24 @@
       }
     },
     {
-      "@id": "estleg:AOS_Osa5_Par_229_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AOS_Osa5_Par_229"
-      },
-      "rdfs:label": "§ 229 lg 3"
-    },
-    {
       "@id": "estleg:AOS_Osa5_Par_230",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 230.",
-      "rdfs:label": "§ 230. Reaalkoormatise liigid",
+      "rdfs:label": {
+        "@value": "§ 230. Reaalkoormatise liigid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Reaalkoormatis on avalik-õiguslik, kui see on seatud seaduse alusel riigi, kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku kasuks. (2) Reaalkoormatis on eraõiguslik, kui see on seatud füüsilise isiku, eraõigusliku juriidilise isiku või teise kinnisasja igakordse omaniku kasuks.",
+      "estleg:summary": {
+        "@value": "(1) Reaalkoormatis on avalik-õiguslik, kui see on seatud seaduse alusel riigi, kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku kasuks. (2) Reaalkoormatis on eraõiguslik, kui see on seatud füüsilise isiku, eraõigusliku juriidilise isiku või teise kinnisasja igakordse omaniku kasuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Reaalkoormatis on avalik-õiguslik, kui see on seatud seaduse alusel riigi, kohaliku omavalitsuse või muu avalik-õigusliku juriidilise isiku kasuks. (2) Reaalkoormatis on eraõiguslik, kui see on seatud füüsilise isiku, eraõigusliku juriidilise isiku või teise kinnisasja igakordse omaniku kasuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
@@ -460,12 +497,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 231.",
-      "rdfs:label": "§ 231. Reaalkoormatise tekkimine",
+      "rdfs:label": {
+        "@value": "§ 231. Reaalkoormatise tekkimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Reaalkoormatise seadmiseks sõlmitav asjaõigusleping peab olema notariaalselt tõestatud. (2) Reaalkoormatise seadmisel tuleb võimaluse korral määrata reaalkoormatise rahaline väärtus ja see kinnistusraamatusse kanda.",
+      "estleg:summary": {
+        "@value": "(1) Reaalkoormatise seadmiseks sõlmitav asjaõigusleping peab olema notariaalselt tõestatud. (2) Reaalkoormatise seadmisel tuleb võimaluse korral määrata reaalkoormatise rahaline väärtus ja see kinnistusraamatusse kanda.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Reaalkoormatise seadmiseks sõlmitav asjaõigusleping peab olema notariaalselt tõestatud. (2) Reaalkoormatise seadmisel tuleb võimaluse korral määrata reaalkoormatise rahaline väärtus ja see kinnistusraamatusse kanda.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
@@ -578,13 +621,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 232.",
-      "rdfs:label": "§ 232. Reaalkoormatise lõppemine",
+      "rdfs:label": {
+        "@value": "§ 232. Reaalkoormatise lõppemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 232. Reaalkoormatise lõppemine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
       },
@@ -613,13 +661,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 233.",
-      "rdfs:label": "§ 233. Reaalkoormatise lõpetamine õigustatud isiku nõudel",
+      "rdfs:label": {
+        "@value": "§ 233. Reaalkoormatise lõpetamine õigustatud isiku nõudel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "Õigustatud isik võib nõuda reaalkoormatise lõpetamist ja selle väljaostmist kohustatud isiku poolt, kui: koormatud kinnisasi jagatakse ning sellega kahjustatakse tunduvalt õigustatud isiku õigusi või kohustatud isik vähendab tunduvalt koormatud kinnisasja väärtust ega anna tagatist reaalkoormatisest tulenevate kohustuste täitmiseks või kohustatud isik on jätnud reaalkoormatisest tulenevad kohustused järjest kolme aasta jooksul täitmata.",
-      "estleg:legalText": "Õigustatud isik võib nõuda reaalkoormatise lõpetamist ja selle väljaostmist kohustatud isiku poolt, kui: koormatud kinnisasi jagatakse ning sellega kahjustatakse tunduvalt õigustatud isiku õigusi või kohustatud isik vähendab tunduvalt koormatud kinnisasja väärtust ega anna tagatist reaalkoormatisest tulenevate kohustuste täitmiseks või kohustatud isik on jätnud reaalkoormatisest tulenevad kohustused järjest kolme aasta jooksul täitmata.",
+      "estleg:summary": {
+        "@value": "Õigustatud isik võib nõuda reaalkoormatise lõpetamist ja selle väljaostmist kohustatud isiku poolt, kui: 1) koormatud kinnisasi jagatakse ning sellega kahjustatakse tunduvalt õigustatud isiku õigusi või 2) kohustatud isik vähendab tunduvalt koormatud kinnisasja väärtust ega anna tagatist reaalkoormatisest tulenevate kohustuste täitmiseks või 3) kohustatud isik on jätnud reaalkoormatisest tulenevad kohustused järjest kolme aasta jooksul täitmata.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Õigustatud isik võib nõuda reaalkoormatise lõpetamist ja selle väljaostmist kohustatud isiku poolt, kui: 1) koormatud kinnisasi jagatakse ning sellega kahjustatakse tunduvalt õigustatud isiku õigusi või 2) kohustatud isik vähendab tunduvalt koormatud kinnisasja väärtust ega anna tagatist reaalkoormatisest tulenevate kohustuste täitmiseks või 3) kohustatud isik on jätnud reaalkoormatisest tulenevad kohustused järjest kolme aasta jooksul täitmata.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
       },
@@ -660,10 +714,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Õigustatud isik võib nõuda reaalkoormatise lõpetamist ja selle väljaostmist kohustatud isiku poolt, kui: koormatud kinnisasi jagatakse ning sellega kahjustatakse tunduvalt õigustatud isiku õigusi või kohustatud isik vähendab tunduvalt koormatud kinnisasja väärtust ega anna tagatist reaalkoormatisest tulenevate kohustuste täitmiseks või kohustatud isik on jätnud reaalkoormatisest tulenevad kohustused järjest kolme aasta jooksul täitmata.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õigustatud isik võib nõuda reaalkoormatise lõpetamist ja selle väljaostmist kohustatud isiku poolt, kui: 1) koormatud kinnisasi jagatakse ning sellega kahjustatakse tunduvalt õigustatud isiku õigusi või 2) kohustatud isik vähendab tunduvalt koormatud kinnisasja väärtust ega anna tagatist reaalkoormatisest tulenevate kohustuste täitmiseks või 3) kohustatud isik on jätnud reaalkoormatisest tulenevad kohustused järjest kolme aasta jooksul täitmata.",
       "estleg:parentProvision": {
         "@id": "estleg:AOS_Osa5_Par_233"
       },
+      "rdfs:label": "§ 233 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -684,13 +745,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 234.",
-      "rdfs:label": "§ 234. Reaalkoormatise lõpetamine kohustatud isiku nõudel",
+      "rdfs:label": {
+        "@value": "§ 234. Reaalkoormatise lõpetamine kohustatud isiku nõudel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Kohustatud isik võib nõuda reaalkoormatise lõpetamist selle väljaostmisega õigustatud isikult, kui: õigustatud isik ei täida reaalkoormatise tekkimise aluseks olevat lepingut või reaalkoormatis on kestnud 30 aastat, olenemata kinnistusraamatu kandes märgitud pikemast tähtajast või väljaostu lubamatusest. (2) Kui reaalkoormatise väljaostu nõutakse käesoleva paragrahvi 1. lõike punktis 2 sätestatud alusel, peab sellest üks aasta ette teatama.",
-      "estleg:legalText": "(1) Kohustatud isik võib nõuda reaalkoormatise lõpetamist selle väljaostmisega õigustatud isikult, kui: õigustatud isik ei täida reaalkoormatise tekkimise aluseks olevat lepingut või reaalkoormatis on kestnud 30 aastat, olenemata kinnistusraamatu kandes märgitud pikemast tähtajast või väljaostu lubamatusest. (2) Kui reaalkoormatise väljaostu nõutakse käesoleva paragrahvi 1. lõike punktis 2 sätestatud alusel, peab sellest üks aasta ette teatama. (3) Väljaostu ei või nõuda, kui reaalkoormatis on seatud teatud füüsilise isiku kasuks või on seatud seaduse alusel või on seotud reaalservituudiga.",
+      "estleg:summary": {
+        "@value": "(1) Kohustatud isik võib nõuda reaalkoormatise lõpetamist selle väljaostmisega õigustatud isikult, kui: 1) õigustatud isik ei täida reaalkoormatise tekkimise aluseks olevat lepingut või 2) reaalkoormatis on kestnud 30 aastat, olenemata kinnistusraamatu kandes märgitud pikemast tähtajast või väljaostu lubamatusest. (2) Kui reaalkoormatise väljaostu nõutakse käesoleva paragrahvi 1. lõike punktis 2 sätestatud alusel, peab sellest üks aasta ette teatama.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kohustatud isik võib nõuda reaalkoormatise lõpetamist selle väljaostmisega õigustatud isikult, kui: 1) õigustatud isik ei täida reaalkoormatise tekkimise aluseks olevat lepingut või 2) reaalkoormatis on kestnud 30 aastat, olenemata kinnistusraamatu kandes märgitud pikemast tähtajast või väljaostu lubamatusest. (2) Kui reaalkoormatise väljaostu nõutakse käesoleva paragrahvi 1. lõike punktis 2 sätestatud alusel, peab sellest üks aasta ette teatama. (3) Väljaostu ei või nõuda, kui reaalkoormatis on seatud teatud füüsilise isiku kasuks või on seatud seaduse alusel või on seotud reaalservituudiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
       },
@@ -733,11 +800,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kohustatud isik võib nõuda reaalkoormatise lõpetamist selle väljaostmisega õigustatud isikult, kui: õigustatud isik ei täida reaalkoormatise tekkimise aluseks olevat lepingut või reaalkoormatis on kestnud 30 aastat, olenemata kinnistusraamatu kandes märgitud pikemast tähtajast või väljaostu lubamatusest.",
+      "estleg:legalText": "(1) Kohustatud isik võib nõuda reaalkoormatise lõpetamist selle väljaostmisega õigustatud isikult, kui: 1) õigustatud isik ei täida reaalkoormatise tekkimise aluseks olevat lepingut või 2) reaalkoormatis on kestnud 30 aastat, olenemata kinnistusraamatu kandes märgitud pikemast tähtajast või väljaostu lubamatusest.",
       "estleg:parentProvision": {
         "@id": "estleg:AOS_Osa5_Par_234"
       },
       "rdfs:label": "§ 234 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -804,12 +875,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 235.",
-      "rdfs:label": "§ 235. Väljaostuhind",
+      "rdfs:label": {
+        "@value": "§ 235. Väljaostuhind",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Reaalkoormatise väljaostuhinna määramisel võetakse aluseks kinnistusraamatu kandes märgitud reaalkoormatise väärtus. (2) Kui reaalkoormatise väärtus ei ole kinnistusraamatusse kantud või kanne on puudulik või reaalkoormatisest tulenevate tegude rahaline väärtus on oluliselt muutunud, määrab väljaostuhinna kohus, arvestades tegelikke olusid ning võttes reaalkoormatise kestuseks 30 aastat.",
+      "estleg:summary": {
+        "@value": "(1) Reaalkoormatise väljaostuhinna määramisel võetakse aluseks kinnistusraamatu kandes märgitud reaalkoormatise väärtus. (2) Kui reaalkoormatise väärtus ei ole kinnistusraamatusse kantud või kanne on puudulik või reaalkoormatisest tulenevate tegude rahaline väärtus on oluliselt muutunud, määrab väljaostuhinna kohus, arvestades tegelikke olusid ning võttes reaalkoormatise kestuseks 30 aastat.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Reaalkoormatise väljaostuhinna määramisel võetakse aluseks kinnistusraamatu kandes märgitud reaalkoormatise väärtus. (2) Kui reaalkoormatise väärtus ei ole kinnistusraamatusse kantud või kanne on puudulik või reaalkoormatisest tulenevate tegude rahaline väärtus on oluliselt muutunud, määrab väljaostuhinna kohus, arvestades tegelikke olusid ning võttes reaalkoormatise kestuseks 30 aastat.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
@@ -894,12 +971,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 236.",
-      "rdfs:label": "§ 236. Reaalkoormatisest tuleneva kohustuse aegumine",
+      "rdfs:label": {
+        "@value": "§ 236. Reaalkoormatisest tuleneva kohustuse aegumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Reaalkoormatis ei teki igamisega ega lõpe aegumisega. (2) Reaalkoormatisest tulenev iga üksik kohustus aegub nõude aegumise üldise tähtaja jooksul, arvates ajast, mil see muutus kohustatud isiku isiklikuks võlaks (§ 239 lg 1).",
+      "estleg:summary": {
+        "@value": "(1) Reaalkoormatis ei teki igamisega ega lõpe aegumisega. (2) Reaalkoormatisest tulenev iga üksik kohustus aegub nõude aegumise üldise tähtaja jooksul, arvates ajast, mil see muutus kohustatud isiku isiklikuks võlaks (§ 239 lg 1).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Reaalkoormatis ei teki igamisega ega lõpe aegumisega. (2) Reaalkoormatisest tulenev iga üksik kohustus aegub nõude aegumise üldise tähtaja jooksul, arvates ajast, mil see muutus kohustatud isiku isiklikuks võlaks (§ 239 lg 1).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_1"
@@ -983,12 +1066,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 237.",
-      "rdfs:label": "§ 237. Reaalkoormatise seotus kinnisasjaga",
+      "rdfs:label": {
+        "@value": "§ 237. Reaalkoormatise seotus kinnisasjaga",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Reaalkoormatis läheb koos koormatud kinnisasjaga üle igale kinnisasja omandajale tema nõusolekust sõltumata. (2) Kinnisasja igakordse omaniku kasuks seatud reaalkoormatist ei või lahutada sellest kinnisasjast. (3) Teatud isiku kasuks seatud reaalkoormatist ei või siduda kinnisasjaga.",
+      "estleg:summary": {
+        "@value": "(1) Reaalkoormatis läheb koos koormatud kinnisasjaga üle igale kinnisasja omandajale tema nõusolekust sõltumata. (2) Kinnisasja igakordse omaniku kasuks seatud reaalkoormatist ei või lahutada sellest kinnisasjast. (3) Teatud isiku kasuks seatud reaalkoormatist ei või siduda kinnisasjaga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Reaalkoormatis läheb koos koormatud kinnisasjaga üle igale kinnisasja omandajale tema nõusolekust sõltumata. (2) Kinnisasja igakordse omaniku kasuks seatud reaalkoormatist ei või lahutada sellest kinnisasjast. (3) Teatud isiku kasuks seatud reaalkoormatist ei või siduda kinnisasjaga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_2"
@@ -1100,12 +1189,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 238.",
-      "rdfs:label": "§ 238. Reaalkoormatise üleantavus",
+      "rdfs:label": {
+        "@value": "§ 238. Reaalkoormatise üleantavus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Teatud isiku kasuks seatud reaalkoormatist võib teisele isikule üle anda, kui reaalkoormatis oma olemuselt on üleantav ega suurene sellega. (2) Reaalkoormatis ei ole üleantav, kui üleantav ei ole reaalkoormatisest tulenev üksikkohustus.",
+      "estleg:summary": {
+        "@value": "(1) Teatud isiku kasuks seatud reaalkoormatist võib teisele isikule üle anda, kui reaalkoormatis oma olemuselt on üleantav ega suurene sellega. (2) Reaalkoormatis ei ole üleantav, kui üleantav ei ole reaalkoormatisest tulenev üksikkohustus.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teatud isiku kasuks seatud reaalkoormatist võib teisele isikule üle anda, kui reaalkoormatis oma olemuselt on üleantav ega suurene sellega. (2) Reaalkoormatis ei ole üleantav, kui üleantav ei ole reaalkoormatisest tulenev üksikkohustus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_2"
@@ -1184,13 +1279,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 239.",
-      "rdfs:label": "§ 239. Vastutus reaalkoormatisest tulenevate kohustuste eest",
+      "rdfs:label": {
+        "@value": "§ 239. Vastutus reaalkoormatisest tulenevate kohustuste eest",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Reaalkoormatisest tulenevate üksikkohustuste täitmise eest vastutab omanik koormatud kinnisasjaga. Kinnisasja omanik vastutab tema omandi kestuse jooksul sissenõutavaks muutunud üksikkohustuste täitmise eest ka isiklikult, kui ei ole kokku lepitud teisiti. (1¹) Kui reaalkoormatisega tagatud rahalist nõuet ei täideta, on õigustatud isikul õigus nõuda sundtäitmist täitemenetluse seadustikus sätestatud korras. (2) Kehtetu - (3) Kui koormatud kinnisasi jagatakse, kehtib reaalkoormatis",
-      "estleg:legalText": "(1) Reaalkoormatisest tulenevate üksikkohustuste täitmise eest vastutab omanik koormatud kinnisasjaga. Kinnisasja omanik vastutab tema omandi kestuse jooksul sissenõutavaks muutunud üksikkohustuste täitmise eest ka isiklikult, kui ei ole kokku lepitud teisiti. (1¹) Kui reaalkoormatisega tagatud rahalist nõuet ei täideta, on õigustatud isikul õigus nõuda sundtäitmist täitemenetluse seadustikus sätestatud korras. (2) Kehtetu - (3) Kui koormatud kinnisasi jagatakse, kehtib reaalkoormatis üksikosade suhtes edasi ja kohustuste täitmise eest vastutavad üksikosade omanikud solidaarselt.",
+      "estleg:summary": {
+        "@value": "(1) Reaalkoormatisest tulenevate üksikkohustuste täitmise eest vastutab omanik koormatud kinnisasjaga. Kinnisasja omanik vastutab tema omandi kestuse jooksul sissenõutavaks muutunud üksikkohustuste täitmise eest ka isiklikult, kui ei ole kokku lepitud teisiti. (1¹) Kui reaalkoormatisega tagatud rahalist nõuet ei täideta, on õigustatud isikul õigus nõuda sundtäitmist täitemenetluse seadustikus sätestatud korras. (3) Kui koormatud kinnisasi jagatakse, kehtib reaalkoormatis üksikosade suhtes edasi",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Reaalkoormatisest tulenevate üksikkohustuste täitmise eest vastutab omanik koormatud kinnisasjaga. Kinnisasja omanik vastutab tema omandi kestuse jooksul sissenõutavaks muutunud üksikkohustuste täitmise eest ka isiklikult, kui ei ole kokku lepitud teisiti. (1¹) Kui reaalkoormatisega tagatud rahalist nõuet ei täideta, on õigustatud isikul õigus nõuda sundtäitmist täitemenetluse seadustikus sätestatud korras. (3) Kui koormatud kinnisasi jagatakse, kehtib reaalkoormatis üksikosade suhtes edasi ja kohustuste täitmise eest vastutavad üksikosade omanikud solidaarselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_2"
       },
@@ -1203,9 +1304,6 @@
         },
         {
           "@id": "estleg:AOS_Osa5_Par_239_Lg_1_1"
-        },
-        {
-          "@id": "estleg:AOS_Osa5_Par_239_Lg_2"
         },
         {
           "@id": "estleg:AOS_Osa5_Par_239_Lg_3"
@@ -1291,19 +1389,6 @@
       }
     },
     {
-      "@id": "estleg:AOS_Osa5_Par_239_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:AOS_Osa5_Par_239"
-      },
-      "rdfs:label": "§ 239 lg 2"
-    },
-    {
       "@id": "estleg:AOS_Osa5_Par_239_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -1332,12 +1417,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 240.",
-      "rdfs:label": "§ 240. Reaalkoormatise kehtivus valitseva kinnisasja jagamisel",
+      "rdfs:label": {
+        "@value": "§ 240. Reaalkoormatise kehtivus valitseva kinnisasja jagamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:partOfAct": {
         "@id": "estleg:AOS_Map"
       },
-      "estleg:summary": "(1) Kui jagatakse kinnisasi, mille igakordse omaniku kasuks reaalkoormatis on seatud (valitsev kinnisasi), kehtib reaalkoormatis osade kasuks edasi. (2) Kui reaalkoormatisest tekkivad kohustused on jagatavad, siis jagatakse reaalkoormatis käesoleva paragrahvi 1. lõikes nimetatud osade vahel vastavalt nende suurusele. Kui kohustused ei ole jagatavad, siis on nende osade omanikud õigustatud nõudma täitmist solidaarselt. (3) Kinnisasja omanik võib valitseva kinnisasja jagamisel määrata",
+      "estleg:summary": {
+        "@value": "(1) Kui jagatakse kinnisasi, mille igakordse omaniku kasuks reaalkoormatis on seatud (valitsev kinnisasi), kehtib reaalkoormatis osade kasuks edasi. (2) Kui reaalkoormatisest tekkivad kohustused on jagatavad, siis jagatakse reaalkoormatis käesoleva paragrahvi 1. lõikes nimetatud osade vahel vastavalt nende suurusele. Kui kohustused ei ole jagatavad, siis on nende osade omanikud õigustatud nõudma täitmist solidaarselt. (3) Kinnisasja omanik võib valitseva kinnisasja jagamisel määrata",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui jagatakse kinnisasi, mille igakordse omaniku kasuks reaalkoormatis on seatud (valitsev kinnisasi), kehtib reaalkoormatis osade kasuks edasi. (2) Kui reaalkoormatisest tekkivad kohustused on jagatavad, siis jagatakse reaalkoormatis käesoleva paragrahvi 1. lõikes nimetatud osade vahel vastavalt nende suurusele. Kui kohustused ei ole jagatavad, siis on nende osade omanikud õigustatud nõudma täitmist solidaarselt. (3) Kinnisasja omanik võib valitseva kinnisasja jagamisel määrata reaalkoormatise kehtivaks ainult ühe või mitme osa suhtes. Määramine tuleb kanda kinnistusraamatusse. (4) Kui valitseva kinnisasja omanik võõrandab ühe osa kinnisasjast, tegemata reaalkoormatise jagamise korraldust, jääb reaalkoormatis kehtima selle kinnisasja osa suhtes, mille omanik endale jätab. (5) Kui reaalkoormatis on oma olemuse tõttu seotud kinnisasja jagamisel tekkinud ühe osaga, võib kohustatud isik nõuda reaalkoormatise lõpetamist teiste osade suhtes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_AOS_5_2"

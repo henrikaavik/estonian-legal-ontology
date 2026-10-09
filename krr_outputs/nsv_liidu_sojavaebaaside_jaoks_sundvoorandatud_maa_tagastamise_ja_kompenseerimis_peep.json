@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:SbMTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
-      "dcterms:title": [
-        {
-          "@value": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Return of and Compensation for Land Expropriated for USSR Military Bases Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/22270.xml"
+        "@id": "https://www.riigiteataja.ee/akt/22270"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/22270/xml"
+      },
+      "estleg:globalId": "22270",
+      "eli:id_local": "22270",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159228",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "dae0025570e2d9babeab6d27c33936050d778afa4b47722f91cd4f13c9f56305",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1993-12-30",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/524112014003"
@@ -93,19 +105,10 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
-      ]
-    },
-    {
-      "@id": "estleg:SbMTS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_SbMTS_default"
-        }
-      ]
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/524112014003"
+      }
     },
     {
       "@id": "estleg:Cluster_SbMTS_default",
@@ -114,12 +117,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–6 NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
-      "skos:prefLabel": "§1–6 NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
+      "rdfs:label": {
+        "@value": "§1–6 NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–6 NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SbMTS_TopicScheme"
       },
       "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:SbMTS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_SbMTS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:SbMTS_Par_1",
@@ -128,12 +152,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [1 (1) Eesti Vabariigi poolt ajavahemikus 1939. aasta septembrist kuni 1940. aast...]",
+      "rdfs:label": {
+        "@value": "§ 1. [(1) Eesti Vabariigi poolt ajavahemikus 1939. aasta septembrist kuni 1940. aasta...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SbMTS_Map"
       },
-      "estleg:summary": "(1) Eesti Vabariigi poolt ajavahemikus 1939. aasta septembrist kuni 1940. aasta 23. juulini NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastatakse või kompenseeritakse isikutele, kellelt maa sundvõõrandati, või nende pärijatele, sõltumata maa sundvõõrandamise viisist. (2) Käesoleva paragrahvi 1. lõikes nimetatud maa tagastamise korral tagastatakse ka sellel maal sundvõõrandamise ajal asunud hooned ja rajatised, kui need on säilinud.",
+      "estleg:summary": {
+        "@value": "(1) Eesti Vabariigi poolt ajavahemikus 1939. aasta septembrist kuni 1940. aasta 23. juulini NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastatakse või kompenseeritakse isikutele, kellelt maa sundvõõrandati, või nende pärijatele, sõltumata maa sundvõõrandamise viisist. (2) Käesoleva paragrahvi 1. lõikes nimetatud maa tagastamise korral tagastatakse ka sellel maal sundvõõrandamise ajal asunud hooned ja rajatised, kui need on säilinud.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti Vabariigi poolt ajavahemikus 1939. aasta septembrist kuni 1940. aasta 23. juulini NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastatakse või kompenseeritakse isikutele, kellelt maa sundvõõrandati, või nende pärijatele, sõltumata maa sundvõõrandamise viisist. (2) Käesoleva paragrahvi 1. lõikes nimetatud maa tagastamise korral tagastatakse ka sellel maal sundvõõrandamise ajal asunud hooned ja rajatised, kui need on säilinud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SbMTS_default"
@@ -199,12 +229,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Kui isik, kellelt sundvõõrandati käesoleva seaduse §-s 1 nimetatud maa, omandas...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Kui isik, kellelt sundvõõrandati käesoleva seaduse §-s 1 nimetatud maa, omandas...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SbMTS_Map"
       },
-      "estleg:summary": "Kui isik, kellelt sundvõõrandati käesoleva seaduse §-s 1 nimetatud maa, omandas selle maa arvel Eesti Vabariigilt muu maa, mis 1940. aasta 23. juulil natsionaliseeriti, tagastatakse või kompenseeritakse talle või tema pärijatele natsionaliseeritud maa nende taotlusel. Sel juhul ei ole neil õigust käesoleva seaduse §-s 1 nimetatud maa tagastamisele või kompenseerimisele.",
+      "estleg:summary": {
+        "@value": "Kui isik, kellelt sundvõõrandati käesoleva seaduse §-s 1 nimetatud maa, omandas selle maa arvel Eesti Vabariigilt muu maa, mis 1940. aasta 23. juulil natsionaliseeriti, tagastatakse või kompenseeritakse talle või tema pärijatele natsionaliseeritud maa nende taotlusel. Sel juhul ei ole neil õigust käesoleva seaduse §-s 1 nimetatud maa tagastamisele või kompenseerimisele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui isik, kellelt sundvõõrandati käesoleva seaduse §-s 1 nimetatud maa, omandas selle maa arvel Eesti Vabariigilt muu maa, mis 1940. aasta 23. juulil natsionaliseeriti, tagastatakse või kompenseeritakse talle või tema pärijatele natsionaliseeritud maa nende taotlusel. Sel juhul ei ole neil õigust käesoleva seaduse §-s 1 nimetatud maa tagastamisele või kompenseerimisele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SbMTS_default"
@@ -240,10 +276,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui isik, kellelt sundvõõrandati käesoleva seaduse §-s 1 nimetatud maa, omandas selle maa arvel Eesti Vabariigilt muu maa, mis 1940. aasta 23. juulil natsionaliseeriti, tagastatakse või kompenseeritakse talle või tema pärijatele natsionaliseeritud maa nende taotlusel. Sel juhul ei ole neil õigust käesoleva seaduse §-s 1 nimetatud maa tagastamisele või kompenseerimisele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui isik, kellelt sundvõõrandati käesoleva seaduse §-s 1 nimetatud maa, omandas selle maa arvel Eesti Vabariigilt muu maa, mis 1940. aasta 23. juulil natsionaliseeriti, tagastatakse või kompenseeritakse talle või tema pärijatele natsionaliseeritud maa nende taotlusel. Sel juhul ei ole neil õigust käesoleva seaduse §-s 1 nimetatud maa tagastamisele või kompenseerimisele.",
       "estleg:parentProvision": {
         "@id": "estleg:SbMTS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -266,12 +304,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Käesoleva seaduse alusel maa ja hoonete tagastamine ning kompenseerimine toimub...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Käesoleva seaduse alusel maa ja hoonete tagastamine ning kompenseerimine toimub...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SbMTS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse alusel maa ja hoonete tagastamine ning kompenseerimine toimub omandireformi aluste seaduses (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253 ja 254; RT I 1993, 35, 545; 1993, 45, 639) ja maareformi seaduses (RT 1991, 34, 426; 1992, 10, 145; RT I 1993, 20, 354) ning nende alusel vastuvõetud muudes õigusaktides ettenähtud korras, kuivõrd seda ei muuda käesolev seadus.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse alusel maa ja hoonete tagastamine ning kompenseerimine toimub omandireformi aluste seaduses (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253 ja 254; RT I 1993, 35, 545; 1993, 45, 639) ja maareformi seaduses (RT 1991, 34, 426; 1992, 10, 145; RT I 1993, 20, 354) ning nende alusel vastuvõetud muudes õigusaktides ettenähtud korras, kuivõrd seda ei muuda käesolev seadus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse alusel maa ja hoonete tagastamine ning kompenseerimine toimub omandireformi aluste seaduses (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253 ja 254; RT I 1993, 35, 545; 1993, 45, 639) ja maareformi seaduses (RT 1991, 34, 426; 1992, 10, 145; RT I 1993, 20, 354) ning nende alusel vastuvõetud muudes õigusaktides ettenähtud korras, kuivõrd seda ei muuda käesolev seadus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SbMTS_default"
@@ -293,10 +337,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse alusel maa ja hoonete tagastamine ning kompenseerimine toimub omandireformi aluste seaduses (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253 ja 254; RT I 1993, 35, 545; 1993, 45, 639) ja maareformi seaduses (RT 1991, 34, 426; 1992, 10, 145; RT I 1993, 20, 354) ning nende alusel vastuvõetud muudes õigusaktides ettenähtud korras, kuivõrd seda ei muuda käesolev seadus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse alusel maa ja hoonete tagastamine ning kompenseerimine toimub omandireformi aluste seaduses (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253 ja 254; RT I 1993, 35, 545; 1993, 45, 639) ja maareformi seaduses (RT 1991, 34, 426; 1992, 10, 145; RT I 1993, 20, 354) ning nende alusel vastuvõetud muudes õigusaktides ettenähtud korras, kuivõrd seda ei muuda käesolev seadus.",
       "estleg:parentProvision": {
         "@id": "estleg:SbMTS_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:SbMTS_Par_4",
@@ -305,12 +351,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [Käesoleva seaduse §-s 1 nimetatud maa tagastamise ja kompenseerimise avaldusi võ...]",
+      "rdfs:label": {
+        "@value": "§ 4. [Käesoleva seaduse §-s 1 nimetatud maa tagastamise ja kompenseerimise avaldusi võ...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SbMTS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse §-s 1 nimetatud maa tagastamise ja kompenseerimise avaldusi võib esitada õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise maakonna- ja linnakomisjonidele kolme kuu jooksul käesoleva seaduse jõustumise päevast, kui need pole varem juba esitatud.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse §-s 1 nimetatud maa tagastamise ja kompenseerimise avaldusi võib esitada õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise maakonna- ja linnakomisjonidele kolme kuu jooksul käesoleva seaduse jõustumise päevast, kui need pole varem juba esitatud.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse §-s 1 nimetatud maa tagastamise ja kompenseerimise avaldusi võib esitada õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise maakonna- ja linnakomisjonidele kolme kuu jooksul käesoleva seaduse jõustumise päevast, kui need pole varem juba esitatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SbMTS_default"
@@ -349,10 +401,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse §-s 1 nimetatud maa tagastamise ja kompenseerimise avaldusi võib esitada õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise maakonna- ja linnakomisjonidele kolme kuu jooksul käesoleva seaduse jõustumise päevast, kui need pole varem juba esitatud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 1 nimetatud maa tagastamise ja kompenseerimise avaldusi võib esitada õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise maakonna- ja linnakomisjonidele kolme kuu jooksul käesoleva seaduse jõustumise päevast, kui need pole varem juba esitatud.",
       "estleg:parentProvision": {
         "@id": "estleg:SbMTS_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -373,12 +427,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamise korra kohta mää...]",
+      "rdfs:label": {
+        "@value": "§ 5. [Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamise korra kohta mää...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SbMTS_Map"
       },
-      "estleg:summary": "Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamise korra kohta määrusi.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamise korra kohta määrusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamise korra kohta määrusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SbMTS_default"
@@ -429,10 +489,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamise korra kohta määrusi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamise korra kohta määrusi.",
       "estleg:parentProvision": {
         "@id": "estleg:SbMTS_Par_5"
       },
+      "rdfs:label": "§ 5 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -459,12 +521,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [Käesolev seadus jõustub selle väljakuulutamise päeval. Käesolev seadus jõustub s...]",
+      "rdfs:label": {
+        "@value": "§ 6. [Käesolev seadus jõustub selle väljakuulutamise päeval.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "NSV Liidu sõjaväebaaside jaoks sundvõõrandatud maa tagastamise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SbMTS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub selle väljakuulutamise päeval.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub selle väljakuulutamise päeval.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub selle väljakuulutamise päeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SbMTS_default"
@@ -486,9 +554,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub selle väljakuulutamise päeval.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub selle väljakuulutamise päeval.",
       "estleg:parentProvision": {
         "@id": "estleg:SbMTS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/524112014003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:SbMTS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Return of and Compensation for Land Expropriated for USSR Military Bases Act",
+        "@language": "en"
       }
     }
   ]

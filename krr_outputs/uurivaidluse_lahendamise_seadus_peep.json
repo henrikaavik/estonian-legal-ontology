@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:UVLS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Üürivaidluse lahendamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Üürivaidluse lahendamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Üürivaidluse lahendamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Üürivaidluse lahendamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Lease Disputes Resolution Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Üürivaidluse lahendamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13315866.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13315866"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13315866/xml"
+      },
+      "estleg:globalId": "13315866",
+      "eli:id_local": "13315866",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "156198",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "6fd2ae11998c0a077a3ee683a82877a7316f7d636df061c434c33a4c2c9b1500",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2003-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2011-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2011-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/506112013001"
@@ -111,14 +123,40 @@
         {
           "@id": "estleg:Institution_kohus"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/506112013001"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_UVLS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 ÜÜRIKOMISJON",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜÜRIKOMISJON",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:UVLS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:UVLS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Üürivaidluse lahendamise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Üürivaidluse lahendamise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_UVLS_1"
@@ -132,26 +170,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_UVLS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜÜRIKOMISJON",
-      "skos:prefLabel": "§1–4 ÜÜRIKOMISJON",
-      "skos:inScheme": {
-        "@id": "estleg:UVLS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_UVLS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜÜRIKOMISJON",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜÜRIKOMISJON",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
@@ -171,8 +198,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–24 MENETLUS ÜÜRIKOMISJONIS",
-      "skos:prefLabel": "§5–24 MENETLUS ÜÜRIKOMISJONIS",
+      "rdfs:label": {
+        "@value": "§5–24 MENETLUS ÜÜRIKOMISJONIS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–24 MENETLUS ÜÜRIKOMISJONIS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:UVLS_TopicScheme"
       },
@@ -184,7 +217,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – MENETLUS ÜÜRIKOMISJONIS",
+      "rdfs:label": {
+        "@value": "2. peatükk – MENETLUS ÜÜRIKOMISJONIS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
@@ -204,8 +240,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§25–28 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§25–28 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§25–28 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§25–28 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:UVLS_TopicScheme"
       },
@@ -217,7 +259,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
@@ -237,12 +282,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Üürikomisjoni pädevus",
+      "rdfs:label": {
+        "@value": "§ 1. Üürikomisjoni pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Eluruumi üürilepingust tuleneva vaidluse (edaspidi üürivaidlus) lahendamiseks võib üürnik või üürileandja pöörduda üürikomisjoni või kohtusse. (1¹) Üürikomisjonides ei lahendata vaidlusi rahaliste nõuete üle, mis ületavad 3200 eurot. (2) Üürikomisjon lahendab vaidluse, kui samas asjas ei ole varem kohtusse pöördutud. (3) Üürikomisjon lahendab vaidluse, mis on tekkinud tema tööpiirkonnas asuva eluruumi üürimisest. (4) Kui üürivaidlus on tekkinud väljaspool üürikomisjoni tööpiirkonda asuva",
+      "estleg:summary": {
+        "@value": "(1) Eluruumi üürilepingust tuleneva vaidluse (edaspidi üürivaidlus) lahendamiseks võib üürnik või üürileandja pöörduda üürikomisjoni või kohtusse. (1¹) Üürikomisjonides ei lahendata vaidlusi rahaliste nõuete üle, mis ületavad 3200 eurot. (2) Üürikomisjon lahendab vaidluse, kui samas asjas ei ole varem kohtusse pöördutud. (3) Üürikomisjon lahendab vaidluse, mis on tekkinud tema tööpiirkonnas asuva eluruumi üürimisest. (4) Kui üürivaidlus on tekkinud väljaspool üürikomisjoni tööpiirkonda asuva",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eluruumi üürilepingust tuleneva vaidluse (edaspidi üürivaidlus) lahendamiseks võib üürnik või üürileandja pöörduda üürikomisjoni või kohtusse. (1¹) Üürikomisjonides ei lahendata vaidlusi rahaliste nõuete üle, mis ületavad 3200 eurot. (2) Üürikomisjon lahendab vaidluse, kui samas asjas ei ole varem kohtusse pöördutud. (3) Üürikomisjon lahendab vaidluse, mis on tekkinud tema tööpiirkonnas asuva eluruumi üürimisest. (4) Kui üürivaidlus on tekkinud väljaspool üürikomisjoni tööpiirkonda asuva eluruumi üürimisest, lahendab üürikomisjon vaidluse, kui asjaomasel kohaliku omavalitsuse üksusel on üürikomisjoni asutanud kohaliku omavalitsuse üksusega sõlmitud haldusleping.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_1"
@@ -400,12 +451,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Üürikomisjoni õiguslik seisund",
+      "rdfs:label": {
+        "@value": "§ 2. Üürikomisjoni õiguslik seisund",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Kohaliku omavalitsuse üksus võib käesoleva seaduse alusel asutada üürikomisjoni. Üürikomisjon on kohaliku omavalitsuse üksuse juures asuv üürivaidlusi lahendav sõltumatu organ. (2) Üürikomisjoni tööpiirkond on üürikomisjoni asutanud kohaliku omavalitsuse üksuse territoorium. (3) Üürivaidluse lahendamiseks võib üürikomisjoni pöörduda üürikomisjoni tööpiirkonnas asuva eluruumi üürilepingu pool.",
+      "estleg:summary": {
+        "@value": "(1) Kohaliku omavalitsuse üksus võib käesoleva seaduse alusel asutada üürikomisjoni. Üürikomisjon on kohaliku omavalitsuse üksuse juures asuv üürivaidlusi lahendav sõltumatu organ. (2) Üürikomisjoni tööpiirkond on üürikomisjoni asutanud kohaliku omavalitsuse üksuse territoorium. (3) Üürivaidluse lahendamiseks võib üürikomisjoni pöörduda üürikomisjoni tööpiirkonnas asuva eluruumi üürilepingu pool.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kohaliku omavalitsuse üksus võib käesoleva seaduse alusel asutada üürikomisjoni. Üürikomisjon on kohaliku omavalitsuse üksuse juures asuv üürivaidlusi lahendav sõltumatu organ. (2) Üürikomisjoni tööpiirkond on üürikomisjoni asutanud kohaliku omavalitsuse üksuse territoorium. (3) Üürivaidluse lahendamiseks võib üürikomisjoni pöörduda üürikomisjoni tööpiirkonnas asuva eluruumi üürilepingu pool.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_1"
@@ -531,12 +588,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Üürikomisjoni koosseis",
+      "rdfs:label": {
+        "@value": "§ 3. Üürikomisjoni koosseis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Üürikomisjon koosneb esimehest ja liikmetest. (2) Esimees korraldab üürikomisjoni tööd ning määrab üürikomisjoni liikmete hulgast üürivaidlust lahendava komisjoni koosseisu (edaspidi komisjon) ja istungi juhataja. (3) Komisjon vaatab üürivaidluse läbi kolmeliikmelises koosseisus. (4) Üürivaidlust arutab ja teeb asjas otsuse komisjoni sama koosseis. Komisjoni liikme surma korral või juhul, kui ta ei ole pikka aega võimeline osalema komisjoni töös, määrab üürikomisjoni esimees tema asemele",
+      "estleg:summary": {
+        "@value": "(1) Üürikomisjon koosneb esimehest ja liikmetest. (2) Esimees korraldab üürikomisjoni tööd ning määrab üürikomisjoni liikmete hulgast üürivaidlust lahendava komisjoni koosseisu (edaspidi komisjon) ja istungi juhataja. (3) Komisjon vaatab üürivaidluse läbi kolmeliikmelises koosseisus. (4) Üürivaidlust arutab ja teeb asjas otsuse komisjoni sama koosseis. Komisjoni liikme surma korral või juhul, kui ta ei ole pikka aega võimeline osalema komisjoni töös, määrab üürikomisjoni esimees tema asemele",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Üürikomisjon koosneb esimehest ja liikmetest. (2) Esimees korraldab üürikomisjoni tööd ning määrab üürikomisjoni liikmete hulgast üürivaidlust lahendava komisjoni koosseisu (edaspidi komisjon) ja istungi juhataja. (3) Komisjon vaatab üürivaidluse läbi kolmeliikmelises koosseisus. (4) Üürivaidlust arutab ja teeb asjas otsuse komisjoni sama koosseis. Komisjoni liikme surma korral või juhul, kui ta ei ole pikka aega võimeline osalema komisjoni töös, määrab üürikomisjoni esimees tema asemele uue liikme. Uue liikme määramise korral alustab komisjon vaidluse lahendamist otsast peale. (5) Kui komisjoni liiget ei ole võimalik asendada sama üürikomisjoni liikmega, võib üürikomisjoni esimees määrata asendajaks isiku, kes on sooritanud üürikomisjoni liikme eksami. (6) Käesoleva paragrahvi lõikes 5 nimetatud isik määratakse komisjoni liikmeks tema nõusolekul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_1"
@@ -715,13 +778,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Nõuded üürikomisjoni liikmetele",
+      "rdfs:label": {
+        "@value": "§ 4. Nõuded üürikomisjoni liikmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Üürikomisjoni esimeheks võib olla üksnes isik, kes on täitnud õigusteaduse akadeemilise õppe riiklikult tunnustatud õppekava ja sooritanud üürikomisjoni liikme eksami. (2) Üürikomisjoni liikmeks võib olla üksnes isik, kes on sooritanud üürikomisjoni liikme eksami. (3) Üürikomisjoni liikme eksami komisjoni moodustab ja eksami sooritamise korra , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"majandus- ja kommunikatsiooniminister\" sõnadega",
-      "estleg:legalText": "(1) Üürikomisjoni esimeheks võib olla üksnes isik, kes on täitnud õigusteaduse akadeemilise õppe riiklikult tunnustatud õppekava ja sooritanud üürikomisjoni liikme eksami. (2) Üürikomisjoni liikmeks võib olla üksnes isik, kes on sooritanud üürikomisjoni liikme eksami. (3) Üürikomisjoni liikme eksami komisjoni moodustab ja eksami sooritamise korra , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"majandus- ja kommunikatsiooniminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:summary": {
+        "@value": "(1) Üürikomisjoni esimeheks võib olla üksnes isik, kes on täitnud õigusteaduse akadeemilise õppe riiklikult tunnustatud õppekava ja sooritanud üürikomisjoni liikme eksami. (2) Üürikomisjoni liikmeks võib olla üksnes isik, kes on sooritanud üürikomisjoni liikme eksami. (3) Üürikomisjoni liikme eksami komisjoni moodustab ja eksami sooritamise korra",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Üürikomisjoni esimeheks võib olla üksnes isik, kes on täitnud õigusteaduse akadeemilise õppe riiklikult tunnustatud õppekava ja sooritanud üürikomisjoni liikme eksami. (2) Üürikomisjoni liikmeks võib olla üksnes isik, kes on sooritanud üürikomisjoni liikme eksami. (3) Üürikomisjoni liikme eksami komisjoni moodustab ja eksami sooritamise korra",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_1"
       },
@@ -841,7 +910,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Üürikomisjoni liikme eksami komisjoni moodustab ja eksami sooritamise korra , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"majandus- ja kommunikatsiooniminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:legalText": "(3) Üürikomisjoni liikme eksami komisjoni moodustab ja eksami sooritamise korra",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_4"
       },
@@ -882,13 +951,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Avalduse esitamine",
+      "rdfs:label": {
+        "@value": "§ 5. Avalduse esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Üürikomisjon võtab üürivaidluse menetlusse üürniku või üürileandja kirjaliku avalduse alusel. (2) Avalduses märgitakse: üürikomisjoni nimetus; üürniku ja üürileandja nimi või nimetus, elu- või asukoht ning sidevahendite numbrid; avaldaja selgelt väljendatud nõue ja seda põhjendavad asjaolud; avalduses esitatud väiteid kinnitavad tõendid. (3) Avaldusele lisatakse juriidilisest isikust üürileandja registrikaardi ärakiri ja üürileping ning muud dokumentaalsed tõendid.",
-      "estleg:legalText": "(1) Üürikomisjon võtab üürivaidluse menetlusse üürniku või üürileandja kirjaliku avalduse alusel. (2) Avalduses märgitakse: üürikomisjoni nimetus; üürniku ja üürileandja nimi või nimetus, elu- või asukoht ning sidevahendite numbrid; avaldaja selgelt väljendatud nõue ja seda põhjendavad asjaolud; avalduses esitatud väiteid kinnitavad tõendid. (3) Avaldusele lisatakse juriidilisest isikust üürileandja registrikaardi ärakiri ja üürileping ning muud dokumentaalsed tõendid.",
+      "estleg:summary": {
+        "@value": "(1) Üürikomisjon võtab üürivaidluse menetlusse üürniku või üürileandja kirjaliku avalduse alusel. (2) Avalduses märgitakse: 1) üürikomisjoni nimetus; 2) üürniku ja üürileandja nimi või nimetus, elu- või asukoht ning sidevahendite numbrid; 3) avaldaja selgelt väljendatud nõue ja seda põhjendavad asjaolud; 4) avalduses esitatud väiteid kinnitavad tõendid. (3) Avaldusele lisatakse juriidilisest isikust üürileandja registrikaardi ärakiri ja üürileping ning muud dokumentaalsed tõendid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Üürikomisjon võtab üürivaidluse menetlusse üürniku või üürileandja kirjaliku avalduse alusel. (2) Avalduses märgitakse: 1) üürikomisjoni nimetus; 2) üürniku ja üürileandja nimi või nimetus, elu- või asukoht ning sidevahendite numbrid; 3) avaldaja selgelt väljendatud nõue ja seda põhjendavad asjaolud; 4) avalduses esitatud väiteid kinnitavad tõendid. (3) Avaldusele lisatakse juriidilisest isikust üürileandja registrikaardi ärakiri ja üürileping ning muud dokumentaalsed tõendid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
       },
@@ -966,11 +1041,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Avalduses märgitakse: üürikomisjoni nimetus; üürniku ja üürileandja nimi või nimetus, elu- või asukoht ning sidevahendite numbrid; avaldaja selgelt väljendatud nõue ja seda põhjendavad asjaolud; avalduses esitatud väiteid kinnitavad tõendid.",
+      "estleg:legalText": "(2) Avalduses märgitakse: 1) üürikomisjoni nimetus; 2) üürniku ja üürileandja nimi või nimetus, elu- või asukoht ning sidevahendite numbrid; 3) avaldaja selgelt väljendatud nõue ja seda põhjendavad asjaolud; 4) avalduses esitatud väiteid kinnitavad tõendid.",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1010,13 +1091,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Avalduse menetlusse võtmisest keeldumine ja menetluse lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 6. Avalduse menetlusse võtmisest keeldumine ja menetluse lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Üürikomisjoni esimees otsustab avalduse menetlusse võtmise kolme tööpäeva jooksul avalduse saamisest alates. (2) Avaldust ei võeta menetlusse või menetlus lõpetatakse, kui: vaidluse lahendamine ei kuulu üürikomisjoni pädevusse; kohtu või üürikomisjoni menetluses on samade poolte sama vaidlus samal alusel; sama vaidlusasi on üürikomisjonis või kohtus juba lahendatud. (3) Kui avaldus ei vasta käesoleva seaduse §-s 5 sätestatud nõuetele, määrab üürikomisjoni esimees tähtaja puuduse",
-      "estleg:legalText": "(1) Üürikomisjoni esimees otsustab avalduse menetlusse võtmise kolme tööpäeva jooksul avalduse saamisest alates. (2) Avaldust ei võeta menetlusse või menetlus lõpetatakse, kui: vaidluse lahendamine ei kuulu üürikomisjoni pädevusse; kohtu või üürikomisjoni menetluses on samade poolte sama vaidlus samal alusel; sama vaidlusasi on üürikomisjonis või kohtus juba lahendatud. (3) Kui avaldus ei vasta käesoleva seaduse §-s 5 sätestatud nõuetele, määrab üürikomisjoni esimees tähtaja puuduse kõrvaldamiseks. Kui avaldaja jätab määratud tähtaja jooksul puuduse kõrvaldamata, keeldub üürikomisjoni esimees avaldust menetlusse võtmast. (4) Avalduse menetlusse võtmisest keeldumine või puuduse kõrvaldamiseks tähtaja määramine tehakse avaldajale kirjalikult viivitamata teatavaks. Teates nimetatakse puudus või keeldumise põhjus.",
+      "estleg:summary": {
+        "@value": "(1) Üürikomisjoni esimees otsustab avalduse menetlusse võtmise kolme tööpäeva jooksul avalduse saamisest alates. (2) Avaldust ei võeta menetlusse või menetlus lõpetatakse, kui: 1) vaidluse lahendamine ei kuulu üürikomisjoni pädevusse; 2) kohtu või üürikomisjoni menetluses on samade poolte sama vaidlus samal alusel; 3) sama vaidlusasi on üürikomisjonis või kohtus juba lahendatud. (3) Kui avaldus ei vasta käesoleva seaduse §-s 5 sätestatud nõuetele, määrab üürikomisjoni esimees tähtaja puuduse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Üürikomisjoni esimees otsustab avalduse menetlusse võtmise kolme tööpäeva jooksul avalduse saamisest alates. (2) Avaldust ei võeta menetlusse või menetlus lõpetatakse, kui: 1) vaidluse lahendamine ei kuulu üürikomisjoni pädevusse; 2) kohtu või üürikomisjoni menetluses on samade poolte sama vaidlus samal alusel; 3) sama vaidlusasi on üürikomisjonis või kohtus juba lahendatud. (3) Kui avaldus ei vasta käesoleva seaduse §-s 5 sätestatud nõuetele, määrab üürikomisjoni esimees tähtaja puuduse kõrvaldamiseks. Kui avaldaja jätab määratud tähtaja jooksul puuduse kõrvaldamata, keeldub üürikomisjoni esimees avaldust menetlusse võtmast. (4) Avalduse menetlusse võtmisest keeldumine või puuduse kõrvaldamiseks tähtaja määramine tehakse avaldajale kirjalikult viivitamata teatavaks. Teates nimetatakse puudus või keeldumise põhjus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
       },
@@ -1099,11 +1186,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Avaldust ei võeta menetlusse või menetlus lõpetatakse, kui: vaidluse lahendamine ei kuulu üürikomisjoni pädevusse; kohtu või üürikomisjoni menetluses on samade poolte sama vaidlus samal alusel; sama vaidlusasi on üürikomisjonis või kohtus juba lahendatud.",
+      "estleg:legalText": "(2) Avaldust ei võeta menetlusse või menetlus lõpetatakse, kui: 1) vaidluse lahendamine ei kuulu üürikomisjoni pädevusse; 2) kohtu või üürikomisjoni menetluses on samade poolte sama vaidlus samal alusel; 3) sama vaidlusasi on üürikomisjonis või kohtus juba lahendatud.",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_6"
       },
       "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1161,12 +1253,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Avalduse läbivaatamise tähtaeg",
+      "rdfs:label": {
+        "@value": "§ 7. Avalduse läbivaatamise tähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjoni istung peetakse ühe kuu jooksul avalduse menetlusse võtmisele järgnevast päevast alates. (2) Komisjoni istungi edasilükkamise korral peetakse istung ühe kuu jooksul eelmise istungi toimumise päevast alates.",
+      "estleg:summary": {
+        "@value": "(1) Komisjoni istung peetakse ühe kuu jooksul avalduse menetlusse võtmisele järgnevast päevast alates. (2) Komisjoni istungi edasilükkamise korral peetakse istung ühe kuu jooksul eelmise istungi toimumise päevast alates.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjoni istung peetakse ühe kuu jooksul avalduse menetlusse võtmisele järgnevast päevast alates. (2) Komisjoni istungi edasilükkamise korral peetakse istung ühe kuu jooksul eelmise istungi toimumise päevast alates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -1221,12 +1319,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Avalduse läbivaatamise ettevalmistamine",
+      "rdfs:label": {
+        "@value": "§ 8. Avalduse läbivaatamise ettevalmistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Avalduse menetlusse võtmisel määrab üürikomisjoni esimees üürivaidlust lahendava komisjoni koosseisu. (2) Istungit ette valmistades teeb komisjon asja lahendamiseks vajalikud toimingud ja nõuab välja vajalikud tõendid. (3) Komisjon määrab istungi toimumise aja ja koha, korraldab kutsete saatmise avaldajale, üürivaidluse vastaspoolele (edaspidi vastustaja) ja tunnistajatele ning määrab vastustajale tähtpäeva vastuväidete, tõendite ja taotluste esitamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Avalduse menetlusse võtmisel määrab üürikomisjoni esimees üürivaidlust lahendava komisjoni koosseisu. (2) Istungit ette valmistades teeb komisjon asja lahendamiseks vajalikud toimingud ja nõuab välja vajalikud tõendid. (3) Komisjon määrab istungi toimumise aja ja koha, korraldab kutsete saatmise avaldajale, üürivaidluse vastaspoolele (edaspidi vastustaja) ja tunnistajatele ning määrab vastustajale tähtpäeva vastuväidete, tõendite ja taotluste esitamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Avalduse menetlusse võtmisel määrab üürikomisjoni esimees üürivaidlust lahendava komisjoni koosseisu. (2) Istungit ette valmistades teeb komisjon asja lahendamiseks vajalikud toimingud ja nõuab välja vajalikud tõendid. (3) Komisjon määrab istungi toimumise aja ja koha, korraldab kutsete saatmise avaldajale, üürivaidluse vastaspoolele (edaspidi vastustaja) ja tunnistajatele ning määrab vastustajale tähtpäeva vastuväidete, tõendite ja taotluste esitamiseks. (4) Koos kutsega saadetakse vastustajale avalduse ja selle lisade koopiad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -1334,13 +1438,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Komisjoni istungile kutsumine",
+      "rdfs:label": {
+        "@value": "§ 9. Komisjoni istungile kutsumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Pooled ja tunnistajad kutsutakse komisjoni istungile kutsetega. (2) Kutses märgitakse: istungile kutsutava isiku nimi; üürikomisjoni nimetus ja aadress; istungi toimumise aeg ja koht; adressaadi äraolekul kutse vastuvõtnud isiku kohustus anda kutse esimesel võimalusel üle adressaadile; kohustus teatada komisjoni istungile ilmumata jätmise seaduslikust takistusest; komisjoni istungile ilmumata jätmise tagajärjed. (3) Komisjoni istungile kutsumise suhtes kohaldatakse vastavalt",
-      "estleg:legalText": "(1) Pooled ja tunnistajad kutsutakse komisjoni istungile kutsetega. (2) Kutses märgitakse: istungile kutsutava isiku nimi; üürikomisjoni nimetus ja aadress; istungi toimumise aeg ja koht; adressaadi äraolekul kutse vastuvõtnud isiku kohustus anda kutse esimesel võimalusel üle adressaadile; kohustus teatada komisjoni istungile ilmumata jätmise seaduslikust takistusest; komisjoni istungile ilmumata jätmise tagajärjed. (3) Komisjoni istungile kutsumise suhtes kohaldatakse vastavalt tsiviilkohtumenetluse sätteid.",
+      "estleg:summary": {
+        "@value": "(1) Pooled ja tunnistajad kutsutakse komisjoni istungile kutsetega. (2) Kutses märgitakse: 1) istungile kutsutava isiku nimi; 2) üürikomisjoni nimetus ja aadress; 3) istungi toimumise aeg ja koht; 4) adressaadi äraolekul kutse vastuvõtnud isiku kohustus anda kutse esimesel võimalusel üle adressaadile; 5) kohustus teatada komisjoni istungile ilmumata jätmise seaduslikust takistusest; 6) komisjoni istungile ilmumata jätmise tagajärjed. (3) Komisjoni istungile kutsumise suhtes kohaldatakse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Pooled ja tunnistajad kutsutakse komisjoni istungile kutsetega. (2) Kutses märgitakse: 1) istungile kutsutava isiku nimi; 2) üürikomisjoni nimetus ja aadress; 3) istungi toimumise aeg ja koht; 4) adressaadi äraolekul kutse vastuvõtnud isiku kohustus anda kutse esimesel võimalusel üle adressaadile; 5) kohustus teatada komisjoni istungile ilmumata jätmise seaduslikust takistusest; 6) komisjoni istungile ilmumata jätmise tagajärjed. (3) Komisjoni istungile kutsumise suhtes kohaldatakse vastavalt tsiviilkohtumenetluse sätteid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
       },
@@ -1398,11 +1508,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kutses märgitakse: istungile kutsutava isiku nimi; üürikomisjoni nimetus ja aadress; istungi toimumise aeg ja koht; adressaadi äraolekul kutse vastuvõtnud isiku kohustus anda kutse esimesel võimalusel üle adressaadile; kohustus teatada komisjoni istungile ilmumata jätmise seaduslikust takistusest; komisjoni istungile ilmumata jätmise tagajärjed.",
+      "estleg:legalText": "(2) Kutses märgitakse: 1) istungile kutsutava isiku nimi; 2) üürikomisjoni nimetus ja aadress; 3) istungi toimumise aeg ja koht; 4) adressaadi äraolekul kutse vastuvõtnud isiku kohustus anda kutse esimesel võimalusel üle adressaadile; 5) kohustus teatada komisjoni istungile ilmumata jätmise seaduslikust takistusest; 6) komisjoni istungile ilmumata jätmise tagajärjed.",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_9"
       },
       "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1433,12 +1551,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Tõendid",
+      "rdfs:label": {
+        "@value": "§ 10. Tõendid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Üürivaidluses on tõend tunnistaja ütlus ja poole seletus, paikvaatlus, eksperdi arvamus ja dokumentaalne tõend. Tõendite suhtes kohaldatakse vastavalt tsiviilkohtumenetluse tunnistajate, paikvaatluse ja eksperdi kohta käivaid sätteid. (2) Komisjon võtab vastu tõendi, millel on asjas tähtsust. Tõendi vastuvõtmisest keeldumist peab komisjon põhjendama. (3) Tõendeid esitavad üürivaidluse pooled. Pool tõendab asjaolusid, millele tuginevad tema väited ja vastuväited.",
+      "estleg:summary": {
+        "@value": "(1) Üürivaidluses on tõend tunnistaja ütlus ja poole seletus, paikvaatlus, eksperdi arvamus ja dokumentaalne tõend. Tõendite suhtes kohaldatakse vastavalt tsiviilkohtumenetluse tunnistajate, paikvaatluse ja eksperdi kohta käivaid sätteid. (2) Komisjon võtab vastu tõendi, millel on asjas tähtsust. Tõendi vastuvõtmisest keeldumist peab komisjon põhjendama. (3) Tõendeid esitavad üürivaidluse pooled. Pool tõendab asjaolusid, millele tuginevad tema väited ja vastuväited.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Üürivaidluses on tõend tunnistaja ütlus ja poole seletus, paikvaatlus, eksperdi arvamus ja dokumentaalne tõend. Tõendite suhtes kohaldatakse vastavalt tsiviilkohtumenetluse tunnistajate, paikvaatluse ja eksperdi kohta käivaid sätteid. (2) Komisjon võtab vastu tõendi, millel on asjas tähtsust. Tõendi vastuvõtmisest keeldumist peab komisjon põhjendama. (3) Tõendeid esitavad üürivaidluse pooled. Pool tõendab asjaolusid, millele tuginevad tema väited ja vastuväited. (4) Avaldaja esitab tõendid ja taotlused avalduses ning vastustaja esitab need komisjoni määratud tähtpäevaks. Komisjon arvestab hiljem esitatud tõendeid ja taotlusi, kui avaldaja või vastustaja ei ole saanud neid tähtpäevaks esitada mõjuval põhjusel. (5) Komisjon selgitab pooltele täiendavate tõendite ja taotluste esitamise vajadust või kogub tõendeid oma algatusel, kui see on vajalik asja õiglaseks lahendamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -1555,12 +1679,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Komisjoni istung",
+      "rdfs:label": {
+        "@value": "§ 11. Komisjoni istung",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjon arutab üürivaidlust istungil. (2) Komisjoni istung on avalik. Komisjon võib kuulutada istungi kinniseks tsiviilkohtumenetluses ettenähtud alusel. (3) Komisjoni istung peetakse üldjuhul komisjoni asukohas. Poole põhjendatud taotlusel võib komisjon pidada istungi mujal.",
+      "estleg:summary": {
+        "@value": "(1) Komisjon arutab üürivaidlust istungil. (2) Komisjoni istung on avalik. Komisjon võib kuulutada istungi kinniseks tsiviilkohtumenetluses ettenähtud alusel. (3) Komisjoni istung peetakse üldjuhul komisjoni asukohas. Poole põhjendatud taotlusel võib komisjon pidada istungi mujal.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjon arutab üürivaidlust istungil. (2) Komisjoni istung on avalik. Komisjon võib kuulutada istungi kinniseks tsiviilkohtumenetluses ettenähtud alusel. (3) Komisjoni istung peetakse üldjuhul komisjoni asukohas. Poole põhjendatud taotlusel võib komisjon pidada istungi mujal.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -1652,12 +1782,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Komisjoni istungist osavõtt",
+      "rdfs:label": {
+        "@value": "§ 12. Komisjoni istungist osavõtt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Üürivaidlus vaadatakse läbi üürniku ja üürileandja või nende esindajate juuresolekul. Komisjon kontrollib esindaja volitusi. Esinduse suhtes kohaldatakse vastavalt tsiviilkohtumenetluse sätteid. (2) Komisjon lükkab istungi edasi, kui pool on komisjonile teatanud, et tal on mõjuv põhjus jääda istungile ilmumata, ning on enne istungi toimumist tõendanud mõjuva põhjuse olemasolu. (3) Kui kumbki pool ei ilmu istungile mõjuva põhjuseta, jätab komisjon avalduse läbi vaatamata.",
+      "estleg:summary": {
+        "@value": "(1) Üürivaidlus vaadatakse läbi üürniku ja üürileandja või nende esindajate juuresolekul. Komisjon kontrollib esindaja volitusi. Esinduse suhtes kohaldatakse vastavalt tsiviilkohtumenetluse sätteid. (2) Komisjon lükkab istungi edasi, kui pool on komisjonile teatanud, et tal on mõjuv põhjus jääda istungile ilmumata, ning on enne istungi toimumist tõendanud mõjuva põhjuse olemasolu. (3) Kui kumbki pool ei ilmu istungile mõjuva põhjuseta, jätab komisjon avalduse läbi vaatamata.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Üürivaidlus vaadatakse läbi üürniku ja üürileandja või nende esindajate juuresolekul. Komisjon kontrollib esindaja volitusi. Esinduse suhtes kohaldatakse vastavalt tsiviilkohtumenetluse sätteid. (2) Komisjon lükkab istungi edasi, kui pool on komisjonile teatanud, et tal on mõjuv põhjus jääda istungile ilmumata, ning on enne istungi toimumist tõendanud mõjuva põhjuse olemasolu. (3) Kui kumbki pool ei ilmu istungile mõjuva põhjuseta, jätab komisjon avalduse läbi vaatamata. (4) Kui avaldaja ei ilmu istungile mõjuva põhjuseta, jätab komisjon avalduse läbi vaatamata. Vastustaja taotlusel võib komisjon istungi edasi lükata või vaidluse sisuliselt lahendada avaldaja kohalolekuta. (5) Kui vastustaja ei ilmu istungile mõjuva põhjuseta, lahendab komisjon vaidluse tema kohalolekuta või lükkab avaldaja taotlusel istungi edasi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -1793,12 +1929,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Istungi käik",
+      "rdfs:label": {
+        "@value": "§ 13. Istungi käik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Istungi juhataja teeb istungi algul kindlaks, kes väljakutsututest on istungile ilmunud ning kas puudujad teavad istungist ja millised on andmed nende ilmumata jäämise kohta. (2) Istungi juhataja teeb kindlaks kohalolijate isikusamasuse ja esindajate volitused, teeb teatavaks avalduse sisu ja komisjoni koosseisu ning selgitab pooltele taandamisõigust. (3) Komisjon kuulab ära poolte täiendavad taotlused ja otsustab nende rahuldamise. Komisjon rahuldab taotluse, kui see on põhjendatud ning",
+      "estleg:summary": {
+        "@value": "(1) Istungi juhataja teeb istungi algul kindlaks, kes väljakutsututest on istungile ilmunud ning kas puudujad teavad istungist ja millised on andmed nende ilmumata jäämise kohta. (2) Istungi juhataja teeb kindlaks kohalolijate isikusamasuse ja esindajate volitused, teeb teatavaks avalduse sisu ja komisjoni koosseisu ning selgitab pooltele taandamisõigust. (3) Komisjon kuulab ära poolte täiendavad taotlused ja otsustab nende rahuldamise. Komisjon rahuldab taotluse, kui see on põhjendatud ning",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Istungi juhataja teeb istungi algul kindlaks, kes väljakutsututest on istungile ilmunud ning kas puudujad teavad istungist ja millised on andmed nende ilmumata jäämise kohta. (2) Istungi juhataja teeb kindlaks kohalolijate isikusamasuse ja esindajate volitused, teeb teatavaks avalduse sisu ja komisjoni koosseisu ning selgitab pooltele taandamisõigust. (3) Komisjon kuulab ära poolte täiendavad taotlused ja otsustab nende rahuldamise. Komisjon rahuldab taotluse, kui see on põhjendatud ning seda ei olnud võimalik varem esitada. Komisjon peab oma otsust põhjendama. (4) Istungi juhataja annab esimesena sõna avalduse esitajale, kes esitab oma nõude ja selle põhjendused. Vajaduse korral selgitab komisjon avaldajale tema õigusi ja vaidluse laadi ning esitab küsimusi. Seejärel võib küsimusi esitada teine pool. (5) Vastustajal on õigus esitada nõudele vastuväiteid. Vajaduse korral selgitab komisjon teisele poolele tema õigusi ja vaidluse laadi ning esitab küsimusi. Seejärel võib küsimusi esitada teine pool. (6) Komisjon uurib kogutud tõendeid ja kuulab ära poolte arvamused. (7) Komisjon teatab otsuse tegemise päeva ja otsuse kättesaamise korra.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -1986,12 +2128,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Komisjoni liikme taandamise alused",
+      "rdfs:label": {
+        "@value": "§ 14. Komisjoni liikme taandamise alused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjoni liige on kohustatud ennast taandama, kui ta on otseselt või kaudselt huvitatud asja lahendamisest või kui tema erapooletuses tekitavad kahtlust muud asjaolud. (2) Käesoleva paragrahvi lõikes 1 sätestatud alustel võib komisjoni liikme taandamist nõuda üürivaidluse pool. Taandamistaotlus esitatakse hiljemalt komisjoni esimese istungi alguses. Taotluse võib esitada hiljem, kui taanduse avaldaja saab taandamise alusest teada pärast istungi algust.",
+      "estleg:summary": {
+        "@value": "(1) Komisjoni liige on kohustatud ennast taandama, kui ta on otseselt või kaudselt huvitatud asja lahendamisest või kui tema erapooletuses tekitavad kahtlust muud asjaolud. (2) Käesoleva paragrahvi lõikes 1 sätestatud alustel võib komisjoni liikme taandamist nõuda üürivaidluse pool. Taandamistaotlus esitatakse hiljemalt komisjoni esimese istungi alguses. Taotluse võib esitada hiljem, kui taanduse avaldaja saab taandamise alusest teada pärast istungi algust.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjoni liige on kohustatud ennast taandama, kui ta on otseselt või kaudselt huvitatud asja lahendamisest või kui tema erapooletuses tekitavad kahtlust muud asjaolud. (2) Käesoleva paragrahvi lõikes 1 sätestatud alustel võib komisjoni liikme taandamist nõuda üürivaidluse pool. Taandamistaotlus esitatakse hiljemalt komisjoni esimese istungi alguses. Taotluse võib esitada hiljem, kui taanduse avaldaja saab taandamise alusest teada pärast istungi algust. (3) Taandamise otsustab komisjon taandatava juuresolekuta. Häälte võrdse jagunemise korral on komisjoni liige taandatud. (4) Komisjoni juhataja määrab taandatud liikme asemele uue liikme.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -2132,13 +2280,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Istungi edasilükkamine",
+      "rdfs:label": {
+        "@value": "§ 15. Istungi edasilükkamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "Komisjon lükkab asja arutamise edasi, kui: komisjoni liige taandatakse; esinevad käesoleva seaduse § 12 lõikes 2, 4 või 5 sätestatud alused; mõlemad pooled on istungi edasilükkamisega nõus; ilmneb muu takistus, mida ei saa istungil kõrvaldada.",
-      "estleg:legalText": "Komisjon lükkab asja arutamise edasi, kui: komisjoni liige taandatakse; esinevad käesoleva seaduse § 12 lõikes 2, 4 või 5 sätestatud alused; mõlemad pooled on istungi edasilükkamisega nõus; ilmneb muu takistus, mida ei saa istungil kõrvaldada.",
+      "estleg:summary": {
+        "@value": "Komisjon lükkab asja arutamise edasi, kui: 1) komisjoni liige taandatakse; 2) esinevad käesoleva seaduse § 12 lõikes 2, 4 või 5 sätestatud alused; 3) mõlemad pooled on istungi edasilükkamisega nõus; 4) ilmneb muu takistus, mida ei saa istungil kõrvaldada.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Komisjon lükkab asja arutamise edasi, kui: 1) komisjoni liige taandatakse; 2) esinevad käesoleva seaduse § 12 lõikes 2, 4 või 5 sätestatud alused; 3) mõlemad pooled on istungi edasilükkamisega nõus; 4) ilmneb muu takistus, mida ei saa istungil kõrvaldada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
       },
@@ -2176,10 +2330,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Komisjon lükkab asja arutamise edasi, kui: komisjoni liige taandatakse; esinevad käesoleva seaduse § 12 lõikes 2, 4 või 5 sätestatud alused; mõlemad pooled on istungi edasilükkamisega nõus; ilmneb muu takistus, mida ei saa istungil kõrvaldada.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Komisjon lükkab asja arutamise edasi, kui: 1) komisjoni liige taandatakse; 2) esinevad käesoleva seaduse § 12 lõikes 2, 4 või 5 sätestatud alused; 3) mõlemad pooled on istungi edasilükkamisega nõus; 4) ilmneb muu takistus, mida ei saa istungil kõrvaldada.",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_15"
       },
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -2202,13 +2364,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Istungi protokoll",
+      "rdfs:label": {
+        "@value": "§ 16. Istungi protokoll",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjoni istung protokollitakse. (2) Komisjoni istungi protokoll peab kajastama vaidluse seisukohalt olulisi andmeid. (3) Komisjoni istungi protokolli märgitakse: istungi toimumise kuupäev ja koht; istungi alguse ja lõpu kellaaeg; üürikomisjoni nimetus ja koosseis ning istungi juhataja ja sekretäri nimed; üürivaidluse poolte nimed; andmed üürivaidluse poolte ja tunnistajate ilmumise kohta; poolte avaldused ja taotlused; andmed pooltele nende õiguste ja kohustuste selgitamise kohta; poolte",
-      "estleg:legalText": "(1) Komisjoni istung protokollitakse. (2) Komisjoni istungi protokoll peab kajastama vaidluse seisukohalt olulisi andmeid. (3) Komisjoni istungi protokolli märgitakse: istungi toimumise kuupäev ja koht; istungi alguse ja lõpu kellaaeg; üürikomisjoni nimetus ja koosseis ning istungi juhataja ja sekretäri nimed; üürivaidluse poolte nimed; andmed üürivaidluse poolte ja tunnistajate ilmumise kohta; poolte avaldused ja taotlused; andmed pooltele nende õiguste ja kohustuste selgitamise kohta; poolte seletuste, taotluste ja vastuväidete ning tunnistajate ütluste põhisisu; andmed dokumentaalsete tõendite tutvustamise kohta; andmed otsuse avaldamise koha ja otsuse vaidlustamise korra selgitamise kohta; protokollile allakirjutamise kuupäev. (4) Protokollile kirjutavad alla protokollija ja istungi juhataja.",
+      "estleg:summary": {
+        "@value": "(1) Komisjoni istung protokollitakse. (2) Komisjoni istungi protokoll peab kajastama vaidluse seisukohalt olulisi andmeid. (3) Komisjoni istungi protokolli märgitakse: 1) istungi toimumise kuupäev ja koht; 2) istungi alguse ja lõpu kellaaeg; 3) üürikomisjoni nimetus ja koosseis ning istungi juhataja ja sekretäri nimed; 4) üürivaidluse poolte nimed; 5) andmed üürivaidluse poolte ja tunnistajate ilmumise kohta; 6) poolte avaldused ja taotlused; 7) andmed pooltele nende õiguste ja kohustuste",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Komisjoni istung protokollitakse. (2) Komisjoni istungi protokoll peab kajastama vaidluse seisukohalt olulisi andmeid. (3) Komisjoni istungi protokolli märgitakse: 1) istungi toimumise kuupäev ja koht; 2) istungi alguse ja lõpu kellaaeg; 3) üürikomisjoni nimetus ja koosseis ning istungi juhataja ja sekretäri nimed; 4) üürivaidluse poolte nimed; 5) andmed üürivaidluse poolte ja tunnistajate ilmumise kohta; 6) poolte avaldused ja taotlused; 7) andmed pooltele nende õiguste ja kohustuste selgitamise kohta; 8) poolte seletuste, taotluste ja vastuväidete ning tunnistajate ütluste põhisisu; 9) andmed dokumentaalsete tõendite tutvustamise kohta; 10) andmed otsuse avaldamise koha ja otsuse vaidlustamise korra selgitamise kohta; 11) protokollile allakirjutamise kuupäev. (4) Protokollile kirjutavad alla protokollija ja istungi juhataja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
       },
@@ -2295,11 +2463,24 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Komisjoni istungi protokolli märgitakse: istungi toimumise kuupäev ja koht; istungi alguse ja lõpu kellaaeg; üürikomisjoni nimetus ja koosseis ning istungi juhataja ja sekretäri nimed; üürivaidluse poolte nimed; andmed üürivaidluse poolte ja tunnistajate ilmumise kohta; poolte avaldused ja taotlused; andmed pooltele nende õiguste ja kohustuste selgitamise kohta; poolte seletuste, taotluste ja vastuväidete ning tunnistajate ütluste põhisisu; andmed dokumentaalsete tõendite tutvustamise kohta; andmed otsuse avaldamise koha ja otsuse vaidlustamise korra selgitamise kohta; protokollile allakirjutamise kuupäev.",
+      "estleg:legalText": "(3) Komisjoni istungi protokolli märgitakse: 1) istungi toimumise kuupäev ja koht; 2) istungi alguse ja lõpu kellaaeg; 3) üürikomisjoni nimetus ja koosseis ning istungi juhataja ja sekretäri nimed; 4) üürivaidluse poolte nimed; 5) andmed üürivaidluse poolte ja tunnistajate ilmumise kohta; 6) poolte avaldused ja taotlused; 7) andmed pooltele nende õiguste ja kohustuste selgitamise kohta; 8) poolte seletuste, taotluste ja vastuväidete ning tunnistajate ütluste põhisisu; 9) andmed dokumentaalsete tõendite tutvustamise kohta; 10) andmed otsuse avaldamise koha ja otsuse vaidlustamise korra selgitamise kohta; 11) protokollile allakirjutamise kuupäev.",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_16"
       },
       "rdfs:label": "§ 16 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -2339,12 +2520,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Komisjoni otsuse tegemine",
+      "rdfs:label": {
+        "@value": "§ 17. Komisjoni otsuse tegemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjon teeb otsuse üürikomisjoni nimel seitsme tööpäeva jooksul asja arutamisest alates. (2) Otsuse tegemise ruumis viibivad ainult komisjoni liikmed. (3) Otsuse tegemisel hindab komisjon kõiki tõendeid igakülgselt, täielikult ja objektiivselt. Ühelgi tõendil ei ole komisjoni jaoks ette kindlaks määratud jõudu. (4) Otsus tehakse hääletamisel häälteenamusega. (5) Komisjoni liikmel ei ole õigust jääda erapooletuks.",
+      "estleg:summary": {
+        "@value": "(1) Komisjon teeb otsuse üürikomisjoni nimel seitsme tööpäeva jooksul asja arutamisest alates. (2) Otsuse tegemise ruumis viibivad ainult komisjoni liikmed. (3) Otsuse tegemisel hindab komisjon kõiki tõendeid igakülgselt, täielikult ja objektiivselt. Ühelgi tõendil ei ole komisjoni jaoks ette kindlaks määratud jõudu. (4) Otsus tehakse hääletamisel häälteenamusega. (5) Komisjoni liikmel ei ole õigust jääda erapooletuks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjon teeb otsuse üürikomisjoni nimel seitsme tööpäeva jooksul asja arutamisest alates. (2) Otsuse tegemise ruumis viibivad ainult komisjoni liikmed. (3) Otsuse tegemisel hindab komisjon kõiki tõendeid igakülgselt, täielikult ja objektiivselt. Ühelgi tõendil ei ole komisjoni jaoks ette kindlaks määratud jõudu. (4) Otsus tehakse hääletamisel häälteenamusega. (5) Komisjoni liikmel ei ole õigust jääda erapooletuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -2480,13 +2667,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
       },
@@ -2512,12 +2704,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Otsuse kohta kehtivad nõuded",
+      "rdfs:label": {
+        "@value": "§ 19. Otsuse kohta kehtivad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjoni otsus peab olema seaduslik ja põhjendatud. Komisjon ei või teha otsust nõude kohta, mida ei ole esitatud. (2) Otsus vormistatakse kirjalikult ja sellele kirjutavad alla kõik komisjoni liikmed. (3) Otsus koosneb sissejuhatusest, kirjeldavast osast, komisjoni põhjendustest ja resolutsioonist. (4) Otsuse sissejuhatuses märgitakse otsuse teinud üürikomisjoni nimetus ja komisjoni koosseis, istungit protokollinud sekretäri nimi, otsuse tegemise aeg ja koht ning poolte ja nende",
+      "estleg:summary": {
+        "@value": "(1) Komisjoni otsus peab olema seaduslik ja põhjendatud. Komisjon ei või teha otsust nõude kohta, mida ei ole esitatud. (2) Otsus vormistatakse kirjalikult ja sellele kirjutavad alla kõik komisjoni liikmed. (3) Otsus koosneb sissejuhatusest, kirjeldavast osast, komisjoni põhjendustest ja resolutsioonist. (4) Otsuse sissejuhatuses märgitakse otsuse teinud üürikomisjoni nimetus ja komisjoni koosseis, istungit protokollinud sekretäri nimi, otsuse tegemise aeg ja koht ning poolte ja nende",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjoni otsus peab olema seaduslik ja põhjendatud. Komisjon ei või teha otsust nõude kohta, mida ei ole esitatud. (2) Otsus vormistatakse kirjalikult ja sellele kirjutavad alla kõik komisjoni liikmed. (3) Otsus koosneb sissejuhatusest, kirjeldavast osast, komisjoni põhjendustest ja resolutsioonist. (4) Otsuse sissejuhatuses märgitakse otsuse teinud üürikomisjoni nimetus ja komisjoni koosseis, istungit protokollinud sekretäri nimi, otsuse tegemise aeg ja koht ning poolte ja nende esindajate nimed. (5) Otsuse kirjeldavas osas esitatakse avaldaja nõue ja teise poole vastuväited. (6) Otsuse põhjendavas osas märgitakse komisjoni tuvastatud asjaolud ja tõendid, millele on rajatud komisjoni järeldused, ning õigusaktid, mida komisjon on kohaldanud. Otsuses põhjendatakse tõenditele antud hinnanguid ning poole väidete arvestamata jätmist, kui komisjon ei ole väidetega nõustunud. (7) Otsuse resolutsioonis esitatakse komisjoni seisukoht avalduse rahuldamise või rahuldamata jätmise kohta ning teave selle kohta, et avaldajal on õigus pöörduda kohtusse. (8) Otsuse tegemisel eriarvamusele jäänud komisjoni liige võib esitada eriarvamuse. Eriarvamus lisatakse otsusele ja sellele kirjutab alla eriarvamusele jäänud komisjoni liige.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -2715,12 +2913,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Otsuse teatavakstegemine",
+      "rdfs:label": {
+        "@value": "§ 20. Otsuse teatavakstegemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjoni otsus on avalik. (2) Üürikomisjon saadab pooltele otsuse ärakirja. (3) Komisjoni jõustunud otsus avaldatakse üürikomisjoni veebilehel.",
+      "estleg:summary": {
+        "@value": "(1) Komisjoni otsus on avalik. (2) Üürikomisjon saadab pooltele otsuse ärakirja. (3) Komisjoni jõustunud otsus avaldatakse üürikomisjoni veebilehel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjoni otsus on avalik. (2) Üürikomisjon saadab pooltele otsuse ärakirja. (3) Komisjoni jõustunud otsus avaldatakse üürikomisjoni veebilehel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -2794,13 +2998,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Samas üürivaidluses kohtusse pöördumine",
+      "rdfs:label": {
+        "@value": "§ 21. Samas üürivaidluses kohtusse pöördumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Kui pool ei nõustu komisjoni otsusega või üürivaidluse läbivaatamisel tehtud menetlusotsuste või -toimingutega, võib ta sama üürivaidluse läbivaatamiseks pöörduda maakohtusse komisjoni otsuse kättesaamise päevale järgnevast päevast alates 20 päeva jooksul. (2) Kehtetu - (3) Kui komisjon jätab avalduse rahuldamata või rahuldab osaliselt, võib avaldaja esitada kohtusse hagi asja lahendamiseks rahuldamata osas. Hagis võib esitada üksnes samad nõuded, mis esitati komisjonile.",
-      "estleg:legalText": "(1) Kui pool ei nõustu komisjoni otsusega või üürivaidluse läbivaatamisel tehtud menetlusotsuste või -toimingutega, võib ta sama üürivaidluse läbivaatamiseks pöörduda maakohtusse komisjoni otsuse kättesaamise päevale järgnevast päevast alates 20 päeva jooksul. (2) Kehtetu - (3) Kui komisjon jätab avalduse rahuldamata või rahuldab osaliselt, võib avaldaja esitada kohtusse hagi asja lahendamiseks rahuldamata osas. Hagis võib esitada üksnes samad nõuded, mis esitati komisjonile. (4) Kui komisjon avalduse täielikult või osaliselt rahuldab, võib teine pool esitada kohtule taotluse, et kohus vaataks komisjonile esitatud avalduse läbi hagimenetluse korras hagina. Sel juhul on hageja komisjoni poole pöördunud isik ja kostja kohtule avalduse esitanud pool. (5) Käesoleva paragrahvi lõikes 4 nimetatud avalduselt tuleb tasuda riigilõivu summas, mille hageja oleks pidanud tasuma hagi esitamise korral. (6) Komisjonile esitatud avaldus loetakse käesoleva paragrahvi lõikes 4 sätestatud juhul hagiavalduseks. Kohus annab pooltele vajaduse korral tähtaja avalduse esitamiseks hagimenetluses ettenähtud vormis, oma seisukohtade täiendavaks põhjendamiseks ja täiendavate tõendite esitamiseks. Komisjonis esitatud dokumente ei pea kohus pooltele kätte toimetama. (7) Kui kohtule esitatakse hagi või avaldus asjas, mida komisjon on juba lahendanud, tuleb seda hagis või avalduses märkida ja lisada otsuse ärakiri. Hagi või avalduse saamisel nõuab kohus komisjonist välja asja lahendamise materjalid ja võtab need toimikusse. Esitatud tõendid loetakse kohtusse esitatuks. (8) Kui komisjoni poole pöördunud isik ei esita käesoleva paragrahvi lõikes 6 sätestatud juhul oma avaldust hagiavaldusele ettenähtud vormis kohtu määratud ajaks, jätab kohus hagiavalduse läbi vaatamata. Sel juhul komisjoni otsus vaidlustatud ulatuses ei jõustu. Kohus juhib sellele hageja tähelepanu, kui ta annab tähtaja avalduse esitamiseks hagiavalduse vormis. (9) Käesoleva paragrahvi lõikes 4 nimetatud avalduse kohtule esitanud isik võib avaldusest loobuda samadel alustel ja korras hagist loobumisega. Avaldusest loobumise puhul jõustub komisjoni otsus.",
+      "estleg:summary": {
+        "@value": "(1) Kui pool ei nõustu komisjoni otsusega või üürivaidluse läbivaatamisel tehtud menetlusotsuste või -toimingutega, võib ta sama üürivaidluse läbivaatamiseks pöörduda maakohtusse komisjoni otsuse kättesaamise päevale järgnevast päevast alates 20 päeva jooksul. (3) Kui komisjon jätab avalduse rahuldamata või rahuldab osaliselt, võib avaldaja esitada kohtusse hagi asja lahendamiseks rahuldamata osas. Hagis võib esitada üksnes samad nõuded, mis esitati komisjonile.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui pool ei nõustu komisjoni otsusega või üürivaidluse läbivaatamisel tehtud menetlusotsuste või -toimingutega, võib ta sama üürivaidluse läbivaatamiseks pöörduda maakohtusse komisjoni otsuse kättesaamise päevale järgnevast päevast alates 20 päeva jooksul. (3) Kui komisjon jätab avalduse rahuldamata või rahuldab osaliselt, võib avaldaja esitada kohtusse hagi asja lahendamiseks rahuldamata osas. Hagis võib esitada üksnes samad nõuded, mis esitati komisjonile. (4) Kui komisjon avalduse täielikult või osaliselt rahuldab, võib teine pool esitada kohtule taotluse, et kohus vaataks komisjonile esitatud avalduse läbi hagimenetluse korras hagina. Sel juhul on hageja komisjoni poole pöördunud isik ja kostja kohtule avalduse esitanud pool. (5) Käesoleva paragrahvi lõikes 4 nimetatud avalduselt tuleb tasuda riigilõivu summas, mille hageja oleks pidanud tasuma hagi esitamise korral. (6) Komisjonile esitatud avaldus loetakse käesoleva paragrahvi lõikes 4 sätestatud juhul hagiavalduseks. Kohus annab pooltele vajaduse korral tähtaja avalduse esitamiseks hagimenetluses ettenähtud vormis, oma seisukohtade täiendavaks põhjendamiseks ja täiendavate tõendite esitamiseks. Komisjonis esitatud dokumente ei pea kohus pooltele kätte toimetama. (7) Kui kohtule esitatakse hagi või avaldus asjas, mida komisjon on juba lahendanud, tuleb seda hagis või avalduses märkida ja lisada otsuse ärakiri. Hagi või avalduse saamisel nõuab kohus komisjonist välja asja lahendamise materjalid ja võtab need toimikusse. Esitatud tõendid loetakse kohtusse esitatuks. (8) Kui komisjoni poole pöördunud isik ei esita käesoleva paragrahvi lõikes 6 sätestatud juhul oma avaldust hagiavaldusele ettenähtud vormis kohtu määratud ajaks, jätab kohus hagiavalduse läbi vaatamata. Sel juhul komisjoni otsus vaidlustatud ulatuses ei jõustu. Kohus juhib sellele hageja tähelepanu, kui ta annab tähtaja avalduse esitamiseks hagiavalduse vormis. (9) Käesoleva paragrahvi lõikes 4 nimetatud avalduse kohtule esitanud isik võib avaldusest loobuda samadel alustel ja korras hagist loobumisega. Avaldusest loobumise puhul jõustub komisjoni otsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
       },
@@ -2810,9 +3020,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:UVLS_Par_21_Lg_1"
-        },
-        {
-          "@id": "estleg:UVLS_Par_21_Lg_2"
         },
         {
           "@id": "estleg:UVLS_Par_21_Lg_3"
@@ -2901,19 +3108,6 @@
           "@id": "estleg:Institution_maakohus"
         }
       ]
-    },
-    {
-      "@id": "estleg:UVLS_Par_21_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:UVLS_Par_21"
-      },
-      "rdfs:label": "§ 21 lg 2"
     },
     {
       "@id": "estleg:UVLS_Par_21_Lg_3",
@@ -3103,12 +3297,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Otsuse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 22. Otsuse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjoni otsus jõustub, kui otsuse kättesaamise päevast alates 20 päeva jooksul ei ole maakohtusse esitatud hagi samas vaidlusasjas. Komisjon lisab poole taotlusel otsusele jõustumismärke. (2) Komisjoni otsuse osalisel vaidlustamisel jõustub otsus osas, mis ei ole seotud vaidlustatud osaga. Kohus on asja lahendamisel seotud komisjoni otsusega selle vaidlustamata osas.",
+      "estleg:summary": {
+        "@value": "(1) Komisjoni otsus jõustub, kui otsuse kättesaamise päevast alates 20 päeva jooksul ei ole maakohtusse esitatud hagi samas vaidlusasjas. Komisjon lisab poole taotlusel otsusele jõustumismärke. (2) Komisjoni otsuse osalisel vaidlustamisel jõustub otsus osas, mis ei ole seotud vaidlustatud osaga. Kohus on asja lahendamisel seotud komisjoni otsusega selle vaidlustamata osas.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjoni otsus jõustub, kui otsuse kättesaamise päevast alates 20 päeva jooksul ei ole maakohtusse esitatud hagi samas vaidlusasjas. Komisjon lisab poole taotlusel otsusele jõustumismärke. (2) Komisjoni otsuse osalisel vaidlustamisel jõustub otsus osas, mis ei ole seotud vaidlustatud osaga. Kohus on asja lahendamisel seotud komisjoni otsusega selle vaidlustamata osas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -3205,12 +3405,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Otsuse jõustumise tagajärjed",
+      "rdfs:label": {
+        "@value": "§ 23. Otsuse jõustumise tagajärjed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Komisjoni jõustunud otsus on pooltele täitmiseks kohustuslik. (2) Pärast otsuse jõustumist ei või pooled esitada kohtusse sama nõuet samal alusel.",
+      "estleg:summary": {
+        "@value": "(1) Komisjoni jõustunud otsus on pooltele täitmiseks kohustuslik. (2) Pärast otsuse jõustumist ei või pooled esitada kohtusse sama nõuet samal alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Komisjoni jõustunud otsus on pooltele täitmiseks kohustuslik. (2) Pärast otsuse jõustumist ei või pooled esitada kohtusse sama nõuet samal alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -3279,12 +3485,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Otsuse täitmine",
+      "rdfs:label": {
+        "@value": "§ 24. Otsuse täitmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "Komisjoni jõustunud otsus täidetakse täitemenetluse sätete alusel.",
+      "estleg:summary": {
+        "@value": "Komisjoni jõustunud otsus täidetakse täitemenetluse sätete alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Komisjoni jõustunud otsus täidetakse täitemenetluse sätete alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_2"
@@ -3309,10 +3521,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Komisjoni jõustunud otsus täidetakse täitemenetluse sätete alusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Komisjoni jõustunud otsus täidetakse täitemenetluse sätete alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_24"
-      }
+      },
+      "rdfs:label": "§ 24 lg 1"
     },
     {
       "@id": "estleg:UVLS_Par_25",
@@ -3321,12 +3535,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 25. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_3"
@@ -3353,12 +3573,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Elamuvaidluskomisjoni lõpetamine ja ümberkujundamine",
+      "rdfs:label": {
+        "@value": "§ 26. Elamuvaidluskomisjoni lõpetamine ja ümberkujundamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "Kohaliku omavalitsuse üksuse volikogu otsustab hiljemalt 2003. aasta 1. juuliks elamuseaduse § 63 alusel asutatud elamuvaidluskomisjoni lõpetamise või ümberkujundamise üürikomisjoniks.",
+      "estleg:summary": {
+        "@value": "Kohaliku omavalitsuse üksuse volikogu otsustab hiljemalt 2003. aasta 1. juuliks elamuseaduse § 63 alusel asutatud elamuvaidluskomisjoni lõpetamise või ümberkujundamise üürikomisjoniks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kohaliku omavalitsuse üksuse volikogu otsustab hiljemalt 2003. aasta 1. juuliks elamuseaduse § 63 alusel asutatud elamuvaidluskomisjoni lõpetamise või ümberkujundamise üürikomisjoniks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_3"
@@ -3407,10 +3633,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kohaliku omavalitsuse üksuse volikogu otsustab hiljemalt 2003. aasta 1. juuliks elamuseaduse § 63 alusel asutatud elamuvaidluskomisjoni lõpetamise või ümberkujundamise üürikomisjoniks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu otsustab hiljemalt 2003. aasta 1. juuliks elamuseaduse § 63 alusel asutatud elamuvaidluskomisjoni lõpetamise või ümberkujundamise üürikomisjoniks.",
       "estleg:parentProvision": {
         "@id": "estleg:UVLS_Par_26"
       },
+      "rdfs:label": "§ 26 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -3443,12 +3671,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 27. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_3"
@@ -3475,12 +3709,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 28. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Üürivaidluse lahendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UVLS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub 2003. aasta 1. juulil. (2) Käesoleva seaduse § 4 lõige 3 ja § 26 jõustuvad 10. päeval pärast seaduse avaldamist Riigi Teatajas.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub 2003. aasta 1. juulil. (2) Käesoleva seaduse § 4 lõige 3 ja § 26 jõustuvad 10. päeval pärast seaduse avaldamist Riigi Teatajas.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus jõustub 2003. aasta 1. juulil. (2) Käesoleva seaduse § 4 lõige 3 ja § 26 jõustuvad 10. päeval pärast seaduse avaldamist Riigi Teatajas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UVLS_3"
@@ -3537,6 +3777,22 @@
           "@id": "estleg:UVLS_Par_4"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/506112013001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:UVLS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Lease Disputes Resolution Act",
+        "@language": "en"
+      }
     }
   ]
 }

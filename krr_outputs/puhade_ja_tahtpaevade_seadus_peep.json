@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:PTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Pühade ja tähtpäevade seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Pühade ja tähtpäevade seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Pühade ja tähtpäevade seadus",
-      "dcterms:title": [
-        {
-          "@value": "Pühade ja tähtpäevade seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Public Holidays and Days of National Importance Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Pühade ja tähtpäevade seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/120122022005.xml"
+        "@id": "https://www.riigiteataja.ee/akt/120122022005"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/120122022005/xml"
+      },
+      "estleg:globalId": "120122022005",
+      "eli:id_local": "120122022005",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159352",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "3f16d0ebb4560528d24758042477c12634dd72de849a12d61f1cd09d44e25691",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1998-02-23",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2022-12-30",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -66,10 +82,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2022-12-30",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/527122022003"
@@ -120,19 +132,10 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU14_1503"
         }
-      ]
-    },
-    {
-      "@id": "estleg:PTS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Pühade ja tähtpäevade seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_PTS_default"
-        }
-      ]
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/527122022003"
+      }
     },
     {
       "@id": "estleg:Cluster_PTS_default",
@@ -141,12 +144,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–6 Pühade ja tähtpäevade seadus",
-      "skos:prefLabel": "§1–6 Pühade ja tähtpäevade seadus",
+      "rdfs:label": {
+        "@value": "§1–6 Pühade ja tähtpäevade seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–6 Pühade ja tähtpäevade seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PTS_TopicScheme"
       },
-      "estleg:provisionCount": 6
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:PTS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Pühade ja tähtpäevade seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PTS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:PTS_Par_1",
@@ -155,12 +179,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Rahvuspüha",
+      "rdfs:label": {
+        "@value": "§ 1. Rahvuspüha",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pühade ja tähtpäevade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTS_Map"
       },
-      "estleg:summary": "Rahvuspüha ja puhkepäev on:24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev.",
+      "estleg:summary": {
+        "@value": "Rahvuspüha ja puhkepäev on:24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvuspüha ja puhkepäev on:24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTS_default"
@@ -196,10 +226,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvuspüha ja puhkepäev on:24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvuspüha ja puhkepäev on:24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev.",
       "estleg:parentProvision": {
         "@id": "estleg:PTS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:PTS_Par_2",
@@ -208,13 +240,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Riigipühad",
+      "rdfs:label": {
+        "@value": "§ 2. Riigipühad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pühade ja tähtpäevade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTS_Map"
       },
-      "estleg:summary": "Riigipühad ja puhkepäevad on: 1. jaanuar – uusaasta; – suur reede; – ülestõusmispühade 1. püha; 1. mai – kevadpüha; – nelipühade 1. püha; 23. juuni – võidupüha; 24. juuni – jaanipäev; 20. august – taasiseseisvumispäev; 24. detsember – jõululaupäev; 25. detsember – esimene jõulupüha; 26. detsember – teine jõulupüha.",
-      "estleg:legalText": "Riigipühad ja puhkepäevad on: 1. jaanuar – uusaasta; – suur reede; – ülestõusmispühade 1. püha; 1. mai – kevadpüha; – nelipühade 1. püha; 23. juuni – võidupüha; 24. juuni – jaanipäev; 20. august – taasiseseisvumispäev; 24. detsember – jõululaupäev; 25. detsember – esimene jõulupüha; 26. detsember – teine jõulupüha.",
+      "estleg:summary": {
+        "@value": "Riigipühad ja puhkepäevad on: 1) 1. jaanuar – uusaasta; 2) – suur reede; 3) – ülestõusmispühade 1. püha; 4) 1. mai – kevadpüha; 5) – nelipühade 1. püha; 6) 23. juuni – võidupüha; 7) 24. juuni – jaanipäev; 8) 20. august – taasiseseisvumispäev; 8¹) 24. detsember – jõululaupäev; 9) 25. detsember – esimene jõulupüha; 10) 26. detsember – teine jõulupüha.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Riigipühad ja puhkepäevad on: 1) 1. jaanuar – uusaasta; 2) – suur reede; 3) – ülestõusmispühade 1. püha; 4) 1. mai – kevadpüha; 5) – nelipühade 1. püha; 6) 23. juuni – võidupüha; 7) 24. juuni – jaanipäev; 8) 20. august – taasiseseisvumispäev; 8¹) 24. detsember – jõululaupäev; 9) 25. detsember – esimene jõulupüha; 10) 26. detsember – teine jõulupüha.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTS_default"
       },
@@ -244,10 +282,25 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigipühad ja puhkepäevad on: 1. jaanuar – uusaasta; – suur reede; – ülestõusmispühade 1. püha; 1. mai – kevadpüha; – nelipühade 1. püha; 23. juuni – võidupüha; 24. juuni – jaanipäev; 20. august – taasiseseisvumispäev; 24. detsember – jõululaupäev; 25. detsember – esimene jõulupüha; 26. detsember – teine jõulupüha.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigipühad ja puhkepäevad on: 1) 1. jaanuar – uusaasta; 2) – suur reede; 3) – ülestõusmispühade 1. püha; 4) 1. mai – kevadpüha; 5) – nelipühade 1. püha; 6) 23. juuni – võidupüha; 7) 24. juuni – jaanipäev; 8) 20. august – taasiseseisvumispäev; 8¹) 24. detsember – jõululaupäev; 9) 25. detsember – esimene jõulupüha; 10) 26. detsember – teine jõulupüha.",
       "estleg:parentProvision": {
         "@id": "estleg:PTS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "8¹",
+        "9",
+        "10"
+      ]
     },
     {
       "@id": "estleg:PTS_Par_3",
@@ -256,13 +309,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Riiklikud tähtpäevad",
+      "rdfs:label": {
+        "@value": "§ 3. Riiklikud tähtpäevad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pühade ja tähtpäevade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTS_Map"
       },
-      "estleg:summary": "Riiklikud tähtpäevad on: 6. jaanuar – kolmekuningapäev; 30. jaanuar – eesti kirjanduse päev; 2. veebruar – Tartu rahulepingu aastapäev; 14. märts – emakeelepäev; maikuu teine pühapäev – emadepäev; 1. juuni – lastekaitsepäev; 4. juuni – Eesti lipu päev; , alapunkti number muudetud [RT I, 24.11.2020, 3] 14. juuni – leinapäev; 23. august – kommunismi ja natsismi ohvrite mälestuspäev; septembrikuu teine pühapäev – vanavanemate päev; 22. september – vastupanuvõitluse päev; , muudetud alapunkti",
-      "estleg:legalText": "Riiklikud tähtpäevad on: 6. jaanuar – kolmekuningapäev; 30. jaanuar – eesti kirjanduse päev; 2. veebruar – Tartu rahulepingu aastapäev; 14. märts – emakeelepäev; maikuu teine pühapäev – emadepäev; 1. juuni – lastekaitsepäev; 4. juuni – Eesti lipu päev; , alapunkti number muudetud [RT I, 24.11.2020, 3] 14. juuni – leinapäev; 23. august – kommunismi ja natsismi ohvrite mälestuspäev; septembrikuu teine pühapäev – vanavanemate päev; 22. september – vastupanuvõitluse päev; , muudetud alapunkti number (RT I 2010, 7, 27) 1. oktoober – omavalitsuspäev; oktoobrikuu kolmas laupäev – hõimupäev; , muudetud alapunkti number (RT I, 12.06.2018, 2) 2. november – hingedepäev; novembrikuu teine pühapäev – isadepäev; 16. november – taassünni päev.",
+      "estleg:summary": {
+        "@value": "Riiklikud tähtpäevad on: 1) 6. jaanuar – kolmekuningapäev; 1¹) 30. jaanuar – eesti kirjanduse päev; 2) 2. veebruar – Tartu rahulepingu aastapäev; 2¹) 14. märts – emakeelepäev; 3) maikuu teine pühapäev – emadepäev; 3¹) 1. juuni – lastekaitsepäev; 3²) 4. juuni – Eesti lipu päev; 4) 14. juuni – leinapäev; 4¹) 23. august – kommunismi ja natsismi ohvrite mälestuspäev; 4²) septembrikuu teine pühapäev – vanavanemate päev; 4³) 22. september – vastupanuvõitluse päev; 4⁴) 1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Riiklikud tähtpäevad on: 1) 6. jaanuar – kolmekuningapäev; 1¹) 30. jaanuar – eesti kirjanduse päev; 2) 2. veebruar – Tartu rahulepingu aastapäev; 2¹) 14. märts – emakeelepäev; 3) maikuu teine pühapäev – emadepäev; 3¹) 1. juuni – lastekaitsepäev; 3²) 4. juuni – Eesti lipu päev; 4) 14. juuni – leinapäev; 4¹) 23. august – kommunismi ja natsismi ohvrite mälestuspäev; 4²) septembrikuu teine pühapäev – vanavanemate päev; 4³) 22. september – vastupanuvõitluse päev; 4⁴) 1. oktoober – omavalitsuspäev; 4⁵) oktoobrikuu kolmas laupäev – hõimupäev; 5) 2. november – hingedepäev; 6) novembrikuu teine pühapäev – isadepäev; 7) 16. november – taassünni päev.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTS_default"
       },
@@ -324,10 +383,30 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riiklikud tähtpäevad on: 6. jaanuar – kolmekuningapäev; 30. jaanuar – eesti kirjanduse päev; 2. veebruar – Tartu rahulepingu aastapäev; 14. märts – emakeelepäev; maikuu teine pühapäev – emadepäev; 1. juuni – lastekaitsepäev; 4. juuni – Eesti lipu päev; , alapunkti number muudetud [RT I, 24.11.2020, 3] 14. juuni – leinapäev; 23. august – kommunismi ja natsismi ohvrite mälestuspäev; septembrikuu teine pühapäev – vanavanemate päev; 22. september – vastupanuvõitluse päev; , muudetud alapunkti number (RT I 2010, 7, 27) 1. oktoober – omavalitsuspäev; oktoobrikuu kolmas laupäev – hõimupäev; , muudetud alapunkti number (RT I, 12.06.2018, 2) 2. november – hingedepäev; novembrikuu teine pühapäev – isadepäev; 16. november – taassünni päev.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riiklikud tähtpäevad on: 1) 6. jaanuar – kolmekuningapäev; 1¹) 30. jaanuar – eesti kirjanduse päev; 2) 2. veebruar – Tartu rahulepingu aastapäev; 2¹) 14. märts – emakeelepäev; 3) maikuu teine pühapäev – emadepäev; 3¹) 1. juuni – lastekaitsepäev; 3²) 4. juuni – Eesti lipu päev; 4) 14. juuni – leinapäev; 4¹) 23. august – kommunismi ja natsismi ohvrite mälestuspäev; 4²) septembrikuu teine pühapäev – vanavanemate päev; 4³) 22. september – vastupanuvõitluse päev; 4⁴) 1. oktoober – omavalitsuspäev; 4⁵) oktoobrikuu kolmas laupäev – hõimupäev; 5) 2. november – hingedepäev; 6) novembrikuu teine pühapäev – isadepäev; 7) 16. november – taassünni päev.",
       "estleg:parentProvision": {
         "@id": "estleg:PTS_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "1¹",
+        "2",
+        "2¹",
+        "3",
+        "3¹",
+        "3²",
+        "4",
+        "4¹",
+        "4²",
+        "4³",
+        "4⁴",
+        "4⁵",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -345,12 +424,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3¹.",
-      "rdfs:label": "§ 3¹. Üleriigiline lein",
+      "rdfs:label": {
+        "@value": "§ 3¹. Üleriigiline lein",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pühade ja tähtpäevade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Valitsus võib välja kuulutada üleriigilise leina. (2) Leinapäeval, 14. juunil, ei korraldata leinaga kokkusobimatuid avalikke üritusi.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Valitsus võib välja kuulutada üleriigilise leina. (2) Leinapäeval, 14. juunil, ei korraldata leinaga kokkusobimatuid avalikke üritusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Valitsus võib välja kuulutada üleriigilise leina. (2) Leinapäeval, 14. juunil, ei korraldata leinaga kokkusobimatuid avalikke üritusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTS_default"
@@ -436,12 +521,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Pühade ja tähtpäevade arvestamine",
+      "rdfs:label": {
+        "@value": "§ 4. Pühade ja tähtpäevade arvestamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pühade ja tähtpäevade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTS_Map"
       },
-      "estleg:summary": "(1) Käesolevas seaduses nimetatud pühad ja tähtpäevad arvestatakse gregooriuse ehk uue kalendri järgi. (2) Rahvuspüha suhtes kohaldatakse teistes õigusaktides riigipühade ja riiklike pühade kohta sätestatut.",
+      "estleg:summary": {
+        "@value": "(1) Käesolevas seaduses nimetatud pühad ja tähtpäevad arvestatakse gregooriuse ehk uue kalendri järgi. (2) Rahvuspüha suhtes kohaldatakse teistes õigusaktides riigipühade ja riiklike pühade kohta sätestatut.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolevas seaduses nimetatud pühad ja tähtpäevad arvestatakse gregooriuse ehk uue kalendri järgi. (2) Rahvuspüha suhtes kohaldatakse teistes õigusaktides riigipühade ja riiklike pühade kohta sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTS_default"
@@ -498,12 +589,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Seaduse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 5. Seaduse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pühade ja tähtpäevade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTS_default"
@@ -527,12 +624,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 6. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pühade ja tähtpäevade seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PTS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 1998. aasta 23. veebruaril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 1998. aasta 23. veebruaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 1998. aasta 23. veebruaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PTS_default"
@@ -554,9 +657,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 1998. aasta 23. veebruaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 1998. aasta 23. veebruaril.",
       "estleg:parentProvision": {
         "@id": "estleg:PTS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/527122022003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:PTS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Public Holidays and Days of National Importance Act",
+        "@language": "en"
       }
     }
   ]

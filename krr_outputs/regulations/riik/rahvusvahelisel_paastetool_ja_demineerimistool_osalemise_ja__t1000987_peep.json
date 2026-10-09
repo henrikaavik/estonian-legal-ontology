@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2011-05-14",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2011-05-11",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -87,7 +89,13 @@
         {
           "@id": "estleg:Institution_siseminister"
         }
-      ]
+      ],
+      "dcterms:title": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1000987_Par_1",
@@ -96,13 +104,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000987_Map"
       },
-      "estleg:summary": "Määrus reguleerib Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve alusel väljaspool Eesti Vabariigi territooriumi rahvusvahelisel päästetööl ja demineerimistööl (edaspidi missioon) osalemise otsustamist, meeskonna missioonile saatmist ning kulude katmist.",
-      "estleg:legalText": "Määrus reguleerib Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve alusel väljaspool Eesti Vabariigi territooriumi rahvusvahelisel päästetööl ja demineerimistööl (edaspidi missioon) osalemise otsustamist, meeskonna missioonile saatmist ning kulude katmist. Määrus reguleerib Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve alusel väljaspool Eesti Vabariigi territooriumi rahvusvahelisel päästetööl ja demineerimistööl (edaspidi missioon) osalemise otsustamist, meeskonna missioonile saatmist ning kulude katmist.",
+      "estleg:summary": {
+        "@value": "Määrus reguleerib Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve alusel väljaspool Eesti Vabariigi territooriumi rahvusvahelisel päästetööl ja demineerimistööl (edaspidi missioon) osalemise otsustamist, meeskonna missioonile saatmist ning kulude katmist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus reguleerib Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve alusel väljaspool Eesti Vabariigi territooriumi rahvusvahelisel päästetööl ja demineerimistööl (edaspidi missioon) osalemise otsustamist, meeskonna missioonile saatmist ning kulude katmist.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Psteseadus_Par_31"
@@ -112,7 +126,25 @@
         {
           "@id": "estleg:Reg_1000987_Par_1_v1000987"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000987_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus reguleerib Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve alusel väljaspool Eesti Vabariigi territooriumi rahvusvahelisel päästetööl ja demineerimistööl (edaspidi missioon) osalemise otsustamist, meeskonna missioonile saatmist ning kulude katmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1000987_Par_2",
@@ -121,13 +153,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Missioonil osalemise otsustamine",
+      "rdfs:label": {
+        "@value": "§ 2. Missioonil osalemise otsustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000987_Map"
       },
-      "estleg:summary": "1 (1) Missioonil osalemise otsuse tegemise aluseks on Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve. Missioonil osalemise otsuse tegemise aluseks on Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve. 2 (2) Missioone käsitlevat teavet kogub Päästeamet, kes võtab vastu osalemiskutseid ja abipalveid ning analüüsib missioonil osalemise vajalikkust, otstarbekust ja võimalikkust. Missioone käsitlevat ",
-      "estleg:legalText": "1 (1) Missioonil osalemise otsuse tegemise aluseks on Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve. Missioonil osalemise otsuse tegemise aluseks on Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve. 2 (2) Missioone käsitlevat teavet kogub Päästeamet, kes võtab vastu osalemiskutseid ja abipalveid ning analüüsib missioonil osalemise vajalikkust, otstarbekust ja võimalikkust. Missioone käsitlevat teavet kogub Päästeamet, kes võtab vastu osalemiskutseid ja abipalveid ning analüüsib missioonil osalemise vajalikkust, otstarbekust ja võimalikkust. 3 (3) Päästeamet teeb ettepaneku missioonil osalemise kohta Siseministeeriumile ning esitab koos ettepanekuga: 1 1) abipalve; 2 2) abipalve rahuldamise hinnangu; 3 3) missiooni eesmärgi ning moodustatava meeskonna lühikirjelduse ja arvulise koosseisu; 4 4) missioonil osalemiseks tehtavate kulutuste eelarve. Päästeamet teeb ettepaneku missioonil osalemise kohta Siseministeeriumile ning esitab koos ettepanekuga: abipalve; abipalve rahuldamise hinnangu; missiooni eesmärgi ning moodustatava meeskonna lühikirjelduse ja arvulise koosseisu; missioonil osalemiseks tehtavate kulutuste eelarve. 4 (4) Vajaduse korral kooskõlastab Siseministeerium missioonil osalemise enne otsuse tegemist Välisministeeriumiga. Vajaduse korral kooskõlastab Siseministeerium missioonil osalemise enne otsuse tegemist Välisministeeriumiga. 5 (5) Missioonil osalemise otsustab siseminister. Missioonil osalemise otsustab siseminister.",
+      "estleg:summary": {
+        "@value": "1 (1) Missioonil osalemise otsuse tegemise aluseks on Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve. 2 (2) Missioone käsitlevat teavet kogub Päästeamet, kes võtab vastu osalemiskutseid ja abipalveid ning analüüsib missioonil osalemise vajalikkust, otstarbekust ja võimalikkust. 3 (3) Päästeamet teeb ettepaneku missioonil osalemise kohta Siseministeeriumile ning esitab koos ettepanekuga: 1 1) abipalve; 2 2) abipalve rahuldamise hinnangu; 3 3)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Missioonil osalemise otsuse tegemise aluseks on Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve. 2 (2) Missioone käsitlevat teavet kogub Päästeamet, kes võtab vastu osalemiskutseid ja abipalveid ning analüüsib missioonil osalemise vajalikkust, otstarbekust ja võimalikkust. 3 (3) Päästeamet teeb ettepaneku missioonil osalemise kohta Siseministeeriumile ning esitab koos ettepanekuga: 1 1) abipalve; 2 2) abipalve rahuldamise hinnangu; 3 3) missiooni eesmärgi ning moodustatava meeskonna lühikirjelduse ja arvulise koosseisu; 4 4) missioonil osalemiseks tehtavate kulutuste eelarve. 4 (4) Vajaduse korral kooskõlastab Siseministeerium missioonil osalemise enne otsuse tegemist Välisministeeriumiga. 5 (5) Missioonil osalemise otsustab siseminister.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RTO_Par_7"
@@ -157,7 +195,95 @@
         {
           "@id": "estleg:Institution_valisministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000987_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_2_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Missioonil osalemise otsuse tegemise aluseks on Euroopa Liidu liikmesriigi abipalve või rahvusvahelise päästekokkuleppe kohaselt esitatud abipalve.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Missioone käsitlevat teavet kogub Päästeamet, kes võtab vastu osalemiskutseid ja abipalveid ning analüüsib missioonil osalemise vajalikkust, otstarbekust ja võimalikkust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Päästeamet teeb ettepaneku missioonil osalemise kohta Siseministeeriumile ning esitab koos ettepanekuga: 1) abipalve; 2) abipalve rahuldamise hinnangu; 3) missiooni eesmärgi ning moodustatava meeskonna lühikirjelduse ja arvulise koosseisu; 4) missioonil osalemiseks tehtavate kulutuste eelarve.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Vajaduse korral kooskõlastab Siseministeerium missioonil osalemise enne otsuse tegemist Välisministeeriumiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Missioonil osalemise otsustab siseminister.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
     },
     {
       "@id": "estleg:Reg_1000987_Par_3",
@@ -166,13 +292,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Meeskond",
+      "rdfs:label": {
+        "@value": "§ 3. Meeskond",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000987_Map"
       },
-      "estleg:summary": "1 (1) Missioonil osalemiseks moodustatakse reservis olevatest ekspertidest meeskond. Missioonil osalemiseks moodustatakse reservis olevatest ekspertidest meeskond. 2 (2) Meeskonna nimetus on Eesti päästemeeskond; inglise keeles Estonian Disaster Relief Team (EDRT). Meeskonna nimetust võib kasutada ka missioonil osalev üks ekspert. Meeskonna nimetus on Eesti päästemeeskond; inglise keeles Estonian Disaster Relief Team (EDRT). Meeskonna nimetust võib kasutada ka missioonil osalev üks ekspert. 3 (3",
-      "estleg:legalText": "1 (1) Missioonil osalemiseks moodustatakse reservis olevatest ekspertidest meeskond. Missioonil osalemiseks moodustatakse reservis olevatest ekspertidest meeskond. 2 (2) Meeskonna nimetus on Eesti päästemeeskond; inglise keeles Estonian Disaster Relief Team (EDRT). Meeskonna nimetust võib kasutada ka missioonil osalev üks ekspert. Meeskonna nimetus on Eesti päästemeeskond; inglise keeles Estonian Disaster Relief Team (EDRT). Meeskonna nimetust võib kasutada ka missioonil osalev üks ekspert. 3 (3) Meeskonna ülesandeks on teha päästetöid ja demineerimistöid vastavalt missiooni eesmärkidele. Meeskonna ülesandeks on teha päästetöid ja demineerimistöid vastavalt missiooni eesmärkidele. 4 (4) Meeskonna ja eksperdi missiooniks valmistumist ja missioonil osalemist korraldab Päästeamet, kaasates vajaduse korral teisi ametiasutusi. Meeskonna ja eksperdi missiooniks valmistumist ja missioonil osalemist korraldab Päästeamet, kaasates vajaduse korral teisi ametiasutusi.",
+      "estleg:summary": {
+        "@value": "1 (1) Missioonil osalemiseks moodustatakse reservis olevatest ekspertidest meeskond. 2 (2) Meeskonna nimetus on Eesti päästemeeskond; inglise keeles Estonian Disaster Relief Team (EDRT). Meeskonna nimetust võib kasutada ka missioonil osalev üks ekspert. 3 (3) Meeskonna ülesandeks on teha päästetöid ja demineerimistöid vastavalt missiooni eesmärkidele. 4 (4) Meeskonna ja eksperdi missiooniks valmistumist ja missioonil osalemist korraldab Päästeamet, kaasates vajaduse korral teisi ametiasutusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Missioonil osalemiseks moodustatakse reservis olevatest ekspertidest meeskond. 2 (2) Meeskonna nimetus on Eesti päästemeeskond; inglise keeles Estonian Disaster Relief Team (EDRT). Meeskonna nimetust võib kasutada ka missioonil osalev üks ekspert. 3 (3) Meeskonna ülesandeks on teha päästetöid ja demineerimistöid vastavalt missiooni eesmärkidele. 4 (4) Meeskonna ja eksperdi missiooniks valmistumist ja missioonil osalemist korraldab Päästeamet, kaasates vajaduse korral teisi ametiasutusi.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -195,7 +327,73 @@
           "@id": "estleg:Institution_paasteamet"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000987_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_3_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Missioonil osalemiseks moodustatakse reservis olevatest ekspertidest meeskond.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Meeskonna nimetus on Eesti päästemeeskond; inglise keeles Estonian Disaster Relief Team (EDRT). Meeskonna nimetust võib kasutada ka missioonil osalev üks ekspert.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Meeskonna ülesandeks on teha päästetöid ja demineerimistöid vastavalt missiooni eesmärkidele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Meeskonna ja eksperdi missiooniks valmistumist ja missioonil osalemist korraldab Päästeamet, kaasates vajaduse korral teisi ametiasutusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
     },
     {
       "@id": "estleg:Reg_1000987_Par_4",
@@ -204,13 +402,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Meeskonna saatmine missioonile",
+      "rdfs:label": {
+        "@value": "§ 4. Meeskonna saatmine missioonile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000987_Map"
       },
-      "estleg:summary": "1 (1) Meeskonna juhi ja liikmed nimetab ning meeskonna saadab missioonile Päästeameti peadirektor käskkirjaga, mille väljaandmisest loetakse missioon alanuks. Missioon lõpeb missioonilt naasmisega. Meeskonna juhi ja liikmed nimetab ning meeskonna saadab missioonile Päästeameti peadirektor käskkirjaga, mille väljaandmisest loetakse missioon alanuks. Missioon lõpeb missioonilt naasmisega. 2 (2) Päästeameti peadirektor sõlmib missioonil osalemiseks nõusoleku andnud eksperdiga võlaõigusliku lepingu,",
-      "estleg:legalText": "1 (1) Meeskonna juhi ja liikmed nimetab ning meeskonna saadab missioonile Päästeameti peadirektor käskkirjaga, mille väljaandmisest loetakse missioon alanuks. Missioon lõpeb missioonilt naasmisega. Meeskonna juhi ja liikmed nimetab ning meeskonna saadab missioonile Päästeameti peadirektor käskkirjaga, mille väljaandmisest loetakse missioon alanuks. Missioon lõpeb missioonilt naasmisega. 2 (2) Päästeameti peadirektor sõlmib missioonil osalemiseks nõusoleku andnud eksperdiga võlaõigusliku lepingu, milles on toodud vähemalt: 1 1) andmed missiooni kohta, sh missiooni asukoht; 2 2) meeskonna liikme ülesanded missioonil; 3 3) meeskonna liikmele ülesannete täitmise eest makstav tasu; 4 4) meeskonna liikmele ülesannete täitmisega seotud kulude hüvitamine; 5 5) missiooni eeldatav kestus. Päästeameti peadirektor sõlmib missioonil osalemiseks nõusoleku andnud eksperdiga võlaõigusliku lepingu, milles on toodud vähemalt: andmed missiooni kohta, sh missiooni asukoht; meeskonna liikme ülesanded missioonil; meeskonna liikmele ülesannete täitmise eest makstav tasu; meeskonna liikmele ülesannete täitmisega seotud kulude hüvitamine; missiooni eeldatav kestus. 3 (3) Aja eest, mil meeskonna liige osaleb missioonil, makstakse talle tasu lähtuvalt tema personaalsetest ülesannetest ning tema missioonile saatmisele eelnenud kuue kuu keskmise töötasu või palga kuni neljakordsest suurusest, kuid mitte rohkem kui viieteistkümnekordses Eesti töötasu alammäära suuruses. Meeskonna liikmetele, kellel puudub püsiv sissetulek, makstakse tasu kuni viieteistkümnekordses Eesti töötasu alammäära suuruses. Aja eest, mil meeskonna liige osaleb missioonil, makstakse talle tasu lähtuvalt tema personaalsetest ülesannetest ning tema missioonile saatmisele eelnenud kuue kuu keskmise töötasu või palga kuni neljakordsest suurusest, kuid mitte rohkem kui viieteistkümnekordses Eesti töötasu alammäära suuruses. Meeskonna liikmetele, kellel puudub püsiv sissetulek, makstakse tasu kuni viieteistkümnekordses Eesti töötasu alammäära suuruses. 4 (4) Meeskonna liikmetele laienevad „Päästeseaduse” §-s 41 ja „Päästeteenistuse seaduse” §-s 16 kehtestatud sotsiaalsed tagatised. Sellele lisaks võib Päästeamet meeskonna liikmete missioonil osalemise ajaks sõlmida täiendava kindlustuslepingu. Meeskonna liikmetele laienevad „Päästeseaduse” §-s 41 ja „Päästeteenistuse seaduse” §-s 16 kehtestatud sotsiaalsed tagatised. Sellele lisaks võib Päästeamet meeskonna liikmete missioonil osalemise ajaks sõlmida täiendava kindlustuslepingu.",
+      "estleg:summary": {
+        "@value": "1 (1) Meeskonna juhi ja liikmed nimetab ning meeskonna saadab missioonile Päästeameti peadirektor käskkirjaga, mille väljaandmisest loetakse missioon alanuks. Missioon lõpeb missioonilt naasmisega. 2 (2) Päästeameti peadirektor sõlmib missioonil osalemiseks nõusoleku andnud eksperdiga võlaõigusliku lepingu, milles on toodud vähemalt: 1 1) andmed missiooni kohta, sh missiooni asukoht; 2 2) meeskonna liikme ülesanded missioonil; 3 3) meeskonna liikmele ülesannete täitmise eest makstav tasu; 4 4)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Meeskonna juhi ja liikmed nimetab ning meeskonna saadab missioonile Päästeameti peadirektor käskkirjaga, mille väljaandmisest loetakse missioon alanuks. Missioon lõpeb missioonilt naasmisega. 2 (2) Päästeameti peadirektor sõlmib missioonil osalemiseks nõusoleku andnud eksperdiga võlaõigusliku lepingu, milles on toodud vähemalt: 1 1) andmed missiooni kohta, sh missiooni asukoht; 2 2) meeskonna liikme ülesanded missioonil; 3 3) meeskonna liikmele ülesannete täitmise eest makstav tasu; 4 4) meeskonna liikmele ülesannete täitmisega seotud kulude hüvitamine; 5 5) missiooni eeldatav kestus. 3 (3) Aja eest, mil meeskonna liige osaleb missioonil, makstakse talle tasu lähtuvalt tema personaalsetest ülesannetest ning tema missioonile saatmisele eelnenud kuue kuu keskmise töötasu või palga kuni neljakordsest suurusest, kuid mitte rohkem kui viieteistkümnekordses Eesti töötasu alammäära suuruses. Meeskonna liikmetele, kellel puudub püsiv sissetulek, makstakse tasu kuni viieteistkümnekordses Eesti töötasu alammäära suuruses. 4 (4) Meeskonna liikmetele laienevad „Päästeseaduse” §-s 41 ja „Päästeteenistuse seaduse” §-s 16 kehtestatud sotsiaalsed tagatised. Sellele lisaks võib Päästeamet meeskonna liikmete missioonil osalemise ajaks sõlmida täiendava kindlustuslepingu.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1000987_Par_4_v1000987"
@@ -220,7 +424,80 @@
         {
           "@id": "estleg:Institution_paasteamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000987_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1000987_Par_4_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Meeskonna juhi ja liikmed nimetab ning meeskonna saadab missioonile Päästeameti peadirektor käskkirjaga, mille väljaandmisest loetakse missioon alanuks. Missioon lõpeb missioonilt naasmisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Päästeameti peadirektor sõlmib missioonil osalemiseks nõusoleku andnud eksperdiga võlaõigusliku lepingu, milles on toodud vähemalt: 1) andmed missiooni kohta, sh missiooni asukoht; 2) meeskonna liikme ülesanded missioonil; 3) meeskonna liikmele ülesannete täitmise eest makstav tasu; 4) meeskonna liikmele ülesannete täitmisega seotud kulude hüvitamine; 5) missiooni eeldatav kestus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Aja eest, mil meeskonna liige osaleb missioonil, makstakse talle tasu lähtuvalt tema personaalsetest ülesannetest ning tema missioonile saatmisele eelnenud kuue kuu keskmise töötasu või palga kuni neljakordsest suurusest, kuid mitte rohkem kui viieteistkümnekordses Eesti töötasu alammäära suuruses. Meeskonna liikmetele, kellel puudub püsiv sissetulek, makstakse tasu kuni viieteistkümnekordses Eesti töötasu alammäära suuruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Meeskonna liikmetele laienevad „Päästeseaduse” §-s 41 ja „Päästeteenistuse seaduse” §-s 16 kehtestatud sotsiaalsed tagatised. Sellele lisaks võib Päästeamet meeskonna liikmete missioonil osalemise ajaks sõlmida täiendava kindlustuslepingu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
     },
     {
       "@id": "estleg:Reg_1000987_Par_5",
@@ -229,13 +506,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Kulude katmine",
+      "rdfs:label": {
+        "@value": "§ 5. Kulude katmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusvahelisel päästetööl ja demineerimistööl osalemise ja kulude katmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000987_Map"
       },
-      "estleg:summary": "Missiooniks valmistumise ja sellel osalemise kulud kaetakse Päästeameti eelarvest, kui ei lepita kokku teisiti.",
-      "estleg:legalText": "Missiooniks valmistumise ja sellel osalemise kulud kaetakse Päästeameti eelarvest, kui ei lepita kokku teisiti. Missiooniks valmistumise ja sellel osalemise kulud kaetakse Päästeameti eelarvest, kui ei lepita kokku teisiti.",
+      "estleg:summary": {
+        "@value": "Missiooniks valmistumise ja sellel osalemise kulud kaetakse Päästeameti eelarvest, kui ei lepita kokku teisiti.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Missiooniks valmistumise ja sellel osalemise kulud kaetakse Päästeameti eelarvest, kui ei lepita kokku teisiti.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RTO_Par_6"
@@ -250,6 +533,11 @@
         {
           "@id": "estleg:Institution_paasteamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000987_Par_5_Lg_1"
+        }
       ]
     },
     {
@@ -263,6 +551,19 @@
       },
       "estleg:citationDetail": "lg 2",
       "estleg:citationText": "Määrus kehtestatakse „ Päästeseaduse ” § 31 lõike 2"
+    },
+    {
+      "@id": "estleg:Reg_1000987_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Missiooniks valmistumise ja sellel osalemise kulud kaetakse Päästeameti eelarvest, kui ei lepita kokku teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000987_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     }
   ]
 }

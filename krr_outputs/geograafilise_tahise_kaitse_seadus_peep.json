@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:GTKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Geograafilise tähise kaitse seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Geograafilise tähise kaitse seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Geograafilise tähise kaitse seadus",
-      "dcterms:title": [
-        {
-          "@value": "Geograafilise tähise kaitse seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Geographical Indication Protection Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Geograafilise tähise kaitse seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/127092023011.xml"
+        "@id": "https://www.riigiteataja.ee/akt/127092023011"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/127092023011/xml"
+      },
+      "estleg:globalId": "127092023011",
+      "eli:id_local": "127092023011",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159410",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "521ad607aad2094caf3473409fced1176f214af547458a87deec05e14c47bc62",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2000-01-10",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-08-31",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-08-31",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/506102023002"
@@ -186,14 +198,40 @@
         {
           "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/506102023002"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_GTKS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:GTKS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:GTKS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Geograafilise tähise kaitse seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Geograafilise tähise kaitse seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_GTKS_1"
@@ -225,26 +263,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_GTKS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–4 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:GTKS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_GTKS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -264,8 +291,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–13 GEOGRAAFILISE TÄHISE ÕIGUSKAITSE ALUSED",
-      "skos:prefLabel": "§5–13 GEOGRAAFILISE TÄHISE ÕIGUSKAITSE ALUSED",
+      "rdfs:label": {
+        "@value": "§5–13 GEOGRAAFILISE TÄHISE ÕIGUSKAITSE ALUSED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–13 GEOGRAAFILISE TÄHISE ÕIGUSKAITSE ALUSED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
@@ -277,7 +310,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – GEOGRAAFILISE TÄHISE ÕIGUSKAITSE ALUSED",
+      "rdfs:label": {
+        "@value": "2. peatükk – GEOGRAAFILISE TÄHISE ÕIGUSKAITSE ALUSED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -297,8 +333,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§14–20 ALKOHOOLSE JOOGI GEOGRAAFILISTE TÄHISTE ÕIGUSKAITSE ERISUSED",
-      "skos:prefLabel": "§14–20 ALKOHOOLSE JOOGI GEOGRAAFILISTE TÄHISTE ÕIGUSKAITSE ERISUSED",
+      "rdfs:label": {
+        "@value": "§14–20 ALKOHOOLSE JOOGI GEOGRAAFILISTE TÄHISTE ÕIGUSKAITSE ERISUSED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§14–20 ALKOHOOLSE JOOGI GEOGRAAFILISTE TÄHISTE ÕIGUSKAITSE ERISUSED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
@@ -310,7 +352,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – ALKOHOOLSE JOOGI GEOGRAAFILISTE TÄHISTE ÕIGUSKAITSE ERISUSED",
+      "rdfs:label": {
+        "@value": "3. peatükk – ALKOHOOLSE JOOGI GEOGRAAFILISTE TÄHISTE ÕIGUSKAITSE ERISUSED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -330,12 +375,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§21–42 GEOGRAAFILISE TÄHISE REGISTREERIMINE",
-      "skos:prefLabel": "§21–42 GEOGRAAFILISE TÄHISE REGISTREERIMINE",
+      "rdfs:label": {
+        "@value": "§21–42 GEOGRAAFILISE TÄHISE REGISTREERIMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§21–42 GEOGRAAFILISE TÄHISE REGISTREERIMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
-      "estleg:provisionCount": 22
+      "estleg:provisionCount": 23
     },
     {
       "@id": "estleg:Chapter_GTKS_4",
@@ -343,7 +394,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – GEOGRAAFILISE TÄHISE REGISTREERIMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – GEOGRAAFILISE TÄHISE REGISTREERIMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -363,8 +417,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§43–47 ÕIGUSTE VAIDLUSTAMINE JA KAITSE",
-      "skos:prefLabel": "§43–47 ÕIGUSTE VAIDLUSTAMINE JA KAITSE",
+      "rdfs:label": {
+        "@value": "§43–47 ÕIGUSTE VAIDLUSTAMINE JA KAITSE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§43–47 ÕIGUSTE VAIDLUSTAMINE JA KAITSE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
@@ -376,7 +436,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – ÕIGUSTE VAIDLUSTAMINE JA KAITSE",
+      "rdfs:label": {
+        "@value": "5. peatükk – ÕIGUSTE VAIDLUSTAMINE JA KAITSE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -396,12 +459,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§47–47 RIIGILÕIV",
-      "skos:prefLabel": "§47–47 RIIGILÕIV",
+      "rdfs:label": {
+        "@value": "§47–47 RIIGILÕIV",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§47–47 RIIGILÕIV",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
-      "estleg:provisionCount": 1
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:Chapter_GTKS_5_97b712e9",
@@ -409,7 +478,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – RIIGILÕIV",
+      "rdfs:label": {
+        "@value": "5. peatükk – RIIGILÕIV",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -429,8 +501,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§48–51 RIIKLIK JÄRELEVALVE",
-      "skos:prefLabel": "§48–51 RIIKLIK JÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "§48–51 RIIKLIK JÄRELEVALVE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§48–51 RIIKLIK JÄRELEVALVE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
@@ -442,7 +520,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – RIIKLIK JÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "6. peatükk – RIIKLIK JÄRELEVALVE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -462,8 +543,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§52–55 VASTUTUS GEOGRAAFILISE TÄHISE ÕIGUSVASTASE KASUTAMISE EEST",
-      "skos:prefLabel": "§52–55 VASTUTUS GEOGRAAFILISE TÄHISE ÕIGUSVASTASE KASUTAMISE EEST",
+      "rdfs:label": {
+        "@value": "§52–55 VASTUTUS GEOGRAAFILISE TÄHISE ÕIGUSVASTASE KASUTAMISE EEST",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§52–55 VASTUTUS GEOGRAAFILISE TÄHISE ÕIGUSVASTASE KASUTAMISE EEST",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
@@ -475,7 +562,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – VASTUTUS GEOGRAAFILISE TÄHISE ÕIGUSVASTASE KASUTAMISE EEST",
+      "rdfs:label": {
+        "@value": "7. peatükk – VASTUTUS GEOGRAAFILISE TÄHISE ÕIGUSVASTASE KASUTAMISE EEST",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -495,12 +585,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§56–63 LÕPPSÄTTED",
-      "skos:prefLabel": "§56–63 LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "§56–63 LÕPPSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§56–63 LÕPPSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:GTKS_TopicScheme"
       },
-      "estleg:provisionCount": 3
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Chapter_GTKS_8",
@@ -508,7 +604,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "8. peatükk – LÕPPSÄTTED",
+      "rdfs:label": {
+        "@value": "8. peatükk – LÕPPSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "8",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
@@ -528,12 +627,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus reguleerib loodusliku, põllumajandusliku, käsitööndusliku või tööstusliku päritoluga kaupade ja teenuste tähistamiseks kasutatavate geograafiliste tähiste õiguskaitset, välja arvatud Euroopa Liidu tasandil kaitstavate põllumajandustoodete, toiduainete ja alkohoolsete jookide geograafilisi tähiseid ja päritolunimetusi. (2) Euroopa Parlamendi ja nõukogu määruses (EL) nr 1151/2012 põllumajandustoodete ja toidu kvaliteedikavade kohta (ELT L 343, 14.12.2012, lk 1–29) sätestatud",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus reguleerib loodusliku, põllumajandusliku, käsitööndusliku või tööstusliku päritoluga kaupade ja teenuste tähistamiseks kasutatavate geograafiliste tähiste õiguskaitset, välja arvatud Euroopa Liidu tasandil kaitstavate põllumajandustoodete, toiduainete ja alkohoolsete jookide geograafilisi tähiseid ja päritolunimetusi. (2) Euroopa Parlamendi ja nõukogu määruses (EL) nr 1151/2012 põllumajandustoodete ja toidu kvaliteedikavade kohta (ELT L 343, 14.12.2012, lk 1–29) sätestatud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus reguleerib loodusliku, põllumajandusliku, käsitööndusliku või tööstusliku päritoluga kaupade ja teenuste tähistamiseks kasutatavate geograafiliste tähiste õiguskaitset, välja arvatud Euroopa Liidu tasandil kaitstavate põllumajandustoodete, toiduainete ja alkohoolsete jookide geograafilisi tähiseid ja päritolunimetusi. (2) Euroopa Parlamendi ja nõukogu määruses (EL) nr 1151/2012 põllumajandustoodete ja toidu kvaliteedikavade kohta (ELT L 343, 14.12.2012, lk 1–29) sätestatud siseriiklikke toiminguid ning Euroopa Liidu tasandil kaitstavate alkohoolsete jookide geograafiliste tähiste ja päritolunimetuste osas ettenähtud siseriiklikke toiminguid teeb Regionaal- ja Põllumajandusministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_1"
@@ -613,12 +718,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Eesti Vabariigi ja välisriigi isiku õiguste ja kohustuste võrdsus",
+      "rdfs:label": {
+        "@value": "§ 2. Eesti Vabariigi ja välisriigi isiku õiguste ja kohustuste võrdsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Geograafilise tähise õiguskaitset käsitlevates õigusaktides ettenähtud õigused ja kohustused kehtivad, arvestades käesolevas seaduses sätestatud piiranguid, võrdselt Eesti Vabariigi ja välisriigi isiku (edaspidi isik) suhtes.",
+      "estleg:summary": {
+        "@value": "Geograafilise tähise õiguskaitset käsitlevates õigusaktides ettenähtud õigused ja kohustused kehtivad, arvestades käesolevas seaduses sätestatud piiranguid, võrdselt Eesti Vabariigi ja välisriigi isiku (edaspidi isik) suhtes.",
+        "@language": "et"
+      },
       "estleg:legalText": "Geograafilise tähise õiguskaitset käsitlevates õigusaktides ettenähtud õigused ja kohustused kehtivad, arvestades käesolevas seaduses sätestatud piiranguid, võrdselt Eesti Vabariigi ja välisriigi isiku (edaspidi isik) suhtes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_1"
@@ -666,10 +777,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Geograafilise tähise õiguskaitset käsitlevates õigusaktides ettenähtud õigused ja kohustused kehtivad, arvestades käesolevas seaduses sätestatud piiranguid, võrdselt Eesti Vabariigi ja välisriigi isiku (edaspidi isik) suhtes.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Geograafilise tähise õiguskaitset käsitlevates õigusaktides ettenähtud õigused ja kohustused kehtivad, arvestades käesolevas seaduses sätestatud piiranguid, võrdselt Eesti Vabariigi ja välisriigi isiku (edaspidi isik) suhtes.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -687,13 +800,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Geograafiline tähis ja geograafiline ala",
+      "rdfs:label": {
+        "@value": "§ 3. Geograafiline tähis ja geograafiline ala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Geograafiline tähis on: geograafilise ala nimi või vihje sellele alale, mis näitab kauba või teenuse kindlat geograafilist päritolu, kui selliselt tähistatud kauba või teenuse konkreetne omadus, maine või muu tunnus on olulisel määral seostatav geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse; muu sõna, sõnaühend või sümbol, mis on pikaajalise ja pideva kasutamise tulemusena muutunud olulisel määral seotuks geograafilise alaga,",
-      "estleg:legalText": "(1) Geograafiline tähis on: geograafilise ala nimi või vihje sellele alale, mis näitab kauba või teenuse kindlat geograafilist päritolu, kui selliselt tähistatud kauba või teenuse konkreetne omadus, maine või muu tunnus on olulisel määral seostatav geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse; muu sõna, sõnaühend või sümbol, mis on pikaajalise ja pideva kasutamise tulemusena muutunud olulisel määral seotuks geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse. (2) Geograafiline ala käesoleva seaduse tähenduses on riigi territoorium, selle teatud piirkond või koht. Geograafiline ala ei pea kokku langema samanimelise haldusüksuse või asustusüksusega. Geograafilise ala nimi geograafilise tähisena ei pea vastama selle geograafilise ala praegusele ametlikule nimele.",
+      "estleg:summary": {
+        "@value": "(1) Geograafiline tähis on: 1) geograafilise ala nimi või vihje sellele alale, mis näitab kauba või teenuse kindlat geograafilist päritolu, kui selliselt tähistatud kauba või teenuse konkreetne omadus, maine või muu tunnus on olulisel määral seostatav geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse; 2) muu sõna, sõnaühend või sümbol, mis on pikaajalise ja pideva kasutamise tulemusena muutunud olulisel määral seotuks geograafilise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Geograafiline tähis on: 1) geograafilise ala nimi või vihje sellele alale, mis näitab kauba või teenuse kindlat geograafilist päritolu, kui selliselt tähistatud kauba või teenuse konkreetne omadus, maine või muu tunnus on olulisel määral seostatav geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse; 2) muu sõna, sõnaühend või sümbol, mis on pikaajalise ja pideva kasutamise tulemusena muutunud olulisel määral seotuks geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse. (2) Geograafiline ala käesoleva seaduse tähenduses on riigi territoorium, selle teatud piirkond või koht. Geograafiline ala ei pea kokku langema samanimelise haldusüksuse või asustusüksusega. Geograafilise ala nimi geograafilise tähisena ei pea vastama selle geograafilise ala praegusele ametlikule nimele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_1"
       },
@@ -721,11 +840,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Geograafiline tähis on: geograafilise ala nimi või vihje sellele alale, mis näitab kauba või teenuse kindlat geograafilist päritolu, kui selliselt tähistatud kauba või teenuse konkreetne omadus, maine või muu tunnus on olulisel määral seostatav geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse; muu sõna, sõnaühend või sümbol, mis on pikaajalise ja pideva kasutamise tulemusena muutunud olulisel määral seotuks geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse.",
+      "estleg:legalText": "(1) Geograafiline tähis on: 1) geograafilise ala nimi või vihje sellele alale, mis näitab kauba või teenuse kindlat geograafilist päritolu, kui selliselt tähistatud kauba või teenuse konkreetne omadus, maine või muu tunnus on olulisel määral seostatav geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse; 2) muu sõna, sõnaühend või sümbol, mis on pikaajalise ja pideva kasutamise tulemusena muutunud olulisel määral seotuks geograafilise alaga, kus kaupa toodetakse, töödeldakse või müügiks ette valmistatakse või kus teenust osutatakse.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_3"
       },
-      "rdfs:label": "§ 3 lg 1"
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:GTKS_Par_3_Lg_2",
@@ -747,12 +870,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Geograafilise tähise vorm",
+      "rdfs:label": {
+        "@value": "§ 4. Geograafilise tähise vorm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Geograafiline tähis võib vormilt olla sõnaline või kujunduslik. (2) Sõnalises vormis geograafiline tähis võib olla sõna või sõnaühend, mis on geograafilise ala nimi, sisaldab seda nime või viitab sellele. (3) Kujunduslikus vormis geograafiline tähis võib olla geograafilise ala kartograafiline kujund või sümbol, mis viitab kindlale geograafilisele alale.",
+      "estleg:summary": {
+        "@value": "(1) Geograafiline tähis võib vormilt olla sõnaline või kujunduslik. (2) Sõnalises vormis geograafiline tähis võib olla sõna või sõnaühend, mis on geograafilise ala nimi, sisaldab seda nime või viitab sellele. (3) Kujunduslikus vormis geograafiline tähis võib olla geograafilise ala kartograafiline kujund või sümbol, mis viitab kindlale geograafilisele alale.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Geograafiline tähis võib vormilt olla sõnaline või kujunduslik. (2) Sõnalises vormis geograafiline tähis võib olla sõna või sõnaühend, mis on geograafilise ala nimi, sisaldab seda nime või viitab sellele. (3) Kujunduslikus vormis geograafiline tähis võib olla geograafilise ala kartograafiline kujund või sümbol, mis viitab kindlale geograafilisele alale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_1"
@@ -871,12 +1000,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Geograafilise tähise õiguskaitse tagamine",
+      "rdfs:label": {
+        "@value": "§ 5. Geograafilise tähise õiguskaitse tagamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Geograafilise tähise õiguskaitse antakse geograafilise tähise registreerimisega riiklikus geograafiliste tähiste registris (edaspidi register) käesolevas seaduses sätestatud korras. (2) Geograafilise tähise õiguskaitse tagatakse riikliku järelevalvega (edaspidi järelevalve) ja riikliku sunni kohaldamisega käesolevas seaduses ettenähtud alustel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Geograafilise tähise õiguskaitse antakse geograafilise tähise registreerimisega riiklikus geograafiliste tähiste registris (edaspidi register) käesolevas seaduses sätestatud korras. (2) Geograafilise tähise õiguskaitse tagatakse riikliku järelevalvega (edaspidi järelevalve) ja riikliku sunni kohaldamisega käesolevas seaduses ettenähtud alustel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Geograafilise tähise õiguskaitse antakse geograafilise tähise registreerimisega riiklikus geograafiliste tähiste registris (edaspidi register) käesolevas seaduses sätestatud korras. (2) Geograafilise tähise õiguskaitse tagatakse riikliku järelevalvega (edaspidi järelevalve) ja riikliku sunni kohaldamisega käesolevas seaduses ettenähtud alustel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
@@ -931,12 +1066,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Geograafilise tähise õiguskaitse ulatus",
+      "rdfs:label": {
+        "@value": "§ 6. Geograafilise tähise õiguskaitse ulatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Geograafilise tähise õiguskaitse ulatus määratakse geograafilise tähise registreeringu (edaspidi registreering) andmetega.",
+      "estleg:summary": {
+        "@value": "Geograafilise tähise õiguskaitse ulatus määratakse geograafilise tähise registreeringu (edaspidi registreering) andmetega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Geograafilise tähise õiguskaitse ulatus määratakse geograafilise tähise registreeringu (edaspidi registreering) andmetega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
@@ -967,10 +1108,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Geograafilise tähise õiguskaitse ulatus määratakse geograafilise tähise registreeringu (edaspidi registreering) andmetega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Geograafilise tähise õiguskaitse ulatus määratakse geograafilise tähise registreeringu (edaspidi registreering) andmetega.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_6"
-      }
+      },
+      "rdfs:label": "§ 6 lg 1"
     },
     {
       "@id": "estleg:GTKS_Par_7",
@@ -979,12 +1122,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Geograafilise tähise õiguskaitse kestus",
+      "rdfs:label": {
+        "@value": "§ 7. Geograafilise tähise õiguskaitse kestus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Geograafilise tähise õiguskaitse on tähtajatu.",
+      "estleg:summary": {
+        "@value": "Geograafilise tähise õiguskaitse on tähtajatu.",
+        "@language": "et"
+      },
       "estleg:legalText": "Geograafilise tähise õiguskaitse on tähtajatu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
@@ -1009,10 +1158,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Geograafilise tähise õiguskaitse on tähtajatu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Geograafilise tähise õiguskaitse on tähtajatu.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_7"
-      }
+      },
+      "rdfs:label": "§ 7 lg 1"
     },
     {
       "@id": "estleg:GTKS_Par_8",
@@ -1021,13 +1172,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Geograafilise tähisena mittekaitstav tähis",
+      "rdfs:label": {
+        "@value": "§ 8. Geograafilise tähisena mittekaitstav tähis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Õiguskaitset ei tagata tähisele, mis: eksitab avalikkust kauba või teenuse geograafilise päritolu suhtes; tähistab kaupa või teenust, mille konkreetne omadus, maine või muu iseloomulik tunnus ei ole olulisel määral seostatav kauba või teenuse geograafilise päritoluga; vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt geograafiliselt alalt; on vastuolus avaliku korra või heade",
-      "estleg:legalText": "Õiguskaitset ei tagata tähisele, mis: eksitab avalikkust kauba või teenuse geograafilise päritolu suhtes; tähistab kaupa või teenust, mille konkreetne omadus, maine või muu iseloomulik tunnus ei ole olulisel määral seostatav kauba või teenuse geograafilise päritoluga; vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt geograafiliselt alalt; on vastuolus avaliku korra või heade tavadega; on algse geograafilise päritolu tähenduse kaotanud ja muutunud kauba või teenuse üldnimeks ja on kasutusel kauba või teenuse liigi, kvaliteedi, sordi või muude omaduste või tunnuste tähistamiseks; sisaldab loomatõu või taimesordi nime või on sellega eksitavalt sarnane; ei ole saanud õiguskaitset oma päritoluriigis või mille õiguskaitse on seal lõpetatud või mille kasutamisest on seal loobutud.",
+      "estleg:summary": {
+        "@value": "Õiguskaitset ei tagata tähisele, mis: 1) eksitab avalikkust kauba või teenuse geograafilise päritolu suhtes; 2) tähistab kaupa või teenust, mille konkreetne omadus, maine või muu iseloomulik tunnus ei ole olulisel määral seostatav kauba või teenuse geograafilise päritoluga; 3) vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt geograafiliselt alalt; 4) on vastuolus avaliku korra või",
+        "@language": "et"
+      },
+      "estleg:legalText": "Õiguskaitset ei tagata tähisele, mis: 1) eksitab avalikkust kauba või teenuse geograafilise päritolu suhtes; 2) tähistab kaupa või teenust, mille konkreetne omadus, maine või muu iseloomulik tunnus ei ole olulisel määral seostatav kauba või teenuse geograafilise päritoluga; 3) vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt geograafiliselt alalt; 4) on vastuolus avaliku korra või heade tavadega; 5) on algse geograafilise päritolu tähenduse kaotanud ja muutunud kauba või teenuse üldnimeks ja on kasutusel kauba või teenuse liigi, kvaliteedi, sordi või muude omaduste või tunnuste tähistamiseks; 6) sisaldab loomatõu või taimesordi nime või on sellega eksitavalt sarnane; 7) ei ole saanud õiguskaitset oma päritoluriigis või mille õiguskaitse on seal lõpetatud või mille kasutamisest on seal loobutud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
       },
@@ -1066,10 +1223,21 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Õiguskaitset ei tagata tähisele, mis: eksitab avalikkust kauba või teenuse geograafilise päritolu suhtes; tähistab kaupa või teenust, mille konkreetne omadus, maine või muu iseloomulik tunnus ei ole olulisel määral seostatav kauba või teenuse geograafilise päritoluga; vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt geograafiliselt alalt; on vastuolus avaliku korra või heade tavadega; on algse geograafilise päritolu tähenduse kaotanud ja muutunud kauba või teenuse üldnimeks ja on kasutusel kauba või teenuse liigi, kvaliteedi, sordi või muude omaduste või tunnuste tähistamiseks; sisaldab loomatõu või taimesordi nime või on sellega eksitavalt sarnane; ei ole saanud õiguskaitset oma päritoluriigis või mille õiguskaitse on seal lõpetatud või mille kasutamisest on seal loobutud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õiguskaitset ei tagata tähisele, mis: 1) eksitab avalikkust kauba või teenuse geograafilise päritolu suhtes; 2) tähistab kaupa või teenust, mille konkreetne omadus, maine või muu iseloomulik tunnus ei ole olulisel määral seostatav kauba või teenuse geograafilise päritoluga; 3) vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt geograafiliselt alalt; 4) on vastuolus avaliku korra või heade tavadega; 5) on algse geograafilise päritolu tähenduse kaotanud ja muutunud kauba või teenuse üldnimeks ja on kasutusel kauba või teenuse liigi, kvaliteedi, sordi või muude omaduste või tunnuste tähistamiseks; 6) sisaldab loomatõu või taimesordi nime või on sellega eksitavalt sarnane; 7) ei ole saanud õiguskaitset oma päritoluriigis või mille õiguskaitse on seal lõpetatud või mille kasutamisest on seal loobutud.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_8"
       },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1085,13 +1253,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Õigus taotleda geograafilise tähise registreerimist",
+      "rdfs:label": {
+        "@value": "§ 9. Õigus taotleda geograafilise tähise registreerimist",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Geograafilise tähise registreerimise taotlemise õigus on: isikul, kes tegutseb tähisega tähistatava kauba tootjana, töötlejana või müügiks ettevalmistajana või teenuse osutajana tähises näidatud geograafilisel alal; tarbijate või käesoleva lõike punktis 1 nimetatud isikute ühendusel, sõltumata selle asukohast ja juriidilisest vormist; kauba või teenuse päritoluriigi pädeval ametiasutusel. (2) Käesoleva paragrahvi lõikes 1 nimetatud isik võib taotleda ainult sellise tähise registreerimist,",
-      "estleg:legalText": "(1) Geograafilise tähise registreerimise taotlemise õigus on: isikul, kes tegutseb tähisega tähistatava kauba tootjana, töötlejana või müügiks ettevalmistajana või teenuse osutajana tähises näidatud geograafilisel alal; tarbijate või käesoleva lõike punktis 1 nimetatud isikute ühendusel, sõltumata selle asukohast ja juriidilisest vormist; kauba või teenuse päritoluriigi pädeval ametiasutusel. (2) Käesoleva paragrahvi lõikes 1 nimetatud isik võib taotleda ainult sellise tähise registreerimist, mis vastab geograafilisele tähisele esitatud nõuetele ja on kooskõlas käesoleva seaduse §-s 4 sätestatuga ega ole §-s 8 sätestatu järgi mittekaitstav. (3) Geograafilise tähise registreerimise taotlemiseks pädevate Eesti ametiasutuste loetelu kinnitab",
+      "estleg:summary": {
+        "@value": "(1) Geograafilise tähise registreerimise taotlemise õigus on: 1) isikul, kes tegutseb tähisega tähistatava kauba tootjana, töötlejana või müügiks ettevalmistajana või teenuse osutajana tähises näidatud geograafilisel alal; 2) tarbijate või käesoleva lõike punktis 1 nimetatud isikute ühendusel, sõltumata selle asukohast ja juriidilisest vormist; 3) kauba või teenuse päritoluriigi pädeval ametiasutusel. (2) Käesoleva paragrahvi lõikes 1 nimetatud isik võib taotleda ainult sellise tähise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Geograafilise tähise registreerimise taotlemise õigus on: 1) isikul, kes tegutseb tähisega tähistatava kauba tootjana, töötlejana või müügiks ettevalmistajana või teenuse osutajana tähises näidatud geograafilisel alal; 2) tarbijate või käesoleva lõike punktis 1 nimetatud isikute ühendusel, sõltumata selle asukohast ja juriidilisest vormist; 3) kauba või teenuse päritoluriigi pädeval ametiasutusel. (2) Käesoleva paragrahvi lõikes 1 nimetatud isik võib taotleda ainult sellise tähise registreerimist, mis vastab geograafilisele tähisele esitatud nõuetele ja on kooskõlas käesoleva seaduse §-s 4 sätestatuga ega ole §-s 8 sätestatu järgi mittekaitstav. (3) Geograafilise tähise registreerimise taotlemiseks pädevate Eesti ametiasutuste loetelu kinnitab",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
       },
@@ -1151,12 +1325,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Geograafilise tähise registreerimise taotlemise õigus on: isikul, kes tegutseb tähisega tähistatava kauba tootjana, töötlejana või müügiks ettevalmistajana või teenuse osutajana tähises näidatud geograafilisel alal; tarbijate või käesoleva lõike punktis 1 nimetatud isikute ühendusel, sõltumata selle asukohast ja juriidilisest vormist; kauba või teenuse päritoluriigi pädeval ametiasutusel.",
+      "estleg:legalText": "(1) Geograafilise tähise registreerimise taotlemise õigus on: 1) isikul, kes tegutseb tähisega tähistatava kauba tootjana, töötlejana või müügiks ettevalmistajana või teenuse osutajana tähises näidatud geograafilisel alal; 2) tarbijate või käesoleva lõike punktis 1 nimetatud isikute ühendusel, sõltumata selle asukohast ja juriidilisest vormist; 3) kauba või teenuse päritoluriigi pädeval ametiasutusel.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_9"
       },
       "rdfs:label": "§ 9 lg 1",
-      "estleg:itemNumber": "1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -1274,12 +1452,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Geograafilise tähise kasutaja",
+      "rdfs:label": {
+        "@value": "§ 10. Geograafilise tähise kasutaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Registreeritud geograafilist tähist võib kauba või teenuse tähistamiseks kasutada isik, kes tegutseb registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana või teenuse osutajana registreeringus märgitud geograafilisel alal ja kelle kaubal või teenusel on kõik registreeringus märgitud omadused, maine või muud iseloomulikud tunnused.",
+      "estleg:summary": {
+        "@value": "Registreeritud geograafilist tähist võib kauba või teenuse tähistamiseks kasutada isik, kes tegutseb registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana või teenuse osutajana registreeringus märgitud geograafilisel alal ja kelle kaubal või teenusel on kõik registreeringus märgitud omadused, maine või muud iseloomulikud tunnused.",
+        "@language": "et"
+      },
       "estleg:legalText": "Registreeritud geograafilist tähist võib kauba või teenuse tähistamiseks kasutada isik, kes tegutseb registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana või teenuse osutajana registreeringus märgitud geograafilisel alal ja kelle kaubal või teenusel on kõik registreeringus märgitud omadused, maine või muud iseloomulikud tunnused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
@@ -1319,10 +1503,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Registreeritud geograafilist tähist võib kauba või teenuse tähistamiseks kasutada isik, kes tegutseb registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana või teenuse osutajana registreeringus märgitud geograafilisel alal ja kelle kaubal või teenusel on kõik registreeringus märgitud omadused, maine või muud iseloomulikud tunnused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registreeritud geograafilist tähist võib kauba või teenuse tähistamiseks kasutada isik, kes tegutseb registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana või teenuse osutajana registreeringus märgitud geograafilisel alal ja kelle kaubal või teenusel on kõik registreeringus märgitud omadused, maine või muud iseloomulikud tunnused.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_10"
       },
+      "rdfs:label": "§ 10 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1343,13 +1529,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Geograafilise tähise õigusvastane kasutamine",
+      "rdfs:label": {
+        "@value": "§ 11. Geograafilise tähise õigusvastane kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Keelatud on: geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks isikul, kes ei tegutse registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana ega teenuse osutajana registreeringus märgitud geograafilisel alal; geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, kui kaubal või teenusel puudub kas või üks registreeringus märgitud omadus, maine või muu iseloomulik tunnus;",
-      "estleg:legalText": "(1) Keelatud on: geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks isikul, kes ei tegutse registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana ega teenuse osutajana registreeringus märgitud geograafilisel alal; geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, kui kaubal või teenusel puudub kas või üks registreeringus märgitud omadus, maine või muu iseloomulik tunnus; geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, mida registreering ei hõlma, kuid mis on registreeringuga hõlmatud kauba või teenusega samaliigiline; geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine muu kauba või teenuse tähistamiseks, kui see võib kaasa tuua kaitstud geograafilise tähise maine pahauskse ärakasutamise; eksitava teabe kasutamine kauba või teenuse päritolu, olemuse või põhiomaduste kohta kauba või teenuse sise- või välispakendil, reklaammaterjalis või sellega seotud dokumentides; sellise tähise kasutamine, mis, vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele, võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt alalt, isegi juhul, kui tegelik päritolu on näidatud; teised toimingud, mis võivad avalikkust kauba või teenuse tegeliku päritolu suhtes eksitada. (2) Käesoleva paragrahvi lõikes 1 sätestatud keeld ei laiene oma ärinime kasutamisele äritegevuses, välja arvatud juhud, kui seda nime kasutatakse avalikkust eksitaval viisil. (3) Kauplemine kaubaga, mis on õigusvastaselt tähistatud registreeritud geograafilise tähisega, on keelatud, sõltumata sellest, kas vahendajat, müüjat või tarbijat kauba vastavast eripärast teavitatakse. See ei mõjuta kauba võõrandamiseks tehtud tehingu kehtivust.",
+      "estleg:summary": {
+        "@value": "(1) Keelatud on: 1) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks isikul, kes ei tegutse registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana ega teenuse osutajana registreeringus märgitud geograafilisel alal; 2) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, kui kaubal või teenusel puudub kas või üks registreeringus märgitud omadus, maine või muu iseloomulik",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Keelatud on: 1) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks isikul, kes ei tegutse registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana ega teenuse osutajana registreeringus märgitud geograafilisel alal; 2) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, kui kaubal või teenusel puudub kas või üks registreeringus märgitud omadus, maine või muu iseloomulik tunnus; 3) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, mida registreering ei hõlma, kuid mis on registreeringuga hõlmatud kauba või teenusega samaliigiline; 4) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine muu kauba või teenuse tähistamiseks, kui see võib kaasa tuua kaitstud geograafilise tähise maine pahauskse ärakasutamise; 5) eksitava teabe kasutamine kauba või teenuse päritolu, olemuse või põhiomaduste kohta kauba või teenuse sise- või välispakendil, reklaammaterjalis või sellega seotud dokumentides; 6) sellise tähise kasutamine, mis, vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele, võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt alalt, isegi juhul, kui tegelik päritolu on näidatud; 7) teised toimingud, mis võivad avalikkust kauba või teenuse tegeliku päritolu suhtes eksitada. (2) Käesoleva paragrahvi lõikes 1 sätestatud keeld ei laiene oma ärinime kasutamisele äritegevuses, välja arvatud juhud, kui seda nime kasutatakse avalikkust eksitaval viisil. (3) Kauplemine kaubaga, mis on õigusvastaselt tähistatud registreeritud geograafilise tähisega, on keelatud, sõltumata sellest, kas vahendajat, müüjat või tarbijat kauba vastavast eripärast teavitatakse. See ei mõjuta kauba võõrandamiseks tehtud tehingu kehtivust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
       },
@@ -1403,11 +1595,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Keelatud on: geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks isikul, kes ei tegutse registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana ega teenuse osutajana registreeringus märgitud geograafilisel alal; geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, kui kaubal või teenusel puudub kas või üks registreeringus märgitud omadus, maine või muu iseloomulik tunnus; geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, mida registreering ei hõlma, kuid mis on registreeringuga hõlmatud kauba või teenusega samaliigiline; geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine muu kauba või teenuse tähistamiseks, kui see võib kaasa tuua kaitstud geograafilise tähise maine pahauskse ärakasutamise; eksitava teabe kasutamine kauba või teenuse päritolu, olemuse või põhiomaduste kohta kauba või teenuse sise- või välispakendil, reklaammaterjalis või sellega seotud dokumentides; sellise tähise kasutamine, mis, vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele, võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt alalt, isegi juhul, kui tegelik päritolu on näidatud; teised toimingud, mis võivad avalikkust kauba või teenuse tegeliku päritolu suhtes eksitada.",
+      "estleg:legalText": "(1) Keelatud on: 1) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks isikul, kes ei tegutse registreeringus märgitud kauba tootja, töötleja või müügiks ettevalmistajana ega teenuse osutajana registreeringus märgitud geograafilisel alal; 2) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, kui kaubal või teenusel puudub kas või üks registreeringus märgitud omadus, maine või muu iseloomulik tunnus; 3) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine kauba või teenuse tähistamiseks, mida registreering ei hõlma, kuid mis on registreeringuga hõlmatud kauba või teenusega samaliigiline; 4) geograafilise tähise või sellega eksitavalt sarnase tähise kasutamine muu kauba või teenuse tähistamiseks, kui see võib kaasa tuua kaitstud geograafilise tähise maine pahauskse ärakasutamise; 5) eksitava teabe kasutamine kauba või teenuse päritolu, olemuse või põhiomaduste kohta kauba või teenuse sise- või välispakendil, reklaammaterjalis või sellega seotud dokumentides; 6) sellise tähise kasutamine, mis, vaatamata kauba või teenuse tegeliku geograafilise päritolu tõepärasele kajastamisele, võib tekitada avalikkuses vale arusaama, et kaup või teenus pärineb teiselt alalt, isegi juhul, kui tegelik päritolu on näidatud; 7) teised toimingud, mis võivad avalikkust kauba või teenuse tegeliku päritolu suhtes eksitada.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_11"
       },
       "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1466,12 +1667,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Geograafilist tähist sisaldava kaubamärgi varemkasutamisõigus",
+      "rdfs:label": {
+        "@value": "§ 12. Geograafilist tähist sisaldava kaubamärgi varemkasutamisõigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Kaubamärki, mis on heauskselt registreerimiseks esitatud või heauskselt registreeritud kas enne käesoleva seaduse jõustumise kuupäeva või enne, kui geograafiline tähis on oma päritoluriigis kaitse saanud, ei saa kehtetuks tunnistada, selle registreerimisest ei saa keelduda või selle kasutamist keelata põhjusel, et kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane, kui käesolev seadus ei sätesta teisiti.",
+      "estleg:summary": {
+        "@value": "(1) Kaubamärki, mis on heauskselt registreerimiseks esitatud või heauskselt registreeritud kas enne käesoleva seaduse jõustumise kuupäeva või enne, kui geograafiline tähis on oma päritoluriigis kaitse saanud, ei saa kehtetuks tunnistada, selle registreerimisest ei saa keelduda või selle kasutamist keelata põhjusel, et kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane, kui käesolev seadus ei sätesta teisiti.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kaubamärki, mis on heauskselt registreerimiseks esitatud või heauskselt registreeritud kas enne käesoleva seaduse jõustumise kuupäeva või enne, kui geograafiline tähis on oma päritoluriigis kaitse saanud, ei saa kehtetuks tunnistada, selle registreerimisest ei saa keelduda või selle kasutamist keelata põhjusel, et kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane, kui käesolev seadus ei sätesta teisiti. (2) Kaubamärgi registreerimiseks esitamine või registreerimine on heauskne, kui seda teinud isik ei teadnud ega pidanudki teadma, et tegemist on tähisega, mis näitab, et kaup või teenus on pärit kindlalt geograafiliselt alalt, kui kauba või teenuse konkreetne omadus, maine või muu iseloomulik tunnus on olulisel määral seostatav kauba või teenuse geograafilise päritoluga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
@@ -1558,12 +1765,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Hoiatustähis",
+      "rdfs:label": {
+        "@value": "§ 13. Hoiatustähis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Registreeritud geograafilise tähise kasutaja võib sellele lisada hoiatustähise «Registreeritud geograafiline tähis» või lühendi «G».",
+      "estleg:summary": {
+        "@value": "Registreeritud geograafilise tähise kasutaja võib sellele lisada hoiatustähise «Registreeritud geograafiline tähis» või lühendi «G».",
+        "@language": "et"
+      },
       "estleg:legalText": "Registreeritud geograafilise tähise kasutaja võib sellele lisada hoiatustähise «Registreeritud geograafiline tähis» või lühendi «G».",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_2"
@@ -1600,10 +1813,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Registreeritud geograafilise tähise kasutaja võib sellele lisada hoiatustähise «Registreeritud geograafiline tähis» või lühendi «G».",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registreeritud geograafilise tähise kasutaja võib sellele lisada hoiatustähise «Registreeritud geograafiline tähis» või lühendi «G».",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1624,13 +1839,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Veinide homonüümsed geograafilised tähised",
+      "rdfs:label": {
+        "@value": "§ 14. Veinide homonüümsed geograafilised tähised",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Veinide homonüümsed geograafilised tähised (edaspidi homonüümsed tähised) käesoleva seaduse tähenduses on identsed või eksitavalt sarnased sõnalised või kujunduslikud tähised, mida kasutatakse erinevate veinide tähistamiseks. (2) Sõnalises vormis homonüümsetel tähistel võib olla: sama hääldus ja sama kirjapilt; sama hääldus, kuid erinev kirjapilt; erinev hääldus, kuid sama kirjapilt.",
-      "estleg:legalText": "(1) Veinide homonüümsed geograafilised tähised (edaspidi homonüümsed tähised) käesoleva seaduse tähenduses on identsed või eksitavalt sarnased sõnalised või kujunduslikud tähised, mida kasutatakse erinevate veinide tähistamiseks. (2) Sõnalises vormis homonüümsetel tähistel võib olla: sama hääldus ja sama kirjapilt; sama hääldus, kuid erinev kirjapilt; erinev hääldus, kuid sama kirjapilt.",
+      "estleg:summary": {
+        "@value": "(1) Veinide homonüümsed geograafilised tähised (edaspidi homonüümsed tähised) käesoleva seaduse tähenduses on identsed või eksitavalt sarnased sõnalised või kujunduslikud tähised, mida kasutatakse erinevate veinide tähistamiseks. (2) Sõnalises vormis homonüümsetel tähistel võib olla: 1) sama hääldus ja sama kirjapilt; 2) sama hääldus, kuid erinev kirjapilt; 3) erinev hääldus, kuid sama kirjapilt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Veinide homonüümsed geograafilised tähised (edaspidi homonüümsed tähised) käesoleva seaduse tähenduses on identsed või eksitavalt sarnased sõnalised või kujunduslikud tähised, mida kasutatakse erinevate veinide tähistamiseks. (2) Sõnalises vormis homonüümsetel tähistel võib olla: 1) sama hääldus ja sama kirjapilt; 2) sama hääldus, kuid erinev kirjapilt; 3) erinev hääldus, kuid sama kirjapilt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_3"
       },
@@ -1678,11 +1899,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Sõnalises vormis homonüümsetel tähistel võib olla: sama hääldus ja sama kirjapilt; sama hääldus, kuid erinev kirjapilt; erinev hääldus, kuid sama kirjapilt.",
+      "estleg:legalText": "(2) Sõnalises vormis homonüümsetel tähistel võib olla: 1) sama hääldus ja sama kirjapilt; 2) sama hääldus, kuid erinev kirjapilt; 3) erinev hääldus, kuid sama kirjapilt.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_14"
       },
       "rdfs:label": "§ 14 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1698,13 +1924,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Homonüümsete tähiste eristamise kriteeriumid",
+      "rdfs:label": {
+        "@value": "§ 15. Homonüümsete tähiste eristamise kriteeriumid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Homonüümsete tähiste üksteisest eristamisel arvestatakse vaidlustamise korral: eristava teabe olemasolu ja piisavust homonüümse tähisega veini etiketil; homonüümse tähise ametlikku tunnustamist selle päritoluriigis; homonüümse tähise kasutamise kestust; homonüümse tähise kasutamise heausksust.",
-      "estleg:legalText": "Homonüümsete tähiste üksteisest eristamisel arvestatakse vaidlustamise korral: eristava teabe olemasolu ja piisavust homonüümse tähisega veini etiketil; homonüümse tähise ametlikku tunnustamist selle päritoluriigis; homonüümse tähise kasutamise kestust; homonüümse tähise kasutamise heausksust.",
+      "estleg:summary": {
+        "@value": "Homonüümsete tähiste üksteisest eristamisel arvestatakse vaidlustamise korral: 1) eristava teabe olemasolu ja piisavust homonüümse tähisega veini etiketil; 2) homonüümse tähise ametlikku tunnustamist selle päritoluriigis; 3) homonüümse tähise kasutamise kestust; 4) homonüümse tähise kasutamise heausksust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Homonüümsete tähiste üksteisest eristamisel arvestatakse vaidlustamise korral: 1) eristava teabe olemasolu ja piisavust homonüümse tähisega veini etiketil; 2) homonüümse tähise ametlikku tunnustamist selle päritoluriigis; 3) homonüümse tähise kasutamise kestust; 4) homonüümse tähise kasutamise heausksust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_3"
       },
@@ -1728,10 +1960,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Homonüümsete tähiste üksteisest eristamisel arvestatakse vaidlustamise korral: eristava teabe olemasolu ja piisavust homonüümse tähisega veini etiketil; homonüümse tähise ametlikku tunnustamist selle päritoluriigis; homonüümse tähise kasutamise kestust; homonüümse tähise kasutamise heausksust.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Homonüümsete tähiste üksteisest eristamisel arvestatakse vaidlustamise korral: 1) eristava teabe olemasolu ja piisavust homonüümse tähisega veini etiketil; 2) homonüümse tähise ametlikku tunnustamist selle päritoluriigis; 3) homonüümse tähise kasutamise kestust; 4) homonüümse tähise kasutamise heausksust.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_15"
-      }
+      },
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "@id": "estleg:GTKS_Par_16",
@@ -1740,12 +1980,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Homonüümsete tähiste õiguskaitse tagamine",
+      "rdfs:label": {
+        "@value": "§ 16. Homonüümsete tähiste õiguskaitse tagamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Õiguskaitse antakse igale homonüümsele tähisele eraldi.",
+      "estleg:summary": {
+        "@value": "Õiguskaitse antakse igale homonüümsele tähisele eraldi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Õiguskaitse antakse igale homonüümsele tähisele eraldi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_3"
@@ -1770,10 +2016,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Õiguskaitse antakse igale homonüümsele tähisele eraldi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õiguskaitse antakse igale homonüümsele tähisele eraldi.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_16"
-      }
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:GTKS_Par_17",
@@ -1782,12 +2030,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Homonüümse tähise kasutamise eritingimus",
+      "rdfs:label": {
+        "@value": "§ 17. Homonüümse tähise kasutamise eritingimus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Homonüümse tähise kasutaja on kohustatud kandma veinietiketile teabe, mis on piisav ühe homonüümse tähise eristamiseks teisest eesmärgiga mitte eksitada tarbijat.",
+      "estleg:summary": {
+        "@value": "Homonüümse tähise kasutaja on kohustatud kandma veinietiketile teabe, mis on piisav ühe homonüümse tähise eristamiseks teisest eesmärgiga mitte eksitada tarbijat.",
+        "@language": "et"
+      },
       "estleg:legalText": "Homonüümse tähise kasutaja on kohustatud kandma veinietiketile teabe, mis on piisav ühe homonüümse tähise eristamiseks teisest eesmärgiga mitte eksitada tarbijat.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_3"
@@ -1824,10 +2078,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Homonüümse tähise kasutaja on kohustatud kandma veinietiketile teabe, mis on piisav ühe homonüümse tähise eristamiseks teisest eesmärgiga mitte eksitada tarbijat.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Homonüümse tähise kasutaja on kohustatud kandma veinietiketile teabe, mis on piisav ühe homonüümse tähise eristamiseks teisest eesmärgiga mitte eksitada tarbijat.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_17"
       },
+      "rdfs:label": "§ 17 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1848,12 +2104,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Registreeritud geograafilise tähise õigusvastane kasutamine alkohoolse joogi tähistamisel",
+      "rdfs:label": {
+        "@value": "§ 18. Registreeritud geograafilise tähise õigusvastane kasutamine alkohoolse joogi tähistamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Lisaks käesoleva seaduse § 11 lõigetes 1 ja 3 sätestatule on keelatud kasutada registreeritud geograafilist tähist sellise alkohoolse joogi tähistamiseks, mis ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt, kaasa arvatud juhud, kui alkohoolse joogi tegelik päritolu on näidatud, kui geograafilist tähist kasutatakse tõlgitult või kui sellega kaasnevad väljendid «liik», «tüüp», «stiil», «imitatsioon» või muu seesugune.",
+      "estleg:summary": {
+        "@value": "Lisaks käesoleva seaduse § 11 lõigetes 1 ja 3 sätestatule on keelatud kasutada registreeritud geograafilist tähist sellise alkohoolse joogi tähistamiseks, mis ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt, kaasa arvatud juhud, kui alkohoolse joogi tegelik päritolu on näidatud, kui geograafilist tähist kasutatakse tõlgitult või kui sellega kaasnevad väljendid «liik», «tüüp», «stiil», «imitatsioon» või muu seesugune.",
+        "@language": "et"
+      },
       "estleg:legalText": "Lisaks käesoleva seaduse § 11 lõigetes 1 ja 3 sätestatule on keelatud kasutada registreeritud geograafilist tähist sellise alkohoolse joogi tähistamiseks, mis ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt, kaasa arvatud juhud, kui alkohoolse joogi tegelik päritolu on näidatud, kui geograafilist tähist kasutatakse tõlgitult või kui sellega kaasnevad väljendid «liik», «tüüp», «stiil», «imitatsioon» või muu seesugune.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_3"
@@ -1890,10 +2152,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Lisaks käesoleva seaduse § 11 lõigetes 1 ja 3 sätestatule on keelatud kasutada registreeritud geograafilist tähist sellise alkohoolse joogi tähistamiseks, mis ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt, kaasa arvatud juhud, kui alkohoolse joogi tegelik päritolu on näidatud, kui geograafilist tähist kasutatakse tõlgitult või kui sellega kaasnevad väljendid «liik», «tüüp», «stiil», «imitatsioon» või muu seesugune.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lisaks käesoleva seaduse § 11 lõigetes 1 ja 3 sätestatule on keelatud kasutada registreeritud geograafilist tähist sellise alkohoolse joogi tähistamiseks, mis ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt, kaasa arvatud juhud, kui alkohoolse joogi tegelik päritolu on näidatud, kui geograafilist tähist kasutatakse tõlgitult või kui sellega kaasnevad väljendid «liik», «tüüp», «stiil», «imitatsioon» või muu seesugune.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_18"
       },
+      "rdfs:label": "§ 18 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1914,12 +2178,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Alkohoolse joogi geograafilise päritolu suhtes eksitav geograafiline tähis registreeritud kaubamärgi koosseisus",
+      "rdfs:label": {
+        "@value": "§ 19. Alkohoolse joogi geograafilise päritolu suhtes eksitav geograafiline tähis registreeritud kaubamärgi koosseisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Asjast huvitatud isik võib nõuda alkohoolse joogi tähistamiseks enne käesoleva seaduse jõustumise kuupäeva registreeritud kaubamärgi kehtetuks tunnistamist, kui kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane ja sellega tähistatav alkohoolne jook ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt.",
+      "estleg:summary": {
+        "@value": "Asjast huvitatud isik võib nõuda alkohoolse joogi tähistamiseks enne käesoleva seaduse jõustumise kuupäeva registreeritud kaubamärgi kehtetuks tunnistamist, kui kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane ja sellega tähistatav alkohoolne jook ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Asjast huvitatud isik võib nõuda alkohoolse joogi tähistamiseks enne käesoleva seaduse jõustumise kuupäeva registreeritud kaubamärgi kehtetuks tunnistamist, kui kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane ja sellega tähistatav alkohoolne jook ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_3"
@@ -1956,10 +2226,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Asjast huvitatud isik võib nõuda alkohoolse joogi tähistamiseks enne käesoleva seaduse jõustumise kuupäeva registreeritud kaubamärgi kehtetuks tunnistamist, kui kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane ja sellega tähistatav alkohoolne jook ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asjast huvitatud isik võib nõuda alkohoolse joogi tähistamiseks enne käesoleva seaduse jõustumise kuupäeva registreeritud kaubamärgi kehtetuks tunnistamist, kui kaubamärk sisaldab registreeritud geograafilist tähist või on sellega eksitavalt sarnane ja sellega tähistatav alkohoolne jook ei pärine selle geograafilise tähisega osutatud geograafiliselt alalt.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_19"
       },
+      "rdfs:label": "§ 19 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1980,12 +2252,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Alkohoolse joogi geograafilise tähise varemkasutamisõigus",
+      "rdfs:label": {
+        "@value": "§ 20. Alkohoolse joogi geograafilise tähise varemkasutamisõigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Eesti kodanik või isik, kelle alaline elu- või asukoht on Eestis ja kes on alkohoolse joogi tähistamiseks registreeritud geograafilist tähist kasutanud kas pidevalt ja heauskselt enne 1994. aasta 15. aprilli või pidevalt vähemalt 10 aasta jooksul enne seda kuupäeva, võib pärast tähise registreerimist jätkata tähise kasutamist identsete või samaliigiliste kaupade või teenuste tähistamiseks endises mahus.",
+      "estleg:summary": {
+        "@value": "Eesti kodanik või isik, kelle alaline elu- või asukoht on Eestis ja kes on alkohoolse joogi tähistamiseks registreeritud geograafilist tähist kasutanud kas pidevalt ja heauskselt enne 1994. aasta 15. aprilli või pidevalt vähemalt 10 aasta jooksul enne seda kuupäeva, võib pärast tähise registreerimist jätkata tähise kasutamist identsete või samaliigiliste kaupade või teenuste tähistamiseks endises mahus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti kodanik või isik, kelle alaline elu- või asukoht on Eestis ja kes on alkohoolse joogi tähistamiseks registreeritud geograafilist tähist kasutanud kas pidevalt ja heauskselt enne 1994. aasta 15. aprilli või pidevalt vähemalt 10 aasta jooksul enne seda kuupäeva, võib pärast tähise registreerimist jätkata tähise kasutamist identsete või samaliigiliste kaupade või teenuste tähistamiseks endises mahus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_3"
@@ -2022,10 +2300,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti kodanik või isik, kelle alaline elu- või asukoht on Eestis ja kes on alkohoolse joogi tähistamiseks registreeritud geograafilist tähist kasutanud kas pidevalt ja heauskselt enne 1994. aasta 15. aprilli või pidevalt vähemalt 10 aasta jooksul enne seda kuupäeva, võib pärast tähise registreerimist jätkata tähise kasutamist identsete või samaliigiliste kaupade või teenuste tähistamiseks endises mahus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti kodanik või isik, kelle alaline elu- või asukoht on Eestis ja kes on alkohoolse joogi tähistamiseks registreeritud geograafilist tähist kasutanud kas pidevalt ja heauskselt enne 1994. aasta 15. aprilli või pidevalt vähemalt 10 aasta jooksul enne seda kuupäeva, võib pärast tähise registreerimist jätkata tähise kasutamist identsete või samaliigiliste kaupade või teenuste tähistamiseks endises mahus.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_20"
       },
+      "rdfs:label": "§ 20 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2046,12 +2326,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Register",
+      "rdfs:label": {
+        "@value": "§ 21. Register",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Registri asutab ja registri pidamise põhimääruse kinnitab (2) Registri vastutav töötleja on Patendiamet. (3) Geograafilise tähise registreerimise taotlust (edaspidi registreerimistaotlus) menetleb ning otsuseid ja registrikandeid teeb Patendiamet. (4) Registrit peetakse eesti keeles. Võõrkeelsed dokumendid esitatakse registrile koos eestikeelse tõlkega.",
+      "estleg:summary": {
+        "@value": "(1) Registri asutab ja registri pidamise põhimääruse kinnitab (2) Registri vastutav töötleja on Patendiamet. (3) Geograafilise tähise registreerimise taotlust (edaspidi registreerimistaotlus) menetleb ning otsuseid ja registrikandeid teeb Patendiamet. (4) Registrit peetakse eesti keeles. Võõrkeelsed dokumendid esitatakse registrile koos eestikeelse tõlkega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Registri asutab ja registri pidamise põhimääruse kinnitab (2) Registri vastutav töötleja on Patendiamet. (3) Geograafilise tähise registreerimise taotlust (edaspidi registreerimistaotlus) menetleb ning otsuseid ja registrikandeid teeb Patendiamet. (4) Registrit peetakse eesti keeles. Võõrkeelsed dokumendid esitatakse registrile koos eestikeelse tõlkega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -2196,12 +2482,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Registrikanne",
+      "rdfs:label": {
+        "@value": "§ 22. Registrikanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Registrikanded on registreerimistaotluse menetluse kanne, registreeringu andmete kanne, registreeringu andmete muutmise kanne ja registreeringu kustutamise kanne. (2) Registrikanne jõustub selle tegemise päeval. (3) Registreeringu andmete kande, registreeringu andmete muutmise kande ja registreeringu kustutamise kande kohta avaldatakse teade Patendiameti ametlikus väljaandes. (4) Registreeringu andmete muutmise kande eest tasutakse riigilõivu.",
+      "estleg:summary": {
+        "@value": "(1) Registrikanded on registreerimistaotluse menetluse kanne, registreeringu andmete kanne, registreeringu andmete muutmise kanne ja registreeringu kustutamise kanne. (2) Registrikanne jõustub selle tegemise päeval. (3) Registreeringu andmete kande, registreeringu andmete muutmise kande ja registreeringu kustutamise kande kohta avaldatakse teade Patendiameti ametlikus väljaandes. (4) Registreeringu andmete muutmise kande eest tasutakse riigilõivu.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Registrikanded on registreerimistaotluse menetluse kanne, registreeringu andmete kanne, registreeringu andmete muutmise kanne ja registreeringu kustutamise kanne. (2) Registrikanne jõustub selle tegemise päeval. (3) Registreeringu andmete kande, registreeringu andmete muutmise kande ja registreeringu kustutamise kande kohta avaldatakse teade Patendiameti ametlikus väljaandes. (4) Registreeringu andmete muutmise kande eest tasutakse riigilõivu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -2298,13 +2590,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Registreering",
+      "rdfs:label": {
+        "@value": "§ 23. Registreering",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Registreering tehakse geograafilise tähise registreerimise otsuse alusel. (2) Registreeringud nummerdatakse geograafiliste tähiste registreerimise järjekorras. (3) Registreering hakkab tagasiulatuvalt kehtima registreerimistaotluse esitamise kuupäevast. (4) Registreeringu andmed on: registreeringu number; registreeringu andmete kande tegemise kuupäev; geograafilise tähise reproduktsioon; kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; geograafilise ala",
-      "estleg:legalText": "(1) Registreering tehakse geograafilise tähise registreerimise otsuse alusel. (2) Registreeringud nummerdatakse geograafiliste tähiste registreerimise järjekorras. (3) Registreering hakkab tagasiulatuvalt kehtima registreerimistaotluse esitamise kuupäevast. (4) Registreeringu andmed on: registreeringu number; registreeringu andmete kande tegemise kuupäev; geograafilise tähise reproduktsioon; kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; geograafilise ala määratlus; kirjeldus, mis näitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga ja määratleb geograafilise ala (edaspidi kirjeldus); kirjelduse lühikokkuvõte; andmed geograafilise tähise kaitstuse kohta selle päritoluriigis või andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud geograafilise tähise registreerimise taotleja (edaspidi taotleja) õigust taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; taotleja nimi, tema elu- või asukoha aadress; taotleja esindaja nimi, kui taotlejal on esindaja; registreerimistaotluse number; registreerimistaotluse esitamise kuupäev.",
+      "estleg:summary": {
+        "@value": "(1) Registreering tehakse geograafilise tähise registreerimise otsuse alusel. (2) Registreeringud nummerdatakse geograafiliste tähiste registreerimise järjekorras. (3) Registreering hakkab tagasiulatuvalt kehtima registreerimistaotluse esitamise kuupäevast. (4) Registreeringu andmed on: 1) registreeringu number; 2) registreeringu andmete kande tegemise kuupäev; 3) geograafilise tähise reproduktsioon; 4) kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; 5)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Registreering tehakse geograafilise tähise registreerimise otsuse alusel. (2) Registreeringud nummerdatakse geograafiliste tähiste registreerimise järjekorras. (3) Registreering hakkab tagasiulatuvalt kehtima registreerimistaotluse esitamise kuupäevast. (4) Registreeringu andmed on: 1) registreeringu number; 2) registreeringu andmete kande tegemise kuupäev; 3) geograafilise tähise reproduktsioon; 4) kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; 5) geograafilise ala määratlus; 6) kirjeldus, mis näitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga ja määratleb geograafilise ala (edaspidi kirjeldus); 7) kirjelduse lühikokkuvõte; 8) andmed geograafilise tähise kaitstuse kohta selle päritoluriigis või andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud geograafilise tähise registreerimise taotleja (edaspidi taotleja) õigust taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; 9) taotleja nimi, tema elu- või asukoha aadress; 10) taotleja esindaja nimi, kui taotlejal on esindaja; 11) registreerimistaotluse number; 12) registreerimistaotluse esitamise kuupäev.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -2389,11 +2687,25 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Registreeringu andmed on: registreeringu number; registreeringu andmete kande tegemise kuupäev; geograafilise tähise reproduktsioon; kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; geograafilise ala määratlus; kirjeldus, mis näitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga ja määratleb geograafilise ala (edaspidi kirjeldus); kirjelduse lühikokkuvõte; andmed geograafilise tähise kaitstuse kohta selle päritoluriigis või andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud geograafilise tähise registreerimise taotleja (edaspidi taotleja) õigust taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; taotleja nimi, tema elu- või asukoha aadress; taotleja esindaja nimi, kui taotlejal on esindaja; registreerimistaotluse number; registreerimistaotluse esitamise kuupäev.",
+      "estleg:legalText": "(4) Registreeringu andmed on: 1) registreeringu number; 2) registreeringu andmete kande tegemise kuupäev; 3) geograafilise tähise reproduktsioon; 4) kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; 5) geograafilise ala määratlus; 6) kirjeldus, mis näitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga ja määratleb geograafilise ala (edaspidi kirjeldus); 7) kirjelduse lühikokkuvõte; 8) andmed geograafilise tähise kaitstuse kohta selle päritoluriigis või andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning andmed päritoluriigi pädeva ametiasutuse kohta, kes on tõendanud geograafilise tähise registreerimise taotleja (edaspidi taotleja) õigust taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; 9) taotleja nimi, tema elu- või asukoha aadress; 10) taotleja esindaja nimi, kui taotlejal on esindaja; 11) registreerimistaotluse number; 12) registreerimistaotluse esitamise kuupäev.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_23"
       },
       "rdfs:label": "§ 23 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2419,13 +2731,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Registreerimistaotlus",
+      "rdfs:label": {
+        "@value": "§ 24. Registreerimistaotlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Taotleja võib ühes registreerimistaotluses taotleda ainult ühe geograafilise tähise registreerimist. (2) Registreerimistaotlus peab koosnema järgmistest dokumentidest: geograafilise tähise registreerimise avaldus; kirjeldus; tõend geograafilise tähise kaitstuse kohta selle päritoluriigis või päritoluriigi pädeva ametiasutuse tõend, mis kinnitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning päritoluriigi pädeva",
-      "estleg:legalText": "(1) Taotleja võib ühes registreerimistaotluses taotleda ainult ühe geograafilise tähise registreerimist. (2) Registreerimistaotlus peab koosnema järgmistest dokumentidest: geograafilise tähise registreerimise avaldus; kirjeldus; tõend geograafilise tähise kaitstuse kohta selle päritoluriigis või päritoluriigi pädeva ametiasutuse tõend, mis kinnitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning päritoluriigi pädeva ametiasutuse tõend taotleja õiguse kohta taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; kehtetu - volikiri, kui taotlejatel on ühine esindaja ja geograafilise tähise registreerimise avaldusele ei ole alla kirjutanud kõik taotlejad. (3) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud tõendi väljastamiseks pädevate Eesti ametiasutuste loetelu ja tõendi väljastamise korra kinnitab (4) Registreerimistaotluse dokumentide vorminõuded ja esitamise korra kehtestab",
+      "estleg:summary": {
+        "@value": "(1) Taotleja võib ühes registreerimistaotluses taotleda ainult ühe geograafilise tähise registreerimist. (2) Registreerimistaotlus peab koosnema järgmistest dokumentidest: 1) geograafilise tähise registreerimise avaldus; 2) kirjeldus; 3) tõend geograafilise tähise kaitstuse kohta selle päritoluriigis või päritoluriigi pädeva ametiasutuse tõend, mis kinnitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Taotleja võib ühes registreerimistaotluses taotleda ainult ühe geograafilise tähise registreerimist. (2) Registreerimistaotlus peab koosnema järgmistest dokumentidest: 1) geograafilise tähise registreerimise avaldus; 2) kirjeldus; 3) tõend geograafilise tähise kaitstuse kohta selle päritoluriigis või päritoluriigi pädeva ametiasutuse tõend, mis kinnitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning päritoluriigi pädeva ametiasutuse tõend taotleja õiguse kohta taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; 4) 5) volikiri, kui taotlejatel on ühine esindaja ja geograafilise tähise registreerimise avaldusele ei ole alla kirjutanud kõik taotlejad. (3) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud tõendi väljastamiseks pädevate Eesti ametiasutuste loetelu ja tõendi väljastamise korra kinnitab (4) Registreerimistaotluse dokumentide vorminõuded ja esitamise korra kehtestab",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -2523,11 +2841,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Registreerimistaotlus peab koosnema järgmistest dokumentidest: geograafilise tähise registreerimise avaldus; kirjeldus; tõend geograafilise tähise kaitstuse kohta selle päritoluriigis või päritoluriigi pädeva ametiasutuse tõend, mis kinnitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning päritoluriigi pädeva ametiasutuse tõend taotleja õiguse kohta taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; kehtetu - volikiri, kui taotlejatel on ühine esindaja ja geograafilise tähise registreerimise avaldusele ei ole alla kirjutanud kõik taotlejad.",
+      "estleg:legalText": "(2) Registreerimistaotlus peab koosnema järgmistest dokumentidest: 1) geograafilise tähise registreerimise avaldus; 2) kirjeldus; 3) tõend geograafilise tähise kaitstuse kohta selle päritoluriigis või päritoluriigi pädeva ametiasutuse tõend, mis kinnitab kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost kauba või teenuse geograafilise päritoluga, ning päritoluriigi pädeva ametiasutuse tõend taotleja õiguse kohta taotleda geograafilise tähise registreerimist käesoleva seaduse § 9 lõikes 1 sätestatu järgi; 4) 5) volikiri, kui taotlejatel on ühine esindaja ja geograafilise tähise registreerimise avaldusele ei ole alla kirjutanud kõik taotlejad.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_24"
       },
       "rdfs:label": "§ 24 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2604,13 +2929,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Geograafilise tähise registreerimise avaldus",
+      "rdfs:label": {
+        "@value": "§ 25. Geograafilise tähise registreerimise avaldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Geograafilise tähise registreerimise avalduses peab sisalduma: geograafilise tähise registreerimise sooviavaldus; geograafilise tähise reproduktsioon; taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed; teave geograafilise tähise registreerimise taotlemise õiguse kohta käesoleva seaduse § 9 lõikes 1 sätestatu järgi; kirjelduse lühikokkuvõte, mis peab vastama kirjelduse sisule; taotleja esindaja nimi, kui taotlejal on esindaja; taotleja või tema esindaja allkiri.",
-      "estleg:legalText": "Geograafilise tähise registreerimise avalduses peab sisalduma: geograafilise tähise registreerimise sooviavaldus; geograafilise tähise reproduktsioon; taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed; teave geograafilise tähise registreerimise taotlemise õiguse kohta käesoleva seaduse § 9 lõikes 1 sätestatu järgi; kirjelduse lühikokkuvõte, mis peab vastama kirjelduse sisule; taotleja esindaja nimi, kui taotlejal on esindaja; taotleja või tema esindaja allkiri.",
+      "estleg:summary": {
+        "@value": "Geograafilise tähise registreerimise avalduses peab sisalduma: 1) geograafilise tähise registreerimise sooviavaldus; 2) geograafilise tähise reproduktsioon; 3) taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed; 4) teave geograafilise tähise registreerimise taotlemise õiguse kohta käesoleva seaduse § 9 lõikes 1 sätestatu järgi; 5) kirjelduse lühikokkuvõte, mis peab vastama kirjelduse sisule; 6) taotleja esindaja nimi, kui taotlejal on esindaja; 7) taotleja või tema esindaja allkiri.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Geograafilise tähise registreerimise avalduses peab sisalduma: 1) geograafilise tähise registreerimise sooviavaldus; 2) geograafilise tähise reproduktsioon; 3) taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed; 4) teave geograafilise tähise registreerimise taotlemise õiguse kohta käesoleva seaduse § 9 lõikes 1 sätestatu järgi; 5) kirjelduse lühikokkuvõte, mis peab vastama kirjelduse sisule; 6) taotleja esindaja nimi, kui taotlejal on esindaja; 7) taotleja või tema esindaja allkiri.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -2656,10 +2987,21 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Geograafilise tähise registreerimise avalduses peab sisalduma: geograafilise tähise registreerimise sooviavaldus; geograafilise tähise reproduktsioon; taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed; teave geograafilise tähise registreerimise taotlemise õiguse kohta käesoleva seaduse § 9 lõikes 1 sätestatu järgi; kirjelduse lühikokkuvõte, mis peab vastama kirjelduse sisule; taotleja esindaja nimi, kui taotlejal on esindaja; taotleja või tema esindaja allkiri.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Geograafilise tähise registreerimise avalduses peab sisalduma: 1) geograafilise tähise registreerimise sooviavaldus; 2) geograafilise tähise reproduktsioon; 3) taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed; 4) teave geograafilise tähise registreerimise taotlemise õiguse kohta käesoleva seaduse § 9 lõikes 1 sätestatu järgi; 5) kirjelduse lühikokkuvõte, mis peab vastama kirjelduse sisule; 6) taotleja esindaja nimi, kui taotlejal on esindaja; 7) taotleja või tema esindaja allkiri.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_25"
       },
+      "rdfs:label": "§ 25 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2685,13 +3027,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Kirjeldus",
+      "rdfs:label": {
+        "@value": "§ 26. Kirjeldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Kirjelduses peab sisalduma: kauba või teenuse nimi; kaupa iseloomustavad tunnused (füüsikaliste, keemiliste, mikrobioloogiliste, organoleptiliste või muude omaduste loetelu vastavalt kaubale); kauba valmistamise meetodit või teenust iseloomustavad tunnused; geograafilise ala määratlus; andmed, mis näitavad kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost geograafilise päritoluga. (2) Kirjelduses võivad sisalduda toorainet iseloomustavad tunnused, hoiatustähise",
-      "estleg:legalText": "(1) Kirjelduses peab sisalduma: kauba või teenuse nimi; kaupa iseloomustavad tunnused (füüsikaliste, keemiliste, mikrobioloogiliste, organoleptiliste või muude omaduste loetelu vastavalt kaubale); kauba valmistamise meetodit või teenust iseloomustavad tunnused; geograafilise ala määratlus; andmed, mis näitavad kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost geograafilise päritoluga. (2) Kirjelduses võivad sisalduda toorainet iseloomustavad tunnused, hoiatustähise kasutamise andmed ja muud andmed, mida taotleja peab vajalikuks esitada. (3) Kirjeldus peab andma täieliku ja täpse ettekujutuse kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seosest kauba või teenuse geograafilise päritoluga. (4) Kui ühe ja sama geograafilise tähisega tähistatakse erinevate omadustega kaupu või teenuseid, esitatakse kirjeldus iga kauba või teenuse kohta eraldi.",
+      "estleg:summary": {
+        "@value": "(1) Kirjelduses peab sisalduma: 1) kauba või teenuse nimi; 2) kaupa iseloomustavad tunnused (füüsikaliste, keemiliste, mikrobioloogiliste, organoleptiliste või muude omaduste loetelu vastavalt kaubale); 3) kauba valmistamise meetodit või teenust iseloomustavad tunnused; 4) geograafilise ala määratlus; 5) andmed, mis näitavad kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost geograafilise päritoluga. (2) Kirjelduses võivad sisalduda toorainet iseloomustavad tunnused,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kirjelduses peab sisalduma: 1) kauba või teenuse nimi; 2) kaupa iseloomustavad tunnused (füüsikaliste, keemiliste, mikrobioloogiliste, organoleptiliste või muude omaduste loetelu vastavalt kaubale); 3) kauba valmistamise meetodit või teenust iseloomustavad tunnused; 4) geograafilise ala määratlus; 5) andmed, mis näitavad kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost geograafilise päritoluga. (2) Kirjelduses võivad sisalduda toorainet iseloomustavad tunnused, hoiatustähise kasutamise andmed ja muud andmed, mida taotleja peab vajalikuks esitada. (3) Kirjeldus peab andma täieliku ja täpse ettekujutuse kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seosest kauba või teenuse geograafilise päritoluga. (4) Kui ühe ja sama geograafilise tähisega tähistatakse erinevate omadustega kaupu või teenuseid, esitatakse kirjeldus iga kauba või teenuse kohta eraldi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -2737,11 +3085,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kirjelduses peab sisalduma: kauba või teenuse nimi; kaupa iseloomustavad tunnused (füüsikaliste, keemiliste, mikrobioloogiliste, organoleptiliste või muude omaduste loetelu vastavalt kaubale); kauba valmistamise meetodit või teenust iseloomustavad tunnused; geograafilise ala määratlus; andmed, mis näitavad kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost geograafilise päritoluga.",
+      "estleg:legalText": "(1) Kirjelduses peab sisalduma: 1) kauba või teenuse nimi; 2) kaupa iseloomustavad tunnused (füüsikaliste, keemiliste, mikrobioloogiliste, organoleptiliste või muude omaduste loetelu vastavalt kaubale); 3) kauba valmistamise meetodit või teenust iseloomustavad tunnused; 4) geograafilise ala määratlus; 5) andmed, mis näitavad kauba või teenuse konkreetse omaduse, maine või muu iseloomuliku tunnuse seost geograafilise päritoluga.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_26"
       },
       "rdfs:label": "§ 26 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2820,13 +3175,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Registreerimistaotluse esitamine",
+      "rdfs:label": {
+        "@value": "§ 27. Registreerimistaotluse esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Registreerimistaotlus esitatakse Patendiametile. (2) Kehtetu - (3) Riigilõiv tasutakse ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates. (4) Taotlejate ühisele esindajale antud volikiri esitatakse kahe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates.",
-      "estleg:legalText": "(1) Registreerimistaotlus esitatakse Patendiametile. (2) Kehtetu - (3) Riigilõiv tasutakse ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates. (4) Taotlejate ühisele esindajale antud volikiri esitatakse kahe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates.",
+      "estleg:summary": {
+        "@value": "(1) Registreerimistaotlus esitatakse Patendiametile. (3) Riigilõiv tasutakse ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates. (4) Taotlejate ühisele esindajale antud volikiri esitatakse kahe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Registreerimistaotlus esitatakse Patendiametile. (3) Riigilõiv tasutakse ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates. (4) Taotlejate ühisele esindajale antud volikiri esitatakse kahe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -2836,9 +3197,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:GTKS_Par_27_Lg_1"
-        },
-        {
-          "@id": "estleg:GTKS_Par_27_Lg_2"
         },
         {
           "@id": "estleg:GTKS_Par_27_Lg_3"
@@ -2903,19 +3261,6 @@
       ]
     },
     {
-      "@id": "estleg:GTKS_Par_27_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:GTKS_Par_27"
-      },
-      "rdfs:label": "§ 27 lg 2"
-    },
-    {
       "@id": "estleg:GTKS_Par_27_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -2957,13 +3302,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Taotleja esindamine",
+      "rdfs:label": {
+        "@value": "§ 28. Taotleja esindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab taotleja või tema volitatud patendivolinik. (2) Kui taotleja elu- või asukoht on väljaspool Eesti Vabariiki, esitab registreerimistaotluse taotleja või patendivolinik. Registreerimistaotluse esitamisele järgnevaid geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab ainult taotleja volitatud patendivolinik.",
-      "estleg:legalText": "(1) Geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab taotleja või tema volitatud patendivolinik. (2) Kui taotleja elu- või asukoht on väljaspool Eesti Vabariiki, esitab registreerimistaotluse taotleja või patendivolinik. Registreerimistaotluse esitamisele järgnevaid geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab ainult taotleja volitatud patendivolinik. (3) Kui registreerimistaotluse esitavad ühiselt mitu taotlejat, peavad nad volitama järgnevate geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toimingute teostamiseks patendivoliniku või valima enda hulgast esindaja (edaspidi ühine esindaja), kelle elu- või asukoht on Eesti Vabariigis. (4) Volikirjas peab sisalduma: taotleja nimi ja elu- või asukoha aadress; patendivoliniku korral tema ees- ja perekonnanimi; ühise esindaja korral tema nimi ja elu- või asukoha aadress; volituse ulatus; edasivolitamise õigus, kui esindatav selle õiguse esindajale annab; volituse kehtivusaeg; esindatava allkiri; volikirja väljaandmise koht ja kuupäev. (5) Patendivoliniku puhul, kes esindajana teeb geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid, eeldatakse esindusõiguse olemasolu. Esindusõiguse olemasolus kahtlemise korral on Patendiametil või tööstusomandi apellatsioonikomisjonil õigus nõuda patendivolinikult volikirja esitamist. Volikiri tuleb esitada kahe kuu jooksul nõude esitamisest arvates. Põhjendatud taotluse alusel võib Patendiamet pikendada volikirja esitamise tähtaega üks kord ühe kuu võrra. (6) Taotleja isiklikku osavõttu geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguga seotud menetlusest ei loeta esindajast loobumiseks, kui esindatav ei ole Patendiametile kirjalikult teatanud teisiti.",
+      "estleg:summary": {
+        "@value": "(1) Geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab taotleja või tema volitatud patendivolinik. (2) Kui taotleja elu- või asukoht on väljaspool Eesti Vabariiki, esitab registreerimistaotluse taotleja või patendivolinik. Registreerimistaotluse esitamisele järgnevaid geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab ainult taotleja volitatud patendivolinik.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab taotleja või tema volitatud patendivolinik. (2) Kui taotleja elu- või asukoht on väljaspool Eesti Vabariiki, esitab registreerimistaotluse taotleja või patendivolinik. Registreerimistaotluse esitamisele järgnevaid geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid teostab ainult taotleja volitatud patendivolinik. (3) Kui registreerimistaotluse esitavad ühiselt mitu taotlejat, peavad nad volitama järgnevate geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toimingute teostamiseks patendivoliniku või valima enda hulgast esindaja (edaspidi ühine esindaja), kelle elu- või asukoht on Eesti Vabariigis. (4) Volikirjas peab sisalduma: 1) taotleja nimi ja elu- või asukoha aadress; 2) patendivoliniku korral tema ees- ja perekonnanimi; 3) ühise esindaja korral tema nimi ja elu- või asukoha aadress; 4) volituse ulatus; 5) edasivolitamise õigus, kui esindatav selle õiguse esindajale annab; 6) volituse kehtivusaeg; 7) esindatava allkiri; 8) volikirja väljaandmise koht ja kuupäev. (5) Patendivoliniku puhul, kes esindajana teeb geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguid, eeldatakse esindusõiguse olemasolu. Esindusõiguse olemasolus kahtlemise korral on Patendiametil või tööstusomandi apellatsioonikomisjonil õigus nõuda patendivolinikult volikirja esitamist. Volikiri tuleb esitada kahe kuu jooksul nõude esitamisest arvates. Põhjendatud taotluse alusel võib Patendiamet pikendada volikirja esitamise tähtaega üks kord ühe kuu võrra. (6) Taotleja isiklikku osavõttu geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguga seotud menetlusest ei loeta esindajast loobumiseks, kui esindatav ei ole Patendiametile kirjalikult teatanud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -3089,11 +3440,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Volikirjas peab sisalduma: taotleja nimi ja elu- või asukoha aadress; patendivoliniku korral tema ees- ja perekonnanimi; ühise esindaja korral tema nimi ja elu- või asukoha aadress; volituse ulatus; edasivolitamise õigus, kui esindatav selle õiguse esindajale annab; volituse kehtivusaeg; esindatava allkiri; volikirja väljaandmise koht ja kuupäev.",
+      "estleg:legalText": "(4) Volikirjas peab sisalduma: 1) taotleja nimi ja elu- või asukoha aadress; 2) patendivoliniku korral tema ees- ja perekonnanimi; 3) ühise esindaja korral tema nimi ja elu- või asukoha aadress; 4) volituse ulatus; 5) edasivolitamise õigus, kui esindatav selle õiguse esindajale annab; 6) volituse kehtivusaeg; 7) esindatava allkiri; 8) volikirja väljaandmise koht ja kuupäev.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_28"
       },
       "rdfs:label": "§ 28 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -3171,12 +3532,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28¹.",
-      "rdfs:label": "§ 28¹. Patendiameti teadete edastamine",
+      "rdfs:label": {
+        "@value": "§ 28¹. Patendiameti teadete edastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Patendiamet edastab geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toimingutega seonduvad teated taotleja või muu toimingu tegemist taotleva isiku esindajale, kui esindatav ei ole Patendiametile kirjalikult teatanud teisiti, ning esindaja puudumise korral isikule endale. (2) Käesoleva paragrahvi lõike 1 tähenduses loetakse esindajaks isik, kes on taotleja või muu toimingu tegemist taotleva isiku esindajana esitanud taotluse või avalduse või teinud Patendiameti",
+      "estleg:summary": {
+        "@value": "(1) Patendiamet edastab geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toimingutega seonduvad teated taotleja või muu toimingu tegemist taotleva isiku esindajale, kui esindatav ei ole Patendiametile kirjalikult teatanud teisiti, ning esindaja puudumise korral isikule endale. (2) Käesoleva paragrahvi lõike 1 tähenduses loetakse esindajaks isik, kes on taotleja või muu toimingu tegemist taotleva isiku esindajana esitanud taotluse või avalduse või teinud Patendiameti",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Patendiamet edastab geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toimingutega seonduvad teated taotleja või muu toimingu tegemist taotleva isiku esindajale, kui esindatav ei ole Patendiametile kirjalikult teatanud teisiti, ning esindaja puudumise korral isikule endale. (2) Käesoleva paragrahvi lõike 1 tähenduses loetakse esindajaks isik, kes on taotleja või muu toimingu tegemist taotleva isiku esindajana esitanud taotluse või avalduse või teinud Patendiameti menetluses muu toimingu või kes on kantud taotleja esindajana registrisse, kui esindatav ei ole Patendiametile kirjalikult teatanud teisiti. (3) Kui isikul on käesoleva paragrahvi lõike 2 tähenduses mitu esindajat, edastatakse teated viimati teatatud esindajale, eelistades samal kuupäeval teatatud esindajate korral patendivolinikust esindajat. Kui toiminguid ühiselt tegevatel isikutel on erinevad esindajad, edastatakse teated kõigile esindajatele. (4) Taotleja või muu isiku puhul, kes on taotluses või avalduses märkinud e-posti aadressi, ning patendivoliniku puhul eeldatakse nõusolekut sellega, et talle edastatakse geograafilise tähise registreerimise ja registreeringu jõushoidmisega seotud toiminguga seonduvad teated elektrooniliselt, kui isik ei ole Patendiametile kirjalikult teatanud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -3345,13 +3712,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Saabumismärge",
+      "rdfs:label": {
+        "@value": "§ 29. Saabumismärge",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Registreerimistaotluse igale dokumendile tehakse saabumismärge, milles sisaldub registreerimistaotluse saabumise kuupäev ja registreerimistaotluse järjekorranumber (edaspidi registreerimistaotluse number). (2) Kehtetu -",
-      "estleg:legalText": "(1) Registreerimistaotluse igale dokumendile tehakse saabumismärge, milles sisaldub registreerimistaotluse saabumise kuupäev ja registreerimistaotluse järjekorranumber (edaspidi registreerimistaotluse number). (2) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Registreerimistaotluse igale dokumendile tehakse saabumismärge, milles sisaldub registreerimistaotluse saabumise kuupäev ja registreerimistaotluse järjekorranumber (edaspidi registreerimistaotluse number).",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Registreerimistaotluse igale dokumendile tehakse saabumismärge, milles sisaldub registreerimistaotluse saabumise kuupäev ja registreerimistaotluse järjekorranumber (edaspidi registreerimistaotluse number).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -3361,9 +3734,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:GTKS_Par_29_Lg_1"
-        },
-        {
-          "@id": "estleg:GTKS_Par_29_Lg_2"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -3397,32 +3767,25 @@
       "rdfs:label": "§ 29 lg 1"
     },
     {
-      "@id": "estleg:GTKS_Par_29_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:GTKS_Par_29"
-      },
-      "rdfs:label": "§ 29 lg 2"
-    },
-    {
       "@id": "estleg:GTKS_Par_30",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Registreerimistaotluse menetlusse võtmine",
+      "rdfs:label": {
+        "@value": "§ 30. Registreerimistaotluse menetlusse võtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Registreerimistaotluse esitamise kuupäevaks loetakse selle saabumise kuupäev, kui esitatud on: geograafilise tähise registreerimise sooviavaldus; geograafilise tähise reproduktsioon; kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; geograafilise ala määratlus; taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed. (2) Esitatud registreerimistaotlus võetakse menetlusse, kui tasutud on riigilõiv ja esitatud volikiri, kui see on nõutav.",
-      "estleg:legalText": "(1) Registreerimistaotluse esitamise kuupäevaks loetakse selle saabumise kuupäev, kui esitatud on: geograafilise tähise registreerimise sooviavaldus; geograafilise tähise reproduktsioon; kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; geograafilise ala määratlus; taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed. (2) Esitatud registreerimistaotlus võetakse menetlusse, kui tasutud on riigilõiv ja esitatud volikiri, kui see on nõutav.",
+      "estleg:summary": {
+        "@value": "(1) Registreerimistaotluse esitamise kuupäevaks loetakse selle saabumise kuupäev, kui esitatud on: 1) geograafilise tähise registreerimise sooviavaldus; 2) geograafilise tähise reproduktsioon; 3) kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; 4) geograafilise ala määratlus; 5) taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed. (2) Esitatud registreerimistaotlus võetakse menetlusse, kui tasutud on riigilõiv ja esitatud volikiri, kui see on nõutav.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Registreerimistaotluse esitamise kuupäevaks loetakse selle saabumise kuupäev, kui esitatud on: 1) geograafilise tähise registreerimise sooviavaldus; 2) geograafilise tähise reproduktsioon; 3) kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; 4) geograafilise ala määratlus; 5) taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed. (2) Esitatud registreerimistaotlus võetakse menetlusse, kui tasutud on riigilõiv ja esitatud volikiri, kui see on nõutav.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -3473,11 +3836,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Registreerimistaotluse esitamise kuupäevaks loetakse selle saabumise kuupäev, kui esitatud on: geograafilise tähise registreerimise sooviavaldus; geograafilise tähise reproduktsioon; kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; geograafilise ala määratlus; taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed.",
+      "estleg:legalText": "(1) Registreerimistaotluse esitamise kuupäevaks loetakse selle saabumise kuupäev, kui esitatud on: 1) geograafilise tähise registreerimise sooviavaldus; 2) geograafilise tähise reproduktsioon; 3) kaupade ja teenuste loetelu, mille tähistamiseks geograafilist tähist kasutatakse; 4) geograafilise ala määratlus; 5) taotleja nimi, elu- või asukoha aadress ja muud kontaktandmed.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_30"
       },
       "rdfs:label": "§ 30 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3515,13 +3885,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Registreerimistaotluse menetlusse võtmisest keeldumine",
+      "rdfs:label": {
+        "@value": "§ 31. Registreerimistaotluse menetlusse võtmisest keeldumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Registreerimistaotluse menetlusse võtmisest keeldumise otsus tehakse ning registreerimistaotlus ja riigilõiv tagastatakse, kui: riigilõiv ei ole tasutud ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates; volikiri on nõutav ja seda ei ole esitatud kahe kuu jooksul registreerimistaotluse saabumise kuupäevast või Patendiameti poolt vastava nõude esitamisest arvates. kehtetu -",
-      "estleg:legalText": "Registreerimistaotluse menetlusse võtmisest keeldumise otsus tehakse ning registreerimistaotlus ja riigilõiv tagastatakse, kui: riigilõiv ei ole tasutud ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates; volikiri on nõutav ja seda ei ole esitatud kahe kuu jooksul registreerimistaotluse saabumise kuupäevast või Patendiameti poolt vastava nõude esitamisest arvates. kehtetu -",
+      "estleg:summary": {
+        "@value": "Registreerimistaotluse menetlusse võtmisest keeldumise otsus tehakse ning registreerimistaotlus ja riigilõiv tagastatakse, kui: 1) riigilõiv ei ole tasutud ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates; 2) volikiri on nõutav ja seda ei ole esitatud kahe kuu jooksul registreerimistaotluse saabumise kuupäevast või Patendiameti poolt vastava nõude esitamisest arvates. 3)",
+        "@language": "et"
+      },
+      "estleg:legalText": "Registreerimistaotluse menetlusse võtmisest keeldumise otsus tehakse ning registreerimistaotlus ja riigilõiv tagastatakse, kui: 1) riigilõiv ei ole tasutud ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates; 2) volikiri on nõutav ja seda ei ole esitatud kahe kuu jooksul registreerimistaotluse saabumise kuupäevast või Patendiameti poolt vastava nõude esitamisest arvates. 3)",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -3580,10 +3956,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Registreerimistaotluse menetlusse võtmisest keeldumise otsus tehakse ning registreerimistaotlus ja riigilõiv tagastatakse, kui: riigilõiv ei ole tasutud ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates; volikiri on nõutav ja seda ei ole esitatud kahe kuu jooksul registreerimistaotluse saabumise kuupäevast või Patendiameti poolt vastava nõude esitamisest arvates. kehtetu -",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registreerimistaotluse menetlusse võtmisest keeldumise otsus tehakse ning registreerimistaotlus ja riigilõiv tagastatakse, kui: 1) riigilõiv ei ole tasutud ühe kuu jooksul registreerimistaotluse saabumise kuupäevast arvates; 2) volikiri on nõutav ja seda ei ole esitatud kahe kuu jooksul registreerimistaotluse saabumise kuupäevast või Patendiameti poolt vastava nõude esitamisest arvates. 3)",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_31"
       },
+      "rdfs:label": "§ 31 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -3604,12 +3987,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Registreerimistaotluse kontrollimine",
+      "rdfs:label": {
+        "@value": "§ 32. Registreerimistaotluse kontrollimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Menetluse käigus ei kontrollita geograafilise tähise vastavust käesoleva seaduse § 8 punktides 1–3 ja 5–7 sätestatule ega registreerimistaotluses esitatud faktide õigsust. (2) Registreerimistaotluse dokumentide vormi ja sisu puuduste või muude menetlust takistavate asjaolude ilmnemisel teatatakse nendest taotlejale kirjalikult ning määratakse puuduste kõrvaldamiseks või asjakohaste selgituste andmiseks kahekuuline tähtaeg. (3) Taotleja avalduse alusel pikendatakse registreerimistaotluse",
+      "estleg:summary": {
+        "@value": "(1) Menetluse käigus ei kontrollita geograafilise tähise vastavust käesoleva seaduse § 8 punktides 1–3 ja 5–7 sätestatule ega registreerimistaotluses esitatud faktide õigsust. (2) Registreerimistaotluse dokumentide vormi ja sisu puuduste või muude menetlust takistavate asjaolude ilmnemisel teatatakse nendest taotlejale kirjalikult ning määratakse puuduste kõrvaldamiseks või asjakohaste selgituste andmiseks kahekuuline tähtaeg. (3) Taotleja avalduse alusel pikendatakse registreerimistaotluse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Menetluse käigus ei kontrollita geograafilise tähise vastavust käesoleva seaduse § 8 punktides 1–3 ja 5–7 sätestatule ega registreerimistaotluses esitatud faktide õigsust. (2) Registreerimistaotluse dokumentide vormi ja sisu puuduste või muude menetlust takistavate asjaolude ilmnemisel teatatakse nendest taotlejale kirjalikult ning määratakse puuduste kõrvaldamiseks või asjakohaste selgituste andmiseks kahekuuline tähtaeg. (3) Taotleja avalduse alusel pikendatakse registreerimistaotluse puuduste kõrvaldamise või selgituste andmise tähtaega kuue kuuni käesoleva paragrahvi lõikes 2 nimetatud tähtaja algusest arvates. Avaldus peab olema esitatud ja riigilõiv tasutud enne käesoleva paragrahvi lõikes 2 määratud tähtaja lõppemist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -3734,12 +4123,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Registreerimistaotluse parandamine ja täiendamine",
+      "rdfs:label": {
+        "@value": "§ 33. Registreerimistaotluse parandamine ja täiendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Taotleja võib menetluse jooksul teha registreerimistaotluses parandusi ja täiendusi, mis ei muuda registreerimistaotluse esitamise kuupäeval selles esitatud geograafilise tähise reproduktsiooni ega laienda selles antud geograafilise piirkonna määratlust, kaupade ega teenuste loetelu.",
+      "estleg:summary": {
+        "@value": "Taotleja võib menetluse jooksul teha registreerimistaotluses parandusi ja täiendusi, mis ei muuda registreerimistaotluse esitamise kuupäeval selles esitatud geograafilise tähise reproduktsiooni ega laienda selles antud geograafilise piirkonna määratlust, kaupade ega teenuste loetelu.",
+        "@language": "et"
+      },
       "estleg:legalText": "Taotleja võib menetluse jooksul teha registreerimistaotluses parandusi ja täiendusi, mis ei muuda registreerimistaotluse esitamise kuupäeval selles esitatud geograafilise tähise reproduktsiooni ega laienda selles antud geograafilise piirkonna määratlust, kaupade ega teenuste loetelu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -3784,10 +4179,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Taotleja võib menetluse jooksul teha registreerimistaotluses parandusi ja täiendusi, mis ei muuda registreerimistaotluse esitamise kuupäeval selles esitatud geograafilise tähise reproduktsiooni ega laienda selles antud geograafilise piirkonna määratlust, kaupade ega teenuste loetelu.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Taotleja võib menetluse jooksul teha registreerimistaotluses parandusi ja täiendusi, mis ei muuda registreerimistaotluse esitamise kuupäeval selles esitatud geograafilise tähise reproduktsiooni ega laienda selles antud geograafilise piirkonna määratlust, kaupade ega teenuste loetelu.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_33"
       },
+      "rdfs:label": "§ 33 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -3808,12 +4205,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Registreerimistaotluse tagasivõtmine",
+      "rdfs:label": {
+        "@value": "§ 34. Registreerimistaotluse tagasivõtmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Taotleja võib registreerimistaotluse menetluse jooksul tagasi võtta, esitades sellekohase kirjaliku avalduse. Registreerimistaotlus loetakse tagasivõetuks avalduse Patendiametisse saabumisel. (2) Registreerimistaotlus loetakse tagasivõetuks, kui taotleja ei ole käesoleva seaduse § 32 lõigete 2 ja 3 kohaselt määratud tähtaja lõpuks kõrvaldanud registreerimistaotluse puudusi või andnud asjakohaseid selgitusi.",
+      "estleg:summary": {
+        "@value": "(1) Taotleja võib registreerimistaotluse menetluse jooksul tagasi võtta, esitades sellekohase kirjaliku avalduse. Registreerimistaotlus loetakse tagasivõetuks avalduse Patendiametisse saabumisel. (2) Registreerimistaotlus loetakse tagasivõetuks, kui taotleja ei ole käesoleva seaduse § 32 lõigete 2 ja 3 kohaselt määratud tähtaja lõpuks kõrvaldanud registreerimistaotluse puudusi või andnud asjakohaseid selgitusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Taotleja võib registreerimistaotluse menetluse jooksul tagasi võtta, esitades sellekohase kirjaliku avalduse. Registreerimistaotlus loetakse tagasivõetuks avalduse Patendiametisse saabumisel. (2) Registreerimistaotlus loetakse tagasivõetuks, kui taotleja ei ole käesoleva seaduse § 32 lõigete 2 ja 3 kohaselt määratud tähtaja lõpuks kõrvaldanud registreerimistaotluse puudusi või andnud asjakohaseid selgitusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -3932,12 +4335,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Menetluse lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 35. Menetluse lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Kui registreerimistaotlus on tagasi võetud või tagasivõetuks loetud, tehakse menetluse lõpetamise otsus.",
+      "estleg:summary": {
+        "@value": "Kui registreerimistaotlus on tagasi võetud või tagasivõetuks loetud, tehakse menetluse lõpetamise otsus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui registreerimistaotlus on tagasi võetud või tagasivõetuks loetud, tehakse menetluse lõpetamise otsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -3970,10 +4379,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui registreerimistaotlus on tagasi võetud või tagasivõetuks loetud, tehakse menetluse lõpetamise otsus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui registreerimistaotlus on tagasi võetud või tagasivõetuks loetud, tehakse menetluse lõpetamise otsus.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_35"
-      }
+      },
+      "rdfs:label": "§ 35 lg 1"
     },
     {
       "@id": "estleg:GTKS_Par_36",
@@ -3982,12 +4393,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Menetluse taastamine",
+      "rdfs:label": {
+        "@value": "§ 36. Menetluse taastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Lõpetatud menetlus taastatakse tööstusomandi apellatsioonikomisjoni (edaspidi apellatsioonikomisjon) otsuse või kohtuotsuse alusel.",
+      "estleg:summary": {
+        "@value": "Lõpetatud menetlus taastatakse tööstusomandi apellatsioonikomisjoni (edaspidi apellatsioonikomisjon) otsuse või kohtuotsuse alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Lõpetatud menetlus taastatakse tööstusomandi apellatsioonikomisjoni (edaspidi apellatsioonikomisjon) otsuse või kohtuotsuse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -4012,10 +4429,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Lõpetatud menetlus taastatakse tööstusomandi apellatsioonikomisjoni (edaspidi apellatsioonikomisjon) otsuse või kohtuotsuse alusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lõpetatud menetlus taastatakse tööstusomandi apellatsioonikomisjoni (edaspidi apellatsioonikomisjon) otsuse või kohtuotsuse alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_36"
-      }
+      },
+      "rdfs:label": "§ 36 lg 1"
     },
     {
       "@id": "estleg:GTKS_Par_37",
@@ -4024,12 +4443,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Geograafilise tähise registreerimise otsus",
+      "rdfs:label": {
+        "@value": "§ 37. Geograafilise tähise registreerimise otsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Kui registreerimistaotlus vastab käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetele ega ole vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimise otsus.",
+      "estleg:summary": {
+        "@value": "Kui registreerimistaotlus vastab käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetele ega ole vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimise otsus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui registreerimistaotlus vastab käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetele ega ole vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimise otsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -4059,10 +4484,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui registreerimistaotlus vastab käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetele ega ole vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimise otsus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui registreerimistaotlus vastab käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetele ega ole vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimise otsus.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_37"
       },
+      "rdfs:label": "§ 37 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:GTKS_Par_4"
@@ -4076,12 +4503,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Geograafilise tähise registreerimisest keeldumise otsus",
+      "rdfs:label": {
+        "@value": "§ 38. Geograafilise tähise registreerimisest keeldumise otsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Kui registreerimistaotlus ei vasta kas või ühele käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetest või on vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimisest keeldumise otsus.",
+      "estleg:summary": {
+        "@value": "Kui registreerimistaotlus ei vasta kas või ühele käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetest või on vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimisest keeldumise otsus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui registreerimistaotlus ei vasta kas või ühele käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetest või on vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimisest keeldumise otsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -4111,10 +4544,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui registreerimistaotlus ei vasta kas või ühele käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetest või on vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimisest keeldumise otsus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui registreerimistaotlus ei vasta kas või ühele käesoleva seaduse §-des 4, 24 ja 25 ning § 26 lõigetes 1 ja 4 sätestatud nõuetest või on vastuolus avaliku korra või heade tavadega, tehakse viivitamata geograafilise tähise registreerimisest keeldumise otsus.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_38"
       },
+      "rdfs:label": "§ 38 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:GTKS_Par_4"
@@ -4128,13 +4563,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39. Otsus ja selle vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 39. Otsus ja selle vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustes peab sisalduma: otsuse tegemise kuupäev; otsuse põhjendus; resolutsioon; selgitus otsuse vaidlustamise korra ja tähtaja kohta; otsuse teinud ametniku nimi ja allkiri. (2) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsused jõustuvad nende tegemise päeval. (3) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustest teatatakse taotlejale kirjalikult. (4) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsuseid võib",
-      "estleg:legalText": "(1) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustes peab sisalduma: otsuse tegemise kuupäev; otsuse põhjendus; resolutsioon; selgitus otsuse vaidlustamise korra ja tähtaja kohta; otsuse teinud ametniku nimi ja allkiri. (2) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsused jõustuvad nende tegemise päeval. (3) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustest teatatakse taotlejale kirjalikult. (4) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsuseid võib taotleja vaidlustada apellatsioonikomisjonis kahe kuu jooksul otsuse tegemise päevast arvates.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustes peab sisalduma: 1) otsuse tegemise kuupäev; 2) otsuse põhjendus; 3) resolutsioon; 4) selgitus otsuse vaidlustamise korra ja tähtaja kohta; 5) otsuse teinud ametniku nimi ja allkiri. (2) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsused jõustuvad nende tegemise päeval. (3) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustest teatatakse taotlejale kirjalikult.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustes peab sisalduma: 1) otsuse tegemise kuupäev; 2) otsuse põhjendus; 3) resolutsioon; 4) selgitus otsuse vaidlustamise korra ja tähtaja kohta; 5) otsuse teinud ametniku nimi ja allkiri. (2) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsused jõustuvad nende tegemise päeval. (3) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustest teatatakse taotlejale kirjalikult. (4) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsuseid võib taotleja vaidlustada apellatsioonikomisjonis kahe kuu jooksul otsuse tegemise päevast arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -4196,11 +4637,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustes peab sisalduma: otsuse tegemise kuupäev; otsuse põhjendus; resolutsioon; selgitus otsuse vaidlustamise korra ja tähtaja kohta; otsuse teinud ametniku nimi ja allkiri.",
+      "estleg:legalText": "(1) Käesoleva seaduse §-des 31, 35, 37 ja 38 nimetatud otsustes peab sisalduma: 1) otsuse tegemise kuupäev; 2) otsuse põhjendus; 3) resolutsioon; 4) selgitus otsuse vaidlustamise korra ja tähtaja kohta; 5) otsuse teinud ametniku nimi ja allkiri.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_39"
       },
       "rdfs:label": "§ 39 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -4301,12 +4749,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40. Registri avalikkus ja teabe väljastamine",
+      "rdfs:label": {
+        "@value": "§ 40. Registri avalikkus ja teabe väljastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Menetluse käigus on lubatud väljastada teavet ainult registreerimistaotluse numbri, esitamise kuupäeva, geograafilise tähise reproduktsiooni, geograafilise ala määratluse, kaupade või teenuste loetelu, taotleja nime ja taotleja esindaja nime kohta. (2) Pärast geograafilise tähise registreerimise otsuse tegemist on geograafilise tähise kohta registris olevad andmed ja dokumendid avalikud. (3) Registrist teabe väljastamise eest tasutakse riigilõivu, välja arvatud teabe väljastamine",
+      "estleg:summary": {
+        "@value": "(1) Menetluse käigus on lubatud väljastada teavet ainult registreerimistaotluse numbri, esitamise kuupäeva, geograafilise tähise reproduktsiooni, geograafilise ala määratluse, kaupade või teenuste loetelu, taotleja nime ja taotleja esindaja nime kohta. (2) Pärast geograafilise tähise registreerimise otsuse tegemist on geograafilise tähise kohta registris olevad andmed ja dokumendid avalikud. (3) Registrist teabe väljastamise eest tasutakse riigilõivu, välja arvatud teabe väljastamine",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Menetluse käigus on lubatud väljastada teavet ainult registreerimistaotluse numbri, esitamise kuupäeva, geograafilise tähise reproduktsiooni, geograafilise ala määratluse, kaupade või teenuste loetelu, taotleja nime ja taotleja esindaja nime kohta. (2) Pärast geograafilise tähise registreerimise otsuse tegemist on geograafilise tähise kohta registris olevad andmed ja dokumendid avalikud. (3) Registrist teabe väljastamise eest tasutakse riigilõivu, välja arvatud teabe väljastamine järelevalveasutusele, apellatsioonikomisjonile või kohtule.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -4418,12 +4872,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41. Geograafilise tähise registreerimise tunnistus",
+      "rdfs:label": {
+        "@value": "§ 41. Geograafilise tähise registreerimise tunnistus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Geograafilise tähise registreerimise tunnistus (edaspidi tunnistus) on dokument, mis tõendab registreeringut. (2) Tunnistus antakse välja Eesti Vabariigi nimel. (3) Tunnistuse numbriks on registreeringu number. (4) Tunnistuse vorminõuded ja vormistamise korra kehtestab",
+      "estleg:summary": {
+        "@value": "(1) Geograafilise tähise registreerimise tunnistus (edaspidi tunnistus) on dokument, mis tõendab registreeringut. (2) Tunnistus antakse välja Eesti Vabariigi nimel. (3) Tunnistuse numbriks on registreeringu number. (4) Tunnistuse vorminõuded ja vormistamise korra kehtestab",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Geograafilise tähise registreerimise tunnistus (edaspidi tunnistus) on dokument, mis tõendab registreeringut. (2) Tunnistus antakse välja Eesti Vabariigi nimel. (3) Tunnistuse numbriks on registreeringu number. (4) Tunnistuse vorminõuded ja vormistamise korra kehtestab",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
@@ -4525,13 +4985,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
-      "rdfs:label": "§ 42. Tunnistuse väljaandmine",
+      "rdfs:label": {
+        "@value": "§ 42. Tunnistuse väljaandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Pärast registreeringu tegemist annab Patendiamet 10 tööpäeva jooksul taotlejale välja tunnistuse. (2) Kehtetu - (3) Taotleja avalduse alusel väljastatakse talle elektroonilise tunnistuse ärakiri paberil. Ärakirja väljastamise eest tasutakse riigilõiv. Ärakiri väljastatakse ühe kuu jooksul avalduse esitamisest arvates, ent mitte enne nõutava riigilõivu tasumist. (4) Taotleja avalduse alusel võib talle välja anda tunnistuse duplikaadi. Duplikaadi väljastamise eest tasutakse riigilõiv.",
-      "estleg:legalText": "(1) Pärast registreeringu tegemist annab Patendiamet 10 tööpäeva jooksul taotlejale välja tunnistuse. (2) Kehtetu - (3) Taotleja avalduse alusel väljastatakse talle elektroonilise tunnistuse ärakiri paberil. Ärakirja väljastamise eest tasutakse riigilõiv. Ärakiri väljastatakse ühe kuu jooksul avalduse esitamisest arvates, ent mitte enne nõutava riigilõivu tasumist. (4) Taotleja avalduse alusel võib talle välja anda tunnistuse duplikaadi. Duplikaadi väljastamise eest tasutakse riigilõiv. Duplikaat väljastatakse ühe kuu jooksul avalduse esitamisest arvates, ent mitte enne nõutava riigilõivu tasumist.",
+      "estleg:summary": {
+        "@value": "(1) Pärast registreeringu tegemist annab Patendiamet 10 tööpäeva jooksul taotlejale välja tunnistuse. (3) Taotleja avalduse alusel väljastatakse talle elektroonilise tunnistuse ärakiri paberil. Ärakirja väljastamise eest tasutakse riigilõiv. Ärakiri väljastatakse ühe kuu jooksul avalduse esitamisest arvates, ent mitte enne nõutava riigilõivu tasumist. (4) Taotleja avalduse alusel võib talle välja anda tunnistuse duplikaadi. Duplikaadi väljastamise eest tasutakse riigilõiv.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Pärast registreeringu tegemist annab Patendiamet 10 tööpäeva jooksul taotlejale välja tunnistuse. (3) Taotleja avalduse alusel väljastatakse talle elektroonilise tunnistuse ärakiri paberil. Ärakirja väljastamise eest tasutakse riigilõiv. Ärakiri väljastatakse ühe kuu jooksul avalduse esitamisest arvates, ent mitte enne nõutava riigilõivu tasumist. (4) Taotleja avalduse alusel võib talle välja anda tunnistuse duplikaadi. Duplikaadi väljastamise eest tasutakse riigilõiv. Duplikaat väljastatakse ühe kuu jooksul avalduse esitamisest arvates, ent mitte enne nõutava riigilõivu tasumist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_4"
       },
@@ -4541,9 +5007,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:GTKS_Par_42_Lg_1"
-        },
-        {
-          "@id": "estleg:GTKS_Par_42_Lg_2"
         },
         {
           "@id": "estleg:GTKS_Par_42_Lg_3"
@@ -4625,19 +5088,6 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:GTKS_Par_42_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:GTKS_Par_42"
-      },
-      "rdfs:label": "§ 42 lg 2"
-    },
-    {
       "@id": "estleg:GTKS_Par_42_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -4691,12 +5141,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
-      "rdfs:label": "§ 43. Registreeringu vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 43. Registreeringu vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Asjast huvitatud isik või järelevalveasutus, kes leiab, et taotlejal ei olnud käesoleva seaduse § 9 lõikes 1 sätestatu järgi õigust esitada registreerimistaotlust, võib esitada apellatsioonikomisjonile registreeringu õigusvastaseks tunnistamise avalduse taotleja, tema pärija või õigusjärglase vastu. (2) Käesoleva paragrahvi lõikes 1 nimetatud avalduse saab esitada ühe aasta jooksul registreeringu andmete kande teate avaldamise kuupäevast arvates.",
+      "estleg:summary": {
+        "@value": "(1) Asjast huvitatud isik või järelevalveasutus, kes leiab, et taotlejal ei olnud käesoleva seaduse § 9 lõikes 1 sätestatu järgi õigust esitada registreerimistaotlust, võib esitada apellatsioonikomisjonile registreeringu õigusvastaseks tunnistamise avalduse taotleja, tema pärija või õigusjärglase vastu. (2) Käesoleva paragrahvi lõikes 1 nimetatud avalduse saab esitada ühe aasta jooksul registreeringu andmete kande teate avaldamise kuupäevast arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Asjast huvitatud isik või järelevalveasutus, kes leiab, et taotlejal ei olnud käesoleva seaduse § 9 lõikes 1 sätestatu järgi õigust esitada registreerimistaotlust, võib esitada apellatsioonikomisjonile registreeringu õigusvastaseks tunnistamise avalduse taotleja, tema pärija või õigusjärglase vastu. (2) Käesoleva paragrahvi lõikes 1 nimetatud avalduse saab esitada ühe aasta jooksul registreeringu andmete kande teate avaldamise kuupäevast arvates. (3) Asjast huvitatud isik või järelevalveasutus, kes leiab, et taotlejal ei olnud käesoleva seaduse § 9 lõikes 2 sätestatu järgi õigust esitada registreerimistaotlust, võib esitada apellatsioonikomisjonile registreeringu õigusvastaseks tunnistamise avalduse taotleja, tema pärija või õigusjärglase vastu. (4) Käesoleva paragrahvi lõikes 3 nimetatud avalduse saab esitada registreeringu kehtivusaja jooksul. (5) Asjast huvitatud isik, kes leiab, et registreering on vastuolus käesoleva seaduse §-s 4, 24 või 25 või § 26 lõikes 1 või 4 sätestatud nõuetega, avaliku korra või heade tavadega, võib esitada apellatsioonikomisjonile avalduse nõudega tunnistada registreering õigusvastaseks ning kohustada Patendiametit menetlust taastama ja uut otsust tegema. (6) Käesoleva paragrahvi lõikes 5 nimetatud avalduse saab esitada kolme kuu jooksul registreeringu andmete kande teate avaldamise kuupäevast arvates. (6¹) Käesoleva paragrahvi lõikes 1, 3 või 5 nimetatud avalduse menetlusosaline, keda apellatsioonikomisjoni otsus ei rahulda, võib esitada tööstusomandi õiguskorralduse aluste seaduse § 64 lõikes 1 sätestatud tähtaja jooksul hagi teise menetlusosalise vastu registreeringu õigusvastaseks tunnistamiseks või selle aluseks oleva asjaolu puudumise kindlakstegemiseks. (7) Patendiamet teeb jõustunud apellatsioonikomisjoni või kohtu otsuse põhjal kande registrisse, kui käesoleva paragrahvi lõikes 1, 3 või 5 nimetatud isik esitab Patendiametile avalduse, millele on lisatud teave jõustunud otsuse kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_5"
@@ -4969,12 +5425,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
-      "rdfs:label": "§ 44. Registreeringu vaidlustamine registreeringu andmete muutmiseks",
+      "rdfs:label": {
+        "@value": "§ 44. Registreeringu vaidlustamine registreeringu andmete muutmiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Asjast huvitatud isik või järelevalveasutus, kes leiab, et registreeringus olev kaupade või teenuste loetelu, geograafilise ala määratlus või kirjeldus on ebatäpne või ei ole piisav, võib esitada apellatsioonikomisjonile registreeringu andmete muutmise avalduse taotleja, tema pärija või õigusjärglase vastu. (2) Käesoleva paragrahvi lõikes 1 nimetatud avalduse saab esitada registreeringu kehtivusaja jooksul. (2¹) Käesoleva paragrahvi lõikes 1 nimetatud avalduse menetlusosaline, keda",
+      "estleg:summary": {
+        "@value": "(1) Asjast huvitatud isik või järelevalveasutus, kes leiab, et registreeringus olev kaupade või teenuste loetelu, geograafilise ala määratlus või kirjeldus on ebatäpne või ei ole piisav, võib esitada apellatsioonikomisjonile registreeringu andmete muutmise avalduse taotleja, tema pärija või õigusjärglase vastu. (2) Käesoleva paragrahvi lõikes 1 nimetatud avalduse saab esitada registreeringu kehtivusaja jooksul. (2¹) Käesoleva paragrahvi lõikes 1 nimetatud avalduse menetlusosaline, keda",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Asjast huvitatud isik või järelevalveasutus, kes leiab, et registreeringus olev kaupade või teenuste loetelu, geograafilise ala määratlus või kirjeldus on ebatäpne või ei ole piisav, võib esitada apellatsioonikomisjonile registreeringu andmete muutmise avalduse taotleja, tema pärija või õigusjärglase vastu. (2) Käesoleva paragrahvi lõikes 1 nimetatud avalduse saab esitada registreeringu kehtivusaja jooksul. (2¹) Käesoleva paragrahvi lõikes 1 nimetatud avalduse menetlusosaline, keda apellatsioonikomisjoni otsus ei rahulda, võib esitada tööstusomandi õiguskorralduse aluste seaduse § 64 lõikes 1 sätestatud tähtaja jooksul hagi teise menetlusosalise vastu registreeringu andmete muutmiseks või selle aluseks oleva asjaolu puudumise kindlakstegemiseks. (3) Patendiamet teeb jõustunud apellatsioonikomisjoni või kohtu otsuse põhjal kande registrisse, kui käesoleva paragrahvi lõikes 1 nimetatud isik esitab Patendiametile avalduse, millele on lisatud teave jõustunud otsuse kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_5"
@@ -5117,13 +5579,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45. Õiguskaitsevahendid registreeritud geograafilise tähise õigusvastase kasutamise korral",
+      "rdfs:label": {
+        "@value": "§ 45. Õiguskaitsevahendid registreeritud geograafilise tähise õigusvastase kasutamise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Asjast huvitatud isik võib registreeritud geograafilise tähise õigusvastase kasutamise korral nõuda: registreeritud geograafilise tähise õigusvastase kasutamisega tekitatud kahju hüvitamist vastavalt võlaõigusseaduse §-le 1043; registreeritud geograafilise tähise õigusvastase kasutamise lõpetamist ja edasisest rikkumisest hoidumist vastavalt võlaõigusseaduse §-le 1055; registreeritud geograafilise tähise õigusvastase kasutamise teel saadu väljaandmist vastavalt võlaõigusseaduse §-dele 1037 ja",
-      "estleg:legalText": "Asjast huvitatud isik võib registreeritud geograafilise tähise õigusvastase kasutamise korral nõuda: registreeritud geograafilise tähise õigusvastase kasutamisega tekitatud kahju hüvitamist vastavalt võlaõigusseaduse §-le 1043; registreeritud geograafilise tähise õigusvastase kasutamise lõpetamist ja edasisest rikkumisest hoidumist vastavalt võlaõigusseaduse §-le 1055; registreeritud geograafilise tähise õigusvastase kasutamise teel saadu väljaandmist vastavalt võlaõigusseaduse §-dele 1037 ja 1039.",
+      "estleg:summary": {
+        "@value": "Asjast huvitatud isik võib registreeritud geograafilise tähise õigusvastase kasutamise korral nõuda: 1) registreeritud geograafilise tähise õigusvastase kasutamisega tekitatud kahju hüvitamist vastavalt võlaõigusseaduse §-le 1043; 2) registreeritud geograafilise tähise õigusvastase kasutamise lõpetamist ja edasisest rikkumisest hoidumist vastavalt võlaõigusseaduse §-le 1055; 3) registreeritud geograafilise tähise õigusvastase kasutamise teel saadu väljaandmist vastavalt võlaõigusseaduse §-dele",
+        "@language": "et"
+      },
+      "estleg:legalText": "Asjast huvitatud isik võib registreeritud geograafilise tähise õigusvastase kasutamise korral nõuda: 1) registreeritud geograafilise tähise õigusvastase kasutamisega tekitatud kahju hüvitamist vastavalt võlaõigusseaduse §-le 1043; 2) registreeritud geograafilise tähise õigusvastase kasutamise lõpetamist ja edasisest rikkumisest hoidumist vastavalt võlaõigusseaduse §-le 1055; 3) registreeritud geograafilise tähise õigusvastase kasutamise teel saadu väljaandmist vastavalt võlaõigusseaduse §-dele 1037 ja 1039.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_5"
       },
@@ -5192,10 +5660,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Asjast huvitatud isik võib registreeritud geograafilise tähise õigusvastase kasutamise korral nõuda: registreeritud geograafilise tähise õigusvastase kasutamisega tekitatud kahju hüvitamist vastavalt võlaõigusseaduse §-le 1043; registreeritud geograafilise tähise õigusvastase kasutamise lõpetamist ja edasisest rikkumisest hoidumist vastavalt võlaõigusseaduse §-le 1055; registreeritud geograafilise tähise õigusvastase kasutamise teel saadu väljaandmist vastavalt võlaõigusseaduse §-dele 1037 ja 1039.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asjast huvitatud isik võib registreeritud geograafilise tähise õigusvastase kasutamise korral nõuda: 1) registreeritud geograafilise tähise õigusvastase kasutamisega tekitatud kahju hüvitamist vastavalt võlaõigusseaduse §-le 1043; 2) registreeritud geograafilise tähise õigusvastase kasutamise lõpetamist ja edasisest rikkumisest hoidumist vastavalt võlaõigusseaduse §-le 1055; 3) registreeritud geograafilise tähise õigusvastase kasutamise teel saadu väljaandmist vastavalt võlaõigusseaduse §-dele 1037 ja 1039.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_45"
       },
+      "rdfs:label": "§ 45 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -5224,13 +5699,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
-      "rdfs:label": "§ 46. Geograafilise tähise alase vaidluse lahendamise erisused",
+      "rdfs:label": {
+        "@value": "§ 46. Geograafilise tähise alase vaidluse lahendamise erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Geograafilise tähise registreerimise, registreeringu kehtivuse ja registreeritud geograafilise tähise õigusvastase kasutamisega seotud kaebusi ja hagisid, hagi tagamise ja esialgse õiguskaitse taotlusi ning muid käesolevas seaduses nimetatud kaebusi ja hagisid vaatab läbi Harju Maakohus. (1¹) Kehtetu - (2) Käesoleva seaduse § 43 lõigetes 1 ja 3 ning § 44 lõikes 1 nimetatud avalduse esitamisest teatab kohus ametlikus väljaandes Ametlikud Teadaanded ning määrab tähtaja, mille jooksul",
-      "estleg:legalText": "(1) Geograafilise tähise registreerimise, registreeringu kehtivuse ja registreeritud geograafilise tähise õigusvastase kasutamisega seotud kaebusi ja hagisid, hagi tagamise ja esialgse õiguskaitse taotlusi ning muid käesolevas seaduses nimetatud kaebusi ja hagisid vaatab läbi Harju Maakohus. (1¹) Kehtetu - (2) Käesoleva seaduse § 43 lõigetes 1 ja 3 ning § 44 lõikes 1 nimetatud avalduse esitamisest teatab kohus ametlikus väljaandes Ametlikud Teadaanded ning määrab tähtaja, mille jooksul geograafilise tähise kasutajad võivad esitada kohtule avalduse protsessi astumiseks hageja või kostja poolel, kusjuures tähtaeg ei või olla lühem kui kaks kuud teate avaldamise kuupäevast arvates. (3) Kohus saadab Patendiametile teadmiseks geograafilise tähise kaitse alases vaidluses tehtud lahendi ärakirja ka siis, kui Patendiamet ei ole protsessis osalenud. (4) Isikul, kelle vastu on esitatud hagi käesoleva seaduse § 45 alusel, on õigus esitada vastuhagi § 43 lõikes 1, 3 või 5 või § 44 lõikes 1 nimetatud nõudes.",
+      "estleg:summary": {
+        "@value": "(1) Geograafilise tähise registreerimise, registreeringu kehtivuse ja registreeritud geograafilise tähise õigusvastase kasutamisega seotud kaebusi ja hagisid, hagi tagamise ja esialgse õiguskaitse taotlusi ning muid käesolevas seaduses nimetatud kaebusi ja hagisid vaatab läbi Harju Maakohus. (2) Käesoleva seaduse § 43 lõigetes 1 ja 3 ning § 44 lõikes 1 nimetatud avalduse esitamisest teatab kohus ametlikus väljaandes Ametlikud Teadaanded ning määrab tähtaja, mille jooksul geograafilise tähise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Geograafilise tähise registreerimise, registreeringu kehtivuse ja registreeritud geograafilise tähise õigusvastase kasutamisega seotud kaebusi ja hagisid, hagi tagamise ja esialgse õiguskaitse taotlusi ning muid käesolevas seaduses nimetatud kaebusi ja hagisid vaatab läbi Harju Maakohus. (2) Käesoleva seaduse § 43 lõigetes 1 ja 3 ning § 44 lõikes 1 nimetatud avalduse esitamisest teatab kohus ametlikus väljaandes Ametlikud Teadaanded ning määrab tähtaja, mille jooksul geograafilise tähise kasutajad võivad esitada kohtule avalduse protsessi astumiseks hageja või kostja poolel, kusjuures tähtaeg ei või olla lühem kui kaks kuud teate avaldamise kuupäevast arvates. (3) Kohus saadab Patendiametile teadmiseks geograafilise tähise kaitse alases vaidluses tehtud lahendi ärakirja ka siis, kui Patendiamet ei ole protsessis osalenud. (4) Isikul, kelle vastu on esitatud hagi käesoleva seaduse § 45 alusel, on õigus esitada vastuhagi § 43 lõikes 1, 3 või 5 või § 44 lõikes 1 nimetatud nõudes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_5"
       },
@@ -5240,9 +5721,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:GTKS_Par_46_Lg_1"
-        },
-        {
-          "@id": "estleg:GTKS_Par_46_Lg_1_1"
         },
         {
           "@id": "estleg:GTKS_Par_46_Lg_2"
@@ -5338,19 +5816,6 @@
         }
       ],
       "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:GTKS_Par_46_Lg_1_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:GTKS_Par_46"
-      },
-      "rdfs:label": "§ 46 lg 1¹"
     },
     {
       "@id": "estleg:GTKS_Par_46_Lg_2",
@@ -5460,13 +5925,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
-      "rdfs:label": "§ 47. Esindaja geograafilise tähise alases kohtuvaidluses",
+      "rdfs:label": {
+        "@value": "§ 47. Esindaja geograafilise tähise alases kohtuvaidluses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Patendivolinik võib olla geograafilise tähise alases vaidluses esindajaks maakohtus ja ringkonnakohtus. Riigikohtus võib patendivolinik olla esindajaks koos vandeadvokaadiga. (2) Kehtetu - (3) Geograafilise tähise õiguspärast kasutajat võib õiguste kaitsel esindada õigusvõimeline esindusorganisatsioon, mille liige ta on.",
-      "estleg:legalText": "(1) Patendivolinik võib olla geograafilise tähise alases vaidluses esindajaks maakohtus ja ringkonnakohtus. Riigikohtus võib patendivolinik olla esindajaks koos vandeadvokaadiga. (2) Kehtetu - (3) Geograafilise tähise õiguspärast kasutajat võib õiguste kaitsel esindada õigusvõimeline esindusorganisatsioon, mille liige ta on.",
+      "estleg:summary": {
+        "@value": "(1) Patendivolinik võib olla geograafilise tähise alases vaidluses esindajaks maakohtus ja ringkonnakohtus. Riigikohtus võib patendivolinik olla esindajaks koos vandeadvokaadiga. (3) Geograafilise tähise õiguspärast kasutajat võib õiguste kaitsel esindada õigusvõimeline esindusorganisatsioon, mille liige ta on.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Patendivolinik võib olla geograafilise tähise alases vaidluses esindajaks maakohtus ja ringkonnakohtus. Riigikohtus võib patendivolinik olla esindajaks koos vandeadvokaadiga. (3) Geograafilise tähise õiguspärast kasutajat võib õiguste kaitsel esindada õigusvõimeline esindusorganisatsioon, mille liige ta on.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_5"
       },
@@ -5476,9 +5947,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:GTKS_Par_47_Lg_1"
-        },
-        {
-          "@id": "estleg:GTKS_Par_47_Lg_2"
         },
         {
           "@id": "estleg:GTKS_Par_47_Lg_3"
@@ -5574,19 +6042,6 @@
       ]
     },
     {
-      "@id": "estleg:GTKS_Par_47_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:GTKS_Par_47"
-      },
-      "rdfs:label": "§ 47 lg 2"
-    },
-    {
       "@id": "estleg:GTKS_Par_47_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -5618,18 +6073,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47¹.",
-      "rdfs:label": "§ 47¹. Riigilõiv",
+      "rdfs:label": {
+        "@value": "§ 47¹. Riigilõiv",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses ettenähtud juhtudel tasutakse registreerimistaotluse läbivaatamise, teabe väljastamise ja muude toimingute tegemise eest riigilõivu riigilõivuseaduses sätestatud määras.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses ettenähtud juhtudel tasutakse registreerimistaotluse läbivaatamise, teabe väljastamise ja muude toimingute tegemise eest riigilõivu riigilõivuseaduses sätestatud määras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas seaduses ettenähtud juhtudel tasutakse registreerimistaotluse läbivaatamise, teabe väljastamise ja muude toimingute tegemise eest riigilõivu riigilõivuseaduses sätestatud määras.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_GTKS_5"
+        "@id": "estleg:Cluster_GTKS_5_47_47"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_GTKS_5"
+        "@id": "estleg:Chapter_GTKS_5_97b712e9"
       },
       "estleg:hasSubsection": [
         {
@@ -5665,10 +6126,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses ettenähtud juhtudel tasutakse registreerimistaotluse läbivaatamise, teabe väljastamise ja muude toimingute tegemise eest riigilõivu riigilõivuseaduses sätestatud määras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses ettenähtud juhtudel tasutakse registreerimistaotluse läbivaatamise, teabe väljastamise ja muude toimingute tegemise eest riigilõivu riigilõivuseaduses sätestatud määras.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_47_1"
-      }
+      },
+      "rdfs:label": "§ 47¹ lg 1"
     },
     {
       "@id": "estleg:GTKS_Par_47_2",
@@ -5677,18 +6140,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47².",
-      "rdfs:label": "§ 47². Unikaalse viitenumbri teatamine",
+      "rdfs:label": {
+        "@value": "§ 47². Unikaalse viitenumbri teatamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Pärast registreerimistaotluse menetlusse võtmist või avalduse esitamist teatab Patendiamet taotlejale või avalduse esitajale unikaalse viitenumbri riigilõivu tasumiseks. Unikaalset viitenumbrit ei teatata, kui isik on riigilõivu juba tasunud.",
+      "estleg:summary": {
+        "@value": "Pärast registreerimistaotluse menetlusse võtmist või avalduse esitamist teatab Patendiamet taotlejale või avalduse esitajale unikaalse viitenumbri riigilõivu tasumiseks. Unikaalset viitenumbrit ei teatata, kui isik on riigilõivu juba tasunud.",
+        "@language": "et"
+      },
       "estleg:legalText": "Pärast registreerimistaotluse menetlusse võtmist või avalduse esitamist teatab Patendiamet taotlejale või avalduse esitajale unikaalse viitenumbri riigilõivu tasumiseks. Unikaalset viitenumbrit ei teatata, kui isik on riigilõivu juba tasunud.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_GTKS_5"
+        "@id": "estleg:Cluster_GTKS_5_47_47"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_GTKS_5"
+        "@id": "estleg:Chapter_GTKS_5_97b712e9"
       },
       "estleg:hasSubsection": [
         {
@@ -5735,10 +6204,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Pärast registreerimistaotluse menetlusse võtmist või avalduse esitamist teatab Patendiamet taotlejale või avalduse esitajale unikaalse viitenumbri riigilõivu tasumiseks. Unikaalset viitenumbrit ei teatata, kui isik on riigilõivu juba tasunud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pärast registreerimistaotluse menetlusse võtmist või avalduse esitamist teatab Patendiamet taotlejale või avalduse esitajale unikaalse viitenumbri riigilõivu tasumiseks. Unikaalset viitenumbrit ei teatata, kui isik on riigilõivu juba tasunud.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_47_2"
       },
+      "rdfs:label": "§ 47² lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -5761,18 +6232,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47³.",
-      "rdfs:label": "§ 47³. Riigilõivu tasumine",
+      "rdfs:label": {
+        "@value": "§ 47³. Riigilõivu tasumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Riigilõiv tasutakse Rahandusministeeriumi kontole. (2) Kui riigilõiv tasutakse unikaalse viitenumbriga, märgitakse maksedokumendile unikaalne viitenumber, mis on seotud toiminguga, mille eest riigilõiv tasutakse. (3) Riigilõiv loetakse tasutuks, kui see on unikaalse viitenumbri alusel laekunud ettenähtud kontole või kui Patendiametile on esitatud käesoleva seaduse § 474 lõikes 1 nimetatud andmed riigilõivu tasumise kohta.",
-      "estleg:legalText": "(1) Riigilõiv tasutakse Rahandusministeeriumi kontole. (2) Kui riigilõiv tasutakse unikaalse viitenumbriga, märgitakse maksedokumendile unikaalne viitenumber, mis on seotud toiminguga, mille eest riigilõiv tasutakse. (3) Riigilõiv loetakse tasutuks, kui see on unikaalse viitenumbri alusel laekunud ettenähtud kontole või kui Patendiametile on esitatud käesoleva seaduse § 474 lõikes 1 nimetatud andmed riigilõivu tasumise kohta.",
+      "estleg:summary": {
+        "@value": "(1) Riigilõiv tasutakse Rahandusministeeriumi kontole. (2) Kui riigilõiv tasutakse unikaalse viitenumbriga, märgitakse maksedokumendile unikaalne viitenumber, mis on seotud toiminguga, mille eest riigilõiv tasutakse. (3) Riigilõiv loetakse tasutuks, kui see on unikaalse viitenumbri alusel laekunud ettenähtud kontole või kui Patendiametile on esitatud käesoleva seaduse § 47⁴ lõikes 1 nimetatud andmed riigilõivu tasumise kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigilõiv tasutakse Rahandusministeeriumi kontole. (2) Kui riigilõiv tasutakse unikaalse viitenumbriga, märgitakse maksedokumendile unikaalne viitenumber, mis on seotud toiminguga, mille eest riigilõiv tasutakse. (3) Riigilõiv loetakse tasutuks, kui see on unikaalse viitenumbri alusel laekunud ettenähtud kontole või kui Patendiametile on esitatud käesoleva seaduse § 47⁴ lõikes 1 nimetatud andmed riigilõivu tasumise kohta.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_GTKS_5"
+        "@id": "estleg:Cluster_GTKS_5_47_47"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_GTKS_5"
+        "@id": "estleg:Chapter_GTKS_5_97b712e9"
       },
       "estleg:hasSubsection": [
         {
@@ -5845,7 +6322,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Riigilõiv loetakse tasutuks, kui see on unikaalse viitenumbri alusel laekunud ettenähtud kontole või kui Patendiametile on esitatud käesoleva seaduse § 474 lõikes 1 nimetatud andmed riigilõivu tasumise kohta.",
+      "estleg:legalText": "(3) Riigilõiv loetakse tasutuks, kui see on unikaalse viitenumbri alusel laekunud ettenähtud kontole või kui Patendiametile on esitatud käesoleva seaduse § 47⁴ lõikes 1 nimetatud andmed riigilõivu tasumise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_47_3"
       },
@@ -5863,18 +6340,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47⁴.",
-      "rdfs:label": "§ 47⁴. Riigilõivu tasumise kohta andmete esitamine",
+      "rdfs:label": {
+        "@value": "§ 47⁴. Riigilõivu tasumise kohta andmete esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Kui riigilõiv tasutakse ilma unikaalse viitenumbrita, esitab taotleja või muu geograafilise tähise alase toimingu tegemist taotlev isik Patendiametile riigilõivu tasumise tähtpäevaks riigilõivu tasumise kohta järgmised andmed: maksedokumendi number; makse kuupäev; maksja nimi; tasutud summa suurus; selle toimingu nimetus, mille eest riigilõiv tasutakse, või riigilõivuseaduse asjakohase paragrahvi number; registreerimistaotluse number, geograafilise tähise registreeringu number või nende",
-      "estleg:legalText": "(1) Kui riigilõiv tasutakse ilma unikaalse viitenumbrita, esitab taotleja või muu geograafilise tähise alase toimingu tegemist taotlev isik Patendiametile riigilõivu tasumise tähtpäevaks riigilõivu tasumise kohta järgmised andmed: maksedokumendi number; makse kuupäev; maksja nimi; tasutud summa suurus; selle toimingu nimetus, mille eest riigilõiv tasutakse, või riigilõivuseaduse asjakohase paragrahvi number; registreerimistaotluse number, geograafilise tähise registreeringu number või nende puudumise korral muud andmed, mis võimaldavad geograafilise tähise tuvastada. (2) Andmed riigilõivu tasumise kohta esitatakse iga registreerimistaotluse või registreeringu ja iga toimingu või tegevuse kohta eraldi. Kui riigilõiv tasutakse korraga mitme toimingu tegemise eest, esitatakse loetelu tasutud summa registreerimistaotluste või registreeringute ja toimingute vahel jaotumise kohta.",
+      "estleg:summary": {
+        "@value": "(1) Kui riigilõiv tasutakse ilma unikaalse viitenumbrita, esitab taotleja või muu geograafilise tähise alase toimingu tegemist taotlev isik Patendiametile riigilõivu tasumise tähtpäevaks riigilõivu tasumise kohta järgmised andmed: 1) maksedokumendi number; 2) makse kuupäev; 3) maksja nimi; 4) tasutud summa suurus; 5) selle toimingu nimetus, mille eest riigilõiv tasutakse, või riigilõivuseaduse asjakohase paragrahvi number; 6) registreerimistaotluse number, geograafilise tähise registreeringu",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui riigilõiv tasutakse ilma unikaalse viitenumbrita, esitab taotleja või muu geograafilise tähise alase toimingu tegemist taotlev isik Patendiametile riigilõivu tasumise tähtpäevaks riigilõivu tasumise kohta järgmised andmed: 1) maksedokumendi number; 2) makse kuupäev; 3) maksja nimi; 4) tasutud summa suurus; 5) selle toimingu nimetus, mille eest riigilõiv tasutakse, või riigilõivuseaduse asjakohase paragrahvi number; 6) registreerimistaotluse number, geograafilise tähise registreeringu number või nende puudumise korral muud andmed, mis võimaldavad geograafilise tähise tuvastada. (2) Andmed riigilõivu tasumise kohta esitatakse iga registreerimistaotluse või registreeringu ja iga toimingu või tegevuse kohta eraldi. Kui riigilõiv tasutakse korraga mitme toimingu tegemise eest, esitatakse loetelu tasutud summa registreerimistaotluste või registreeringute ja toimingute vahel jaotumise kohta.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_GTKS_5"
+        "@id": "estleg:Cluster_GTKS_5_47_47"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_GTKS_5"
+        "@id": "estleg:Chapter_GTKS_5_97b712e9"
       },
       "estleg:hasSubsection": [
         {
@@ -5925,11 +6408,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kui riigilõiv tasutakse ilma unikaalse viitenumbrita, esitab taotleja või muu geograafilise tähise alase toimingu tegemist taotlev isik Patendiametile riigilõivu tasumise tähtpäevaks riigilõivu tasumise kohta järgmised andmed: maksedokumendi number; makse kuupäev; maksja nimi; tasutud summa suurus; selle toimingu nimetus, mille eest riigilõiv tasutakse, või riigilõivuseaduse asjakohase paragrahvi number; registreerimistaotluse number, geograafilise tähise registreeringu number või nende puudumise korral muud andmed, mis võimaldavad geograafilise tähise tuvastada.",
+      "estleg:legalText": "(1) Kui riigilõiv tasutakse ilma unikaalse viitenumbrita, esitab taotleja või muu geograafilise tähise alase toimingu tegemist taotlev isik Patendiametile riigilõivu tasumise tähtpäevaks riigilõivu tasumise kohta järgmised andmed: 1) maksedokumendi number; 2) makse kuupäev; 3) maksja nimi; 4) tasutud summa suurus; 5) selle toimingu nimetus, mille eest riigilõiv tasutakse, või riigilõivuseaduse asjakohase paragrahvi number; 6) registreerimistaotluse number, geograafilise tähise registreeringu number või nende puudumise korral muud andmed, mis võimaldavad geograafilise tähise tuvastada.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_47_4"
       },
       "rdfs:label": "§ 47⁴ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -5965,18 +6456,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47⁵.",
-      "rdfs:label": "§ 47⁵. Riigilõivu tasumise kontrollimise kord",
+      "rdfs:label": {
+        "@value": "§ 47⁵. Riigilõivu tasumise kontrollimise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Kui andmed riigilõivu tasumise kohta on esitatud tähtpäevaks, kuid riigilõiv ei ole nõutavas summas Rahandusministeeriumi kontole laekunud, võib Patendiamet tasumise kontrollimiseks nõuda andmed esitanud isikult pangaasutuse kinnitatud riigilõivu tasumist tõendava dokumendi esitamist. (2) Kui riigilõiv tuleb tasuda kindlaks tähtpäevaks, loetakse see tähtaegselt tasutuks ka juhul, kui ettenähtud summas riigilõiv on unikaalse viitenumbri alusel laekunud ettenähtud kontole kolme pangapäeva",
+      "estleg:summary": {
+        "@value": "(1) Kui andmed riigilõivu tasumise kohta on esitatud tähtpäevaks, kuid riigilõiv ei ole nõutavas summas Rahandusministeeriumi kontole laekunud, võib Patendiamet tasumise kontrollimiseks nõuda andmed esitanud isikult pangaasutuse kinnitatud riigilõivu tasumist tõendava dokumendi esitamist. (2) Kui riigilõiv tuleb tasuda kindlaks tähtpäevaks, loetakse see tähtaegselt tasutuks ka juhul, kui ettenähtud summas riigilõiv on unikaalse viitenumbri alusel laekunud ettenähtud kontole kolme pangapäeva",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui andmed riigilõivu tasumise kohta on esitatud tähtpäevaks, kuid riigilõiv ei ole nõutavas summas Rahandusministeeriumi kontole laekunud, võib Patendiamet tasumise kontrollimiseks nõuda andmed esitanud isikult pangaasutuse kinnitatud riigilõivu tasumist tõendava dokumendi esitamist. (2) Kui riigilõiv tuleb tasuda kindlaks tähtpäevaks, loetakse see tähtaegselt tasutuks ka juhul, kui ettenähtud summas riigilõiv on unikaalse viitenumbri alusel laekunud ettenähtud kontole kolme pangapäeva jooksul Patendiameti poolt unikaalse viitenumbri väljastamisest arvates.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_GTKS_5"
+        "@id": "estleg:Cluster_GTKS_5_47_47"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_GTKS_5"
+        "@id": "estleg:Chapter_GTKS_5_97b712e9"
       },
       "estleg:hasSubsection": [
         {
@@ -6075,13 +6572,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
-      "rdfs:label": "§ 48. Järelevalve teostamise alused",
+      "rdfs:label": {
+        "@value": "§ 48. Järelevalve teostamise alused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 48. Järelevalve teostamise alused",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_6"
       },
@@ -6104,13 +6606,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
-      "rdfs:label": "§ 49. Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "§ 49. Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses sätestatud nõuete täitmise üle teostavad riiklikku järelevalvet: Tarbijakaitse ja Tehnilise Järelevalve Amet; Põllumajandus- ja Toiduamet registreeritud geograafilise tähise nimetuse nõuetekohase kasutamise ning registreeritud geograafilise tähise kirjelduses sätestatud nõuetele vastavuse üle.",
-      "estleg:legalText": "Käesolevas seaduses sätestatud nõuete täitmise üle teostavad riiklikku järelevalvet: Tarbijakaitse ja Tehnilise Järelevalve Amet; Põllumajandus- ja Toiduamet registreeritud geograafilise tähise nimetuse nõuetekohase kasutamise ning registreeritud geograafilise tähise kirjelduses sätestatud nõuetele vastavuse üle.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses sätestatud nõuete täitmise üle teostavad riiklikku järelevalvet: 1) Tarbijakaitse ja Tehnilise Järelevalve Amet; 2) Põllumajandus- ja Toiduamet registreeritud geograafilise tähise nimetuse nõuetekohase kasutamise ning registreeritud geograafilise tähise kirjelduses sätestatud nõuetele vastavuse üle.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolevas seaduses sätestatud nõuete täitmise üle teostavad riiklikku järelevalvet: 1) Tarbijakaitse ja Tehnilise Järelevalve Amet; 2) Põllumajandus- ja Toiduamet registreeritud geograafilise tähise nimetuse nõuetekohase kasutamise ning registreeritud geograafilise tähise kirjelduses sätestatud nõuetele vastavuse üle.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_6"
       },
@@ -6189,10 +6697,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses sätestatud nõuete täitmise üle teostavad riiklikku järelevalvet: Tarbijakaitse ja Tehnilise Järelevalve Amet; Põllumajandus- ja Toiduamet registreeritud geograafilise tähise nimetuse nõuetekohase kasutamise ning registreeritud geograafilise tähise kirjelduses sätestatud nõuetele vastavuse üle.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud nõuete täitmise üle teostavad riiklikku järelevalvet: 1) Tarbijakaitse ja Tehnilise Järelevalve Amet; 2) Põllumajandus- ja Toiduamet registreeritud geograafilise tähise nimetuse nõuetekohase kasutamise ning registreeritud geograafilise tähise kirjelduses sätestatud nõuetele vastavuse üle.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_49"
       },
+      "rdfs:label": "§ 49 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -6224,12 +6738,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 50.",
-      "rdfs:label": "§ 50. Riikliku järelevalve erimeetmed",
+      "rdfs:label": {
+        "@value": "§ 50. Riikliku järelevalve erimeetmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_6"
@@ -6286,10 +6806,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:GTKS_Par_50"
       },
+      "rdfs:label": "§ 50 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -6310,13 +6832,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 51.",
-      "rdfs:label": "§ 51. Ärisaladuse hoidmine",
+      "rdfs:label": {
+        "@value": "§ 51. Ärisaladuse hoidmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 51. Ärisaladuse hoidmine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_6"
       },
@@ -6339,18 +6866,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 52.",
-      "rdfs:label": "§ 52.",
+      "rdfs:label": {
+        "@value": "§ 52.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
+      "estleg:summary": "§ 52.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_GTKS_7"
       },
-      "estleg:summary": "§ 52.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:GTKS_Par_52_v22457"
@@ -6367,13 +6897,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 55.",
-      "rdfs:label": "§ 55. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 55.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 55.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_7"
       },
@@ -6396,13 +6931,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 56.",
-      "rdfs:label": "§ 56. Riigilõiv",
+      "rdfs:label": {
+        "@value": "§ 56. Riigilõiv",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 56. Riigilõiv",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_8"
       },
@@ -6434,12 +6974,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 56¹.",
-      "rdfs:label": "§ 56¹. Enne 2019. aasta 1. aprilli kohtule esitatud kaebuse, avalduse ja hagi menetlemine",
+      "rdfs:label": {
+        "@value": "§ 56¹. Enne 2019. aasta 1. aprilli kohtule esitatud kaebuse, avalduse ja hagi menetlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "(1) Enne 2019. aasta 1. aprilli käesoleva seaduse alusel kohtule esitatud avaldust menetletakse kohtus ka juhul, kui alates nimetatud kuupäevast on asjaomase vaidluse lahendamiseks ette nähtud kohustuslik kohtueelne menetlus apellatsioonikomisjonis. (2) Enne 2019. aasta 1. aprilli käesoleva seaduse alusel kohtule esitatud kaebust, avaldust või hagi menetletakse muus maakohtus peale Harju Maakohtu ka juhul, kui alates nimetatud kuupäevast on asjaomase kaebuse, avalduse või hagi lahendamiseks",
+      "estleg:summary": {
+        "@value": "(1) Enne 2019. aasta 1. aprilli käesoleva seaduse alusel kohtule esitatud avaldust menetletakse kohtus ka juhul, kui alates nimetatud kuupäevast on asjaomase vaidluse lahendamiseks ette nähtud kohustuslik kohtueelne menetlus apellatsioonikomisjonis. (2) Enne 2019. aasta 1. aprilli käesoleva seaduse alusel kohtule esitatud kaebust, avaldust või hagi menetletakse muus maakohtus peale Harju Maakohtu ka juhul, kui alates nimetatud kuupäevast on asjaomase kaebuse, avalduse või hagi lahendamiseks",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Enne 2019. aasta 1. aprilli käesoleva seaduse alusel kohtule esitatud avaldust menetletakse kohtus ka juhul, kui alates nimetatud kuupäevast on asjaomase vaidluse lahendamiseks ette nähtud kohustuslik kohtueelne menetlus apellatsioonikomisjonis. (2) Enne 2019. aasta 1. aprilli käesoleva seaduse alusel kohtule esitatud kaebust, avaldust või hagi menetletakse muus maakohtus peale Harju Maakohtu ka juhul, kui alates nimetatud kuupäevast on asjaomase kaebuse, avalduse või hagi lahendamiseks ainupädevus Harju Maakohtul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_8"
@@ -6548,18 +7094,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 57.",
-      "rdfs:label": "§ 57.",
+      "rdfs:label": {
+        "@value": "§ 57.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
+      "estleg:summary": "§ 57.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_8"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_GTKS_8"
-      },
-      "estleg:summary": "§ 57."
+      }
     },
     {
       "@id": "estleg:GTKS_Par_63",
@@ -6568,12 +7117,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 63.",
-      "rdfs:label": "§ 63. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 63. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Geograafilise tähise kaitse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:GTKS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_GTKS_8"
@@ -6588,26 +7143,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_GTKS_P_47_3_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/506102023002",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:GTKS_Par_47_3"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "käesoleva seaduse § 474 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_GTKS_P_47_3_Lg_3_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:GTKS_Par_47_3_Lg_3"
+      "eli:realizes": {
+        "@id": "estleg:GTKS_Map"
       },
-      "estleg:citationText": "käesoleva seaduse § 474 lõikes 1"
+      "rdfs:label": {
+        "@value": "Geographical Indication Protection Act",
+        "@language": "en"
+      }
     }
   ]
 }

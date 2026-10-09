@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kättetoimetamisportaali teenuse nõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Kättetoimetamisportaali teenuse nõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1054535",
       "estleg:preambleText": "Määrus kehtestatakse kriminaalmenetluse seadustiku § 156 tsiviilkohtumenetluse seadustiku § 311 väärteomenetluse seadustiku § 41 lõike 10, § 47",
       "estleg:entryIntoForce": {
-        "@value": "2022-07-10",
+        "@value": "2025-03-31",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2025-03-24",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-07-07",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1054535_4029bb53ef"
@@ -106,7 +108,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2162"
         }
-      ]
+      ],
+      "dcterms:title": "Kättetoimetamisportaali teenuse nõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054535_Par_1",
@@ -115,18 +123,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "Kättetoimetamisportaali arendamise ja kasutuselevõtmise eesmärk on võimaldada paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid.",
-      "estleg:legalText": "Kättetoimetamisportaali arendamise ja kasutuselevõtmise eesmärk on võimaldada paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid. Kättetoimetamisportaali arendamise ja kasutuselevõtmise eesmärk on võimaldada paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid.",
+      "estleg:summary": {
+        "@value": "Kättetoimetamisportaali arendamise ja kasutuselevõtmise eesmärk on võimaldada paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kättetoimetamisportaali arendamise ja kasutuselevõtmise eesmärk on võimaldada paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054535_Par_1_v1054535"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kättetoimetamisportaali arendamise ja kasutuselevõtmise eesmärk on võimaldada paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1054535_Par_2",
@@ -135,13 +167,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kättetoimetamisportaali omanik ja haldaja",
+      "rdfs:label": {
+        "@value": "§ 2. Kättetoimetamisportaali omanik ja haldaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "1 (1) Kättetoimetamisportaali omanik on Justiits- ja Digiministeeriumi õiguspoliitika osakond. RT I 2025-03-11 6 111032025006 2025-03-14 Kättetoimetamisportaali omanik on Justiits- ja Digiministeeriumi õiguspoliitika osakond. 2 (2) Kättetoimetamisportaali haldaja on Registrite ja Infosüsteemide Keskus. Kättetoimetamisportaali haldaja on Registrite ja Infosüsteemide Keskus.",
-      "estleg:legalText": "1 (1) Kättetoimetamisportaali omanik on Justiits- ja Digiministeeriumi õiguspoliitika osakond. RT I 2025-03-11 6 111032025006 2025-03-14 Kättetoimetamisportaali omanik on Justiits- ja Digiministeeriumi õiguspoliitika osakond. 2 (2) Kättetoimetamisportaali haldaja on Registrite ja Infosüsteemide Keskus. Kättetoimetamisportaali haldaja on Registrite ja Infosüsteemide Keskus.",
+      "estleg:summary": {
+        "@value": "1 (1) Kättetoimetamisportaali omanik on Justiits- ja Digiministeeriumi õiguspoliitika osakond. RT I 2025-03-11 6 111032025006 2025-03-14 2 (2) Kättetoimetamisportaali haldaja on Registrite ja Infosüsteemide Keskus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kättetoimetamisportaali omanik on Justiits- ja Digiministeeriumi õiguspoliitika osakond. RT I 2025-03-11 6 111032025006 2025-03-14 2 (2) Kättetoimetamisportaali haldaja on Registrite ja Infosüsteemide Keskus.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -160,7 +198,41 @@
         {
           "@id": "estleg:Institution_justiits_ja_digiministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kättetoimetamisportaali omanik on Justiits- ja Digiministeeriumi õiguspoliitika osakond.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kättetoimetamisportaali haldaja on Registrite ja Infosüsteemide Keskus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1054535_Par_3",
@@ -169,13 +241,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Terminid",
+      "rdfs:label": {
+        "@value": "§ 3. Terminid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "Käesolevas määruses kasutatakse termineid järgmistes tähendustes: 1 1) kättetoimetamisportaal – tehniline lahendus, mis võimaldab paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid; 2 2) kättetoimetamisportaali liige – infosüsteem või andmekogu, mis on liidestatud kättetoimetamisportaaliga; 3 3) kättetoimetamisteenus – kättetoimetamisportaali vahendusel pakutav e-teenus, mille kaudu toimub infosüsteemide või andmekogude vahel andmevahetus dokumentide kättetoimetamise",
-      "estleg:legalText": "Käesolevas määruses kasutatakse termineid järgmistes tähendustes: 1 1) kättetoimetamisportaal – tehniline lahendus, mis võimaldab paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid; 2 2) kättetoimetamisportaali liige – infosüsteem või andmekogu, mis on liidestatud kättetoimetamisportaaliga; 3 3) kättetoimetamisteenus – kättetoimetamisportaali vahendusel pakutav e-teenus, mille kaudu toimub infosüsteemide või andmekogude vahel andmevahetus dokumentide kättetoimetamiseks lõppkasutajale; 4 4) kättetoimetamisteenuse kasutaja – kättetoimetamisportaali liige, kes kasutab kättetoimetamisteenust; 5 5) lõppkasutaja – füüsiline isik, kellele toimetatakse kättetoimetamisportaali kaudu kätte menetlusseadustikega ette nähtud menetlusdokumente; 6 6) sõnum – vormindatud andmete ja dokumentide kogum, mille kättetoimetamisteenuse kasutaja edastab kättetoimetamisteenuse vahendusel lõppkasutajale. Käesolevas määruses kasutatakse termineid järgmistes tähendustes: kättetoimetamisportaal – tehniline lahendus, mis võimaldab paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid; kättetoimetamisportaali liige – infosüsteem või andmekogu, mis on liidestatud kättetoimetamisportaaliga; kättetoimetamisteenus – kättetoimetamisportaali vahendusel pakutav e-teenus, mille kaudu toimub infosüsteemide või andmekogude vahel andmevahetus dokumentide kättetoimetamiseks lõppkasutajale; kättetoimetamisteenuse kasutaja – kättetoimetamisportaali liige, kes kasutab kättetoimetamisteenust; lõppkasutaja – füüsiline isik, kellele toimetatakse kättetoimetamisportaali kaudu kätte menetlusseadustikega ette nähtud menetlusdokumente; sõnum – vormindatud andmete ja dokumentide kogum, mille kättetoimetamisteenuse kasutaja edastab kättetoimetamisteenuse vahendusel lõppkasutajale.",
+      "estleg:summary": {
+        "@value": "Käesolevas määruses kasutatakse termineid järgmistes tähendustes: 1 1) kättetoimetamisportaal – tehniline lahendus, mis võimaldab paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid; 2 2) kättetoimetamisportaali liige – infosüsteem või andmekogu, mis on liidestatud kättetoimetamisportaaliga; 3 3) kättetoimetamisteenus – kättetoimetamisportaali vahendusel pakutav e-teenus, mille kaudu toimub infosüsteemide või andmekogude vahel andmevahetus dokumentide…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolevas määruses kasutatakse termineid järgmistes tähendustes: 1 1) kättetoimetamisportaal – tehniline lahendus, mis võimaldab paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid; 2 2) kättetoimetamisportaali liige – infosüsteem või andmekogu, mis on liidestatud kättetoimetamisportaaliga; 3 3) kättetoimetamisteenus – kättetoimetamisportaali vahendusel pakutav e-teenus, mille kaudu toimub infosüsteemide või andmekogude vahel andmevahetus dokumentide kättetoimetamiseks lõppkasutajale; 4 4) kättetoimetamisteenuse kasutaja – kättetoimetamisportaali liige, kes kasutab kättetoimetamisteenust; 5 5) lõppkasutaja – füüsiline isik, kellele toimetatakse kättetoimetamisportaali kaudu kätte menetlusseadustikega ette nähtud menetlusdokumente; 6 6) sõnum – vormindatud andmete ja dokumentide kogum, mille kättetoimetamisteenuse kasutaja edastab kättetoimetamisteenuse vahendusel lõppkasutajale.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -189,6 +267,32 @@
         {
           "@id": "estleg:Reg_1054535_Par_3_v1054535"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_3_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas määruses kasutatakse termineid järgmistes tähendustes: 1) kättetoimetamisportaal – tehniline lahendus, mis võimaldab paremini korraldada menetlusseadustikega reguleeritud kättetoimetamistoiminguid; 2) kättetoimetamisportaali liige – infosüsteem või andmekogu, mis on liidestatud kättetoimetamisportaaliga; 3) kättetoimetamisteenus – kättetoimetamisportaali vahendusel pakutav e-teenus, mille kaudu toimub infosüsteemide või andmekogude vahel andmevahetus dokumentide kättetoimetamiseks lõppkasutajale; 4) kättetoimetamisteenuse kasutaja – kättetoimetamisportaali liige, kes kasutab kättetoimetamisteenust; 5) lõppkasutaja – füüsiline isik, kellele toimetatakse kättetoimetamisportaali kaudu kätte menetlusseadustikega ette nähtud menetlusdokumente; 6) sõnum – vormindatud andmete ja dokumentide kogum, mille kättetoimetamisteenuse kasutaja edastab kättetoimetamisteenuse vahendusel lõppkasutajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -198,18 +302,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus",
+      "rdfs:label": {
+        "@value": "§ 4. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "1 (1) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus on kättetoimetamisportaal. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus on kättetoimetamisportaal. 2 (2) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetuse lühend on Käpo. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetuse lühend on Käpo. 3 (3) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus inglise keeles on Service of Documents. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus ",
-      "estleg:legalText": "1 (1) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus on kättetoimetamisportaal. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus on kättetoimetamisportaal. 2 (2) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetuse lühend on Käpo. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetuse lühend on Käpo. 3 (3) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus inglise keeles on Service of Documents. Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus inglise keeles on Service of Documents.",
+      "estleg:summary": {
+        "@value": "1 (1) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus on kättetoimetamisportaal. 2 (2) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetuse lühend on Käpo. 3 (3) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus inglise keeles on Service of Documents.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus on kättetoimetamisportaal. 2 (2) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetuse lühend on Käpo. 3 (3) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus inglise keeles on Service of Documents.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054535_Par_4_v1054535"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_4_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus on kättetoimetamisportaal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetuse lühend on Käpo.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kättetoimetamisteenust pakkuva tehnilise lahenduse nimetus inglise keeles on Service of Documents.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:Reg_1054535_Par_5",
@@ -218,18 +378,90 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Kättetoimetamisportaali pidamine ja ülesehitus ning andmete kaitse",
+      "rdfs:label": {
+        "@value": "§ 5. Kättetoimetamisportaali pidamine ja ülesehitus ning andmete kaitse",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "1 (1) Kättetoimetamisportaal ei ole riigi infosüsteemi kuuluv andmekogu avaliku teabe seaduse tähenduses. Kättetoimetamisportaal ei ole riigi infosüsteemi kuuluv andmekogu avaliku teabe seaduse tähenduses. 2 (2) Kättetoimetamisportaali peetakse elektrooniliselt. Kättetoimetamisportaali peetakse elektrooniliselt. 3 (3) Kättetoimetamisportaalis olevaid andmeid, dokumente ja logisid säilitatakse digitaalsel kujul. Kättetoimetamisportaalis olevaid andmeid, dokumente ja logisid säilitatakse digitaals",
-      "estleg:legalText": "1 (1) Kättetoimetamisportaal ei ole riigi infosüsteemi kuuluv andmekogu avaliku teabe seaduse tähenduses. Kättetoimetamisportaal ei ole riigi infosüsteemi kuuluv andmekogu avaliku teabe seaduse tähenduses. 2 (2) Kättetoimetamisportaali peetakse elektrooniliselt. Kättetoimetamisportaali peetakse elektrooniliselt. 3 (3) Kättetoimetamisportaalis olevaid andmeid, dokumente ja logisid säilitatakse digitaalsel kujul. Kättetoimetamisportaalis olevaid andmeid, dokumente ja logisid säilitatakse digitaalsel kujul. 4 (4) Kättetoimetamisportaali turvaklass on K2T2S2. Kättetoimetamisportaali turvaklass on K2T2S2.",
+      "estleg:summary": {
+        "@value": "1 (1) Kättetoimetamisportaal ei ole riigi infosüsteemi kuuluv andmekogu avaliku teabe seaduse tähenduses. 2 (2) Kättetoimetamisportaali peetakse elektrooniliselt. 3 (3) Kättetoimetamisportaalis olevaid andmeid, dokumente ja logisid säilitatakse digitaalsel kujul. 4 (4) Kättetoimetamisportaali turvaklass on K2T2S2.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kättetoimetamisportaal ei ole riigi infosüsteemi kuuluv andmekogu avaliku teabe seaduse tähenduses. 2 (2) Kättetoimetamisportaali peetakse elektrooniliselt. 3 (3) Kättetoimetamisportaalis olevaid andmeid, dokumente ja logisid säilitatakse digitaalsel kujul. 4 (4) Kättetoimetamisportaali turvaklass on K2T2S2.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054535_Par_5_v1054535"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_5_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kättetoimetamisportaal ei ole riigi infosüsteemi kuuluv andmekogu avaliku teabe seaduse tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kättetoimetamisportaali peetakse elektrooniliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kättetoimetamisportaalis olevaid andmeid, dokumente ja logisid säilitatakse digitaalsel kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kättetoimetamisportaali turvaklass on K2T2S2.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     },
     {
       "@id": "estleg:Reg_1054535_Par_6",
@@ -238,17 +470,48 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Kättetoimetamisportaali haldamise ja pidamise põhimõtted",
+      "rdfs:label": {
+        "@value": "§ 6. Kättetoimetamisportaali haldamise ja pidamise põhimõtted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "Kättetoimetamisportaali haldamisel ja arendamisel järgitakse järgmisi põhimõtteid: 1 1) avatus ja standardiseeritus – võimalusel rakendatakse rahvusvahelisi standardeid ja protokolle; 2 2) turvalisus – andmete vahendamisel ei muutu andmete terviklus, käideldavus ega konfidentsiaalsus; 3 3) seaduslikkus – andmeid töödeldakse seaduses või selle alusel antud õigusaktis ette nähtud kättetoimetamiskohustuse täitmiseks; 4 4) põhiandmete kasutamise põhimõte – andmed kogutakse autentsest allikast; 5 5) ",
-      "estleg:legalText": "Kättetoimetamisportaali haldamisel ja arendamisel järgitakse järgmisi põhimõtteid: 1 1) avatus ja standardiseeritus – võimalusel rakendatakse rahvusvahelisi standardeid ja protokolle; 2 2) turvalisus – andmete vahendamisel ei muutu andmete terviklus, käideldavus ega konfidentsiaalsus; 3 3) seaduslikkus – andmeid töödeldakse seaduses või selle alusel antud õigusaktis ette nähtud kättetoimetamiskohustuse täitmiseks; 4 4) põhiandmete kasutamise põhimõte – andmed kogutakse autentsest allikast; 5 5) põhiandmete kogumise ja säilitamise minimaalsus – andmeid kogutakse vajalikus ulatuses ja vajalikuks ajaks minimaalselt. Kättetoimetamisportaali haldamisel ja arendamisel järgitakse järgmisi põhimõtteid: avatus ja standardiseeritus – võimalusel rakendatakse rahvusvahelisi standardeid ja protokolle; turvalisus – andmete vahendamisel ei muutu andmete terviklus, käideldavus ega konfidentsiaalsus; seaduslikkus – andmeid töödeldakse seaduses või selle alusel antud õigusaktis ette nähtud kättetoimetamiskohustuse täitmiseks; põhiandmete kasutamise põhimõte – andmed kogutakse autentsest allikast; põhiandmete kogumise ja säilitamise minimaalsus – andmeid kogutakse vajalikus ulatuses ja vajalikuks ajaks minimaalselt.",
+      "estleg:summary": {
+        "@value": "Kättetoimetamisportaali haldamisel ja arendamisel järgitakse järgmisi põhimõtteid: 1 1) avatus ja standardiseeritus – võimalusel rakendatakse rahvusvahelisi standardeid ja protokolle; 2 2) turvalisus – andmete vahendamisel ei muutu andmete terviklus, käideldavus ega konfidentsiaalsus; 3 3) seaduslikkus – andmeid töödeldakse seaduses või selle alusel antud õigusaktis ette nähtud kättetoimetamiskohustuse täitmiseks; 4 4) põhiandmete kasutamise põhimõte – andmed kogutakse autentsest allikast; 5 5)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kättetoimetamisportaali haldamisel ja arendamisel järgitakse järgmisi põhimõtteid: 1 1) avatus ja standardiseeritus – võimalusel rakendatakse rahvusvahelisi standardeid ja protokolle; 2 2) turvalisus – andmete vahendamisel ei muutu andmete terviklus, käideldavus ega konfidentsiaalsus; 3 3) seaduslikkus – andmeid töödeldakse seaduses või selle alusel antud õigusaktis ette nähtud kättetoimetamiskohustuse täitmiseks; 4 4) põhiandmete kasutamise põhimõte – andmed kogutakse autentsest allikast; 5 5) põhiandmete kogumise ja säilitamise minimaalsus – andmeid kogutakse vajalikus ulatuses ja vajalikuks ajaks minimaalselt.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054535_Par_6_v1054535"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_6_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kättetoimetamisportaali haldamisel ja arendamisel järgitakse järgmisi põhimõtteid: 1) avatus ja standardiseeritus – võimalusel rakendatakse rahvusvahelisi standardeid ja protokolle; 2) turvalisus – andmete vahendamisel ei muutu andmete terviklus, käideldavus ega konfidentsiaalsus; 3) seaduslikkus – andmeid töödeldakse seaduses või selle alusel antud õigusaktis ette nähtud kättetoimetamiskohustuse täitmiseks; 4) põhiandmete kasutamise põhimõte – andmed kogutakse autentsest allikast; 5) põhiandmete kogumise ja säilitamise minimaalsus – andmeid kogutakse vajalikus ulatuses ja vajalikuks ajaks minimaalselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ]
     },
     {
@@ -258,13 +521,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kättetoimetamisportaalis kogutavate andmete koosseis ja nende säilitamine",
+      "rdfs:label": {
+        "@value": "§ 7. Kättetoimetamisportaalis kogutavate andmete koosseis ja nende säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "1 (1) Kättetoimetamisportaalis kogutakse lõppkasutajale edastatud sõnumis sisalduvaid andmeid ja dokumente 48 tundi pärast sõnumi kättetoimetamist lõppkasutajale või kuni saatja avalikustab sõnumi Ametlikes Teadaannetes. Kättetoimetamisportaalis kogutakse lõppkasutajale edastatud sõnumis sisalduvaid andmeid ja dokumente 48 tundi pärast sõnumi kättetoimetamist lõppkasutajale või kuni saatja avalikustab sõnumi Ametlikes Teadaannetes. 2 (2) Lõppkasutajale edastatud sõnumis sisalduvad andmed on: 1 1",
-      "estleg:legalText": "1 (1) Kättetoimetamisportaalis kogutakse lõppkasutajale edastatud sõnumis sisalduvaid andmeid ja dokumente 48 tundi pärast sõnumi kättetoimetamist lõppkasutajale või kuni saatja avalikustab sõnumi Ametlikes Teadaannetes. Kättetoimetamisportaalis kogutakse lõppkasutajale edastatud sõnumis sisalduvaid andmeid ja dokumente 48 tundi pärast sõnumi kättetoimetamist lõppkasutajale või kuni saatja avalikustab sõnumi Ametlikes Teadaannetes. 2 (2) Lõppkasutajale edastatud sõnumis sisalduvad andmed on: 1 1) e-toimiku süsteemi kantavad andmed, mis on nimetatud e-toimiku süsteemi asutamise ja e-toimiku süsteemi pidamise põhimääruses; 2 2) äriregistri registrikaardi andmed, sealhulgas juriidilise isiku esindaja isikunimi ja isikukood; 3 3) maksekäsu kiirmenetluse infosüsteemi andmed, mis on nimetatud maksekäsu kiirmenetluse infosüsteemi asutamise ja infosüsteemi pidamise põhimääruses. RT I 2025-03-11 6 111032025006 2025-03-14 Lõppkasutajale edastatud sõnumis sisalduvad andmed on: e-toimiku süsteemi kantavad andmed, mis on nimetatud e-toimiku süsteemi asutamise ja e-toimiku süsteemi pidamise põhimääruses; äriregistri registrikaardi andmed, sealhulgas juriidilise isiku esindaja isikunimi ja isikukood; maksekäsu kiirmenetluse infosüsteemi andmed, mis on nimetatud maksekäsu kiirmenetluse infosüsteemi asutamise ja infosüsteemi pidamise põhimääruses. 3 (3) Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid andmetega, mis võimaldavad tuvastada kättetoimetamisteenuse kasutaja, lõppkasutaja, lõppkasutaja e-posti aadressi ja sõnumi kättetoimetamise aja. RT I 2024-07-05 13 105072024013 2024-07-08 Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid andmetega, mis võimaldavad tuvastada kättetoimetamisteenuse kasutaja, lõppkasutaja, lõppkasutaja e-posti aadressi ja sõnumi kättetoimetamise aja. 4 (4) Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid, mis võimaldavad fikseerida teenusesse sisselogimise aja ning sisse loginud lõppkasutaja isikunime, isikukoodi ja isikukoodi moodustanud riigi. Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid, mis võimaldavad fikseerida teenusesse sisselogimise aja ning sisse loginud lõppkasutaja isikunime, isikukoodi ja isikukoodi moodustanud riigi. 5 (5) Lõigetes 3 ja 4 nimetatud logisid säilitatakse kümme aastat. Lõigetes 3 ja 4 nimetatud logisid säilitatakse kümme aastat.",
+      "estleg:summary": {
+        "@value": "1 (1) Kättetoimetamisportaalis kogutakse lõppkasutajale edastatud sõnumis sisalduvaid andmeid ja dokumente 48 tundi pärast sõnumi kättetoimetamist lõppkasutajale või kuni saatja avalikustab sõnumi Ametlikes Teadaannetes. 2 (2) Lõppkasutajale edastatud sõnumis sisalduvad andmed on: 1 1) e-toimiku süsteemi kantavad andmed, mis on nimetatud e-toimiku süsteemi asutamise ja e-toimiku süsteemi pidamise põhimääruses; 2 2) äriregistri registrikaardi andmed, sealhulgas juriidilise isiku esindaja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kättetoimetamisportaalis kogutakse lõppkasutajale edastatud sõnumis sisalduvaid andmeid ja dokumente 48 tundi pärast sõnumi kättetoimetamist lõppkasutajale või kuni saatja avalikustab sõnumi Ametlikes Teadaannetes. 2 (2) Lõppkasutajale edastatud sõnumis sisalduvad andmed on: 1 1) e-toimiku süsteemi kantavad andmed, mis on nimetatud e-toimiku süsteemi asutamise ja e-toimiku süsteemi pidamise põhimääruses; 2 2) äriregistri registrikaardi andmed, sealhulgas juriidilise isiku esindaja isikunimi ja isikukood; 3 3) maksekäsu kiirmenetluse infosüsteemi andmed, mis on nimetatud maksekäsu kiirmenetluse infosüsteemi asutamise ja infosüsteemi pidamise põhimääruses. RT I 2025-03-11 6 111032025006 2025-03-14 3 (3) Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid andmetega, mis võimaldavad tuvastada kättetoimetamisteenuse kasutaja, lõppkasutaja, lõppkasutaja e-posti aadressi ja sõnumi kättetoimetamise aja. RT I 2024-07-05 13 105072024013 2024-07-08 4 (4) Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid, mis võimaldavad fikseerida teenusesse sisselogimise aja ning sisse loginud lõppkasutaja isikunime, isikukoodi ja isikukoodi moodustanud riigi. 5 (5) Lõigetes 3 ja 4 nimetatud logisid säilitatakse kümme aastat.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -281,7 +550,94 @@
         {
           "@id": "estleg:Reg_1054535_Par_7_v1054535"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_7_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kättetoimetamisportaalis kogutakse lõppkasutajale edastatud sõnumis sisalduvaid andmeid ja dokumente 48 tundi pärast sõnumi kättetoimetamist lõppkasutajale või kuni saatja avalikustab sõnumi Ametlikes Teadaannetes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõppkasutajale edastatud sõnumis sisalduvad andmed on: 1) e-toimiku süsteemi kantavad andmed, mis on nimetatud e-toimiku süsteemi asutamise ja e-toimiku süsteemi pidamise põhimääruses; 2) äriregistri registrikaardi andmed, sealhulgas juriidilise isiku esindaja isikunimi ja isikukood; 3) maksekäsu kiirmenetluse infosüsteemi andmed, mis on nimetatud maksekäsu kiirmenetluse infosüsteemi asutamise ja infosüsteemi pidamise põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid andmetega, mis võimaldavad tuvastada kättetoimetamisteenuse kasutaja, lõppkasutaja, lõppkasutaja e-posti aadressi ja sõnumi kättetoimetamise aja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kättetoimetamisportaalis kogutakse kättetoimetamisteenuse logisid, mis võimaldavad fikseerida teenusesse sisselogimise aja ning sisse loginud lõppkasutaja isikunime, isikukoodi ja isikukoodi moodustanud riigi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Lõigetes 3 ja 4 nimetatud logisid säilitatakse kümme aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
     },
     {
       "@id": "estleg:Reg_1054535_Par_7_7",
@@ -289,18 +645,46 @@
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
-      "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Menetlusdokumendi vastuvõtmise tähtajad",
+      "estleg:paragrahv": "§ 7<sup>1</sup>.",
+      "rdfs:label": {
+        "@value": "§ 7<sup>1</sup>. Menetlusdokumendi vastuvõtmise tähtajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "Kättetoimetamisportaali kaudu kättetoimetatavate menetlusdokumentide vastuvõtmise tähtaeg on: 1 1) e-toimiku süsteemist ja maksekäsu kiirmenetluse infosüsteemist saadetud dokumentidel 20 päeva; RT I 2025-03-11 6 111032025006 2025-03-14 2 2) äriregistrist saadetud dokumentidel 5 päeva. RT I 2024-07-05 13 105072024013 2024-07-08 Kättetoimetamisportaali kaudu kättetoimetatavate menetlusdokumentide vastuvõtmise tähtaeg on: e-toimiku süsteemist ja maksekäsu kiirmenetluse infosüsteemist saadetud dokum",
-      "estleg:legalText": "Kättetoimetamisportaali kaudu kättetoimetatavate menetlusdokumentide vastuvõtmise tähtaeg on: 1 1) e-toimiku süsteemist ja maksekäsu kiirmenetluse infosüsteemist saadetud dokumentidel 20 päeva; RT I 2025-03-11 6 111032025006 2025-03-14 2 2) äriregistrist saadetud dokumentidel 5 päeva. RT I 2024-07-05 13 105072024013 2024-07-08 Kättetoimetamisportaali kaudu kättetoimetatavate menetlusdokumentide vastuvõtmise tähtaeg on: e-toimiku süsteemist ja maksekäsu kiirmenetluse infosüsteemist saadetud dokumentidel 20 päeva; äriregistrist saadetud dokumentidel 5 päeva.",
+      "estleg:summary": {
+        "@value": "Kättetoimetamisportaali kaudu kättetoimetatavate menetlusdokumentide vastuvõtmise tähtaeg on: 1 1) e-toimiku süsteemist ja maksekäsu kiirmenetluse infosüsteemist saadetud dokumentidel 20 päeva; RT I 2025-03-11 6 111032025006 2025-03-14 2 2) äriregistrist saadetud dokumentidel 5 päeva. RT I 2024-07-05 13 105072024013 2024-07-08",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kättetoimetamisportaali kaudu kättetoimetatavate menetlusdokumentide vastuvõtmise tähtaeg on: 1 1) e-toimiku süsteemist ja maksekäsu kiirmenetluse infosüsteemist saadetud dokumentidel 20 päeva; RT I 2025-03-11 6 111032025006 2025-03-14 2 2) äriregistrist saadetud dokumentidel 5 päeva. RT I 2024-07-05 13 105072024013 2024-07-08",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054535_Par_7_7_v1054535"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_7_7_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_7_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kättetoimetamisportaali kaudu kättetoimetatavate menetlusdokumentide vastuvõtmise tähtaeg on: 1) e-toimiku süsteemist ja maksekäsu kiirmenetluse infosüsteemist saadetud dokumentidel 20 päeva; 2) äriregistrist saadetud dokumentidel 5 päeva.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_7_7"
+      },
+      "rdfs:label": "§ 7<sup>1</sup> lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -310,13 +694,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Kättetoimetamisportaali omaniku ja haldaja õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 8. Kättetoimetamisportaali omaniku ja haldaja õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kättetoimetamisportaali teenuse nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054535_Map"
       },
-      "estleg:summary": "1 (1) Omaniku õigused ja kohustused: 1 1) tagab kättetoimetamisportaali pidamise õigusaktides sätestatud nõuete järgi; 2 2) juhib kättetoimetamisportaali arendamise töid; 3 3) otsustab kättetoimetamisportaali liikmete liidestamise. Omaniku õigused ja kohustused: tagab kättetoimetamisportaali pidamise õigusaktides sätestatud nõuete järgi; juhib kättetoimetamisportaali arendamise töid; otsustab kättetoimetamisportaali liikmete liidestamise. 2 (2) Haldaja õigused ja kohustused: 1 1) haldab kättetoi",
-      "estleg:legalText": "1 (1) Omaniku õigused ja kohustused: 1 1) tagab kättetoimetamisportaali pidamise õigusaktides sätestatud nõuete järgi; 2 2) juhib kättetoimetamisportaali arendamise töid; 3 3) otsustab kättetoimetamisportaali liikmete liidestamise. Omaniku õigused ja kohustused: tagab kättetoimetamisportaali pidamise õigusaktides sätestatud nõuete järgi; juhib kättetoimetamisportaali arendamise töid; otsustab kättetoimetamisportaali liikmete liidestamise. 2 (2) Haldaja õigused ja kohustused: 1 1) haldab kättetoimetamisportaali ja selle liidestamist andmevahetuskeskkondadega; 2 2) tagab kättetoimetamisportaali kasutamise võimalus; 3 3) kogub ja säilitab kättetoimetamisteenuse andmeid, dokumente ja logisid; 4 4) käsitleb turvaintsidente; 5 5) valmistab ette ja viib ellu kättetoimetamisportaali arendamise projekte ja tagab kättetoimetamisportaali arhitektuurse tervikluse. Haldaja õigused ja kohustused: haldab kättetoimetamisportaali ja selle liidestamist andmevahetuskeskkondadega; tagab kättetoimetamisportaali kasutamise võimalus; kogub ja säilitab kättetoimetamisteenuse andmeid, dokumente ja logisid; käsitleb turvaintsidente; valmistab ette ja viib ellu kättetoimetamisportaali arendamise projekte ja tagab kättetoimetamisportaali arhitektuurse tervikluse.",
+      "estleg:summary": {
+        "@value": "1 (1) Omaniku õigused ja kohustused: 1 1) tagab kättetoimetamisportaali pidamise õigusaktides sätestatud nõuete järgi; 2 2) juhib kättetoimetamisportaali arendamise töid; 3 3) otsustab kättetoimetamisportaali liikmete liidestamise. 2 (2) Haldaja õigused ja kohustused: 1 1) haldab kättetoimetamisportaali ja selle liidestamist andmevahetuskeskkondadega; 2 2) tagab kättetoimetamisportaali kasutamise võimalus; 3 3) kogub ja säilitab kättetoimetamisteenuse andmeid, dokumente ja logisid; 4 4)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Omaniku õigused ja kohustused: 1 1) tagab kättetoimetamisportaali pidamise õigusaktides sätestatud nõuete järgi; 2 2) juhib kättetoimetamisportaali arendamise töid; 3 3) otsustab kättetoimetamisportaali liikmete liidestamise. 2 (2) Haldaja õigused ja kohustused: 1 1) haldab kättetoimetamisportaali ja selle liidestamist andmevahetuskeskkondadega; 2 2) tagab kättetoimetamisportaali kasutamise võimalus; 3 3) kogub ja säilitab kättetoimetamisteenuse andmeid, dokumente ja logisid; 4 4) käsitleb turvaintsidente; 5 5) valmistab ette ja viib ellu kättetoimetamisportaali arendamise projekte ja tagab kättetoimetamisportaali arhitektuurse tervikluse.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -329,6 +719,14 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054535_Par_8_v1054535"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054535_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054535_Par_8_Lg_2"
         }
       ]
     },
@@ -376,6 +774,44 @@
         "@id": "estleg:VTMS_Par_47"
       },
       "estleg:citationText": ", § 47"
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Omaniku õigused ja kohustused: 1) tagab kättetoimetamisportaali pidamise õigusaktides sätestatud nõuete järgi; 2) juhib kättetoimetamisportaali arendamise töid; 3) otsustab kättetoimetamisportaali liikmete liidestamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054535_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Haldaja õigused ja kohustused: 1) haldab kättetoimetamisportaali ja selle liidestamist andmevahetuskeskkondadega; 2) tagab kättetoimetamisportaali kasutamise võimalus; 3) kogub ja säilitab kättetoimetamisteenuse andmeid, dokumente ja logisid; 4) käsitleb turvaintsidente; 5) valmistab ette ja viib ellu kättetoimetamisportaali arendamise projekte ja tagab kättetoimetamisportaali arhitektuurse tervikluse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054535_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     }
   ]
 }

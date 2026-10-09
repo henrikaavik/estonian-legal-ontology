@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/estleg/eval/gold_sets/item.schema.json",
+  "title": "Estonian Legal Ontology gold set (#698)",
+  "description": "One heuristic layer's gold set: a deterministic, stratified sample of system assertions (and deliberate negatives) with a verdict per item. Items are adjudicated by a legal reviewer; `mechanical` verdicts are pre-filled only where a documented rule decides the item from the quoted evidence.",
+  "type": "object",
+  "required": ["schema_version", "layer", "title", "property", "sampling", "mechanical_rules", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {"type": "string"},
+    "schema_version": {"const": "1.0"},
+    "layer": {
+      "enum": ["crossReferences", "sanctions", "eurovoc", "deontic", "targetGroup", "competence", "courtLinks", "altLabelFolds"]
+    },
+    "title": {"type": "string", "minLength": 1},
+    "property": {"type": "string", "pattern": "^[a-z]+:[A-Za-z]+$"},
+    "description": {"type": "string"},
+    "sampling": {
+      "type": "object",
+      "required": ["seed", "corpus_commit", "generated_by", "sample_size", "negatives"],
+      "additionalProperties": true,
+      "properties": {
+        "seed": {"type": "integer"},
+        "corpus_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "generated_by": {"type": "string"},
+        "sample_size": {"type": "integer", "minimum": 0},
+        "negatives": {"type": "integer", "minimum": 0},
+        "negative_share_target": {"type": "number", "minimum": 0, "maximum": 1},
+        "min_per_stratum": {"type": "integer", "minimum": 0},
+        "population": {"type": "object", "additionalProperties": {"type": "integer"}}
+      }
+    },
+    "mechanical_rules": {
+      "type": "object",
+      "description": "Rule id -> the rule as applied. Every mechanical verdict names one of these.",
+      "additionalProperties": {"type": "string", "minLength": 1}
+    },
+    "items": {"type": "array", "items": {"$ref": "#/$defs/item"}}
+  },
+  "$defs": {
+    "iri": {"type": "string", "pattern": "^(estleg:[^\\s]+|https?://[^\\s]+)$"},
+    "item": {
+      "type": "object",
+      "required": [
+        "id", "node", "predicate", "system", "gold", "verdict", "verdict_source",
+        "mechanical_rule", "negative", "citation", "evidence", "stratum",
+        "reviewer", "adjudicated_on", "note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z]+-[0-9a-f]{12}$"},
+        "node": {"$ref": "#/$defs/iri", "description": "The subject node the assertion is made on."},
+        "predicate": {"type": "string", "pattern": "^[a-z]+:[A-Za-z]+$"},
+        "system": {
+          "type": "array",
+          "description": "What the system asserts (IRIs or literals). Empty for a negative item.",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "system_labels": {"type": "array", "items": {"type": "string"}},
+        "gold": {
+          "type": "array",
+          "description": "The reviewer's correct value(s). Empty until adjudicated; for `correct` it may stay empty (= system).",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "verdict": {"enum": ["pending", "correct", "incorrect", "partial"]},
+        "verdict_source": {"enum": [null, "mechanical", "reviewer"]},
+        "mechanical_rule": {"type": ["string", "null"]},
+        "negative": {
+          "type": "boolean",
+          "description": "true: the system asserts nothing here; `correct` = the reviewer confirms there is nothing."
+        },
+        "probe": {"$ref": "#/$defs/iri", "description": "Negative items: the candidate value the reviewer checks for absence."},
+        "probe_label": {"type": "string"},
+        "citation": {
+          "type": "string",
+          "description": "Riigi Teataja (or Riigikohus / EUR-Lex) URL of the source text.",
+          "pattern": "^https://(www\\.riigiteataja\\.ee|www\\.riigikohus\\.ee|eur-lex\\.europa\\.eu)/"
+        },
+        "related_citation": {"type": "string", "pattern": "^https://"},
+        "evidence": {
+          "type": "object",
+          "required": ["text", "source"],
+          "additionalProperties": false,
+          "properties": {
+            "text": {"type": "string", "minLength": 1, "maxLength": 1600},
+            "source": {"type": "string", "minLength": 1}
+          }
+        },
+        "stratum": {
+          "type": "object",
+          "required": ["act_kind", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "act_kind": {"enum": ["law", "state_regulation", "kov_regulation", "court_decision", "concept"]},
+            "value": {"type": "string"}
+          }
+        },
+        "context": {"type": "object"},
+        "reviewer": {"type": ["string", "null"]},
+        "adjudicated_on": {"type": ["string", "null"], "format": "date"},
+        "note": {"type": ["string", "null"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"verdict_source": {"const": "mechanical"}}},
+          "then": {"properties": {"mechanical_rule": {"type": "string", "minLength": 1}}}
+        },
+        {
+          "if": {"properties": {"verdict_source": {"const": "reviewer"}}},
+          "then": {
+            "properties": {
+              "reviewer": {"type": "string", "minLength": 1},
+              "adjudicated_on": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

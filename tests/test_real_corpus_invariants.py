@@ -352,7 +352,10 @@ def test_kars_par_121_is_kehaline_vaarkohtlemine():
         for n in doc.get("@graph", [])
         if n.get("@id") == "estleg:KARIST_2_Osa2_Par_121"
     )
-    assert node.get("rdfs:label") == "§ 121. Kehaline väärkohtlemine", (
+    label = node.get("rdfs:label")
+    if isinstance(label, dict):  # generator labels are @et literals (fc8fae2639)
+        label = label.get("@value")
+    assert label == "§ 121. Kehaline väärkohtlemine", (
         "KarS § 121 title drifted from the published Riigi Teataja heading"
     )
 

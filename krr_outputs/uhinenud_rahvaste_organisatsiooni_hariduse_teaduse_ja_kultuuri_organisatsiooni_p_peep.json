@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:UROHTKOPH_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
       "dcterms:title": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13080779.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13080779"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13080779/xml"
+      },
+      "estleg:globalId": "13080779",
+      "eli:id_local": "13080779",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "328978",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "4c651add2584899da9bfbe356615a4c69efa3323474b214709e7f000049a9326",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2008-12-22",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -48,30 +69,39 @@
       ]
     },
     {
-      "@id": "estleg:UROHTKOPH_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_UROHTKOPH_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_UROHTKOPH_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
-      "skos:prefLabel": "§1–2 Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:UROHTKOPH_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:UROHTKOPH_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_UROHTKOPH_default"
+        }
+      ]
     },
     {
       "@id": "estleg:UROHTKOPH_Par_1",
@@ -80,12 +110,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Kiita heaks Eesti Vabariigi ühinemine Ühinenud Rahvaste Organisatsiooni Hariduse...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Kiita heaks Eesti Vabariigi ühinemine Ühinenud Rahvaste Organisatsiooni Hariduse...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UROHTKOPH_Map"
       },
-      "estleg:summary": "Kiita heaks Eesti Vabariigi ühinemine Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooniga 1991. aasta 14. oktoobril.",
+      "estleg:summary": {
+        "@value": "Kiita heaks Eesti Vabariigi ühinemine Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooniga 1991. aasta 14. oktoobril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kiita heaks Eesti Vabariigi ühinemine Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooniga 1991. aasta 14. oktoobril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UROHTKOPH_default"
@@ -112,10 +148,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kiita heaks Eesti Vabariigi ühinemine Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooniga 1991. aasta 14. oktoobril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiita heaks Eesti Vabariigi ühinemine Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooniga 1991. aasta 14. oktoobril.",
       "estleg:parentProvision": {
         "@id": "estleg:UROHTKOPH_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:UROHTKOPH_Par_2",
@@ -124,12 +162,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Kiita heaks juurdelisatud Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Kiita heaks juurdelisatud , mis on koostatud 1945. aasta 16. novembril Londonis.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni Hariduse, Teaduse ja Kultuuri Organisatsiooni põhikirja heakskiitmise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UROHTKOPH_Map"
       },
-      "estleg:summary": "Kiita heaks juurdelisatud , mis on koostatud 1945. aasta 16. novembril Londonis.",
+      "estleg:summary": {
+        "@value": "Kiita heaks juurdelisatud , mis on koostatud 1945. aasta 16. novembril Londonis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kiita heaks juurdelisatud , mis on koostatud 1945. aasta 16. novembril Londonis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UROHTKOPH_default"
@@ -159,10 +203,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kiita heaks juurdelisatud , mis on koostatud 1945. aasta 16. novembril Londonis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiita heaks juurdelisatud , mis on koostatud 1945. aasta 16. novembril Londonis.",
       "estleg:parentProvision": {
         "@id": "estleg:UROHTKOPH_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

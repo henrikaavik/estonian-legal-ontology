@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Alkoholi aktsiisivabastuse loa vorm ja selle täitmise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Alkoholi aktsiisivabastuse loa vorm ja selle täitmise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Alkoholi aktsiisivabastuse loa vorm ja selle täitmise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -41,18 +48,13 @@
         }
       ],
       "estleg:entryIntoForce": {
-        "@value": "2009-03-15",
+        "@value": "2012-12-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2012-11-23",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2009-03-12",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_333789_a831286001"
@@ -83,7 +85,13 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "dcterms:title": "Alkoholi aktsiisivabastuse loa vorm ja selle täitmise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_333789_Annex_1",
@@ -91,7 +99,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Alkoholi aktsiisivabastuse loa vorm\n\t\t\t\n\t\t\t\t\n\t\t\t\t\tRT I\n\t\t\t\t\t2012-11-28\n\t\t\t\t\t3\n\t\t\t\t\t128112012003\n\t\t\t\t\n\t\t\t\t2012-12-01",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -100,7 +111,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -110,13 +124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Alkoholi aktsiisivabastuse loa vorm",
+      "rdfs:label": {
+        "@value": "§ 1. Alkoholi aktsiisivabastuse loa vorm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi aktsiisivabastuse loa vorm ja selle täitmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_333789_Map"
       },
-      "estleg:summary": "Alkoholi aktsiisivabastuse loa (edaspidi luba) vorm kehtestatakse käesoleva määruse lisaga. Elektroonilise loa kujundus võib olla erinev.",
-      "estleg:legalText": "Alkoholi aktsiisivabastuse loa (edaspidi luba) vorm kehtestatakse käesoleva määruse lisaga. Elektroonilise loa kujundus võib olla erinev. Alkoholi aktsiisivabastuse loa (edaspidi luba) vorm kehtestatakse käesoleva määruse lisaga. Elektroonilise loa kujundus võib olla erinev.",
+      "estleg:summary": {
+        "@value": "Alkoholi aktsiisivabastuse loa (edaspidi luba) vorm kehtestatakse käesoleva määruse lisaga. Elektroonilise loa kujundus võib olla erinev.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Alkoholi aktsiisivabastuse loa (edaspidi luba) vorm kehtestatakse käesoleva määruse lisaga. Elektroonilise loa kujundus võib olla erinev.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_303518_Par_2"
@@ -136,7 +156,25 @@
         {
           "@id": "estleg:Reg_333789_Par_1_v333789"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_333789_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_333789_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Alkoholi aktsiisivabastuse loa (edaspidi luba) vorm kehtestatakse käesoleva määruse lisaga. Elektroonilise loa kujundus võib olla erinev.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_333789_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_333789_Par_2",
@@ -145,13 +183,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Loa täitmine",
+      "rdfs:label": {
+        "@value": "§ 2. Loa täitmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi aktsiisivabastuse loa vorm ja selle täitmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_333789_Map"
       },
-      "estleg:summary": "1 (1) Loa, välja arvatud tabeli 2, täidab maksuhaldur. RT I 2012-11-28 3 128112012003 2012-12-01 Loa, välja arvatud tabeli 2, täidab maksuhaldur. 2 (2) Loa tabeli 2 täidab aktsiisilaopidaja aktsiisivaba alkoholi (edaspidi alkoholi) väljastamisel aktsiisilaost või maksuhaldur alkoholi impordil või teisest liikmesriigist soetamisel. RT I 2012-11-28 3 128112012003 2012-12-01 Loa tabeli 2 täidab aktsiisilaopidaja aktsiisivaba alkoholi (edaspidi alkoholi) väljastamisel aktsiisilaost või maksuhaldur a",
-      "estleg:legalText": "1 (1) Loa, välja arvatud tabeli 2, täidab maksuhaldur. RT I 2012-11-28 3 128112012003 2012-12-01 Loa, välja arvatud tabeli 2, täidab maksuhaldur. 2 (2) Loa tabeli 2 täidab aktsiisilaopidaja aktsiisivaba alkoholi (edaspidi alkoholi) väljastamisel aktsiisilaost või maksuhaldur alkoholi impordil või teisest liikmesriigist soetamisel. RT I 2012-11-28 3 128112012003 2012-12-01 Loa tabeli 2 täidab aktsiisilaopidaja aktsiisivaba alkoholi (edaspidi alkoholi) väljastamisel aktsiisilaost või maksuhaldur alkoholi impordil või teisest liikmesriigist soetamisel. 3 (3) Loa ridadele märgitakse järgmised andmed: 1 1) reale „Alkoholi aktsiisivabastuse luba nr” märgitakse loa number, mis koosneb loa liigi tähisest, loa järjekorranumbrist kasvavas järjekorras vastavalt väljastatud alkoholi aktsiisivabastuse lubade arvule ning Maksu- ja Tolliameti koodist; RT I 2012-11-28 3 128112012003 2012-12-01 2 2) reale «Nimi, äriregistrikood» märgitakse loa saaja nimi ja äriregistrikood; 3 3) reale «Käibemaksukohustuslase number» märgitakse loa saaja käibemaksukohustuslasena registreerimise number; 4 4) reale «Tegevuskoha aadress» märgitakse aadress, kus loa saaja ladustab ja kasutab alkoholi; 5 5) reale «Kehtivus» märgitakse kuupäev (päev, kuu, aasta), millest alates võib selle loa alusel alkoholi soetada; 6 6) reale „MTA” märgitakse Maksu- ja Tolliameti asjaomase struktuuriüksuse nimi ja kontaktandmed; RT I 2012-11-28 3 128112012003 2012-12-01 7 7) reale „Maksuhalduri pädeva ametniku nimi, allkiri ja kuupäev” märgitakse Maksu- ja Tolliameti vastava allkirjastamispädevusega ametniku ees- ja perekonnanimi, tema allkiri ning allakirjutamise kuupäev. RT I 2012-11-28 3 128112012003 2012-12-01 Loa ridadele märgitakse järgmised andmed: reale „Alkoholi aktsiisivabastuse luba nr” märgitakse loa number, mis koosneb loa liigi tähisest, loa järjekorranumbrist kasvavas järjekorras vastavalt väljastatud alkoholi aktsiisivabastuse lubade arvule ning Maksu- ja Tolliameti koodist; reale «Nimi, äriregistrikood» märgitakse loa saaja nimi ja äriregistrikood; reale «Käibemaksukohustuslase number» märgitakse loa saaja käibemaksukohustuslasena registreerimise number; reale «Tegevuskoha aadress» märgitakse aadress, kus loa saaja ladustab ja kasutab alkoholi; reale «Kehtivus» märgitakse kuupäev (päev, kuu, aasta), millest alates võib selle loa alusel alkoholi soetada; reale „MTA” märgitakse Maksu- ja Tolliameti asjaomase struktuuriüksuse nimi ja kontaktandmed; reale „Maksuhalduri pädeva ametniku nimi, allkiri ja kuupäev” märgitakse Maksu- ja Tolliameti vastava allkirjastamispädevusega ametniku ees- ja perekonnanimi, tema allkiri ning allakirjutamise kuupäev. 4 (4) Loa tabelisse 1 märgitakse järgmised andmed: 1 1) alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; 2 2) alkoholi kaubakood vastavalt Euroopa Ühenduste Nõukogu määrusega nr 2658/87/EMÜ kehtestatud kombineeritud nomenklatuurile; 3 3) alkoholi kogus liitrites 12 kalendrikuuks. Loa tabelisse 1 märgitakse järgmised andmed: alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; alkoholi kaubakood vastavalt Euroopa Ühenduste Nõukogu määrusega nr 2658/87/EMÜ kehtestatud kombineeritud nomenklatuurile; alkoholi kogus liitrites 12 kalendrikuuks. 5 (5) Loa tabelisse 2 märgitakse alkoholi saaja soetatud alkoholi kohta järgmised andmed: 1 1) tehingu kuupäev; 2 2) alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; 3 3) alkoholi kaubakood; 4 4) alkoholi etanoolisisaldus; 5 5) alkoholi kogus liitrites; 6 6) alkoholi väljastanud aktsiisilaopidaja number; 7 7) tollideklaratsiooni number alkoholi importimisel, saatelehe number alkoholi vastuvõtmisel aktsiisilaost või teisest liikmesriigist. Loa tabelisse 2 märgitakse alkoholi saaja soetatud alkoholi kohta järgmised andmed: tehingu kuupäev; alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; alkoholi kaubakood; alkoholi etanoolisisaldus; alkoholi kogus liitrites; alkoholi väljastanud aktsiisilaopidaja number; tollideklaratsiooni number alkoholi importimisel, saatelehe number alkoholi vastuvõtmisel aktsiisilaost või teisest liikmesriigist.",
+      "estleg:summary": {
+        "@value": "1 (1) Loa, välja arvatud tabeli 2, täidab maksuhaldur. RT I 2012-11-28 3 128112012003 2012-12-01 2 (2) Loa tabeli 2 täidab aktsiisilaopidaja aktsiisivaba alkoholi (edaspidi alkoholi) väljastamisel aktsiisilaost või maksuhaldur alkoholi impordil või teisest liikmesriigist soetamisel. RT I 2012-11-28 3 128112012003 2012-12-01 3 (3) Loa ridadele märgitakse järgmised andmed: 1 1) reale „Alkoholi aktsiisivabastuse luba nr” märgitakse loa number, mis koosneb loa liigi tähisest, loa järjekorranumbrist…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Loa, välja arvatud tabeli 2, täidab maksuhaldur. RT I 2012-11-28 3 128112012003 2012-12-01 2 (2) Loa tabeli 2 täidab aktsiisilaopidaja aktsiisivaba alkoholi (edaspidi alkoholi) väljastamisel aktsiisilaost või maksuhaldur alkoholi impordil või teisest liikmesriigist soetamisel. RT I 2012-11-28 3 128112012003 2012-12-01 3 (3) Loa ridadele märgitakse järgmised andmed: 1 1) reale „Alkoholi aktsiisivabastuse luba nr” märgitakse loa number, mis koosneb loa liigi tähisest, loa järjekorranumbrist kasvavas järjekorras vastavalt väljastatud alkoholi aktsiisivabastuse lubade arvule ning Maksu- ja Tolliameti koodist; RT I 2012-11-28 3 128112012003 2012-12-01 2 2) reale «Nimi, äriregistrikood» märgitakse loa saaja nimi ja äriregistrikood; 3 3) reale «Käibemaksukohustuslase number» märgitakse loa saaja käibemaksukohustuslasena registreerimise number; 4 4) reale «Tegevuskoha aadress» märgitakse aadress, kus loa saaja ladustab ja kasutab alkoholi; 5 5) reale «Kehtivus» märgitakse kuupäev (päev, kuu, aasta), millest alates võib selle loa alusel alkoholi soetada; 6 6) reale „MTA” märgitakse Maksu- ja Tolliameti asjaomase struktuuriüksuse nimi ja kontaktandmed; RT I 2012-11-28 3 128112012003 2012-12-01 7 7) reale „Maksuhalduri pädeva ametniku nimi, allkiri ja kuupäev” märgitakse Maksu- ja Tolliameti vastava allkirjastamispädevusega ametniku ees- ja perekonnanimi, tema allkiri ning allakirjutamise kuupäev. RT I 2012-11-28 3 128112012003 2012-12-01 4 (4) Loa tabelisse 1 märgitakse järgmised andmed: 1 1) alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; 2 2) alkoholi kaubakood vastavalt Euroopa Ühenduste Nõukogu määrusega nr 2658/87/EMÜ kehtestatud kombineeritud nomenklatuurile; 3 3) alkoholi kogus liitrites 12 kalendrikuuks. 5 (5) Loa tabelisse 2 märgitakse alkoholi saaja soetatud alkoholi kohta järgmised andmed: 1 1) tehingu kuupäev; 2 2) alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; 3 3) alkoholi kaubakood; 4 4) alkoholi etanoolisisaldus; 5 5) alkoholi kogus liitrites; 6 6) alkoholi väljastanud aktsiisilaopidaja number; 7 7) tollideklaratsiooni number alkoholi importimisel, saatelehe number alkoholi vastuvõtmisel aktsiisilaost või teisest liikmesriigist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -173,6 +217,111 @@
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_333789_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_333789_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_333789_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_333789_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_333789_Par_2_Lg_5"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_333789_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Loa, välja arvatud tabeli 2, täidab maksuhaldur.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_333789_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_333789_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Loa tabeli 2 täidab aktsiisilaopidaja aktsiisivaba alkoholi (edaspidi alkoholi) väljastamisel aktsiisilaost või maksuhaldur alkoholi impordil või teisest liikmesriigist soetamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_333789_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_333789_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Loa ridadele märgitakse järgmised andmed: 1) reale „Alkoholi aktsiisivabastuse luba nr” märgitakse loa number, mis koosneb loa liigi tähisest, loa järjekorranumbrist kasvavas järjekorras vastavalt väljastatud alkoholi aktsiisivabastuse lubade arvule ning Maksu- ja Tolliameti koodist; 2) reale «Nimi, äriregistrikood» märgitakse loa saaja nimi ja äriregistrikood; 3) reale «Käibemaksukohustuslase number» märgitakse loa saaja käibemaksukohustuslasena registreerimise number; 4) reale «Tegevuskoha aadress» märgitakse aadress, kus loa saaja ladustab ja kasutab alkoholi; 5) reale «Kehtivus» märgitakse kuupäev (päev, kuu, aasta), millest alates võib selle loa alusel alkoholi soetada; 6) reale „MTA” märgitakse Maksu- ja Tolliameti asjaomase struktuuriüksuse nimi ja kontaktandmed; 7) reale „Maksuhalduri pädeva ametniku nimi, allkiri ja kuupäev” märgitakse Maksu- ja Tolliameti vastava allkirjastamispädevusega ametniku ees- ja perekonnanimi, tema allkiri ning allakirjutamise kuupäev.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_333789_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_333789_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Loa tabelisse 1 märgitakse järgmised andmed: 1) alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; 2) alkoholi kaubakood vastavalt Euroopa Ühenduste Nõukogu määrusega nr 2658/87/EMÜ kehtestatud kombineeritud nomenklatuurile; 3) alkoholi kogus liitrites 12 kalendrikuuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_333789_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_333789_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Loa tabelisse 2 märgitakse alkoholi saaja soetatud alkoholi kohta järgmised andmed: 1) tehingu kuupäev; 2) alkoholi liik nagu näiteks piiritus, viin, vein, õlu ja muu taoline; 3) alkoholi kaubakood; 4) alkoholi etanoolisisaldus; 5) alkoholi kogus liitrites; 6) alkoholi väljastanud aktsiisilaopidaja number; 7) tollideklaratsiooni number alkoholi importimisel, saatelehe number alkoholi vastuvõtmisel aktsiisilaost või teisest liikmesriigist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_333789_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -182,18 +331,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 3. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi aktsiisivabastuse loa vorm ja selle täitmise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_333789_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud.] [Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_333789_Par_3_v333789"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_333789_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_333789_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) [Käesolevast tekstist välja jäetud.]",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_333789_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kaitseväe kalmistu haldamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Kaitseväe kalmistu haldamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kaitseväe kalmistu haldamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2013-04-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2013-03-25",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -74,7 +76,13 @@
         {
           "@id": "estleg:Institution_kaitseminister"
         }
-      ]
+      ],
+      "dcterms:title": "Kaitseväe kalmistu haldamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1012304_Par_1",
@@ -83,13 +91,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Kaitseväe kalmistu haldaja",
+      "rdfs:label": {
+        "@value": "§ 1. Kaitseväe kalmistu haldaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kalmistu haldamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1012304_Map"
       },
-      "estleg:summary": "1 (1) Kaitseväe kalmistu haldamise eest vastutab Kaitseministeerium. Kaitseväe kalmistu haldamise eest vastutab Kaitseministeerium. 2 (2) Kaitseministril on õigus volitada kaitseväe kalmistu haldamisega seotud ülesannete täitmine teisele juriidilisele isikule (Kaitseministeerium või vastav juriidiline isik, edaspidi kalmistu haldaja). Kaitseministril on õigus volitada kaitseväe kalmistu haldamisega seotud ülesannete täitmine teisele juriidilisele isikule (Kaitseministeerium või vastav juriidilin",
-      "estleg:legalText": "1 (1) Kaitseväe kalmistu haldamise eest vastutab Kaitseministeerium. Kaitseväe kalmistu haldamise eest vastutab Kaitseministeerium. 2 (2) Kaitseministril on õigus volitada kaitseväe kalmistu haldamisega seotud ülesannete täitmine teisele juriidilisele isikule (Kaitseministeerium või vastav juriidiline isik, edaspidi kalmistu haldaja). Kaitseministril on õigus volitada kaitseväe kalmistu haldamisega seotud ülesannete täitmine teisele juriidilisele isikule (Kaitseministeerium või vastav juriidiline isik, edaspidi kalmistu haldaja). 3 (3) Kaitseminister otsustab kaitseväe kalmistu asutamise, laiendamise ja tegevuse lõpetamise. Kaitseminister otsustab kaitseväe kalmistu asutamise, laiendamise ja tegevuse lõpetamise. 4 (4) Kaitseminister otsustab, millisele kaitseväe kalmistule maetakse välisriigi teenistuses olnud sõduri säilmed ning milline on vastava tseremoonia korraldus. Kaitseminister otsustab, millisele kaitseväe kalmistule maetakse välisriigi teenistuses olnud sõduri säilmed ning milline on vastava tseremoonia korraldus. 5 (5) Kaitseminister otsustab hauasamba või muu suuremõõtmelise hauarajatise rajamise kaitseväe kalmistule, arvestades §-s 3 sätestatut. Kaitseminister otsustab hauasamba või muu suuremõõtmelise hauarajatise rajamise kaitseväe kalmistule, arvestades §-s 3 sätestatut.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseväe kalmistu haldamise eest vastutab Kaitseministeerium. 2 (2) Kaitseministril on õigus volitada kaitseväe kalmistu haldamisega seotud ülesannete täitmine teisele juriidilisele isikule (Kaitseministeerium või vastav juriidiline isik, edaspidi kalmistu haldaja). 3 (3) Kaitseminister otsustab kaitseväe kalmistu asutamise, laiendamise ja tegevuse lõpetamise.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseväe kalmistu haldamise eest vastutab Kaitseministeerium. 2 (2) Kaitseministril on õigus volitada kaitseväe kalmistu haldamisega seotud ülesannete täitmine teisele juriidilisele isikule (Kaitseministeerium või vastav juriidiline isik, edaspidi kalmistu haldaja). 3 (3) Kaitseminister otsustab kaitseväe kalmistu asutamise, laiendamise ja tegevuse lõpetamise. 4 (4) Kaitseminister otsustab, millisele kaitseväe kalmistule maetakse välisriigi teenistuses olnud sõduri säilmed ning milline on vastava tseremoonia korraldus. 5 (5) Kaitseminister otsustab hauasamba või muu suuremõõtmelise hauarajatise rajamise kaitseväe kalmistule, arvestades §-s 3 sätestatut.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -120,7 +134,89 @@
         {
           "@id": "estleg:Institution_kaitseministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1012304_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_1_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_1_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseväe kalmistu haldamise eest vastutab Kaitseministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseministril on õigus volitada kaitseväe kalmistu haldamisega seotud ülesannete täitmine teisele juriidilisele isikule (Kaitseministeerium või vastav juriidiline isik, edaspidi kalmistu haldaja).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitseminister otsustab kaitseväe kalmistu asutamise, laiendamise ja tegevuse lõpetamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitseminister otsustab, millisele kaitseväe kalmistule maetakse välisriigi teenistuses olnud sõduri säilmed ning milline on vastava tseremoonia korraldus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kaitseminister otsustab hauasamba või muu suuremõõtmelise hauarajatise rajamise kaitseväe kalmistule, arvestades §-s 3 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 5"
     },
     {
       "@id": "estleg:Reg_1012304_Par_2",
@@ -129,13 +225,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseväe kalmistu tähistamine",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseväe kalmistu tähistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kalmistu haldamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1012304_Map"
       },
-      "estleg:summary": "1 (1) Kaitseväe kalmistu territoorium ümbritsetakse piirdega või tähistatakse muul viisil äratuntavalt. Kaitseväe kalmistu peasissekäigu juures peab olema kalmistu plaan kvartalite, teede ning ajalooliselt ja kultuuriliselt erilist tähendust omavate kalmude ning kalmistu hoonete asukohtadega. Kaitseväe kalmistu territoorium ümbritsetakse piirdega või tähistatakse muul viisil äratuntavalt. Kaitseväe kalmistu peasissekäigu juures peab olema kalmistu plaan kvartalite, teede ning ajalooliselt ja kul",
-      "estleg:legalText": "1 (1) Kaitseväe kalmistu territoorium ümbritsetakse piirdega või tähistatakse muul viisil äratuntavalt. Kaitseväe kalmistu peasissekäigu juures peab olema kalmistu plaan kvartalite, teede ning ajalooliselt ja kultuuriliselt erilist tähendust omavate kalmude ning kalmistu hoonete asukohtadega. Kaitseväe kalmistu territoorium ümbritsetakse piirdega või tähistatakse muul viisil äratuntavalt. Kaitseväe kalmistu peasissekäigu juures peab olema kalmistu plaan kvartalite, teede ning ajalooliselt ja kultuuriliselt erilist tähendust omavate kalmude ning kalmistu hoonete asukohtadega. 2 (2) Kaitseväe kalmistu sissepääsu juures peab olema teave kalmistu lahtioleku kellaaegade kohta. Kaitseväe kalmistu sissepääsu juures peab olema teave kalmistu lahtioleku kellaaegade kohta.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseväe kalmistu territoorium ümbritsetakse piirdega või tähistatakse muul viisil äratuntavalt. Kaitseväe kalmistu peasissekäigu juures peab olema kalmistu plaan kvartalite, teede ning ajalooliselt ja kultuuriliselt erilist tähendust omavate kalmude ning kalmistu hoonete asukohtadega. 2 (2) Kaitseväe kalmistu sissepääsu juures peab olema teave kalmistu lahtioleku kellaaegade kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseväe kalmistu territoorium ümbritsetakse piirdega või tähistatakse muul viisil äratuntavalt. Kaitseväe kalmistu peasissekäigu juures peab olema kalmistu plaan kvartalite, teede ning ajalooliselt ja kultuuriliselt erilist tähendust omavate kalmude ning kalmistu hoonete asukohtadega. 2 (2) Kaitseväe kalmistu sissepääsu juures peab olema teave kalmistu lahtioleku kellaaegade kohta.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -147,7 +249,41 @@
         {
           "@id": "estleg:Reg_1012304_Par_2_v1012304"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1012304_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseväe kalmistu territoorium ümbritsetakse piirdega või tähistatakse muul viisil äratuntavalt. Kaitseväe kalmistu peasissekäigu juures peab olema kalmistu plaan kvartalite, teede ning ajalooliselt ja kultuuriliselt erilist tähendust omavate kalmude ning kalmistu hoonete asukohtadega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseväe kalmistu sissepääsu juures peab olema teave kalmistu lahtioleku kellaaegade kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1012304_Par_3",
@@ -156,13 +292,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Matmisplatsi eraldamine",
+      "rdfs:label": {
+        "@value": "§ 3. Matmisplatsi eraldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kalmistu haldamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1012304_Map"
       },
-      "estleg:summary": "1 (1) Matmisplatsi eraldamise otsustab kaitseväe kalmistu haldaja. Sõjahaudade kaitse seaduse § 8 lõikes 1 sätestatud juhul otsustab matmisplatsi eraldamisega seotud küsimuse kaitseminister ning § 8 lõikes 2 sätestatud juhul Vabariigi Valitsus. Matmisplatsi eraldamise otsustab kaitseväe kalmistu haldaja. Sõjahaudade kaitse seaduse § 8 lõikes 1 sätestatud juhul otsustab matmisplatsi eraldamisega seotud küsimuse kaitseminister ning § 8 lõikes 2 sätestatud juhul Vabariigi Valitsus. 2 (2) Kalmistu h",
-      "estleg:legalText": "1 (1) Matmisplatsi eraldamise otsustab kaitseväe kalmistu haldaja. Sõjahaudade kaitse seaduse § 8 lõikes 1 sätestatud juhul otsustab matmisplatsi eraldamisega seotud küsimuse kaitseminister ning § 8 lõikes 2 sätestatud juhul Vabariigi Valitsus. Matmisplatsi eraldamise otsustab kaitseväe kalmistu haldaja. Sõjahaudade kaitse seaduse § 8 lõikes 1 sätestatud juhul otsustab matmisplatsi eraldamisega seotud küsimuse kaitseminister ning § 8 lõikes 2 sätestatud juhul Vabariigi Valitsus. 2 (2) Kalmistu haldaja algatusel võib säilmed ümber matta kalmistu haldaja määratud uude asukohta kalmistul, kui hauaplats asub kohas, mis ei võimalda haua väärikat kohtlemist, või hauaplatsi asukoha muutmine on vältimatu kaitseväe kalmistu kehtestatud kujundusprojekti elluviimiseks või hauaplatsi asukoha muutmine on vältimatu varasema hauaplatsi taastamiseks. Kalmistu haldaja algatusel võib säilmed ümber matta kalmistu haldaja määratud uude asukohta kalmistul, kui hauaplats asub kohas, mis ei võimalda haua väärikat kohtlemist, või hauaplatsi asukoha muutmine on vältimatu kaitseväe kalmistu kehtestatud kujundusprojekti elluviimiseks või hauaplatsi asukoha muutmine on vältimatu varasema hauaplatsi taastamiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) Matmisplatsi eraldamise otsustab kaitseväe kalmistu haldaja. Sõjahaudade kaitse seaduse § 8 lõikes 1 sätestatud juhul otsustab matmisplatsi eraldamisega seotud küsimuse kaitseminister ning § 8 lõikes 2 sätestatud juhul Vabariigi Valitsus. 2 (2) Kalmistu haldaja algatusel võib säilmed ümber matta kalmistu haldaja määratud uude asukohta kalmistul, kui hauaplats asub kohas, mis ei võimalda haua väärikat kohtlemist, või hauaplatsi asukoha muutmine on vältimatu kaitseväe kalmistu kehtestatud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Matmisplatsi eraldamise otsustab kaitseväe kalmistu haldaja. Sõjahaudade kaitse seaduse § 8 lõikes 1 sätestatud juhul otsustab matmisplatsi eraldamisega seotud küsimuse kaitseminister ning § 8 lõikes 2 sätestatud juhul Vabariigi Valitsus. 2 (2) Kalmistu haldaja algatusel võib säilmed ümber matta kalmistu haldaja määratud uude asukohta kalmistul, kui hauaplats asub kohas, mis ei võimalda haua väärikat kohtlemist, või hauaplatsi asukoha muutmine on vältimatu kaitseväe kalmistu kehtestatud kujundusprojekti elluviimiseks või hauaplatsi asukoha muutmine on vältimatu varasema hauaplatsi taastamiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -189,7 +331,41 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1012304_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_3_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Matmisplatsi eraldamise otsustab kaitseväe kalmistu haldaja. Sõjahaudade kaitse seaduse § 8 lõikes 1 sätestatud juhul otsustab matmisplatsi eraldamisega seotud küsimuse kaitseminister ning § 8 lõikes 2 sätestatud juhul Vabariigi Valitsus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kalmistu haldaja algatusel võib säilmed ümber matta kalmistu haldaja määratud uude asukohta kalmistul, kui hauaplats asub kohas, mis ei võimalda haua väärikat kohtlemist, või hauaplatsi asukoha muutmine on vältimatu kaitseväe kalmistu kehtestatud kujundusprojekti elluviimiseks või hauaplatsi asukoha muutmine on vältimatu varasema hauaplatsi taastamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:Reg_1012304_Par_4",
@@ -198,13 +374,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kaitseväe kalmistu lahtiolekuaeg",
+      "rdfs:label": {
+        "@value": "§ 4. Kaitseväe kalmistu lahtiolekuaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kalmistu haldamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1012304_Map"
       },
-      "estleg:summary": "Kaitseväe kalmistu on avatud iga päev. Kaitseväe kalmistu lahtioleku kellaajad sätestab vajaduse korral kalmistu haldaja.",
-      "estleg:legalText": "Kaitseväe kalmistu on avatud iga päev. Kaitseväe kalmistu lahtioleku kellaajad sätestab vajaduse korral kalmistu haldaja. Kaitseväe kalmistu on avatud iga päev. Kaitseväe kalmistu lahtioleku kellaajad sätestab vajaduse korral kalmistu haldaja.",
+      "estleg:summary": {
+        "@value": "Kaitseväe kalmistu on avatud iga päev. Kaitseväe kalmistu lahtioleku kellaajad sätestab vajaduse korral kalmistu haldaja.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseväe kalmistu on avatud iga päev. Kaitseväe kalmistu lahtioleku kellaajad sätestab vajaduse korral kalmistu haldaja.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -218,7 +400,25 @@
         {
           "@id": "estleg:Reg_1012304_Par_4_v1012304"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1012304_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseväe kalmistu on avatud iga päev. Kaitseväe kalmistu lahtioleku kellaajad sätestab vajaduse korral kalmistu haldaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1012304_Par_5",
@@ -227,13 +427,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Kaitseväe kalmistu heakorrareeglid",
+      "rdfs:label": {
+        "@value": "§ 5. Kaitseväe kalmistu heakorrareeglid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kalmistu haldamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1012304_Map"
       },
-      "estleg:summary": "1 (1) Kaitseväe kalmistul olev hauaplats tähistatakse risti, hauaplaadi, -kivi, -samba või muu tähisega. Hauatähise kujundus ja paigutamine tuleb kooskõlastada kalmistu haldajaga. Kaitseväe kalmistul olev hauaplats tähistatakse risti, hauaplaadi, -kivi, -samba või muu tähisega. Hauatähise kujundus ja paigutamine tuleb kooskõlastada kalmistu haldajaga. 2 (2) Kaitseväe kalmistu külastaja on kohustatud pidama korda, puhtust ja vaikust. Kaitseväe kalmistul on keelatud: 1 1) hoonete, väravate, piiret",
-      "estleg:legalText": "1 (1) Kaitseväe kalmistul olev hauaplats tähistatakse risti, hauaplaadi, -kivi, -samba või muu tähisega. Hauatähise kujundus ja paigutamine tuleb kooskõlastada kalmistu haldajaga. Kaitseväe kalmistul olev hauaplats tähistatakse risti, hauaplaadi, -kivi, -samba või muu tähisega. Hauatähise kujundus ja paigutamine tuleb kooskõlastada kalmistu haldajaga. 2 (2) Kaitseväe kalmistu külastaja on kohustatud pidama korda, puhtust ja vaikust. Kaitseväe kalmistul on keelatud: 1 1) hoonete, väravate, piirete, kalmude, hauatähiste ja -rajatiste kahjustamine, samuti lillede, puude ning nende okste murdmine; 2 2) kalmistule olmeprügi toomine, prahi panemine selleks mitte ette nähtud kohta või kalmistu territooriumi risustamine mõnel muul viisil; 3 3) kalmistu territooriumil liiklusvahendi, välja arvatud ratastool, kasutamine kalmistu haldaja või tema volitatud isiku loata; 4 4) hauatähiste ja -rajatiste paigaldamine, ümberpaigaldamine, eemaldamine või restaureerimine kalmistu haldaja või tema volitatud isiku loata; 5 5) hauaplatsi piirete rajamine; 6 6) lõkke tegemine ja sportimine; 7 7) muu korda, puhtust või hauarahu rikkuv ning häiriv tegevus. Kaitseväe kalmistu külastaja on kohustatud pidama korda, puhtust ja vaikust. Kaitseväe kalmistul on keelatud: hoonete, väravate, piirete, kalmude, hauatähiste ja -rajatiste kahjustamine, samuti lillede, puude ning nende okste murdmine; kalmistule olmeprügi toomine, prahi panemine selleks mitte ette nähtud kohta või kalmistu territooriumi risustamine mõnel muul viisil; kalmistu territooriumil liiklusvahendi, välja arvatud ratastool, kasutamine kalmistu haldaja või tema volitatud isiku loata; hauatähiste ja -rajatiste paigaldamine, ümberpaigaldamine, eemaldamine või restaureerimine kalmistu haldaja või tema volitatud isiku loata; hauaplatsi piirete rajamine; lõkke tegemine ja sportimine; muu korda, puhtust või hauarahu rikkuv ning häiriv tegevus. 3 (3) Kaitseväe kalmistu haldaja võib vajaduse korral kehtestada kalmistu kohta täiendavad kalmistu heakorra reeglid. Kaitseväe kalmistu haldaja võib vajaduse korral kehtestada kalmistu kohta täiendavad kalmistu heakorra reeglid.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseväe kalmistul olev hauaplats tähistatakse risti, hauaplaadi, -kivi, -samba või muu tähisega. Hauatähise kujundus ja paigutamine tuleb kooskõlastada kalmistu haldajaga. 2 (2) Kaitseväe kalmistu külastaja on kohustatud pidama korda, puhtust ja vaikust. Kaitseväe kalmistul on keelatud: 1 1) hoonete, väravate, piirete, kalmude, hauatähiste ja -rajatiste kahjustamine, samuti lillede, puude ning nende okste murdmine; 2 2) kalmistule olmeprügi toomine, prahi panemine selleks mitte ette…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseväe kalmistul olev hauaplats tähistatakse risti, hauaplaadi, -kivi, -samba või muu tähisega. Hauatähise kujundus ja paigutamine tuleb kooskõlastada kalmistu haldajaga. 2 (2) Kaitseväe kalmistu külastaja on kohustatud pidama korda, puhtust ja vaikust. Kaitseväe kalmistul on keelatud: 1 1) hoonete, väravate, piirete, kalmude, hauatähiste ja -rajatiste kahjustamine, samuti lillede, puude ning nende okste murdmine; 2 2) kalmistule olmeprügi toomine, prahi panemine selleks mitte ette nähtud kohta või kalmistu territooriumi risustamine mõnel muul viisil; 3 3) kalmistu territooriumil liiklusvahendi, välja arvatud ratastool, kasutamine kalmistu haldaja või tema volitatud isiku loata; 4 4) hauatähiste ja -rajatiste paigaldamine, ümberpaigaldamine, eemaldamine või restaureerimine kalmistu haldaja või tema volitatud isiku loata; 5 5) hauaplatsi piirete rajamine; 6 6) lõkke tegemine ja sportimine; 7 7) muu korda, puhtust või hauarahu rikkuv ning häiriv tegevus. 3 (3) Kaitseväe kalmistu haldaja võib vajaduse korral kehtestada kalmistu kohta täiendavad kalmistu heakorra reeglid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -253,7 +459,66 @@
         {
           "@id": "estleg:Reg_1012304_Par_5_v1012304"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1012304_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1012304_Par_5_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseväe kalmistul olev hauaplats tähistatakse risti, hauaplaadi, -kivi, -samba või muu tähisega. Hauatähise kujundus ja paigutamine tuleb kooskõlastada kalmistu haldajaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseväe kalmistu külastaja on kohustatud pidama korda, puhtust ja vaikust. Kaitseväe kalmistul on keelatud: 1) hoonete, väravate, piirete, kalmude, hauatähiste ja -rajatiste kahjustamine, samuti lillede, puude ning nende okste murdmine; 2) kalmistule olmeprügi toomine, prahi panemine selleks mitte ette nähtud kohta või kalmistu territooriumi risustamine mõnel muul viisil; 3) kalmistu territooriumil liiklusvahendi, välja arvatud ratastool, kasutamine kalmistu haldaja või tema volitatud isiku loata; 4) hauatähiste ja -rajatiste paigaldamine, ümberpaigaldamine, eemaldamine või restaureerimine kalmistu haldaja või tema volitatud isiku loata; 5) hauaplatsi piirete rajamine; 6) lõkke tegemine ja sportimine; 7) muu korda, puhtust või hauarahu rikkuv ning häiriv tegevus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitseväe kalmistu haldaja võib vajaduse korral kehtestada kalmistu kohta täiendavad kalmistu heakorra reeglid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
     },
     {
       "@id": "estleg:Reg_1012304_Par_6",
@@ -262,16 +527,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 6. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kaitseväe kalmistu haldamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1012304_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. aprillil 2013. a.",
-      "estleg:legalText": "Määrus jõustub 1. aprillil 2013. a. Määrus jõustub 1. aprillil 2013. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. aprillil 2013. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. aprillil 2013. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1012304_Par_6_v1012304"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1012304_Par_6_Lg_1"
         }
       ]
     },
@@ -286,6 +562,19 @@
       },
       "estleg:citationDetail": "p 4",
       "estleg:citationText": "Määrus kehtestatakse sõjahaudade kaitse seaduse § 2 punkti 4"
+    },
+    {
+      "@id": "estleg:Reg_1012304_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. aprillil 2013. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1012304_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     }
   ]
 }

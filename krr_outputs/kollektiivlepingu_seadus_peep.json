@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:kollektiivlepingu_seadus_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Kollektiivlepingu seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Kollektiivlepingu seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Kollektiivlepingu seadus",
-      "dcterms:title": [
-        {
-          "@value": "Kollektiivlepingu seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Collective Agreements Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Kollektiivlepingu seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/103022026014.xml"
+        "@id": "https://www.riigiteataja.ee/akt/103022026014"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/103022026014/xml"
+      },
+      "estleg:globalId": "103022026014",
+      "eli:id_local": "103022026014",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159199",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "2f90666bddfef8ead8c899e9a520f1bae8aff0c7df6c9e631dd34ae67db28354",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1993-05-16",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-07-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-07-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/511022026004"
@@ -124,14 +136,40 @@
         {
           "@id": "estleg:Draft_SOM20_1289"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/511022026004"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_kollektiivlepingu_seadus_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:kollektiivlepingu_seadus_TopicScheme"
+      },
+      "estleg:provisionCount": 10
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Kollektiivlepingu seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Kollektiivlepingu seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
@@ -154,26 +192,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_kollektiivlepingu_seadus_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–4 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:kollektiivlepingu_seadus_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_kollektiivlepingu_seadus_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
@@ -193,8 +220,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–6 KOLLEKTIIVLEPINGU VORM JA SISU",
-      "skos:prefLabel": "§5–6 KOLLEKTIIVLEPINGU VORM JA SISU",
+      "rdfs:label": {
+        "@value": "§5–6 KOLLEKTIIVLEPINGU VORM JA SISU",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–6 KOLLEKTIIVLEPINGU VORM JA SISU",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:kollektiivlepingu_seadus_TopicScheme"
       },
@@ -206,7 +239,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – KOLLEKTIIVLEPINGU VORM JA SISU",
+      "rdfs:label": {
+        "@value": "2. peatükk – KOLLEKTIIVLEPINGU VORM JA SISU",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
@@ -226,8 +262,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§7–13 KOLLEKTIIVLEPINGU SÕLMIMINE, KEHTIVUS JA MUUTMINE",
-      "skos:prefLabel": "§7–13 KOLLEKTIIVLEPINGU SÕLMIMINE, KEHTIVUS JA MUUTMINE",
+      "rdfs:label": {
+        "@value": "§7–13 KOLLEKTIIVLEPINGU SÕLMIMINE, KEHTIVUS JA MUUTMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§7–13 KOLLEKTIIVLEPINGU SÕLMIMINE, KEHTIVUS JA MUUTMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:kollektiivlepingu_seadus_TopicScheme"
       },
@@ -239,7 +281,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – KOLLEKTIIVLEPINGU SÕLMIMINE, KEHTIVUS JA MUUTMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – KOLLEKTIIVLEPINGU SÕLMIMINE, KEHTIVUS JA MUUTMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
@@ -259,8 +304,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§14–16 KOLLEKTIIVLEPINGU TÄITMISE KONTROLLIMINE, VAIDLUSTE LAHENDAMINE JA VASTUTUS",
-      "skos:prefLabel": "§14–16 KOLLEKTIIVLEPINGU TÄITMISE KONTROLLIMINE, VAIDLUSTE LAHENDAMINE JA VASTUTUS",
+      "rdfs:label": {
+        "@value": "§14–16 KOLLEKTIIVLEPINGU TÄITMISE KONTROLLIMINE, VAIDLUSTE LAHENDAMINE JA VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§14–16 KOLLEKTIIVLEPINGU TÄITMISE KONTROLLIMINE, VAIDLUSTE LAHENDAMINE JA VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:kollektiivlepingu_seadus_TopicScheme"
       },
@@ -272,7 +323,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – KOLLEKTIIVLEPINGU TÄITMISE KONTROLLIMINE, VAIDLUSTE LAHENDAMINE JA VASTUTUS",
+      "rdfs:label": {
+        "@value": "4. peatükk – KOLLEKTIIVLEPINGU TÄITMISE KONTROLLIMINE, VAIDLUSTE LAHENDAMINE JA VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
@@ -292,12 +346,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–16 RIIKLIK JA HALDUSJÄRELEVALVE",
-      "skos:prefLabel": "§16–16 RIIKLIK JA HALDUSJÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "§16–16 RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–16 RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:kollektiivlepingu_seadus_TopicScheme"
       },
-      "estleg:provisionCount": 1
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:Chapter_kollektiivlepingu_seadus_4_747dd79c",
@@ -305,7 +365,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "4. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
@@ -325,12 +388,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§17–18 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§17–18 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§17–18 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§17–18 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:kollektiivlepingu_seadus_TopicScheme"
       },
-      "estleg:provisionCount": 2
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:Chapter_kollektiivlepingu_seadus_5",
@@ -338,7 +407,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "5. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
@@ -358,12 +430,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse ülesanne",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse ülesanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Käesolev seadus määrab kindlaks kollektiivlepingu sõlmimise ja täitmise õiguslikud alused.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus määrab kindlaks kollektiivlepingu sõlmimise ja täitmise õiguslikud alused.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus määrab kindlaks kollektiivlepingu sõlmimise ja täitmise õiguslikud alused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
@@ -388,10 +466,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus määrab kindlaks kollektiivlepingu sõlmimise ja täitmise õiguslikud alused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus määrab kindlaks kollektiivlepingu sõlmimise ja täitmise õiguslikud alused.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_2",
@@ -400,12 +480,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Üldpõhimõtted",
+      "rdfs:label": {
+        "@value": "§ 2. Üldpõhimõtted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivleping on vabatahtlik kokkulepe töötajate või töötajate ühingu või liidu ja tööandja või tööandjate ühingu või liidu, samuti riigiasutuste või kohalike omavalitsuste vahel, mis reguleerib tööandjate ja töötajate vahelisi töösuhteid. (2) Tööandjate ühing või liit ühendab teatud tegevusharu või muul alusel juriidilisi ja füüsilisi isikuid, kes on tööandjad töölepingu seaduse tähenduses, ning kaitseb ja esindab oma liikmete huve töösuhetes.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivleping on vabatahtlik kokkulepe töötajate või töötajate ühingu või liidu ja tööandja või tööandjate ühingu või liidu, samuti riigiasutuste või kohalike omavalitsuste vahel, mis reguleerib tööandjate ja töötajate vahelisi töösuhteid. (2) Tööandjate ühing või liit ühendab teatud tegevusharu või muul alusel juriidilisi ja füüsilisi isikuid, kes on tööandjad töölepingu seaduse tähenduses, ning kaitseb ja esindab oma liikmete huve töösuhetes.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivleping on vabatahtlik kokkulepe töötajate või töötajate ühingu või liidu ja tööandja või tööandjate ühingu või liidu, samuti riigiasutuste või kohalike omavalitsuste vahel, mis reguleerib tööandjate ja töötajate vahelisi töösuhteid. (2) Tööandjate ühing või liit ühendab teatud tegevusharu või muul alusel juriidilisi ja füüsilisi isikuid, kes on tööandjad töölepingu seaduse tähenduses, ning kaitseb ja esindab oma liikmete huve töösuhetes. (3) Töötajate ühing või liit ühendab töötajaid tegevusharude, ettevõtete, asutuste, muude organisatsioonide või kutsealade (ametite) järgi ja vastavalt põhikirjale kaitseb ja esindab neid töösuhetes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
@@ -524,13 +610,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kollektiivlepingu pooled",
+      "rdfs:label": {
+        "@value": "§ 3. Kollektiivlepingu pooled",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivleping võib olla kahe- või kolmepoolne. (2) Kollektiivleping sõlmitakse: tööandja ja töötajate ühingu, liidu või volitatud esindaja vahel; tööandjate ühingu või liidu ja töötajate ühingu või liidu vahel; omavalitsusüksuste liidu ning töötajate ja teenistujate ühingu või liidu vahel; tööandjate keskliidu ja töötajate keskliidu vahel; töötajate ühingute keskliidu, tööandjate keskliidu ja Vabariigi Valitsuse vahel, samuti töötajate ühingute paikkondlike liitude, tööandjate liidu ja",
-      "estleg:legalText": "(1) Kollektiivleping võib olla kahe- või kolmepoolne. (2) Kollektiivleping sõlmitakse: tööandja ja töötajate ühingu, liidu või volitatud esindaja vahel; tööandjate ühingu või liidu ja töötajate ühingu või liidu vahel; omavalitsusüksuste liidu ning töötajate ja teenistujate ühingu või liidu vahel; tööandjate keskliidu ja töötajate keskliidu vahel; töötajate ühingute keskliidu, tööandjate keskliidu ja Vabariigi Valitsuse vahel, samuti töötajate ühingute paikkondlike liitude, tööandjate liidu ja kohalike omavalitsuste vahel. (3) Ettevõttes, asutuses ja muus organisatsioonis sõlmib kollektiivlepinguid töötajate ühing. Kui ettevõttes, asutuses või muus organisatsioonis ei esinda töötajaid ametiühing, sõlmib kollektiivlepingu töötajate volitatud esindaja. (4) Valitsusasutuses, valitsusasutuse hallatavas riigiasutuses või riigi ametiasutuses võib tööandjana sõlmida kollektiivlepingu asutuse juht. Asutuse juht vastutab kollektiivlepinguga võetud kohustuste vastavuse eest riigieelarvele. (5) Kohaliku omavalitsuse ametiasutuses või kohaliku omavalitsuse ametiasutuse hallatavas asutuses võib tööandjana kollektiivlepingu sõlmida asutuse juht, samuti linna- või vallavalitsus. Asutuse juht vastutab kollektiivlepinguga võetud kohustuste vastavuse eest valla- või linnaeelarvele.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivleping võib olla kahe- või kolmepoolne. (2) Kollektiivleping sõlmitakse: 1) tööandja ja töötajate ühingu, liidu või volitatud esindaja vahel; 2) tööandjate ühingu või liidu ja töötajate ühingu või liidu vahel; 2¹) omavalitsusüksuste liidu ning töötajate ja teenistujate ühingu või liidu vahel; 3) tööandjate keskliidu ja töötajate keskliidu vahel; 4) töötajate ühingute keskliidu, tööandjate keskliidu ja Vabariigi Valitsuse vahel, samuti töötajate ühingute paikkondlike liitude,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kollektiivleping võib olla kahe- või kolmepoolne. (2) Kollektiivleping sõlmitakse: 1) tööandja ja töötajate ühingu, liidu või volitatud esindaja vahel; 2) tööandjate ühingu või liidu ja töötajate ühingu või liidu vahel; 2¹) omavalitsusüksuste liidu ning töötajate ja teenistujate ühingu või liidu vahel; 3) tööandjate keskliidu ja töötajate keskliidu vahel; 4) töötajate ühingute keskliidu, tööandjate keskliidu ja Vabariigi Valitsuse vahel, samuti töötajate ühingute paikkondlike liitude, tööandjate liidu ja kohalike omavalitsuste vahel. (3) Ettevõttes, asutuses ja muus organisatsioonis sõlmib kollektiivlepinguid töötajate ühing. Kui ettevõttes, asutuses või muus organisatsioonis ei esinda töötajaid ametiühing, sõlmib kollektiivlepingu töötajate volitatud esindaja. (4) Valitsusasutuses, valitsusasutuse hallatavas riigiasutuses või riigi ametiasutuses võib tööandjana sõlmida kollektiivlepingu asutuse juht. Asutuse juht vastutab kollektiivlepinguga võetud kohustuste vastavuse eest riigieelarvele. (5) Kohaliku omavalitsuse ametiasutuses või kohaliku omavalitsuse ametiasutuse hallatavas asutuses võib tööandjana kollektiivlepingu sõlmida asutuse juht, samuti linna- või vallavalitsus. Asutuse juht vastutab kollektiivlepinguga võetud kohustuste vastavuse eest valla- või linnaeelarvele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
       },
@@ -621,11 +713,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kollektiivleping sõlmitakse: tööandja ja töötajate ühingu, liidu või volitatud esindaja vahel; tööandjate ühingu või liidu ja töötajate ühingu või liidu vahel; omavalitsusüksuste liidu ning töötajate ja teenistujate ühingu või liidu vahel; tööandjate keskliidu ja töötajate keskliidu vahel; töötajate ühingute keskliidu, tööandjate keskliidu ja Vabariigi Valitsuse vahel, samuti töötajate ühingute paikkondlike liitude, tööandjate liidu ja kohalike omavalitsuste vahel.",
+      "estleg:legalText": "(2) Kollektiivleping sõlmitakse: 1) tööandja ja töötajate ühingu, liidu või volitatud esindaja vahel; 2) tööandjate ühingu või liidu ja töötajate ühingu või liidu vahel; 2¹) omavalitsusüksuste liidu ning töötajate ja teenistujate ühingu või liidu vahel; 3) tööandjate keskliidu ja töötajate keskliidu vahel; 4) töötajate ühingute keskliidu, tööandjate keskliidu ja Vabariigi Valitsuse vahel, samuti töötajate ühingute paikkondlike liitude, tööandjate liidu ja kohalike omavalitsuste vahel.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_3"
       },
       "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "2¹",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -737,13 +836,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kollektiivlepingu rakendusala",
+      "rdfs:label": {
+        "@value": "§ 4. Kollektiivlepingu rakendusala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivleping kehtib neile tööandjatele ja töötajatele, kes kuuluvad kollektiivlepingu sõlminud organisatsioonidesse, kui kollektiivlepingus ei ole ette nähtud teisiti. (2) Kollektiivlepingu tingimused, mis on töötaja jaoks halvemad seaduses või muus õigusaktis ettenähtust, on tühised, välja arvatud, kui sellise kokkuleppe võimalus on seaduses ette nähtud. (3) Erinevate kollektiivlepingute sätete vastuolu korral kohaldatakse sätet, mis on töötajale soodsam. (4) Kehtetu - (5) Kehtetu -",
-      "estleg:legalText": "(1) Kollektiivleping kehtib neile tööandjatele ja töötajatele, kes kuuluvad kollektiivlepingu sõlminud organisatsioonidesse, kui kollektiivlepingus ei ole ette nähtud teisiti. (2) Kollektiivlepingu tingimused, mis on töötaja jaoks halvemad seaduses või muus õigusaktis ettenähtust, on tühised, välja arvatud, kui sellise kokkuleppe võimalus on seaduses ette nähtud. (3) Erinevate kollektiivlepingute sätete vastuolu korral kohaldatakse sätet, mis on töötajale soodsam. (4) Kehtetu - (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivleping kehtib neile tööandjatele ja töötajatele, kes kuuluvad kollektiivlepingu sõlminud organisatsioonidesse, kui kollektiivlepingus ei ole ette nähtud teisiti. (2) Kollektiivlepingu tingimused, mis on töötaja jaoks halvemad seaduses või muus õigusaktis ettenähtust, on tühised, välja arvatud, kui sellise kokkuleppe võimalus on seaduses ette nähtud. (3) Erinevate kollektiivlepingute sätete vastuolu korral kohaldatakse sätet, mis on töötajale soodsam.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kollektiivleping kehtib neile tööandjatele ja töötajatele, kes kuuluvad kollektiivlepingu sõlminud organisatsioonidesse, kui kollektiivlepingus ei ole ette nähtud teisiti. (2) Kollektiivlepingu tingimused, mis on töötaja jaoks halvemad seaduses või muus õigusaktis ettenähtust, on tühised, välja arvatud, kui sellise kokkuleppe võimalus on seaduses ette nähtud. (3) Erinevate kollektiivlepingute sätete vastuolu korral kohaldatakse sätet, mis on töötajale soodsam.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
       },
@@ -759,12 +864,6 @@
         },
         {
           "@id": "estleg:kollektiivlepingu_seadus_Par_4_Lg_3"
-        },
-        {
-          "@id": "estleg:kollektiivlepingu_seadus_Par_4_Lg_4"
-        },
-        {
-          "@id": "estleg:kollektiivlepingu_seadus_Par_4_Lg_5"
         }
       ],
       "estleg:targetGroup": [
@@ -873,45 +972,25 @@
       }
     },
     {
-      "@id": "estleg:kollektiivlepingu_seadus_Par_4_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 4"
-    },
-    {
-      "@id": "estleg:kollektiivlepingu_seadus_Par_4_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 5"
-    },
-    {
       "@id": "estleg:kollektiivlepingu_seadus_Par_4_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4¹.",
-      "rdfs:label": "§ 4¹. Kollektiivlepingu registreerimine",
+      "rdfs:label": {
+        "@value": "§ 4¹. Kollektiivlepingu registreerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Sõlmitud kollektiivlepingud registreeritakse kollektiivlepingute andmekogus. Andmekogu peetakse kehtivate kollektiivlepingute säilitamise eesmärgil, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu",
-      "estleg:legalText": "(1) Sõlmitud kollektiivlepingud registreeritakse kollektiivlepingute andmekogus. Andmekogu peetakse kehtivate kollektiivlepingute säilitamise eesmärgil, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu tingimuste avaldamiseks. (2) Andmekogu põhimääruse kehtestab määrusega. (3) Kollektiivlepingute andmekogu põhimääruses sätestatakse: volitatud töötleja; vastutava ja volitatud töötleja ülesanded; kogutavate andmete koosseis ja registrisse kandmise kord; andmetele juurdepääsu ja andmete väljastamise kord; muud korralduslikud küsimused. (4) Kollektiivlepingute andmekogus töödeldakse järgmisi andmeid: isiku andmed: ees- ja perekonnanimi, isikukood, kontaktandmed, töötajate esindaja vorm; tööandja andmed; lepingu põhiandmed. (5) Käesoleva paragrahvi lõikes 4 nimetatud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. (6) Kollektiivlepingute andmekogu vastutav töötleja on Majandus- ja Kommunikatsiooniministeerium.",
+      "estleg:summary": {
+        "@value": "(1) Sõlmitud kollektiivlepingud registreeritakse kollektiivlepingute andmekogus. Andmekogu peetakse kehtivate kollektiivlepingute säilitamise eesmärgil, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Sõlmitud kollektiivlepingud registreeritakse kollektiivlepingute andmekogus. Andmekogu peetakse kehtivate kollektiivlepingute säilitamise eesmärgil, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu tingimuste avaldamiseks. (2) Andmekogu põhimääruse kehtestab määrusega. (3) Kollektiivlepingute andmekogu põhimääruses sätestatakse: 1) volitatud töötleja; 2) vastutava ja volitatud töötleja ülesanded; 3) kogutavate andmete koosseis ja registrisse kandmise kord; 4) andmetele juurdepääsu ja andmete väljastamise kord; 5) muud korralduslikud küsimused. (4) Kollektiivlepingute andmekogus töödeldakse järgmisi andmeid: 1) isiku andmed: ees- ja perekonnanimi, isikukood, kontaktandmed, töötajate esindaja vorm; 2) tööandja andmed; 3) lepingu põhiandmed. (5) Käesoleva paragrahvi lõikes 4 nimetatud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. (6) Kollektiivlepingute andmekogu vastutav töötleja on Majandus- ja Kommunikatsiooniministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
       },
@@ -1036,11 +1115,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kollektiivlepingute andmekogu põhimääruses sätestatakse: volitatud töötleja; vastutava ja volitatud töötleja ülesanded; kogutavate andmete koosseis ja registrisse kandmise kord; andmetele juurdepääsu ja andmete väljastamise kord; muud korralduslikud küsimused.",
+      "estleg:legalText": "(3) Kollektiivlepingute andmekogu põhimääruses sätestatakse: 1) volitatud töötleja; 2) vastutava ja volitatud töötleja ülesanded; 3) kogutavate andmete koosseis ja registrisse kandmise kord; 4) andmetele juurdepääsu ja andmete väljastamise kord; 5) muud korralduslikud küsimused.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_1"
       },
       "rdfs:label": "§ 4¹ lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1058,11 +1144,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kollektiivlepingute andmekogus töödeldakse järgmisi andmeid: isiku andmed: ees- ja perekonnanimi, isikukood, kontaktandmed, töötajate esindaja vorm; tööandja andmed; lepingu põhiandmed.",
+      "estleg:legalText": "(4) Kollektiivlepingute andmekogus töödeldakse järgmisi andmeid: 1) isiku andmed: ees- ja perekonnanimi, isikukood, kontaktandmed, töötajate esindaja vorm; 2) tööandja andmed; 3) lepingu põhiandmed.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_1"
       },
       "rdfs:label": "§ 4¹ lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1123,13 +1214,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4².",
-      "rdfs:label": "§ 4². Kollektiivlepingu tingimuse laiendamine",
+      "rdfs:label": {
+        "@value": "§ 4². Kollektiivlepingu tingimuse laiendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivlepingut võib laiendada poolte kokkuleppel käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas. Laiendamise ulatus määratakse kindlaks kollektiivlepingus. (2) Kollektiivlepingu laiendatud tingimus kehtib ka nende tööandjate ja töötajate suhtes, kes ei ole kollektiivlepingu pooled ega isikud, kelle huve pooled kollektiivlepinguga esindavad, ning kes tegutsevad kollektiivlepingus kokkulepitud tegevusalal või tegevusala piires kokkulepitud ametialal.",
-      "estleg:legalText": "(1) Kollektiivlepingut võib laiendada poolte kokkuleppel käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas. Laiendamise ulatus määratakse kindlaks kollektiivlepingus. (2) Kollektiivlepingu laiendatud tingimus kehtib ka nende tööandjate ja töötajate suhtes, kes ei ole kollektiivlepingu pooled ega isikud, kelle huve pooled kollektiivlepinguga esindavad, ning kes tegutsevad kollektiivlepingus kokkulepitud tegevusalal või tegevusala piires kokkulepitud ametialal. (3) Kollektiivlepingu tingimuse laiendamise võivad kokku leppida: ametiühingute liit või tegevusala ametiühing, kelle liikmed moodustavad 15 protsenti tegevusala töötajatest või kellel on vähemalt 500 liiget, ja tööandjate ühing või liit, kelle liikmed on tööandjaks vähemalt 40 protsendile vastava tegevusala töötajatele, kellele kohaldatakse kollektiivlepingu laiendatud tingimust. (4) Käesoleva paragrahvi lõike 3 punktis 2 nimetatud töötajate arvu hindamisel võetakse aluseks kollektiivlepingu tingimuse laiendamise kokkuleppe sõlmimisele eelneva kolme kuu keskmine vastava tegevusala töötajate arv Maksu- ja Tolliameti andmetel ning kollektiivlepingu tingimuse laiendamise kokkuleppe sõlminud poolte tõendid. (5) Käesoleva paragrahvi lõike 3 punktis 2 nimetatud töötajate arvu hindamisel arvestatakse ka tööandjate ühingusse või liitu mittekuuluvaid tööandjaid, kes avaldavad ühingule või liidule soovi sõlmida kollektiivlepingu tingimuse laiendamise kokkulepe.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivlepingut võib laiendada poolte kokkuleppel käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas. Laiendamise ulatus määratakse kindlaks kollektiivlepingus. (2) Kollektiivlepingu laiendatud tingimus kehtib ka nende tööandjate ja töötajate suhtes, kes ei ole kollektiivlepingu pooled ega isikud, kelle huve pooled kollektiivlepinguga esindavad, ning kes tegutsevad kollektiivlepingus kokkulepitud tegevusalal või tegevusala piires kokkulepitud ametialal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kollektiivlepingut võib laiendada poolte kokkuleppel käesoleva seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste osas. Laiendamise ulatus määratakse kindlaks kollektiivlepingus. (2) Kollektiivlepingu laiendatud tingimus kehtib ka nende tööandjate ja töötajate suhtes, kes ei ole kollektiivlepingu pooled ega isikud, kelle huve pooled kollektiivlepinguga esindavad, ning kes tegutsevad kollektiivlepingus kokkulepitud tegevusalal või tegevusala piires kokkulepitud ametialal. (3) Kollektiivlepingu tingimuse laiendamise võivad kokku leppida: 1) ametiühingute liit või tegevusala ametiühing, kelle liikmed moodustavad 15 protsenti tegevusala töötajatest või kellel on vähemalt 500 liiget, ja 2) tööandjate ühing või liit, kelle liikmed on tööandjaks vähemalt 40 protsendile vastava tegevusala töötajatele, kellele kohaldatakse kollektiivlepingu laiendatud tingimust. (4) Käesoleva paragrahvi lõike 3 punktis 2 nimetatud töötajate arvu hindamisel võetakse aluseks kollektiivlepingu tingimuse laiendamise kokkuleppe sõlmimisele eelneva kolme kuu keskmine vastava tegevusala töötajate arv Maksu- ja Tolliameti andmetel ning kollektiivlepingu tingimuse laiendamise kokkuleppe sõlminud poolte tõendid. (5) Käesoleva paragrahvi lõike 3 punktis 2 nimetatud töötajate arvu hindamisel arvestatakse ka tööandjate ühingusse või liitu mittekuuluvaid tööandjaid, kes avaldavad ühingule või liidule soovi sõlmida kollektiivlepingu tingimuse laiendamise kokkulepe.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
       },
@@ -1241,11 +1338,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kollektiivlepingu tingimuse laiendamise võivad kokku leppida: ametiühingute liit või tegevusala ametiühing, kelle liikmed moodustavad 15 protsenti tegevusala töötajatest või kellel on vähemalt 500 liiget, ja tööandjate ühing või liit, kelle liikmed on tööandjaks vähemalt 40 protsendile vastava tegevusala töötajatele, kellele kohaldatakse kollektiivlepingu laiendatud tingimust.",
+      "estleg:legalText": "(3) Kollektiivlepingu tingimuse laiendamise võivad kokku leppida: 1) ametiühingute liit või tegevusala ametiühing, kelle liikmed moodustavad 15 protsenti tegevusala töötajatest või kellel on vähemalt 500 liiget, ja 2) tööandjate ühing või liit, kelle liikmed on tööandjaks vähemalt 40 protsendile vastava tegevusala töötajatele, kellele kohaldatakse kollektiivlepingu laiendatud tingimust.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_2"
       },
       "rdfs:label": "§ 4² lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1323,13 +1424,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4³.",
-      "rdfs:label": "§ 4³. Informeerimine ja konsulteerimine kollektiivlepingu tingimuse laiendamisel",
+      "rdfs:label": {
+        "@value": "§ 4³. Informeerimine ja konsulteerimine kollektiivlepingu tingimuse laiendamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Läbirääkimiste pooled peavad enne kollektiivlepingu tingimuse laiendamist informeerima laiendamise kavatsusest tööandjaid ning töötajate ühinguid ja liite, kelle suhtes soovitakse lepingu tingimust laiendada, ja nendega konsulteerima käesolevas paragrahvis sätestatud korras. (2) Informeerimise ja konsulteerimise kohustus hõlmab vähemalt: laiendatavat tingimust; laiendatava tingimuse kohaldamisala; laiendatava tingimuse eeldatavat jõustumisaega.",
-      "estleg:legalText": "(1) Läbirääkimiste pooled peavad enne kollektiivlepingu tingimuse laiendamist informeerima laiendamise kavatsusest tööandjaid ning töötajate ühinguid ja liite, kelle suhtes soovitakse lepingu tingimust laiendada, ja nendega konsulteerima käesolevas paragrahvis sätestatud korras. (2) Informeerimise ja konsulteerimise kohustus hõlmab vähemalt: laiendatavat tingimust; laiendatava tingimuse kohaldamisala; laiendatava tingimuse eeldatavat jõustumisaega. (3) Läbirääkimiste pooled teavitavad avalikkust üleriigilise levikuga meediakanali vahendusel hiljemalt 30 päeva enne kollektiivlepingu tingimuse laiendamisega seotud läbirääkimiste alustamist, avaldades: käesoleva paragrahvi lõikes 2 nimetatud teabe; konsulteerimisprotsessis osalemise soovist teada andmise tähtpäeva; läbirääkimiste poolte kontaktandmed. (4) Tööandja ning töötajate ühing ja liit, kelle suhtes kavatsetakse kollektiivlepingu tingimust laiendada, peavad soovist läbirääkimiste pooltega konsulteerida teatama kümne päeva jooksul käesoleva paragrahvi lõikes 3 nimetatud teabe avaldamisest arvates, kui teates ei ole märgitud pikemat tähtaega. (5) Läbirääkimiste jooksul on konsulteerimises osaleval tööandjal ning töötajate ühingul ja liidul õigus esitada laiendamise kohta arvamusi ja ettepanekuid ning saada läbirääkimiste pooltelt asjakohaseid selgitusi. Läbirääkimiste pooled peavad põhjendama esitatud arvamuste ja ettepanekutega arvestamata jätmist. (6) Kollektiivlepingu tingimuse laiendamisega seotud läbirääkimiste lõppemise järel teavitavad läbirääkimiste pooled avalikkust üleriigilise levikuga meediakanali vahendusel, avaldades sõlmitud kokkuleppe läbirääkimistel osalenud töötajate ühingu või liidu ning tööandjate ühingu või liidu veebilehel.",
+      "estleg:summary": {
+        "@value": "(1) Läbirääkimiste pooled peavad enne kollektiivlepingu tingimuse laiendamist informeerima laiendamise kavatsusest tööandjaid ning töötajate ühinguid ja liite, kelle suhtes soovitakse lepingu tingimust laiendada, ja nendega konsulteerima käesolevas paragrahvis sätestatud korras. (2) Informeerimise ja konsulteerimise kohustus hõlmab vähemalt: 1) laiendatavat tingimust; 2) laiendatava tingimuse kohaldamisala; 3) laiendatava tingimuse eeldatavat jõustumisaega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Läbirääkimiste pooled peavad enne kollektiivlepingu tingimuse laiendamist informeerima laiendamise kavatsusest tööandjaid ning töötajate ühinguid ja liite, kelle suhtes soovitakse lepingu tingimust laiendada, ja nendega konsulteerima käesolevas paragrahvis sätestatud korras. (2) Informeerimise ja konsulteerimise kohustus hõlmab vähemalt: 1) laiendatavat tingimust; 2) laiendatava tingimuse kohaldamisala; 3) laiendatava tingimuse eeldatavat jõustumisaega. (3) Läbirääkimiste pooled teavitavad avalikkust üleriigilise levikuga meediakanali vahendusel hiljemalt 30 päeva enne kollektiivlepingu tingimuse laiendamisega seotud läbirääkimiste alustamist, avaldades: 1) käesoleva paragrahvi lõikes 2 nimetatud teabe; 2) konsulteerimisprotsessis osalemise soovist teada andmise tähtpäeva; 3) läbirääkimiste poolte kontaktandmed. (4) Tööandja ning töötajate ühing ja liit, kelle suhtes kavatsetakse kollektiivlepingu tingimust laiendada, peavad soovist läbirääkimiste pooltega konsulteerida teatama kümne päeva jooksul käesoleva paragrahvi lõikes 3 nimetatud teabe avaldamisest arvates, kui teates ei ole märgitud pikemat tähtaega. (5) Läbirääkimiste jooksul on konsulteerimises osaleval tööandjal ning töötajate ühingul ja liidul õigus esitada laiendamise kohta arvamusi ja ettepanekuid ning saada läbirääkimiste pooltelt asjakohaseid selgitusi. Läbirääkimiste pooled peavad põhjendama esitatud arvamuste ja ettepanekutega arvestamata jätmist. (6) Kollektiivlepingu tingimuse laiendamisega seotud läbirääkimiste lõppemise järel teavitavad läbirääkimiste pooled avalikkust üleriigilise levikuga meediakanali vahendusel, avaldades sõlmitud kokkuleppe läbirääkimistel osalenud töötajate ühingu või liidu ning tööandjate ühingu või liidu veebilehel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
       },
@@ -1412,11 +1519,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Informeerimise ja konsulteerimise kohustus hõlmab vähemalt: laiendatavat tingimust; laiendatava tingimuse kohaldamisala; laiendatava tingimuse eeldatavat jõustumisaega.",
+      "estleg:legalText": "(2) Informeerimise ja konsulteerimise kohustus hõlmab vähemalt: 1) laiendatavat tingimust; 2) laiendatava tingimuse kohaldamisala; 3) laiendatava tingimuse eeldatavat jõustumisaega.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_3"
       },
-      "rdfs:label": "§ 4³ lg 2"
+      "rdfs:label": "§ 4³ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_4_3_Lg_3",
@@ -1425,11 +1537,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Läbirääkimiste pooled teavitavad avalikkust üleriigilise levikuga meediakanali vahendusel hiljemalt 30 päeva enne kollektiivlepingu tingimuse laiendamisega seotud läbirääkimiste alustamist, avaldades: käesoleva paragrahvi lõikes 2 nimetatud teabe; konsulteerimisprotsessis osalemise soovist teada andmise tähtpäeva; läbirääkimiste poolte kontaktandmed.",
+      "estleg:legalText": "(3) Läbirääkimiste pooled teavitavad avalikkust üleriigilise levikuga meediakanali vahendusel hiljemalt 30 päeva enne kollektiivlepingu tingimuse laiendamisega seotud läbirääkimiste alustamist, avaldades: 1) käesoleva paragrahvi lõikes 2 nimetatud teabe; 2) konsulteerimisprotsessis osalemise soovist teada andmise tähtpäeva; 3) läbirääkimiste poolte kontaktandmed.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_3"
       },
-      "rdfs:label": "§ 4³ lg 3"
+      "rdfs:label": "§ 4³ lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_4_3_Lg_4",
@@ -1519,13 +1636,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4⁴.",
-      "rdfs:label": "§ 4⁴. Kollektiivlepingu laiendatud tingimuse kontroll",
+      "rdfs:label": {
+        "@value": "§ 4⁴. Kollektiivlepingu laiendatud tingimuse kontroll",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivlepingu laiendatud tingimus esitatakse valdkonna eest vastutavale ministrile koos dokumentidega, mis tõendavad kollektiivlepingu poolte vastavust käesoleva seaduse § 42 lõigetes 1 ja 3 sätestatud tingimustele ning §-s 43 sätestatud kohustuste täitmist. (2) Valdkonna eest vastutav minister kontrollib kollektiivlepingu laiendatud tingimuse vastavust käesoleva seaduse nõuetele. Kontrolli kaasatakse nõuandval eesmärgil tööandjate keskliidu ja töötajate keskliidu esindajad.",
-      "estleg:legalText": "(1) Kollektiivlepingu laiendatud tingimus esitatakse valdkonna eest vastutavale ministrile koos dokumentidega, mis tõendavad kollektiivlepingu poolte vastavust käesoleva seaduse § 42 lõigetes 1 ja 3 sätestatud tingimustele ning §-s 43 sätestatud kohustuste täitmist. (2) Valdkonna eest vastutav minister kontrollib kollektiivlepingu laiendatud tingimuse vastavust käesoleva seaduse nõuetele. Kontrolli kaasatakse nõuandval eesmärgil tööandjate keskliidu ja töötajate keskliidu esindajad. (3) Valdkonna eest vastutav minister avaldab kollektiivlepingu laiendatud tingimuse Ametlikes Teadaannetes või seaduse nõuetele mittevastavuse korral keeldub selle avaldamisest kümne tööpäeva jooksul käesoleva paragrahvi lõikes 1 sätestatud laiendatud tingimuse esitamisest arvates. Valdkonna eest vastutav minister võib tähtaega pikendada kuni kümne tööpäeva võrra, kui kollektiivlepingu laiendatud tingimuse kontroll vajab täiendavat teavet ja uurimist.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivlepingu laiendatud tingimus esitatakse valdkonna eest vastutavale ministrile koos dokumentidega, mis tõendavad kollektiivlepingu poolte vastavust käesoleva seaduse § 4² lõigetes 1 ja 3 sätestatud tingimustele ning §-s 4³ sätestatud kohustuste täitmist. (2) Valdkonna eest vastutav minister kontrollib kollektiivlepingu laiendatud tingimuse vastavust käesoleva seaduse nõuetele. Kontrolli kaasatakse nõuandval eesmärgil tööandjate keskliidu ja töötajate keskliidu esindajad.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kollektiivlepingu laiendatud tingimus esitatakse valdkonna eest vastutavale ministrile koos dokumentidega, mis tõendavad kollektiivlepingu poolte vastavust käesoleva seaduse § 4² lõigetes 1 ja 3 sätestatud tingimustele ning §-s 4³ sätestatud kohustuste täitmist. (2) Valdkonna eest vastutav minister kontrollib kollektiivlepingu laiendatud tingimuse vastavust käesoleva seaduse nõuetele. Kontrolli kaasatakse nõuandval eesmärgil tööandjate keskliidu ja töötajate keskliidu esindajad. (3) Valdkonna eest vastutav minister avaldab kollektiivlepingu laiendatud tingimuse Ametlikes Teadaannetes või seaduse nõuetele mittevastavuse korral keeldub selle avaldamisest kümne tööpäeva jooksul käesoleva paragrahvi lõikes 1 sätestatud laiendatud tingimuse esitamisest arvates. Valdkonna eest vastutav minister võib tähtaega pikendada kuni kümne tööpäeva võrra, kui kollektiivlepingu laiendatud tingimuse kontroll vajab täiendavat teavet ja uurimist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
       },
@@ -1568,7 +1691,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kollektiivlepingu laiendatud tingimus esitatakse valdkonna eest vastutavale ministrile koos dokumentidega, mis tõendavad kollektiivlepingu poolte vastavust käesoleva seaduse § 42 lõigetes 1 ja 3 sätestatud tingimustele ning §-s 43 sätestatud kohustuste täitmist.",
+      "estleg:legalText": "(1) Kollektiivlepingu laiendatud tingimus esitatakse valdkonna eest vastutavale ministrile koos dokumentidega, mis tõendavad kollektiivlepingu poolte vastavust käesoleva seaduse § 4² lõigetes 1 ja 3 sätestatud tingimustele ning §-s 4³ sätestatud kohustuste täitmist.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_4"
       },
@@ -1631,12 +1754,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4⁵.",
-      "rdfs:label": "§ 4⁵. Laiendatud tingimuse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4⁵. Laiendatud tingimuse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Kollektiivlepingu laiendatud tingimus jõustub kolme kuu möödumisel Ametlikes Teadaannetes avaldamisest, kui kokkuleppes ei ole sätestatud hilisemat kuupäeva.",
+      "estleg:summary": {
+        "@value": "Kollektiivlepingu laiendatud tingimus jõustub kolme kuu möödumisel Ametlikes Teadaannetes avaldamisest, kui kokkuleppes ei ole sätestatud hilisemat kuupäeva.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kollektiivlepingu laiendatud tingimus jõustub kolme kuu möödumisel Ametlikes Teadaannetes avaldamisest, kui kokkuleppes ei ole sätestatud hilisemat kuupäeva.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
@@ -1661,10 +1790,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kollektiivlepingu laiendatud tingimus jõustub kolme kuu möödumisel Ametlikes Teadaannetes avaldamisest, kui kokkuleppes ei ole sätestatud hilisemat kuupäeva.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kollektiivlepingu laiendatud tingimus jõustub kolme kuu möödumisel Ametlikes Teadaannetes avaldamisest, kui kokkuleppes ei ole sätestatud hilisemat kuupäeva.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_5"
-      }
+      },
+      "rdfs:label": "§ 4⁵ lg 1"
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_4_6",
@@ -1673,13 +1804,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4⁶.",
-      "rdfs:label": "§ 4⁶. Üleriigilise töötasu alammäära kokkulepe",
+      "rdfs:label": {
+        "@value": "§ 4⁶. Üleriigilise töötasu alammäära kokkulepe",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Töötajate keskliit ja tööandjate keskliit võivad laiendatud kollektiivlepinguna kokku leppida üleriigilise töötasu alammäära, mida kohaldatakse kõigile töötajatele ja tööandjatele. (2) Üleriigilise töötasu alammäära kokkuleppele ei kohaldata käesoleva seaduse §-des 42–45 sätestatut. (3) Valdkonna eest vastutav minister avaldab üleriigilise töötasu alammäära kokkuleppe Ametlikes Teadaannetes kümne tööpäeva jooksul selle ministrile esitamisest arvates.",
-      "estleg:legalText": "(1) Töötajate keskliit ja tööandjate keskliit võivad laiendatud kollektiivlepinguna kokku leppida üleriigilise töötasu alammäära, mida kohaldatakse kõigile töötajatele ja tööandjatele. (2) Üleriigilise töötasu alammäära kokkuleppele ei kohaldata käesoleva seaduse §-des 42–45 sätestatut. (3) Valdkonna eest vastutav minister avaldab üleriigilise töötasu alammäära kokkuleppe Ametlikes Teadaannetes kümne tööpäeva jooksul selle ministrile esitamisest arvates. (4) Üleriigilise töötasu alammäära kokkulepe jõustub ühe kuu möödumisel Ametlikes Teadaannetes avaldamisest, kui kokkuleppes ei ole sätestatud hilisemat kuupäeva.",
+      "estleg:summary": {
+        "@value": "(1) Töötajate keskliit ja tööandjate keskliit võivad laiendatud kollektiivlepinguna kokku leppida üleriigilise töötasu alammäära, mida kohaldatakse kõigile töötajatele ja tööandjatele. (2) Üleriigilise töötasu alammäära kokkuleppele ei kohaldata käesoleva seaduse §-des 4²–4⁵ sätestatut. (3) Valdkonna eest vastutav minister avaldab üleriigilise töötasu alammäära kokkuleppe Ametlikes Teadaannetes kümne tööpäeva jooksul selle ministrile esitamisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Töötajate keskliit ja tööandjate keskliit võivad laiendatud kollektiivlepinguna kokku leppida üleriigilise töötasu alammäära, mida kohaldatakse kõigile töötajatele ja tööandjatele. (2) Üleriigilise töötasu alammäära kokkuleppele ei kohaldata käesoleva seaduse §-des 4²–4⁵ sätestatut. (3) Valdkonna eest vastutav minister avaldab üleriigilise töötasu alammäära kokkuleppe Ametlikes Teadaannetes kümne tööpäeva jooksul selle ministrile esitamisest arvates. (4) Üleriigilise töötasu alammäära kokkulepe jõustub ühe kuu möödumisel Ametlikes Teadaannetes avaldamisest, kui kokkuleppes ei ole sätestatud hilisemat kuupäeva.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_1"
       },
@@ -1750,7 +1887,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Üleriigilise töötasu alammäära kokkuleppele ei kohaldata käesoleva seaduse §-des 42–45 sätestatut.",
+      "estleg:legalText": "(2) Üleriigilise töötasu alammäära kokkuleppele ei kohaldata käesoleva seaduse §-des 4²–4⁵ sätestatut.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_4_6"
       },
@@ -1798,12 +1935,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Kollektiivlepingu vorm",
+      "rdfs:label": {
+        "@value": "§ 5. Kollektiivlepingu vorm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivleping sõlmitakse kirjalikult. (2) Kollektiivlepingu lisad on lepingu lahutamatu osa ning nendel on kollektiivlepinguga võrdne juriidiline jõud.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivleping sõlmitakse kirjalikult. (2) Kollektiivlepingu lisad on lepingu lahutamatu osa ning nendel on kollektiivlepinguga võrdne juriidiline jõud.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivleping sõlmitakse kirjalikult. (2) Kollektiivlepingu lisad on lepingu lahutamatu osa ning nendel on kollektiivlepinguga võrdne juriidiline jõud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_2"
@@ -1858,13 +2001,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Kollektiivlepingu sisu",
+      "rdfs:label": {
+        "@value": "§ 6. Kollektiivlepingu sisu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 3 2. lõike punktides 1–3 loetletud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: palgatingimused; töötingimused; töö- ja puhkeaja tingimused; töölepingu muutmise ja ülesütlemise tingimused ning töö tegemisest keeldumise alused; töötajate koondamise tingimused, korra ja tagatised koondamise puhul; töötervishoiu ja tööohutuse tingimused; kutse-, täiendus- ja ümberõppe tingimused ja abi töötutele; tagatised ja hüvitused, mida pooled peavad vajalikuks;",
-      "estleg:legalText": "(1) Käesoleva seaduse § 3 2. lõike punktides 1–3 loetletud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: palgatingimused; töötingimused; töö- ja puhkeaja tingimused; töölepingu muutmise ja ülesütlemise tingimused ning töö tegemisest keeldumise alused; töötajate koondamise tingimused, korra ja tagatised koondamise puhul; töötervishoiu ja tööohutuse tingimused; kutse-, täiendus- ja ümberõppe tingimused ja abi töötutele; tagatised ja hüvitused, mida pooled peavad vajalikuks; kollektiivlepingu täitmise kontrollimise ja vajaliku informatsiooni andmise korra; kollektiivlepingu muutmise, pikendamise ja uue kollektiivlepingu sõlmimise korra; täiendava vastutuse kollektiivlepingu täitmata jätmise eest; töötajate ja tööandjate nõudmiste esitamise korra kollektiivse töötüli puhul; tingimused, millega reguleeritakse muud kollektiivlepingu poolte vahelised suhted. (2) Käesoleva seaduse § 3 2. lõike punktis 4 nimetatud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: palga alammäära ning selle korrigeerimise korra, lähtudes elukalliduse tõusust; töötervishoiu ja tööohutuse tagamiseks rakendatavad lisaabinõud; täiendavad tööhõivetagatised; muud täiendavad tööalased tagatised, mida pooled peavad vajalikuks; kollektiivlepingu täitmise kontrollimise ja vajaliku teabe saamise korra. (3) Kollektiivlepinguga võib kindlaks määrata töötajaid esindava isiku täiendavad õigused ja tagatised töösuhetes.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 3 2. lõike punktides 1–3 loetletud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: 1) palgatingimused; 2) töötingimused; 3) töö- ja puhkeaja tingimused; 4) töölepingu muutmise ja ülesütlemise tingimused ning töö tegemisest keeldumise alused; 5) töötajate koondamise tingimused, korra ja tagatised koondamise puhul; 6) töötervishoiu ja tööohutuse tingimused; 7) kutse-, täiendus- ja ümberõppe tingimused ja abi töötutele; 8) tagatised ja hüvitused, mida",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse § 3 2. lõike punktides 1–3 loetletud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: 1) palgatingimused; 2) töötingimused; 3) töö- ja puhkeaja tingimused; 4) töölepingu muutmise ja ülesütlemise tingimused ning töö tegemisest keeldumise alused; 5) töötajate koondamise tingimused, korra ja tagatised koondamise puhul; 6) töötervishoiu ja tööohutuse tingimused; 7) kutse-, täiendus- ja ümberõppe tingimused ja abi töötutele; 8) tagatised ja hüvitused, mida pooled peavad vajalikuks; 9) kollektiivlepingu täitmise kontrollimise ja vajaliku informatsiooni andmise korra; 10) kollektiivlepingu muutmise, pikendamise ja uue kollektiivlepingu sõlmimise korra; 11) täiendava vastutuse kollektiivlepingu täitmata jätmise eest; 12) töötajate ja tööandjate nõudmiste esitamise korra kollektiivse töötüli puhul; 13) tingimused, millega reguleeritakse muud kollektiivlepingu poolte vahelised suhted. (2) Käesoleva seaduse § 3 2. lõike punktis 4 nimetatud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: 1) palga alammäära ning selle korrigeerimise korra, lähtudes elukalliduse tõusust; 2) töötervishoiu ja tööohutuse tagamiseks rakendatavad lisaabinõud; 3) täiendavad tööhõivetagatised; 4) muud täiendavad tööalased tagatised, mida pooled peavad vajalikuks; 5) kollektiivlepingu täitmise kontrollimise ja vajaliku teabe saamise korra. (3) Kollektiivlepinguga võib kindlaks määrata töötajaid esindava isiku täiendavad õigused ja tagatised töösuhetes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_2"
       },
@@ -1924,11 +2073,26 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Käesoleva seaduse § 3 2. lõike punktides 1–3 loetletud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: palgatingimused; töötingimused; töö- ja puhkeaja tingimused; töölepingu muutmise ja ülesütlemise tingimused ning töö tegemisest keeldumise alused; töötajate koondamise tingimused, korra ja tagatised koondamise puhul; töötervishoiu ja tööohutuse tingimused; kutse-, täiendus- ja ümberõppe tingimused ja abi töötutele; tagatised ja hüvitused, mida pooled peavad vajalikuks; kollektiivlepingu täitmise kontrollimise ja vajaliku informatsiooni andmise korra; kollektiivlepingu muutmise, pikendamise ja uue kollektiivlepingu sõlmimise korra; täiendava vastutuse kollektiivlepingu täitmata jätmise eest; töötajate ja tööandjate nõudmiste esitamise korra kollektiivse töötüli puhul; tingimused, millega reguleeritakse muud kollektiivlepingu poolte vahelised suhted.",
+      "estleg:legalText": "(1) Käesoleva seaduse § 3 2. lõike punktides 1–3 loetletud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: 1) palgatingimused; 2) töötingimused; 3) töö- ja puhkeaja tingimused; 4) töölepingu muutmise ja ülesütlemise tingimused ning töö tegemisest keeldumise alused; 5) töötajate koondamise tingimused, korra ja tagatised koondamise puhul; 6) töötervishoiu ja tööohutuse tingimused; 7) kutse-, täiendus- ja ümberõppe tingimused ja abi töötutele; 8) tagatised ja hüvitused, mida pooled peavad vajalikuks; 9) kollektiivlepingu täitmise kontrollimise ja vajaliku informatsiooni andmise korra; 10) kollektiivlepingu muutmise, pikendamise ja uue kollektiivlepingu sõlmimise korra; 11) täiendava vastutuse kollektiivlepingu täitmata jätmise eest; 12) töötajate ja tööandjate nõudmiste esitamise korra kollektiivse töötüli puhul; 13) tingimused, millega reguleeritakse muud kollektiivlepingu poolte vahelised suhted.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_6"
       },
       "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1974,12 +2138,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva seaduse § 3 2. lõike punktis 4 nimetatud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: palga alammäära ning selle korrigeerimise korra, lähtudes elukalliduse tõusust; töötervishoiu ja tööohutuse tagamiseks rakendatavad lisaabinõud; täiendavad tööhõivetagatised; muud täiendavad tööalased tagatised, mida pooled peavad vajalikuks; kollektiivlepingu täitmise kontrollimise ja vajaliku teabe saamise korra.",
+      "estleg:legalText": "(2) Käesoleva seaduse § 3 2. lõike punktis 4 nimetatud poolte vahel sõlmitava kollektiivlepinguga võib kindlaks määrata: 1) palga alammäära ning selle korrigeerimise korra, lähtudes elukalliduse tõusust; 2) töötervishoiu ja tööohutuse tagamiseks rakendatavad lisaabinõud; 3) täiendavad tööhõivetagatised; 4) muud täiendavad tööalased tagatised, mida pooled peavad vajalikuks; 5) kollektiivlepingu täitmise kontrollimise ja vajaliku teabe saamise korra.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_6"
       },
       "rdfs:label": "§ 6 lg 2",
-      "estleg:itemNumber": "4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2025,12 +2195,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kollektiivlepingu sõlmimise kord",
+      "rdfs:label": {
+        "@value": "§ 7. Kollektiivlepingu sõlmimise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivleping sõlmitakse käesolevas seaduses ettenähtud lepingupoolte vahel läbirääkimiste teel vastastikuse usalduse ja vajaliku informatsiooni alusel. (2) Kollektiivlepingu projekti valmistab ette läbirääkimiste algataja ja esitab selle kirjalikult teisele poolele koos teatega soovist läbirääkimisi alustada. (3) Pooled alustavad läbirääkimisi seitsme päeva jooksul pärast vastava teate saamist. (4) Läbirääkimiste pidamiseks määravad pooled oma esindajad.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivleping sõlmitakse käesolevas seaduses ettenähtud lepingupoolte vahel läbirääkimiste teel vastastikuse usalduse ja vajaliku informatsiooni alusel. (2) Kollektiivlepingu projekti valmistab ette läbirääkimiste algataja ja esitab selle kirjalikult teisele poolele koos teatega soovist läbirääkimisi alustada. (3) Pooled alustavad läbirääkimisi seitsme päeva jooksul pärast vastava teate saamist. (4) Läbirääkimiste pidamiseks määravad pooled oma esindajad.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivleping sõlmitakse käesolevas seaduses ettenähtud lepingupoolte vahel läbirääkimiste teel vastastikuse usalduse ja vajaliku informatsiooni alusel. (2) Kollektiivlepingu projekti valmistab ette läbirääkimiste algataja ja esitab selle kirjalikult teisele poolele koos teatega soovist läbirääkimisi alustada. (3) Pooled alustavad läbirääkimisi seitsme päeva jooksul pärast vastava teate saamist. (4) Läbirääkimiste pidamiseks määravad pooled oma esindajad. Omavahelisel kokkuleppel võivad töötajate ühingud või liidud moodustada ühise esinduse ning sõlmida ühise kollektiivlepingu. (5) Läbirääkimisi peetakse poolte vahel kokkulepitud ajal. Läbirääkimiste pidamiseks tööajal vabastatakse poolte kokkuleppel nende esindajad põhitööst keskmise palga säilitamisega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_3"
@@ -2157,12 +2333,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Poolte õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 8. Poolte õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Pooltel on õigus kaasata läbirääkimistele ja kollektiivlepingu projekti koostamisele asjatundjaid ja eksperte ning moodustada pariteetsel alusel töörühmi. Asjatundjate ja ekspertide kutsumisega seotud kulud kannab neid kutsunud pool. (2) Läbirääkimistel osalevate poolte esindajad, asjatundjad, eksperdid ja teised kollektiivlepingu projekti väljatöötamisega seotud isikud peavad hoidma neile teatavaks saanud tootmis-, äri- või ametisaladusi.",
+      "estleg:summary": {
+        "@value": "(1) Pooltel on õigus kaasata läbirääkimistele ja kollektiivlepingu projekti koostamisele asjatundjaid ja eksperte ning moodustada pariteetsel alusel töörühmi. Asjatundjate ja ekspertide kutsumisega seotud kulud kannab neid kutsunud pool. (2) Läbirääkimistel osalevate poolte esindajad, asjatundjad, eksperdid ja teised kollektiivlepingu projekti väljatöötamisega seotud isikud peavad hoidma neile teatavaks saanud tootmis-, äri- või ametisaladusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Pooltel on õigus kaasata läbirääkimistele ja kollektiivlepingu projekti koostamisele asjatundjaid ja eksperte ning moodustada pariteetsel alusel töörühmi. Asjatundjate ja ekspertide kutsumisega seotud kulud kannab neid kutsunud pool. (2) Läbirääkimistel osalevate poolte esindajad, asjatundjad, eksperdid ja teised kollektiivlepingu projekti väljatöötamisega seotud isikud peavad hoidma neile teatavaks saanud tootmis-, äri- või ametisaladusi. Seda nõuet rikkunud isikud kannavad vastutust seadusega ettenähtud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_3"
@@ -2248,12 +2430,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Tagatised",
+      "rdfs:label": {
+        "@value": "§ 9. Tagatised",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Läbirääkimistes osalevate poolte esindajatega ei või töölepingut üles öelda töölepingu seaduse § 92 lõike 1 punktist 4 tuleneval põhjusel.",
+      "estleg:summary": {
+        "@value": "Läbirääkimistes osalevate poolte esindajatega ei või töölepingut üles öelda töölepingu seaduse § 92 lõike 1 punktist 4 tuleneval põhjusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Läbirääkimistes osalevate poolte esindajatega ei või töölepingut üles öelda töölepingu seaduse § 92 lõike 1 punktist 4 tuleneval põhjusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_3"
@@ -2296,10 +2484,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Läbirääkimistes osalevate poolte esindajatega ei või töölepingut üles öelda töölepingu seaduse § 92 lõike 1 punktist 4 tuleneval põhjusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Läbirääkimistes osalevate poolte esindajatega ei või töölepingut üles öelda töölepingu seaduse § 92 lõike 1 punktist 4 tuleneval põhjusel.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -2320,12 +2510,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Kollektiivlepingu sõlmimisel tekkivate vaidluste lahendamine",
+      "rdfs:label": {
+        "@value": "§ 10. Kollektiivlepingu sõlmimisel tekkivate vaidluste lahendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Kollektiivlepingu sõlmimisel tekkivad vaidlused lahendatakse kollektiivse töötüli lahendamise seaduse alusel.",
+      "estleg:summary": {
+        "@value": "Kollektiivlepingu sõlmimisel tekkivad vaidlused lahendatakse kollektiivse töötüli lahendamise seaduse alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kollektiivlepingu sõlmimisel tekkivad vaidlused lahendatakse kollektiivse töötüli lahendamise seaduse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_3"
@@ -2350,10 +2546,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kollektiivlepingu sõlmimisel tekkivad vaidlused lahendatakse kollektiivse töötüli lahendamise seaduse alusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kollektiivlepingu sõlmimisel tekkivad vaidlused lahendatakse kollektiivse töötüli lahendamise seaduse alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_10"
-      }
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_11",
@@ -2362,12 +2560,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Jõustumine ja kehtivus",
+      "rdfs:label": {
+        "@value": "§ 11. Jõustumine ja kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivleping jõustub sellele allakirjutamise päevast, kui kollektiivlepingus ei ole ette nähtud teisiti. (2) Kollektiivlepingu kehtivus on üks aasta, kui pooled ei ole kokku leppinud teisiti. (3) Kollektiivlepingu kehtivuse ajal on pooled kohustatud täitma kollektiivlepingus ettenähtud tingimusi ning mitte kuulutama välja streiki või töösulgu kollektiivlepingus sätestatud tingimuste muutmise ajendil (edaspidi – pidama töörahu). (4) Ettevõtte või selle organisatsiooniliselt iseseisva osa",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivleping jõustub sellele allakirjutamise päevast, kui kollektiivlepingus ei ole ette nähtud teisiti. (2) Kollektiivlepingu kehtivus on üks aasta, kui pooled ei ole kokku leppinud teisiti. (3) Kollektiivlepingu kehtivuse ajal on pooled kohustatud täitma kollektiivlepingus ettenähtud tingimusi ning mitte kuulutama välja streiki või töösulgu kollektiivlepingus sätestatud tingimuste muutmise ajendil (edaspidi – pidama töörahu). (4) Ettevõtte või selle organisatsiooniliselt iseseisva osa",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivleping jõustub sellele allakirjutamise päevast, kui kollektiivlepingus ei ole ette nähtud teisiti. (2) Kollektiivlepingu kehtivus on üks aasta, kui pooled ei ole kokku leppinud teisiti. (3) Kollektiivlepingu kehtivuse ajal on pooled kohustatud täitma kollektiivlepingus ettenähtud tingimusi ning mitte kuulutama välja streiki või töösulgu kollektiivlepingus sätestatud tingimuste muutmise ajendil (edaspidi – pidama töörahu). (4) Ettevõtte või selle organisatsiooniliselt iseseisva osa üleminekul ühelt isikult teisele läheb kollektiivleping üle ettevõtte omandajale. Ettevõtteks käesoleva seaduse tähenduses loetakse ka majandusüksust, mis ei kuulu ettevõtjale, samuti asutust ja muud organisatsiooni. (5) Kollektiivlepingu tähtaja möödumisel loetakse, et kollektiivleping on muutunud tähtajatuks, kui kumbki kollektiivlepingu pool ei teata vähemalt kolm kuud enne kollektiivlepingu tähtaja möödumist kirjalikult teisele poolele, et ta ei soovi lepingu pikenemist. Kollektiivlepingu tähtajatuks muutumise korral on pooled kuni uue kollektiivlepingu sõlmimiseni või kollektiivlepingu lõppemiseni selle ülesütlemise tõttu kohustatud täitma kollektiivlepingu tingimusi. Tähtajatu kollektiivlepingu võib kumbki lepingupool üles öelda, teatades sellest teisele poolele ette vähemalt kuus kuud. Alates kollektiivlepingu ülesütlemisest teatamisest lõpeb kollektiivlepingust tulenev töörahu pidamise kohustus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_3"
@@ -2515,12 +2719,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Kollektiivlepingu avalikustamine",
+      "rdfs:label": {
+        "@value": "§ 12. Kollektiivlepingu avalikustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Sõlmitud kollektiivleping peab olema kättesaadav kõigile, keda see puudutab. (2) Tööandja on kohustatud tutvustama kollektiivlepingut ettevõtte, asutuse või muu organisatsiooni kõigile töötajatele, samuti uutele töötajatele nende tööleasumisel.",
+      "estleg:summary": {
+        "@value": "(1) Sõlmitud kollektiivleping peab olema kättesaadav kõigile, keda see puudutab. (2) Tööandja on kohustatud tutvustama kollektiivlepingut ettevõtte, asutuse või muu organisatsiooni kõigile töötajatele, samuti uutele töötajatele nende tööleasumisel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Sõlmitud kollektiivleping peab olema kättesaadav kõigile, keda see puudutab. (2) Tööandja on kohustatud tutvustama kollektiivlepingut ettevõtte, asutuse või muu organisatsiooni kõigile töötajatele, samuti uutele töötajatele nende tööleasumisel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_3"
@@ -2614,12 +2824,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Kollektiivlepingu muutmine ja täiendamine",
+      "rdfs:label": {
+        "@value": "§ 13. Kollektiivlepingu muutmine ja täiendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Kollektiivlepingut täiendatakse ja muudetakse kollektiivlepingus ettenähtud korras. Kui nimetatud korda ei ole kindlaks määratud, siis muudetakse või täiendatakse kollektiivlepingut seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Kollektiivlepingut täiendatakse ja muudetakse kollektiivlepingus ettenähtud korras. Kui nimetatud korda ei ole kindlaks määratud, siis muudetakse või täiendatakse kollektiivlepingut seaduses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kollektiivlepingut täiendatakse ja muudetakse kollektiivlepingus ettenähtud korras. Kui nimetatud korda ei ole kindlaks määratud, siis muudetakse või täiendatakse kollektiivlepingut seaduses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_3"
@@ -2644,10 +2860,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kollektiivlepingut täiendatakse ja muudetakse kollektiivlepingus ettenähtud korras. Kui nimetatud korda ei ole kindlaks määratud, siis muudetakse või täiendatakse kollektiivlepingut seaduses sätestatud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kollektiivlepingut täiendatakse ja muudetakse kollektiivlepingus ettenähtud korras. Kui nimetatud korda ei ole kindlaks määratud, siis muudetakse või täiendatakse kollektiivlepingut seaduses sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_13"
-      }
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_14",
@@ -2656,12 +2874,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Täitmise kontrollimine",
+      "rdfs:label": {
+        "@value": "§ 14. Täitmise kontrollimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivlepingu täitmist kontrollivad poolte volitatud esindajad. (2) Kollektiivlepingu kohta informatsiooni andmise ja täitmise kontrollimise kord määratakse kollektiivlepinguga.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivlepingu täitmist kontrollivad poolte volitatud esindajad. (2) Kollektiivlepingu kohta informatsiooni andmise ja täitmise kontrollimise kord määratakse kollektiivlepinguga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivlepingu täitmist kontrollivad poolte volitatud esindajad. (2) Kollektiivlepingu kohta informatsiooni andmise ja täitmise kontrollimise kord määratakse kollektiivlepinguga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_4"
@@ -2716,12 +2940,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Täitmisel tekkivate vaidluste lahendamine",
+      "rdfs:label": {
+        "@value": "§ 15. Täitmisel tekkivate vaidluste lahendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Kollektiivlepingu täitmisel tekkivad vaidlused lahendatakse vastavalt kollektiivlepingus ettenähtud korrale ja kollektiivse töötüli lahendamise seadusele.",
+      "estleg:summary": {
+        "@value": "Kollektiivlepingu täitmisel tekkivad vaidlused lahendatakse vastavalt kollektiivlepingus ettenähtud korrale ja kollektiivse töötüli lahendamise seadusele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kollektiivlepingu täitmisel tekkivad vaidlused lahendatakse vastavalt kollektiivlepingus ettenähtud korrale ja kollektiivse töötüli lahendamise seadusele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_4"
@@ -2746,10 +2976,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kollektiivlepingu täitmisel tekkivad vaidlused lahendatakse vastavalt kollektiivlepingus ettenähtud korrale ja kollektiivse töötüli lahendamise seadusele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kollektiivlepingu täitmisel tekkivad vaidlused lahendatakse vastavalt kollektiivlepingus ettenähtud korrale ja kollektiivse töötüli lahendamise seadusele.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_15"
-      }
+      },
+      "rdfs:label": "§ 15 lg 1"
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_16",
@@ -2758,12 +2990,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Vastutus",
+      "rdfs:label": {
+        "@value": "§ 16. Vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Kollektiivlepingus ettenähtud kohustuste mittetäitmisel kannab süüdiolev pool vastutust seaduses ja kollektiivlepingus ettenähtud korras.",
+      "estleg:summary": {
+        "@value": "Kollektiivlepingus ettenähtud kohustuste mittetäitmisel kannab süüdiolev pool vastutust seaduses ja kollektiivlepingus ettenähtud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kollektiivlepingus ettenähtud kohustuste mittetäitmisel kannab süüdiolev pool vastutust seaduses ja kollektiivlepingus ettenähtud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_4"
@@ -2788,10 +3026,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kollektiivlepingus ettenähtud kohustuste mittetäitmisel kannab süüdiolev pool vastutust seaduses ja kollektiivlepingus ettenähtud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kollektiivlepingus ettenähtud kohustuste mittetäitmisel kannab süüdiolev pool vastutust seaduses ja kollektiivlepingus ettenähtud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_16"
-      }
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_16_1",
@@ -2800,18 +3040,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16¹.",
-      "rdfs:label": "§ 16¹. Riikliku ja haldusjärelevalve teostamine",
+      "rdfs:label": {
+        "@value": "§ 16¹. Riikliku ja haldusjärelevalve teostamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse nõuete, sealhulgas kollektiivlepingu laiendatud tingimuse täitmise üle teostab Tööinspektsioon. (2) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse nõuete, sealhulgas kollektiivlepingu laiendatud tingimuse täitmise üle teostab Tööinspektsioon. (2) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet käesoleva seaduse nõuete, sealhulgas kollektiivlepingu laiendatud tingimuse täitmise üle teostab Tööinspektsioon. (2) Tööinspektsioon võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_kollektiivlepingu_seadus_4"
+        "@id": "estleg:Cluster_kollektiivlepingu_seadus_4_16_16"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_kollektiivlepingu_seadus_4"
+        "@id": "estleg:Chapter_kollektiivlepingu_seadus_4_747dd79c"
       },
       "estleg:hasSubsection": [
         {
@@ -2942,18 +3188,23 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16².",
-      "rdfs:label": "§ 16². Ettekirjutuse vaidemenetlus",
+      "rdfs:label": {
+        "@value": "§ 16². Ettekirjutuse vaidemenetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 16². Ettekirjutuse vaidemenetlus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_kollektiivlepingu_seadus_4"
+        "@id": "estleg:Cluster_kollektiivlepingu_seadus_4_16_16"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_kollektiivlepingu_seadus_4"
+        "@id": "estleg:Chapter_kollektiivlepingu_seadus_4_747dd79c"
       },
       "estleg:hasVersion": [
         {
@@ -2977,12 +3228,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. [1 (1) Kollektiivlepingud ja kokkulepped, mis on sõlmitud enne käesoleva seaduse...]",
+      "rdfs:label": {
+        "@value": "§ 17. [(1) Kollektiivlepingud ja kokkulepped, mis on sõlmitud enne käesoleva seaduse jõ...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "(1) Kollektiivlepingud ja kokkulepped, mis on sõlmitud enne käesoleva seaduse jõustumist, kehtivad niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega. (2) Käesoleva seaduse § 11 lõikes 5 sätestatut kohaldatakse ka nendele kollektiivlepingutele, mis on sõlmitud enne 2012. aasta 1. maid.",
+      "estleg:summary": {
+        "@value": "(1) Kollektiivlepingud ja kokkulepped, mis on sõlmitud enne käesoleva seaduse jõustumist, kehtivad niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega. (2) Käesoleva seaduse § 11 lõikes 5 sätestatut kohaldatakse ka nendele kollektiivlepingutele, mis on sõlmitud enne 2012. aasta 1. maid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kollektiivlepingud ja kokkulepped, mis on sõlmitud enne käesoleva seaduse jõustumist, kehtivad niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega. (2) Käesoleva seaduse § 11 lõikes 5 sätestatut kohaldatakse ka nendele kollektiivlepingutele, mis on sõlmitud enne 2012. aasta 1. maid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_5"
@@ -3055,13 +3312,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17¹.",
-      "rdfs:label": "§ 17¹. Kollektiivlepingu laiendatud tingimuse kehtivus",
+      "rdfs:label": {
+        "@value": "§ 17¹. Kollektiivlepingu laiendatud tingimuse kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "Enne käesoleva seaduse jõustumist Ametlikes Teadaannetes avaldatud kollektiivlepingu laiendatud tingimus, mis ei vasta käesoleva seaduse § 42 lõikes 3 sätestatud nõuetele, kaotab kehtivuse 2021. aasta 31. detsembril, kui kollektiivlepingus ei ole sätestatud varasemat tähtpäeva.",
-      "estleg:legalText": "Enne käesoleva seaduse jõustumist Ametlikes Teadaannetes avaldatud kollektiivlepingu laiendatud tingimus, mis ei vasta käesoleva seaduse § 42 lõikes 3 sätestatud nõuetele, kaotab kehtivuse 2021. aasta 31. detsembril, kui kollektiivlepingus ei ole sätestatud varasemat tähtpäeva.",
+      "estleg:summary": {
+        "@value": "Enne käesoleva seaduse jõustumist Ametlikes Teadaannetes avaldatud kollektiivlepingu laiendatud tingimus, mis ei vasta käesoleva seaduse § 4² lõikes 3 sätestatud nõuetele, kaotab kehtivuse 2021. aasta 31. detsembril, kui kollektiivlepingus ei ole sätestatud varasemat tähtpäeva.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Enne käesoleva seaduse jõustumist Ametlikes Teadaannetes avaldatud kollektiivlepingu laiendatud tingimus, mis ei vasta käesoleva seaduse § 4² lõikes 3 sätestatud nõuetele, kaotab kehtivuse 2021. aasta 31. detsembril, kui kollektiivlepingus ei ole sätestatud varasemat tähtpäeva.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_5"
       },
@@ -3085,10 +3348,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Enne käesoleva seaduse jõustumist Ametlikes Teadaannetes avaldatud kollektiivlepingu laiendatud tingimus, mis ei vasta käesoleva seaduse § 42 lõikes 3 sätestatud nõuetele, kaotab kehtivuse 2021. aasta 31. detsembril, kui kollektiivlepingus ei ole sätestatud varasemat tähtpäeva.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist Ametlikes Teadaannetes avaldatud kollektiivlepingu laiendatud tingimus, mis ei vasta käesoleva seaduse § 4² lõikes 3 sätestatud nõuetele, kaotab kehtivuse 2021. aasta 31. detsembril, kui kollektiivlepingus ei ole sätestatud varasemat tähtpäeva.",
       "estleg:parentProvision": {
         "@id": "estleg:kollektiivlepingu_seadus_Par_17_1"
-      }
+      },
+      "rdfs:label": "§ 17¹ lg 1"
     },
     {
       "@id": "estleg:kollektiivlepingu_seadus_Par_18",
@@ -3097,12 +3362,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 18. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_kollektiivlepingu_seadus_5"
@@ -3120,70 +3391,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_kollektiivlepingu_seadus_P_4_4_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/511022026004",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_4_4"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "käesoleva seaduse § 42"
-    },
-    {
-      "@id": "estleg:Citation_kollektiivlepingu_seadus_P_4_4_Lg_1_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_4_4_Lg_1"
+      "eli:realizes": {
+        "@id": "estleg:kollektiivlepingu_seadus_Map"
       },
-      "estleg:citationText": "käesoleva seaduse § 42"
-    },
-    {
-      "@id": "estleg:Citation_kollektiivlepingu_seadus_P_4_6_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_4_6"
-      },
-      "estleg:citationText": "käesoleva seaduse §-des 42–45"
-    },
-    {
-      "@id": "estleg:Citation_kollektiivlepingu_seadus_P_4_6_Lg_2_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_4_6_Lg_2"
-      },
-      "estleg:citationText": "käesoleva seaduse §-des 42–45"
-    },
-    {
-      "@id": "estleg:Citation_kollektiivlepingu_seadus_P_17_1_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_17_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 42 lõikes 3"
-    },
-    {
-      "@id": "estleg:Citation_kollektiivlepingu_seadus_P_17_1_Lg_1_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:kollektiivlepingu_seadus_Par_17_1_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 42 lõikes 3"
+      "rdfs:label": {
+        "@value": "Collective Agreements Act",
+        "@language": "en"
+      }
     }
   ]
 }

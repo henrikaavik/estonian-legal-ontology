@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Õhusõidukite märgistamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Õhusõidukite märgistamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Õhusõidukite märgistamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "154074",
       "estleg:preambleText": "Määrus kehtestatakse lennundusseaduse § 22 lõike 2 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2000-03-04",
+        "@value": "2012-02-10",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2012-02-02",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2012-02-07",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_154074_581b764b50"
@@ -90,7 +92,13 @@
         {
           "@id": "estleg:Institution_transpordiamet"
         }
-      ]
+      ],
+      "dcterms:title": "Õhusõidukite märgistamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_154074_Par_1",
@@ -99,18 +107,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "Käesolev õhusõidukite märgistamise kord kehtib kõikide Eestis registreeritavate õhusõidukite kohta. RT I 2012-02-07 1 107022012001 2012-02-10",
-      "estleg:legalText": "Käesolev õhusõidukite märgistamise kord kehtib kõikide Eestis registreeritavate õhusõidukite kohta. RT I 2012-02-07 1 107022012001 2012-02-10 Käesolev õhusõidukite märgistamise kord kehtib kõikide Eestis registreeritavate õhusõidukite kohta.",
+      "estleg:summary": {
+        "@value": "Käesolev õhusõidukite märgistamise kord kehtib kõikide Eestis registreeritavate õhusõidukite kohta. RT I 2012-02-07 1 107022012001 2012-02-10",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev õhusõidukite märgistamise kord kehtib kõikide Eestis registreeritavate õhusõidukite kohta. RT I 2012-02-07 1 107022012001 2012-02-10",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_154074_Par_1_v154074"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev õhusõidukite märgistamise kord kehtib kõikide Eestis registreeritavate õhusõidukite kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_154074_Par_2",
@@ -119,13 +151,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Õhusõidukite tunnused",
+      "rdfs:label": {
+        "@value": "§ 2. Õhusõidukite tunnused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Õhusõidukite riiklikus registris registreeritavale õhusõidukile antakse riigi tunnus ja registreerimistunnus, mis koosnevad tähtede või tähtede ja numbrite kombinatsioonist. RT I 2012-02-07 1 107022012001 2012-02-10 Õhusõidukite riiklikus registris registreeritavale õhusõidukile antakse riigi tunnus ja registreerimistunnus, mis koosnevad tähtede või tähtede ja numbrite kombinatsioonist. 2 (2) Eestis registreeritud õhusõiduki riigi tunnus on ES (kaks esimest tähte sõnast ESTONIA). RT I 2012",
-      "estleg:legalText": "1 (1) Õhusõidukite riiklikus registris registreeritavale õhusõidukile antakse riigi tunnus ja registreerimistunnus, mis koosnevad tähtede või tähtede ja numbrite kombinatsioonist. RT I 2012-02-07 1 107022012001 2012-02-10 Õhusõidukite riiklikus registris registreeritavale õhusõidukile antakse riigi tunnus ja registreerimistunnus, mis koosnevad tähtede või tähtede ja numbrite kombinatsioonist. 2 (2) Eestis registreeritud õhusõiduki riigi tunnus on ES (kaks esimest tähte sõnast ESTONIA). RT I 2012-02-07 1 107022012001 2012-02-10 Eestis registreeritud õhusõiduki riigi tunnus on ES (kaks esimest tähte sõnast ESTONIA). 3 (3) Registreerimistunnus on kolmest tähest või purilennukil neljast numbrist koosnev kombinatsioon. Registreerimistunnus on kolmest tähest või purilennukil neljast numbrist koosnev kombinatsioon. 4 (4) Riigi tunnus ja registreerimistunnus (edaspidi tunnused) ühendatakse sidekriipsuga. Riigi tunnus ja registreerimistunnus (edaspidi tunnused) ühendatakse sidekriipsuga. 5 (5) Registreerimistunnuse annab välja Lennuamet. Registreerimistunnuse annab välja Lennuamet.",
+      "estleg:summary": {
+        "@value": "1 (1) Õhusõidukite riiklikus registris registreeritavale õhusõidukile antakse riigi tunnus ja registreerimistunnus, mis koosnevad tähtede või tähtede ja numbrite kombinatsioonist. RT I 2012-02-07 1 107022012001 2012-02-10 2 (2) Eestis registreeritud õhusõiduki riigi tunnus on ES (kaks esimest tähte sõnast ESTONIA). RT I 2012-02-07 1 107022012001 2012-02-10 3 (3) Registreerimistunnus on kolmest tähest või purilennukil neljast numbrist koosnev kombinatsioon.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õhusõidukite riiklikus registris registreeritavale õhusõidukile antakse riigi tunnus ja registreerimistunnus, mis koosnevad tähtede või tähtede ja numbrite kombinatsioonist. RT I 2012-02-07 1 107022012001 2012-02-10 2 (2) Eestis registreeritud õhusõiduki riigi tunnus on ES (kaks esimest tähte sõnast ESTONIA). RT I 2012-02-07 1 107022012001 2012-02-10 3 (3) Registreerimistunnus on kolmest tähest või purilennukil neljast numbrist koosnev kombinatsioon. 4 (4) Riigi tunnus ja registreerimistunnus (edaspidi tunnused) ühendatakse sidekriipsuga. 5 (5) Registreerimistunnuse annab välja Lennuamet.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_154074_Par_2_v154074"
@@ -141,7 +179,89 @@
         {
           "@id": "estleg:Institution_lennuamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_2_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õhusõidukite riiklikus registris registreeritavale õhusõidukile antakse riigi tunnus ja registreerimistunnus, mis koosnevad tähtede või tähtede ja numbrite kombinatsioonist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eestis registreeritud õhusõiduki riigi tunnus on ES (kaks esimest tähte sõnast ESTONIA).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Registreerimistunnus on kolmest tähest või purilennukil neljast numbrist koosnev kombinatsioon.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigi tunnus ja registreerimistunnus (edaspidi tunnused) ühendatakse sidekriipsuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Registreerimistunnuse annab välja Lennuamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
     },
     {
       "@id": "estleg:Reg_154074_Par_3",
@@ -150,13 +270,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Tunnuste kandmine õhusõidukile",
+      "rdfs:label": {
+        "@value": "§ 3. Tunnuste kandmine õhusõidukile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Tunnused kantakse õhusõidukile värviga või kinnitatakse viisil, mis tagab hea püsivuse ja loetavuse. Tunnused peavad olema selgelt eraldatavad, puhtad ja vigastusteta. Tunnused kantakse õhusõidukile värviga või kinnitatakse viisil, mis tagab hea püsivuse ja loetavuse. Tunnused peavad olema selgelt eraldatavad, puhtad ja vigastusteta. 2 (2) Tunnuste taustast erinev õhusõiduki värvkate ei tohi asetseda tunnustele lähemal kui 1/4 tunnuste kõrgusest. Tunnuste taustast erinev õhusõiduki värvkat",
-      "estleg:legalText": "1 (1) Tunnused kantakse õhusõidukile värviga või kinnitatakse viisil, mis tagab hea püsivuse ja loetavuse. Tunnused peavad olema selgelt eraldatavad, puhtad ja vigastusteta. Tunnused kantakse õhusõidukile värviga või kinnitatakse viisil, mis tagab hea püsivuse ja loetavuse. Tunnused peavad olema selgelt eraldatavad, puhtad ja vigastusteta. 2 (2) Tunnuste taustast erinev õhusõiduki värvkate ei tohi asetseda tunnustele lähemal kui 1/4 tunnuste kõrgusest. Tunnuste taustast erinev õhusõiduki värvkate ei tohi asetseda tunnustele lähemal kui 1/4 tunnuste kõrgusest. 3 (3) Iga õhusõiduk varustatakse tulekindlast materjalist tunnussildiga, millele on graveeritud või söövitatud õhusõiduki tunnused. Iga õhusõiduk varustatakse tulekindlast materjalist tunnussildiga, millele on graveeritud või söövitatud õhusõiduki tunnused.",
+      "estleg:summary": {
+        "@value": "1 (1) Tunnused kantakse õhusõidukile värviga või kinnitatakse viisil, mis tagab hea püsivuse ja loetavuse. Tunnused peavad olema selgelt eraldatavad, puhtad ja vigastusteta. 2 (2) Tunnuste taustast erinev õhusõiduki värvkate ei tohi asetseda tunnustele lähemal kui 1/4 tunnuste kõrgusest. 3 (3) Iga õhusõiduk varustatakse tulekindlast materjalist tunnussildiga, millele on graveeritud või söövitatud õhusõiduki tunnused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tunnused kantakse õhusõidukile värviga või kinnitatakse viisil, mis tagab hea püsivuse ja loetavuse. Tunnused peavad olema selgelt eraldatavad, puhtad ja vigastusteta. 2 (2) Tunnuste taustast erinev õhusõiduki värvkate ei tohi asetseda tunnustele lähemal kui 1/4 tunnuste kõrgusest. 3 (3) Iga õhusõiduk varustatakse tulekindlast materjalist tunnussildiga, millele on graveeritud või söövitatud õhusõiduki tunnused.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -168,7 +294,57 @@
         {
           "@id": "estleg:Reg_154074_Par_3_v154074"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_3_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tunnused kantakse õhusõidukile värviga või kinnitatakse viisil, mis tagab hea püsivuse ja loetavuse. Tunnused peavad olema selgelt eraldatavad, puhtad ja vigastusteta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tunnuste taustast erinev õhusõiduki värvkate ei tohi asetseda tunnustele lähemal kui 1/4 tunnuste kõrgusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Iga õhusõiduk varustatakse tulekindlast materjalist tunnussildiga, millele on graveeritud või söövitatud õhusõiduki tunnused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:Reg_154074_Par_4",
@@ -177,13 +353,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Märkide ja sümbolite kasutamise keeld",
+      "rdfs:label": {
+        "@value": "§ 4. Märkide ja sümbolite kasutamise keeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Õhusõidukile ei tohi kanda lisamärke või sümboleid, mis muudaksid tunnuste kuju või raskendaksid nende loetavust. Õhusõidukile ei tohi kanda lisamärke või sümboleid, mis muudaksid tunnuste kuju või raskendaksid nende loetavust. 2 (2) Registreerimistunnusena ei ole lubatud kasutada tähtede kombinatsiooni, mida võib segi ajada rahvusvaheliste signaalide viietähelise koodiga, kolmetähelist Q-tähega algavat kombinatsiooni või teiste häda- või kiirteadete signaalidega nagu SOS, PAN, XXX, TTT sa",
-      "estleg:legalText": "1 (1) Õhusõidukile ei tohi kanda lisamärke või sümboleid, mis muudaksid tunnuste kuju või raskendaksid nende loetavust. Õhusõidukile ei tohi kanda lisamärke või sümboleid, mis muudaksid tunnuste kuju või raskendaksid nende loetavust. 2 (2) Registreerimistunnusena ei ole lubatud kasutada tähtede kombinatsiooni, mida võib segi ajada rahvusvaheliste signaalide viietähelise koodiga, kolmetähelist Q-tähega algavat kombinatsiooni või teiste häda- või kiirteadete signaalidega nagu SOS, PAN, XXX, TTT samaseid kombinatsioone. Registreerimistunnusena ei ole lubatud kasutada tähtede kombinatsiooni, mida võib segi ajada rahvusvaheliste signaalide viietähelise koodiga, kolmetähelist Q-tähega algavat kombinatsiooni või teiste häda- või kiirteadete signaalidega nagu SOS, PAN, XXX, TTT samaseid kombinatsioone.",
+      "estleg:summary": {
+        "@value": "1 (1) Õhusõidukile ei tohi kanda lisamärke või sümboleid, mis muudaksid tunnuste kuju või raskendaksid nende loetavust. 2 (2) Registreerimistunnusena ei ole lubatud kasutada tähtede kombinatsiooni, mida võib segi ajada rahvusvaheliste signaalide viietähelise koodiga, kolmetähelist Q-tähega algavat kombinatsiooni või teiste häda- või kiirteadete signaalidega nagu SOS, PAN, XXX, TTT samaseid kombinatsioone.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õhusõidukile ei tohi kanda lisamärke või sümboleid, mis muudaksid tunnuste kuju või raskendaksid nende loetavust. 2 (2) Registreerimistunnusena ei ole lubatud kasutada tähtede kombinatsiooni, mida võib segi ajada rahvusvaheliste signaalide viietähelise koodiga, kolmetähelist Q-tähega algavat kombinatsiooni või teiste häda- või kiirteadete signaalidega nagu SOS, PAN, XXX, TTT samaseid kombinatsioone.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -195,7 +377,41 @@
         {
           "@id": "estleg:Reg_154074_Par_4_v154074"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õhusõidukile ei tohi kanda lisamärke või sümboleid, mis muudaksid tunnuste kuju või raskendaksid nende loetavust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registreerimistunnusena ei ole lubatud kasutada tähtede kombinatsiooni, mida võib segi ajada rahvusvaheliste signaalide viietähelise koodiga, kolmetähelist Q-tähega algavat kombinatsiooni või teiste häda- või kiirteadete signaalidega nagu SOS, PAN, XXX, TTT samaseid kombinatsioone.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_154074_Par_5",
@@ -204,13 +420,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Tunnuste kandmine jäigatiivalistele õhusõidukitele",
+      "rdfs:label": {
+        "@value": "§ 5. Tunnuste kandmine jäigatiivalistele õhusõidukitele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Monoplaani tiibadele kantakse tunnused vasaku pooltiiva alumisele küljele, biplaanil – alumise vasaku pooltiiva alumisele küljele. Lennuamet võib erandina lubada tunnused tiibadele kandmata jätta, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008, mis käsitleb tsiviillennunduse valdkonna ühiseeskirju ja millega luuakse Euroopa Lennundusohutusamet ning tunnistatakse kehtetuks nõukogu direktiiv 91/670/EMÜ, määrus (EÜ) nr 1592/2002 ning direkt",
-      "estleg:legalText": "1 (1) Monoplaani tiibadele kantakse tunnused vasaku pooltiiva alumisele küljele, biplaanil – alumise vasaku pooltiiva alumisele küljele. Lennuamet võib erandina lubada tunnused tiibadele kandmata jätta, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008, mis käsitleb tsiviillennunduse valdkonna ühiseeskirju ja millega luuakse Euroopa Lennundusohutusamet ning tunnistatakse kehtetuks nõukogu direktiiv 91/670/EMÜ, määrus (EÜ) nr 1592/2002 ning direktiiv 2004/36/EÜ (ELT L 79, 19.03.2008, lk 1–49), II lisas. RT I 2012-02-07 1 107022012001 2012-02-10 Monoplaani tiibadele kantakse tunnused vasaku pooltiiva alumisele küljele, biplaanil – alumise vasaku pooltiiva alumisele küljele. Lennuamet võib erandina lubada tunnused tiibadele kandmata jätta, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008, mis käsitleb tsiviillennunduse valdkonna ühiseeskirju ja millega luuakse Euroopa Lennundusohutusamet ning tunnistatakse kehtetuks nõukogu direktiiv 91/670/EMÜ, määrus (EÜ) nr 1592/2002 ning direktiiv 2004/36/EÜ (ELT L 79, 19.03.2008, lk 1–49), II lisas. 2 (2) Tunnuste kõrgus peab olema vähemalt 500 mm. Tunnused kantakse pooltiiva keskele ülaäärega lennu suunas. Tunnuste kõrgus peab olema vähemalt 500 mm. Tunnused kantakse pooltiiva keskele ülaäärega lennu suunas. 3 (3) Kui tunnused ei mahu vasakule pooltiivale, kantakse riigi tunnus ja sidekriips paremale pooltiivale, õhusõiduki registreerimistunnus vasakule pooltiivale. Kui tunnused ei mahu vasakule pooltiivale, kantakse riigi tunnus ja sidekriips paremale pooltiivale, õhusõiduki registreerimistunnus vasakule pooltiivale. 4 (4) Lisaks alaküljele võivad tunnused olla ka õhusõiduki ülaküljel. Lisaks alaküljele võivad tunnused olla ka õhusõiduki ülaküljel. 5 (5) Kerele või kiilule kantakse tunnused kere mõlemale poolele tiiva ja saba vahelisele kereosale või kiilu mõlemale küljele. Mitme kiiluga õhusõidukitel kantakse tunnus välimiste kiilude väliskülgedele. Kerele või kiilule kantakse tunnused kere mõlemale poolele tiiva ja saba vahelisele kereosale või kiilu mõlemale küljele. Mitme kiiluga õhusõidukitel kantakse tunnus välimiste kiilude väliskülgedele. 6 (6) Kerele või kiilule kantavad tunnused peavad olema vähemalt 300 mm kõrgused. Lennuamet võib erandina lubada kerele või kiilule kantavad tunnused teha madalamad, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008 II lisas. RT I 2012-02-07 1 107022012001 2012-02-10 Kerele või kiilule kantavad tunnused peavad olema vähemalt 300 mm kõrgused. Lennuamet võib erandina lubada kerele või kiilule kantavad tunnused teha madalamad, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008 II lisas. 7 (7) Tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja jätma igas suunas vähemalt 50 mm vaba ruumi. Tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja jätma igas suunas vähemalt 50 mm vaba ruumi.",
+      "estleg:summary": {
+        "@value": "1 (1) Monoplaani tiibadele kantakse tunnused vasaku pooltiiva alumisele küljele, biplaanil – alumise vasaku pooltiiva alumisele küljele. Lennuamet võib erandina lubada tunnused tiibadele kandmata jätta, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008, mis käsitleb tsiviillennunduse valdkonna ühiseeskirju ja millega luuakse Euroopa Lennundusohutusamet ning tunnistatakse kehtetuks nõukogu direktiiv 91/670/EMÜ, määrus (EÜ) nr 1592/2002 ning…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Monoplaani tiibadele kantakse tunnused vasaku pooltiiva alumisele küljele, biplaanil – alumise vasaku pooltiiva alumisele küljele. Lennuamet võib erandina lubada tunnused tiibadele kandmata jätta, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008, mis käsitleb tsiviillennunduse valdkonna ühiseeskirju ja millega luuakse Euroopa Lennundusohutusamet ning tunnistatakse kehtetuks nõukogu direktiiv 91/670/EMÜ, määrus (EÜ) nr 1592/2002 ning direktiiv 2004/36/EÜ (ELT L 79, 19.03.2008, lk 1–49), II lisas. RT I 2012-02-07 1 107022012001 2012-02-10 2 (2) Tunnuste kõrgus peab olema vähemalt 500 mm. Tunnused kantakse pooltiiva keskele ülaäärega lennu suunas. 3 (3) Kui tunnused ei mahu vasakule pooltiivale, kantakse riigi tunnus ja sidekriips paremale pooltiivale, õhusõiduki registreerimistunnus vasakule pooltiivale. 4 (4) Lisaks alaküljele võivad tunnused olla ka õhusõiduki ülaküljel. 5 (5) Kerele või kiilule kantakse tunnused kere mõlemale poolele tiiva ja saba vahelisele kereosale või kiilu mõlemale küljele. Mitme kiiluga õhusõidukitel kantakse tunnus välimiste kiilude väliskülgedele. 6 (6) Kerele või kiilule kantavad tunnused peavad olema vähemalt 300 mm kõrgused. Lennuamet võib erandina lubada kerele või kiilule kantavad tunnused teha madalamad, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008 II lisas. RT I 2012-02-07 1 107022012001 2012-02-10 7 (7) Tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja jätma igas suunas vähemalt 50 mm vaba ruumi.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -230,7 +452,121 @@
         {
           "@id": "estleg:Institution_lennundusohutusamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_5_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_5_Lg_7"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Monoplaani tiibadele kantakse tunnused vasaku pooltiiva alumisele küljele, biplaanil – alumise vasaku pooltiiva alumisele küljele. Lennuamet võib erandina lubada tunnused tiibadele kandmata jätta, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008, mis käsitleb tsiviillennunduse valdkonna ühiseeskirju ja millega luuakse Euroopa Lennundusohutusamet ning tunnistatakse kehtetuks nõukogu direktiiv 91/670/EMÜ, määrus (EÜ) nr 1592/2002 ning direktiiv 2004/36/EÜ (ELT L 79, 19.03.2008, lk 1–49), II lisas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tunnuste kõrgus peab olema vähemalt 500 mm. Tunnused kantakse pooltiiva keskele ülaäärega lennu suunas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui tunnused ei mahu vasakule pooltiivale, kantakse riigi tunnus ja sidekriips paremale pooltiivale, õhusõiduki registreerimistunnus vasakule pooltiivale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lisaks alaküljele võivad tunnused olla ka õhusõiduki ülaküljel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kerele või kiilule kantakse tunnused kere mõlemale poolele tiiva ja saba vahelisele kereosale või kiilu mõlemale küljele. Mitme kiiluga õhusõidukitel kantakse tunnus välimiste kiilude väliskülgedele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kerele või kiilule kantavad tunnused peavad olema vähemalt 300 mm kõrgused. Lennuamet võib erandina lubada kerele või kiilule kantavad tunnused teha madalamad, kui tegu on õhusõidukiga, mis on määratletud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 216/2008 II lisas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_5_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja jätma igas suunas vähemalt 50 mm vaba ruumi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 7"
     },
     {
       "@id": "estleg:Reg_154074_Par_6",
@@ -239,13 +575,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Tunnuste kandmine rootortiibadega õhusõidukitele",
+      "rdfs:label": {
+        "@value": "§ 6. Tunnuste kandmine rootortiibadega õhusõidukitele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Rootortiibadega õhusõiduki tunnused kantakse kere mõlemale poolele ja selle alapinnale. Rootortiibadega õhusõiduki tunnused kantakse kere mõlemale poolele ja selle alapinnale. 2 (2) Kere külgedele kantavad tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja olema vähemalt 300 mm kõrgused. Kere külgedele kantavad tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja olema vähemalt 300 mm kõrgused. 3 (3) Alapinnale kantavate tunnuste kõrgus peab olema 4/5 kere laiuses",
-      "estleg:legalText": "1 (1) Rootortiibadega õhusõiduki tunnused kantakse kere mõlemale poolele ja selle alapinnale. Rootortiibadega õhusõiduki tunnused kantakse kere mõlemale poolele ja selle alapinnale. 2 (2) Kere külgedele kantavad tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja olema vähemalt 300 mm kõrgused. Kere külgedele kantavad tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja olema vähemalt 300 mm kõrgused. 3 (3) Alapinnale kantavate tunnuste kõrgus peab olema 4/5 kere laiusest, kuid mitte üle 500 mm. Tunnuse lugemissuund peab olema eest taha. Alapinnale kantavate tunnuste kõrgus peab olema 4/5 kere laiusest, kuid mitte üle 500 mm. Tunnuse lugemissuund peab olema eest taha.",
+      "estleg:summary": {
+        "@value": "1 (1) Rootortiibadega õhusõiduki tunnused kantakse kere mõlemale poolele ja selle alapinnale. 2 (2) Kere külgedele kantavad tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja olema vähemalt 300 mm kõrgused. 3 (3) Alapinnale kantavate tunnuste kõrgus peab olema 4/5 kere laiusest, kuid mitte üle 500 mm. Tunnuse lugemissuund peab olema eest taha.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Rootortiibadega õhusõiduki tunnused kantakse kere mõlemale poolele ja selle alapinnale. 2 (2) Kere külgedele kantavad tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja olema vähemalt 300 mm kõrgused. 3 (3) Alapinnale kantavate tunnuste kõrgus peab olema 4/5 kere laiusest, kuid mitte üle 500 mm. Tunnuse lugemissuund peab olema eest taha.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -257,7 +599,57 @@
         {
           "@id": "estleg:Reg_154074_Par_6_v154074"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_6_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rootortiibadega õhusõiduki tunnused kantakse kere mõlemale poolele ja selle alapinnale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kere külgedele kantavad tunnused peavad asetsema paralleelselt õhusõiduki pikiteljega ja olema vähemalt 300 mm kõrgused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Alapinnale kantavate tunnuste kõrgus peab olema 4/5 kere laiusest, kuid mitte üle 500 mm. Tunnuse lugemissuund peab olema eest taha.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
     },
     {
       "@id": "estleg:Reg_154074_Par_7",
@@ -266,18 +658,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Tunnuste kandmine dirižaablitele",
+      "rdfs:label": {
+        "@value": "§ 7. Tunnuste kandmine dirižaablitele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Dirižaabli tunnused kantakse kerele või stabilisaatori pindadele. Dirižaabli tunnused kantakse kerele või stabilisaatori pindadele. 2 (2) Kerele kantakse tunnused mõlemale küljele ja samuti ülaosa sümmeetriateljele. Kerele kantakse tunnused mõlemale küljele ja samuti ülaosa sümmeetriateljele. 3 (3) Stabilisaatorile kantakse tunnused alumise vertikaalse stabilisaatori mõlemale küljele horisontaalselt ja horisontaalse stabilisaatori vasaku külje alapinnale ning parema külje ülapinnale tähted",
-      "estleg:legalText": "1 (1) Dirižaabli tunnused kantakse kerele või stabilisaatori pindadele. Dirižaabli tunnused kantakse kerele või stabilisaatori pindadele. 2 (2) Kerele kantakse tunnused mõlemale küljele ja samuti ülaosa sümmeetriateljele. Kerele kantakse tunnused mõlemale küljele ja samuti ülaosa sümmeetriateljele. 3 (3) Stabilisaatorile kantakse tunnused alumise vertikaalse stabilisaatori mõlemale küljele horisontaalselt ja horisontaalse stabilisaatori vasaku külje alapinnale ning parema külje ülapinnale tähtede ülaosaga liikumise suunas. Stabilisaatorile kantakse tunnused alumise vertikaalse stabilisaatori mõlemale küljele horisontaalselt ja horisontaalse stabilisaatori vasaku külje alapinnale ning parema külje ülapinnale tähtede ülaosaga liikumise suunas.",
+      "estleg:summary": {
+        "@value": "1 (1) Dirižaabli tunnused kantakse kerele või stabilisaatori pindadele. 2 (2) Kerele kantakse tunnused mõlemale küljele ja samuti ülaosa sümmeetriateljele. 3 (3) Stabilisaatorile kantakse tunnused alumise vertikaalse stabilisaatori mõlemale küljele horisontaalselt ja horisontaalse stabilisaatori vasaku külje alapinnale ning parema külje ülapinnale tähtede ülaosaga liikumise suunas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Dirižaabli tunnused kantakse kerele või stabilisaatori pindadele. 2 (2) Kerele kantakse tunnused mõlemale küljele ja samuti ülaosa sümmeetriateljele. 3 (3) Stabilisaatorile kantakse tunnused alumise vertikaalse stabilisaatori mõlemale küljele horisontaalselt ja horisontaalse stabilisaatori vasaku külje alapinnale ning parema külje ülapinnale tähtede ülaosaga liikumise suunas.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_154074_Par_7_v154074"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_7_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Dirižaabli tunnused kantakse kerele või stabilisaatori pindadele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kerele kantakse tunnused mõlemale küljele ja samuti ülaosa sümmeetriateljele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Stabilisaatorile kantakse tunnused alumise vertikaalse stabilisaatori mõlemale küljele horisontaalselt ja horisontaalse stabilisaatori vasaku külje alapinnale ning parema külje ülapinnale tähtede ülaosaga liikumise suunas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
     },
     {
       "@id": "estleg:Reg_154074_Par_8",
@@ -286,18 +734,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Tunnuste kandmine õhupallidele",
+      "rdfs:label": {
+        "@value": "§ 8. Tunnuste kandmine õhupallidele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Sfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse kahes kohas diametraalselt vastaskülgedele palli maksimaalse läbimõõdu lähedale. Sfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse kahes kohas diametraalselt vastaskülgedele palli maksimaalse läbimõõdu lähedale. 2 (2) Mittesfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse mõlemale küljele ülalpool taglasvööd või korvi trosside kinnituspunkte. Mittesfäärilist",
-      "estleg:legalText": "1 (1) Sfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse kahes kohas diametraalselt vastaskülgedele palli maksimaalse läbimõõdu lähedale. Sfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse kahes kohas diametraalselt vastaskülgedele palli maksimaalse läbimõõdu lähedale. 2 (2) Mittesfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse mõlemale küljele ülalpool taglasvööd või korvi trosside kinnituspunkte. Mittesfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse mõlemale küljele ülalpool taglasvööd või korvi trosside kinnituspunkte. 3 (3) Mehitamata õhupallide tunnused peavad olema kantud tunnussildile. Mehitamata õhupallide tunnused peavad olema kantud tunnussildile.",
+      "estleg:summary": {
+        "@value": "1 (1) Sfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse kahes kohas diametraalselt vastaskülgedele palli maksimaalse läbimõõdu lähedale. 2 (2) Mittesfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse mõlemale küljele ülalpool taglasvööd või korvi trosside kinnituspunkte. 3 (3) Mehitamata õhupallide tunnused peavad olema kantud tunnussildile.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse kahes kohas diametraalselt vastaskülgedele palli maksimaalse läbimõõdu lähedale. 2 (2) Mittesfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse mõlemale küljele ülalpool taglasvööd või korvi trosside kinnituspunkte. 3 (3) Mehitamata õhupallide tunnused peavad olema kantud tunnussildile.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_154074_Par_8_v154074"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_8_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse kahes kohas diametraalselt vastaskülgedele palli maksimaalse läbimõõdu lähedale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Mittesfääriliste õhupallide (välja arvatud mehitamata õhupallid) tunnused kantakse mõlemale küljele ülalpool taglasvööd või korvi trosside kinnituspunkte.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Mehitamata õhupallide tunnused peavad olema kantud tunnussildile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
     },
     {
       "@id": "estleg:Reg_154074_Par_9",
@@ -306,13 +810,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Tunnuste kandmine muudele õhusõidukitele",
+      "rdfs:label": {
+        "@value": "§ 9. Tunnuste kandmine muudele õhusõidukitele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Õhust kergemate õhusõidukite külgedele kantud tunnused peavad olema nähtavad nii külgedelt kui maa pealt vaadates. Õhust kergemate õhusõidukite külgedele kantud tunnused peavad olema nähtavad nii külgedelt kui maa pealt vaadates. 2 (2) Erikonstruktsiooniga õhusõidukitel, kui õhusõiduki konstruktsioonis puuduvad eespool nimetatud osad, peab tunnuse suurus võimaldama tunnust kergesti lugeda. Erikonstruktsiooniga õhusõidukitel, kui õhusõiduki konstruktsioonis puuduvad eespool nimetatud osad, ",
-      "estleg:legalText": "1 (1) Õhust kergemate õhusõidukite külgedele kantud tunnused peavad olema nähtavad nii külgedelt kui maa pealt vaadates. Õhust kergemate õhusõidukite külgedele kantud tunnused peavad olema nähtavad nii külgedelt kui maa pealt vaadates. 2 (2) Erikonstruktsiooniga õhusõidukitel, kui õhusõiduki konstruktsioonis puuduvad eespool nimetatud osad, peab tunnuse suurus võimaldama tunnust kergesti lugeda. Erikonstruktsiooniga õhusõidukitel, kui õhusõiduki konstruktsioonis puuduvad eespool nimetatud osad, peab tunnuse suurus võimaldama tunnust kergesti lugeda.",
+      "estleg:summary": {
+        "@value": "1 (1) Õhust kergemate õhusõidukite külgedele kantud tunnused peavad olema nähtavad nii külgedelt kui maa pealt vaadates. 2 (2) Erikonstruktsiooniga õhusõidukitel, kui õhusõiduki konstruktsioonis puuduvad eespool nimetatud osad, peab tunnuse suurus võimaldama tunnust kergesti lugeda.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õhust kergemate õhusõidukite külgedele kantud tunnused peavad olema nähtavad nii külgedelt kui maa pealt vaadates. 2 (2) Erikonstruktsiooniga õhusõidukitel, kui õhusõiduki konstruktsioonis puuduvad eespool nimetatud osad, peab tunnuse suurus võimaldama tunnust kergesti lugeda.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -324,7 +834,41 @@
         {
           "@id": "estleg:Reg_154074_Par_9_v154074"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õhust kergemate õhusõidukite külgedele kantud tunnused peavad olema nähtavad nii külgedelt kui maa pealt vaadates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Erikonstruktsiooniga õhusõidukitel, kui õhusõiduki konstruktsioonis puuduvad eespool nimetatud osad, peab tunnuse suurus võimaldama tunnust kergesti lugeda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_154074_Par_10",
@@ -333,13 +877,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Tunnuste tähtede ja numbrite kuju",
+      "rdfs:label": {
+        "@value": "§ 10. Tunnuste tähtede ja numbrite kuju",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Õhusõidukite märgistamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_154074_Map"
       },
-      "estleg:summary": "1 (1) Tunnuse märkimiseks kasutatakse ornamenteerimata suuri ladina tähti ja araabia numbreid. Tunnuse märkimiseks kasutatakse ornamenteerimata suuri ladina tähti ja araabia numbreid. 2 (2) Tähtede ja numbrite ümarate osade märkimiseks võib kasutada murdjoont. Tunnuste tähed ja numbrid peavad olema ühekõrgused ja asetsema ühel joonel. Kõikide tähtede ja numbrite kaldenurgad peavad olema võrdsed ja mitte üle 30° ning tähtede ja numbrite märkimiseks peab kasutama ühesugust joont (ümar- või murdjoo",
-      "estleg:legalText": "1 (1) Tunnuse märkimiseks kasutatakse ornamenteerimata suuri ladina tähti ja araabia numbreid. Tunnuse märkimiseks kasutatakse ornamenteerimata suuri ladina tähti ja araabia numbreid. 2 (2) Tähtede ja numbrite ümarate osade märkimiseks võib kasutada murdjoont. Tunnuste tähed ja numbrid peavad olema ühekõrgused ja asetsema ühel joonel. Kõikide tähtede ja numbrite kaldenurgad peavad olema võrdsed ja mitte üle 30° ning tähtede ja numbrite märkimiseks peab kasutama ühesugust joont (ümar- või murdjoont). Tähtede ja numbrite ümarate osade märkimiseks võib kasutada murdjoont. Tunnuste tähed ja numbrid peavad olema ühekõrgused ja asetsema ühel joonel. Kõikide tähtede ja numbrite kaldenurgad peavad olema võrdsed ja mitte üle 30° ning tähtede ja numbrite märkimiseks peab kasutama ühesugust joont (ümar- või murdjoont). 3 (3) Tähtede, numbrite ja sidekriipsu laius peab võrduma 2/3 sümboli kõrgusega. Märkimiseks kasutatakse pidevjoont laiusega 1/6 sümboli kõrgusest. Sümbolite vahe peab olema 1/4 nende kõrgusest. Tähtede, numbrite ja sidekriipsu laius peab võrduma 2/3 sümboli kõrgusega. Märkimiseks kasutatakse pidevjoont laiusega 1/6 sümboli kõrgusest. Sümbolite vahe peab olema 1/4 nende kõrgusest.",
+      "estleg:summary": {
+        "@value": "1 (1) Tunnuse märkimiseks kasutatakse ornamenteerimata suuri ladina tähti ja araabia numbreid. 2 (2) Tähtede ja numbrite ümarate osade märkimiseks võib kasutada murdjoont. Tunnuste tähed ja numbrid peavad olema ühekõrgused ja asetsema ühel joonel. Kõikide tähtede ja numbrite kaldenurgad peavad olema võrdsed ja mitte üle 30° ning tähtede ja numbrite märkimiseks peab kasutama ühesugust joont (ümar- või murdjoont). 3 (3) Tähtede, numbrite ja sidekriipsu laius peab võrduma 2/3 sümboli kõrgusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tunnuse märkimiseks kasutatakse ornamenteerimata suuri ladina tähti ja araabia numbreid. 2 (2) Tähtede ja numbrite ümarate osade märkimiseks võib kasutada murdjoont. Tunnuste tähed ja numbrid peavad olema ühekõrgused ja asetsema ühel joonel. Kõikide tähtede ja numbrite kaldenurgad peavad olema võrdsed ja mitte üle 30° ning tähtede ja numbrite märkimiseks peab kasutama ühesugust joont (ümar- või murdjoont). 3 (3) Tähtede, numbrite ja sidekriipsu laius peab võrduma 2/3 sümboli kõrgusega. Märkimiseks kasutatakse pidevjoont laiusega 1/6 sümboli kõrgusest. Sümbolite vahe peab olema 1/4 nende kõrgusest.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -350,6 +900,17 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_154074_Par_10_v154074"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_154074_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_154074_Par_10_Lg_3"
         }
       ]
     },
@@ -364,6 +925,45 @@
       },
       "estleg:citationDetail": "lg 2",
       "estleg:citationText": "Määrus kehtestatakse lennundusseaduse § 22 lõike 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tunnuse märkimiseks kasutatakse ornamenteerimata suuri ladina tähti ja araabia numbreid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tähtede ja numbrite ümarate osade märkimiseks võib kasutada murdjoont. Tunnuste tähed ja numbrid peavad olema ühekõrgused ja asetsema ühel joonel. Kõikide tähtede ja numbrite kaldenurgad peavad olema võrdsed ja mitte üle 30° ning tähtede ja numbrite märkimiseks peab kasutama ühesugust joont (ümar- või murdjoont).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_154074_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tähtede, numbrite ja sidekriipsu laius peab võrduma 2/3 sümboli kõrgusega. Märkimiseks kasutatakse pidevjoont laiusega 1/6 sümboli kõrgusest. Sümbolite vahe peab olema 1/4 nende kõrgusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_154074_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
     }
   ]
 }

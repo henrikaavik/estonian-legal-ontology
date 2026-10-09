@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Sadama registreerimistaotlusel kajastatavate andmete loetelu (määrus)",
+      "rdfs:label": {
+        "@value": "Sadama registreerimistaotlusel kajastatavate andmete loetelu (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1053857",
       "estleg:preambleText": "Määrus kehtestatakse sadamaseaduse § 40 lõike 5 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2022-04-04",
+        "@value": "2025-01-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2024-12-16",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-04-01",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1053857_f97a487132"
@@ -85,7 +87,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2498"
         }
-      ]
+      ],
+      "dcterms:title": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1053857_Par_1",
@@ -94,18 +102,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Sadama registreerimistaotlusel kajastatavate andmete loetelu",
+      "rdfs:label": {
+        "@value": "§ 1. Sadama registreerimistaotlusel kajastatavate andmete loetelu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse sadama põhiandmed, tehnilised andmed, sadama pidaja andmed, sadamakapteni andmed, maa-ala andmed, akvatooriumi andmed, teenindatavad veesõidukid, sadamateenused ja ehitiste andmed.",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse sadama põhiandmed, tehnilised andmed, sadama pidaja andmed, sadamakapteni andmed, maa-ala andmed, akvatooriumi andmed, teenindatavad veesõidukid, sadamateenused ja ehitiste andmed. Sadama registreerimistaotlusel kajastatakse sadama põhiandmed, tehnilised andmed, sadama pidaja andmed, sadamakapteni andmed, maa-ala andmed, akvatooriumi andmed, teenindatavad veesõidukid, sadamateenused ja ehitiste andmed.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse sadama põhiandmed, tehnilised andmed, sadama pidaja andmed, sadamakapteni andmed, maa-ala andmed, akvatooriumi andmed, teenindatavad veesõidukid, sadamateenused ja ehitiste andmed.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse sadama põhiandmed, tehnilised andmed, sadama pidaja andmed, sadamakapteni andmed, maa-ala andmed, akvatooriumi andmed, teenindatavad veesõidukid, sadamateenused ja ehitiste andmed.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_1_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse sadama põhiandmed, tehnilised andmed, sadama pidaja andmed, sadamakapteni andmed, maa-ala andmed, akvatooriumi andmed, teenindatavad veesõidukid, sadamateenused ja ehitiste andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1053857_Par_2",
@@ -114,17 +146,50 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Sadama põhiandmed",
+      "rdfs:label": {
+        "@value": "§ 2. Sadama põhiandmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse järgmised sadama põhiandmed: 1 1) sadama nimi, mis on määratud vastavalt kohanimeseadusele; 2 2) sadama aadress; 3 3) sadama telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 4 4) veekogu, millel asub sadama akvatoorium, liik ja nimi; 5 5) navigatsiooniperioodi algus ja lõpp; 6 6) sadama ülesanne – sadamateenuseid osutatakse sõltumata veesõiduki suurusest / sadamateenuseid osutatakse vaid alla 24-meetrise kogupikkusega veesõidukitele / väik",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama põhiandmed: 1 1) sadama nimi, mis on määratud vastavalt kohanimeseadusele; 2 2) sadama aadress; 3 3) sadama telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 4 4) veekogu, millel asub sadama akvatoorium, liik ja nimi; 5 5) navigatsiooniperioodi algus ja lõpp; 6 6) sadama ülesanne – sadamateenuseid osutatakse sõltumata veesõiduki suurusest / sadamateenuseid osutatakse vaid alla 24-meetrise kogupikkusega veesõidukitele / väikesadam, kus ei osutata tasulisi sadamateenuseid; 7 7) märge selle kohta, kas sadamas on võimalik teenindada välisriigi veesõidukit. Sadama registreerimistaotlusel kajastatakse järgmised sadama põhiandmed: sadama nimi, mis on määratud vastavalt kohanimeseadusele; sadama aadress; sadama telefoninumber, veebiaadress, e-posti aadress ja faksinumber; veekogu, millel asub sadama akvatoorium, liik ja nimi; navigatsiooniperioodi algus ja lõpp; sadama ülesanne – sadamateenuseid osutatakse sõltumata veesõiduki suurusest / sadamateenuseid osutatakse vaid alla 24-meetrise kogupikkusega veesõidukitele / väikesadam, kus ei osutata tasulisi sadamateenuseid; märge selle kohta, kas sadamas on võimalik teenindada välisriigi veesõidukit.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse järgmised sadama põhiandmed: 1 1) sadama nimi, mis on määratud vastavalt kohanimeseadusele; 2 2) sadama aadress; 3 3) sadama telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 4 4) veekogu, millel asub sadama akvatoorium, liik ja nimi; 5 5) navigatsiooniperioodi algus ja lõpp; 6 6) sadama ülesanne – sadamateenuseid osutatakse sõltumata veesõiduki suurusest / sadamateenuseid osutatakse vaid alla 24-meetrise kogupikkusega veesõidukitele /…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama põhiandmed: 1 1) sadama nimi, mis on määratud vastavalt kohanimeseadusele; 2 2) sadama aadress; 3 3) sadama telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 4 4) veekogu, millel asub sadama akvatoorium, liik ja nimi; 5 5) navigatsiooniperioodi algus ja lõpp; 6 6) sadama ülesanne – sadamateenuseid osutatakse sõltumata veesõiduki suurusest / sadamateenuseid osutatakse vaid alla 24-meetrise kogupikkusega veesõidukitele / väikesadam, kus ei osutata tasulisi sadamateenuseid; 7 7) märge selle kohta, kas sadamas on võimalik teenindada välisriigi veesõidukit.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_2_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_2_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse järgmised sadama põhiandmed: 1) sadama nimi, mis on määratud vastavalt kohanimeseadusele; 2) sadama aadress; 3) sadama telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 4) veekogu, millel asub sadama akvatoorium, liik ja nimi; 5) navigatsiooniperioodi algus ja lõpp; 6) sadama ülesanne – sadamateenuseid osutatakse sõltumata veesõiduki suurusest / sadamateenuseid osutatakse vaid alla 24-meetrise kogupikkusega veesõidukitele / väikesadam, kus ei osutata tasulisi sadamateenuseid; 7) märge selle kohta, kas sadamas on võimalik teenindada välisriigi veesõidukit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -134,17 +199,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Sadama tehnilised andmed",
+      "rdfs:label": {
+        "@value": "§ 3. Sadama tehnilised andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse järgmised sadama tehnilised andmed: 1 1) suurima sadamas teenindatava veesõiduki kogumahutavus; 2 2) sadamas teenindatava veesõiduki suurim süvis meetrites; 3 3) sadamas teenindatava veesõiduki suurim laius meetrites; 4 4) sadamas teenindatava veesõiduki suurim pikkus meetrites; 5 5) sadama sissesõidutee väikseim laius meetrites; 6 6) sadama sissesõidutee väikseim sügavus meetrites.",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama tehnilised andmed: 1 1) suurima sadamas teenindatava veesõiduki kogumahutavus; 2 2) sadamas teenindatava veesõiduki suurim süvis meetrites; 3 3) sadamas teenindatava veesõiduki suurim laius meetrites; 4 4) sadamas teenindatava veesõiduki suurim pikkus meetrites; 5 5) sadama sissesõidutee väikseim laius meetrites; 6 6) sadama sissesõidutee väikseim sügavus meetrites. Sadama registreerimistaotlusel kajastatakse järgmised sadama tehnilised andmed: suurima sadamas teenindatava veesõiduki kogumahutavus; sadamas teenindatava veesõiduki suurim süvis meetrites; sadamas teenindatava veesõiduki suurim laius meetrites; sadamas teenindatava veesõiduki suurim pikkus meetrites; sadama sissesõidutee väikseim laius meetrites; sadama sissesõidutee väikseim sügavus meetrites.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse järgmised sadama tehnilised andmed: 1 1) suurima sadamas teenindatava veesõiduki kogumahutavus; 2 2) sadamas teenindatava veesõiduki suurim süvis meetrites; 3 3) sadamas teenindatava veesõiduki suurim laius meetrites; 4 4) sadamas teenindatava veesõiduki suurim pikkus meetrites; 5 5) sadama sissesõidutee väikseim laius meetrites; 6 6) sadama sissesõidutee väikseim sügavus meetrites.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama tehnilised andmed: 1 1) suurima sadamas teenindatava veesõiduki kogumahutavus; 2 2) sadamas teenindatava veesõiduki suurim süvis meetrites; 3 3) sadamas teenindatava veesõiduki suurim laius meetrites; 4 4) sadamas teenindatava veesõiduki suurim pikkus meetrites; 5 5) sadama sissesõidutee väikseim laius meetrites; 6 6) sadama sissesõidutee väikseim sügavus meetrites.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_3_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_3_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse järgmised sadama tehnilised andmed: 1) suurima sadamas teenindatava veesõiduki kogumahutavus; 2) sadamas teenindatava veesõiduki suurim süvis meetrites; 3) sadamas teenindatava veesõiduki suurim laius meetrites; 4) sadamas teenindatava veesõiduki suurim pikkus meetrites; 5) sadama sissesõidutee väikseim laius meetrites; 6) sadama sissesõidutee väikseim sügavus meetrites.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -154,13 +251,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Sadama pidaja andmed",
+      "rdfs:label": {
+        "@value": "§ 4. Sadama pidaja andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse järgmised sadama pidaja andmed: 1 1) nimi; 2 2) isiku- või registrikood; 3 3) kontaktisiku nimi; 4 4) aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber. Sadama registreerimistaotlusel kajastatakse järgmised sadama pidaja andmed: nimi; isiku- või registrikood; kontaktisiku nimi; aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber.",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama pidaja andmed: 1 1) nimi; 2 2) isiku- või registrikood; 3 3) kontaktisiku nimi; 4 4) aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber. Sadama registreerimistaotlusel kajastatakse järgmised sadama pidaja andmed: nimi; isiku- või registrikood; kontaktisiku nimi; aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse järgmised sadama pidaja andmed: 1 1) nimi; 2 2) isiku- või registrikood; 3 3) kontaktisiku nimi; 4 4) aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama pidaja andmed: 1 1) nimi; 2 2) isiku- või registrikood; 3 3) kontaktisiku nimi; 4 4) aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -179,6 +282,30 @@
         {
           "@id": "estleg:Reg_1053857_Par_4_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_4_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse järgmised sadama pidaja andmed: 1) nimi; 2) isiku- või registrikood; 3) kontaktisiku nimi; 4) aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -188,17 +315,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Sadamakapteni andmed",
+      "rdfs:label": {
+        "@value": "§ 5. Sadamakapteni andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadamakapteni andmed: 1 1) ees- ja perekonnanimi; 2 2) isikukood; 3 3) kodakondsus; 4 4) telefoninumber ja e-posti aadress; 5 5) meresõidudiplomi või väikelaevajuhi tunnistuse number; 6 6) atesteerimise kuupäev, kui sadamakapten kuulub atesteerimisele.",
-      "estleg:legalText": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadamakapteni andmed: 1 1) ees- ja perekonnanimi; 2 2) isikukood; 3 3) kodakondsus; 4 4) telefoninumber ja e-posti aadress; 5 5) meresõidudiplomi või väikelaevajuhi tunnistuse number; 6 6) atesteerimise kuupäev, kui sadamakapten kuulub atesteerimisele. Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadamakapteni andmed: ees- ja perekonnanimi; isikukood; kodakondsus; telefoninumber ja e-posti aadress; meresõidudiplomi või väikelaevajuhi tunnistuse number; atesteerimise kuupäev, kui sadamakapten kuulub atesteerimisele.",
+      "estleg:summary": {
+        "@value": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadamakapteni andmed: 1 1) ees- ja perekonnanimi; 2 2) isikukood; 3 3) kodakondsus; 4 4) telefoninumber ja e-posti aadress; 5 5) meresõidudiplomi või väikelaevajuhi tunnistuse number; 6 6) atesteerimise kuupäev, kui sadamakapten kuulub atesteerimisele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadamakapteni andmed: 1 1) ees- ja perekonnanimi; 2 2) isikukood; 3 3) kodakondsus; 4 4) telefoninumber ja e-posti aadress; 5 5) meresõidudiplomi või väikelaevajuhi tunnistuse number; 6 6) atesteerimise kuupäev, kui sadamakapten kuulub atesteerimisele.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_5_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_5_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadamakapteni andmed: 1) ees- ja perekonnanimi; 2) isikukood; 3) kodakondsus; 4) telefoninumber ja e-posti aadress; 5) meresõidudiplomi või väikelaevajuhi tunnistuse number; 6) atesteerimise kuupäev, kui sadamakapten kuulub atesteerimisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -208,13 +367,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Sadama maa-ala andmed",
+      "rdfs:label": {
+        "@value": "§ 6. Sadama maa-ala andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse järgmised sadama maa-ala andmed: 1 1) pindala ruutmeetrites; 2 2) maa-ala piirid Maa- ja Ruumiameti geoportaali kaardirakendusest; RT I 2024-12-27 3 127122024003 2025-01-01 3 3) maa-alasse jäävate katastriüksuste tunnused; 4 4) sadama maa-ala kaldajoone punkti koordinaadid. Sadama registreerimistaotlusel kajastatakse järgmised sadama maa-ala andmed: pindala ruutmeetrites; maa-ala piirid Maa- ja Ruumiameti geoportaali kaardirakendusest; maa-alasse jääva",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama maa-ala andmed: 1 1) pindala ruutmeetrites; 2 2) maa-ala piirid Maa- ja Ruumiameti geoportaali kaardirakendusest; RT I 2024-12-27 3 127122024003 2025-01-01 3 3) maa-alasse jäävate katastriüksuste tunnused; 4 4) sadama maa-ala kaldajoone punkti koordinaadid. Sadama registreerimistaotlusel kajastatakse järgmised sadama maa-ala andmed: pindala ruutmeetrites; maa-ala piirid Maa- ja Ruumiameti geoportaali kaardirakendusest; maa-alasse jäävate katastriüksuste tunnused; sadama maa-ala kaldajoone punkti koordinaadid.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse järgmised sadama maa-ala andmed: 1 1) pindala ruutmeetrites; 2 2) maa-ala piirid Maa- ja Ruumiameti geoportaali kaardirakendusest; RT I 2024-12-27 3 127122024003 2025-01-01 3 3) maa-alasse jäävate katastriüksuste tunnused; 4 4) sadama maa-ala kaldajoone punkti koordinaadid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama maa-ala andmed: 1 1) pindala ruutmeetrites; 2 2) maa-ala piirid Maa- ja Ruumiameti geoportaali kaardirakendusest; RT I 2024-12-27 3 127122024003 2025-01-01 3 3) maa-alasse jäävate katastriüksuste tunnused; 4 4) sadama maa-ala kaldajoone punkti koordinaadid.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_6_v1053857"
@@ -224,6 +389,30 @@
         {
           "@id": "estleg:Institution_maa_ja_ruumiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_6_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse järgmised sadama maa-ala andmed: 1) pindala ruutmeetrites; 2) maa-ala piirid Maa- ja Ruumiameti geoportaali kaardirakendusest; 3) maa-alasse jäävate katastriüksuste tunnused; 4) sadama maa-ala kaldajoone punkti koordinaadid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -233,13 +422,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Sadama akvatooriumi andmed",
+      "rdfs:label": {
+        "@value": "§ 7. Sadama akvatooriumi andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadama akvatooriumi andmed: 1 1) akvatooriumi määramise õigusakti väljaandja asutus, liik, number ja väljaandmise kuupäev; 2 2) akvatooriumi pindala ruutmeetrites; 3 3) akvatooriumi piiripunktide koordinaadid. Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadama akvatooriumi andmed: akvatooriumi määramise õigusakti väl",
-      "estleg:legalText": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadama akvatooriumi andmed: 1 1) akvatooriumi määramise õigusakti väljaandja asutus, liik, number ja väljaandmise kuupäev; 2 2) akvatooriumi pindala ruutmeetrites; 3 3) akvatooriumi piiripunktide koordinaadid. Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadama akvatooriumi andmed: akvatooriumi määramise õigusakti väljaandja asutus, liik, number ja väljaandmise kuupäev; akvatooriumi pindala ruutmeetrites; akvatooriumi piiripunktide koordinaadid.",
+      "estleg:summary": {
+        "@value": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadama akvatooriumi andmed: 1 1) akvatooriumi määramise õigusakti väljaandja asutus, liik, number ja väljaandmise kuupäev; 2 2) akvatooriumi pindala ruutmeetrites; 3 3) akvatooriumi piiripunktide koordinaadid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadama akvatooriumi andmed: 1 1) akvatooriumi määramise õigusakti väljaandja asutus, liik, number ja väljaandmise kuupäev; 2 2) akvatooriumi pindala ruutmeetrites; 3 3) akvatooriumi piiripunktide koordinaadid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -253,6 +448,29 @@
         {
           "@id": "estleg:Reg_1053857_Par_7_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_7_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama, välja arvatud tasulisi teenuseid mitteosutava väikesadama registreerimistaotlusel kajastatakse järgmised sadama akvatooriumi andmed: 1) akvatooriumi määramise õigusakti väljaandja asutus, liik, number ja väljaandmise kuupäev; 2) akvatooriumi pindala ruutmeetrites; 3) akvatooriumi piiripunktide koordinaadid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -262,18 +480,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Sadamas teenindatavate veesõidukite liik ja kasutuspiirangud",
+      "rdfs:label": {
+        "@value": "§ 8. Sadamas teenindatavate veesõidukite liik ja kasutuspiirangud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse sadamas teenindatavate veesõidukite liik ja kasutuspiirangud.",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse sadamas teenindatavate veesõidukite liik ja kasutuspiirangud. Sadama registreerimistaotlusel kajastatakse sadamas teenindatavate veesõidukite liik ja kasutuspiirangud.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse sadamas teenindatavate veesõidukite liik ja kasutuspiirangud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse sadamas teenindatavate veesõidukite liik ja kasutuspiirangud.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_8_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_8_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse sadamas teenindatavate veesõidukite liik ja kasutuspiirangud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
     },
     {
       "@id": "estleg:Reg_1053857_Par_9",
@@ -282,17 +524,50 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Sadamateenuste andmed",
+      "rdfs:label": {
+        "@value": "§ 9. Sadamateenuste andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse järgmised sadamateenuste andmed: 1 1) põhiteenuse liik ja kirjeldus; 2 2) põhiteenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 3 3) lisateenuse liik, nimetus ja kirjeldus; 4 4) lisateenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 5 5) sadamas käideldava kaubagrupi liik; 6 6) abilaevade nimi, registritunnus ja kasutusotstarve; 7 7) tehnili",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadamateenuste andmed: 1 1) põhiteenuse liik ja kirjeldus; 2 2) põhiteenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 3 3) lisateenuse liik, nimetus ja kirjeldus; 4 4) lisateenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 5 5) sadamas käideldava kaubagrupi liik; 6 6) abilaevade nimi, registritunnus ja kasutusotstarve; 7 7) tehnilise vahendi liik, nimetus ja kasutustingimused. Sadama registreerimistaotlusel kajastatakse järgmised sadamateenuste andmed: põhiteenuse liik ja kirjeldus; põhiteenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; lisateenuse liik, nimetus ja kirjeldus; lisateenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; sadamas käideldava kaubagrupi liik; abilaevade nimi, registritunnus ja kasutusotstarve; tehnilise vahendi liik, nimetus ja kasutustingimused.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse järgmised sadamateenuste andmed: 1 1) põhiteenuse liik ja kirjeldus; 2 2) põhiteenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 3 3) lisateenuse liik, nimetus ja kirjeldus; 4 4) lisateenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 5 5) sadamas käideldava kaubagrupi liik; 6 6) abilaevade nimi, registritunnus ja kasutusotstarve; 7 7)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadamateenuste andmed: 1 1) põhiteenuse liik ja kirjeldus; 2 2) põhiteenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 3 3) lisateenuse liik, nimetus ja kirjeldus; 4 4) lisateenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 5 5) sadamas käideldava kaubagrupi liik; 6 6) abilaevade nimi, registritunnus ja kasutusotstarve; 7 7) tehnilise vahendi liik, nimetus ja kasutustingimused.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_9_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_9_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse järgmised sadamateenuste andmed: 1) põhiteenuse liik ja kirjeldus; 2) põhiteenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 3) lisateenuse liik, nimetus ja kirjeldus; 4) lisateenuse osutaja nimi, registrikood, aadress, telefoninumber, veebiaadress, e-posti aadress ja faksinumber; 5) sadamas käideldava kaubagrupi liik; 6) abilaevade nimi, registritunnus ja kasutusotstarve; 7) tehnilise vahendi liik, nimetus ja kasutustingimused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -302,17 +577,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Sadama ehitiste andmed",
+      "rdfs:label": {
+        "@value": "§ 10. Sadama ehitiste andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "Sadama registreerimistaotlusel kajastatakse järgmised sadama ehitiste andmed: 1 1) ehitise liik; 2 2) ehitise alamliik; 3 3) ehitise tehnilised andmed vastavalt ehitise liigile; 4 4) kai alamliik; 5 5) kai nimi; 6 6) kai ehitisregistri kood; 7 7) kai pikkus meetrites; 8 8) kai laius meetrites; 9 9) sügavus kai ääres meetrites; 10 10) kai kasutusperiood; 11 11) kail teenindatavad veesõidukid; 12 12) vendri tüüp ja arv; 13 13) haalamispollari tüüp ja arv; 14 14) rampide arv; 15 15) võimalus kail v",
-      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama ehitiste andmed: 1 1) ehitise liik; 2 2) ehitise alamliik; 3 3) ehitise tehnilised andmed vastavalt ehitise liigile; 4 4) kai alamliik; 5 5) kai nimi; 6 6) kai ehitisregistri kood; 7 7) kai pikkus meetrites; 8 8) kai laius meetrites; 9 9) sügavus kai ääres meetrites; 10 10) kai kasutusperiood; 11 11) kail teenindatavad veesõidukid; 12 12) vendri tüüp ja arv; 13 13) haalamispollari tüüp ja arv; 14 14) rampide arv; 15 15) võimalus kail varustada kütuse, joogivee või elektriga. Sadama registreerimistaotlusel kajastatakse järgmised sadama ehitiste andmed: ehitise liik; ehitise alamliik; ehitise tehnilised andmed vastavalt ehitise liigile; kai alamliik; kai nimi; kai ehitisregistri kood; kai pikkus meetrites; kai laius meetrites; sügavus kai ääres meetrites; kai kasutusperiood; kail teenindatavad veesõidukid; vendri tüüp ja arv; haalamispollari tüüp ja arv; rampide arv; võimalus kail varustada kütuse, joogivee või elektriga.",
+      "estleg:summary": {
+        "@value": "Sadama registreerimistaotlusel kajastatakse järgmised sadama ehitiste andmed: 1 1) ehitise liik; 2 2) ehitise alamliik; 3 3) ehitise tehnilised andmed vastavalt ehitise liigile; 4 4) kai alamliik; 5 5) kai nimi; 6 6) kai ehitisregistri kood; 7 7) kai pikkus meetrites; 8 8) kai laius meetrites; 9 9) sügavus kai ääres meetrites; 10 10) kai kasutusperiood; 11 11) kail teenindatavad veesõidukid; 12 12) vendri tüüp ja arv; 13 13) haalamispollari tüüp ja arv; 14 14) rampide arv; 15 15) võimalus kail…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sadama registreerimistaotlusel kajastatakse järgmised sadama ehitiste andmed: 1 1) ehitise liik; 2 2) ehitise alamliik; 3 3) ehitise tehnilised andmed vastavalt ehitise liigile; 4 4) kai alamliik; 5 5) kai nimi; 6 6) kai ehitisregistri kood; 7 7) kai pikkus meetrites; 8 8) kai laius meetrites; 9 9) sügavus kai ääres meetrites; 10 10) kai kasutusperiood; 11 11) kail teenindatavad veesõidukid; 12 12) vendri tüüp ja arv; 13 13) haalamispollari tüüp ja arv; 14 14) rampide arv; 15 15) võimalus kail varustada kütuse, joogivee või elektriga.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_10_v1053857"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_10_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sadama registreerimistaotlusel kajastatakse järgmised sadama ehitiste andmed: 1) ehitise liik; 2) ehitise alamliik; 3) ehitise tehnilised andmed vastavalt ehitise liigile; 4) kai alamliik; 5) kai nimi; 6) kai ehitisregistri kood; 7) kai pikkus meetrites; 8) kai laius meetrites; 9) sügavus kai ääres meetrites; 10) kai kasutusperiood; 11) kail teenindatavad veesõidukid; 12) vendri tüüp ja arv; 13) haalamispollari tüüp ja arv; 14) rampide arv; 15) võimalus kail varustada kütuse, joogivee või elektriga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
       ]
     },
     {
@@ -322,16 +638,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 11. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Sadama registreerimistaotlusel kajastatavate andmete loetelu",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1053857_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud.] [Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1053857_Par_11_v1053857"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1053857_Par_11_Lg_1"
         }
       ]
     },
@@ -346,6 +673,19 @@
       },
       "estleg:citationDetail": "lg 5",
       "estleg:citationText": "Määrus kehtestatakse sadamaseaduse § 40 lõike 5"
+    },
+    {
+      "@id": "estleg:Reg_1053857_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) [Käesolevast tekstist välja jäetud.]",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1053857_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     }
   ]
 }

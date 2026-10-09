@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:PSVVJPTLR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Act to Regulate Dissemination of Works which Contain Pornography or Promote Violence or Cruelty",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072014106.xml"
+        "@id": "https://www.riigiteataja.ee/akt/112072014106"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/112072014106/xml"
+      },
+      "estleg:globalId": "112072014106",
+      "eli:id_local": "112072014106",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "152067",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "60eca7d0016150a078a57a1fe087421a8aaf025660fb3c51ec35393a85408653",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1998-05-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2015-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2015-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/520012015009"
@@ -99,14 +111,40 @@
         {
           "@id": "estleg:Institution_kultuuriministeerium"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/520012015009"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_PSVVJPTLR_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–6 KEELUD JA NÕUDED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–6 KEELUD JA NÕUDED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:PSVVJPTLR_TopicScheme"
+      },
+      "estleg:provisionCount": 7
     },
     {
       "@id": "estleg:PSVVJPTLR_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_PSVVJPTLR_1"
@@ -126,26 +164,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_PSVVJPTLR_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–6 KEELUD JA NÕUDED",
-      "skos:prefLabel": "§1–6 KEELUD JA NÕUDED",
-      "skos:inScheme": {
-        "@id": "estleg:PSVVJPTLR_TopicScheme"
-      },
-      "estleg:provisionCount": 6
-    },
-    {
       "@id": "estleg:Chapter_PSVVJPTLR_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – KEELUD JA NÕUDED",
+      "rdfs:label": {
+        "@value": "1. peatükk – KEELUD JA NÕUDED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
@@ -165,8 +192,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§7–11 TEOSE SISU MÄÄRATLEMINE",
-      "skos:prefLabel": "§7–11 TEOSE SISU MÄÄRATLEMINE",
+      "rdfs:label": {
+        "@value": "§7–11 TEOSE SISU MÄÄRATLEMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§7–11 TEOSE SISU MÄÄRATLEMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PSVVJPTLR_TopicScheme"
       },
@@ -178,7 +211,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – TEOSE SISU MÄÄRATLEMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – TEOSE SISU MÄÄRATLEMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
@@ -198,12 +234,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§12–15 RIIKLIK JÄRELEVALVE",
-      "skos:prefLabel": "§12–15 RIIKLIK JÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "§12–15 RIIKLIK JÄRELEVALVE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§12–15 RIIKLIK JÄRELEVALVE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PSVVJPTLR_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:Chapter_PSVVJPTLR_3",
@@ -211,7 +253,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – RIIKLIK JÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "3. peatükk – RIIKLIK JÄRELEVALVE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
@@ -231,8 +276,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§15–15 VASTUTUS",
-      "skos:prefLabel": "§15–15 VASTUTUS",
+      "rdfs:label": {
+        "@value": "§15–15 VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§15–15 VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PSVVJPTLR_TopicScheme"
       },
@@ -244,7 +295,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – VASTUTUS",
+      "rdfs:label": {
+        "@value": "3. peatükk – VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
@@ -264,8 +318,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–19 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§16–19 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§16–19 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–19 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PSVVJPTLR_TopicScheme"
       },
@@ -277,7 +337,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
@@ -297,13 +360,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Teose levitamise ja demonstreerimisega seonduvad keelud",
+      "rdfs:label": {
+        "@value": "§ 1. Teose levitamise ja demonstreerimisega seonduvad keelud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "(1) Pornograafilise sisuga ja vägivalda või julmust propageeriva teose levitamine ja demonstreerimine alaealisele on keelatud. (2) Käesoleva seaduse mõistes on: teose levitamine – teose või selle mis tahes vormis produtseeritud koopiate müümine, laenutamine või muul viisil üleandmine; teose demonstreerimine – teose või selle koopiate näitamine vahetult või tehnilise vahendi abil; pornograafia – selline kujutamisviis, mis teisi inimlikke seoseid kõrvale või tahaplaanile jättes seksuaalsed",
-      "estleg:legalText": "(1) Pornograafilise sisuga ja vägivalda või julmust propageeriva teose levitamine ja demonstreerimine alaealisele on keelatud. (2) Käesoleva seaduse mõistes on: teose levitamine – teose või selle mis tahes vormis produtseeritud koopiate müümine, laenutamine või muul viisil üleandmine; teose demonstreerimine – teose või selle koopiate näitamine vahetult või tehnilise vahendi abil; pornograafia – selline kujutamisviis, mis teisi inimlikke seoseid kõrvale või tahaplaanile jättes seksuaalsed toimingud labaselt ja pealetükkivalt esiplaanile toob; vägivalla või julmuse propageerimine – enesekaitseliselt õigustatud piire ületava vägivalla või julmuse kujutamine heakskiitval viisil, eesmärgiga levitada inimeste hulgas vägivaldset või julma käitumist. (3) Pornograafilise sisuga ja vägivalda või julmust propageeriva televisiooni- või raadiosaate edastamine Eestis televisiooni- või raadiosaadete edastamise õigust omava isiku poolt on keelatud. (4) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Pornograafilise sisuga ja vägivalda või julmust propageeriva teose levitamine ja demonstreerimine alaealisele on keelatud. (2) Käesoleva seaduse mõistes on: 1) teose levitamine – teose või selle mis tahes vormis produtseeritud koopiate müümine, laenutamine või muul viisil üleandmine; 2) teose demonstreerimine – teose või selle koopiate näitamine vahetult või tehnilise vahendi abil; 3) pornograafia – selline kujutamisviis, mis teisi inimlikke seoseid kõrvale või tahaplaanile jättes",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Pornograafilise sisuga ja vägivalda või julmust propageeriva teose levitamine ja demonstreerimine alaealisele on keelatud. (2) Käesoleva seaduse mõistes on: 1) teose levitamine – teose või selle mis tahes vormis produtseeritud koopiate müümine, laenutamine või muul viisil üleandmine; 2) teose demonstreerimine – teose või selle koopiate näitamine vahetult või tehnilise vahendi abil; 3) pornograafia – selline kujutamisviis, mis teisi inimlikke seoseid kõrvale või tahaplaanile jättes seksuaalsed toimingud labaselt ja pealetükkivalt esiplaanile toob; 4) vägivalla või julmuse propageerimine – enesekaitseliselt õigustatud piire ületava vägivalla või julmuse kujutamine heakskiitval viisil, eesmärgiga levitada inimeste hulgas vägivaldset või julma käitumist. (3) Pornograafilise sisuga ja vägivalda või julmust propageeriva televisiooni- või raadiosaate edastamine Eestis televisiooni- või raadiosaadete edastamise õigust omava isiku poolt on keelatud. (4) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_1"
       },
@@ -378,11 +447,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva seaduse mõistes on: teose levitamine – teose või selle mis tahes vormis produtseeritud koopiate müümine, laenutamine või muul viisil üleandmine; teose demonstreerimine – teose või selle koopiate näitamine vahetult või tehnilise vahendi abil; pornograafia – selline kujutamisviis, mis teisi inimlikke seoseid kõrvale või tahaplaanile jättes seksuaalsed toimingud labaselt ja pealetükkivalt esiplaanile toob; vägivalla või julmuse propageerimine – enesekaitseliselt õigustatud piire ületava vägivalla või julmuse kujutamine heakskiitval viisil, eesmärgiga levitada inimeste hulgas vägivaldset või julma käitumist.",
+      "estleg:legalText": "(2) Käesoleva seaduse mõistes on: 1) teose levitamine – teose või selle mis tahes vormis produtseeritud koopiate müümine, laenutamine või muul viisil üleandmine; 2) teose demonstreerimine – teose või selle koopiate näitamine vahetult või tehnilise vahendi abil; 3) pornograafia – selline kujutamisviis, mis teisi inimlikke seoseid kõrvale või tahaplaanile jättes seksuaalsed toimingud labaselt ja pealetükkivalt esiplaanile toob; 4) vägivalla või julmuse propageerimine – enesekaitseliselt õigustatud piire ületava vägivalla või julmuse kujutamine heakskiitval viisil, eesmärgiga levitada inimeste hulgas vägivaldset või julma käitumist.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_1"
       },
       "rdfs:label": "§ 1 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:MEEDIA_Par_19_Lg_2"
@@ -434,13 +509,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Teoste levitamine ja demonstreerimine spetsialiseeritud tegevuskohas",
+      "rdfs:label": {
+        "@value": "§ 2. Teoste levitamine ja demonstreerimine spetsialiseeritud tegevuskohas",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "(1) Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamiseks või demonstreerimiseks töötava kaupluse, kino, videosaali või muu tegevuskoha (edaspidi spetsialiseeritud tegevuskoht) ruumides ei või viibida alaealine. (jõustumine muudetud - RT I, 22.12.2013, 1) (2) Spetsialiseeritud tegevuskohas peab olema välja pandud teade «alaealistele keelatud». (3) Pornograafilise sisuga ja vägivalda või julmust propageerivaid teoseid võib demonstreerida ainult spetsialiseeritud",
-      "estleg:legalText": "(1) Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamiseks või demonstreerimiseks töötava kaupluse, kino, videosaali või muu tegevuskoha (edaspidi spetsialiseeritud tegevuskoht) ruumides ei või viibida alaealine. (jõustumine muudetud - RT I, 22.12.2013, 1) (2) Spetsialiseeritud tegevuskohas peab olema välja pandud teade «alaealistele keelatud». (3) Pornograafilise sisuga ja vägivalda või julmust propageerivaid teoseid võib demonstreerida ainult spetsialiseeritud tegevuskohas.",
+      "estleg:summary": {
+        "@value": "(1) Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamiseks või demonstreerimiseks töötava kaupluse, kino, videosaali või muu tegevuskoha (edaspidi spetsialiseeritud tegevuskoht) ruumides ei või viibida alaealine. (2) Spetsialiseeritud tegevuskohas peab olema välja pandud teade «alaealistele keelatud». (3) Pornograafilise sisuga ja vägivalda või julmust propageerivaid teoseid võib demonstreerida ainult spetsialiseeritud tegevuskohas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamiseks või demonstreerimiseks töötava kaupluse, kino, videosaali või muu tegevuskoha (edaspidi spetsialiseeritud tegevuskoht) ruumides ei või viibida alaealine. (2) Spetsialiseeritud tegevuskohas peab olema välja pandud teade «alaealistele keelatud». (3) Pornograafilise sisuga ja vägivalda või julmust propageerivaid teoseid võib demonstreerida ainult spetsialiseeritud tegevuskohas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_1"
       },
@@ -492,7 +573,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamiseks või demonstreerimiseks töötava kaupluse, kino, videosaali või muu tegevuskoha (edaspidi spetsialiseeritud tegevuskoht) ruumides ei või viibida alaealine. (jõustumine muudetud - RT I, 22.12.2013, 1)",
+      "estleg:legalText": "(1) Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamiseks või demonstreerimiseks töötava kaupluse, kino, videosaali või muu tegevuskoha (edaspidi spetsialiseeritud tegevuskoht) ruumides ei või viibida alaealine.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_2"
       },
@@ -552,13 +633,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Teoste levitamine väljaspool spetsialiseeritud tegevuskohta",
+      "rdfs:label": {
+        "@value": "§ 3. Teoste levitamine väljaspool spetsialiseeritud tegevuskohta",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamisel väljaspool spetsialiseeritud tegevuskohta: peab pakkumine olema korraldatud viisil, mis ei võimalda alaealisel teosega tutvuda; ei tohi teoseid nähtavale kohale välja panna.",
-      "estleg:legalText": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamisel väljaspool spetsialiseeritud tegevuskohta: peab pakkumine olema korraldatud viisil, mis ei võimalda alaealisel teosega tutvuda; ei tohi teoseid nähtavale kohale välja panna.",
+      "estleg:summary": {
+        "@value": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamisel väljaspool spetsialiseeritud tegevuskohta: 1) peab pakkumine olema korraldatud viisil, mis ei võimalda alaealisel teosega tutvuda; 2) ei tohi teoseid nähtavale kohale välja panna.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamisel väljaspool spetsialiseeritud tegevuskohta: 1) peab pakkumine olema korraldatud viisil, mis ei võimalda alaealisel teosega tutvuda; 2) ei tohi teoseid nähtavale kohale välja panna.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_1"
       },
@@ -589,10 +676,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamisel väljaspool spetsialiseeritud tegevuskohta: peab pakkumine olema korraldatud viisil, mis ei võimalda alaealisel teosega tutvuda; ei tohi teoseid nähtavale kohale välja panna.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste levitamisel väljaspool spetsialiseeritud tegevuskohta: 1) peab pakkumine olema korraldatud viisil, mis ei võimalda alaealisel teosega tutvuda; 2) ei tohi teoseid nähtavale kohale välja panna.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -608,12 +701,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Teoste levitamise ja demonstreerimise nõuete täitmine",
+      "rdfs:label": {
+        "@value": "§ 4. Teoste levitamise ja demonstreerimise nõuete täitmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse §-des 2 ja 3 sätestatud nõuete täitmise tagab teoste levitamise või demonstreerimisega tegelev füüsiline või juriidiline isik (edaspidi ettevõtja). (2) Kahtluse korral, kas tegemist on alaealisega, on ettevõtjal või temaga töösuhetes oleval isikul õigus kontrollida isikut tõendavat dokumenti.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse §-des 2 ja 3 sätestatud nõuete täitmise tagab teoste levitamise või demonstreerimisega tegelev füüsiline või juriidiline isik (edaspidi ettevõtja). (2) Kahtluse korral, kas tegemist on alaealisega, on ettevõtjal või temaga töösuhetes oleval isikul õigus kontrollida isikut tõendavat dokumenti.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse §-des 2 ja 3 sätestatud nõuete täitmise tagab teoste levitamise või demonstreerimisega tegelev füüsiline või juriidiline isik (edaspidi ettevõtja). (2) Kahtluse korral, kas tegemist on alaealisega, on ettevõtjal või temaga töösuhetes oleval isikul õigus kontrollida isikut tõendavat dokumenti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_1"
@@ -711,13 +810,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Nõuded spetsialiseeritud tegevuskohale",
+      "rdfs:label": {
+        "@value": "§ 5. Nõuded spetsialiseeritud tegevuskohale",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Spetsialiseeritud tegevuskoht ei või asuda koolide ja lasteasutuste läheduses. (jõustumine muudetud - RT I, 22.12.2013, 1)",
-      "estleg:legalText": "Spetsialiseeritud tegevuskoht ei või asuda koolide ja lasteasutuste läheduses. (jõustumine muudetud - RT I, 22.12.2013, 1)",
+      "estleg:summary": {
+        "@value": "Spetsialiseeritud tegevuskoht ei või asuda koolide ja lasteasutuste läheduses.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Spetsialiseeritud tegevuskoht ei või asuda koolide ja lasteasutuste läheduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_1"
       },
@@ -756,10 +861,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Spetsialiseeritud tegevuskoht ei või asuda koolide ja lasteasutuste läheduses. (jõustumine muudetud - RT I, 22.12.2013, 1)",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Spetsialiseeritud tegevuskoht ei või asuda koolide ja lasteasutuste läheduses.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_5"
       },
+      "rdfs:label": "§ 5 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -780,13 +887,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5¹.",
-      "rdfs:label": "§ 5¹. Teatamiskohustus",
+      "rdfs:label": {
+        "@value": "§ 5¹. Teatamiskohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Ettevõtja peab esitama pornograafilise sisuga ja vägivalda või julmust propageerivate teoste demonstreerimiseks majandustegevusteate. (jõustumine muudetud - RT I, 22.12.2013, 1)",
-      "estleg:legalText": "Ettevõtja peab esitama pornograafilise sisuga ja vägivalda või julmust propageerivate teoste demonstreerimiseks majandustegevusteate. (jõustumine muudetud - RT I, 22.12.2013, 1)",
+      "estleg:summary": {
+        "@value": "Ettevõtja peab esitama pornograafilise sisuga ja vägivalda või julmust propageerivate teoste demonstreerimiseks majandustegevusteate.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ettevõtja peab esitama pornograafilise sisuga ja vägivalda või julmust propageerivate teoste demonstreerimiseks majandustegevusteate.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_1"
       },
@@ -827,10 +940,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ettevõtja peab esitama pornograafilise sisuga ja vägivalda või julmust propageerivate teoste demonstreerimiseks majandustegevusteate. (jõustumine muudetud - RT I, 22.12.2013, 1)",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettevõtja peab esitama pornograafilise sisuga ja vägivalda või julmust propageerivate teoste demonstreerimiseks majandustegevusteate.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_5_1"
       },
+      "rdfs:label": "§ 5¹ lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -851,13 +966,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 6.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 6.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_1"
       },
@@ -883,12 +1003,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Teose sisu määratlemine",
+      "rdfs:label": {
+        "@value": "§ 7. Teose sisu määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "(1) Teose sisu määratlemine käesoleva seaduse tähenduses on otsustus, kas teos on või ei ole pornograafilise sisuga või vägivalda või julmust propageeriv, millest tulenevalt rakendatakse või ei rakendata käesoleva seaduse 1. peatükis sätestatut. (2) Ettevõtja määratleb teose sisu enne levitamisele või demonstreerimisele asumist. Kui teose sisu ei ole üheselt määratletav, on ettevõtjal õigus taotleda teose läbivaatamist ja sisu määratlemist teoste ekspertkomisjonis (edaspidi ekspertkomisjon).",
+      "estleg:summary": {
+        "@value": "(1) Teose sisu määratlemine käesoleva seaduse tähenduses on otsustus, kas teos on või ei ole pornograafilise sisuga või vägivalda või julmust propageeriv, millest tulenevalt rakendatakse või ei rakendata käesoleva seaduse 1. peatükis sätestatut. (2) Ettevõtja määratleb teose sisu enne levitamisele või demonstreerimisele asumist. Kui teose sisu ei ole üheselt määratletav, on ettevõtjal õigus taotleda teose läbivaatamist ja sisu määratlemist teoste ekspertkomisjonis (edaspidi ekspertkomisjon).",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teose sisu määratlemine käesoleva seaduse tähenduses on otsustus, kas teos on või ei ole pornograafilise sisuga või vägivalda või julmust propageeriv, millest tulenevalt rakendatakse või ei rakendata käesoleva seaduse 1. peatükis sätestatut. (2) Ettevõtja määratleb teose sisu enne levitamisele või demonstreerimisele asumist. Kui teose sisu ei ole üheselt määratletav, on ettevõtjal õigus taotleda teose läbivaatamist ja sisu määratlemist teoste ekspertkomisjonis (edaspidi ekspertkomisjon). (3) Ekspertkomisjonis läbivaatamisel oleva teose levitamisel ja demonstreerimisel tuleb lähtuda eeldusest, et teos on pornograafilise sisuga või vägivalda või julmust propageeriv. (4) Kui teos on läbi vaadatud ekspertkomisjonis, loetakse teose sisu kõikidel juhtudel määratletuks ekspertkomisjoni otsusega, välja arvatud juhul, kui ekspertkomisjoni otsuse on muutnud valdkonna eest vastutav minister vastavalt käesoleva seaduse §-le 11.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_2"
@@ -1031,12 +1157,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ekspertkomisjon",
+      "rdfs:label": {
+        "@value": "§ 8. Ekspertkomisjon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "(1) Ekspertkomisjon tegutseb Kultuuriministeeriumi juures. (2) Ekspertkomisjoni koosseisu kuuluvad Kultuuriministeeriumi, haridus- ja kultuuriasutuste, tervise- ja õiguskaitseasutuste, kunstiloomeühenduste, tervisekaitseühenduste ning teoste levitajate ja demonstreerijate ühenduste esindajad. Ekspertkomisjoni koosseisu ja töökorra kinnitab valdkonna eest vastutav minister oma käskkirjaga. (3) Ekspertkomisjoni ülesanne on teoste sisu määratlemine käesoleva seaduse § 7 lõikes 2 ja § 13 lõike 1",
+      "estleg:summary": {
+        "@value": "(1) Ekspertkomisjon tegutseb Kultuuriministeeriumi juures. (2) Ekspertkomisjoni koosseisu kuuluvad Kultuuriministeeriumi, haridus- ja kultuuriasutuste, tervise- ja õiguskaitseasutuste, kunstiloomeühenduste, tervisekaitseühenduste ning teoste levitajate ja demonstreerijate ühenduste esindajad. Ekspertkomisjoni koosseisu ja töökorra kinnitab valdkonna eest vastutav minister oma käskkirjaga. (3) Ekspertkomisjoni ülesanne on teoste sisu määratlemine käesoleva seaduse § 7 lõikes 2 ja § 13 lõike 1",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ekspertkomisjon tegutseb Kultuuriministeeriumi juures. (2) Ekspertkomisjoni koosseisu kuuluvad Kultuuriministeeriumi, haridus- ja kultuuriasutuste, tervise- ja õiguskaitseasutuste, kunstiloomeühenduste, tervisekaitseühenduste ning teoste levitajate ja demonstreerijate ühenduste esindajad. Ekspertkomisjoni koosseisu ja töökorra kinnitab valdkonna eest vastutav minister oma käskkirjaga. (3) Ekspertkomisjoni ülesanne on teoste sisu määratlemine käesoleva seaduse § 7 lõikes 2 ja § 13 lõike 1 punktis 4 nimetatud juhtudel. (4) Ekspertkomisjoni liige saab tehtud ekspertiiside eest tasu valdkonna eest vastutava ministri kehtestatud korras. (5) Ekspertkomisjoni teenindab ja finantseerib Kultuuriministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_2"
@@ -1194,12 +1326,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Taotluse esitamine",
+      "rdfs:label": {
+        "@value": "§ 9. Taotluse esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Ettevõtja esitab taotluse teose sisu määratlemiseks Kultuuriministeeriumi nimele. Koos taotlusega esitatakse teos, mille sisu määratlemist taotletakse.",
+      "estleg:summary": {
+        "@value": "Ettevõtja esitab taotluse teose sisu määratlemiseks Kultuuriministeeriumi nimele. Koos taotlusega esitatakse teos, mille sisu määratlemist taotletakse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ettevõtja esitab taotluse teose sisu määratlemiseks Kultuuriministeeriumi nimele. Koos taotlusega esitatakse teos, mille sisu määratlemist taotletakse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_2"
@@ -1238,10 +1376,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ettevõtja esitab taotluse teose sisu määratlemiseks Kultuuriministeeriumi nimele. Koos taotlusega esitatakse teos, mille sisu määratlemist taotletakse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettevõtja esitab taotluse teose sisu määratlemiseks Kultuuriministeeriumi nimele. Koos taotlusega esitatakse teos, mille sisu määratlemist taotletakse.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1264,12 +1404,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Ekspertkomisjoni otsus",
+      "rdfs:label": {
+        "@value": "§ 10. Ekspertkomisjoni otsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "(1) Ekspertkomisjon teeb otsuse läbivaadatud teose sisu kohta hiljemalt 30 päeva jooksul taotluse saabumise päevast arvates. Kultuuriministeerium teeb otsuse kolme päeva jooksul ettevõtjale teatavaks. (2) Käesoleva paragrahvi lõikes 1 sätestatud otsuse tegemise ja ettevõtjale teatamise tähtaegu rakendatakse ka juhul, kui teose on ekspertkomisjoni suunanud järelevalveametnik vastavalt käesoleva seaduse § 13 lõike 1 punktile 4. (3) Kultuuriministeerium teeb ekspertkomisjoni otsuse üleriigilise",
+      "estleg:summary": {
+        "@value": "(1) Ekspertkomisjon teeb otsuse läbivaadatud teose sisu kohta hiljemalt 30 päeva jooksul taotluse saabumise päevast arvates. Kultuuriministeerium teeb otsuse kolme päeva jooksul ettevõtjale teatavaks. (2) Käesoleva paragrahvi lõikes 1 sätestatud otsuse tegemise ja ettevõtjale teatamise tähtaegu rakendatakse ka juhul, kui teose on ekspertkomisjoni suunanud järelevalveametnik vastavalt käesoleva seaduse § 13 lõike 1 punktile 4. (3) Kultuuriministeerium teeb ekspertkomisjoni otsuse üleriigilise",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ekspertkomisjon teeb otsuse läbivaadatud teose sisu kohta hiljemalt 30 päeva jooksul taotluse saabumise päevast arvates. Kultuuriministeerium teeb otsuse kolme päeva jooksul ettevõtjale teatavaks. (2) Käesoleva paragrahvi lõikes 1 sätestatud otsuse tegemise ja ettevõtjale teatamise tähtaegu rakendatakse ka juhul, kui teose on ekspertkomisjoni suunanud järelevalveametnik vastavalt käesoleva seaduse § 13 lõike 1 punktile 4. (3) Kultuuriministeerium teeb ekspertkomisjoni otsuse üleriigilise levikuga ajalehe kaudu avalikult teatavaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_2"
@@ -1407,12 +1553,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Vaide esitamine ekspertkomisjoni otsuse peale",
+      "rdfs:label": {
+        "@value": "§ 11. Vaide esitamine ekspertkomisjoni otsuse peale",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "(1) Ekspertkomisjoni otsuse peale võib ettevõtja esitada kaebuse valdkonna eest vastutavale ministrile 15 päeva jooksul otsuse kättesaamisest arvates. (2) Valdkonna eest vastutav minister vaatab vaide läbi 15 päeva jooksul alates selle saabumisest.",
+      "estleg:summary": {
+        "@value": "(1) Ekspertkomisjoni otsuse peale võib ettevõtja esitada kaebuse valdkonna eest vastutavale ministrile 15 päeva jooksul otsuse kättesaamisest arvates. (2) Valdkonna eest vastutav minister vaatab vaide läbi 15 päeva jooksul alates selle saabumisest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ekspertkomisjoni otsuse peale võib ettevõtja esitada kaebuse valdkonna eest vastutavale ministrile 15 päeva jooksul otsuse kättesaamisest arvates. (2) Valdkonna eest vastutav minister vaatab vaide läbi 15 päeva jooksul alates selle saabumisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_2"
@@ -1525,12 +1677,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "§ 12. Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Kultuuriministeerium.",
+      "estleg:summary": {
+        "@value": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Kultuuriministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Kultuuriministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_3"
@@ -1581,10 +1739,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Kultuuriministeerium.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Kultuuriministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_12"
       },
+      "rdfs:label": "§ 12 lg 1",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kultuuriministeerium"
@@ -1599,12 +1759,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Riikliku järelevalve erimeetmed",
+      "rdfs:label": {
+        "@value": "§ 13. Riikliku järelevalve erimeetmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_3"
@@ -1664,10 +1830,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1696,12 +1864,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13¹.",
-      "rdfs:label": "§ 13¹. Riikliku järelevalve erisused",
+      "rdfs:label": {
+        "@value": "§ 13¹. Riikliku järelevalve erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Käesoleva seaduse nõuete rikkumise korral vähemalt teist korda peatab valla- või linnavalitsus kuni üheks aastaks ettevõtja tegutsemisloa kehtivuse või tunnistab selle kehtetuks. Tegutsemisloa kehtetuks tunnistamise korral ei anta ettevõtjale uut tegutsemisluba enne ühe aasta möödumist kehtetuks tunnistamise päevast arvates.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse nõuete rikkumise korral vähemalt teist korda peatab valla- või linnavalitsus kuni üheks aastaks ettevõtja tegutsemisloa kehtivuse või tunnistab selle kehtetuks. Tegutsemisloa kehtetuks tunnistamise korral ei anta ettevõtjale uut tegutsemisluba enne ühe aasta möödumist kehtetuks tunnistamise päevast arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse nõuete rikkumise korral vähemalt teist korda peatab valla- või linnavalitsus kuni üheks aastaks ettevõtja tegutsemisloa kehtivuse või tunnistab selle kehtetuks. Tegutsemisloa kehtetuks tunnistamise korral ei anta ettevõtjale uut tegutsemisluba enne ühe aasta möödumist kehtetuks tunnistamise päevast arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_3"
@@ -1738,10 +1912,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse nõuete rikkumise korral vähemalt teist korda peatab valla- või linnavalitsus kuni üheks aastaks ettevõtja tegutsemisloa kehtivuse või tunnistab selle kehtetuks. Tegutsemisloa kehtetuks tunnistamise korral ei anta ettevõtjale uut tegutsemisluba enne ühe aasta möödumist kehtetuks tunnistamise päevast arvates.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse nõuete rikkumise korral vähemalt teist korda peatab valla- või linnavalitsus kuni üheks aastaks ettevõtja tegutsemisloa kehtivuse või tunnistab selle kehtetuks. Tegutsemisloa kehtetuks tunnistamise korral ei anta ettevõtjale uut tegutsemisluba enne ühe aasta möödumist kehtetuks tunnistamise päevast arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_13_1"
       },
+      "rdfs:label": "§ 13¹ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1762,12 +1938,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Sunniraha määr",
+      "rdfs:label": {
+        "@value": "§ 14. Sunniraha määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
+      "estleg:summary": {
+        "@value": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_3"
@@ -1839,10 +2021,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_14"
       },
+      "rdfs:label": "§ 14 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -1866,13 +2050,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 15.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 15.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_3"
       },
@@ -1901,18 +2090,23 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
-      "rdfs:label": "§ 15¹. Pornograafilise sisuga või vägivalda või julmust propageeriva teose levitamise või demonstreerimise nõuete rikkumine",
+      "rdfs:label": {
+        "@value": "§ 15¹. Pornograafilise sisuga või vägivalda või julmust propageeriva teose levitamise või demonstreerimise nõuete rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 15¹. Pornograafilise sisuga või vägivalda või julmust propageeriva teose levitamise või demonstreerimise nõuete rikkumine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_PSVVJPTLR_3"
+        "@id": "estleg:Cluster_PSVVJPTLR_3_15_15"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_PSVVJPTLR_3"
+        "@id": "estleg:Chapter_PSVVJPTLR_3_02dbc079"
       },
       "estleg:hasVersion": [
         {
@@ -1939,18 +2133,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16.",
+      "rdfs:label": {
+        "@value": "§ 16.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
+      "estleg:summary": "§ 16.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_4"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_PSVVJPTLR_4"
       },
-      "estleg:summary": "§ 16.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:PSVVJPTLR_Par_16_v25470"
@@ -1964,12 +2161,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 18. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_4"
@@ -1993,12 +2196,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 19. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pornograafilise sisuga ja vägivalda või julmust propageerivate teoste leviku reguleerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PSVVJPTLR_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 1998. aasta 1. mail.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 1998. aasta 1. mail.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 1998. aasta 1. mail.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PSVVJPTLR_4"
@@ -2023,9 +2232,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 1998. aasta 1. mail.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 1998. aasta 1. mail.",
       "estleg:parentProvision": {
         "@id": "estleg:PSVVJPTLR_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/520012015009",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:PSVVJPTLR_Map"
+      },
+      "rdfs:label": {
+        "@value": "Act to Regulate Dissemination of Works which Contain Pornography or Promote Violence or Cruelty",
+        "@language": "en"
       }
     }
   ]

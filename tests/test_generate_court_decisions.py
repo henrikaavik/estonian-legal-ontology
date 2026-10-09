@@ -443,16 +443,12 @@ class TestDecisionToNode:
         assert node["estleg:decisionDate"]["@value"] == "2026-02-26"
         assert node["estleg:rikObjectId"] == "4567890"
 
-    def test_iri_includes_object_id_for_stability(
-        self, sample_decision: dict
-    ) -> None:
-        """The IRI MUST include ``object_id`` so two runs with the same
-        decisions produce identical IRIs regardless of feed order."""
+    def test_iri_is_the_frozen_short_form(self, sample_decision: dict) -> None:
+        """#697: the frozen scheme is ``estleg:RK_<sanitize(caseNumber)>``."""
         node = gcd.decision_to_node(sample_decision, 2026, set())
         assert node is not None
-        assert "4567890" in node["@id"], (
-            f"object_id missing from IRI: {node['@id']}"
-        )
+        assert node["@id"] == "estleg:RK_3_21_2176_52"
+        assert node["@id"] == gcd.rk_short_iri(sample_decision["case_nr"])
 
     def test_url_is_properly_encoded_for_special_chars(self) -> None:
         """Pre-fix bug: f-string concatenation left ``#`` unencoded."""
@@ -518,9 +514,10 @@ class TestDecisionToNode:
         self,
     ) -> None:
         """Pre-fix bug: collision-resolution flipped IDs across runs.
-        With object_id always in the IRI, two decisions sharing
-        ``case_nr`` but with distinct ``object_id`` produce distinct
-        stable IRIs regardless of input order.
+        #697: with a planned :class:`RkIriScheme` two decisions sharing
+        ``case_nr`` but with distinct ``object_id`` get distinct IRIs
+        regardless of input order — the lowest oid holds the short form,
+        the other gets ``<short>_<oid>``.
         """
         dec_a = {
             "case_nr": "3-21-2176/52",
@@ -538,13 +535,17 @@ class TestDecisionToNode:
             "decision_type": "",
             "link": "",
         }
+        fwd = gcd.RkIriScheme()
+        fwd.plan([dec_a, dec_b])
         seen_forward: set[str] = set()
-        a_first = gcd.decision_to_node(dec_a, 2026, seen_forward)["@id"]
-        b_first = gcd.decision_to_node(dec_b, 2026, seen_forward)["@id"]
+        a_first = gcd.decision_to_node(dec_a, 2026, seen_forward, iri_scheme=fwd)["@id"]
+        b_first = gcd.decision_to_node(dec_b, 2026, seen_forward, iri_scheme=fwd)["@id"]
         # And in reverse order — IDs must be identical to the forward run.
+        rev = gcd.RkIriScheme()
+        rev.plan([dec_b, dec_a])
         seen_reverse: set[str] = set()
-        b_second = gcd.decision_to_node(dec_b, 2026, seen_reverse)["@id"]
-        a_second = gcd.decision_to_node(dec_a, 2026, seen_reverse)["@id"]
+        b_second = gcd.decision_to_node(dec_b, 2026, seen_reverse, iri_scheme=rev)["@id"]
+        a_second = gcd.decision_to_node(dec_a, 2026, seen_reverse, iri_scheme=rev)["@id"]
         assert a_first == a_second, (
             "IRI for dec_a flipped between runs — not deterministic"
         )
@@ -552,6 +553,27 @@ class TestDecisionToNode:
             "IRI for dec_b flipped between runs — not deterministic"
         )
         assert a_first != b_first
+        assert a_first == "estleg:RK_3_21_2176_52"
+        assert b_first == "estleg:RK_3_21_2176_52_BRAVO"
+        assert fwd.new_collisions == [
+            {
+                "caseNumber": "3-21-2176/52",
+                "rikObjectId": "BRAVO",
+                "iri": "estleg:RK_3_21_2176_52_BRAVO",
+                "shortFormHolder": "ALPHA",
+            }
+        ]
+
+    def test_without_scheme_second_document_gets_collision_iri(self) -> None:
+        """Stateless fallback: first row holds the short IRI, the next oid gets ``_<oid>``."""
+        base = {"summary": "", "date": "", "decision_type": "", "link": ""}
+        seen: set[str] = set()
+        first = gcd.decision_to_node({**base, "case_nr": "3-1-1/1", "object_id": "1"}, 2026, seen)
+        second = gcd.decision_to_node({**base, "case_nr": "3-1-1/1", "object_id": "2"}, 2026, seen)
+        again = gcd.decision_to_node({**base, "case_nr": "3-1-1/1", "object_id": "1"}, 2026, seen)
+        assert first is not None and first["@id"] == "estleg:RK_3_1_1_1"
+        assert second is not None and second["@id"] == "estleg:RK_3_1_1_1_2"
+        assert again is None
 
     # --- #683: personal ID code screening at the estleg:summary write site --
 
@@ -563,10 +585,11 @@ class TestDecisionToNode:
         )
         node = gcd.decision_to_node(sample_decision, 2026, set())
         assert node is not None
-        summary = node["estleg:summary"]["@value"]
+        summary = node["estleg:summary"]
+        # #697: plain-string literal, as on every committed Riigikohus node.
+        assert isinstance(summary, str)
         assert SYNTHETIC_ISIKUKOOD not in summary
         assert ec.PERSONAL_CODE_PLACEHOLDER in summary
-        assert node["estleg:summary"]["@language"] == "et"
         assert node["estleg:personalDataScreened"] is True
         assert node["estleg:personalDataMaskedCount"] == 1
 
@@ -580,7 +603,7 @@ class TestDecisionToNode:
         node = gcd.decision_to_node(sample_decision, 2026, set())
         assert node is not None
         assert node["estleg:personalDataMaskedCount"] == 1
-        assert SYNTHETIC_ISIKUKOOD[:6] not in node["estleg:summary"]["@value"]
+        assert SYNTHETIC_ISIKUKOOD[:6] not in node["estleg:summary"]
 
     def test_clean_summary_is_stamped_with_zero(
         self, sample_decision: dict

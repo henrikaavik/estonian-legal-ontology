@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Elamumajanduslaenu andmise tingimused (määrus)",
+      "rdfs:label": {
+        "@value": "Elamumajanduslaenu andmise tingimused (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Elamumajanduslaenu andmise tingimused",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1049468",
       "estleg:preambleText": "Määrus kehtestatakse ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 4 lõike 2",
       "estleg:entryIntoForce": {
-        "@value": "2020-05-16",
+        "@value": "2023-07-08",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2023-06-22",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2020-05-13",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1049468_13488b14c6"
@@ -90,7 +92,13 @@
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
-      ]
+      ],
+      "dcterms:title": "Elamumajanduslaenu andmise tingimused",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1049468_Par_1",
@@ -99,13 +107,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Elamumajanduslaenu saaja",
+      "rdfs:label": {
+        "@value": "§ 1. Elamumajanduslaenu saaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Elamumajanduslaenu andmise tingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1049468_Map"
       },
-      "estleg:summary": "Elamumajanduslaenu saajaks (edaspidi laenusaaja) võib olla ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 7 lõike 3 alusel kehtestatud määruses sätestatud sihtgruppi kuuluv isik, korteri- või hooneühistu, samuti isik, kes määratakse riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga.",
-      "estleg:legalText": "Elamumajanduslaenu saajaks (edaspidi laenusaaja) võib olla ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 7 lõike 3 alusel kehtestatud määruses sätestatud sihtgruppi kuuluv isik, korteri- või hooneühistu, samuti isik, kes määratakse riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga. Elamumajanduslaenu saajaks (edaspidi laenusaaja) võib olla ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 7 lõike 3 alusel kehtestatud määruses sätestatud sihtgruppi kuuluv isik, korteri- või hooneühistu, samuti isik, kes määratakse riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga.",
+      "estleg:summary": {
+        "@value": "Elamumajanduslaenu saajaks (edaspidi laenusaaja) võib olla ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 7 lõike 3 alusel kehtestatud määruses sätestatud sihtgruppi kuuluv isik, korteri- või hooneühistu, samuti isik, kes määratakse riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Elamumajanduslaenu saajaks (edaspidi laenusaaja) võib olla ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 7 lõike 3 alusel kehtestatud määruses sätestatud sihtgruppi kuuluv isik, korteri- või hooneühistu, samuti isik, kes määratakse riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -127,7 +141,25 @@
         {
           "@id": "estleg:Reg_1049468_Par_1_v1049468"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1049468_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Elamumajanduslaenu saajaks (edaspidi laenusaaja) võib olla ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 7 lõike 3 alusel kehtestatud määruses sätestatud sihtgruppi kuuluv isik, korteri- või hooneühistu, samuti isik, kes määratakse riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1049468_Par_2",
@@ -136,13 +168,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Elamumajanduslaenu andmise üldised põhimõtted",
+      "rdfs:label": {
+        "@value": "§ 2. Elamumajanduslaenu andmise üldised põhimõtted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Elamumajanduslaenu andmise tingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1049468_Map"
       },
-      "estleg:summary": "1 (1) Elamumajanduslaenu andjaks on ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 51 lõikes 1 nimetatud sihtasutus (edaspidi sihtasutus). Elamumajanduslaenu andjaks on ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 51 lõikes 1 nimetatud sihtasutus (edaspidi sihtasutus). 2 (2) Sihtasutus annab elamumajanduslaenu enda välja töötatud meetme alusel, mis lähtub vastava valdkonna arengudokumentidest, riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast",
-      "estleg:legalText": "1 (1) Elamumajanduslaenu andjaks on ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 51 lõikes 1 nimetatud sihtasutus (edaspidi sihtasutus). Elamumajanduslaenu andjaks on ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 51 lõikes 1 nimetatud sihtasutus (edaspidi sihtasutus). 2 (2) Sihtasutus annab elamumajanduslaenu enda välja töötatud meetme alusel, mis lähtub vastava valdkonna arengudokumentidest, riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust ning arvestab finantseerimisasutuste pakutavaid teenuseid. Sihtasutus annab elamumajanduslaenu enda välja töötatud meetme alusel, mis lähtub vastava valdkonna arengudokumentidest, riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust ning arvestab finantseerimisasutuste pakutavaid teenuseid. 3 (3) COVID-19 haigust põhjustava koroonaviiruse levikuga seotud kriisi leevendamiseks ette nähtud toetusmeetme välja töötamisel lähtub sihtasutus riigieelarve seaduse § 812 lõike 1 alusel kehtestatud Vabariigi Valitsuse määrusest ulatuses, mis ei ole ettevõtluse toetamise ja laenude riikliku tagamise seadusega vastuolus. COVID-19 haigust põhjustava koroonaviiruse levikuga seotud kriisi leevendamiseks ette nähtud toetusmeetme välja töötamisel lähtub sihtasutus riigieelarve seaduse § 812 lõike 1 alusel kehtestatud Vabariigi Valitsuse määrusest ulatuses, mis ei ole ettevõtluse toetamise ja laenude riikliku tagamise seadusega vastuolus. 4 (4) Sihtasutus kooskõlastab lõikes 2 nimetatud meetme enne selle kehtestamist Kliimaministeeriumiga. RT I 2023-07-05 7 105072023007 2023-07-08 Sihtasutus kooskõlastab lõikes 2 nimetatud meetme enne selle kehtestamist Kliimaministeeriumiga. 5 (5) Informatsiooni lõikes 2 nimetatud meetme kohta avaldab sihtasutus oma veebilehel. Informatsiooni lõikes 2 nimetatud meetme kohta avaldab sihtasutus oma veebilehel.",
+      "estleg:summary": {
+        "@value": "1 (1) Elamumajanduslaenu andjaks on ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 51 lõikes 1 nimetatud sihtasutus (edaspidi sihtasutus). 2 (2) Sihtasutus annab elamumajanduslaenu enda välja töötatud meetme alusel, mis lähtub vastava valdkonna arengudokumentidest, riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust ning arvestab finantseerimisasutuste pakutavaid teenuseid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Elamumajanduslaenu andjaks on ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 51 lõikes 1 nimetatud sihtasutus (edaspidi sihtasutus). 2 (2) Sihtasutus annab elamumajanduslaenu enda välja töötatud meetme alusel, mis lähtub vastava valdkonna arengudokumentidest, riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust ning arvestab finantseerimisasutuste pakutavaid teenuseid. 3 (3) COVID-19 haigust põhjustava koroonaviiruse levikuga seotud kriisi leevendamiseks ette nähtud toetusmeetme välja töötamisel lähtub sihtasutus riigieelarve seaduse § 812 lõike 1 alusel kehtestatud Vabariigi Valitsuse määrusest ulatuses, mis ei ole ettevõtluse toetamise ja laenude riikliku tagamise seadusega vastuolus. 4 (4) Sihtasutus kooskõlastab lõikes 2 nimetatud meetme enne selle kehtestamist Kliimaministeeriumiga. RT I 2023-07-05 7 105072023007 2023-07-08 5 (5) Informatsiooni lõikes 2 nimetatud meetme kohta avaldab sihtasutus oma veebilehel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -172,7 +210,89 @@
         {
           "@id": "estleg:Institution_kliimaministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1049468_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_2_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Elamumajanduslaenu andjaks on ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 5¹ lõikes 1 nimetatud sihtasutus (edaspidi sihtasutus).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sihtasutus annab elamumajanduslaenu enda välja töötatud meetme alusel, mis lähtub vastava valdkonna arengudokumentidest, riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust ning arvestab finantseerimisasutuste pakutavaid teenuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) COVID-19 haigust põhjustava koroonaviiruse levikuga seotud kriisi leevendamiseks ette nähtud toetusmeetme välja töötamisel lähtub sihtasutus riigieelarve seaduse § 81² lõike 1 alusel kehtestatud Vabariigi Valitsuse määrusest ulatuses, mis ei ole ettevõtluse toetamise ja laenude riikliku tagamise seadusega vastuolus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Sihtasutus kooskõlastab lõikes 2 nimetatud meetme enne selle kehtestamist Kliimaministeeriumiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Informatsiooni lõikes 2 nimetatud meetme kohta avaldab sihtasutus oma veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
     },
     {
       "@id": "estleg:Reg_1049468_Par_3",
@@ -181,13 +301,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Elamumajanduslaenude andmise isetasuvuse nõue",
+      "rdfs:label": {
+        "@value": "§ 3. Elamumajanduslaenude andmise isetasuvuse nõue",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Elamumajanduslaenu andmise tingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1049468_Map"
       },
-      "estleg:summary": "1 (1) Sihtasutus peab oma elamumajanduslaenude alase tegevuse korraldamisel tagama elamumajanduslaenude andmisega seotud tulude ja kulude tasakaalu pikema perioodi vältel. Sihtasutus peab oma elamumajanduslaenude alase tegevuse korraldamisel tagama elamumajanduslaenude andmisega seotud tulude ja kulude tasakaalu pikema perioodi vältel. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust. Lõiget 1 ei kohaldata, kui see t",
-      "estleg:legalText": "1 (1) Sihtasutus peab oma elamumajanduslaenude alase tegevuse korraldamisel tagama elamumajanduslaenude andmisega seotud tulude ja kulude tasakaalu pikema perioodi vältel. Sihtasutus peab oma elamumajanduslaenude alase tegevuse korraldamisel tagama elamumajanduslaenude andmisega seotud tulude ja kulude tasakaalu pikema perioodi vältel. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust. Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust.",
+      "estleg:summary": {
+        "@value": "1 (1) Sihtasutus peab oma elamumajanduslaenude alase tegevuse korraldamisel tagama elamumajanduslaenude andmisega seotud tulude ja kulude tasakaalu pikema perioodi vältel. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtasutus peab oma elamumajanduslaenude alase tegevuse korraldamisel tagama elamumajanduslaenude andmisega seotud tulude ja kulude tasakaalu pikema perioodi vältel. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_NGO"
@@ -223,7 +349,41 @@
         {
           "@id": "estleg:Reg_1049468_Par_3_v1049468"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1049468_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_3_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtasutus peab oma elamumajanduslaenude alase tegevuse korraldamisel tagama elamumajanduslaenude andmisega seotud tulude ja kulude tasakaalu pikema perioodi vältel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:Reg_1049468_Par_4",
@@ -232,13 +392,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Elamumajanduslaenu piirsumma laenusaaja kohta",
+      "rdfs:label": {
+        "@value": "§ 4. Elamumajanduslaenu piirsumma laenusaaja kohta",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Elamumajanduslaenu andmise tingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1049468_Map"
       },
-      "estleg:summary": "1 (1) Sihtasutuse antavast elamumajanduslaenust tuleneva krediidiriski piirmäär on kuni 3 miljonit eurot ühe laenusaaja kohta. Sihtasutuse antavast elamumajanduslaenust tuleneva krediidiriski piirmäär on kuni 3 miljonit eurot ühe laenusaaja kohta. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust. Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust",
-      "estleg:legalText": "1 (1) Sihtasutuse antavast elamumajanduslaenust tuleneva krediidiriski piirmäär on kuni 3 miljonit eurot ühe laenusaaja kohta. Sihtasutuse antavast elamumajanduslaenust tuleneva krediidiriski piirmäär on kuni 3 miljonit eurot ühe laenusaaja kohta. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust. Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust. 3 (3) Kui sihtasutuse antav elamumajanduslaen on allutatud teiste võlausaldajate nõuetele, on sellest tuleneva krediidiriski maksimaalne määr 1,5 miljonit eurot ühe laenusaaja kohta. Kui sihtasutuse antav elamumajanduslaen on allutatud teiste võlausaldajate nõuetele, on sellest tuleneva krediidiriski maksimaalne määr 1,5 miljonit eurot ühe laenusaaja kohta.",
+      "estleg:summary": {
+        "@value": "1 (1) Sihtasutuse antavast elamumajanduslaenust tuleneva krediidiriski piirmäär on kuni 3 miljonit eurot ühe laenusaaja kohta. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust. 3 (3) Kui sihtasutuse antav elamumajanduslaen on allutatud teiste võlausaldajate nõuetele, on sellest tuleneva krediidiriski maksimaalne määr 1,5 miljonit eurot ühe laenusaaja kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sihtasutuse antavast elamumajanduslaenust tuleneva krediidiriski piirmäär on kuni 3 miljonit eurot ühe laenusaaja kohta. 2 (2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust. 3 (3) Kui sihtasutuse antav elamumajanduslaen on allutatud teiste võlausaldajate nõuetele, on sellest tuleneva krediidiriski maksimaalne määr 1,5 miljonit eurot ühe laenusaaja kohta.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -263,7 +429,57 @@
         {
           "@id": "estleg:Reg_1049468_Par_4_v1049468"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1049468_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_4_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtasutuse antavast elamumajanduslaenust tuleneva krediidiriski piirmäär on kuni 3 miljonit eurot ühe laenusaaja kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõiget 1 ei kohaldata, kui see tuleneb riigieelarvest meetme rahastamiseks eraldatud vahendite kohta sõlmitavast lepingust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui sihtasutuse antav elamumajanduslaen on allutatud teiste võlausaldajate nõuetele, on sellest tuleneva krediidiriski maksimaalne määr 1,5 miljonit eurot ühe laenusaaja kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:Reg_1049468_Par_5",
@@ -272,13 +488,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Elamumajanduslaenu andmise otsus ja elamumajanduslaenu lepingu tingimused",
+      "rdfs:label": {
+        "@value": "§ 5. Elamumajanduslaenu andmise otsus ja elamumajanduslaenu lepingu tingimused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Elamumajanduslaenu andmise tingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1049468_Map"
       },
-      "estleg:summary": "1 (1) Elamumajanduslaenu andmise otsustamisel lähtub sihtasutus laenusaaja võimest täita taotletava laenu tagastamisega seotud kohustusi. Elamumajanduslaenu andmise otsuse teeb sihtasutus vastavalt enda kehtestatud korrale. Elamumajanduslaenu andmise otsustamisel lähtub sihtasutus laenusaaja võimest täita taotletava laenu tagastamisega seotud kohustusi. Elamumajanduslaenu andmise otsuse teeb sihtasutus vastavalt enda kehtestatud korrale. 2 (2) Riigieelarvest elamumajanduslaenu meetme rahastamise",
-      "estleg:legalText": "1 (1) Elamumajanduslaenu andmise otsustamisel lähtub sihtasutus laenusaaja võimest täita taotletava laenu tagastamisega seotud kohustusi. Elamumajanduslaenu andmise otsuse teeb sihtasutus vastavalt enda kehtestatud korrale. Elamumajanduslaenu andmise otsustamisel lähtub sihtasutus laenusaaja võimest täita taotletava laenu tagastamisega seotud kohustusi. Elamumajanduslaenu andmise otsuse teeb sihtasutus vastavalt enda kehtestatud korrale. 2 (2) Riigieelarvest elamumajanduslaenu meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga võib ette näha elamumajanduslaenu andmise täpsemaid tingimusi. Riigieelarvest elamumajanduslaenu meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga võib ette näha elamumajanduslaenu andmise täpsemaid tingimusi. 3 (3) Elamumajanduslaenu andmise otsuses sätestatakse olulised laenutingimused, milleks on muuhulgas laenusumma, laenu tagasimaksmise kohustus, intressimäär ning laenu- ja intressimaksete tasumise tähtajad. Laenutingimused peavad arvestama sihtasutuse finantseeritava laenuprojektiga võetud riske, laenusaaja isikut ja tema maksevõimet ning sihtasutuse kasuks antud tagatisi. Elamumajanduslaenu andmise otsuses sätestatakse olulised laenutingimused, milleks on muuhulgas laenusumma, laenu tagasimaksmise kohustus, intressimäär ning laenu- ja intressimaksete tasumise tähtajad. Laenutingimused peavad arvestama sihtasutuse finantseeritava laenuprojektiga võetud riske, laenusaaja isikut ja tema maksevõimet ning sihtasutuse kasuks antud tagatisi. 4 (4) Elamumajanduslaenu lepingus fikseeritakse lõikes 3 nimetatud olulised laenutingimused, muud olulised andmed ja tingimused, mis võivad mõjutada laenu tagasimaksmist ja sihtasutuse nõuete rahuldamist ning vajadusel laenusaaja krediidivõimelisuse hindamiseks kohase aruandluse esitamise kohustus. Elamumajanduslaenu lepingus fikseeritakse lõikes 3 nimetatud olulised laenutingimused, muud olulised andmed ja tingimused, mis võivad mõjutada laenu tagasimaksmist ja sihtasutuse nõuete rahuldamist ning vajadusel laenusaaja krediidivõimelisuse hindamiseks kohase aruandluse esitamise kohustus.",
+      "estleg:summary": {
+        "@value": "1 (1) Elamumajanduslaenu andmise otsustamisel lähtub sihtasutus laenusaaja võimest täita taotletava laenu tagastamisega seotud kohustusi. Elamumajanduslaenu andmise otsuse teeb sihtasutus vastavalt enda kehtestatud korrale. 2 (2) Riigieelarvest elamumajanduslaenu meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga võib ette näha elamumajanduslaenu andmise täpsemaid tingimusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Elamumajanduslaenu andmise otsustamisel lähtub sihtasutus laenusaaja võimest täita taotletava laenu tagastamisega seotud kohustusi. Elamumajanduslaenu andmise otsuse teeb sihtasutus vastavalt enda kehtestatud korrale. 2 (2) Riigieelarvest elamumajanduslaenu meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga võib ette näha elamumajanduslaenu andmise täpsemaid tingimusi. 3 (3) Elamumajanduslaenu andmise otsuses sätestatakse olulised laenutingimused, milleks on muuhulgas laenusumma, laenu tagasimaksmise kohustus, intressimäär ning laenu- ja intressimaksete tasumise tähtajad. Laenutingimused peavad arvestama sihtasutuse finantseeritava laenuprojektiga võetud riske, laenusaaja isikut ja tema maksevõimet ning sihtasutuse kasuks antud tagatisi. 4 (4) Elamumajanduslaenu lepingus fikseeritakse lõikes 3 nimetatud olulised laenutingimused, muud olulised andmed ja tingimused, mis võivad mõjutada laenu tagasimaksmist ja sihtasutuse nõuete rahuldamist ning vajadusel laenusaaja krediidivõimelisuse hindamiseks kohase aruandluse esitamise kohustus.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -299,6 +521,20 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1049468_Par_5_v1049468"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1049468_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1049468_Par_5_Lg_4"
         }
       ]
     },
@@ -337,6 +573,58 @@
       },
       "estleg:citationDetail": "lg 2",
       "estleg:citationText": "kehtestatakse ettevõtluse toetamise ja laenude riikliku tagamise seaduse § 4 lõike 2"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Elamumajanduslaenu andmise otsustamisel lähtub sihtasutus laenusaaja võimest täita taotletava laenu tagastamisega seotud kohustusi. Elamumajanduslaenu andmise otsuse teeb sihtasutus vastavalt enda kehtestatud korrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigieelarvest elamumajanduslaenu meetme rahastamiseks eraldatud vahendite kohta sõlmitava lepinguga võib ette näha elamumajanduslaenu andmise täpsemaid tingimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Elamumajanduslaenu andmise otsuses sätestatakse olulised laenutingimused, milleks on muuhulgas laenusumma, laenu tagasimaksmise kohustus, intressimäär ning laenu- ja intressimaksete tasumise tähtajad. Laenutingimused peavad arvestama sihtasutuse finantseeritava laenuprojektiga võetud riske, laenusaaja isikut ja tema maksevõimet ning sihtasutuse kasuks antud tagatisi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1049468_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Elamumajanduslaenu lepingus fikseeritakse lõikes 3 nimetatud olulised laenutingimused, muud olulised andmed ja tingimused, mis võivad mõjutada laenu tagasimaksmist ja sihtasutuse nõuete rahuldamist ning vajadusel laenusaaja krediidivõimelisuse hindamiseks kohase aruandluse esitamise kohustus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1049468_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     }
   ]
 }

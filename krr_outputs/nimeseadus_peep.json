@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:NS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Nimeseadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Nimeseadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Nimeseadus",
-      "dcterms:title": [
-        {
-          "@value": "Nimeseadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Names Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Nimeseadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/118122025015.xml"
+        "@id": "https://www.riigiteataja.ee/akt/110022026015"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/110022026015/xml"
+      },
+      "estleg:globalId": "110022026015",
+      "eli:id_local": "110022026015",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "158344",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "eb9989cd21d0b53dd05102a1dbefb91ca78d74027f15d09811a3ce499ef4dca8",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2005-03-31",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-12-29",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-12-29",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/506012026007"
@@ -173,14 +185,40 @@
         {
           "@id": "estleg:Draft_SIM14_1355"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/506012026007"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_NS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–7 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–7 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:NS_TopicScheme"
+      },
+      "estleg:provisionCount": 9
     },
     {
       "@id": "estleg:NS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Nimeseadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Nimeseadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_NS_1"
@@ -200,26 +238,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_NS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–7 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–7 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:NS_TopicScheme"
-      },
-      "estleg:provisionCount": 7
-    },
-    {
       "@id": "estleg:Chapter_NS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
@@ -239,12 +266,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§8–9 ISIKUNIME ANDMINE LAPSELE",
-      "skos:prefLabel": "§8–9 ISIKUNIME ANDMINE LAPSELE",
+      "rdfs:label": {
+        "@value": "§8–9 ISIKUNIME ANDMINE LAPSELE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§8–9 ISIKUNIME ANDMINE LAPSELE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:NS_TopicScheme"
       },
-      "estleg:provisionCount": 2
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:Chapter_NS_2",
@@ -252,7 +285,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – ISIKUNIME ANDMINE LAPSELE",
+      "rdfs:label": {
+        "@value": "2. peatükk – ISIKUNIME ANDMINE LAPSELE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
@@ -272,12 +308,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "UUE ISIKUNIME ANDMINE",
-      "skos:prefLabel": "UUE ISIKUNIME ANDMINE",
+      "rdfs:label": {
+        "@value": "UUE ISIKUNIME ANDMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "UUE ISIKUNIME ANDMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:NS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 12
     },
     {
       "@id": "estleg:Division_NS_3_1",
@@ -285,7 +327,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Uue isikunime andmine ja perekonnanime või isikunime taastamine",
+      "rdfs:label": {
+        "@value": "1. jagu – Uue isikunime andmine ja perekonnanime või isikunime taastamine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_NS_3"
       }
@@ -296,7 +341,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Uue isikunime andmine isiku soovil",
+      "rdfs:label": {
+        "@value": "2. jagu – Uue isikunime andmine isiku soovil",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_NS_3"
       }
@@ -307,7 +355,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Alaealisele uue perekonnanime andmine",
+      "rdfs:label": {
+        "@value": "3. jagu – Alaealisele uue perekonnanime andmine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_NS_3"
       }
@@ -318,7 +369,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – UUE ISIKUNIME ANDMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – UUE ISIKUNIME ANDMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
@@ -349,8 +403,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§21–26 ISIKUNIMEDE KORRASTAMINE",
-      "skos:prefLabel": "§21–26 ISIKUNIMEDE KORRASTAMINE",
+      "rdfs:label": {
+        "@value": "§21–26 ISIKUNIMEDE KORRASTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§21–26 ISIKUNIMEDE KORRASTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:NS_TopicScheme"
       },
@@ -362,7 +422,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – ISIKUNIMEDE KORRASTAMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – ISIKUNIMEDE KORRASTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
@@ -382,12 +445,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§27–32 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§27–32 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§27–32 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§27–32 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:NS_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:Chapter_NS_5",
@@ -395,7 +464,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "5. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
@@ -415,12 +487,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses sätestatakse füüsilise isiku nime (edaspidi isikunime) andmise ja kohaldamise põhimõtted ja kord ning Eesti kodaniku ja Eestis viibiva välismaalase (edaspidi isiku) isikunime ühtse kasutamise alused.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses sätestatakse füüsilise isiku nime (edaspidi isikunime) andmise ja kohaldamise põhimõtted ja kord ning Eesti kodaniku ja Eestis viibiva välismaalase (edaspidi isiku) isikunime ühtse kasutamise alused.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas seaduses sätestatakse füüsilise isiku nime (edaspidi isikunime) andmise ja kohaldamise põhimõtted ja kord ning Eesti kodaniku ja Eestis viibiva välismaalase (edaspidi isiku) isikunime ühtse kasutamise alused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
@@ -457,10 +535,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses sätestatakse füüsilise isiku nime (edaspidi isikunime) andmise ja kohaldamise põhimõtted ja kord ning Eesti kodaniku ja Eestis viibiva välismaalase (edaspidi isiku) isikunime ühtse kasutamise alused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatakse füüsilise isiku nime (edaspidi isikunime) andmise ja kohaldamise põhimõtted ja kord ning Eesti kodaniku ja Eestis viibiva välismaalase (edaspidi isiku) isikunime ühtse kasutamise alused.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_1"
       },
+      "rdfs:label": "§ 1 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -478,12 +558,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduste kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 2. Seaduste kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Isikunime andmisel ja kohaldamisel rakendatavale haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesoleva seaduse erisusi. (2) Kohtu poolt isikunime andmisel ja kohaldamisel rakendatavale menetlusele kohaldatakse tsiviilkohtumenetlust reguleerivaid sätteid. (3) Käesoleva seadusega reguleerimata küsimustes kohaldatakse perekonnaseisutoimingute seadust.",
+      "estleg:summary": {
+        "@value": "(1) Isikunime andmisel ja kohaldamisel rakendatavale haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesoleva seaduse erisusi. (2) Kohtu poolt isikunime andmisel ja kohaldamisel rakendatavale menetlusele kohaldatakse tsiviilkohtumenetlust reguleerivaid sätteid. (3) Käesoleva seadusega reguleerimata küsimustes kohaldatakse perekonnaseisutoimingute seadust.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isikunime andmisel ja kohaldamisel rakendatavale haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesoleva seaduse erisusi. (2) Kohtu poolt isikunime andmisel ja kohaldamisel rakendatavale menetlusele kohaldatakse tsiviilkohtumenetlust reguleerivaid sätteid. (3) Käesoleva seadusega reguleerimata küsimustes kohaldatakse perekonnaseisutoimingute seadust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
@@ -580,12 +666,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Mõisted",
+      "rdfs:label": {
+        "@value": "§ 3. Mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Isikunimi on isiku ametlik nimi, mis kantakse seadusega sätestatud juhtudel rahvastikuregistrisse. Isikunimi koosneb eesnimest ja perekonnanimest. (2) Isikunime andmine on isikunime esmane dokumenteerimine Eesti haldusorgani või kohtu poolt. (3) Isikunime kohaldamine on isikule välisriigis väljaantud dokumenti kantud isikunime dokumenteerimine Eesti haldusorgani või kohtu poolt, rakendades vajaduse korral võõrkeelsete isikunimede teistest tähestikest ümberkirjutamise reegleid (edaspidi",
+      "estleg:summary": {
+        "@value": "(1) Isikunimi on isiku ametlik nimi, mis kantakse seadusega sätestatud juhtudel rahvastikuregistrisse. Isikunimi koosneb eesnimest ja perekonnanimest. (2) Isikunime andmine on isikunime esmane dokumenteerimine Eesti haldusorgani või kohtu poolt. (3) Isikunime kohaldamine on isikule välisriigis väljaantud dokumenti kantud isikunime dokumenteerimine Eesti haldusorgani või kohtu poolt, rakendades vajaduse korral võõrkeelsete isikunimede teistest tähestikest ümberkirjutamise reegleid (edaspidi",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isikunimi on isiku ametlik nimi, mis kantakse seadusega sätestatud juhtudel rahvastikuregistrisse. Isikunimi koosneb eesnimest ja perekonnanimest. (2) Isikunime andmine on isikunime esmane dokumenteerimine Eesti haldusorgani või kohtu poolt. (3) Isikunime kohaldamine on isikule välisriigis väljaantud dokumenti kantud isikunime dokumenteerimine Eesti haldusorgani või kohtu poolt, rakendades vajaduse korral võõrkeelsete isikunimede teistest tähestikest ümberkirjutamise reegleid (edaspidi võõrkeelsete isikunimede ümberkirjutusreeglid).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
@@ -698,12 +790,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3¹.",
-      "rdfs:label": "§ 3¹. Isikunime kasutamine",
+      "rdfs:label": {
+        "@value": "§ 3¹. Isikunime kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Rahvastikuregistrisse kantud isikunime õigsust eeldatakse. Kui isik ei ole rahvastikuregistri andmesubjekt, loetakse tema ametlikuks nimeks tema isikut tõendavas dokumendis olev nimi. (2) Kui isiku andmetes on välisriigis tehtud nimeõiguslik muudatus, peab isik muudetud andmete kandmiseks rahvastikuregistrisse esitama 30 päeva jooksul alates muudatuse tegemisest Eesti perekonnaseisuasutusele tema nimeõigusliku muudatuse aluseks olnud dokumendi.",
+      "estleg:summary": {
+        "@value": "(1) Rahvastikuregistrisse kantud isikunime õigsust eeldatakse. Kui isik ei ole rahvastikuregistri andmesubjekt, loetakse tema ametlikuks nimeks tema isikut tõendavas dokumendis olev nimi. (2) Kui isiku andmetes on välisriigis tehtud nimeõiguslik muudatus, peab isik muudetud andmete kandmiseks rahvastikuregistrisse esitama 30 päeva jooksul alates muudatuse tegemisest Eesti perekonnaseisuasutusele tema nimeõigusliku muudatuse aluseks olnud dokumendi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvastikuregistrisse kantud isikunime õigsust eeldatakse. Kui isik ei ole rahvastikuregistri andmesubjekt, loetakse tema ametlikuks nimeks tema isikut tõendavas dokumendis olev nimi. (2) Kui isiku andmetes on välisriigis tehtud nimeõiguslik muudatus, peab isik muudetud andmete kandmiseks rahvastikuregistrisse esitama 30 päeva jooksul alates muudatuse tegemisest Eesti perekonnaseisuasutusele tema nimeõigusliku muudatuse aluseks olnud dokumendi. Kuni nimeõigusliku muudatuse kandmiseni rahvastikuregistrisse loetakse tema ametlikuks nimeks tema isikut tõendavas dokumendis olev nimi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
@@ -794,12 +892,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3².",
-      "rdfs:label": "§ 3². Nimekanne",
+      "rdfs:label": {
+        "@value": "§ 3². Nimekanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Nimekanne on nimeõigusliku muudatuse kohta rahvastikuregistrisse kantavate andmete kogum. (2) Nimeõigusliku muudatuse võib teha Eesti perekonnaseisuasutus või kohus käesolevas seaduses sätestatud tingimustel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Nimekanne on nimeõigusliku muudatuse kohta rahvastikuregistrisse kantavate andmete kogum. (2) Nimeõigusliku muudatuse võib teha Eesti perekonnaseisuasutus või kohus käesolevas seaduses sätestatud tingimustel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nimekanne on nimeõigusliku muudatuse kohta rahvastikuregistrisse kantavate andmete kogum. (2) Nimeõigusliku muudatuse võib teha Eesti perekonnaseisuasutus või kohus käesolevas seaduses sätestatud tingimustel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
@@ -888,13 +992,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Isikunime andmine ja kohaldamine",
+      "rdfs:label": {
+        "@value": "§ 4. Isikunime andmine ja kohaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, võib Eesti haldusorgan või kohus anda isikunime, välja arvatud käesoleva seaduse 3. peatüki 2. jaos sätestatud juhtudel. (3) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, kohaldatakse isikunimi Eestis isikuandmete esmakordse dokumenteerimise käigus välisriigi antud või kohaldatud nime alusel.",
-      "estleg:legalText": "(1) Kehtetu - (2) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, võib Eesti haldusorgan või kohus anda isikunime, välja arvatud käesoleva seaduse 3. peatüki 2. jaos sätestatud juhtudel. (3) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, kohaldatakse isikunimi Eestis isikuandmete esmakordse dokumenteerimise käigus välisriigi antud või kohaldatud nime alusel. (4) Isikunime kohaldamine ei muuda isiku ametlikku nime. Isikunime dokumenteerimisel ei või ühe ja sama isikunime koosseisu kuuluvate nimede arvu ja järjekorda ning eesnime ega perekonnanime kirjapilti muuta. Erandina võib isiku avalduse alusel muuta nime kirjapilti, kui välisriigis on isikule antud perekonnanimi, mille kirjapilt kajastab isiku sugu, perekonnaseisu või muud tunnust vastavalt isiku rahvuslikule tavale. (5) Kümneaastasele või vanemale lapsele isikunime andmisel on vaja tema nõusolekut. Arvestada tuleb ka noorema kui kümneaastase lapse soovi, kui tema arengutase seda võimaldab. Alaealise nõusoleku selgitab välja ametnik ning kinnitab selle oma allkirjaga nime andmise taotlusel. (6) Kehtetu - (7) Isikunime kohaldav haldusorgan edastab nimeõigusliku muudatuse tegemiseks isikunime kohaldamise aluseks olevad dokumendid perekonnaseisuasutusele. (8) Käesolevas seaduses abikaasade ja abielu kohta sätestatut kohaldatakse ka registreeritud elukaaslaste ja registreeritud kooselu kohta.",
+      "estleg:summary": {
+        "@value": "(2) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, võib Eesti haldusorgan või kohus anda isikunime, välja arvatud käesoleva seaduse 3. peatüki 2. jaos sätestatud juhtudel. (3) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, kohaldatakse isikunimi Eestis isikuandmete esmakordse dokumenteerimise käigus välisriigi antud või kohaldatud nime alusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(2) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, võib Eesti haldusorgan või kohus anda isikunime, välja arvatud käesoleva seaduse 3. peatüki 2. jaos sätestatud juhtudel. (3) Välisriigi kodanikule ja ajutiselt Eestis viibivale välismaalasele, kes ei ole ühegi riigi kodanik, kohaldatakse isikunimi Eestis isikuandmete esmakordse dokumenteerimise käigus välisriigi antud või kohaldatud nime alusel. (4) Isikunime kohaldamine ei muuda isiku ametlikku nime. Isikunime dokumenteerimisel ei või ühe ja sama isikunime koosseisu kuuluvate nimede arvu ja järjekorda ning eesnime ega perekonnanime kirjapilti muuta. Erandina võib isiku avalduse alusel muuta nime kirjapilti, kui välisriigis on isikule antud perekonnanimi, mille kirjapilt kajastab isiku sugu, perekonnaseisu või muud tunnust vastavalt isiku rahvuslikule tavale. (5) Kümneaastasele või vanemale lapsele isikunime andmisel on vaja tema nõusolekut. Arvestada tuleb ka noorema kui kümneaastase lapse soovi, kui tema arengutase seda võimaldab. Alaealise nõusoleku selgitab välja ametnik ning kinnitab selle oma allkirjaga nime andmise taotlusel. (7) Isikunime kohaldav haldusorgan edastab nimeõigusliku muudatuse tegemiseks isikunime kohaldamise aluseks olevad dokumendid perekonnaseisuasutusele. (8) Käesolevas seaduses abikaasade ja abielu kohta sätestatut kohaldatakse ka registreeritud elukaaslaste ja registreeritud kooselu kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
       },
@@ -902,9 +1012,6 @@
         "@id": "estleg:Chapter_NS_1"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:NS_Par_4_Lg_1"
-        },
         {
           "@id": "estleg:NS_Par_4_Lg_2"
         },
@@ -916,9 +1023,6 @@
         },
         {
           "@id": "estleg:NS_Par_4_Lg_5"
-        },
-        {
-          "@id": "estleg:NS_Par_4_Lg_6"
         },
         {
           "@id": "estleg:NS_Par_4_Lg_7"
@@ -961,19 +1065,6 @@
           "@id": "estleg:Institution_kohus"
         }
       ]
-    },
-    {
-      "@id": "estleg:NS_Par_4_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:NS_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:NS_Par_4_Lg_2",
@@ -1101,19 +1192,6 @@
       ]
     },
     {
-      "@id": "estleg:NS_Par_4_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:NS_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 6"
-    },
-    {
       "@id": "estleg:NS_Par_4_Lg_7",
       "@type": [
         "estleg:Subsection",
@@ -1146,13 +1224,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Isikunime õigekirjutus",
+      "rdfs:label": {
+        "@value": "§ 5. Isikunime õigekirjutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Isikunime kirjutamisel kasutatakse eesti-ladina tähti ja sümboleid ning vajaduse korral võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Eestikeelse isikunime kirjapilt peab vastama eesti õigekirjutuse reeglitele. Võõrkeelse isikunime kirjapilt peab vastama asjaomase keele õigekirjutuse reeglitele. (3) Isikunime kohaldatakse: alusdokumenti kantud ladinatähelise nime alusel võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt; käesoleva lõike punktis 1 nimetatud võimaluse puudumisel",
-      "estleg:legalText": "(1) Isikunime kirjutamisel kasutatakse eesti-ladina tähti ja sümboleid ning vajaduse korral võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Eestikeelse isikunime kirjapilt peab vastama eesti õigekirjutuse reeglitele. Võõrkeelse isikunime kirjapilt peab vastama asjaomase keele õigekirjutuse reeglitele. (3) Isikunime kohaldatakse: alusdokumenti kantud ladinatähelise nime alusel võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt; käesoleva lõike punktis 1 nimetatud võimaluse puudumisel alusdokumenti kantud mitteladinatähelise nime ümberkirjutamise abil eesti-ladina tähtedega, tehes seda võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt või nende puudumisel nimeteadusliku usaldusasutuse soovituse alusel. (4) Isikunime kohaldamisel kasutatakse samaaegselt vaid ühte käesoleva paragrahvi lõikes 3 nimetatud viisi. (5) Seadusega sätestatud juhtudel võib eesnime või perekonnanime esitada lühendatud kujul. (6) kehtestab määrusega isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreeglid.",
+      "estleg:summary": {
+        "@value": "(1) Isikunime kirjutamisel kasutatakse eesti-ladina tähti ja sümboleid ning vajaduse korral võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Eestikeelse isikunime kirjapilt peab vastama eesti õigekirjutuse reeglitele. Võõrkeelse isikunime kirjapilt peab vastama asjaomase keele õigekirjutuse reeglitele. (3) Isikunime kohaldatakse: 1) alusdokumenti kantud ladinatähelise nime alusel võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt; 2) käesoleva lõike punktis 1 nimetatud võimaluse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Isikunime kirjutamisel kasutatakse eesti-ladina tähti ja sümboleid ning vajaduse korral võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Eestikeelse isikunime kirjapilt peab vastama eesti õigekirjutuse reeglitele. Võõrkeelse isikunime kirjapilt peab vastama asjaomase keele õigekirjutuse reeglitele. (3) Isikunime kohaldatakse: 1) alusdokumenti kantud ladinatähelise nime alusel võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt; 2) käesoleva lõike punktis 1 nimetatud võimaluse puudumisel alusdokumenti kantud mitteladinatähelise nime ümberkirjutamise abil eesti-ladina tähtedega, tehes seda võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt või nende puudumisel nimeteadusliku usaldusasutuse soovituse alusel. (4) Isikunime kohaldamisel kasutatakse samaaegselt vaid ühte käesoleva paragrahvi lõikes 3 nimetatud viisi. (5) Seadusega sätestatud juhtudel võib eesnime või perekonnanime esitada lühendatud kujul. (6) kehtestab määrusega isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreeglid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
       },
@@ -1245,12 +1329,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Isikunime kohaldatakse: alusdokumenti kantud ladinatähelise nime alusel võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt; käesoleva lõike punktis 1 nimetatud võimaluse puudumisel alusdokumenti kantud mitteladinatähelise nime ümberkirjutamise abil eesti-ladina tähtedega, tehes seda võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt või nende puudumisel nimeteadusliku usaldusasutuse soovituse alusel.",
+      "estleg:legalText": "(3) Isikunime kohaldatakse: 1) alusdokumenti kantud ladinatähelise nime alusel võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt; 2) käesoleva lõike punktis 1 nimetatud võimaluse puudumisel alusdokumenti kantud mitteladinatähelise nime ümberkirjutamise abil eesti-ladina tähtedega, tehes seda võõrkeelsete isikunimede ümberkirjutusreeglite kohaselt või nende puudumisel nimeteadusliku usaldusasutuse soovituse alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_5"
       },
       "rdfs:label": "§ 5 lg 3",
-      "estleg:itemNumber": "1"
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:NS_Par_5_Lg_4",
@@ -1316,13 +1403,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Perekonnanimele esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 6. Perekonnanimele esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Perekonnanimi võib koosneda: andmisel ühest või sidekriipsuga seotud kahest nimest; kohaldamisel ühest või mitmest nimest. (2) Käesolevas seaduses käsitatakse ühise perekonnanimena omavahel abielus, suguluses või hõimluses olevate või olnud isikute perekonnanimesid, mille kirjapilt on täht-tähelt kokkulangev, samuti nimesid, mille kirjapildi erinevused on tingitud soo, perekonnaseisu või muu tunnuse kajastumisest nimes vastavalt isiku rahvuslikule tavale.",
-      "estleg:legalText": "(1) Perekonnanimi võib koosneda: andmisel ühest või sidekriipsuga seotud kahest nimest; kohaldamisel ühest või mitmest nimest. (2) Käesolevas seaduses käsitatakse ühise perekonnanimena omavahel abielus, suguluses või hõimluses olevate või olnud isikute perekonnanimesid, mille kirjapilt on täht-tähelt kokkulangev, samuti nimesid, mille kirjapildi erinevused on tingitud soo, perekonnaseisu või muu tunnuse kajastumisest nimes vastavalt isiku rahvuslikule tavale. (3) Tunnused, mille alusel perekonnanimesid käsitatakse ühise perekonnanimena, kehtestab määrusega. (4) Kahtluse korral rahvusliku nimekuju õigsuses pöördub perekonnanime andev või kohaldav haldusorgan või kohus selgituste saamiseks nimeteadusliku usaldusasutuse poole või vastava riigi diplomaatilise esinduse poole. (5) Perekonnanimi ei tohi sisaldada numbreid ja mittesõnalisi tähiseid ega olla eraldi või koos eesnimega vastuolus heade kommetega. (6) Käesoleva paragrahvi lõikes 1 sätestatust võib teha erandi, kui isikul on oma kodakondsuse, peresuhete, rahvuskuuluvuse või usu tõttu isiklik seos muukeelse nimetraditsiooniga ja taotletav nimi on sellele vastav. (7) Käesolevas paragrahvis sätestatud nõuded ei laiene perekonnanime kohaldamisele.",
+      "estleg:summary": {
+        "@value": "(1) Perekonnanimi võib koosneda: 1) andmisel ühest või sidekriipsuga seotud kahest nimest; 2) kohaldamisel ühest või mitmest nimest. (2) Käesolevas seaduses käsitatakse ühise perekonnanimena omavahel abielus, suguluses või hõimluses olevate või olnud isikute perekonnanimesid, mille kirjapilt on täht-tähelt kokkulangev, samuti nimesid, mille kirjapildi erinevused on tingitud soo, perekonnaseisu või muu tunnuse kajastumisest nimes vastavalt isiku rahvuslikule tavale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Perekonnanimi võib koosneda: 1) andmisel ühest või sidekriipsuga seotud kahest nimest; 2) kohaldamisel ühest või mitmest nimest. (2) Käesolevas seaduses käsitatakse ühise perekonnanimena omavahel abielus, suguluses või hõimluses olevate või olnud isikute perekonnanimesid, mille kirjapilt on täht-tähelt kokkulangev, samuti nimesid, mille kirjapildi erinevused on tingitud soo, perekonnaseisu või muu tunnuse kajastumisest nimes vastavalt isiku rahvuslikule tavale. (3) Tunnused, mille alusel perekonnanimesid käsitatakse ühise perekonnanimena, kehtestab määrusega. (4) Kahtluse korral rahvusliku nimekuju õigsuses pöördub perekonnanime andev või kohaldav haldusorgan või kohus selgituste saamiseks nimeteadusliku usaldusasutuse poole või vastava riigi diplomaatilise esinduse poole. (5) Perekonnanimi ei tohi sisaldada numbreid ja mittesõnalisi tähiseid ega olla eraldi või koos eesnimega vastuolus heade kommetega. (6) Käesoleva paragrahvi lõikes 1 sätestatust võib teha erandi, kui isikul on oma kodakondsuse, peresuhete, rahvuskuuluvuse või usu tõttu isiklik seos muukeelse nimetraditsiooniga ja taotletav nimi on sellele vastav. (7) Käesolevas paragrahvis sätestatud nõuded ei laiene perekonnanime kohaldamisele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
       },
@@ -1396,11 +1489,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Perekonnanimi võib koosneda: andmisel ühest või sidekriipsuga seotud kahest nimest; kohaldamisel ühest või mitmest nimest.",
+      "estleg:legalText": "(1) Perekonnanimi võib koosneda: 1) andmisel ühest või sidekriipsuga seotud kahest nimest; 2) kohaldamisel ühest või mitmest nimest.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_6"
       },
       "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1536,13 +1633,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Eesnimele esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 7. Eesnimele esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Eesnimi võib koosneda: andmisel mitte rohkem kui kolmest lahku kirjutatud nimest või sidekriipsuga seotud kahest nimest; kohaldamisel ühest või mitmest nimest. (1¹) Võõrkeelne eesnimi peab olema teises riigis kasutusel eesnimena. (2) Eesnimeks ei või anda nime, mis sisaldab numbreid või mittesõnalisi tähiseid või mis eraldi või koos perekonnanimega ei ole kooskõlas heade kommetega. (3) Eesnimeks ei või ilma mõjuva põhjuseta anda: tavatut eesnime, mis oma keeruka või üldisele keelekasutusele",
-      "estleg:legalText": "(1) Eesnimi võib koosneda: andmisel mitte rohkem kui kolmest lahku kirjutatud nimest või sidekriipsuga seotud kahest nimest; kohaldamisel ühest või mitmest nimest. (1¹) Võõrkeelne eesnimi peab olema teises riigis kasutusel eesnimena. (2) Eesnimeks ei või anda nime, mis sisaldab numbreid või mittesõnalisi tähiseid või mis eraldi või koos perekonnanimega ei ole kooskõlas heade kommetega. (3) Eesnimeks ei või ilma mõjuva põhjuseta anda: tavatut eesnime, mis oma keeruka või üldisele keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu ei ole eesnimena kasutamiseks sobiv; isiku soole mittevastavat nime; üldtuntud isikunimena kasutatavat nime või selle lühendatud kuju, üldtuntud autori nime või teenistusnime. Teenistusnimena käsitatakse käesoleva seaduse tähenduses nime, mida kasutatakse ametikohustuste täitmisel, kuid mis ei ole isiku ametlik nimi. (4) Käesoleva paragrahvi lõigetes 2 ja 3 sätestatust võib teha erandi, kui lapsel või lapse vanematel on oma kodakondsuse, peresuhete, rahvuskuuluvuse või muude asjaolude tõttu isiklik seos muukeelse nimetraditsiooniga ja taotletav nimi on sellele vastav.",
+      "estleg:summary": {
+        "@value": "(1) Eesnimi võib koosneda: 1) andmisel mitte rohkem kui kolmest lahku kirjutatud nimest või sidekriipsuga seotud kahest nimest; 2) kohaldamisel ühest või mitmest nimest. (1¹) Võõrkeelne eesnimi peab olema teises riigis kasutusel eesnimena. (2) Eesnimeks ei või anda nime, mis sisaldab numbreid või mittesõnalisi tähiseid või mis eraldi või koos perekonnanimega ei ole kooskõlas heade kommetega. (3) Eesnimeks ei või ilma mõjuva põhjuseta anda: 1) tavatut eesnime, mis oma keeruka või üldisele",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesnimi võib koosneda: 1) andmisel mitte rohkem kui kolmest lahku kirjutatud nimest või sidekriipsuga seotud kahest nimest; 2) kohaldamisel ühest või mitmest nimest. (1¹) Võõrkeelne eesnimi peab olema teises riigis kasutusel eesnimena. (2) Eesnimeks ei või anda nime, mis sisaldab numbreid või mittesõnalisi tähiseid või mis eraldi või koos perekonnanimega ei ole kooskõlas heade kommetega. (3) Eesnimeks ei või ilma mõjuva põhjuseta anda: 1) tavatut eesnime, mis oma keeruka või üldisele keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu ei ole eesnimena kasutamiseks sobiv; 2) isiku soole mittevastavat nime; 3) üldtuntud isikunimena kasutatavat nime või selle lühendatud kuju, üldtuntud autori nime või teenistusnime. Teenistusnimena käsitatakse käesoleva seaduse tähenduses nime, mida kasutatakse ametikohustuste täitmisel, kuid mis ei ole isiku ametlik nimi. (4) Käesoleva paragrahvi lõigetes 2 ja 3 sätestatust võib teha erandi, kui lapsel või lapse vanematel on oma kodakondsuse, peresuhete, rahvuskuuluvuse või muude asjaolude tõttu isiklik seos muukeelse nimetraditsiooniga ja taotletav nimi on sellele vastav.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_1"
       },
@@ -1613,11 +1716,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eesnimi võib koosneda: andmisel mitte rohkem kui kolmest lahku kirjutatud nimest või sidekriipsuga seotud kahest nimest; kohaldamisel ühest või mitmest nimest.",
+      "estleg:legalText": "(1) Eesnimi võib koosneda: 1) andmisel mitte rohkem kui kolmest lahku kirjutatud nimest või sidekriipsuga seotud kahest nimest; 2) kohaldamisel ühest või mitmest nimest.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_7"
       },
       "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1678,11 +1785,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Eesnimeks ei või ilma mõjuva põhjuseta anda: tavatut eesnime, mis oma keeruka või üldisele keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu ei ole eesnimena kasutamiseks sobiv; isiku soole mittevastavat nime; üldtuntud isikunimena kasutatavat nime või selle lühendatud kuju, üldtuntud autori nime või teenistusnime. Teenistusnimena käsitatakse käesoleva seaduse tähenduses nime, mida kasutatakse ametikohustuste täitmisel, kuid mis ei ole isiku ametlik nimi.",
+      "estleg:legalText": "(3) Eesnimeks ei või ilma mõjuva põhjuseta anda: 1) tavatut eesnime, mis oma keeruka või üldisele keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu ei ole eesnimena kasutamiseks sobiv; 2) isiku soole mittevastavat nime; 3) üldtuntud isikunimena kasutatavat nime või selle lühendatud kuju, üldtuntud autori nime või teenistusnime. Teenistusnimena käsitatakse käesoleva seaduse tähenduses nime, mida kasutatakse ametikohustuste täitmisel, kuid mis ei ole isiku ametlik nimi.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1728,13 +1840,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Elusalt sündinud lapsele isikunime andmine",
+      "rdfs:label": {
+        "@value": "§ 8. Elusalt sündinud lapsele isikunime andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Elusalt sündinud lapsele antakse: vanemate perekonnanimi, kui vanemad kannavad ühist perekonnanime; erinevat perekonnanime kandvate vanemate kokkuleppel ühe vanema perekonnanimi. Kui nad kokkuleppele ei jõua, otsustab eestkosteasutus, kumma vanema perekonnanimi lapsele antakse; ema perekonnanimi, kui isadus ei ole kindlaks tehtud. (2) Lapsele ei või perekonnanimeks anda vanemale abiellumisel või perekonnanime muutmise korras antud kahest nimest koosnevat perekonnanime.",
-      "estleg:legalText": "(1) Elusalt sündinud lapsele antakse: vanemate perekonnanimi, kui vanemad kannavad ühist perekonnanime; erinevat perekonnanime kandvate vanemate kokkuleppel ühe vanema perekonnanimi. Kui nad kokkuleppele ei jõua, otsustab eestkosteasutus, kumma vanema perekonnanimi lapsele antakse; ema perekonnanimi, kui isadus ei ole kindlaks tehtud. (2) Lapsele ei või perekonnanimeks anda vanemale abiellumisel või perekonnanime muutmise korras antud kahest nimest koosnevat perekonnanime. Kui mõlema vanema perekonnanimi koosneb perekonnanime muutmise korras antud kahest nimest, antakse lapsele vanemate kokkuleppel ühe vanema perekonnanimi. Käesolevat lõiget ei kohaldata kahest nimest koosneva nime suhtes, mis on saadud § 8 lõike 1 punktis 3 sätestatud juhul. (2¹) Kui lapse õel või vennal on kahest nimest koosnev perekonnanimi, mis ühtib vanema kahest nimest koosneva perekonnanimega, võib lapsele erandina anda vanema kahest nimest koosneva perekonnanime. Mitmikutele antakse sama perekonnanimi. (3) Lapsele antakse eesnimi vanemate kokkuleppel või tema ainsa vanema või eestkostja ettepanekul. Kui lapse hooldusõigus kuulub ainult ühele vanematest, antakse lapsele eesnimi tema ettepanekul. Kui kokkulepet ei ole või ettepanekut ei tehta, otsustab eestkosteasutus, milline eesnimi lapsele antakse. (4) Leidlapsele antakse eesnimi ja perekonnanimi eestkosteasutuse avalduse alusel.",
+      "estleg:summary": {
+        "@value": "(1) Elusalt sündinud lapsele antakse: 1) vanemate perekonnanimi, kui vanemad kannavad ühist perekonnanime; 2) erinevat perekonnanime kandvate vanemate kokkuleppel ühe vanema perekonnanimi. Kui nad kokkuleppele ei jõua, otsustab valla- või linnavalitsus, kelle kohustus on vajaduse korral täita eestkostja ülesandeid, kumma vanema perekonnanimi lapsele antakse; 3) ema perekonnanimi, kui isadus ei ole kindlaks tehtud. (2) Lapsele ei või perekonnanimeks anda vanemale abiellumisel või perekonnanime",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Elusalt sündinud lapsele antakse: 1) vanemate perekonnanimi, kui vanemad kannavad ühist perekonnanime; 2) erinevat perekonnanime kandvate vanemate kokkuleppel ühe vanema perekonnanimi. Kui nad kokkuleppele ei jõua, otsustab valla- või linnavalitsus, kelle kohustus on vajaduse korral täita eestkostja ülesandeid, kumma vanema perekonnanimi lapsele antakse; 3) ema perekonnanimi, kui isadus ei ole kindlaks tehtud. (2) Lapsele ei või perekonnanimeks anda vanemale abiellumisel või perekonnanime muutmise korras antud kahest nimest koosnevat perekonnanime. Kui mõlema vanema perekonnanimi koosneb perekonnanime muutmise korras antud kahest nimest, antakse lapsele vanemate kokkuleppel ühe vanema perekonnanimi. Käesolevat lõiget ei kohaldata kahest nimest koosneva nime suhtes, mis on saadud § 8 lõike 1 punktis 3 sätestatud juhul. (2¹) Kui lapse õel või vennal on kahest nimest koosnev perekonnanimi, mis ühtib vanema kahest nimest koosneva perekonnanimega, võib lapsele erandina anda vanema kahest nimest koosneva perekonnanime. Mitmikutele antakse sama perekonnanimi. (3) Lapsele antakse eesnimi vanemate kokkuleppel või tema ainsa vanema või eestkostja ettepanekul. Kui lapse hooldusõigus kuulub ainult ühele vanematest, antakse lapsele eesnimi tema ettepanekul. Kui kokkulepet ei ole või ettepanekut ei tehta, otsustab valla- või linnavalitsus, kelle kohustus on vajaduse korral täita eestkostja ülesandeid, milline eesnimi lapsele antakse. (4) Leidlapsele antakse eesnimi ja perekonnanimi selle valla- või linnavalitsuse, kelle kohustus on vajaduse korral täita eestkostja ülesandeid, avalduse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_2"
       },
@@ -1809,11 +1927,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Elusalt sündinud lapsele antakse: vanemate perekonnanimi, kui vanemad kannavad ühist perekonnanime; erinevat perekonnanime kandvate vanemate kokkuleppel ühe vanema perekonnanimi. Kui nad kokkuleppele ei jõua, otsustab eestkosteasutus, kumma vanema perekonnanimi lapsele antakse; ema perekonnanimi, kui isadus ei ole kindlaks tehtud.",
+      "estleg:legalText": "(1) Elusalt sündinud lapsele antakse: 1) vanemate perekonnanimi, kui vanemad kannavad ühist perekonnanime; 2) erinevat perekonnanime kandvate vanemate kokkuleppel ühe vanema perekonnanimi. Kui nad kokkuleppele ei jõua, otsustab valla- või linnavalitsus, kelle kohustus on vajaduse korral täita eestkostja ülesandeid, kumma vanema perekonnanimi lapsele antakse; 3) ema perekonnanimi, kui isadus ei ole kindlaks tehtud.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_8"
       },
       "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1882,7 +2005,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Lapsele antakse eesnimi vanemate kokkuleppel või tema ainsa vanema või eestkostja ettepanekul. Kui lapse hooldusõigus kuulub ainult ühele vanematest, antakse lapsele eesnimi tema ettepanekul. Kui kokkulepet ei ole või ettepanekut ei tehta, otsustab eestkosteasutus, milline eesnimi lapsele antakse.",
+      "estleg:legalText": "(3) Lapsele antakse eesnimi vanemate kokkuleppel või tema ainsa vanema või eestkostja ettepanekul. Kui lapse hooldusõigus kuulub ainult ühele vanematest, antakse lapsele eesnimi tema ettepanekul. Kui kokkulepet ei ole või ettepanekut ei tehta, otsustab valla- või linnavalitsus, kelle kohustus on vajaduse korral täita eestkostja ülesandeid, milline eesnimi lapsele antakse.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_8"
       },
@@ -1904,7 +2027,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Leidlapsele antakse eesnimi ja perekonnanimi eestkosteasutuse avalduse alusel.",
+      "estleg:legalText": "(4) Leidlapsele antakse eesnimi ja perekonnanimi selle valla- või linnavalitsuse, kelle kohustus on vajaduse korral täita eestkostja ülesandeid, avalduse alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_8"
       },
@@ -1917,12 +2040,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8¹.",
-      "rdfs:label": "§ 8¹. Põlvnemisel lapsele uue perekonnanime andmine",
+      "rdfs:label": {
+        "@value": "§ 8¹. Põlvnemisel lapsele uue perekonnanime andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Kui lapse vanemad ei ole abielus ja isa võtab lapse omaks pärast sünni registreerimist, võib lapsele anda isa perekonnanime. (2) Lapse põlvnemisasja lahendamisel kohtus võib kohus anda lapsele uue perekonnanime.",
+      "estleg:summary": {
+        "@value": "(1) Kui lapse vanemad ei ole abielus ja isa võtab lapse omaks pärast sünni registreerimist, võib lapsele anda isa perekonnanime. (2) Lapse põlvnemisasja lahendamisel kohtus võib kohus anda lapsele uue perekonnanime.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui lapse vanemad ei ole abielus ja isa võtab lapse omaks pärast sünni registreerimist, võib lapsele anda isa perekonnanime. (2) Lapse põlvnemisasja lahendamisel kohtus võib kohus anda lapsele uue perekonnanime.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_2"
@@ -2026,12 +2155,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Surnult sündinud lapsele isikunime andmise erisused",
+      "rdfs:label": {
+        "@value": "§ 9. Surnult sündinud lapsele isikunime andmise erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Surnult sündinud lapsele antakse perekonnanimi ja vanema(te) soovil ka eesnimi. (2) Perekonnanime ja eesnime andmisel arvestatakse käesoleva seaduse §-s 8 kirjeldatud põhimõtteid.",
+      "estleg:summary": {
+        "@value": "(1) Surnult sündinud lapsele antakse perekonnanimi ja vanema(te) soovil ka eesnimi. (2) Perekonnanime ja eesnime andmisel arvestatakse käesoleva seaduse §-s 8 kirjeldatud põhimõtteid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Surnult sündinud lapsele antakse perekonnanimi ja vanema(te) soovil ka eesnimi. (2) Perekonnanime ja eesnime andmisel arvestatakse käesoleva seaduse §-s 8 kirjeldatud põhimõtteid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_2"
@@ -2120,13 +2255,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Perekonnanime andmine abielu sõlmimisel",
+      "rdfs:label": {
+        "@value": "§ 10. Perekonnanime andmine abielu sõlmimisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Abielu sõlmimisel valib isik uue perekonnanime või säilitab senise perekonnanime. (2) Uus perekonnanimi võib: olla abikaasaga ühine perekonnanimi, milleks on ühe abikaasa abielu eel viimati kantud perekonnanimi; koosneda abielu eel viimati kantud perekonnanimest ja sellele järgnevast abikaasa perekonnanimest. (3) Käesoleva paragrahvi lõike 2 punkti 2 alusel antud uus perekonnanimi ei või koosneda enam kui kahest sidekriipsuga seotud nimest ning selliselt antud perekonnanime võib kanda vaid",
-      "estleg:legalText": "(1) Abielu sõlmimisel valib isik uue perekonnanime või säilitab senise perekonnanime. (2) Uus perekonnanimi võib: olla abikaasaga ühine perekonnanimi, milleks on ühe abikaasa abielu eel viimati kantud perekonnanimi; koosneda abielu eel viimati kantud perekonnanimest ja sellele järgnevast abikaasa perekonnanimest. (3) Käesoleva paragrahvi lõike 2 punkti 2 alusel antud uus perekonnanimi ei või koosneda enam kui kahest sidekriipsuga seotud nimest ning selliselt antud perekonnanime võib kanda vaid üks abikaasadest.",
+      "estleg:summary": {
+        "@value": "(1) Abielu sõlmimisel valib isik uue perekonnanime või säilitab senise perekonnanime. (2) Uus perekonnanimi võib: 1) olla abikaasaga ühine perekonnanimi, milleks on ühe abikaasa abielu eel viimati kantud perekonnanimi; 2) koosneda abielu eel viimati kantud perekonnanimest ja sellele järgnevast abikaasa perekonnanimest. (3) Käesoleva paragrahvi lõike 2 punkti 2 alusel antud uus perekonnanimi ei või koosneda enam kui kahest sidekriipsuga seotud nimest ning selliselt antud perekonnanime võib kanda",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abielu sõlmimisel valib isik uue perekonnanime või säilitab senise perekonnanime. (2) Uus perekonnanimi võib: 1) olla abikaasaga ühine perekonnanimi, milleks on ühe abikaasa abielu eel viimati kantud perekonnanimi; 2) koosneda abielu eel viimati kantud perekonnanimest ja sellele järgnevast abikaasa perekonnanimest. (3) Käesoleva paragrahvi lõike 2 punkti 2 alusel antud uus perekonnanimi ei või koosneda enam kui kahest sidekriipsuga seotud nimest ning selliselt antud perekonnanime võib kanda vaid üks abikaasadest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_1"
       },
@@ -2191,11 +2335,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Uus perekonnanimi võib: olla abikaasaga ühine perekonnanimi, milleks on ühe abikaasa abielu eel viimati kantud perekonnanimi; koosneda abielu eel viimati kantud perekonnanimest ja sellele järgnevast abikaasa perekonnanimest.",
+      "estleg:legalText": "(2) Uus perekonnanimi võib: 1) olla abikaasaga ühine perekonnanimi, milleks on ühe abikaasa abielu eel viimati kantud perekonnanimi; 2) koosneda abielu eel viimati kantud perekonnanimest ja sellele järgnevast abikaasa perekonnanimest.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_10"
       },
       "rdfs:label": "§ 10 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2232,13 +2380,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Perekonnanime taastamine abielu lahutamisel",
+      "rdfs:label": {
+        "@value": "§ 11. Perekonnanime taastamine abielu lahutamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Abielu lahutamisel võib kohus või perekonnaseisuasutus taastada isiku avalduse alusel tema varem kantud perekonnanime, muidu säilib isiku abielu ajal kantud perekonnanimi. (2) Taastatav perekonnanimi võib olla: lahutatava abielu eel viimati kantud perekonnanimi; esimese abielu eel viimati kantud perekonnanimi. (3) Kui lahutatakse abielu, mis on sõlmitud kooseluseaduse § 24 kohaselt, võib taastatav nimi lisaks käesoleva paragrahvi lõikes 2 sätestatule olla registreeritud kooselu eel viimati",
-      "estleg:legalText": "(1) Abielu lahutamisel võib kohus või perekonnaseisuasutus taastada isiku avalduse alusel tema varem kantud perekonnanime, muidu säilib isiku abielu ajal kantud perekonnanimi. (2) Taastatav perekonnanimi võib olla: lahutatava abielu eel viimati kantud perekonnanimi; esimese abielu eel viimati kantud perekonnanimi. (3) Kui lahutatakse abielu, mis on sõlmitud kooseluseaduse § 24 kohaselt, võib taastatav nimi lisaks käesoleva paragrahvi lõikes 2 sätestatule olla registreeritud kooselu eel viimati kantud perekonnanimi.",
+      "estleg:summary": {
+        "@value": "(1) Abielu lahutamisel võib kohus või perekonnaseisuasutus taastada isiku avalduse alusel tema varem kantud perekonnanime, muidu säilib isiku abielu ajal kantud perekonnanimi. (2) Taastatav perekonnanimi võib olla: 1) lahutatava abielu eel viimati kantud perekonnanimi; 2) esimese abielu eel viimati kantud perekonnanimi. (3) Kui lahutatakse abielu, mis on sõlmitud kooseluseaduse § 24 kohaselt, võib taastatav nimi lisaks käesoleva paragrahvi lõikes 2 sätestatule olla registreeritud kooselu eel",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Abielu lahutamisel võib kohus või perekonnaseisuasutus taastada isiku avalduse alusel tema varem kantud perekonnanime, muidu säilib isiku abielu ajal kantud perekonnanimi. (2) Taastatav perekonnanimi võib olla: 1) lahutatava abielu eel viimati kantud perekonnanimi; 2) esimese abielu eel viimati kantud perekonnanimi. (3) Kui lahutatakse abielu, mis on sõlmitud kooseluseaduse § 24 kohaselt, võib taastatav nimi lisaks käesoleva paragrahvi lõikes 2 sätestatule olla registreeritud kooselu eel viimati kantud perekonnanimi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_1"
       },
@@ -2327,11 +2484,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Taastatav perekonnanimi võib olla: lahutatava abielu eel viimati kantud perekonnanimi; esimese abielu eel viimati kantud perekonnanimi.",
+      "estleg:legalText": "(2) Taastatav perekonnanimi võib olla: 1) lahutatava abielu eel viimati kantud perekonnanimi; 2) esimese abielu eel viimati kantud perekonnanimi.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_11"
       },
       "rdfs:label": "§ 11 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2372,13 +2533,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Perekonnanime taastamine abielu kehtetuks tunnistamise korral",
+      "rdfs:label": {
+        "@value": "§ 12. Perekonnanime taastamine abielu kehtetuks tunnistamise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Abielu kehtetuks tunnistamise korral taastatakse isiku kehtetuks tunnistatava abielu eel viimati kantud perekonnanimi.",
+      "estleg:summary": {
+        "@value": "Abielu kehtetuks tunnistamise korral taastatakse isiku kehtetuks tunnistatava abielu eel viimati kantud perekonnanimi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Abielu kehtetuks tunnistamise korral taastatakse isiku kehtetuks tunnistatava abielu eel viimati kantud perekonnanimi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_1"
       },
@@ -2408,10 +2578,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Abielu kehtetuks tunnistamise korral taastatakse isiku kehtetuks tunnistatava abielu eel viimati kantud perekonnanimi.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Abielu kehtetuks tunnistamise korral taastatakse isiku kehtetuks tunnistatava abielu eel viimati kantud perekonnanimi.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_12"
       },
+      "rdfs:label": "§ 12 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2429,13 +2601,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Isikunime andmine lapsendamisel",
+      "rdfs:label": {
+        "@value": "§ 13. Isikunime andmine lapsendamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Lapsendamisel võib kohus lapsendaja avalduse alusel anda lapsele uue eesnime ja lapsendaja perekonnanime. (2) Uue eesnime ja lapsendaja(te) perekonnanime andmisel arvestatakse perekonnanime puhul käesoleva seaduse § 8 lõigetes 1 ja 2 ning eesnime puhul §-s 7 ja § 8 lõikes 3 sätestatut. (3) Käesolevas paragrahvis nimetatud juhtudel on vaja käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolekut.",
+      "estleg:summary": {
+        "@value": "(1) Lapsendamisel võib kohus lapsendaja avalduse alusel anda lapsele uue eesnime ja lapsendaja perekonnanime. (2) Uue eesnime ja lapsendaja(te) perekonnanime andmisel arvestatakse perekonnanime puhul käesoleva seaduse § 8 lõigetes 1 ja 2 ning eesnime puhul §-s 7 ja § 8 lõikes 3 sätestatut. (3) Käesolevas paragrahvis nimetatud juhtudel on vaja käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolekut.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Lapsendamisel võib kohus lapsendaja avalduse alusel anda lapsele uue eesnime ja lapsendaja perekonnanime. (2) Uue eesnime ja lapsendaja(te) perekonnanime andmisel arvestatakse perekonnanime puhul käesoleva seaduse § 8 lõigetes 1 ja 2 ning eesnime puhul §-s 7 ja § 8 lõikes 3 sätestatut. (3) Käesolevas paragrahvis nimetatud juhtudel on vaja käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolekut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_1"
       },
@@ -2569,13 +2750,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Isikunime taastamine lapsendamise kehtetuks tunnistamise korral",
+      "rdfs:label": {
+        "@value": "§ 14. Isikunime taastamine lapsendamise kehtetuks tunnistamise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Lapsendamise kehtetuks tunnistamise korral taastatakse lapse lapsendamise eelne isikunimi. (2) Käesoleva paragrahvi lõikes 1 nimetatud juhul on vaja käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolekut.",
+      "estleg:summary": {
+        "@value": "(1) Lapsendamise kehtetuks tunnistamise korral taastatakse lapse lapsendamise eelne isikunimi. (2) Käesoleva paragrahvi lõikes 1 nimetatud juhul on vaja käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolekut.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Lapsendamise kehtetuks tunnistamise korral taastatakse lapse lapsendamise eelne isikunimi. (2) Käesoleva paragrahvi lõikes 1 nimetatud juhul on vaja käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolekut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_1"
       },
@@ -2657,13 +2847,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Uue isikunime andmine isiku soo muutumise tõttu",
+      "rdfs:label": {
+        "@value": "§ 15. Uue isikunime andmine isiku soo muutumise tõttu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Isiku soo muutumise korral võib perekonnaseisuasutus anda isiku enda, alaealise vanema või eestkostetava alaealise eestkostja kirjaliku avalduse alusel isikule uue eesnime ja muuta muukeelset perekonnanime, kui sugu kajastub vastavalt isiku rahvuslikule tavale perekonnanimes. (2) Uue eesnime andmisel järgitakse käesoleva seaduse §-s 7 sätestatud nõudeid ja piiranguid.",
+      "estleg:summary": {
+        "@value": "(1) Isiku soo muutumise korral võib perekonnaseisuasutus anda isiku enda, alaealise vanema või eestkostetava alaealise eestkostja kirjaliku avalduse alusel isikule uue eesnime ja muuta muukeelset perekonnanime, kui sugu kajastub vastavalt isiku rahvuslikule tavale perekonnanimes. (2) Uue eesnime andmisel järgitakse käesoleva seaduse §-s 7 sätestatud nõudeid ja piiranguid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isiku soo muutumise korral võib perekonnaseisuasutus anda isiku enda, alaealise vanema või eestkostetava alaealise eestkostja kirjaliku avalduse alusel isikule uue eesnime ja muuta muukeelset perekonnanime, kui sugu kajastub vastavalt isiku rahvuslikule tavale perekonnanimes. (2) Uue eesnime andmisel järgitakse käesoleva seaduse §-s 7 sätestatud nõudeid ja piiranguid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_1"
       },
@@ -2759,13 +2958,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Uue isikunime andmine isiku soovil",
+      "rdfs:label": {
+        "@value": "§ 16. Uue isikunime andmine isiku soovil",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Isikule uue eesnime, perekonnanime või isikunime andmiseks esitab isik vormikohase avalduse perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 4, 9, 12 või 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele kui perekonnaseisuasutusele. Uue perekonnanime või uue isikunime andmise taotlemisel võib taotleda ka isiku alaealistele lastele uue perekonnanime andmist. (2) Käesoleva paragrahvi lõikes 1 nimetatud avaldus esitatakse isiklikult.",
-      "estleg:legalText": "(1) Isikule uue eesnime, perekonnanime või isikunime andmiseks esitab isik vormikohase avalduse perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 4, 9, 12 või 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele kui perekonnaseisuasutusele. Uue perekonnanime või uue isikunime andmise taotlemisel võib taotleda ka isiku alaealistele lastele uue perekonnanime andmist. (2) Käesoleva paragrahvi lõikes 1 nimetatud avaldus esitatakse isiklikult. Avalduse võib esitada rahvastikuregistri turvalises veebikeskkonnas või perekonnaseisuasutuses kirjalikult ning avalduses märgitakse järgmised andmed: isiku eesnimi, perekonnanimi, isikukood või sünniaeg, sünnikoht, elukoht, kontaktandmed (sealhulgas telefoninumber ja elektronposti aadress), kodakondsus ning perekonnaseis; kehtetu - uue eesnime, perekonnanime või isikunime taotlemise põhjus; soovitav uus eesnimi, perekonnanimi või isikunimi; käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolek; isiku rahvus; isiku emakeel; isiku haridus. kehtetu - (2¹) Rahvastikuregistri turvalises veebikeskkonnas ei või esitada piiratud teovõimega täisealisele isikule uue eesnime, perekonnanime või isikunime andmise avaldust. (3) Uue perekonnanime andmisel järgitakse käesoleva seaduse §-s 171 ja eesnime andmisel §-s 19 sätestatut. (4) Käesoleva paragrahvi alusel antakse isikule uus eesnimi, perekonnanimi või isikunimi üldjuhul üks kord. Isikule antakse uus eesnimi, perekonnanimi või isikunimi rohkem kui üks kord vaid mõjuval põhjusel. (4¹) Isik, kelle suhtes on jõustunud süüdimõistev kohtuotsus seonduvalt seksuaalse enesemääramise vastase kuriteo toimepanemisega alaealise isiku suhtes, ei saa nime muuta. (5) Isikul on õigus loobuda käesoleva paragrahvi alusel antud eesnimest, perekonnanimest või isikunimest ning taotleda endise eesnime, perekonnanime või isikunime taastamist. (6) Kehtetu - (6¹) Isiku soovil uue eesnime, perekonnanime või isikunime andmise, sealhulgas endise nime taastamise, otsustab: valdkonna eest vastutav minister; valdkonna eest vastutava ministri volitatud Siseministeeriumi ametnik; käesoleva paragrahvi lõikes 1 nimetatud perekonnaseisuasutuse perekonnaseisuametnik, kellel on perekonnaseisutoimingute seaduse § 4 lõikes 2 sätestatud perekonnaseisuametnikuna tegutsemise õigus, sealhulgas õigus anda isiku soovil uus eesnimi, perekonnanimi või isikunimi, või käesoleva paragrahvi lõikes 64 sätestatud juhul Siseministeerium. (6²) Kui uue ees- või perekonnanime andmise või endise isikunime taastamise otsustab minister või tema volitatud Siseministeeriumi ametnik, teeb käesoleva paragrahvi lõike 9 alusel kehtestatud korras sätestatud menetlustoimingud käesoleva paragrahvi lõikes 1 nimetatud perekonnaseisuasutuse ametnik. (6³) Kohaliku omavalitsuse üksuse poolt käesoleva paragrahvi lõigete 61 ja 62 alusel uue ees- või perekonnanime andmise või endise isikunime taastamise otsustamise ning käesoleva paragrahvi lõike 9 alusel kehtestatud korras sätestatud juhtudel menetlustoimingute tegemise kui riikliku ülesande täitmise kulud hüvitatakse kohaliku omavalitsuse üksusele riigieelarvest, võttes aluseks eelarveaastale eelnenud aastal tehtud toimingute arvu ning vastava aasta riigieelarves sätestatud ühe toimingu keskmise arvutatud kulu. (6⁴) Kui käesoleva paragrahvi lõikes 1 nimetatud avaldus on esitatud rahvastikuregistri turvalises veebikeskkonnas ja selle vastavust käesolevas seaduses sätestatud isiku soovil uue isikunime andmise nõuetele on kontrollitud rahvastikuregistrist automaatselt ning otsuse tegemiseks vajalikud eeldused on täidetud, otsustab Siseministeerium uue eesnime, perekonnanime või isikunime andmise ja kannab selle rahvastikuregistrisse automaatselt. (6⁵) Käesoleva paragrahvi lõikes 64 nimetatud otsuse ja kande tegemise täpsemad tingimused ja korra kehtestab määrusega. (7) Valdkonna eest vastutava ministri või tema volitatud isiku poolt haldusaktiga uue eesnime, perekonnanime või isikunime andmise või eesnime, perekonnanime või isikunime taastamise otsustamise eest tasutakse riigilõiv. (8) Käesoleva paragrahvi lõikes 1 nimetatud avalduses esitatavate andmete täpsustatud loetelu kehtestab määrusega. (9) Isikule uue eesnime, perekonnanime või isikunime andmise korra ja avalduse vormi kehtestab määrusega. (10) Kehtetu - (11) Enda isiku tõendamiseks esitab avaldaja isikut tõendavate dokumentide seaduse § 2 lõike 2 punktides 1 ja 12–8 või §-s 4 nimetatud dokumendi, välja arvatud digitaalallkirjaga kinnitatud avalduse esitamise korral.",
+      "estleg:summary": {
+        "@value": "(1) Isikule uue eesnime, perekonnanime või isikunime andmiseks esitab isik vormikohase avalduse perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 4, 9, 12 või 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele kui perekonnaseisuasutusele. Uue perekonnanime või uue isikunime andmise taotlemisel võib taotleda ka isiku alaealistele lastele uue perekonnanime andmist. (2) Käesoleva paragrahvi lõikes 1 nimetatud avaldus esitatakse isiklikult.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Isikule uue eesnime, perekonnanime või isikunime andmiseks esitab isik vormikohase avalduse perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 4, 9, 12 või 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele kui perekonnaseisuasutusele. Uue perekonnanime või uue isikunime andmise taotlemisel võib taotleda ka isiku alaealistele lastele uue perekonnanime andmist. (2) Käesoleva paragrahvi lõikes 1 nimetatud avaldus esitatakse isiklikult. Avalduse võib esitada rahvastikuregistri turvalises veebikeskkonnas või perekonnaseisuasutuses kirjalikult ning avalduses märgitakse järgmised andmed: 1) isiku eesnimi, perekonnanimi, isikukood või sünniaeg, sünnikoht, elukoht, kontaktandmed (sealhulgas telefoninumber ja elektronposti aadress), kodakondsus ning perekonnaseis; 2) 3) uue eesnime, perekonnanime või isikunime taotlemise põhjus; 4) soovitav uus eesnimi, perekonnanimi või isikunimi; 5) käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolek; 6) isiku rahvus; 7) isiku emakeel; 8) isiku haridus. 9) (2¹) Rahvastikuregistri turvalises veebikeskkonnas ei või esitada piiratud teovõimega täisealisele isikule uue eesnime, perekonnanime või isikunime andmise avaldust. (3) Uue perekonnanime andmisel järgitakse käesoleva seaduse §-s 17¹ ja eesnime andmisel §-s 19 sätestatut. (4) Käesoleva paragrahvi alusel antakse isikule uus eesnimi, perekonnanimi või isikunimi üldjuhul üks kord. Isikule antakse uus eesnimi, perekonnanimi või isikunimi rohkem kui üks kord vaid mõjuval põhjusel. (4¹) Isik, kelle suhtes on jõustunud süüdimõistev kohtuotsus seonduvalt seksuaalse enesemääramise vastase kuriteo toimepanemisega alaealise isiku suhtes, ei saa nime muuta. (5) Isikul on õigus loobuda käesoleva paragrahvi alusel antud eesnimest, perekonnanimest või isikunimest ning taotleda endise eesnime, perekonnanime või isikunime taastamist. (6¹) Isiku soovil uue eesnime, perekonnanime või isikunime andmise, sealhulgas endise nime taastamise, otsustab: 1) valdkonna eest vastutav minister; 2) valdkonna eest vastutava ministri volitatud Siseministeeriumi ametnik; 3) käesoleva paragrahvi lõikes 1 nimetatud perekonnaseisuasutuse perekonnaseisuametnik, kellel on perekonnaseisutoimingute seaduse § 4 lõikes 2 sätestatud perekonnaseisuametnikuna tegutsemise õigus, sealhulgas õigus anda isiku soovil uus eesnimi, perekonnanimi või isikunimi, või 4) käesoleva paragrahvi lõikes 6⁴ sätestatud juhul Siseministeerium. (6²) Kui uue ees- või perekonnanime andmise või endise isikunime taastamise otsustab minister või tema volitatud Siseministeeriumi ametnik, teeb käesoleva paragrahvi lõike 9 alusel kehtestatud korras sätestatud menetlustoimingud käesoleva paragrahvi lõikes 1 nimetatud perekonnaseisuasutuse ametnik. (6³) Kohaliku omavalitsuse üksuse poolt käesoleva paragrahvi lõigete 6¹ ja 6² alusel uue ees- või perekonnanime andmise või endise isikunime taastamise otsustamise ning käesoleva paragrahvi lõike 9 alusel kehtestatud korras sätestatud juhtudel menetlustoimingute tegemise kui riikliku ülesande täitmise kulud hüvitatakse kohaliku omavalitsuse üksusele riigieelarvest, võttes aluseks eelarveaastale eelnenud aastal tehtud toimingute arvu ning vastava aasta riigieelarves sätestatud ühe toimingu keskmise arvutatud kulu. (6⁴) Kui käesoleva paragrahvi lõikes 1 nimetatud avaldus on esitatud rahvastikuregistri turvalises veebikeskkonnas ja selle vastavust käesolevas seaduses sätestatud isiku soovil uue isikunime andmise nõuetele on kontrollitud rahvastikuregistrist automaatselt ning otsuse tegemiseks vajalikud eeldused on täidetud, otsustab Siseministeerium uue eesnime, perekonnanime või isikunime andmise ja kannab selle rahvastikuregistrisse automaatselt. (6⁵) Käesoleva paragrahvi lõikes 6⁴ nimetatud otsuse ja kande tegemise täpsemad tingimused ja korra kehtestab määrusega. (7) Valdkonna eest vastutava ministri või tema volitatud isiku poolt haldusaktiga uue eesnime, perekonnanime või isikunime andmise või eesnime, perekonnanime või isikunime taastamise otsustamise eest tasutakse riigilõiv. (8) Käesoleva paragrahvi lõikes 1 nimetatud avalduses esitatavate andmete täpsustatud loetelu kehtestab määrusega. (9) Isikule uue eesnime, perekonnanime või isikunime andmise korra ja avalduse vormi kehtestab määrusega. (11) Enda isiku tõendamiseks esitab avaldaja isikut tõendavate dokumentide seaduse § 2 lõike 2 punktides 1 ja 1²–8 või §-s 4 nimetatud dokumendi, välja arvatud digitaalallkirjaga kinnitatud avalduse esitamise korral.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_2"
       },
@@ -2792,9 +3000,6 @@
           "@id": "estleg:NS_Par_16_Lg_5"
         },
         {
-          "@id": "estleg:NS_Par_16_Lg_6"
-        },
-        {
           "@id": "estleg:NS_Par_16_Lg_6_1"
         },
         {
@@ -2817,9 +3022,6 @@
         },
         {
           "@id": "estleg:NS_Par_16_Lg_9"
-        },
-        {
-          "@id": "estleg:NS_Par_16_Lg_10"
         },
         {
           "@id": "estleg:NS_Par_16_Lg_11"
@@ -2895,7 +3097,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Isikule uue eesnime, perekonnanime või isikunime andmiseks esitab isik vormikohase avalduse perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 4, 9, 12 või 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele kui perekonnaseisuasutusele. Uue perekonnanime või uue isikunime andmise taotlemisel võib taotleda ka isiku alaealistele lastele uue perekonnanime andmist.",
+      "estleg:legalText": "(1) Isikule uue eesnime, perekonnanime või isikunime andmiseks esitab isik vormikohase avalduse perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 4, 9, 12 või 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele kui perekonnaseisuasutusele. Uue perekonnanime või uue isikunime andmise taotlemisel võib taotleda ka isiku alaealistele lastele uue perekonnanime andmist.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_16"
       },
@@ -2942,11 +3144,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud avaldus esitatakse isiklikult. Avalduse võib esitada rahvastikuregistri turvalises veebikeskkonnas või perekonnaseisuasutuses kirjalikult ning avalduses märgitakse järgmised andmed: isiku eesnimi, perekonnanimi, isikukood või sünniaeg, sünnikoht, elukoht, kontaktandmed (sealhulgas telefoninumber ja elektronposti aadress), kodakondsus ning perekonnaseis; kehtetu - uue eesnime, perekonnanime või isikunime taotlemise põhjus; soovitav uus eesnimi, perekonnanimi või isikunimi; käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolek; isiku rahvus; isiku emakeel; isiku haridus. kehtetu -",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud avaldus esitatakse isiklikult. Avalduse võib esitada rahvastikuregistri turvalises veebikeskkonnas või perekonnaseisuasutuses kirjalikult ning avalduses märgitakse järgmised andmed: 1) isiku eesnimi, perekonnanimi, isikukood või sünniaeg, sünnikoht, elukoht, kontaktandmed (sealhulgas telefoninumber ja elektronposti aadress), kodakondsus ning perekonnaseis; 2) 3) uue eesnime, perekonnanime või isikunime taotlemise põhjus; 4) soovitav uus eesnimi, perekonnanimi või isikunimi; 5) käesoleva seaduse § 4 lõikes 5 nimetatud isiku nõusolek; 6) isiku rahvus; 7) isiku emakeel; 8) isiku haridus. 9)",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_16"
       },
       "rdfs:label": "§ 16 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2997,7 +3210,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Uue perekonnanime andmisel järgitakse käesoleva seaduse §-s 171 ja eesnime andmisel §-s 19 sätestatut.",
+      "estleg:legalText": "(3) Uue perekonnanime andmisel järgitakse käesoleva seaduse §-s 17¹ ja eesnime andmisel §-s 19 sätestatut.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_16"
       },
@@ -3081,30 +3294,23 @@
       }
     },
     {
-      "@id": "estleg:NS_Par_16_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:NS_Par_16"
-      },
-      "rdfs:label": "§ 16 lg 6"
-    },
-    {
       "@id": "estleg:NS_Par_16_Lg_6_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6¹",
-      "estleg:legalText": "(6¹) Isiku soovil uue eesnime, perekonnanime või isikunime andmise, sealhulgas endise nime taastamise, otsustab: valdkonna eest vastutav minister; valdkonna eest vastutava ministri volitatud Siseministeeriumi ametnik; käesoleva paragrahvi lõikes 1 nimetatud perekonnaseisuasutuse perekonnaseisuametnik, kellel on perekonnaseisutoimingute seaduse § 4 lõikes 2 sätestatud perekonnaseisuametnikuna tegutsemise õigus, sealhulgas õigus anda isiku soovil uus eesnimi, perekonnanimi või isikunimi, või käesoleva paragrahvi lõikes 64 sätestatud juhul Siseministeerium.",
+      "estleg:legalText": "(6¹) Isiku soovil uue eesnime, perekonnanime või isikunime andmise, sealhulgas endise nime taastamise, otsustab: 1) valdkonna eest vastutav minister; 2) valdkonna eest vastutava ministri volitatud Siseministeeriumi ametnik; 3) käesoleva paragrahvi lõikes 1 nimetatud perekonnaseisuasutuse perekonnaseisuametnik, kellel on perekonnaseisutoimingute seaduse § 4 lõikes 2 sätestatud perekonnaseisuametnikuna tegutsemise õigus, sealhulgas õigus anda isiku soovil uus eesnimi, perekonnanimi või isikunimi, või 4) käesoleva paragrahvi lõikes 6⁴ sätestatud juhul Siseministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_16"
       },
       "rdfs:label": "§ 16 lg 6¹",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3162,7 +3368,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6³",
-      "estleg:legalText": "(6³) Kohaliku omavalitsuse üksuse poolt käesoleva paragrahvi lõigete 61 ja 62 alusel uue ees- või perekonnanime andmise või endise isikunime taastamise otsustamise ning käesoleva paragrahvi lõike 9 alusel kehtestatud korras sätestatud juhtudel menetlustoimingute tegemise kui riikliku ülesande täitmise kulud hüvitatakse kohaliku omavalitsuse üksusele riigieelarvest, võttes aluseks eelarveaastale eelnenud aastal tehtud toimingute arvu ning vastava aasta riigieelarves sätestatud ühe toimingu keskmise arvutatud kulu.",
+      "estleg:legalText": "(6³) Kohaliku omavalitsuse üksuse poolt käesoleva paragrahvi lõigete 6¹ ja 6² alusel uue ees- või perekonnanime andmise või endise isikunime taastamise otsustamise ning käesoleva paragrahvi lõike 9 alusel kehtestatud korras sätestatud juhtudel menetlustoimingute tegemise kui riikliku ülesande täitmise kulud hüvitatakse kohaliku omavalitsuse üksusele riigieelarvest, võttes aluseks eelarveaastale eelnenud aastal tehtud toimingute arvu ning vastava aasta riigieelarves sätestatud ühe toimingu keskmise arvutatud kulu.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_16"
       },
@@ -3217,7 +3423,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6⁵",
-      "estleg:legalText": "(6⁵) Käesoleva paragrahvi lõikes 64 nimetatud otsuse ja kande tegemise täpsemad tingimused ja korra kehtestab määrusega.",
+      "estleg:legalText": "(6⁵) Käesoleva paragrahvi lõikes 6⁴ nimetatud otsuse ja kande tegemise täpsemad tingimused ja korra kehtestab määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_16"
       },
@@ -3293,26 +3499,13 @@
       "estleg:implementedByCount": 1
     },
     {
-      "@id": "estleg:NS_Par_16_Lg_10",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "10",
-      "estleg:legalText": "(10) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:NS_Par_16"
-      },
-      "rdfs:label": "§ 16 lg 10"
-    },
-    {
       "@id": "estleg:NS_Par_16_Lg_11",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "11",
-      "estleg:legalText": "(11) Enda isiku tõendamiseks esitab avaldaja isikut tõendavate dokumentide seaduse § 2 lõike 2 punktides 1 ja 12–8 või §-s 4 nimetatud dokumendi, välja arvatud digitaalallkirjaga kinnitatud avalduse esitamise korral.",
+      "estleg:legalText": "(11) Enda isiku tõendamiseks esitab avaldaja isikut tõendavate dokumentide seaduse § 2 lõike 2 punktides 1 ja 1²–8 või §-s 4 nimetatud dokumendi, välja arvatud digitaalallkirjaga kinnitatud avalduse esitamise korral.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_16"
       },
@@ -3339,13 +3532,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 17.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 17.",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_2"
       },
@@ -3374,13 +3575,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17¹.",
-      "rdfs:label": "§ 17¹. Isiku soovil uue perekonnanime andmine",
+      "rdfs:label": {
+        "@value": "§ 17¹. Isiku soovil uue perekonnanime andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Uus perekonnanimi antakse, kui isik: soovib kasutada vanemate, vanavanemate või vanavanavanemate perekonnanime; soovib kasutada mitmest nimest koosneva perekonnanime puhul neist ainult ühte nime; soovib kanda abikaasaga ühist perekonnanime või lisada abikaasa perekonnanime oma perekonnanime järele; on lesestunud ja soovib kanda abielu eel viimati kantud perekonnanime; soovib kanda tegelikus kasutuses juurdunud perekonnanime, mis erineb dokumenti või rahvastikuregistrisse kantud isikunimest",
-      "estleg:legalText": "(1) Uus perekonnanimi antakse, kui isik: soovib kasutada vanemate, vanavanemate või vanavanavanemate perekonnanime; soovib kasutada mitmest nimest koosneva perekonnanime puhul neist ainult ühte nime; soovib kanda abikaasaga ühist perekonnanime või lisada abikaasa perekonnanime oma perekonnanime järele; on lesestunud ja soovib kanda abielu eel viimati kantud perekonnanime; soovib kanda tegelikus kasutuses juurdunud perekonnanime, mis erineb dokumenti või rahvastikuregistrisse kantud isikunimest nimede kokku- ja lahkukirjutamise poolest või märgi poolest, mis ei ole täht (ülakoma, sidekriips), või üksikute tähemärkide poolest ning vastab käesoleva seaduse nõuetele; soovib kasutada sulgudes kahest nimest koosneva perekonnanime puhul ühte neist nimedest ilma sulgudeta; soovib kanda perekonnanime kujul, mis on kantud rahvastikuregistrisse, kuid erineb isikule nime andmise aluseks olevasse dokumenti kantud nimekujust ümberkirjutusreeglite kohaldamise tõttu; soovib oma alaealisele lapsele anda perekonnanime, mille sai pärast abiellumist lapse teise vanemaga pärast lapse sünni registreerimist ja mis on vanemate ühine perekonnanimi. (2) Uue perekonnanime võib anda isiku põhjendatud soovil, kui isik: soovib vabaneda tavatu kujuga perekonnanimest, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse või üldkeelelise tähenduse tõttu; soovib vabaneda senisest perekonnanimest, kui tema isikunimi ühtib teise isiku isikunimega; soovib vältida isikunimest tingitud majanduslikku või sotsiaalset laadi kahjulikke tagajärgi; soovib kanda eestipärast perekonnanime; soovib perekonnanime muuta muul mõjuval põhjusel. (3) Isikule uue perekonnanime andmisel käesoleva paragrahvi lõike 2 alusel ei või uueks perekonnanimeks olla: nimi, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu; nimi, mida rahvastikuregistri andmetel kannab 1–20 elavat isikut; nimi, mille võtmise korral ühtiksid isiku uus isikunimi ja sünniaasta teise elava isiku isikunime ja sünniaastaga; nimi, mis on liiga laialdase kasutusega; nimi, mida kasutatakse eesnimena; üldtuntud ajaloolise isiku või kuulsa suguvõsa nimi; juriidilisele isikule viitav nimi või üldtuntud registreeritud kaubamärgis sisalduv kaitstud sõnaline osa ning riigi, kohaliku omavalitsuse ja nende organite ja asutuste nimi; nimi, mille võtmise korral oleks isiku eesnimi ja perekonnanimi sama; vanemate kahest nimest koosnev perekonnanimi. (4) Käesoleva paragrahvi lõikes 3 sätestatust võib teha erandi, kui perekonnanime muutjal on oma kodakondsuse, peresuhete, rahvuskuuluvuse või usu tõttu isiklik seos muukeelse nimetraditsiooniga ja taotletav nimi on sellele vastav. (5) Liiga laialdase kasutusega perekonnanimi käesoleva seaduse mõistes on perekonnanimi, mida rahvastikuregistri andmetel kannab 500 või rohkem isikut. Liiga laialdase kasutusega perekonnanimede loetelu kehtestab määrusega ja seda loetelu uuendatakse iga kolme aasta järel.",
+      "estleg:summary": {
+        "@value": "(1) Uus perekonnanimi antakse, kui isik: 1) soovib kasutada vanemate, vanavanemate või vanavanavanemate perekonnanime; 2) soovib kasutada mitmest nimest koosneva perekonnanime puhul neist ainult ühte nime; 3) soovib kanda abikaasaga ühist perekonnanime või lisada abikaasa perekonnanime oma perekonnanime järele; 4) on lesestunud ja soovib kanda abielu eel viimati kantud perekonnanime; 5) soovib kanda tegelikus kasutuses juurdunud perekonnanime, mis erineb dokumenti või rahvastikuregistrisse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Uus perekonnanimi antakse, kui isik: 1) soovib kasutada vanemate, vanavanemate või vanavanavanemate perekonnanime; 2) soovib kasutada mitmest nimest koosneva perekonnanime puhul neist ainult ühte nime; 3) soovib kanda abikaasaga ühist perekonnanime või lisada abikaasa perekonnanime oma perekonnanime järele; 4) on lesestunud ja soovib kanda abielu eel viimati kantud perekonnanime; 5) soovib kanda tegelikus kasutuses juurdunud perekonnanime, mis erineb dokumenti või rahvastikuregistrisse kantud isikunimest nimede kokku- ja lahkukirjutamise poolest või märgi poolest, mis ei ole täht (ülakoma, sidekriips), või üksikute tähemärkide poolest ning vastab käesoleva seaduse nõuetele; 6) soovib kasutada sulgudes kahest nimest koosneva perekonnanime puhul ühte neist nimedest ilma sulgudeta; 7) soovib kanda perekonnanime kujul, mis on kantud rahvastikuregistrisse, kuid erineb isikule nime andmise aluseks olevasse dokumenti kantud nimekujust ümberkirjutusreeglite kohaldamise tõttu; 8) soovib oma alaealisele lapsele anda perekonnanime, mille sai pärast abiellumist lapse teise vanemaga pärast lapse sünni registreerimist ja mis on vanemate ühine perekonnanimi. (2) Uue perekonnanime võib anda isiku põhjendatud soovil, kui isik: 1) soovib vabaneda tavatu kujuga perekonnanimest, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse või üldkeelelise tähenduse tõttu; 2) soovib vabaneda senisest perekonnanimest, kui tema isikunimi ühtib teise isiku isikunimega; 3) soovib vältida isikunimest tingitud majanduslikku või sotsiaalset laadi kahjulikke tagajärgi; 4) soovib kanda eestipärast perekonnanime; 5) soovib perekonnanime muuta muul mõjuval põhjusel. (3) Isikule uue perekonnanime andmisel käesoleva paragrahvi lõike 2 alusel ei või uueks perekonnanimeks olla: 1) nimi, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu; 2) nimi, mida rahvastikuregistri andmetel kannab 1–20 elavat isikut; 3) nimi, mille võtmise korral ühtiksid isiku uus isikunimi ja sünniaasta teise elava isiku isikunime ja sünniaastaga; 4) nimi, mis on liiga laialdase kasutusega; 5) nimi, mida kasutatakse eesnimena; 6) üldtuntud ajaloolise isiku või kuulsa suguvõsa nimi; 7) juriidilisele isikule viitav nimi või üldtuntud registreeritud kaubamärgis sisalduv kaitstud sõnaline osa ning riigi, kohaliku omavalitsuse ja nende organite ja asutuste nimi; 8) nimi, mille võtmise korral oleks isiku eesnimi ja perekonnanimi sama; 9) vanemate kahest nimest koosnev perekonnanimi. (4) Käesoleva paragrahvi lõikes 3 sätestatust võib teha erandi, kui perekonnanime muutjal on oma kodakondsuse, peresuhete, rahvuskuuluvuse või usu tõttu isiklik seos muukeelse nimetraditsiooniga ja taotletav nimi on sellele vastav. (5) Liiga laialdase kasutusega perekonnanimi käesoleva seaduse mõistes on perekonnanimi, mida rahvastikuregistri andmetel kannab 500 või rohkem isikut. Liiga laialdase kasutusega perekonnanimede loetelu kehtestab määrusega ja seda loetelu uuendatakse iga kolme aasta järel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_2"
       },
@@ -3434,11 +3644,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Uus perekonnanimi antakse, kui isik: soovib kasutada vanemate, vanavanemate või vanavanavanemate perekonnanime; soovib kasutada mitmest nimest koosneva perekonnanime puhul neist ainult ühte nime; soovib kanda abikaasaga ühist perekonnanime või lisada abikaasa perekonnanime oma perekonnanime järele; on lesestunud ja soovib kanda abielu eel viimati kantud perekonnanime; soovib kanda tegelikus kasutuses juurdunud perekonnanime, mis erineb dokumenti või rahvastikuregistrisse kantud isikunimest nimede kokku- ja lahkukirjutamise poolest või märgi poolest, mis ei ole täht (ülakoma, sidekriips), või üksikute tähemärkide poolest ning vastab käesoleva seaduse nõuetele; soovib kasutada sulgudes kahest nimest koosneva perekonnanime puhul ühte neist nimedest ilma sulgudeta; soovib kanda perekonnanime kujul, mis on kantud rahvastikuregistrisse, kuid erineb isikule nime andmise aluseks olevasse dokumenti kantud nimekujust ümberkirjutusreeglite kohaldamise tõttu; soovib oma alaealisele lapsele anda perekonnanime, mille sai pärast abiellumist lapse teise vanemaga pärast lapse sünni registreerimist ja mis on vanemate ühine perekonnanimi.",
+      "estleg:legalText": "(1) Uus perekonnanimi antakse, kui isik: 1) soovib kasutada vanemate, vanavanemate või vanavanavanemate perekonnanime; 2) soovib kasutada mitmest nimest koosneva perekonnanime puhul neist ainult ühte nime; 3) soovib kanda abikaasaga ühist perekonnanime või lisada abikaasa perekonnanime oma perekonnanime järele; 4) on lesestunud ja soovib kanda abielu eel viimati kantud perekonnanime; 5) soovib kanda tegelikus kasutuses juurdunud perekonnanime, mis erineb dokumenti või rahvastikuregistrisse kantud isikunimest nimede kokku- ja lahkukirjutamise poolest või märgi poolest, mis ei ole täht (ülakoma, sidekriips), või üksikute tähemärkide poolest ning vastab käesoleva seaduse nõuetele; 6) soovib kasutada sulgudes kahest nimest koosneva perekonnanime puhul ühte neist nimedest ilma sulgudeta; 7) soovib kanda perekonnanime kujul, mis on kantud rahvastikuregistrisse, kuid erineb isikule nime andmise aluseks olevasse dokumenti kantud nimekujust ümberkirjutusreeglite kohaldamise tõttu; 8) soovib oma alaealisele lapsele anda perekonnanime, mille sai pärast abiellumist lapse teise vanemaga pärast lapse sünni registreerimist ja mis on vanemate ühine perekonnanimi.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_17_1"
       },
       "rdfs:label": "§ 17¹ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3456,11 +3676,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Uue perekonnanime võib anda isiku põhjendatud soovil, kui isik: soovib vabaneda tavatu kujuga perekonnanimest, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse või üldkeelelise tähenduse tõttu; soovib vabaneda senisest perekonnanimest, kui tema isikunimi ühtib teise isiku isikunimega; soovib vältida isikunimest tingitud majanduslikku või sotsiaalset laadi kahjulikke tagajärgi; soovib kanda eestipärast perekonnanime; soovib perekonnanime muuta muul mõjuval põhjusel.",
+      "estleg:legalText": "(2) Uue perekonnanime võib anda isiku põhjendatud soovil, kui isik: 1) soovib vabaneda tavatu kujuga perekonnanimest, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse või üldkeelelise tähenduse tõttu; 2) soovib vabaneda senisest perekonnanimest, kui tema isikunimi ühtib teise isiku isikunimega; 3) soovib vältida isikunimest tingitud majanduslikku või sotsiaalset laadi kahjulikke tagajärgi; 4) soovib kanda eestipärast perekonnanime; 5) soovib perekonnanime muuta muul mõjuval põhjusel.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_17_1"
       },
       "rdfs:label": "§ 17¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -3481,11 +3708,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Isikule uue perekonnanime andmisel käesoleva paragrahvi lõike 2 alusel ei või uueks perekonnanimeks olla: nimi, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu; nimi, mida rahvastikuregistri andmetel kannab 1–20 elavat isikut; nimi, mille võtmise korral ühtiksid isiku uus isikunimi ja sünniaasta teise elava isiku isikunime ja sünniaastaga; nimi, mis on liiga laialdase kasutusega; nimi, mida kasutatakse eesnimena; üldtuntud ajaloolise isiku või kuulsa suguvõsa nimi; juriidilisele isikule viitav nimi või üldtuntud registreeritud kaubamärgis sisalduv kaitstud sõnaline osa ning riigi, kohaliku omavalitsuse ja nende organite ja asutuste nimi; nimi, mille võtmise korral oleks isiku eesnimi ja perekonnanimi sama; vanemate kahest nimest koosnev perekonnanimi.",
+      "estleg:legalText": "(3) Isikule uue perekonnanime andmisel käesoleva paragrahvi lõike 2 alusel ei või uueks perekonnanimeks olla: 1) nimi, mis ei ole perekonnanimeks sobiv oma keeruka või eesti keelekasutusele mittevastava kirjapildi või häälduse tõttu või üldkeelelise tähenduse tõttu; 2) nimi, mida rahvastikuregistri andmetel kannab 1–20 elavat isikut; 3) nimi, mille võtmise korral ühtiksid isiku uus isikunimi ja sünniaasta teise elava isiku isikunime ja sünniaastaga; 4) nimi, mis on liiga laialdase kasutusega; 5) nimi, mida kasutatakse eesnimena; 6) üldtuntud ajaloolise isiku või kuulsa suguvõsa nimi; 7) juriidilisele isikule viitav nimi või üldtuntud registreeritud kaubamärgis sisalduv kaitstud sõnaline osa ning riigi, kohaliku omavalitsuse ja nende organite ja asutuste nimi; 8) nimi, mille võtmise korral oleks isiku eesnimi ja perekonnanimi sama; 9) vanemate kahest nimest koosnev perekonnanimi.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_17_1"
       },
       "rdfs:label": "§ 17¹ lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -3556,13 +3794,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 18.",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_2"
       },
@@ -3585,13 +3831,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Isiku soovil uue eesnime andmine",
+      "rdfs:label": {
+        "@value": "§ 19. Isiku soovil uue eesnime andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Uus eesnimi antakse, kui see vastab käesoleva seaduse § 7 nõuetele. (2) Uut eesnime ei anta, kui selle võtmise korral ühtiksid isiku uus isikunimi ja sünniaasta teise elava isiku isikunime ja sünniaastaga.",
+      "estleg:summary": {
+        "@value": "(1) Uus eesnimi antakse, kui see vastab käesoleva seaduse § 7 nõuetele. (2) Uut eesnime ei anta, kui selle võtmise korral ühtiksid isiku uus isikunimi ja sünniaasta teise elava isiku isikunime ja sünniaastaga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Uus eesnimi antakse, kui see vastab käesoleva seaduse § 7 nõuetele. (2) Uut eesnime ei anta, kui selle võtmise korral ühtiksid isiku uus isikunimi ja sünniaasta teise elava isiku isikunime ja sünniaastaga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_2"
       },
@@ -3679,13 +3934,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 20.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 20.",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_NS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_NS_3_3"
       },
@@ -3705,13 +3968,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Välisriigis antud või kohaldatud isikunime kohaldamine Eestis",
+      "rdfs:label": {
+        "@value": "§ 21. Välisriigis antud või kohaldatud isikunime kohaldamine Eestis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Käesoleva paragrahvi alusel kohaldatakse Eestis välisriigis antud või kohaldatud isikunime Eesti kodanikule ja Eestis elamisloa alusel viibivale isikule, kes ei ole ühegi riigi kodanik. (2) Kehtetu - (2¹) Nime kohaldatakse välisriigis väljaantud sünni-, abielu-, abielulahutusdokumendi või muu isikunime muutust tõendava ametliku dokumendi alusel. (3) Välisriigis antud või kohaldatud isikunime kasutusele võtmisel järgitakse käesoleva seaduse kohaseid isikunime andmisel isikunime suhtes",
-      "estleg:legalText": "(1) Käesoleva paragrahvi alusel kohaldatakse Eestis välisriigis antud või kohaldatud isikunime Eesti kodanikule ja Eestis elamisloa alusel viibivale isikule, kes ei ole ühegi riigi kodanik. (2) Kehtetu - (2¹) Nime kohaldatakse välisriigis väljaantud sünni-, abielu-, abielulahutusdokumendi või muu isikunime muutust tõendava ametliku dokumendi alusel. (3) Välisriigis antud või kohaldatud isikunime kasutusele võtmisel järgitakse käesoleva seaduse kohaseid isikunime andmisel isikunime suhtes kehtivaid nõudeid, kusjuures: isiku nõusolekul säilitatakse talle välisriigis antud või kohaldatud isikunimi, kui isikunimi on kirjutatud eesti-ladina tähtedega; isikunimi võidakse taastada välisriigi poolt isikunime andmisele või kohaldamisele eelnenud kujul; abielulahutuse korral võidakse taastada isiku abielu eel viimati kantud või esimese abielu eel viimati kantud isikunimi Eestis kasutusel olnud kujul. (4) Välisriigi dokumendis olev nimi, mis ei ole eesnime ega perekonnanime osa, loetakse eesnime osaks ja lisatakse eesnime järele.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva paragrahvi alusel kohaldatakse Eestis välisriigis antud või kohaldatud isikunime Eesti kodanikule ja Eestis elamisloa alusel viibivale isikule, kes ei ole ühegi riigi kodanik. (2¹) Nime kohaldatakse välisriigis väljaantud sünni-, abielu-, abielulahutusdokumendi või muu isikunime muutust tõendava ametliku dokumendi alusel. (3) Välisriigis antud või kohaldatud isikunime kasutusele võtmisel järgitakse käesoleva seaduse kohaseid isikunime andmisel isikunime suhtes kehtivaid nõudeid,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva paragrahvi alusel kohaldatakse Eestis välisriigis antud või kohaldatud isikunime Eesti kodanikule ja Eestis elamisloa alusel viibivale isikule, kes ei ole ühegi riigi kodanik. (2¹) Nime kohaldatakse välisriigis väljaantud sünni-, abielu-, abielulahutusdokumendi või muu isikunime muutust tõendava ametliku dokumendi alusel. (3) Välisriigis antud või kohaldatud isikunime kasutusele võtmisel järgitakse käesoleva seaduse kohaseid isikunime andmisel isikunime suhtes kehtivaid nõudeid, kusjuures: 1) isiku nõusolekul säilitatakse talle välisriigis antud või kohaldatud isikunimi, kui isikunimi on kirjutatud eesti-ladina tähtedega; 2) isikunimi võidakse taastada välisriigi poolt isikunime andmisele või kohaldamisele eelnenud kujul; 3) abielulahutuse korral võidakse taastada isiku abielu eel viimati kantud või esimese abielu eel viimati kantud isikunimi Eestis kasutusel olnud kujul. (4) Välisriigi dokumendis olev nimi, mis ei ole eesnime ega perekonnanime osa, loetakse eesnime osaks ja lisatakse eesnime järele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_4"
       },
@@ -3721,9 +3990,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:NS_Par_21_Lg_1"
-        },
-        {
-          "@id": "estleg:NS_Par_21_Lg_2"
         },
         {
           "@id": "estleg:NS_Par_21_Lg_2_1"
@@ -3779,19 +4045,6 @@
       }
     },
     {
-      "@id": "estleg:NS_Par_21_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:NS_Par_21"
-      },
-      "rdfs:label": "§ 21 lg 2"
-    },
-    {
       "@id": "estleg:NS_Par_21_Lg_2_1",
       "@type": [
         "estleg:Subsection",
@@ -3811,11 +4064,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Välisriigis antud või kohaldatud isikunime kasutusele võtmisel järgitakse käesoleva seaduse kohaseid isikunime andmisel isikunime suhtes kehtivaid nõudeid, kusjuures: isiku nõusolekul säilitatakse talle välisriigis antud või kohaldatud isikunimi, kui isikunimi on kirjutatud eesti-ladina tähtedega; isikunimi võidakse taastada välisriigi poolt isikunime andmisele või kohaldamisele eelnenud kujul; abielulahutuse korral võidakse taastada isiku abielu eel viimati kantud või esimese abielu eel viimati kantud isikunimi Eestis kasutusel olnud kujul.",
+      "estleg:legalText": "(3) Välisriigis antud või kohaldatud isikunime kasutusele võtmisel järgitakse käesoleva seaduse kohaseid isikunime andmisel isikunime suhtes kehtivaid nõudeid, kusjuures: 1) isiku nõusolekul säilitatakse talle välisriigis antud või kohaldatud isikunimi, kui isikunimi on kirjutatud eesti-ladina tähtedega; 2) isikunimi võidakse taastada välisriigi poolt isikunime andmisele või kohaldamisele eelnenud kujul; 3) abielulahutuse korral võidakse taastada isiku abielu eel viimati kantud või esimese abielu eel viimati kantud isikunimi Eestis kasutusel olnud kujul.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_21"
       },
       "rdfs:label": "§ 21 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3846,12 +4104,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Isikunime asendamine kohaldatud isikunimega",
+      "rdfs:label": {
+        "@value": "§ 22. Isikunime asendamine kohaldatud isikunimega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Eesti haldusorgani või kohtu poolt dokumenti kantud välisriigi kodaniku või ajutiselt Eestis viibiva välismaalase, kes ei ole ühegi riigi kodanik, isikunime kasutatakse koos vastava dokumendiga seni, kuni isik ei ole esitanud välisriigi dokumenti, kuhu on kantud isikule välisriigi poolt antud või kohaldatud nimi, ja selle alusel ei ole isikunime kohaldatud.",
+      "estleg:summary": {
+        "@value": "Eesti haldusorgani või kohtu poolt dokumenti kantud välisriigi kodaniku või ajutiselt Eestis viibiva välismaalase, kes ei ole ühegi riigi kodanik, isikunime kasutatakse koos vastava dokumendiga seni, kuni isik ei ole esitanud välisriigi dokumenti, kuhu on kantud isikule välisriigi poolt antud või kohaldatud nimi, ja selle alusel ei ole isikunime kohaldatud.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti haldusorgani või kohtu poolt dokumenti kantud välisriigi kodaniku või ajutiselt Eestis viibiva välismaalase, kes ei ole ühegi riigi kodanik, isikunime kasutatakse koos vastava dokumendiga seni, kuni isik ei ole esitanud välisriigi dokumenti, kuhu on kantud isikule välisriigi poolt antud või kohaldatud nimi, ja selle alusel ei ole isikunime kohaldatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_4"
@@ -3888,10 +4152,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti haldusorgani või kohtu poolt dokumenti kantud välisriigi kodaniku või ajutiselt Eestis viibiva välismaalase, kes ei ole ühegi riigi kodanik, isikunime kasutatakse koos vastava dokumendiga seni, kuni isik ei ole esitanud välisriigi dokumenti, kuhu on kantud isikule välisriigi poolt antud või kohaldatud nimi, ja selle alusel ei ole isikunime kohaldatud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti haldusorgani või kohtu poolt dokumenti kantud välisriigi kodaniku või ajutiselt Eestis viibiva välismaalase, kes ei ole ühegi riigi kodanik, isikunime kasutatakse koos vastava dokumendiga seni, kuni isik ei ole esitanud välisriigi dokumenti, kuhu on kantud isikule välisriigi poolt antud või kohaldatud nimi, ja selle alusel ei ole isikunime kohaldatud.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_22"
       },
+      "rdfs:label": "§ 22 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3912,13 +4178,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Isikunime kande parandamine",
+      "rdfs:label": {
+        "@value": "§ 23. Isikunime kande parandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Isikul on õigus taotleda oma ja oma alaealise lapse isikunime parandamist, kui: dokumenti või rahvastikuregistrisse on kantud vigane isikunimi, mis ei vasta käesoleva seaduse nõuetele; kehtetu - isikunime kohaldamisel ei ole järgitud Vabariigi Valitsuse kehtestatud isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Dokumenti kantud vigase isikunime peab dokumendi välja andnud haldusorgan isiku",
-      "estleg:legalText": "(1) Isikul on õigus taotleda oma ja oma alaealise lapse isikunime parandamist, kui: dokumenti või rahvastikuregistrisse on kantud vigane isikunimi, mis ei vasta käesoleva seaduse nõuetele; kehtetu - isikunime kohaldamisel ei ole järgitud Vabariigi Valitsuse kehtestatud isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Dokumenti kantud vigase isikunime peab dokumendi välja andnud haldusorgan isiku taotluse alusel pärast vea avastamist ja tuvastamist viivitamatult parandama. Rahvastikuregistrisse kantud vigase isikunime peab andmekogu vastutav, volitatud või lepinguline töötleja omal algatusel või isiku taotluse alusel pärast vea avastamist ja tuvastamist viivitamatult parandama ning teavitama tehtud parandusest isikut, kelle isikunime suhtes parandus tehti. (3) Kui isikunimi on kantud rahvastikuregistrisse, siis võetakse isikunime kande parandamise aluseks rahvastikuregistrisse kantud isikunimi.",
+      "estleg:summary": {
+        "@value": "(1) Isikul on õigus taotleda oma ja oma alaealise lapse isikunime parandamist, kui: 1) dokumenti või rahvastikuregistrisse on kantud vigane isikunimi, mis ei vasta käesoleva seaduse nõuetele; 2) 3) isikunime kohaldamisel ei ole järgitud Vabariigi Valitsuse kehtestatud isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Dokumenti kantud vigase isikunime peab dokumendi välja andnud haldusorgan isiku",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Isikul on õigus taotleda oma ja oma alaealise lapse isikunime parandamist, kui: 1) dokumenti või rahvastikuregistrisse on kantud vigane isikunimi, mis ei vasta käesoleva seaduse nõuetele; 2) 3) isikunime kohaldamisel ei ole järgitud Vabariigi Valitsuse kehtestatud isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreegleid. (2) Dokumenti kantud vigase isikunime peab dokumendi välja andnud haldusorgan isiku taotluse alusel pärast vea avastamist ja tuvastamist viivitamatult parandama. Rahvastikuregistrisse kantud vigase isikunime peab andmekogu vastutav, volitatud või lepinguline töötleja omal algatusel või isiku taotluse alusel pärast vea avastamist ja tuvastamist viivitamatult parandama ning teavitama tehtud parandusest isikut, kelle isikunime suhtes parandus tehti. (3) Kui isikunimi on kantud rahvastikuregistrisse, siis võetakse isikunime kande parandamise aluseks rahvastikuregistrisse kantud isikunimi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_4"
       },
@@ -3975,11 +4247,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Isikul on õigus taotleda oma ja oma alaealise lapse isikunime parandamist, kui: dokumenti või rahvastikuregistrisse on kantud vigane isikunimi, mis ei vasta käesoleva seaduse nõuetele; kehtetu - isikunime kohaldamisel ei ole järgitud Vabariigi Valitsuse kehtestatud isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreegleid.",
+      "estleg:legalText": "(1) Isikul on õigus taotleda oma ja oma alaealise lapse isikunime parandamist, kui: 1) dokumenti või rahvastikuregistrisse on kantud vigane isikunimi, mis ei vasta käesoleva seaduse nõuetele; 2) 3) isikunime kohaldamisel ei ole järgitud Vabariigi Valitsuse kehtestatud isikunime andmisel ja kohaldamisel kasutatavate eesti-ladina tähtede ja sümbolite loetelu ning võõrkeelsete isikunimede ümberkirjutusreegleid.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_23"
       },
       "rdfs:label": "§ 23 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -4043,12 +4320,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Isikunime andmise või kohaldamise vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 24. Isikunime andmise või kohaldamise vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Isik, kes leiab, et tema õigusi on isikunime andmise või kohaldamise menetluse käigus rikutud, või kes ei ole nõus talle või tema lapsele antud või kohaldatud isikunimega või isikunime andmisest või kohaldamisest keeldumisega, võib esitada 30 päeva jooksul vaide Siseministeeriumile või kaebuse halduskohtule. Tähtaja arvestus algab päevast, millal isik sai teada või oleks pidanud teada saama oma õiguste rikkumisest või antud või kohaldatud isikunimest või selle andmisest või kohaldamisest",
+      "estleg:summary": {
+        "@value": "(1) Isik, kes leiab, et tema õigusi on isikunime andmise või kohaldamise menetluse käigus rikutud, või kes ei ole nõus talle või tema lapsele antud või kohaldatud isikunimega või isikunime andmisest või kohaldamisest keeldumisega, võib esitada 30 päeva jooksul vaide Siseministeeriumile või kaebuse halduskohtule. Tähtaja arvestus algab päevast, millal isik sai teada või oleks pidanud teada saama oma õiguste rikkumisest või antud või kohaldatud isikunimest või selle andmisest või kohaldamisest",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isik, kes leiab, et tema õigusi on isikunime andmise või kohaldamise menetluse käigus rikutud, või kes ei ole nõus talle või tema lapsele antud või kohaldatud isikunimega või isikunime andmisest või kohaldamisest keeldumisega, võib esitada 30 päeva jooksul vaide Siseministeeriumile või kaebuse halduskohtule. Tähtaja arvestus algab päevast, millal isik sai teada või oleks pidanud teada saama oma õiguste rikkumisest või antud või kohaldatud isikunimest või selle andmisest või kohaldamisest keeldumise otsusest. (2) Siseministeerium vaatab vaide läbi ning teeb vaideotsuse vaide esitamisest arvates 30 päeva jooksul, kuulates vajaduse korral ära isikunimekomisjoni arvamuse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_4"
@@ -4155,13 +4438,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Isikunimekomisjon",
+      "rdfs:label": {
+        "@value": "§ 25. Isikunimekomisjon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Valdkonna eest vastutav minister moodustab ministeeriumi valitsemisalasse seitsme kuni üheksa liikmega nõuandva isikunimekomisjoni ja kehtestab (2) Isikunimekomisjoni liikmed, sealhulgas esimehe, nimetab valdkonna eest vastutav minister. (3) Isikunimekomisjon: annab valdkonna eest vastutavale ministrile soovitusi isikunime andmise või kohaldamise vaidlustamise korral; annab valdkonna eest vastutavale ministrile või tema volitatud isikule soovitusi isikunime andmise või kohaldamise kohta",
-      "estleg:legalText": "(1) Valdkonna eest vastutav minister moodustab ministeeriumi valitsemisalasse seitsme kuni üheksa liikmega nõuandva isikunimekomisjoni ja kehtestab (2) Isikunimekomisjoni liikmed, sealhulgas esimehe, nimetab valdkonna eest vastutav minister. (3) Isikunimekomisjon: annab valdkonna eest vastutavale ministrile soovitusi isikunime andmise või kohaldamise vaidlustamise korral; annab valdkonna eest vastutavale ministrile või tema volitatud isikule soovitusi isikunime andmise või kohaldamise kohta esitatud küsimustele vastamiseks ja probleemide lahendamiseks; teeb valdkonna eest vastutavale ministrile ettepanekuid isikunime andmist ja kohaldamist käsitlevate õigusaktide muutmise algatamiseks; annab selgitusi isikunimede vastavuse kohta headele kommetele ning soole mittevastavate eesnimede kohta; täidab teisi talle põhimäärusega pandud ülesandeid. (4) Isikunimekomisjonil on õigus: saada nimeteadusliku usaldusasutuse isikunimeteemalisi eksperdihinnanguid; saada isikunime andmise ja kohaldamise küsimustele riigi- ja kohaliku omavalitsuse asutustelt vastuseid; koostada nimeseaduse selgitamiseks ja tutvustamiseks juhendeid ja selgitusi, mis kinnitatakse valdkonna eest vastutava ministri käskkirjaga. (5) Isikunimekomisjon kasutab oma otsuse tegemisel nimeteadusliku usaldusasutuse eksperdihinnanguid.",
+      "estleg:summary": {
+        "@value": "(1) Valdkonna eest vastutav minister moodustab ministeeriumi valitsemisalasse seitsme kuni üheksa liikmega nõuandva isikunimekomisjoni ja kehtestab (2) Isikunimekomisjoni liikmed, sealhulgas esimehe, nimetab valdkonna eest vastutav minister. (3) Isikunimekomisjon: 1) annab valdkonna eest vastutavale ministrile soovitusi isikunime andmise või kohaldamise vaidlustamise korral; 2) annab valdkonna eest vastutavale ministrile või tema volitatud isikule soovitusi isikunime andmise või kohaldamise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Valdkonna eest vastutav minister moodustab ministeeriumi valitsemisalasse seitsme kuni üheksa liikmega nõuandva isikunimekomisjoni ja kehtestab (2) Isikunimekomisjoni liikmed, sealhulgas esimehe, nimetab valdkonna eest vastutav minister. (3) Isikunimekomisjon: 1) annab valdkonna eest vastutavale ministrile soovitusi isikunime andmise või kohaldamise vaidlustamise korral; 2) annab valdkonna eest vastutavale ministrile või tema volitatud isikule soovitusi isikunime andmise või kohaldamise kohta esitatud küsimustele vastamiseks ja probleemide lahendamiseks; 3) teeb valdkonna eest vastutavale ministrile ettepanekuid isikunime andmist ja kohaldamist käsitlevate õigusaktide muutmise algatamiseks; 4) annab selgitusi isikunimede vastavuse kohta headele kommetele ning soole mittevastavate eesnimede kohta; 5) täidab teisi talle põhimäärusega pandud ülesandeid. (4) Isikunimekomisjonil on õigus: 1) saada nimeteadusliku usaldusasutuse isikunimeteemalisi eksperdihinnanguid; 2) saada isikunime andmise ja kohaldamise küsimustele riigi- ja kohaliku omavalitsuse asutustelt vastuseid; 3) koostada nimeseaduse selgitamiseks ja tutvustamiseks juhendeid ja selgitusi, mis kinnitatakse valdkonna eest vastutava ministri käskkirjaga. (5) Isikunimekomisjon kasutab oma otsuse tegemisel nimeteadusliku usaldusasutuse eksperdihinnanguid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_4"
       },
@@ -4273,11 +4562,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Isikunimekomisjon: annab valdkonna eest vastutavale ministrile soovitusi isikunime andmise või kohaldamise vaidlustamise korral; annab valdkonna eest vastutavale ministrile või tema volitatud isikule soovitusi isikunime andmise või kohaldamise kohta esitatud küsimustele vastamiseks ja probleemide lahendamiseks; teeb valdkonna eest vastutavale ministrile ettepanekuid isikunime andmist ja kohaldamist käsitlevate õigusaktide muutmise algatamiseks; annab selgitusi isikunimede vastavuse kohta headele kommetele ning soole mittevastavate eesnimede kohta; täidab teisi talle põhimäärusega pandud ülesandeid.",
+      "estleg:legalText": "(3) Isikunimekomisjon: 1) annab valdkonna eest vastutavale ministrile soovitusi isikunime andmise või kohaldamise vaidlustamise korral; 2) annab valdkonna eest vastutavale ministrile või tema volitatud isikule soovitusi isikunime andmise või kohaldamise kohta esitatud küsimustele vastamiseks ja probleemide lahendamiseks; 3) teeb valdkonna eest vastutavale ministrile ettepanekuid isikunime andmist ja kohaldamist käsitlevate õigusaktide muutmise algatamiseks; 4) annab selgitusi isikunimede vastavuse kohta headele kommetele ning soole mittevastavate eesnimede kohta; 5) täidab teisi talle põhimäärusega pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_25"
       },
       "rdfs:label": "§ 25 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4295,11 +4591,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Isikunimekomisjonil on õigus: saada nimeteadusliku usaldusasutuse isikunimeteemalisi eksperdihinnanguid; saada isikunime andmise ja kohaldamise küsimustele riigi- ja kohaliku omavalitsuse asutustelt vastuseid; koostada nimeseaduse selgitamiseks ja tutvustamiseks juhendeid ja selgitusi, mis kinnitatakse valdkonna eest vastutava ministri käskkirjaga.",
+      "estleg:legalText": "(4) Isikunimekomisjonil on õigus: 1) saada nimeteadusliku usaldusasutuse isikunimeteemalisi eksperdihinnanguid; 2) saada isikunime andmise ja kohaldamise küsimustele riigi- ja kohaliku omavalitsuse asutustelt vastuseid; 3) koostada nimeseaduse selgitamiseks ja tutvustamiseks juhendeid ja selgitusi, mis kinnitatakse valdkonna eest vastutava ministri käskkirjaga.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_25"
       },
       "rdfs:label": "§ 25 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -4338,12 +4639,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Nimeteaduslik usaldusasutus",
+      "rdfs:label": {
+        "@value": "§ 26. Nimeteaduslik usaldusasutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Nimeteadusliku usaldusasutuse ülesandeks isikunimede alal on anda nimede asjus eksperdihinnanguid. (2) Vabariigi Valitsus määrab valdkonna eest vastutava ministri ettepanekul usaldusasutuseks teadusasutuse, kus on nimeteadusele spetsialiseerunud teadustöötajaid.",
+      "estleg:summary": {
+        "@value": "(1) Nimeteadusliku usaldusasutuse ülesandeks isikunimede alal on anda nimede asjus eksperdihinnanguid. (2) Vabariigi Valitsus määrab valdkonna eest vastutava ministri ettepanekul usaldusasutuseks teadusasutuse, kus on nimeteadusele spetsialiseerunud teadustöötajaid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nimeteadusliku usaldusasutuse ülesandeks isikunimede alal on anda nimede asjus eksperdihinnanguid. (2) Vabariigi Valitsus määrab valdkonna eest vastutava ministri ettepanekul usaldusasutuseks teadusasutuse, kus on nimeteadusele spetsialiseerunud teadustöötajaid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_4"
@@ -4439,18 +4746,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27.",
+      "rdfs:label": {
+        "@value": "§ 27.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
+      "estleg:summary": "Perekonnaseaduses (RT I 1994, 75, 1326; 1996, 40, 773; 49, 953; 1997, 28, 422; 35, 538; 2000, 50, 317; 2001, 16, 69; RT III 2001, 15, 154; RT I 2001, 53, 307; 2002, 53, 336; 2003, 78, 527; 2004, 14, 92; 22, 148) tehakse järgmised muudatused: 1 1) paragrahvid 5, 31, 46, 47, 48 ja 85, § 91 lõige 5, § 107 1 lõike 2 punkt 5, §-d 122 ja 140 ning 4. osa 14. peatüki 6. jagu tunnistatakse kehtetuks; 2 2) paragrahv 107 muudetakse ja sõnastatakse järgmiselt: « § 107. Perekonnaseisuakt Perekonnaseisuakt on",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_5"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_NS_5"
       },
-      "estleg:summary": "Perekonnaseaduses (RT I 1994, 75, 1326; 1996, 40, 773; 49, 953; 1997, 28, 422; 35, 538; 2000, 50, 317; 2001, 16, 69; RT III 2001, 15, 154; RT I 2001, 53, 307; 2002, 53, 336; 2003, 78, 527; 2004, 14, 92; 22, 148) tehakse järgmised muudatused: 1 1) paragrahvid 5, 31, 46, 47, 48 ja 85, § 91 lõige 5, § 107 1 lõike 2 punkt 5, §-d 122 ja 140 ning 4. osa 14. peatüki 6. jagu tunnistatakse kehtetuks; 2 2) paragrahv 107 muudetakse ja sõnastatakse järgmiselt: « § 107. Perekonnaseisuakt Perekonnaseisuakt on",
       "estleg:hasVersion": [
         {
           "@id": "estleg:NS_Par_27_v832979"
@@ -4464,12 +4774,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 30. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_5"
@@ -4493,12 +4809,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Kasutusel oleva isikunime kehtivus",
+      "rdfs:label": {
+        "@value": "§ 31. Kasutusel oleva isikunime kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse jõustumisel kasutusel olev isikunimi, mis seaduse nõuetele ei vasta, jääb kasutatavaks kuni isikunime andmise, taastamise või kohaldamiseni. (2) Enne käesoleva seaduse jõustumist nime muutnud isikute suhtes ei rakendata käesoleva seaduse § 16 lõikes 4 sätestatud piirangut tagasiulatuvalt.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse jõustumisel kasutusel olev isikunimi, mis seaduse nõuetele ei vasta, jääb kasutatavaks kuni isikunime andmise, taastamise või kohaldamiseni. (2) Enne käesoleva seaduse jõustumist nime muutnud isikute suhtes ei rakendata käesoleva seaduse § 16 lõikes 4 sätestatud piirangut tagasiulatuvalt.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse jõustumisel kasutusel olev isikunimi, mis seaduse nõuetele ei vasta, jääb kasutatavaks kuni isikunime andmise, taastamise või kohaldamiseni. (2) Enne käesoleva seaduse jõustumist nime muutnud isikute suhtes ei rakendata käesoleva seaduse § 16 lõikes 4 sätestatud piirangut tagasiulatuvalt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_5"
@@ -4581,13 +4903,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31¹.",
-      "rdfs:label": "§ 31¹. Enne 2018. aasta 1. jaanuari käesoleva seaduse 3. peatüki 2. jaos sätestatud juhtudel algatatud uue ees- või perekonnanime andmise või endise isikunime taastamise menetlemise pädevus",
+      "rdfs:label": {
+        "@value": "§ 31¹. Enne 2018. aasta 1. jaanuari käesoleva seaduse 3. peatüki 2. jaos sätestatud juhtudel algatatud uue ees- või perekonnanime andmise või endise isikunime taastamise menetlemise pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "(1) Enne 2018. aasta 1. jaanuari maavalitsuses algatatud menetlus läheb maavalitsuse tegevuse lõppemisel üle järgmiselt: Harju, Järva ja Rapla Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 12 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Ida-Viru ja Lääne-Viru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 4 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Hiiu, Lääne, Pärnu, Saare ja Viljandi",
-      "estleg:legalText": "(1) Enne 2018. aasta 1. jaanuari maavalitsuses algatatud menetlus läheb maavalitsuse tegevuse lõppemisel üle järgmiselt: Harju, Järva ja Rapla Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 12 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Ida-Viru ja Lääne-Viru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 4 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Hiiu, Lääne, Pärnu, Saare ja Viljandi Maavalitsuses algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 9 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Põlva, Tartu, Valga, Jõgeva ja Võru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele. (2) Tallinna Perekonnaseisuametis algatatud menetlus jääb Tallinna Perekonnaseisuametile.",
+      "estleg:summary": {
+        "@value": "(1) Enne 2018. aasta 1. jaanuari maavalitsuses algatatud menetlus läheb maavalitsuse tegevuse lõppemisel üle järgmiselt: 1) Harju, Järva ja Rapla Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 12 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 2) Ida-Viru ja Lääne-Viru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 4 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 3) Hiiu, Lääne, Pärnu, Saare ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Enne 2018. aasta 1. jaanuari maavalitsuses algatatud menetlus läheb maavalitsuse tegevuse lõppemisel üle järgmiselt: 1) Harju, Järva ja Rapla Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 12 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 2) Ida-Viru ja Lääne-Viru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 4 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 3) Hiiu, Lääne, Pärnu, Saare ja Viljandi Maavalitsuses algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 9 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 4) Põlva, Tartu, Valga, Jõgeva ja Võru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele. (2) Tallinna Perekonnaseisuametis algatatud menetlus jääb Tallinna Perekonnaseisuametile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_5"
       },
@@ -4642,16 +4970,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Enne 2018. aasta 1. jaanuari maavalitsuses algatatud menetlus läheb maavalitsuse tegevuse lõppemisel üle järgmiselt: Harju, Järva ja Rapla Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 12 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Ida-Viru ja Lääne-Viru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 4 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Hiiu, Lääne, Pärnu, Saare ja Viljandi Maavalitsuses algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 9 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; Põlva, Tartu, Valga, Jõgeva ja Võru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 32 punktis 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele.",
+      "estleg:legalText": "(1) Enne 2018. aasta 1. jaanuari maavalitsuses algatatud menetlus läheb maavalitsuse tegevuse lõppemisel üle järgmiselt: 1) Harju, Järva ja Rapla Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 12 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 2) Ida-Viru ja Lääne-Viru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 4 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 3) Hiiu, Lääne, Pärnu, Saare ja Viljandi Maavalitsuses algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 9 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele; 4) Põlva, Tartu, Valga, Jõgeva ja Võru Maavalitsuse algatatud menetlus perekonnaseisutoimingute seaduse § 3 lõike 3² punktis 13 nimetatud maakonnakeskuse kohaliku omavalitsuse üksusele.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_31_1"
       },
       "rdfs:label": "§ 31¹ lg 1",
       "estleg:itemNumber": [
-        "12",
-        "4",
-        "9",
-        "13"
+        "1",
+        "2",
+        "3",
+        "4"
       ],
       "estleg:targetGroup": [
         {
@@ -4698,13 +5026,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31².",
-      "rdfs:label": "§ 31². Perekonnaseisuametniku õiguste kehtivus",
+      "rdfs:label": {
+        "@value": "§ 31². Perekonnaseisuametniku õiguste kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 16 lõikes 1 nimetatud maakonnakeskuse kohaliku omavalitsuse üksuses töötavatel perekonnaseisuametnikel, kelle valdkonna eest vastutav minister on enne 2018. aasta 1. jaanuari volitanud otsustama käesoleva seaduse § 16 lõike 61 alusel uue ees- ja perekonnanime andmise ja endise isikunime taastamise üle, on nime andmise või taastamise õigus perekonnaseisuametnikuna tegutsemise õiguse tähtaja lõpuni.",
-      "estleg:legalText": "Käesoleva seaduse § 16 lõikes 1 nimetatud maakonnakeskuse kohaliku omavalitsuse üksuses töötavatel perekonnaseisuametnikel, kelle valdkonna eest vastutav minister on enne 2018. aasta 1. jaanuari volitanud otsustama käesoleva seaduse § 16 lõike 61 alusel uue ees- ja perekonnanime andmise ja endise isikunime taastamise üle, on nime andmise või taastamise õigus perekonnaseisuametnikuna tegutsemise õiguse tähtaja lõpuni.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 16 lõikes 1 nimetatud maakonnakeskuse kohaliku omavalitsuse üksuses töötavatel perekonnaseisuametnikel, kelle valdkonna eest vastutav minister on enne 2018. aasta 1. jaanuari volitanud otsustama käesoleva seaduse § 16 lõike 6¹ alusel uue ees- ja perekonnanime andmise ja endise isikunime taastamise üle, on nime andmise või taastamise õigus perekonnaseisuametnikuna tegutsemise õiguse tähtaja lõpuni.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva seaduse § 16 lõikes 1 nimetatud maakonnakeskuse kohaliku omavalitsuse üksuses töötavatel perekonnaseisuametnikel, kelle valdkonna eest vastutav minister on enne 2018. aasta 1. jaanuari volitanud otsustama käesoleva seaduse § 16 lõike 6¹ alusel uue ees- ja perekonnanime andmise ja endise isikunime taastamise üle, on nime andmise või taastamise õigus perekonnaseisuametnikuna tegutsemise õiguse tähtaja lõpuni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_5"
       },
@@ -4758,10 +5092,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 16 lõikes 1 nimetatud maakonnakeskuse kohaliku omavalitsuse üksuses töötavatel perekonnaseisuametnikel, kelle valdkonna eest vastutav minister on enne 2018. aasta 1. jaanuari volitanud otsustama käesoleva seaduse § 16 lõike 61 alusel uue ees- ja perekonnanime andmise ja endise isikunime taastamise üle, on nime andmise või taastamise õigus perekonnaseisuametnikuna tegutsemise õiguse tähtaja lõpuni.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 16 lõikes 1 nimetatud maakonnakeskuse kohaliku omavalitsuse üksuses töötavatel perekonnaseisuametnikel, kelle valdkonna eest vastutav minister on enne 2018. aasta 1. jaanuari volitanud otsustama käesoleva seaduse § 16 lõike 6¹ alusel uue ees- ja perekonnanime andmise ja endise isikunime taastamise üle, on nime andmise või taastamise õigus perekonnaseisuametnikuna tegutsemise õiguse tähtaja lõpuni.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_31_2"
       },
+      "rdfs:label": "§ 31² lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -4800,12 +5136,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 32. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nimeseadus",
       "estleg:partOfAct": {
         "@id": "estleg:NS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2005. aasta 31. märtsil.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2005. aasta 31. märtsil.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2005. aasta 31. märtsil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_NS_5"
@@ -4830,21 +5172,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2005. aasta 31. märtsil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2005. aasta 31. märtsil.",
       "estleg:parentProvision": {
         "@id": "estleg:NS_Par_32"
-      }
+      },
+      "rdfs:label": "§ 32 lg 1"
     },
     {
-      "@id": "estleg:Citation_NS_P_16_Lg_3_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/506012026007",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:NS_Par_16_Lg_3"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "käesoleva seaduse §-s 171"
+      "eli:realizes": {
+        "@id": "estleg:NS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Names Act",
+        "@language": "en"
+      }
     }
   ]
 }

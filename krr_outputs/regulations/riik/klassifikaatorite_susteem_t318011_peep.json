@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Klassifikaatorite süsteem (määrus)",
+      "rdfs:label": {
+        "@value": "Klassifikaatorite süsteem (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Klassifikaatorite süsteem",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -35,11 +42,6 @@
         "@value": "2008-01-25",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2008-01-22",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -64,7 +66,13 @@
         {
           "@id": "estleg:Institution_statistikaamet"
         }
-      ]
+      ],
+      "dcterms:title": "Klassifikaatorite süsteem",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_318011_Par_1",
@@ -73,13 +81,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Määrusega kehtestatakse klassifikaatorite (klassifikatsioonide) süsteem ja selle koosseis ning klassifikaatorite haldamise kord. Määrusega kehtestatakse klassifikaatorite (klassifikatsioonide) süsteem ja selle koosseis ning klassifikaatorite haldamise kord. 2(2)Klassifikaatorite süsteemi koordineeriv asutus on Statistikaamet. Klassifikaatorite süsteemi koordineeriv asutus on Statistikaamet.",
-      "estleg:legalText": "1(1)Määrusega kehtestatakse klassifikaatorite (klassifikatsioonide) süsteem ja selle koosseis ning klassifikaatorite haldamise kord. Määrusega kehtestatakse klassifikaatorite (klassifikatsioonide) süsteem ja selle koosseis ning klassifikaatorite haldamise kord. 2(2)Klassifikaatorite süsteemi koordineeriv asutus on Statistikaamet. Klassifikaatorite süsteemi koordineeriv asutus on Statistikaamet.",
+      "estleg:summary": {
+        "@value": "1(1)Määrusega kehtestatakse klassifikaatorite (klassifikatsioonide) süsteem ja selle koosseis ning klassifikaatorite haldamise kord. 2(2)Klassifikaatorite süsteemi koordineeriv asutus on Statistikaamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Määrusega kehtestatakse klassifikaatorite (klassifikatsioonide) süsteem ja selle koosseis ning klassifikaatorite haldamise kord. 2(2)Klassifikaatorite süsteemi koordineeriv asutus on Statistikaamet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -98,7 +112,41 @@
         {
           "@id": "estleg:Institution_statistikaamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse klassifikaatorite (klassifikatsioonide) süsteem ja selle koosseis ning klassifikaatorite haldamise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Klassifikaatorite süsteemi koordineeriv asutus on Statistikaamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_318011_Par_2",
@@ -107,18 +155,90 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Klassifikaator",
+      "rdfs:label": {
+        "@value": "§ 2. Klassifikaator",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Klassifikaator on riigi infosüsteemi kuuluvas andmekogus kasutatav täpselt kirjeldatud, üksteist välistavate ning number- või tähtkoodiga tähistatud kategooriate põhjalik ja korrastatud süsteem. Klassifikaator on riigi infosüsteemi kuuluvas andmekogus kasutatav täpselt kirjeldatud, üksteist välistavate ning number- või tähtkoodiga tähistatud kategooriate põhjalik ja korrastatud süsteem. 2(2)Klassifikaatoriks käesoleva määruse mõistes ei loeta infosüsteemis kasutatavaid abivahendeid, nagu and",
-      "estleg:legalText": "1(1)Klassifikaator on riigi infosüsteemi kuuluvas andmekogus kasutatav täpselt kirjeldatud, üksteist välistavate ning number- või tähtkoodiga tähistatud kategooriate põhjalik ja korrastatud süsteem. Klassifikaator on riigi infosüsteemi kuuluvas andmekogus kasutatav täpselt kirjeldatud, üksteist välistavate ning number- või tähtkoodiga tähistatud kategooriate põhjalik ja korrastatud süsteem. 2(2)Klassifikaatoriks käesoleva määruse mõistes ei loeta infosüsteemis kasutatavaid abivahendeid, nagu andmekogus registreeritavale andmeobjektile omistatavat identifitseerivat koodi, samuti andmekogu tarkvaralahenduses kasutatavat rakenduse toimimiseks vajalikku liigitust (rakenduse menüüd, veateadete liigitus jms) ja muid abivahendeid, kui nende alusel ei toimu andmevahetus riigi infosüsteemi kuuluvate andmekogude vahel. Klassifikaatoriks käesoleva määruse mõistes ei loeta infosüsteemis kasutatavaid abivahendeid, nagu andmekogus registreeritavale andmeobjektile omistatavat identifitseerivat koodi, samuti andmekogu tarkvaralahenduses kasutatavat rakenduse toimimiseks vajalikku liigitust (rakenduse menüüd, veateadete liigitus jms) ja muid abivahendeid, kui nende alusel ei toimu andmevahetus riigi infosüsteemi kuuluvate andmekogude vahel. 3(3)Iga klassifikaator on unikaalne. Iga klassifikaator on unikaalne. 4(4)Iga klassifikaator on avalik, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti. Iga klassifikaator on avalik, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti.",
+      "estleg:summary": {
+        "@value": "1(1)Klassifikaator on riigi infosüsteemi kuuluvas andmekogus kasutatav täpselt kirjeldatud, üksteist välistavate ning number- või tähtkoodiga tähistatud kategooriate põhjalik ja korrastatud süsteem. 2(2)Klassifikaatoriks käesoleva määruse mõistes ei loeta infosüsteemis kasutatavaid abivahendeid, nagu andmekogus registreeritavale andmeobjektile omistatavat identifitseerivat koodi, samuti andmekogu tarkvaralahenduses kasutatavat rakenduse toimimiseks vajalikku liigitust (rakenduse menüüd,…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Klassifikaator on riigi infosüsteemi kuuluvas andmekogus kasutatav täpselt kirjeldatud, üksteist välistavate ning number- või tähtkoodiga tähistatud kategooriate põhjalik ja korrastatud süsteem. 2(2)Klassifikaatoriks käesoleva määruse mõistes ei loeta infosüsteemis kasutatavaid abivahendeid, nagu andmekogus registreeritavale andmeobjektile omistatavat identifitseerivat koodi, samuti andmekogu tarkvaralahenduses kasutatavat rakenduse toimimiseks vajalikku liigitust (rakenduse menüüd, veateadete liigitus jms) ja muid abivahendeid, kui nende alusel ei toimu andmevahetus riigi infosüsteemi kuuluvate andmekogude vahel. 3(3)Iga klassifikaator on unikaalne. 4(4)Iga klassifikaator on avalik, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_318011_Par_2_v318011"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Klassifikaator on riigi infosüsteemi kuuluvas andmekogus kasutatav täpselt kirjeldatud, üksteist välistavate ning number- või tähtkoodiga tähistatud kategooriate põhjalik ja korrastatud süsteem.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Klassifikaatoriks käesoleva määruse mõistes ei loeta infosüsteemis kasutatavaid abivahendeid, nagu andmekogus registreeritavale andmeobjektile omistatavat identifitseerivat koodi, samuti andmekogu tarkvaralahenduses kasutatavat rakenduse toimimiseks vajalikku liigitust (rakenduse menüüd, veateadete liigitus jms) ja muid abivahendeid, kui nende alusel ei toimu andmevahetus riigi infosüsteemi kuuluvate andmekogude vahel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Iga klassifikaator on unikaalne.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Iga klassifikaator on avalik, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_318011_Par_3",
@@ -127,13 +247,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Klassifikaatorite süsteem",
+      "rdfs:label": {
+        "@value": "§ 3. Klassifikaatorite süsteem",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Klassifikaatorite süsteem on klassifikaatorite haldamise ja kasutamise ühtsete põhimõtete kogum. Klassifikaatorite süsteem on klassifikaatorite haldamise ja kasutamise ühtsete põhimõtete kogum. 2(2)Klassifikaatorite süsteem koosneb:11)klassifikaatoritele esitatavatest nõuetest;22)klassifikaatoritest;33)klassifikaatorite haldajatest;44)klassifikaatorite kasutajatest;55)klassifikaatoreid väljastavatest andmeteenustest. Klassifikaatorite süsteem koosneb: klassifikaatoritele esitatavatest nõuete",
-      "estleg:legalText": "1(1)Klassifikaatorite süsteem on klassifikaatorite haldamise ja kasutamise ühtsete põhimõtete kogum. Klassifikaatorite süsteem on klassifikaatorite haldamise ja kasutamise ühtsete põhimõtete kogum. 2(2)Klassifikaatorite süsteem koosneb:11)klassifikaatoritele esitatavatest nõuetest;22)klassifikaatoritest;33)klassifikaatorite haldajatest;44)klassifikaatorite kasutajatest;55)klassifikaatoreid väljastavatest andmeteenustest. Klassifikaatorite süsteem koosneb: klassifikaatoritele esitatavatest nõuetest; klassifikaatoritest; klassifikaatorite haldajatest; klassifikaatorite kasutajatest; klassifikaatoreid väljastavatest andmeteenustest.",
+      "estleg:summary": {
+        "@value": "1(1)Klassifikaatorite süsteem on klassifikaatorite haldamise ja kasutamise ühtsete põhimõtete kogum. 2(2)Klassifikaatorite süsteem koosneb:11)klassifikaatoritele esitatavatest nõuetest;22)klassifikaatoritest;33)klassifikaatorite haldajatest;44)klassifikaatorite kasutajatest;55)klassifikaatoreid väljastavatest andmeteenustest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Klassifikaatorite süsteem on klassifikaatorite haldamise ja kasutamise ühtsete põhimõtete kogum. 2(2)Klassifikaatorite süsteem koosneb:11)klassifikaatoritele esitatavatest nõuetest;22)klassifikaatoritest;33)klassifikaatorite haldajatest;44)klassifikaatorite kasutajatest;55)klassifikaatoreid väljastavatest andmeteenustest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -147,6 +273,47 @@
         {
           "@id": "estleg:Reg_318011_Par_3_v318011"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_3_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Klassifikaatorite süsteem on klassifikaatorite haldamise ja kasutamise ühtsete põhimõtete kogum.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Klassifikaatorite süsteem koosneb: 1) klassifikaatoritele esitatavatest nõuetest; 2) klassifikaatoritest; 3) klassifikaatorite haldajatest; 4) klassifikaatorite kasutajatest; 5) klassifikaatoreid väljastavatest andmeteenustest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ]
     },
     {
@@ -156,13 +323,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Statistikaameti ülesanded klassifikaatorite süsteemi koordineerimisel",
+      "rdfs:label": {
+        "@value": "§ 4. Statistikaameti ülesanded klassifikaatorite süsteemi koordineerimisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "Statistikaamet klassifikaatorite süsteemi koordineerimisel:11)nõustab klassifikaatorite haldajaid;22)kooskõlastab klassifikaatoreid;33)korraldab klassifikaatorite esitamiseks soovitatava XML mudeli väljatöötamist ja haldamist;44)korraldab klassifikaatorite XML kujul kirjeldamise juhendi väljatöötamist ja haldamist;55)tagab klassifikaatorite haldajate teavitamise muudatustest XML kujul kirjeldamise süsteemis;66)korraldab klassifikaatoritega seotud üksikjuhtumite lahendamist.",
-      "estleg:legalText": "Statistikaamet klassifikaatorite süsteemi koordineerimisel:11)nõustab klassifikaatorite haldajaid;22)kooskõlastab klassifikaatoreid;33)korraldab klassifikaatorite esitamiseks soovitatava XML mudeli väljatöötamist ja haldamist;44)korraldab klassifikaatorite XML kujul kirjeldamise juhendi väljatöötamist ja haldamist;55)tagab klassifikaatorite haldajate teavitamise muudatustest XML kujul kirjeldamise süsteemis;66)korraldab klassifikaatoritega seotud üksikjuhtumite lahendamist. Statistikaamet klassifikaatorite süsteemi koordineerimisel: nõustab klassifikaatorite haldajaid; kooskõlastab klassifikaatoreid; korraldab klassifikaatorite esitamiseks soovitatava XML mudeli väljatöötamist ja haldamist; korraldab klassifikaatorite XML kujul kirjeldamise juhendi väljatöötamist ja haldamist; tagab klassifikaatorite haldajate teavitamise muudatustest XML kujul kirjeldamise süsteemis; korraldab klassifikaatoritega seotud üksikjuhtumite lahendamist.",
+      "estleg:summary": {
+        "@value": "Statistikaamet klassifikaatorite süsteemi koordineerimisel:11)nõustab klassifikaatorite haldajaid;22)kooskõlastab klassifikaatoreid;33)korraldab klassifikaatorite esitamiseks soovitatava XML mudeli väljatöötamist ja haldamist;44)korraldab klassifikaatorite XML kujul kirjeldamise juhendi väljatöötamist ja haldamist;55)tagab klassifikaatorite haldajate teavitamise muudatustest XML kujul kirjeldamise süsteemis;66)korraldab klassifikaatoritega seotud üksikjuhtumite lahendamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Statistikaamet klassifikaatorite süsteemi koordineerimisel:11)nõustab klassifikaatorite haldajaid;22)kooskõlastab klassifikaatoreid;33)korraldab klassifikaatorite esitamiseks soovitatava XML mudeli väljatöötamist ja haldamist;44)korraldab klassifikaatorite XML kujul kirjeldamise juhendi väljatöötamist ja haldamist;55)tagab klassifikaatorite haldajate teavitamise muudatustest XML kujul kirjeldamise süsteemis;66)korraldab klassifikaatoritega seotud üksikjuhtumite lahendamist.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_318011_Par_4_v318011"
@@ -172,6 +345,32 @@
         {
           "@id": "estleg:Institution_statistikaamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_4_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Statistikaamet klassifikaatorite süsteemi koordineerimisel: 1) nõustab klassifikaatorite haldajaid; 2) kooskõlastab klassifikaatoreid; 3) korraldab klassifikaatorite esitamiseks soovitatava XML mudeli väljatöötamist ja haldamist; 4) korraldab klassifikaatorite XML kujul kirjeldamise juhendi väljatöötamist ja haldamist; 5) tagab klassifikaatorite haldajate teavitamise muudatustest XML kujul kirjeldamise süsteemis; 6) korraldab klassifikaatoritega seotud üksikjuhtumite lahendamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -181,13 +380,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Klassifikaatorile esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 5. Klassifikaatorile esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Klassifikaator registreeritakse riigi infosüsteemi halduse infosüsteemis (edaspidi RIHA). Klassifikaator registreeritakse riigi infosüsteemi halduse infosüsteemis (edaspidi RIHA). 2(2)RIHA-sse kantavas klassifikaatori kirjelduses esitatakse järgmised andmed:11)klassifikaatori täielik nimetus;22)lühinimetus;33)rahvusvaheline alusklassifikaator;44)haldaja (registrikood);55)õiguslik alus;66)kehtiv seisund;77)kehtivusaja algus;88)kehtivusaja lõpp;99)uuendamissagedus;1010)eelneva klassifikaatori ",
-      "estleg:legalText": "1(1)Klassifikaator registreeritakse riigi infosüsteemi halduse infosüsteemis (edaspidi RIHA). Klassifikaator registreeritakse riigi infosüsteemi halduse infosüsteemis (edaspidi RIHA). 2(2)RIHA-sse kantavas klassifikaatori kirjelduses esitatakse järgmised andmed:11)klassifikaatori täielik nimetus;22)lühinimetus;33)rahvusvaheline alusklassifikaator;44)haldaja (registrikood);55)õiguslik alus;66)kehtiv seisund;77)kehtivusaja algus;88)kehtivusaja lõpp;99)uuendamissagedus;1010)eelneva klassifikaatori nimetus;1111)klassifikaatori struktuuri kirjeldus;1212)lühiiseloomustus;1313)sidusklassifikaatorid;1414)klassifitseeritav valdkond;1515)viide klassifikaatorile;1616)viide klassifikaatori üleminekutabelile. RIHA-sse kantavas klassifikaatori kirjelduses esitatakse järgmised andmed: klassifikaatori täielik nimetus; lühinimetus; rahvusvaheline alusklassifikaator; haldaja (registrikood); õiguslik alus; kehtiv seisund; kehtivusaja algus; kehtivusaja lõpp; uuendamissagedus; eelneva klassifikaatori nimetus; klassifikaatori struktuuri kirjeldus; lühiiseloomustus; sidusklassifikaatorid; klassifitseeritav valdkond; viide klassifikaatorile; viide klassifikaatori üleminekutabelile. 3(3)Klassifikaator ja klassifikaatori üleminekutabelid peavad olema kättesaadavad XML kujul. Klassifikaator ja klassifikaatori üleminekutabelid peavad olema kättesaadavad XML kujul. 4(4)Klassifikaator peab olema kättesaadav riigi infosüsteemi andmevahetuskihi (X-tee) kaudu. Klassifikaator peab olema kättesaadav riigi infosüsteemi andmevahetuskihi (X-tee) kaudu.",
+      "estleg:summary": {
+        "@value": "1(1)Klassifikaator registreeritakse riigi infosüsteemi halduse infosüsteemis (edaspidi RIHA). 2(2)RIHA-sse kantavas klassifikaatori kirjelduses esitatakse järgmised andmed:11)klassifikaatori täielik nimetus;22)lühinimetus;33)rahvusvaheline alusklassifikaator;44)haldaja (registrikood);55)õiguslik alus;66)kehtiv seisund;77)kehtivusaja algus;88)kehtivusaja lõpp;99)uuendamissagedus;1010)eelneva klassifikaatori nimetus;1111)klassifikaatori struktuuri…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Klassifikaator registreeritakse riigi infosüsteemi halduse infosüsteemis (edaspidi RIHA). 2(2)RIHA-sse kantavas klassifikaatori kirjelduses esitatakse järgmised andmed:11)klassifikaatori täielik nimetus;22)lühinimetus;33)rahvusvaheline alusklassifikaator;44)haldaja (registrikood);55)õiguslik alus;66)kehtiv seisund;77)kehtivusaja algus;88)kehtivusaja lõpp;99)uuendamissagedus;1010)eelneva klassifikaatori nimetus;1111)klassifikaatori struktuuri kirjeldus;1212)lühiiseloomustus;1313)sidusklassifikaatorid;1414)klassifitseeritav valdkond;1515)viide klassifikaatorile;1616)viide klassifikaatori üleminekutabelile. 3(3)Klassifikaator ja klassifikaatori üleminekutabelid peavad olema kättesaadavad XML kujul. 4(4)Klassifikaator peab olema kättesaadav riigi infosüsteemi andmevahetuskihi (X-tee) kaudu.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -201,7 +406,91 @@
         {
           "@id": "estleg:Reg_318011_Par_5_v318011"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_5_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Klassifikaator registreeritakse riigi infosüsteemi halduse infosüsteemis (edaspidi RIHA).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) RIHA-sse kantavas klassifikaatori kirjelduses esitatakse järgmised andmed: 1) klassifikaatori täielik nimetus; 2) lühinimetus; 3) rahvusvaheline alusklassifikaator; 4) haldaja (registrikood); 5) õiguslik alus; 6) kehtiv seisund; 7) kehtivusaja algus; 8) kehtivusaja lõpp; 9) uuendamissagedus; 10) eelneva klassifikaatori nimetus; 11) klassifikaatori struktuuri kirjeldus; 12) lühiiseloomustus; 13) sidusklassifikaatorid; 14) klassifitseeritav valdkond; 15) viide klassifikaatorile; 16) viide klassifikaatori üleminekutabelile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Klassifikaator ja klassifikaatori üleminekutabelid peavad olema kättesaadavad XML kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Klassifikaator peab olema kättesaadav riigi infosüsteemi andmevahetuskihi (X-tee) kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     },
     {
       "@id": "estleg:Reg_318011_Par_6",
@@ -210,13 +499,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Klassifikaatori haldamine",
+      "rdfs:label": {
+        "@value": "§ 6. Klassifikaatori haldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Klassifikaatori haldamine on klassifikaatori kehtestamine, muutmine ja kehtetuks tunnistamine. Klassifikaatori haldamine on klassifikaatori kehtestamine, muutmine ja kehtetuks tunnistamine. 2(2)Klassifikaatorit haldab klassifikaatori registreerinud asutus või isik, kes võib vajadusel haldamise delegeerida mõnele teisele pädevale asutusele või isikule. Klassifikaatorit haldab klassifikaatori registreerinud asutus või isik, kes võib vajadusel haldamise delegeerida mõnele teisele pädevale asutu",
-      "estleg:legalText": "1(1)Klassifikaatori haldamine on klassifikaatori kehtestamine, muutmine ja kehtetuks tunnistamine. Klassifikaatori haldamine on klassifikaatori kehtestamine, muutmine ja kehtetuks tunnistamine. 2(2)Klassifikaatorit haldab klassifikaatori registreerinud asutus või isik, kes võib vajadusel haldamise delegeerida mõnele teisele pädevale asutusele või isikule. Klassifikaatorit haldab klassifikaatori registreerinud asutus või isik, kes võib vajadusel haldamise delegeerida mõnele teisele pädevale asutusele või isikule. 3(3)Klassifikaatorite haldajate üle peetakse arvestust RIHA-s. Klassifikaatorite haldajate üle peetakse arvestust RIHA-s. 4(4)Klassifikaatori haldaja tagab klassifikaatori, klassifikaatori kirjelduse ning muude klassifikaatoriga seotud dokumentide, nagu selgitavad märkused ja üleminekutabelid, avaliku elektroonilise kättesaadavuse, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti. Klassifikaatori haldaja tagab klassifikaatori, klassifikaatori kirjelduse ning muude klassifikaatoriga seotud dokumentide, nagu selgitavad märkused ja üleminekutabelid, avaliku elektroonilise kättesaadavuse, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti.",
+      "estleg:summary": {
+        "@value": "1(1)Klassifikaatori haldamine on klassifikaatori kehtestamine, muutmine ja kehtetuks tunnistamine. 2(2)Klassifikaatorit haldab klassifikaatori registreerinud asutus või isik, kes võib vajadusel haldamise delegeerida mõnele teisele pädevale asutusele või isikule. 3(3)Klassifikaatorite haldajate üle peetakse arvestust RIHA-s. 4(4)Klassifikaatori haldaja tagab klassifikaatori, klassifikaatori kirjelduse ning muude klassifikaatoriga seotud dokumentide, nagu selgitavad märkused ja üleminekutabelid,…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Klassifikaatori haldamine on klassifikaatori kehtestamine, muutmine ja kehtetuks tunnistamine. 2(2)Klassifikaatorit haldab klassifikaatori registreerinud asutus või isik, kes võib vajadusel haldamise delegeerida mõnele teisele pädevale asutusele või isikule. 3(3)Klassifikaatorite haldajate üle peetakse arvestust RIHA-s. 4(4)Klassifikaatori haldaja tagab klassifikaatori, klassifikaatori kirjelduse ning muude klassifikaatoriga seotud dokumentide, nagu selgitavad märkused ja üleminekutabelid, avaliku elektroonilise kättesaadavuse, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -236,7 +531,73 @@
         {
           "@id": "estleg:Reg_318011_Par_6_v318011"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_6_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Klassifikaatori haldamine on klassifikaatori kehtestamine, muutmine ja kehtetuks tunnistamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Klassifikaatorit haldab klassifikaatori registreerinud asutus või isik, kes võib vajadusel haldamise delegeerida mõnele teisele pädevale asutusele või isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Klassifikaatorite haldajate üle peetakse arvestust RIHA-s.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Klassifikaatori haldaja tagab klassifikaatori, klassifikaatori kirjelduse ning muude klassifikaatoriga seotud dokumentide, nagu selgitavad märkused ja üleminekutabelid, avaliku elektroonilise kättesaadavuse, kui seadusega või muu õigusaktiga ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
     },
     {
       "@id": "estleg:Reg_318011_Par_7",
@@ -245,13 +606,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Klassifikaatori kehtestamine",
+      "rdfs:label": {
+        "@value": "§ 7. Klassifikaatori kehtestamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Klassifikaator kehtestatakse, kui tekib vajadus kasutada klassifikaatorit, mida veel ei ole kehtestatud ja millel puudub haldaja. Klassifikaator kehtestatakse, kui tekib vajadus kasutada klassifikaatorit, mida veel ei ole kehtestatud ja millel puudub haldaja. 2(2)Enne klassifikaatori kehtestamist kontrollib klassifikaatori haldaja RIHA kaudu klassifikaatori nimetuse unikaalsust ning võrdleb loodavat klassifikaatorit varem kehtestatud klassifikaatoritega. Enne klassifikaatori kehtestamist kon",
-      "estleg:legalText": "1(1)Klassifikaator kehtestatakse, kui tekib vajadus kasutada klassifikaatorit, mida veel ei ole kehtestatud ja millel puudub haldaja. Klassifikaator kehtestatakse, kui tekib vajadus kasutada klassifikaatorit, mida veel ei ole kehtestatud ja millel puudub haldaja. 2(2)Enne klassifikaatori kehtestamist kontrollib klassifikaatori haldaja RIHA kaudu klassifikaatori nimetuse unikaalsust ning võrdleb loodavat klassifikaatorit varem kehtestatud klassifikaatoritega. Enne klassifikaatori kehtestamist kontrollib klassifikaatori haldaja RIHA kaudu klassifikaatori nimetuse unikaalsust ning võrdleb loodavat klassifikaatorit varem kehtestatud klassifikaatoritega. 3(3)Klassifikaatori haldaja tagab rahvusvahelise klassifikaatori alusel väljatöötatud klassifikaatori ühilduvuse rahvusvahelise klassifikaatoriga ja fikseerib vastava viite rahvusvahelisele klassifikaatorile. Klassifikaatori haldaja tagab rahvusvahelise klassifikaatori alusel väljatöötatud klassifikaatori ühilduvuse rahvusvahelise klassifikaatoriga ja fikseerib vastava viite rahvusvahelisele klassifikaatorile. 4(4)Klassifikaatori haldaja registreerib kehtestatava klassifikaatori RIHA-s, mille kaudu saadetakse see kooskõlastamiseks Statistikaametile. Statistikaamet kooskõlastab või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kooskõlastamisele esitamise päevast arvates. Klassifikaatori haldaja registreerib kehtestatava klassifikaatori RIHA-s, mille kaudu saadetakse see kooskõlastamiseks Statistikaametile. Statistikaamet kooskõlastab või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kooskõlastamisele esitamise päevast arvates. 5(5)Klassifikaator loetakse kehtestatuks, kui Statistikaamet on klassifikaatori RIHA kaudu kooskõlastanud. Klassifikaator loetakse kehtestatuks, kui Statistikaamet on klassifikaatori RIHA kaudu kooskõlastanud.",
+      "estleg:summary": {
+        "@value": "1(1)Klassifikaator kehtestatakse, kui tekib vajadus kasutada klassifikaatorit, mida veel ei ole kehtestatud ja millel puudub haldaja. 2(2)Enne klassifikaatori kehtestamist kontrollib klassifikaatori haldaja RIHA kaudu klassifikaatori nimetuse unikaalsust ning võrdleb loodavat klassifikaatorit varem kehtestatud klassifikaatoritega. 3(3)Klassifikaatori haldaja tagab rahvusvahelise klassifikaatori alusel väljatöötatud klassifikaatori ühilduvuse rahvusvahelise klassifikaatoriga ja fikseerib vastava…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Klassifikaator kehtestatakse, kui tekib vajadus kasutada klassifikaatorit, mida veel ei ole kehtestatud ja millel puudub haldaja. 2(2)Enne klassifikaatori kehtestamist kontrollib klassifikaatori haldaja RIHA kaudu klassifikaatori nimetuse unikaalsust ning võrdleb loodavat klassifikaatorit varem kehtestatud klassifikaatoritega. 3(3)Klassifikaatori haldaja tagab rahvusvahelise klassifikaatori alusel väljatöötatud klassifikaatori ühilduvuse rahvusvahelise klassifikaatoriga ja fikseerib vastava viite rahvusvahelisele klassifikaatorile. 4(4)Klassifikaatori haldaja registreerib kehtestatava klassifikaatori RIHA-s, mille kaudu saadetakse see kooskõlastamiseks Statistikaametile. Statistikaamet kooskõlastab või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kooskõlastamisele esitamise päevast arvates. 5(5)Klassifikaator loetakse kehtestatuks, kui Statistikaamet on klassifikaatori RIHA kaudu kooskõlastanud.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_318011_Par_7_v318011"
@@ -262,7 +629,89 @@
           "@id": "estleg:Institution_statistikaamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_7_Lg_5"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Klassifikaator kehtestatakse, kui tekib vajadus kasutada klassifikaatorit, mida veel ei ole kehtestatud ja millel puudub haldaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne klassifikaatori kehtestamist kontrollib klassifikaatori haldaja RIHA kaudu klassifikaatori nimetuse unikaalsust ning võrdleb loodavat klassifikaatorit varem kehtestatud klassifikaatoritega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Klassifikaatori haldaja tagab rahvusvahelise klassifikaatori alusel väljatöötatud klassifikaatori ühilduvuse rahvusvahelise klassifikaatoriga ja fikseerib vastava viite rahvusvahelisele klassifikaatorile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Klassifikaatori haldaja registreerib kehtestatava klassifikaatori RIHA-s, mille kaudu saadetakse see kooskõlastamiseks Statistikaametile. Statistikaamet kooskõlastab või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kooskõlastamisele esitamise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Klassifikaator loetakse kehtestatuks, kui Statistikaamet on klassifikaatori RIHA kaudu kooskõlastanud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
     },
     {
       "@id": "estleg:Reg_318011_Par_8",
@@ -271,13 +720,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Klassifikaatori muutmine",
+      "rdfs:label": {
+        "@value": "§ 8. Klassifikaatori muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Klassifikaatori muutmisena käsitatakse klassifikaatori kirjelduses sisalduvate andmete muutmist ja klassifikaatoris sisuliste muudatuste tegemist ning vormi-, keele- ja trükivigade parandamist. Klassifikaatoris sisuliste muudatuste tegemisega kaasneb klassifikaatori uue versiooni loomine. Klassifikaatori muutmisena käsitatakse klassifikaatori kirjelduses sisalduvate andmete muutmist ja klassifikaatoris sisuliste muudatuste tegemist ning vormi-, keele- ja trükivigade parandamist. Klassifikaat",
-      "estleg:legalText": "1(1)Klassifikaatori muutmisena käsitatakse klassifikaatori kirjelduses sisalduvate andmete muutmist ja klassifikaatoris sisuliste muudatuste tegemist ning vormi-, keele- ja trükivigade parandamist. Klassifikaatoris sisuliste muudatuste tegemisega kaasneb klassifikaatori uue versiooni loomine. Klassifikaatori muutmisena käsitatakse klassifikaatori kirjelduses sisalduvate andmete muutmist ja klassifikaatoris sisuliste muudatuste tegemist ning vormi-, keele- ja trükivigade parandamist. Klassifikaatoris sisuliste muudatuste tegemisega kaasneb klassifikaatori uue versiooni loomine. 2(2)Klassifikaatori muutmise algatab klassifikaatori haldaja vastava vajaduse tekkimisel. Klassifikaatori muutmise aluseks on seaduse või muu õigusaktiga kehtestatud muudatused, RIHA vastutava töötleja, Statistikaameti või klassifikaatori kasutaja põhjendatud ettepanek või vastava rahvusvahelise alusklassifikaatori muutmine. Klassifikaatori muutmise algatab klassifikaatori haldaja vastava vajaduse tekkimisel. Klassifikaatori muutmise aluseks on seaduse või muu õigusaktiga kehtestatud muudatused, RIHA vastutava töötleja, Statistikaameti või klassifikaatori kasutaja põhjendatud ettepanek või vastava rahvusvahelise alusklassifikaatori muutmine. 3(3)Klassifikaatori kirjelduses sisalduvate andmete ja klassifikaatori sisuliseks muutmiseks saadab klassifikaatori haldaja muutmise ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. Klassifikaatori kirjelduses sisalduvate andmete ja klassifikaatori sisuliseks muutmiseks saadab klassifikaatori haldaja muutmise ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. 4(4)Statistikaamet kooskõlastab lõikes 3 kirjeldatud klassifikaatori muutmise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori muutmise kooskõlastamisele esitamise päevast arvates. Statistikaamet kooskõlastab lõikes 3 kirjeldatud klassifikaatori muutmise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori muutmise kooskõlastamisele esitamise päevast arvates. 5(5)Klassifikaatori vormi-, keele- ja trükivigade parandamiseks klassifikaatori muutmist Statistikaametiga kooskõlastama ei pea. Klassifikaatori vormi-, keele- ja trükivigade parandamiseks klassifikaatori muutmist Statistikaametiga kooskõlastama ei pea. 6(6)Statistikaamet võib põhjendatud juhtudel lubada klassifikaatori haldajal teha muudatusi ilma lõike 3 kohase kooskõlastuseta. Sellise loa kohta tehakse vastav märge RIHA-sse. Statistikaamet võib põhjendatud juhtudel lubada klassifikaatori haldajal teha muudatusi ilma lõike 3 kohase kooskõlastuseta. Sellise loa kohta tehakse vastav märge RIHA-sse. 7(7)Klassifikaatori muutmisest teavitatakse RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid vähemalt üks kuu enne klassifikaatori uue versiooni kehtivusaja algust, kui seadus või muu õigusakt ei näe ette teisiti. Klassifikaatori muutmisest teavitatakse RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid vähemalt üks kuu enne klassifikaatori uue versiooni kehtivusaja algust, kui seadus või muu õigusakt ei näe ette teisiti. 8(8)Klassifikaatori haldaja tagab klassifikaatori muutmisel seose eelnevalt kehtestatud klassifikaatori ja klassifikaatori uue versiooni vahel, luues vastavad üleminekutabelid. Klassifikaatori haldaja tagab klassifikaatori muutmisel seose eelnevalt kehtestatud klassifikaatori ja klassifikaatori uue versiooni vahel, luues vastavad üleminekutabelid.",
+      "estleg:summary": {
+        "@value": "1(1)Klassifikaatori muutmisena käsitatakse klassifikaatori kirjelduses sisalduvate andmete muutmist ja klassifikaatoris sisuliste muudatuste tegemist ning vormi-, keele- ja trükivigade parandamist. Klassifikaatoris sisuliste muudatuste tegemisega kaasneb klassifikaatori uue versiooni loomine. 2(2)Klassifikaatori muutmise algatab klassifikaatori haldaja vastava vajaduse tekkimisel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Klassifikaatori muutmisena käsitatakse klassifikaatori kirjelduses sisalduvate andmete muutmist ja klassifikaatoris sisuliste muudatuste tegemist ning vormi-, keele- ja trükivigade parandamist. Klassifikaatoris sisuliste muudatuste tegemisega kaasneb klassifikaatori uue versiooni loomine. 2(2)Klassifikaatori muutmise algatab klassifikaatori haldaja vastava vajaduse tekkimisel. Klassifikaatori muutmise aluseks on seaduse või muu õigusaktiga kehtestatud muudatused, RIHA vastutava töötleja, Statistikaameti või klassifikaatori kasutaja põhjendatud ettepanek või vastava rahvusvahelise alusklassifikaatori muutmine. 3(3)Klassifikaatori kirjelduses sisalduvate andmete ja klassifikaatori sisuliseks muutmiseks saadab klassifikaatori haldaja muutmise ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. 4(4)Statistikaamet kooskõlastab lõikes 3 kirjeldatud klassifikaatori muutmise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori muutmise kooskõlastamisele esitamise päevast arvates. 5(5)Klassifikaatori vormi-, keele- ja trükivigade parandamiseks klassifikaatori muutmist Statistikaametiga kooskõlastama ei pea. 6(6)Statistikaamet võib põhjendatud juhtudel lubada klassifikaatori haldajal teha muudatusi ilma lõike 3 kohase kooskõlastuseta. Sellise loa kohta tehakse vastav märge RIHA-sse. 7(7)Klassifikaatori muutmisest teavitatakse RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid vähemalt üks kuu enne klassifikaatori uue versiooni kehtivusaja algust, kui seadus või muu õigusakt ei näe ette teisiti. 8(8)Klassifikaatori haldaja tagab klassifikaatori muutmisel seose eelnevalt kehtestatud klassifikaatori ja klassifikaatori uue versiooni vahel, luues vastavad üleminekutabelid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -300,7 +755,137 @@
           "@id": "estleg:Institution_statistikaamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_8_Lg_8"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Klassifikaatori muutmisena käsitatakse klassifikaatori kirjelduses sisalduvate andmete muutmist ja klassifikaatoris sisuliste muudatuste tegemist ning vormi-, keele- ja trükivigade parandamist. Klassifikaatoris sisuliste muudatuste tegemisega kaasneb klassifikaatori uue versiooni loomine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Klassifikaatori muutmise algatab klassifikaatori haldaja vastava vajaduse tekkimisel. Klassifikaatori muutmise aluseks on seaduse või muu õigusaktiga kehtestatud muudatused, RIHA vastutava töötleja, Statistikaameti või klassifikaatori kasutaja põhjendatud ettepanek või vastava rahvusvahelise alusklassifikaatori muutmine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Klassifikaatori kirjelduses sisalduvate andmete ja klassifikaatori sisuliseks muutmiseks saadab klassifikaatori haldaja muutmise ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Statistikaamet kooskõlastab lõikes 3 kirjeldatud klassifikaatori muutmise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori muutmise kooskõlastamisele esitamise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Klassifikaatori vormi-, keele- ja trükivigade parandamiseks klassifikaatori muutmist Statistikaametiga kooskõlastama ei pea.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Statistikaamet võib põhjendatud juhtudel lubada klassifikaatori haldajal teha muudatusi ilma lõike 3 kohase kooskõlastuseta. Sellise loa kohta tehakse vastav märge RIHA-sse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Klassifikaatori muutmisest teavitatakse RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid vähemalt üks kuu enne klassifikaatori uue versiooni kehtivusaja algust, kui seadus või muu õigusakt ei näe ette teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 7"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_8_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Klassifikaatori haldaja tagab klassifikaatori muutmisel seose eelnevalt kehtestatud klassifikaatori ja klassifikaatori uue versiooni vahel, luues vastavad üleminekutabelid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 8"
     },
     {
       "@id": "estleg:Reg_318011_Par_9",
@@ -309,13 +894,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Klassifikaatori kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 9. Klassifikaatori kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Klassifikaatori kehtetuks tunnistamise algatab klassifikaatori haldaja, põhjendades kehtetuks tunnistamise vajadust ja edastades vastava ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. Klassifikaatori kehtetuks tunnistamise algatab klassifikaatori haldaja, põhjendades kehtetuks tunnistamise vajadust ja edastades vastava ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. 2(2)Statistikaamet kooskõlastab klassifikaatori kehtetuks tunnistamise või jätab selle põhjendatult koos",
-      "estleg:legalText": "1(1)Klassifikaatori kehtetuks tunnistamise algatab klassifikaatori haldaja, põhjendades kehtetuks tunnistamise vajadust ja edastades vastava ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. Klassifikaatori kehtetuks tunnistamise algatab klassifikaatori haldaja, põhjendades kehtetuks tunnistamise vajadust ja edastades vastava ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. 2(2)Statistikaamet kooskõlastab klassifikaatori kehtetuks tunnistamise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kehtetuks tunnistamise kooskõlastamisele esitamise päevast arvates. Statistikaamet kooskõlastab klassifikaatori kehtetuks tunnistamise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kehtetuks tunnistamise kooskõlastamisele esitamise päevast arvates. 3(3)Klassifikaatori kehtetuks tunnistamisest teavitab klassifikaatori haldaja RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid ja teeb RIHA-s vastavad muudatused. Klassifikaatori kehtetuks tunnistamisest teavitab klassifikaatori haldaja RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid ja teeb RIHA-s vastavad muudatused.",
+      "estleg:summary": {
+        "@value": "1(1)Klassifikaatori kehtetuks tunnistamise algatab klassifikaatori haldaja, põhjendades kehtetuks tunnistamise vajadust ja edastades vastava ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. 2(2)Statistikaamet kooskõlastab klassifikaatori kehtetuks tunnistamise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kehtetuks tunnistamise kooskõlastamisele esitamise päevast arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Klassifikaatori kehtetuks tunnistamise algatab klassifikaatori haldaja, põhjendades kehtetuks tunnistamise vajadust ja edastades vastava ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks. 2(2)Statistikaamet kooskõlastab klassifikaatori kehtetuks tunnistamise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kehtetuks tunnistamise kooskõlastamisele esitamise päevast arvates. 3(3)Klassifikaatori kehtetuks tunnistamisest teavitab klassifikaatori haldaja RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid ja teeb RIHA-s vastavad muudatused.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -335,7 +926,57 @@
           "@id": "estleg:Institution_statistikaamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_9_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Klassifikaatori kehtetuks tunnistamise algatab klassifikaatori haldaja, põhjendades kehtetuks tunnistamise vajadust ja edastades vastava ettepaneku RIHA kaudu Statistikaametile kooskõlastamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Statistikaamet kooskõlastab klassifikaatori kehtetuks tunnistamise või jätab selle põhjendatult kooskõlastamata 20 tööpäeva jooksul klassifikaatori kehtetuks tunnistamise kooskõlastamisele esitamise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Klassifikaatori kehtetuks tunnistamisest teavitab klassifikaatori haldaja RIHA kaudu kõiki registreerunud klassifikaatori kasutajaid ja teeb RIHA-s vastavad muudatused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
     },
     {
       "@id": "estleg:Reg_318011_Par_10",
@@ -344,18 +985,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Klassifikaatori kasutamine",
+      "rdfs:label": {
+        "@value": "§ 10. Klassifikaatori kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "1(1)Riigi infosüsteemi kuuluvas andmekogus on RIHA-s registreeritud klassifikaatorite kasutamine kohustuslik. Riigi infosüsteemi kuuluvas andmekogus on RIHA-s registreeritud klassifikaatorite kasutamine kohustuslik. 2(2)Muude andmekogude puhul on klassifikaatorite kasutamine soovituslik. Muude andmekogude puhul on klassifikaatorite kasutamine soovituslik.",
-      "estleg:legalText": "1(1)Riigi infosüsteemi kuuluvas andmekogus on RIHA-s registreeritud klassifikaatorite kasutamine kohustuslik. Riigi infosüsteemi kuuluvas andmekogus on RIHA-s registreeritud klassifikaatorite kasutamine kohustuslik. 2(2)Muude andmekogude puhul on klassifikaatorite kasutamine soovituslik. Muude andmekogude puhul on klassifikaatorite kasutamine soovituslik.",
+      "estleg:summary": {
+        "@value": "1(1)Riigi infosüsteemi kuuluvas andmekogus on RIHA-s registreeritud klassifikaatorite kasutamine kohustuslik. 2(2)Muude andmekogude puhul on klassifikaatorite kasutamine soovituslik.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Riigi infosüsteemi kuuluvas andmekogus on RIHA-s registreeritud klassifikaatorite kasutamine kohustuslik. 2(2)Muude andmekogude puhul on klassifikaatorite kasutamine soovituslik.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_318011_Par_10_v318011"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_318011_Par_10_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi infosüsteemi kuuluvas andmekogus on RIHA-s registreeritud klassifikaatorite kasutamine kohustuslik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Muude andmekogude puhul on klassifikaatorite kasutamine soovituslik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:Reg_318011_Par_11",
@@ -364,13 +1045,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Määruse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 11. Määruse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Klassifikaatorite süsteem",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_318011_Map"
       },
-      "estleg:summary": "Käesoleva määruse jõustumisel viiakse kasutusel olevad klassifikaatorid vastavusse käesolevas määruses sätestatud nõuetega ja registreeritakse RIHA-s 6 kuu jooksul määruse jõustumise päevast arvates.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Peaminister Andrus ANSIP</font></b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td ",
-      "estleg:legalText": "Käesoleva määruse jõustumisel viiakse kasutusel olevad klassifikaatorid vastavusse käesolevas määruses sätestatud nõuetega ja registreeritakse RIHA-s 6 kuu jooksul määruse jõustumise päevast arvates.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Peaminister Andrus ANSIP</font></b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Majandus- ja<br/>kommunikatsiooniminister Juhan PARTS</font></b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigisekretär Heiki LOOT</font></b> </td> </tr> </tbody></table> Käesoleva määruse jõustumisel viiakse kasutusel olevad klassifikaatorid vastavusse käesolevas määruses sätestatud nõuetega ja registreeritakse RIHA-s 6 kuu jooksul määruse jõustumise päevast arvates.",
+      "estleg:summary": {
+        "@value": "Käesoleva määruse jõustumisel viiakse kasutusel olevad klassifikaatorid vastavusse käesolevas määruses sätestatud nõuetega ja registreeritakse RIHA-s 6 kuu jooksul määruse jõustumise päevast arvates.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Peaminister Andrus ANSIP</font></b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva määruse jõustumisel viiakse kasutusel olevad klassifikaatorid vastavusse käesolevas määruses sätestatud nõuetega ja registreeritakse RIHA-s 6 kuu jooksul määruse jõustumise päevast arvates.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Peaminister Andrus ANSIP</font></b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Majandus- ja<br/>kommunikatsiooniminister Juhan PARTS</font></b> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigisekretär Heiki LOOT</font></b> </td> </tr> </tbody></table>",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_331436_Par_2"
@@ -388,7 +1075,25 @@
         {
           "@id": "estleg:Institution_kommunikatsiooniminister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_318011_Par_11_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_318011_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määruse jõustumisel viiakse kasutusel olevad klassifikaatorid vastavusse käesolevas määruses sätestatud nõuetega ja registreeritakse RIHA-s 6 kuu jooksul määruse jõustumise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_318011_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     }
   ]
 }

@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TDVS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Töötajate distsiplinaarvastutuse seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Töötajate distsiplinaarvastutuse seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Töötajate distsiplinaarvastutuse seadus",
-      "dcterms:title": [
-        {
-          "@value": "Töötajate distsiplinaarvastutuse seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Employees Disciplinary Liability Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/106072023109.xml"
+        "@id": "https://www.riigiteataja.ee/akt/106072023109"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/106072023109/xml"
+      },
+      "estleg:globalId": "106072023109",
+      "eli:id_local": "106072023109",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159201",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "abc9ff2279f9605be2e0955303386abaf1fe9e40d70e9704249601584291c2e0",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1993-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2024-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2024-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/515122023005"
@@ -96,14 +108,40 @@
         {
           "@id": "estleg:Institution_kohus"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/515122023005"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_TDVS_I",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–5 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:TDVS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:TDVS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Töötajate distsiplinaarvastutuse seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Töötajate distsiplinaarvastutuse seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_TDVS_I"
@@ -120,26 +158,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_TDVS_I",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–5 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–5 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:TDVS_TopicScheme"
-      },
-      "estleg:provisionCount": 3
-    },
-    {
       "@id": "estleg:Chapter_TDVS_I",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "I. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "I. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "I",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
@@ -159,8 +186,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§6–16 DISTSIPLINAARKARISTUSE MÄÄRAMINE, KUSTUMINE JA KUSTUTAMINE",
-      "skos:prefLabel": "§6–16 DISTSIPLINAARKARISTUSE MÄÄRAMINE, KUSTUMINE JA KUSTUTAMINE",
+      "rdfs:label": {
+        "@value": "§6–16 DISTSIPLINAARKARISTUSE MÄÄRAMINE, KUSTUMINE JA KUSTUTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§6–16 DISTSIPLINAARKARISTUSE MÄÄRAMINE, KUSTUMINE JA KUSTUTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TDVS_TopicScheme"
       },
@@ -172,7 +205,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "II. peatükk – DISTSIPLINAARKARISTUSE MÄÄRAMINE, KUSTUMINE JA KUSTUTAMINE",
+      "rdfs:label": {
+        "@value": "II. peatükk – DISTSIPLINAARKARISTUSE MÄÄRAMINE, KUSTUMINE JA KUSTUTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "II",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
@@ -192,8 +228,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§17–22 RAHATRAHV, PALGA MAKSMISE PEATAMISEGA TÖÖLT KÕRVALDAMINE JA TÖÖLEPINGU LÕPETAMINE",
-      "skos:prefLabel": "§17–22 RAHATRAHV, PALGA MAKSMISE PEATAMISEGA TÖÖLT KÕRVALDAMINE JA TÖÖLEPINGU LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "§17–22 RAHATRAHV, PALGA MAKSMISE PEATAMISEGA TÖÖLT KÕRVALDAMINE JA TÖÖLEPINGU LÕPETAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§17–22 RAHATRAHV, PALGA MAKSMISE PEATAMISEGA TÖÖLT KÕRVALDAMINE JA TÖÖLEPINGU LÕPETAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TDVS_TopicScheme"
       },
@@ -205,7 +247,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "III. peatükk – RAHATRAHV, PALGA MAKSMISE PEATAMISEGA TÖÖLT KÕRVALDAMINE JA TÖÖLEPINGU LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "III. peatükk – RAHATRAHV, PALGA MAKSMISE PEATAMISEGA TÖÖLT KÕRVALDAMINE JA TÖÖLEPINGU LÕPETAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "III",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
@@ -225,8 +270,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§23–29 RAKENDUSLIKUD SÄTTED",
-      "skos:prefLabel": "§23–29 RAKENDUSLIKUD SÄTTED",
+      "rdfs:label": {
+        "@value": "§23–29 RAKENDUSLIKUD SÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§23–29 RAKENDUSLIKUD SÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TDVS_TopicScheme"
       },
@@ -238,7 +289,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "IV. peatükk – RAKENDUSLIKUD SÄTTED",
+      "rdfs:label": {
+        "@value": "IV. peatükk – RAKENDUSLIKUD SÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "IV",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
@@ -258,12 +312,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Käesoleva seaduse rakendusala",
+      "rdfs:label": {
+        "@value": "§ 1. Käesoleva seaduse rakendusala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Käesolevat seadust kohaldatakse seadusega ettenähtud juhtudel, arvestades nendes sätestatud erisusi. Käesolevat seadust ei kohaldata töölepingulistele suhetele.",
+      "estleg:summary": {
+        "@value": "Käesolevat seadust kohaldatakse seadusega ettenähtud juhtudel, arvestades nendes sätestatud erisusi. Käesolevat seadust ei kohaldata töölepingulistele suhetele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevat seadust kohaldatakse seadusega ettenähtud juhtudel, arvestades nendes sätestatud erisusi. Käesolevat seadust ei kohaldata töölepingulistele suhetele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_I"
@@ -299,10 +359,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevat seadust kohaldatakse seadusega ettenähtud juhtudel, arvestades nendes sätestatud erisusi. Käesolevat seadust ei kohaldata töölepingulistele suhetele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevat seadust kohaldatakse seadusega ettenähtud juhtudel, arvestades nendes sätestatud erisusi. Käesolevat seadust ei kohaldata töölepingulistele suhetele.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:TDVS_Par_2",
@@ -311,18 +373,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": {
+        "@value": "§ 2.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
+      "estleg:summary": "§ 2.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_I"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TDVS_I"
       },
-      "estleg:summary": "§ 2.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:TDVS_Par_2_v22242"
@@ -347,13 +412,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 5.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 5.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_I"
       },
@@ -376,12 +446,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Distsiplinaarkaristuse määramise tähtajad",
+      "rdfs:label": {
+        "@value": "§ 6. Distsiplinaarkaristuse määramise tähtajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Distsiplinaarkaristuse võib määrata kuue kuu jooksul, arvates süüteo toimepanemise päevast, kuid seejuures hiljemalt ühe kuu jooksul, arvates päevast, mil süüteost sai teada mis tahes isik, kellele süüdlane tööalaselt allub. (2) Inventuuri, revisjoni, audiitorkontrolli jmt. tulemustega tõendatud süüteo eest võib distsiplinaarkaristuse määrata aasta jooksul, arvates süüteo toimepanemise päevast, kuid seejuures hiljemalt ühe kuu jooksul, arvates inventuuri, revisjoni, audiitorkontrolli jmt.",
+      "estleg:summary": {
+        "@value": "(1) Distsiplinaarkaristuse võib määrata kuue kuu jooksul, arvates süüteo toimepanemise päevast, kuid seejuures hiljemalt ühe kuu jooksul, arvates päevast, mil süüteost sai teada mis tahes isik, kellele süüdlane tööalaselt allub. (2) Inventuuri, revisjoni, audiitorkontrolli jmt. tulemustega tõendatud süüteo eest võib distsiplinaarkaristuse määrata aasta jooksul, arvates süüteo toimepanemise päevast, kuid seejuures hiljemalt ühe kuu jooksul, arvates inventuuri, revisjoni, audiitorkontrolli jmt.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Distsiplinaarkaristuse võib määrata kuue kuu jooksul, arvates süüteo toimepanemise päevast, kuid seejuures hiljemalt ühe kuu jooksul, arvates päevast, mil süüteost sai teada mis tahes isik, kellele süüdlane tööalaselt allub. (2) Inventuuri, revisjoni, audiitorkontrolli jmt. tulemustega tõendatud süüteo eest võib distsiplinaarkaristuse määrata aasta jooksul, arvates süüteo toimepanemise päevast, kuid seejuures hiljemalt ühe kuu jooksul, arvates inventuuri, revisjoni, audiitorkontrolli jmt. tulemuste vormistamise päevast. (3) Käesoleva paragrahvi 1. ja 2. lõikega ettenähtud ühekuuse tähtaja hulka ei arvata aega, mil tööleping oli töölepingu seaduse § 55 punktide 1–6, 9, 11 ja 12 alusel peatunud, välja arvatud puhkepäevade ja riiklike pühade aeg.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -556,12 +632,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Seletuse nõudmine",
+      "rdfs:label": {
+        "@value": "§ 7. Seletuse nõudmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Tööandjal on õigus nõuda süüdlaselt kirjalikku seletust süüteo kohta. Seletuse andmisest keeldumine, samuti seletuses valeandmete esitamine ei ole distsiplinaarkaristuse määramise iseseisvaks aluseks. (2) Tööandjal on õigus nõuda oma töötajalt, kes oli süüteo tunnistajaks, kirjalikku seletust süüteo kohta ja tunnistaja on kohustatud andma niisuguse seletuse. Seletuse andmisest keeldumise, samuti seletuses teadvalt valeandmete esitamise eest võib tunnistajale määrata distsiplinaarkaristuse.",
+      "estleg:summary": {
+        "@value": "(1) Tööandjal on õigus nõuda süüdlaselt kirjalikku seletust süüteo kohta. Seletuse andmisest keeldumine, samuti seletuses valeandmete esitamine ei ole distsiplinaarkaristuse määramise iseseisvaks aluseks. (2) Tööandjal on õigus nõuda oma töötajalt, kes oli süüteo tunnistajaks, kirjalikku seletust süüteo kohta ja tunnistaja on kohustatud andma niisuguse seletuse. Seletuse andmisest keeldumise, samuti seletuses teadvalt valeandmete esitamise eest võib tunnistajale määrata distsiplinaarkaristuse.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tööandjal on õigus nõuda süüdlaselt kirjalikku seletust süüteo kohta. Seletuse andmisest keeldumine, samuti seletuses valeandmete esitamine ei ole distsiplinaarkaristuse määramise iseseisvaks aluseks. (2) Tööandjal on õigus nõuda oma töötajalt, kes oli süüteo tunnistajaks, kirjalikku seletust süüteo kohta ja tunnistaja on kohustatud andma niisuguse seletuse. Seletuse andmisest keeldumise, samuti seletuses teadvalt valeandmete esitamise eest võib tunnistajale määrata distsiplinaarkaristuse. Seletuse andmisest keeldumise eest ei saa distsiplinaarkaristust määrata töötajale, kes oli selle töötaja, kelle teo kohta temalt seletust nõuti, lähedane sugulane (vanem, vend, õde, laps) või hõimlane (abikaasa, registreeritud elukaaslane, abikaasa või registreeritud elukaaslase vanem, vend, õde, laps). (3) Distsiplinaarkaristuse võib määrata seletust nõudmata, kui süütegu on tõendatud muude tõenditega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -725,12 +807,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Distsiplinaarkaristuse valik",
+      "rdfs:label": {
+        "@value": "§ 8. Distsiplinaarkaristuse valik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Distsiplinaarkaristus ei tohi olla ilmses vastuolus süüteo raskuse, selle toimepanemise asjaolude ning töötaja eelneva käitumisega. (2) Tööandja ei ole distsiplinaarkaristuse valikul seotud käesoleva seaduse §-s 3 sisalduva karistuste loetlemise järjekorraga.",
+      "estleg:summary": {
+        "@value": "(1) Distsiplinaarkaristus ei tohi olla ilmses vastuolus süüteo raskuse, selle toimepanemise asjaolude ning töötaja eelneva käitumisega. (2) Tööandja ei ole distsiplinaarkaristuse valikul seotud käesoleva seaduse §-s 3 sisalduva karistuste loetlemise järjekorraga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Distsiplinaarkaristus ei tohi olla ilmses vastuolus süüteo raskuse, selle toimepanemise asjaolude ning töötaja eelneva käitumisega. (2) Tööandja ei ole distsiplinaarkaristuse valikul seotud käesoleva seaduse §-s 3 sisalduva karistuste loetlemise järjekorraga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -867,12 +955,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Ühe süüteo eest mitme distsiplinaarkaristuse määramise keeld",
+      "rdfs:label": {
+        "@value": "§ 9. Ühe süüteo eest mitme distsiplinaarkaristuse määramise keeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Iga süüteo eest võib määrata ainult ühe distsiplinaarkaristuse. (2) Süüteo jätkumine pärast distsiplinaarkaristuse määramist on uus süütegu ja selle eest võib töötajale määrata distsiplinaarkaristuse.",
+      "estleg:summary": {
+        "@value": "(1) Iga süüteo eest võib määrata ainult ühe distsiplinaarkaristuse. (2) Süüteo jätkumine pärast distsiplinaarkaristuse määramist on uus süütegu ja selle eest võib töötajale määrata distsiplinaarkaristuse.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Iga süüteo eest võib määrata ainult ühe distsiplinaarkaristuse. (2) Süüteo jätkumine pärast distsiplinaarkaristuse määramist on uus süütegu ja selle eest võib töötajale määrata distsiplinaarkaristuse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -977,12 +1071,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Distsiplinaarkaristuse ühitamine haldus-, kriminaal- või materiaalse vastutusega",
+      "rdfs:label": {
+        "@value": "§ 10. Distsiplinaarkaristuse ühitamine haldus-, kriminaal- või materiaalse vastutusega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Töötaja võtmine haldus-, kriminaal- või materiaalsele vastutusele ei takista sama teo eest distsiplinaarkaristuse määramist.",
+      "estleg:summary": {
+        "@value": "Töötaja võtmine haldus-, kriminaal- või materiaalsele vastutusele ei takista sama teo eest distsiplinaarkaristuse määramist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Töötaja võtmine haldus-, kriminaal- või materiaalsele vastutusele ei takista sama teo eest distsiplinaarkaristuse määramist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -1032,10 +1132,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Töötaja võtmine haldus-, kriminaal- või materiaalsele vastutusele ei takista sama teo eest distsiplinaarkaristuse määramist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töötaja võtmine haldus-, kriminaal- või materiaalsele vastutusele ei takista sama teo eest distsiplinaarkaristuse määramist.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_10"
       },
+      "rdfs:label": "§ 10 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1053,13 +1155,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Distsiplinaarkaristuse vormistamine",
+      "rdfs:label": {
+        "@value": "§ 11. Distsiplinaarkaristuse vormistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Tööandja on kohustatud vähemalt kahes eksemplaris koostama dokumendi, millega ta vormistab distsiplinaarkaristuse. Üks eksemplar jääb tööandjale, teise annab tööandja töötajale. (2) Tööandja on kohustatud kandma dokumenti, millega ta vormistab distsiplinaarkaristuse, vähemalt alljärgneva: karistatava töötaja nime; süüteo toimepanemise aja; süüteo, samuti karistamisel arvesse võetud muude asjaolude kirjelduse; määratud karistuse, rahatrahvi korral ka selle suuruse eurodes ja sentides ning",
-      "estleg:legalText": "(1) Tööandja on kohustatud vähemalt kahes eksemplaris koostama dokumendi, millega ta vormistab distsiplinaarkaristuse. Üks eksemplar jääb tööandjale, teise annab tööandja töötajale. (2) Tööandja on kohustatud kandma dokumenti, millega ta vormistab distsiplinaarkaristuse, vähemalt alljärgneva: karistatava töötaja nime; süüteo toimepanemise aja; süüteo, samuti karistamisel arvesse võetud muude asjaolude kirjelduse; määratud karistuse, rahatrahvi korral ka selle suuruse eurodes ja sentides ning trahvi igast palgast kinnipidamise ulatuse protsentides; dokumendi koostamise kuupäeva; karistust määrava isiku nime ja allkirja.",
+      "estleg:summary": {
+        "@value": "(1) Tööandja on kohustatud vähemalt kahes eksemplaris koostama dokumendi, millega ta vormistab distsiplinaarkaristuse. Üks eksemplar jääb tööandjale, teise annab tööandja töötajale. (2) Tööandja on kohustatud kandma dokumenti, millega ta vormistab distsiplinaarkaristuse, vähemalt alljärgneva: 1) karistatava töötaja nime; 2) süüteo toimepanemise aja; 3) süüteo, samuti karistamisel arvesse võetud muude asjaolude kirjelduse; 4) määratud karistuse, rahatrahvi korral ka selle suuruse eurodes ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tööandja on kohustatud vähemalt kahes eksemplaris koostama dokumendi, millega ta vormistab distsiplinaarkaristuse. Üks eksemplar jääb tööandjale, teise annab tööandja töötajale. (2) Tööandja on kohustatud kandma dokumenti, millega ta vormistab distsiplinaarkaristuse, vähemalt alljärgneva: 1) karistatava töötaja nime; 2) süüteo toimepanemise aja; 3) süüteo, samuti karistamisel arvesse võetud muude asjaolude kirjelduse; 4) määratud karistuse, rahatrahvi korral ka selle suuruse eurodes ja sentides ning trahvi igast palgast kinnipidamise ulatuse protsentides; 5) dokumendi koostamise kuupäeva; 6) karistust määrava isiku nime ja allkirja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
       },
@@ -1146,11 +1254,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Tööandja on kohustatud kandma dokumenti, millega ta vormistab distsiplinaarkaristuse, vähemalt alljärgneva: karistatava töötaja nime; süüteo toimepanemise aja; süüteo, samuti karistamisel arvesse võetud muude asjaolude kirjelduse; määratud karistuse, rahatrahvi korral ka selle suuruse eurodes ja sentides ning trahvi igast palgast kinnipidamise ulatuse protsentides; dokumendi koostamise kuupäeva; karistust määrava isiku nime ja allkirja.",
+      "estleg:legalText": "(2) Tööandja on kohustatud kandma dokumenti, millega ta vormistab distsiplinaarkaristuse, vähemalt alljärgneva: 1) karistatava töötaja nime; 2) süüteo toimepanemise aja; 3) süüteo, samuti karistamisel arvesse võetud muude asjaolude kirjelduse; 4) määratud karistuse, rahatrahvi korral ka selle suuruse eurodes ja sentides ning trahvi igast palgast kinnipidamise ulatuse protsentides; 5) dokumendi koostamise kuupäeva; 6) karistust määrava isiku nime ja allkirja.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_11"
       },
       "rdfs:label": "§ 11 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1188,12 +1304,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Päev, millest alates on distsiplinaarkaristus määratud",
+      "rdfs:label": {
+        "@value": "§ 12. Päev, millest alates on distsiplinaarkaristus määratud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Distsiplinaarkaristus on määratud päevast, mil töötaja andis allkirja dokumendile, millega tööandja vormistas karistuse. Kui töötaja ei märkinud sellele dokumendile allkirja andmise kuupäeva, siis loetakse karistus määratuks dokumendi koostamise päevast. (2) Karistuse allkirja vastu teatavaks võtmisest keeldumise kohta võib tööandja karistatava töötaja juuresolekul võtta tunnistajate allkirjad dokumendile, millega ta vormistas karistuse.",
+      "estleg:summary": {
+        "@value": "(1) Distsiplinaarkaristus on määratud päevast, mil töötaja andis allkirja dokumendile, millega tööandja vormistas karistuse. Kui töötaja ei märkinud sellele dokumendile allkirja andmise kuupäeva, siis loetakse karistus määratuks dokumendi koostamise päevast. (2) Karistuse allkirja vastu teatavaks võtmisest keeldumise kohta võib tööandja karistatava töötaja juuresolekul võtta tunnistajate allkirjad dokumendile, millega ta vormistas karistuse.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Distsiplinaarkaristus on määratud päevast, mil töötaja andis allkirja dokumendile, millega tööandja vormistas karistuse. Kui töötaja ei märkinud sellele dokumendile allkirja andmise kuupäeva, siis loetakse karistus määratuks dokumendi koostamise päevast. (2) Karistuse allkirja vastu teatavaks võtmisest keeldumise kohta võib tööandja karistatava töötaja juuresolekul võtta tunnistajate allkirjad dokumendile, millega ta vormistas karistuse. Niisugusel juhul on karistus määratud tunnistajate allkirjade andmise päevast. (3) Omavoliliselt töölt puuduvale töötajale määratud töölepingu lõpetamine loetakse määratuks päevast, mis järgnes päevale, mil töötaja omavoliliselt töölt lahkus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -1325,12 +1447,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Distsiplinaarkaristuse kustumine",
+      "rdfs:label": {
+        "@value": "§ 13. Distsiplinaarkaristuse kustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Distsiplinaarkaristus on kustunud, kui töötajale ei ole ühe aasta jooksul, arvates karistuse määramise päevast, määratud uut distsiplinaarkaristust.",
+      "estleg:summary": {
+        "@value": "Distsiplinaarkaristus on kustunud, kui töötajale ei ole ühe aasta jooksul, arvates karistuse määramise päevast, määratud uut distsiplinaarkaristust.",
+        "@language": "et"
+      },
       "estleg:legalText": "Distsiplinaarkaristus on kustunud, kui töötajale ei ole ühe aasta jooksul, arvates karistuse määramise päevast, määratud uut distsiplinaarkaristust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -1397,10 +1525,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Distsiplinaarkaristus on kustunud, kui töötajale ei ole ühe aasta jooksul, arvates karistuse määramise päevast, määratud uut distsiplinaarkaristust.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Distsiplinaarkaristus on kustunud, kui töötajale ei ole ühe aasta jooksul, arvates karistuse määramise päevast, määratud uut distsiplinaarkaristust.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1418,12 +1548,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Distsiplinaarkaristuse ennetähtaegne kustutamine",
+      "rdfs:label": {
+        "@value": "§ 14. Distsiplinaarkaristuse ennetähtaegne kustutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Tööandja võib distsiplinaarkaristuse kustutada ennetähtaegselt. (2) Karistuse ennetähtaegse kustutamise vormistab tööandja kirjalikult.",
+      "estleg:summary": {
+        "@value": "(1) Tööandja võib distsiplinaarkaristuse kustutada ennetähtaegselt. (2) Karistuse ennetähtaegse kustutamise vormistab tööandja kirjalikult.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tööandja võib distsiplinaarkaristuse kustutada ennetähtaegselt. (2) Karistuse ennetähtaegse kustutamise vormistab tööandja kirjalikult.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -1511,12 +1647,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Keeld viidata kustunud või ennetähtaegselt kustutatud distsiplinaarkaristusele",
+      "rdfs:label": {
+        "@value": "§ 15. Keeld viidata kustunud või ennetähtaegselt kustutatud distsiplinaarkaristusele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Tööandja ei tohi distsiplinaarkaristuse määramisel, samuti töötaja iseloomustamisel viidata kustunud või ennetähtaegselt kustutatud distsiplinaarkaristusele.",
+      "estleg:summary": {
+        "@value": "Tööandja ei tohi distsiplinaarkaristuse määramisel, samuti töötaja iseloomustamisel viidata kustunud või ennetähtaegselt kustutatud distsiplinaarkaristusele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tööandja ei tohi distsiplinaarkaristuse määramisel, samuti töötaja iseloomustamisel viidata kustunud või ennetähtaegselt kustutatud distsiplinaarkaristusele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
@@ -1561,10 +1703,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tööandja ei tohi distsiplinaarkaristuse määramisel, samuti töötaja iseloomustamisel viidata kustunud või ennetähtaegselt kustutatud distsiplinaarkaristusele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tööandja ei tohi distsiplinaarkaristuse määramisel, samuti töötaja iseloomustamisel viidata kustunud või ennetähtaegselt kustutatud distsiplinaarkaristusele.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_15"
       },
+      "rdfs:label": "§ 15 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1588,13 +1732,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 16.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 16.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_II"
       },
@@ -1620,12 +1769,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Rahatrahv",
+      "rdfs:label": {
+        "@value": "§ 17. Rahatrahv",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Tööandjal on õigus määrata rahatrahvi mitte üle töötaja kümnekordse keskmise päevapalga. Kalendriaastas määratavate trahvide summa ei tohi ületada töötaja kahekümnekordset keskmist päevapalka. (2) Tööandja kannab trahvi lisaks sotsiaalmaksule pärast töötajale palga väljamaksmist riigieelarve tuludesse. Trahvi riigieelarve tuludesse kandmise korra kehtestab Vabariigi Valitsus. (3) Trahv arvutatakse keskmisest päevapalgast, mida töölepingu seaduse kohaselt makstakse töölepingu lõpetamisel iga",
+      "estleg:summary": {
+        "@value": "(1) Tööandjal on õigus määrata rahatrahvi mitte üle töötaja kümnekordse keskmise päevapalga. Kalendriaastas määratavate trahvide summa ei tohi ületada töötaja kahekümnekordset keskmist päevapalka. (2) Tööandja kannab trahvi lisaks sotsiaalmaksule pärast töötajale palga väljamaksmist riigieelarve tuludesse. Trahvi riigieelarve tuludesse kandmise korra kehtestab Vabariigi Valitsus. (3) Trahv arvutatakse keskmisest päevapalgast, mida töölepingu seaduse kohaselt makstakse töölepingu lõpetamisel iga",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tööandjal on õigus määrata rahatrahvi mitte üle töötaja kümnekordse keskmise päevapalga. Kalendriaastas määratavate trahvide summa ei tohi ületada töötaja kahekümnekordset keskmist päevapalka. (2) Tööandja kannab trahvi lisaks sotsiaalmaksule pärast töötajale palga väljamaksmist riigieelarve tuludesse. Trahvi riigieelarve tuludesse kandmise korra kehtestab Vabariigi Valitsus. (3) Trahv arvutatakse keskmisest päevapalgast, mida töölepingu seaduse kohaselt makstakse töölepingu lõpetamisel iga etteteatamise tähtajast puudu jääva tööpäeva eest. (4) Tööandja peab trahvi kinni töötaja palgast arvestusega, et kõigi kinnipidamiste summa ei ületaks igal palga maksmisel 50 protsenti töötajale väljamaksmisele kuuluvast palgast. (5) Trahvi kinnipidamist alustatakse hiljemalt teisest palgast, mis kuulub töötajale väljamaksmisele pärast karistuse määramist. Kinnipidamisi jätkatakse igast järgmisest palgast kuni trahvi täieliku kinnipidamiseni, kuid mitte kauem kui kolme kuu jooksul, arvates esimesest kinnipidamisest. Kui kinnipidamisi ei alustatud õigeaegselt, siis loetakse, et töötajat ei ole karistatud ja talle ei saa sama süüteo eest enam distsiplinaarkaristust määrata. Kui aga trahvi kinnipidamine katkes, siis loetakse, et töötajat on distsiplinaarkorras karistatud ja tema palgast ei saa trahvi enam kinni pidada. Distsiplinaarkorras karistatuks loetakse ka töötajat, kelle palgast lõpetas tööandja trahvi kinnipidamise ennetähtaegselt. (6) Rahatrahvi ei saa kinni pidada lõpparvest, samuti surma tõttu saamata jäänud palgast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_III"
@@ -1825,12 +1980,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Rahatrahvi kinnipidamine rasedalt",
+      "rdfs:label": {
+        "@value": "§ 18. Rahatrahvi kinnipidamine rasedalt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Naisele, kelle kohta tööandjal on dokument, mis tõendab, et töötaja on rase, peab pärast rahatrahvi kinnipidamist jääma vähemalt 70 protsenti temale väljamaksmisele kuuluvast palgast. (2) Kui tööandja saab töötaja rasedust tõendava dokumendi pärast karistuse määramist, siis kohaldatakse käesoleva paragrahvi 1.lõiget niisuguse dokumendi saamise päevast. Juba kinnipeetud summad võib tööandja tagastada või tasaarvestada.",
+      "estleg:summary": {
+        "@value": "(1) Naisele, kelle kohta tööandjal on dokument, mis tõendab, et töötaja on rase, peab pärast rahatrahvi kinnipidamist jääma vähemalt 70 protsenti temale väljamaksmisele kuuluvast palgast. (2) Kui tööandja saab töötaja rasedust tõendava dokumendi pärast karistuse määramist, siis kohaldatakse käesoleva paragrahvi 1.lõiget niisuguse dokumendi saamise päevast. Juba kinnipeetud summad võib tööandja tagastada või tasaarvestada.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Naisele, kelle kohta tööandjal on dokument, mis tõendab, et töötaja on rase, peab pärast rahatrahvi kinnipidamist jääma vähemalt 70 protsenti temale väljamaksmisele kuuluvast palgast. (2) Kui tööandja saab töötaja rasedust tõendava dokumendi pärast karistuse määramist, siis kohaldatakse käesoleva paragrahvi 1.lõiget niisuguse dokumendi saamise päevast. Juba kinnipeetud summad võib tööandja tagastada või tasaarvestada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_III"
@@ -1930,12 +2091,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Palga maksmise peatamisega töölt kõrvaldamine",
+      "rdfs:label": {
+        "@value": "§ 19. Palga maksmise peatamisega töölt kõrvaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Tööandjal on õigus määrata töötajale palga maksmise peatamisega töölt kõrvaldamine mitte üle kümne järjestikuse graafikujärgse tööpäeva. Seda karistust tohib töötajale määrata mitte üle kolme korra kalendriaastas kogukestusega mitte üle kahekümne kalendripäeva. (2) Palga maksmise peatamisega töölt kõrvaldamise tähtaeg algab karistuse määramise päevale vahetult järgnevast graafikujärgsest tööpäevast. (3) Palga maksmise peatamisega töölt kõrvaldamise täitmine peatub ajaks, mil tööleping on",
+      "estleg:summary": {
+        "@value": "(1) Tööandjal on õigus määrata töötajale palga maksmise peatamisega töölt kõrvaldamine mitte üle kümne järjestikuse graafikujärgse tööpäeva. Seda karistust tohib töötajale määrata mitte üle kolme korra kalendriaastas kogukestusega mitte üle kahekümne kalendripäeva. (2) Palga maksmise peatamisega töölt kõrvaldamise tähtaeg algab karistuse määramise päevale vahetult järgnevast graafikujärgsest tööpäevast. (3) Palga maksmise peatamisega töölt kõrvaldamise täitmine peatub ajaks, mil tööleping on",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tööandjal on õigus määrata töötajale palga maksmise peatamisega töölt kõrvaldamine mitte üle kümne järjestikuse graafikujärgse tööpäeva. Seda karistust tohib töötajale määrata mitte üle kolme korra kalendriaastas kogukestusega mitte üle kahekümne kalendripäeva. (2) Palga maksmise peatamisega töölt kõrvaldamise tähtaeg algab karistuse määramise päevale vahetult järgnevast graafikujärgsest tööpäevast. (3) Palga maksmise peatamisega töölt kõrvaldamise täitmine peatub ajaks, mil tööleping on töölepingu seaduse § 55 punktide 1–9 ja 11–12 alusel peatunud. Karistuse kandmine algab või jätkub sel juhul päevast, mil töötaja pidanuks pärast lepingu peatumist tööle asuma. Kui selleks ajaks on karistuse määramise päevast möödunud üle viie kuu, siis karistust ei täideta. (4) Kui palga maksmise peatamisega töölt kõrvaldamine ei ole käesoleva paragrahvi 2. või 3.lõikes ettenähtud tähtajal alanud, siis loetakse, et töötajat ei ole karistatud. Sel juhul ei saa töötajale sama süüteo eest enam distsiplinaarkaristust määrata. (5) Tööandjal on õigus ennetähtaegselt lõpetada palga maksmise peatamisega töölt kõrvaldamise täitmine ja kutsuda karistatud töötaja tööle. Töötaja, kellele määratud karistuse täitmine lõpetati ennetähtaegselt, loetakse distsiplinaarkorras karistatuks. (6) Karistuse kandmise lõppemisel on tööandja kohustatud töötaja tööle lubama ja töötaja on kohustatud tööle asuma.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_III"
@@ -2140,13 +2307,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Keeld määrata palga maksmise peatamisega töölt kõrvaldamist",
+      "rdfs:label": {
+        "@value": "§ 20. Keeld määrata palga maksmise peatamisega töölt kõrvaldamist",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Palga maksmise peatamisega töölt kõrvaldamist ei saa määrata töötajale, kelle kohta tööandjal on dokument, mis tõendab, et: ta on rase, lapsinvaliidi või alla kolmeaastase lapse ema; ta kasvatab ilma emata lapsinvaliidi või alla kolmeaastast last; ta on lapsinvaliidi eestkostja või hooldaja; ta on kohustatud maksma tervisekahjustuse tekitamise või toitja surma põhjustamise korral väljamõistetud hüvist. (2) Kui tööandja saab pärast karistuse määramist dokumendi, mis tõendab käesoleva",
-      "estleg:legalText": "(1) Palga maksmise peatamisega töölt kõrvaldamist ei saa määrata töötajale, kelle kohta tööandjal on dokument, mis tõendab, et: ta on rase, lapsinvaliidi või alla kolmeaastase lapse ema; ta kasvatab ilma emata lapsinvaliidi või alla kolmeaastast last; ta on lapsinvaliidi eestkostja või hooldaja; ta on kohustatud maksma tervisekahjustuse tekitamise või toitja surma põhjustamise korral väljamõistetud hüvist. (2) Kui tööandja saab pärast karistuse määramist dokumendi, mis tõendab käesoleva paragrahvi 1.lõikes nimetatud asjaolu, siis ei tohi ta karistuse täitmist alustada või peab selle lõpetama vastava dokumendi esitamise päevale vahetult järgnevast graafikujärgsest tööpäevast. Sel juhul on tööandjal kohustus asendada karistus noomitusega või kooskõlas käesoleva seaduse §-dega 17 ja 18 rahatrahviga, järgides karistuse asendamisel karistuse vormistamise ja teatavakstegemise korda. Rahatrahviga asendamisel võetakse karistuse kantud osa arvesse nii, et üks palga maksmise peatamisega töölt kõrvaldamise päev on võrdne rahatrahviga ühe päevapalga ulatuses. Kui karistus jäi enne selle täitmise algust asendamata, siis loetakse, et töötajat ei ole karistatud. Sel juhul ei saa töötajale sama süüteo eest enam distsiplinaarkaristust määrata. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Palga maksmise peatamisega töölt kõrvaldamist ei saa määrata töötajale, kelle kohta tööandjal on dokument, mis tõendab, et: 1) ta on rase, lapsinvaliidi või alla kolmeaastase lapse ema; 2) ta kasvatab ilma emata lapsinvaliidi või alla kolmeaastast last; 3) ta on lapsinvaliidi eestkostja või hooldaja; 4) ta on kohustatud maksma tervisekahjustuse tekitamise või toitja surma põhjustamise korral väljamõistetud hüvist. (2) Kui tööandja saab pärast karistuse määramist dokumendi, mis tõendab",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Palga maksmise peatamisega töölt kõrvaldamist ei saa määrata töötajale, kelle kohta tööandjal on dokument, mis tõendab, et: 1) ta on rase, lapsinvaliidi või alla kolmeaastase lapse ema; 2) ta kasvatab ilma emata lapsinvaliidi või alla kolmeaastast last; 3) ta on lapsinvaliidi eestkostja või hooldaja; 4) ta on kohustatud maksma tervisekahjustuse tekitamise või toitja surma põhjustamise korral väljamõistetud hüvist. (2) Kui tööandja saab pärast karistuse määramist dokumendi, mis tõendab käesoleva paragrahvi 1.lõikes nimetatud asjaolu, siis ei tohi ta karistuse täitmist alustada või peab selle lõpetama vastava dokumendi esitamise päevale vahetult järgnevast graafikujärgsest tööpäevast. Sel juhul on tööandjal kohustus asendada karistus noomitusega või kooskõlas käesoleva seaduse §-dega 17 ja 18 rahatrahviga, järgides karistuse asendamisel karistuse vormistamise ja teatavakstegemise korda. Rahatrahviga asendamisel võetakse karistuse kantud osa arvesse nii, et üks palga maksmise peatamisega töölt kõrvaldamise päev on võrdne rahatrahviga ühe päevapalga ulatuses. Kui karistus jäi enne selle täitmise algust asendamata, siis loetakse, et töötajat ei ole karistatud. Sel juhul ei saa töötajale sama süüteo eest enam distsiplinaarkaristust määrata.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_III"
       },
@@ -2159,9 +2332,6 @@
         },
         {
           "@id": "estleg:TDVS_Par_20_Lg_2"
-        },
-        {
-          "@id": "estleg:TDVS_Par_20_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -2198,11 +2368,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Palga maksmise peatamisega töölt kõrvaldamist ei saa määrata töötajale, kelle kohta tööandjal on dokument, mis tõendab, et: ta on rase, lapsinvaliidi või alla kolmeaastase lapse ema; ta kasvatab ilma emata lapsinvaliidi või alla kolmeaastast last; ta on lapsinvaliidi eestkostja või hooldaja; ta on kohustatud maksma tervisekahjustuse tekitamise või toitja surma põhjustamise korral väljamõistetud hüvist.",
+      "estleg:legalText": "(1) Palga maksmise peatamisega töölt kõrvaldamist ei saa määrata töötajale, kelle kohta tööandjal on dokument, mis tõendab, et: 1) ta on rase, lapsinvaliidi või alla kolmeaastase lapse ema; 2) ta kasvatab ilma emata lapsinvaliidi või alla kolmeaastast last; 3) ta on lapsinvaliidi eestkostja või hooldaja; 4) ta on kohustatud maksma tervisekahjustuse tekitamise või toitja surma põhjustamise korral väljamõistetud hüvist.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_20"
       },
       "rdfs:label": "§ 20 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2248,32 +2424,24 @@
       }
     },
     {
-      "@id": "estleg:TDVS_Par_20_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:TDVS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 3"
-    },
-    {
       "@id": "estleg:TDVS_Par_21",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 21.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 21.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_III"
       },
@@ -2299,12 +2467,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Edasikaebamine ja distsiplinaarkaristuse täitmine",
+      "rdfs:label": {
+        "@value": "§ 22. Edasikaebamine ja distsiplinaarkaristuse täitmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Rahatrahvi, palga maksmise peatamisega töölt kõrvaldamise ja töölepingu lõpetamise peale kaebuse esitamine ei takista karistuse täitmist.",
+      "estleg:summary": {
+        "@value": "Rahatrahvi, palga maksmise peatamisega töölt kõrvaldamise ja töölepingu lõpetamise peale kaebuse esitamine ei takista karistuse täitmist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahatrahvi, palga maksmise peatamisega töölt kõrvaldamise ja töölepingu lõpetamise peale kaebuse esitamine ei takista karistuse täitmist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_III"
@@ -2329,10 +2503,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahatrahvi, palga maksmise peatamisega töölt kõrvaldamise ja töölepingu lõpetamise peale kaebuse esitamine ei takista karistuse täitmist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahatrahvi, palga maksmise peatamisega töölt kõrvaldamise ja töölepingu lõpetamise peale kaebuse esitamine ei takista karistuse täitmist.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_22"
-      }
+      },
+      "rdfs:label": "§ 22 lg 1"
     },
     {
       "@id": "estleg:TDVS_Par_23",
@@ -2341,12 +2517,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Vaidluste läbivaatamine",
+      "rdfs:label": {
+        "@value": "§ 23. Vaidluste läbivaatamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Töötaja, kellele on määratud distsiplinaarkaristus, võib pöörduda kohtusse ühe kuu jooksul, arvates päevast, mis järgnes päevale, mil ta sai teada või pidanuks teada saama karistuse määramisest. (2) Kohus tühistab määratud distsiplinaarkaristuse, kui töötajat on karistatud ebaseaduslikult, sealhulgas süüteo raskusele, selle toimepanemise asjaoludele ning töötaja eelnevale käitumisele ilmselt mitte vastava karistusega. Kui töötajale on karistusena määratud töölepingu lõpetamine, siis",
+      "estleg:summary": {
+        "@value": "(1) Töötaja, kellele on määratud distsiplinaarkaristus, võib pöörduda kohtusse ühe kuu jooksul, arvates päevast, mis järgnes päevale, mil ta sai teada või pidanuks teada saama karistuse määramisest. (2) Kohus tühistab määratud distsiplinaarkaristuse, kui töötajat on karistatud ebaseaduslikult, sealhulgas süüteo raskusele, selle toimepanemise asjaoludele ning töötaja eelnevale käitumisele ilmselt mitte vastava karistusega. Kui töötajale on karistusena määratud töölepingu lõpetamine, siis",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Töötaja, kellele on määratud distsiplinaarkaristus, võib pöörduda kohtusse ühe kuu jooksul, arvates päevast, mis järgnes päevale, mil ta sai teada või pidanuks teada saama karistuse määramisest. (2) Kohus tühistab määratud distsiplinaarkaristuse, kui töötajat on karistatud ebaseaduslikult, sealhulgas süüteo raskusele, selle toimepanemise asjaoludele ning töötaja eelnevale käitumisele ilmselt mitte vastava karistusega. Kui töötajale on karistusena määratud töölepingu lõpetamine, siis juhindub kohus ka töölepingu seaduse §-st 144.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_IV"
@@ -2473,12 +2655,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Enne käesoleva seaduse jõustumist määratud distsiplinaarkaristus",
+      "rdfs:label": {
+        "@value": "§ 24. Enne käesoleva seaduse jõustumist määratud distsiplinaarkaristus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Distsiplinaarkaristus, mis määrati enne käesoleva seaduse jõustumist, on jõus ka pärast käesoleva seaduse jõustumist. Niisugune karistus kaotab kehtivuse käesoleva seaduse §-des 13 ja 14 ettenähtud korras. (2) Töötaja võib enne käesoleva seaduse jõustumist määratud distsiplinaarkaristuse vaidlustada kohtus käesoleva seaduse § 23 1. lõike alusel, kui samas vaidluses puudub jõustunud kohtuotsus. Vaidluse läbivaatamisel juhindub kohus käesoleva seaduse § 23 2. lõikest.",
+      "estleg:summary": {
+        "@value": "(1) Distsiplinaarkaristus, mis määrati enne käesoleva seaduse jõustumist, on jõus ka pärast käesoleva seaduse jõustumist. Niisugune karistus kaotab kehtivuse käesoleva seaduse §-des 13 ja 14 ettenähtud korras. (2) Töötaja võib enne käesoleva seaduse jõustumist määratud distsiplinaarkaristuse vaidlustada kohtus käesoleva seaduse § 23 1. lõike alusel, kui samas vaidluses puudub jõustunud kohtuotsus. Vaidluse läbivaatamisel juhindub kohus käesoleva seaduse § 23 2. lõikest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Distsiplinaarkaristus, mis määrati enne käesoleva seaduse jõustumist, on jõus ka pärast käesoleva seaduse jõustumist. Niisugune karistus kaotab kehtivuse käesoleva seaduse §-des 13 ja 14 ettenähtud korras. (2) Töötaja võib enne käesoleva seaduse jõustumist määratud distsiplinaarkaristuse vaidlustada kohtus käesoleva seaduse § 23 1. lõike alusel, kui samas vaidluses puudub jõustunud kohtuotsus. Vaidluse läbivaatamisel juhindub kohus käesoleva seaduse § 23 2. lõikest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_IV"
@@ -2615,12 +2803,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Enne käesoleva seaduse jõustumist toimepandud süüteo eest distsiplinaarkaristuse määramine",
+      "rdfs:label": {
+        "@value": "§ 25. Enne käesoleva seaduse jõustumist toimepandud süüteo eest distsiplinaarkaristuse määramine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "(1) Tööandja võib enne käesoleva seaduse jõustumist toimepandud süüteo eest määrata käesoleva seadusega ettenähtud distsiplinaarkaristuse, kui töötajale ei ole sama süüteo eest varem distsiplinaarkaristust määratud. (2) Enne käesoleva seaduse jõustumist toimepandud süüteo eest ei saa määrata rahatrahvi ega palga maksmise peatamisega töölt kõrvaldamist.",
+      "estleg:summary": {
+        "@value": "(1) Tööandja võib enne käesoleva seaduse jõustumist toimepandud süüteo eest määrata käesoleva seadusega ettenähtud distsiplinaarkaristuse, kui töötajale ei ole sama süüteo eest varem distsiplinaarkaristust määratud. (2) Enne käesoleva seaduse jõustumist toimepandud süüteo eest ei saa määrata rahatrahvi ega palga maksmise peatamisega töölt kõrvaldamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tööandja võib enne käesoleva seaduse jõustumist toimepandud süüteo eest määrata käesoleva seadusega ettenähtud distsiplinaarkaristuse, kui töötajale ei ole sama süüteo eest varem distsiplinaarkaristust määratud. (2) Enne käesoleva seaduse jõustumist toimepandud süüteo eest ei saa määrata rahatrahvi ega palga maksmise peatamisega töölt kõrvaldamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_IV"
@@ -2716,18 +2910,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26.",
+      "rdfs:label": {
+        "@value": "§ 26.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
+      "estleg:summary": "§ 26.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_IV"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TDVS_IV"
-      },
-      "estleg:summary": "§ 26."
+      }
     },
     {
       "@id": "estleg:TDVS_Par_27",
@@ -2736,12 +2933,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 27. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_IV"
@@ -2762,12 +2965,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Rahatrahvi sotsiaalfondi kandmise korra kehtestamine",
+      "rdfs:label": {
+        "@value": "§ 28. Rahatrahvi sotsiaalfondi kandmise korra kehtestamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "käesoleva seaduse § 3 punkti 2 alusel määratava rahatrahvi sotsiaalfondi kandmise kord.",
+      "estleg:summary": {
+        "@value": "käesoleva seaduse § 3 punkti 2 alusel määratava rahatrahvi sotsiaalfondi kandmise kord.",
+        "@language": "et"
+      },
       "estleg:legalText": "käesoleva seaduse § 3 punkti 2 alusel määratava rahatrahvi sotsiaalfondi kandmise kord.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_IV"
@@ -2792,10 +3001,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "käesoleva seaduse § 3 punkti 2 alusel määratava rahatrahvi sotsiaalfondi kandmise kord.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) käesoleva seaduse § 3 punkti 2 alusel määratava rahatrahvi sotsiaalfondi kandmise kord.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_28"
       },
+      "rdfs:label": "§ 28 lg 1",
       "estleg:itemNumber": "2"
     },
     {
@@ -2805,12 +3016,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 29. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töötajate distsiplinaarvastutuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TDVS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 1993. aasta 1. septembrist.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 1993. aasta 1. septembrist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 1993. aasta 1. septembrist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TDVS_IV"
@@ -2838,66 +3055,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 1993. aasta 1. septembrist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 1993. aasta 1. septembrist.",
       "estleg:parentProvision": {
         "@id": "estleg:TDVS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/515122023005",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:TDVS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Employees Disciplinary Liability Act",
+        "@language": "en"
       }
-    },
-    {
-      "@id": "estleg:Citation_TDVS_P_8_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TDVS_Par_8"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 3"
-    },
-    {
-      "@id": "estleg:Citation_TDVS_P_8_Lg_2_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TDVS_Par_8_Lg_2"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 3"
-    },
-    {
-      "@id": "estleg:Citation_TDVS_P_23_Lg_2_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TDVS_Par_23_Lg_2"
-      },
-      "estleg:citationDetail": "TLS",
-      "estleg:citationText": "töölepingu seaduse §-st 144"
-    },
-    {
-      "@id": "estleg:Citation_TDVS_P_28_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TDVS_Par_28"
-      },
-      "estleg:citationText": "käesoleva seaduse § 3"
-    },
-    {
-      "@id": "estleg:Citation_TDVS_P_28_Lg_1_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:TDVS_Par_28_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 3"
     }
   ]
 }

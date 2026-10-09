@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Pae maastikukaitseala kaitse-eeskiri (määrus)",
+      "rdfs:label": {
+        "@value": "Pae maastikukaitseala kaitse-eeskiri (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -41,18 +48,13 @@
         }
       ],
       "estleg:entryIntoForce": {
-        "@value": "2006-02-18",
+        "@value": "2023-07-08",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2023-06-22",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2023-07-05",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_301689_eebe50c791"
@@ -99,7 +101,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2442"
         }
-      ]
+      ],
+      "dcterms:title": "Pae maastikukaitseala kaitse-eeskiri",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_301689_Annex_1",
@@ -107,7 +115,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Pae maastikukaitseala",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -116,7 +127,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -126,13 +140,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Pae maastikukaitseala kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Pae maastikukaitseala kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_301689_Map"
       },
-      "estleg:summary": "1 (1) Pae maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) unikaalsete karstivormide ja ajaloomälestiste poolest rikka maastiku kaitse; 2 2) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – plaatloode (8240*)3, koobaste (8310), rohunditerikaste kuusikute (9050) ja puiskarjamaade (9070) kaitse. Pae maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: unikaalsete karstivormide ja aja",
-      "estleg:legalText": "1 (1) Pae maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) unikaalsete karstivormide ja ajaloomälestiste poolest rikka maastiku kaitse; 2 2) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – plaatloode (8240*)3, koobaste (8310), rohunditerikaste kuusikute (9050) ja puiskarjamaade (9070) kaitse. Pae maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: unikaalsete karstivormide ja ajaloomälestiste poolest rikka maastiku kaitse; EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – plaatloode (8240*)3, koobaste (8310), rohunditerikaste kuusikute (9050) ja puiskarjamaade (9070) kaitse. 2 (2) Kaitseala maa-ala kuulub vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele Pae piiranguvööndisse. Kaitseala maa-ala kuulub vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele Pae piiranguvööndisse. 3 (3) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega. Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
+      "estleg:summary": {
+        "@value": "1 (1) Pae maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) unikaalsete karstivormide ja ajaloomälestiste poolest rikka maastiku kaitse; 2 2) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – plaatloode (8240*)3, koobaste (8310), rohunditerikaste kuusikute (9050) ja puiskarjamaade (9070) kaitse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pae maastikukaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) unikaalsete karstivormide ja ajaloomälestiste poolest rikka maastiku kaitse; 2 2) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – plaatloode (8240*)3, koobaste (8310), rohunditerikaste kuusikute (9050) ja puiskarjamaade (9070) kaitse. 2 (2) Kaitseala maa-ala kuulub vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele Pae piiranguvööndisse. 3 (3) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158859_Par_1"
@@ -154,7 +174,61 @@
         {
           "@id": "estleg:Reg_301689_Par_1_v301689"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_301689_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_1_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pae maastikukaitseala² (edaspidi kaitseala) kaitse-eesmärk on: 1) unikaalsete karstivormide ja ajaloomälestiste poolest rikka maastiku kaitse; 2) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – plaatloode (8240*)³, koobaste (8310), rohunditerikaste kuusikute (9050) ja puiskarjamaade (9070) kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala maa-ala kuulub vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele Pae piiranguvööndisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:Reg_301689_Par_2",
@@ -163,13 +237,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseala asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseala asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_301689_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala asub Rapla maakonnas Kehtna vallas Pae külas. Kaitseala asub Rapla maakonnas Kehtna vallas Pae külas. 2 (2) Kaitseala välispiir on esitatud kaardil määruse lisas4. Kaitseala välispiir on esitatud kaardil määruse lisas4.",
-      "estleg:legalText": "1 (1) Kaitseala asub Rapla maakonnas Kehtna vallas Pae külas. Kaitseala asub Rapla maakonnas Kehtna vallas Pae külas. 2 (2) Kaitseala välispiir on esitatud kaardil määruse lisas4. Kaitseala välispiir on esitatud kaardil määruse lisas4.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala asub Rapla maakonnas Kehtna vallas Pae külas. 2 (2) Kaitseala välispiir on esitatud kaardil määruse lisas4.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala asub Rapla maakonnas Kehtna vallas Pae külas. 2 (2) Kaitseala välispiir on esitatud kaardil määruse lisas4.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158627_Par_2"
@@ -191,7 +271,41 @@
         {
           "@id": "estleg:Reg_301689_Par_2_v301689"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_301689_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala asub Rapla maakonnas Kehtna vallas Pae külas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala välispiir on esitatud kaardil määruse lisas⁴.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_301689_Par_3",
@@ -200,13 +314,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kaitseala valitseja",
+      "rdfs:label": {
+        "@value": "§ 3. Kaitseala valitseja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_301689_Map"
       },
-      "estleg:summary": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00",
-      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00 Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -225,7 +345,25 @@
         {
           "@id": "estleg:Institution_keskkonnaamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_301689_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_301689_Par_4",
@@ -234,13 +372,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 4. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_301689_Map"
       },
-      "estleg:summary": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseadus",
-      "estleg:legalText": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. 3 (3) Kaitsealal on lubatud jahipidamine. Kaitsealal on lubatud jahipidamine. 4 (4) Telkimine ja lõkke tegemine kaitsealal on lubatud üksnes kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades. Telkimine ja lõkke tegemine kaitsealal on lubatud üksnes kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades. 5 (5) Kaitsealal on lubatud rahvaürituste korraldamine selleks ettevalmistatud ja tähistatud kohtades ning kuni 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades. Rohkem kui 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades on lubatud üksnes kaitseala valitseja nõusolekul. Kaitsealal on lubatud rahvaürituste korraldamine selleks ettevalmistatud ja tähistatud kohtades ning kuni 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades. Rohkem kui 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades on lubatud üksnes kaitseala valitseja nõusolekul. 6 (6) Kaitseala teedel on lubatud sõidukiga sõitmine. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, valitsemisega seotud töödel, kaitseala valitseja nõusolekul teostatavas teadustegevuses, liinirajatiste hooldustöödel ning maatulundusmaal metsamajandustöödel ja põllumajandustöödel. Kaitseala teedel on lubatud sõidukiga sõitmine. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, valitsemisega seotud töödel, kaitseala valitseja nõusolekul teostatavas teadustegevuses, liinirajatiste hooldustöödel ning maatulundusmaal metsamajandustöödel ja põllumajandustöödel. 7 (7) Kaitseala valitseja nõusolekul on lubatud: 1 1) uuendusraie; 2 2) puidu kokku- ja väljavedu külmumata pinnasel; 3 3) ehitise, kaasa arvatud ajutise ehitise püstitamine. Kaitseala valitseja nõusolekul on lubatud: uuendusraie; puidu kokku- ja väljavedu külmumata pinnasel; ehitise, kaasa arvatud ajutise ehitise püstitamine.",
+      "estleg:summary": {
+        "@value": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. 3 (3) Kaitsealal on lubatud jahipidamine. 4 (4) Telkimine ja lõkke tegemine kaitsealal on lubatud üksnes kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. 3 (3) Kaitsealal on lubatud jahipidamine. 4 (4) Telkimine ja lõkke tegemine kaitsealal on lubatud üksnes kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades. 5 (5) Kaitsealal on lubatud rahvaürituste korraldamine selleks ettevalmistatud ja tähistatud kohtades ning kuni 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades. Rohkem kui 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades on lubatud üksnes kaitseala valitseja nõusolekul. 6 (6) Kaitseala teedel on lubatud sõidukiga sõitmine. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, valitsemisega seotud töödel, kaitseala valitseja nõusolekul teostatavas teadustegevuses, liinirajatiste hooldustöödel ning maatulundusmaal metsamajandustöödel ja põllumajandustöödel. 7 (7) Kaitseala valitseja nõusolekul on lubatud: 1 1) uuendusraie; 2 2) puidu kokku- ja väljavedu külmumata pinnasel; 3 3) ehitise, kaasa arvatud ajutise ehitise püstitamine.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -277,6 +421,125 @@
         {
           "@id": "estleg:Reg_301689_Par_4_v301689"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_301689_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_4_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_4_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_4_Lg_7"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Inimestel on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi kogu kaitsealal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsealal on lubatud jahipidamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Telkimine ja lõkke tegemine kaitsealal on lubatud üksnes kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kaitsealal on lubatud rahvaürituste korraldamine selleks ettevalmistatud ja tähistatud kohtades ning kuni 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades. Rohkem kui 50 osalejaga rahvaürituste korraldamine selleks ettevalmistamata kohtades on lubatud üksnes kaitseala valitseja nõusolekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_4_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kaitseala teedel on lubatud sõidukiga sõitmine. Sõidukiga sõitmine väljaspool teid ning maastikusõidukiga sõitmine on lubatud järelevalve- ja päästetöödel, kaitse-eeskirjaga lubatud töödel, valitsemisega seotud töödel, kaitseala valitseja nõusolekul teostatavas teadustegevuses, liinirajatiste hooldustöödel ning maatulundusmaal metsamajandustöödel ja põllumajandustöödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_4_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kaitseala valitseja nõusolekul on lubatud: 1) uuendusraie; 2) puidu kokku- ja väljavedu külmumata pinnasel; 3) ehitise, kaasa arvatud ajutise ehitise püstitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -286,13 +549,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 5. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_301689_Map"
       },
-      "estleg:summary": "1 (1) Kaitsealal on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavarade kaevandamine; 3 3) uute veekogude rajamine; 4 4) biotsiidi ja taimekaitsevahendi kasutamine; 5 5) puhtpuistute kujundamine ja energiapuistute rajamine. Kaitsealal on keelatud: uue maaparandussüsteemi rajamine; maavarade kaevandamine; uute veekogude rajamine; biotsiidi ja taimekaitsevahendi kasutamine; puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatu",
-      "estleg:legalText": "1 (1) Kaitsealal on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavarade kaevandamine; 3 3) uute veekogude rajamine; 4 4) biotsiidi ja taimekaitsevahendi kasutamine; 5 5) puhtpuistute kujundamine ja energiapuistute rajamine. Kaitsealal on keelatud: uue maaparandussüsteemi rajamine; maavarade kaevandamine; uute veekogude rajamine; biotsiidi ja taimekaitsevahendi kasutamine; puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3 3) väljastada metsamajandamiskava; 4 4) kinnitada metsateatist; 5 5) kehtestada detailplaneeringut ja üldplaneeringut; 6 6) anda nõusolekut väikeehitise ehitamiseks; 7 7) anda projekteerimistingimusi; 8 8) anda ehitusluba. Kaitseala valitseja nõusolekuta on kaitsealal keelatud: muuta katastriüksuse kõlvikute piire ja sihtotstarvet; koostada maakorralduskava ja teostada maakorraldustoiminguid; väljastada metsamajandamiskava; kinnitada metsateatist; kehtestada detailplaneeringut ja üldplaneeringut; anda nõusolekut väikeehitise ehitamiseks; anda projekteerimistingimusi; anda ehitusluba.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitsealal on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavarade kaevandamine; 3 3) uute veekogude rajamine; 4 4) biotsiidi ja taimekaitsevahendi kasutamine; 5 5) puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3 3) väljastada metsamajandamiskava; 4 4) kinnitada metsateatist; 5 5)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitsealal on keelatud: 1 1) uue maaparandussüsteemi rajamine; 2 2) maavarade kaevandamine; 3 3) uute veekogude rajamine; 4 4) biotsiidi ja taimekaitsevahendi kasutamine; 5 5) puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3 3) väljastada metsamajandamiskava; 4 4) kinnitada metsateatist; 5 5) kehtestada detailplaneeringut ja üldplaneeringut; 6 6) anda nõusolekut väikeehitise ehitamiseks; 7 7) anda projekteerimistingimusi; 8 8) anda ehitusluba.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1048343_Par_7"
@@ -321,6 +590,57 @@
         {
           "@id": "estleg:Reg_301689_Par_5_v301689"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_301689_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_5_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitsealal on keelatud: 1) uue maaparandussüsteemi rajamine; 2) maavarade kaevandamine; 3) uute veekogude rajamine; 4) biotsiidi ja taimekaitsevahendi kasutamine; 5) puhtpuistute kujundamine ja energiapuistute rajamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3) väljastada metsamajandamiskava; 4) kinnitada metsateatist; 5) kehtestada detailplaneeringut ja üldplaneeringut; 6) anda nõusolekut väikeehitise ehitamiseks; 7) anda projekteerimistingimusi; 8) anda ehitusluba.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
       ]
     },
     {
@@ -330,13 +650,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 6. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_301689_Map"
       },
-      "estleg:summary": "Kaitsealal on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik rohu niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
-      "estleg:legalText": "Kaitsealal on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik rohu niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine. Kaitsealal on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik rohu niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
+      "estleg:summary": {
+        "@value": "Kaitsealal on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik rohu niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitsealal on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik rohu niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158717_Par_14"
@@ -358,7 +684,25 @@
         {
           "@id": "estleg:Reg_301689_Par_6_v301689"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_301689_Par_6_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitsealal on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik rohu niitmine, loomade karjatamine ning puu- ja põõsarinde harvendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     },
     {
       "@id": "estleg:Reg_301689_Par_7",
@@ -367,13 +711,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Tegevuse kooskõlastamine",
+      "rdfs:label": {
+        "@value": "§ 7. Tegevuse kooskõlastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pae maastikukaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_301689_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja k",
-      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. 3 (3) Kehtetu - RT I 2023-07-05 1 105072023001 2023-07-08 Kehtetu -",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. 3 (3) Kehtetu - RT I 2023-07-05 1 105072023001 2023-07-08",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -407,6 +757,14 @@
         {
           "@id": "estleg:Reg_301689_Par_7_v301689"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_301689_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_301689_Par_7_Lg_2"
+        }
       ]
     },
     {
@@ -420,6 +778,32 @@
       },
       "estleg:citationDetail": "lg 1",
       "estleg:citationText": "Määrus kehtestatakse « Looduskaitseseaduse » § 10 lõike 1"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_301689_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_301689_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     }
   ]
 }

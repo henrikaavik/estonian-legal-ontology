@@ -145,7 +145,12 @@ def test_committed_kars_content_hash_matches_cached_xml() -> None:
     from estleg.estleg_common import sha256_hex
 
     repo = Path(__file__).resolve().parents[1]
-    xml = (repo / "data" / "riigiteataja" / "karistusseadustik.xml").read_bytes()
+    # #692: the hash attests the cache file the peep was parsed from, named
+    # in fetch_content_hashes.json (the tid-keyed file since the 2026 refresh).
+    ledger = json.loads((repo / "krr_outputs" / "fetch_content_hashes.json").read_text())
+    rows = ledger.get("rows", ledger)
+    cache_file = rows["karistusseadustik"]["cacheFile"]
+    xml = (repo / cache_file).read_bytes()
     peep = json.loads(
         (repo / "krr_outputs" / "karistusseadustik_osa1_peep.json").read_text()
     )

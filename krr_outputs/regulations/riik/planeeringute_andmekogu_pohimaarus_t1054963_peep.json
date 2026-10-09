@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Planeeringute andmekogu põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Planeeringute andmekogu põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Planeeringute andmekogu põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1054963",
       "estleg:preambleText": "Määrus kehtestatakse planeerimisseaduse § 4",
       "estleg:entryIntoForce": {
-        "@value": "2022-11-01",
+        "@value": "2025-01-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2024-12-19",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-10-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1054963_7d946f4fea"
@@ -96,7 +98,13 @@
         {
           "@id": "http://eurovoc.europa.eu/5188"
         }
-      ]
+      ],
+      "dcterms:title": "Planeeringute andmekogu põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054963_Par_1",
@@ -105,13 +113,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Andmekogu nimetus",
+      "rdfs:label": {
+        "@value": "§ 1. Andmekogu nimetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Määrusega asutatakse planeeringute andmekogu (edaspidi andmekogu). Määrusega asutatakse planeeringute andmekogu (edaspidi andmekogu). 2 (2) Andmekogu kuulub riigi infosüsteemi ja selle ametlik lühend on PLANK. Andmekogu kuulub riigi infosüsteemi ja selle ametlik lühend on PLANK. 3 (3) Andmekogu ingliskeelne nimetus on Database of spatial plans. Andmekogu ingliskeelne nimetus on Database of spatial plans.",
-      "estleg:legalText": "1 (1) Määrusega asutatakse planeeringute andmekogu (edaspidi andmekogu). Määrusega asutatakse planeeringute andmekogu (edaspidi andmekogu). 2 (2) Andmekogu kuulub riigi infosüsteemi ja selle ametlik lühend on PLANK. Andmekogu kuulub riigi infosüsteemi ja selle ametlik lühend on PLANK. 3 (3) Andmekogu ingliskeelne nimetus on Database of spatial plans. Andmekogu ingliskeelne nimetus on Database of spatial plans.",
+      "estleg:summary": {
+        "@value": "1 (1) Määrusega asutatakse planeeringute andmekogu (edaspidi andmekogu). 2 (2) Andmekogu kuulub riigi infosüsteemi ja selle ametlik lühend on PLANK. 3 (3) Andmekogu ingliskeelne nimetus on Database of spatial plans.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määrusega asutatakse planeeringute andmekogu (edaspidi andmekogu). 2 (2) Andmekogu kuulub riigi infosüsteemi ja selle ametlik lühend on PLANK. 3 (3) Andmekogu ingliskeelne nimetus on Database of spatial plans.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1040583_Par_1"
@@ -133,7 +147,57 @@
         {
           "@id": "estleg:Reg_1054963_Par_1_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_1_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega asutatakse planeeringute andmekogu (edaspidi andmekogu).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu kuulub riigi infosüsteemi ja selle ametlik lühend on PLANK.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu ingliskeelne nimetus on Database of spatial plans.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:Reg_1054963_Par_2",
@@ -142,13 +206,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Andmekogu pidamise eesmärk ja andmete kasutamine",
+      "rdfs:label": {
+        "@value": "§ 2. Andmekogu pidamise eesmärk ja andmete kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Planeeringute andmekogu pidamise eesmärk on planeeringute, nende juurde kuuluvate lisade ja planeeringutega seotud haldusotsuste kohta andmete kogumine, säilitamine ning avalikustamine. Planeeringute andmekogu pidamise eesmärk on planeeringute, nende juurde kuuluvate lisade ja planeeringutega seotud haldusotsuste kohta andmete kogumine, säilitamine ning avalikustamine. 2 (2) Andmekogu andmeid kasutatakse planeerimisseaduse §-s 4 sätestatud planeerimisalase tegevuse korraldaja ülesannete tä",
-      "estleg:legalText": "1 (1) Planeeringute andmekogu pidamise eesmärk on planeeringute, nende juurde kuuluvate lisade ja planeeringutega seotud haldusotsuste kohta andmete kogumine, säilitamine ning avalikustamine. Planeeringute andmekogu pidamise eesmärk on planeeringute, nende juurde kuuluvate lisade ja planeeringutega seotud haldusotsuste kohta andmete kogumine, säilitamine ning avalikustamine. 2 (2) Andmekogu andmeid kasutatakse planeerimisseaduse §-s 4 sätestatud planeerimisalase tegevuse korraldaja ülesannete täitmiseks ja planeeringute avalikkusele kättesaadavuse tagamiseks. Andmekogu andmeid kasutatakse planeerimisseaduse §-s 4 sätestatud planeerimisalase tegevuse korraldaja ülesannete täitmiseks ja planeeringute avalikkusele kättesaadavuse tagamiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) Planeeringute andmekogu pidamise eesmärk on planeeringute, nende juurde kuuluvate lisade ja planeeringutega seotud haldusotsuste kohta andmete kogumine, säilitamine ning avalikustamine. 2 (2) Andmekogu andmeid kasutatakse planeerimisseaduse §-s 4 sätestatud planeerimisalase tegevuse korraldaja ülesannete täitmiseks ja planeeringute avalikkusele kättesaadavuse tagamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Planeeringute andmekogu pidamise eesmärk on planeeringute, nende juurde kuuluvate lisade ja planeeringutega seotud haldusotsuste kohta andmete kogumine, säilitamine ning avalikustamine. 2 (2) Andmekogu andmeid kasutatakse planeerimisseaduse §-s 4 sätestatud planeerimisalase tegevuse korraldaja ülesannete täitmiseks ja planeeringute avalikkusele kättesaadavuse tagamiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -167,7 +237,41 @@
         {
           "@id": "estleg:Reg_1054963_Par_2_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Planeeringute andmekogu pidamise eesmärk on planeeringute, nende juurde kuuluvate lisade ja planeeringutega seotud haldusotsuste kohta andmete kogumine, säilitamine ning avalikustamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu andmeid kasutatakse planeerimisseaduse §-s 4 sätestatud planeerimisalase tegevuse korraldaja ülesannete täitmiseks ja planeeringute avalikkusele kättesaadavuse tagamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1054963_Par_3",
@@ -176,13 +280,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Andmekogu vastutav ja volitatud töötleja",
+      "rdfs:label": {
+        "@value": "§ 3. Andmekogu vastutav ja volitatud töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu vastutav töötleja on Maa- ja Ruumiamet (edaspidi vastutav töötleja). RT I 2024-12-28 13 128122024013 2025-01-01 Andmekogu vastutav töötleja on Maa- ja Ruumiamet (edaspidi vastutav töötleja). 2 (2) Andmekogu volitatud töötleja on Rahandusministeeriumi Infotehnoloogiakeskus (edaspidi volitatud töötleja). Andmekogu volitatud töötleja on Rahandusministeeriumi Infotehnoloogiakeskus (edaspidi volitatud töötleja). 3 (3) Vastutav töötleja: 1 1) tagab andmekogu pidamise vastavalt õigusakt",
-      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja on Maa- ja Ruumiamet (edaspidi vastutav töötleja). RT I 2024-12-28 13 128122024013 2025-01-01 Andmekogu vastutav töötleja on Maa- ja Ruumiamet (edaspidi vastutav töötleja). 2 (2) Andmekogu volitatud töötleja on Rahandusministeeriumi Infotehnoloogiakeskus (edaspidi volitatud töötleja). Andmekogu volitatud töötleja on Rahandusministeeriumi Infotehnoloogiakeskus (edaspidi volitatud töötleja). 3 (3) Vastutav töötleja: 1 1) tagab andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) tagab õigustatud isikutele juurdepääsu andmekogule; 3 3) tagab koos volitatud töötlejaga organisatsiooniliste ja tehniliste meetmete abil andmekogus andmete kaitse ja säilimise; 4 4) vastutab isikuandmete töötlemise nõuete täitmise eest; 5 5) korraldab koos volitatud töötlejaga andmekogu arendamist. Vastutav töötleja: tagab andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; tagab õigustatud isikutele juurdepääsu andmekogule; tagab koos volitatud töötlejaga organisatsiooniliste ja tehniliste meetmete abil andmekogus andmete kaitse ja säilimise; vastutab isikuandmete töötlemise nõuete täitmise eest; korraldab koos volitatud töötlejaga andmekogu arendamist. 4 (4) Volitatud töötleja: 1 1) arendab andmekogu vastavalt vastutavalt töötlejalt saadud ettepanekutele; 2 2) tagab andmekogu majutamiseks vajaliku infotehnoloogilise keskkonna ja selle tehnilise valmisoleku teenusleppes kokku lepitud ulatuses ja korras. Volitatud töötleja: arendab andmekogu vastavalt vastutavalt töötlejalt saadud ettepanekutele; tagab andmekogu majutamiseks vajaliku infotehnoloogilise keskkonna ja selle tehnilise valmisoleku teenusleppes kokku lepitud ulatuses ja korras.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu vastutav töötleja on Maa- ja Ruumiamet (edaspidi vastutav töötleja). RT I 2024-12-28 13 128122024013 2025-01-01 2 (2) Andmekogu volitatud töötleja on Rahandusministeeriumi Infotehnoloogiakeskus (edaspidi volitatud töötleja). 3 (3) Vastutav töötleja: 1 1) tagab andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) tagab õigustatud isikutele juurdepääsu andmekogule; 3 3) tagab koos volitatud töötlejaga organisatsiooniliste ja tehniliste meetmete abil andmekogus…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja on Maa- ja Ruumiamet (edaspidi vastutav töötleja). RT I 2024-12-28 13 128122024013 2025-01-01 2 (2) Andmekogu volitatud töötleja on Rahandusministeeriumi Infotehnoloogiakeskus (edaspidi volitatud töötleja). 3 (3) Vastutav töötleja: 1 1) tagab andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) tagab õigustatud isikutele juurdepääsu andmekogule; 3 3) tagab koos volitatud töötlejaga organisatsiooniliste ja tehniliste meetmete abil andmekogus andmete kaitse ja säilimise; 4 4) vastutab isikuandmete töötlemise nõuete täitmise eest; 5 5) korraldab koos volitatud töötlejaga andmekogu arendamist. 4 (4) Volitatud töötleja: 1 1) arendab andmekogu vastavalt vastutavalt töötlejalt saadud ettepanekutele; 2 2) tagab andmekogu majutamiseks vajaliku infotehnoloogilise keskkonna ja selle tehnilise valmisoleku teenusleppes kokku lepitud ulatuses ja korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -221,6 +331,83 @@
         {
           "@id": "estleg:Institution_rahandusministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_3_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu vastutav töötleja on Maa- ja Ruumiamet (edaspidi vastutav töötleja).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu volitatud töötleja on Rahandusministeeriumi Infotehnoloogiakeskus (edaspidi volitatud töötleja).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vastutav töötleja: 1) tagab andmekogu pidamise vastavalt õigusaktides sätestatud nõuetele; 2) tagab õigustatud isikutele juurdepääsu andmekogule; 3) tagab koos volitatud töötlejaga organisatsiooniliste ja tehniliste meetmete abil andmekogus andmete kaitse ja säilimise; 4) vastutab isikuandmete töötlemise nõuete täitmise eest; 5) korraldab koos volitatud töötlejaga andmekogu arendamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Volitatud töötleja: 1) arendab andmekogu vastavalt vastutavalt töötlejalt saadud ettepanekutele; 2) tagab andmekogu majutamiseks vajaliku infotehnoloogilise keskkonna ja selle tehnilise valmisoleku teenusleppes kokku lepitud ulatuses ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -230,13 +417,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Andmekogu turvameetmed ja turbeaste",
+      "rdfs:label": {
+        "@value": "§ 4. Andmekogu turvameetmed ja turbeaste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse kantud andmete käideldavuse (K), terviklikkuse (T) ja konfidentsiaalsuse (S) tagamiseks rakendatakse organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. Andmekogusse kantud andmete käideldavuse (K), terviklikkuse (T) ja konfidentsiaalsuse (S) tagamiseks rakendatakse organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. 2 (2) Andmekogu andmete turvaklass on K1T2S1 ja turbeaste on keskmine (M). Andmekogu andmete turvaklass on K1T2S1 ja turbeaste on ",
-      "estleg:legalText": "1 (1) Andmekogusse kantud andmete käideldavuse (K), terviklikkuse (T) ja konfidentsiaalsuse (S) tagamiseks rakendatakse organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. Andmekogusse kantud andmete käideldavuse (K), terviklikkuse (T) ja konfidentsiaalsuse (S) tagamiseks rakendatakse organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. 2 (2) Andmekogu andmete turvaklass on K1T2S1 ja turbeaste on keskmine (M). Andmekogu andmete turvaklass on K1T2S1 ja turbeaste on keskmine (M).",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse kantud andmete käideldavuse (K), terviklikkuse (T) ja konfidentsiaalsuse (S) tagamiseks rakendatakse organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. 2 (2) Andmekogu andmete turvaklass on K1T2S1 ja turbeaste on keskmine (M).",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse kantud andmete käideldavuse (K), terviklikkuse (T) ja konfidentsiaalsuse (S) tagamiseks rakendatakse organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. 2 (2) Andmekogu andmete turvaklass on K1T2S1 ja turbeaste on keskmine (M).",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1019044_Par_5"
@@ -258,7 +451,41 @@
         {
           "@id": "estleg:Reg_1054963_Par_4_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantud andmete käideldavuse (K), terviklikkuse (T) ja konfidentsiaalsuse (S) tagamiseks rakendatakse organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu andmete turvaklass on K1T2S1 ja turbeaste on keskmine (M).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_1054963_Par_5",
@@ -267,13 +494,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Andmete esitajad",
+      "rdfs:label": {
+        "@value": "§ 5. Andmete esitajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "Andmekogusse esitavad andmeid planeerimisseaduse § 4 lõikes 1 nimetatud asutused ja isikud.",
-      "estleg:legalText": "Andmekogusse esitavad andmeid planeerimisseaduse § 4 lõikes 1 nimetatud asutused ja isikud. Andmekogusse esitavad andmeid planeerimisseaduse § 4 lõikes 1 nimetatud asutused ja isikud.",
+      "estleg:summary": {
+        "@value": "Andmekogusse esitavad andmeid planeerimisseaduse § 4 lõikes 1 nimetatud asutused ja isikud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogusse esitavad andmeid planeerimisseaduse § 4 lõikes 1 nimetatud asutused ja isikud.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -300,7 +533,25 @@
         {
           "@id": "estleg:Reg_1054963_Par_5_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse esitavad andmeid planeerimisseaduse § 4 lõikes 1 nimetatud asutused ja isikud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_1054963_Par_6",
@@ -309,13 +560,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Andmekogusse kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 6. Andmekogusse kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "Andmekogusse kantakse üleriigilise planeeringu mereala teemaplaneeringu, riigi eriplaneeringu, maakonnaplaneeringu, üldplaneeringu, kohaliku omavalitsuse eriplaneeringu ja detailplaneeringu kohta järgmised andmed ja dokumendid: 1 1) planeeringu jooniste digitaalsed kihid; 2 2) planeeringu jooniste esituskujud; 3 3) planeeringu seletuskiri; 4 4) keskkonnamõju strateegilise hindamise aruanne, juhul kui planeeringule teostati keskkonnamõju strateegiline hindamine; 5 5) planeeringu elluviimiseks vaj",
-      "estleg:legalText": "Andmekogusse kantakse üleriigilise planeeringu mereala teemaplaneeringu, riigi eriplaneeringu, maakonnaplaneeringu, üldplaneeringu, kohaliku omavalitsuse eriplaneeringu ja detailplaneeringu kohta järgmised andmed ja dokumendid: 1 1) planeeringu jooniste digitaalsed kihid; 2 2) planeeringu jooniste esituskujud; 3 3) planeeringu seletuskiri; 4 4) keskkonnamõju strateegilise hindamise aruanne, juhul kui planeeringule teostati keskkonnamõju strateegiline hindamine; 5 5) planeeringu elluviimiseks vajalike tegevuste koond (planeeringu tegevuskava), juhul kui see on koostatud; 6 6) planeerimismenetluses sõlmitud planeerimisseadusekohane leping; 7 7) muud planeeringu juurde kuuluvad lisad; 8 8) planeerimismenetluse käigus tehtud planeeringutega seotud haldusotsused (planeeringu algatamise, vastuvõtmise ja kehtestamise otsus). Andmekogusse kantakse üleriigilise planeeringu mereala teemaplaneeringu, riigi eriplaneeringu, maakonnaplaneeringu, üldplaneeringu, kohaliku omavalitsuse eriplaneeringu ja detailplaneeringu kohta järgmised andmed ja dokumendid: planeeringu jooniste digitaalsed kihid; planeeringu jooniste esituskujud; planeeringu seletuskiri; keskkonnamõju strateegilise hindamise aruanne, juhul kui planeeringule teostati keskkonnamõju strateegiline hindamine; planeeringu elluviimiseks vajalike tegevuste koond (planeeringu tegevuskava), juhul kui see on koostatud; planeerimismenetluses sõlmitud planeerimisseadusekohane leping; muud planeeringu juurde kuuluvad lisad; planeerimismenetluse käigus tehtud planeeringutega seotud haldusotsused (planeeringu algatamise, vastuvõtmise ja kehtestamise otsus).",
+      "estleg:summary": {
+        "@value": "Andmekogusse kantakse üleriigilise planeeringu mereala teemaplaneeringu, riigi eriplaneeringu, maakonnaplaneeringu, üldplaneeringu, kohaliku omavalitsuse eriplaneeringu ja detailplaneeringu kohta järgmised andmed ja dokumendid: 1 1) planeeringu jooniste digitaalsed kihid; 2 2) planeeringu jooniste esituskujud; 3 3) planeeringu seletuskiri; 4 4) keskkonnamõju strateegilise hindamise aruanne, juhul kui planeeringule teostati keskkonnamõju strateegiline hindamine; 5 5) planeeringu elluviimiseks…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogusse kantakse üleriigilise planeeringu mereala teemaplaneeringu, riigi eriplaneeringu, maakonnaplaneeringu, üldplaneeringu, kohaliku omavalitsuse eriplaneeringu ja detailplaneeringu kohta järgmised andmed ja dokumendid: 1 1) planeeringu jooniste digitaalsed kihid; 2 2) planeeringu jooniste esituskujud; 3 3) planeeringu seletuskiri; 4 4) keskkonnamõju strateegilise hindamise aruanne, juhul kui planeeringule teostati keskkonnamõju strateegiline hindamine; 5 5) planeeringu elluviimiseks vajalike tegevuste koond (planeeringu tegevuskava), juhul kui see on koostatud; 6 6) planeerimismenetluses sõlmitud planeerimisseadusekohane leping; 7 7) muud planeeringu juurde kuuluvad lisad; 8 8) planeerimismenetluse käigus tehtud planeeringutega seotud haldusotsused (planeeringu algatamise, vastuvõtmise ja kehtestamise otsus).",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -334,6 +591,34 @@
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_6_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse üleriigilise planeeringu mereala teemaplaneeringu, riigi eriplaneeringu, maakonnaplaneeringu, üldplaneeringu, kohaliku omavalitsuse eriplaneeringu ja detailplaneeringu kohta järgmised andmed ja dokumendid: 1) planeeringu jooniste digitaalsed kihid; 2) planeeringu jooniste esituskujud; 3) planeeringu seletuskiri; 4) keskkonnamõju strateegilise hindamise aruanne, juhul kui planeeringule teostati keskkonnamõju strateegiline hindamine; 5) planeeringu elluviimiseks vajalike tegevuste koond (planeeringu tegevuskava), juhul kui see on koostatud; 6) planeerimismenetluses sõlmitud planeerimisseadusekohane leping; 7) muud planeeringu juurde kuuluvad lisad; 8) planeerimismenetluse käigus tehtud planeeringutega seotud haldusotsused (planeeringu algatamise, vastuvõtmise ja kehtestamise otsus).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
       ]
     },
     {
@@ -343,13 +628,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Andmete õigsus ja parandamine",
+      "rdfs:label": {
+        "@value": "§ 7. Andmete õigsus ja parandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmete esitaja vastutab tema esitatud andmete ja dokumentidel olevate andmete õigsuse eest. Andmete esitaja vastutab tema esitatud andmete ja dokumentidel olevate andmete õigsuse eest. 2 (2) Ebaõigete või puudulike andmete esitamise korral esitab andmete esitaja andmekogusse õiged andmed. Andmete parandamisel märgitakse paranduskande teinud isiku nimi, paranduse tegemise aeg ja põhjus. Ebaõigete või puudulike andmete esitamise korral esitab andmete esitaja andmekogusse õiged andmed. Andme",
-      "estleg:legalText": "1 (1) Andmete esitaja vastutab tema esitatud andmete ja dokumentidel olevate andmete õigsuse eest. Andmete esitaja vastutab tema esitatud andmete ja dokumentidel olevate andmete õigsuse eest. 2 (2) Ebaõigete või puudulike andmete esitamise korral esitab andmete esitaja andmekogusse õiged andmed. Andmete parandamisel märgitakse paranduskande teinud isiku nimi, paranduse tegemise aeg ja põhjus. Ebaõigete või puudulike andmete esitamise korral esitab andmete esitaja andmekogusse õiged andmed. Andmete parandamisel märgitakse paranduskande teinud isiku nimi, paranduse tegemise aeg ja põhjus. 3 (3) Volitatud töötlejal on õigus teostada andmete kontrolli eesmärgiga tuvastada ebaõiged või puudulikud andmed. Volitatud töötlejal on õigus teostada andmete kontrolli eesmärgiga tuvastada ebaõiged või puudulikud andmed.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete esitaja vastutab tema esitatud andmete ja dokumentidel olevate andmete õigsuse eest. 2 (2) Ebaõigete või puudulike andmete esitamise korral esitab andmete esitaja andmekogusse õiged andmed. Andmete parandamisel märgitakse paranduskande teinud isiku nimi, paranduse tegemise aeg ja põhjus. 3 (3) Volitatud töötlejal on õigus teostada andmete kontrolli eesmärgiga tuvastada ebaõiged või puudulikud andmed.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete esitaja vastutab tema esitatud andmete ja dokumentidel olevate andmete õigsuse eest. 2 (2) Ebaõigete või puudulike andmete esitamise korral esitab andmete esitaja andmekogusse õiged andmed. Andmete parandamisel märgitakse paranduskande teinud isiku nimi, paranduse tegemise aeg ja põhjus. 3 (3) Volitatud töötlejal on õigus teostada andmete kontrolli eesmärgiga tuvastada ebaõiged või puudulikud andmed.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -374,7 +665,57 @@
         {
           "@id": "estleg:Reg_1054963_Par_7_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_7_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete esitaja vastutab tema esitatud andmete ja dokumentidel olevate andmete õigsuse eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ebaõigete või puudulike andmete esitamise korral esitab andmete esitaja andmekogusse õiged andmed. Andmete parandamisel märgitakse paranduskande teinud isiku nimi, paranduse tegemise aeg ja põhjus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Volitatud töötlejal on õigus teostada andmete kontrolli eesmärgiga tuvastada ebaõiged või puudulikud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
     },
     {
       "@id": "estleg:Reg_1054963_Par_8",
@@ -383,13 +724,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Andmete andmekogusse vastuvõtmisest keeldumine",
+      "rdfs:label": {
+        "@value": "§ 8. Andmete andmekogusse vastuvõtmisest keeldumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmete andmekogusse vastuvõtmisest keeldutakse, kui esitatud andmed ei vasta neile kehtestatud nõuetele. Andmete andmekogusse vastuvõtmisest keeldutakse, kui esitatud andmed ei vasta neile kehtestatud nõuetele. 2 (2) Teade andmete vastuvõtmisest keeldumise kohta edastatakse dokumendi esitanud isikule viivituseta. Teade andmete vastuvõtmisest keeldumise kohta edastatakse dokumendi esitanud isikule viivituseta.",
-      "estleg:legalText": "1 (1) Andmete andmekogusse vastuvõtmisest keeldutakse, kui esitatud andmed ei vasta neile kehtestatud nõuetele. Andmete andmekogusse vastuvõtmisest keeldutakse, kui esitatud andmed ei vasta neile kehtestatud nõuetele. 2 (2) Teade andmete vastuvõtmisest keeldumise kohta edastatakse dokumendi esitanud isikule viivituseta. Teade andmete vastuvõtmisest keeldumise kohta edastatakse dokumendi esitanud isikule viivituseta.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete andmekogusse vastuvõtmisest keeldutakse, kui esitatud andmed ei vasta neile kehtestatud nõuetele. 2 (2) Teade andmete vastuvõtmisest keeldumise kohta edastatakse dokumendi esitanud isikule viivituseta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete andmekogusse vastuvõtmisest keeldutakse, kui esitatud andmed ei vasta neile kehtestatud nõuetele. 2 (2) Teade andmete vastuvõtmisest keeldumise kohta edastatakse dokumendi esitanud isikule viivituseta.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -408,7 +755,41 @@
         {
           "@id": "estleg:Reg_1054963_Par_8_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_8_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete andmekogusse vastuvõtmisest keeldutakse, kui esitatud andmed ei vasta neile kehtestatud nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Teade andmete vastuvõtmisest keeldumise kohta edastatakse dokumendi esitanud isikule viivituseta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_1054963_Par_9",
@@ -417,13 +798,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Andmekogusse kantavad planeeringu üldandmed",
+      "rdfs:label": {
+        "@value": "§ 9. Andmekogusse kantavad planeeringu üldandmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "Andmekogusse kantakse järgmised planeeringute üldandmed: 1 1) planeeringu identifitseerimise number andmekogus; 2 2) planeeringu identifitseerimise number Maa- ja Ruumiametis; RT I 2024-12-28 13 128122024013 2025-01-01 3 3) planeeringu identifitseerimise number planeerimisalase tegevuse korraldaja juures; 4 4) planeeringu nimetus; 5 5) planeeringu liik; 6 6) planeeringu seisund; 7 7) planeeringu eesmärk; 8 8) üldisema planeeringu muutus; 9 9) planeeringu keskkonnamõju strateegilise hindamise läb",
-      "estleg:legalText": "Andmekogusse kantakse järgmised planeeringute üldandmed: 1 1) planeeringu identifitseerimise number andmekogus; 2 2) planeeringu identifitseerimise number Maa- ja Ruumiametis; RT I 2024-12-28 13 128122024013 2025-01-01 3 3) planeeringu identifitseerimise number planeerimisalase tegevuse korraldaja juures; 4 4) planeeringu nimetus; 5 5) planeeringu liik; 6 6) planeeringu seisund; 7 7) planeeringu eesmärk; 8 8) üldisema planeeringu muutus; 9 9) planeeringu keskkonnamõju strateegilise hindamise läbiviimine; 10 10) planeeringuala ruumiandmed; 11 11) veebiviide planeeringu failidele planeerimisalase tegevuse korraldaja juures; 12 12) kehtestamise kuupäev; 13 13) algatamise kuupäev; 14 14) vastuvõtmise kuupäev; 15 15) kehtetuks muutmise kuupäev; 16 16) esitatud andmete selgitus; 17 17) seosed teiste planeeringutega; 18 18) metaandmed; 19 19) planeeringuga seotud märkused. Andmekogusse kantakse järgmised planeeringute üldandmed: planeeringu identifitseerimise number andmekogus; planeeringu identifitseerimise number Maa- ja Ruumiametis; planeeringu identifitseerimise number planeerimisalase tegevuse korraldaja juures; planeeringu nimetus; planeeringu liik; planeeringu seisund; planeeringu eesmärk; üldisema planeeringu muutus; planeeringu keskkonnamõju strateegilise hindamise läbiviimine; planeeringuala ruumiandmed; veebiviide planeeringu failidele planeerimisalase tegevuse korraldaja juures; kehtestamise kuupäev; algatamise kuupäev; vastuvõtmise kuupäev; kehtetuks muutmise kuupäev; esitatud andmete selgitus; seosed teiste planeeringutega; metaandmed; planeeringuga seotud märkused.",
+      "estleg:summary": {
+        "@value": "Andmekogusse kantakse järgmised planeeringute üldandmed: 1 1) planeeringu identifitseerimise number andmekogus; 2 2) planeeringu identifitseerimise number Maa- ja Ruumiametis; RT I 2024-12-28 13 128122024013 2025-01-01 3 3) planeeringu identifitseerimise number planeerimisalase tegevuse korraldaja juures; 4 4) planeeringu nimetus; 5 5) planeeringu liik; 6 6) planeeringu seisund; 7 7) planeeringu eesmärk; 8 8) üldisema planeeringu muutus; 9 9) planeeringu keskkonnamõju strateegilise hindamise…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogusse kantakse järgmised planeeringute üldandmed: 1 1) planeeringu identifitseerimise number andmekogus; 2 2) planeeringu identifitseerimise number Maa- ja Ruumiametis; RT I 2024-12-28 13 128122024013 2025-01-01 3 3) planeeringu identifitseerimise number planeerimisalase tegevuse korraldaja juures; 4 4) planeeringu nimetus; 5 5) planeeringu liik; 6 6) planeeringu seisund; 7 7) planeeringu eesmärk; 8 8) üldisema planeeringu muutus; 9 9) planeeringu keskkonnamõju strateegilise hindamise läbiviimine; 10 10) planeeringuala ruumiandmed; 11 11) veebiviide planeeringu failidele planeerimisalase tegevuse korraldaja juures; 12 12) kehtestamise kuupäev; 13 13) algatamise kuupäev; 14 14) vastuvõtmise kuupäev; 15 15) kehtetuks muutmise kuupäev; 16 16) esitatud andmete selgitus; 17 17) seosed teiste planeeringutega; 18 18) metaandmed; 19 19) planeeringuga seotud märkused.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -442,6 +829,45 @@
         {
           "@id": "estleg:Institution_maa_ja_ruumiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_9_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse järgmised planeeringute üldandmed: 1) planeeringu identifitseerimise number andmekogus; 2) planeeringu identifitseerimise number Maa- ja Ruumiametis; 3) planeeringu identifitseerimise number planeerimisalase tegevuse korraldaja juures; 4) planeeringu nimetus; 5) planeeringu liik; 6) planeeringu seisund; 7) planeeringu eesmärk; 8) üldisema planeeringu muutus; 9) planeeringu keskkonnamõju strateegilise hindamise läbiviimine; 10) planeeringuala ruumiandmed; 11) veebiviide planeeringu failidele planeerimisalase tegevuse korraldaja juures; 12) kehtestamise kuupäev; 13) algatamise kuupäev; 14) vastuvõtmise kuupäev; 15) kehtetuks muutmise kuupäev; 16) esitatud andmete selgitus; 17) seosed teiste planeeringutega; 18) metaandmed; 19) planeeringuga seotud märkused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19"
       ]
     },
     {
@@ -451,17 +877,176 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Andmekogusse kantava detailplaneeringu, kohaliku omavalituse eriplaneeringu ja riigi eriplaneeringuandmed",
+      "rdfs:label": {
+        "@value": "§ 10. Andmekogusse kantava detailplaneeringu, kohaliku omavalituse eriplaneeringu ja riigi eriplaneeringuandmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse kantakse järgmised krundi andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) krundi nimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) krundi pindala; 6 6) ruumiandmed. Andmekogusse kantakse järgmised krundi andmed: objekti identifikaator; tüvikihi koodnimetus; krundi nimetus; maakasutus- ja ehitustingimus; krundi pindala; ruumiandmed. 2 (2) Andmekogusse kantakse järgmised krundi kasutamise sihtotstarbe andmed: 1 1) krundi identifikaator; 2 2) krundi kasutamis",
-      "estleg:legalText": "1 (1) Andmekogusse kantakse järgmised krundi andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) krundi nimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) krundi pindala; 6 6) ruumiandmed. Andmekogusse kantakse järgmised krundi andmed: objekti identifikaator; tüvikihi koodnimetus; krundi nimetus; maakasutus- ja ehitustingimus; krundi pindala; ruumiandmed. 2 (2) Andmekogusse kantakse järgmised krundi kasutamise sihtotstarbe andmed: 1 1) krundi identifikaator; 2 2) krundi kasutamise sihtotstarve; 3 3) suurim lubatud osakaal; 4 4) väikseim lubatud osakaal; 5 5) kasutamise sihtotstarbe lühend; 6 6) sihtotstarbe täpsustus ja kasutusotstarve. Andmekogusse kantakse järgmised krundi kasutamise sihtotstarbe andmed: krundi identifikaator; krundi kasutamise sihtotstarve; suurim lubatud osakaal; väikseim lubatud osakaal; kasutamise sihtotstarbe lühend; sihtotstarbe täpsustus ja kasutusotstarve. 3 (3) Andmekogusse kantakse järgmised krundi hoonestusala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) krundi identifikaator; 5 5) ehitusõiguse tüüp; 6 6) ehitusõiguse tingimus; 7 7) hoonete või olulise avaliku huviga rajatiste suurim lubatud arv; 8 8) abihoonete suurim lubatud arv; 9 9) hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 10 10) maapealsete hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 11 11) maa-aluste hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 12 12) hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne kõrgus maapinnast; 13 13) hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne absoluutkõrgus; 14 14) hoonete või olulise avaliku huviga rajatiste suurim lubatud sügavus; 15 15) hoonestustihedus; 16 16) täisehituse protsent; 17 17) kavandatud suletud brutopind kokku; 18 18) kavandatud maapealne suletud brutopind kokku; 19 19) kavandatud maa-alune suletud brutopind kokku; 20 20) kuja tingimus; 21 21) maakasutus- ja ehitustingimus; 22 22) ruumiandmed. Andmekogusse kantakse järgmised krundi hoonestusala andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; krundi identifikaator; ehitusõiguse tüüp; ehitusõiguse tingimus; hoonete või olulise avaliku huviga rajatiste suurim lubatud arv; abihoonete suurim lubatud arv; hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; maapealsete hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; maa-aluste hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne kõrgus maapinnast; hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne absoluutkõrgus; hoonete või olulise avaliku huviga rajatiste suurim lubatud sügavus; hoonestustihedus; täisehituse protsent; kavandatud suletud brutopind kokku; kavandatud maapealne suletud brutopind kokku; kavandatud maa-alune suletud brutopind kokku; kuja tingimus; maakasutus- ja ehitustingimus; ruumiandmed. 4 (4) Andmekogusse kantakse järgmised tehnorajatise andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) maakasutus- ja ehitustingimus; 6 6) kaitsevööndi ulatus; 7 7) suhteline kõrgus maapinnast; 8 8) suurim lubatud suhteline kõrgus maapinnast; 9 9) väikseim lubatud suhteline kõrgus maapinnast; 10 10) absoluutne kõrgus; 11 11) suurim lubatud absoluutne kõrgus; 12 12) väikseim lubatud absoluutne kõrgus; 13 13) sügavus; 14 14) suurim lubatud sügavus; 15 15) väikseim lubatud sügavus; 16 16) kuja tingimus; 17 17) ruumiandmed. Andmekogusse kantakse järgmised tehnorajatise andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; maakasutus- ja ehitustingimus; kaitsevööndi ulatus; suhteline kõrgus maapinnast; suurim lubatud suhteline kõrgus maapinnast; väikseim lubatud suhteline kõrgus maapinnast; absoluutne kõrgus; suurim lubatud absoluutne kõrgus; väikseim lubatud absoluutne kõrgus; sügavus; suurim lubatud sügavus; väikseim lubatud sügavus; kuja tingimus; ruumiandmed. 5 (5) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) maakasutus- ja ehitustingimus; 6 6) kaitsevööndi ulatus; 7 7) suhteline kõrgus maapinnast; 8 8) absoluutne kõrgus; 9 9) kuja tingimus; 10 10) ruumiandmed. Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; maakasutus- ja ehitustingimus; kaitsevööndi ulatus; suhteline kõrgus maapinnast; absoluutne kõrgus; kuja tingimus; ruumiandmed.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse kantakse järgmised krundi andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) krundi nimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) krundi pindala; 6 6) ruumiandmed. 2 (2) Andmekogusse kantakse järgmised krundi kasutamise sihtotstarbe andmed: 1 1) krundi identifikaator; 2 2) krundi kasutamise sihtotstarve; 3 3) suurim lubatud osakaal; 4 4) väikseim lubatud osakaal; 5 5) kasutamise sihtotstarbe lühend; 6 6) sihtotstarbe täpsustus ja kasutusotstarve.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse kantakse järgmised krundi andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) krundi nimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) krundi pindala; 6 6) ruumiandmed. 2 (2) Andmekogusse kantakse järgmised krundi kasutamise sihtotstarbe andmed: 1 1) krundi identifikaator; 2 2) krundi kasutamise sihtotstarve; 3 3) suurim lubatud osakaal; 4 4) väikseim lubatud osakaal; 5 5) kasutamise sihtotstarbe lühend; 6 6) sihtotstarbe täpsustus ja kasutusotstarve. 3 (3) Andmekogusse kantakse järgmised krundi hoonestusala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) krundi identifikaator; 5 5) ehitusõiguse tüüp; 6 6) ehitusõiguse tingimus; 7 7) hoonete või olulise avaliku huviga rajatiste suurim lubatud arv; 8 8) abihoonete suurim lubatud arv; 9 9) hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 10 10) maapealsete hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 11 11) maa-aluste hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 12 12) hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne kõrgus maapinnast; 13 13) hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne absoluutkõrgus; 14 14) hoonete või olulise avaliku huviga rajatiste suurim lubatud sügavus; 15 15) hoonestustihedus; 16 16) täisehituse protsent; 17 17) kavandatud suletud brutopind kokku; 18 18) kavandatud maapealne suletud brutopind kokku; 19 19) kavandatud maa-alune suletud brutopind kokku; 20 20) kuja tingimus; 21 21) maakasutus- ja ehitustingimus; 22 22) ruumiandmed. 4 (4) Andmekogusse kantakse järgmised tehnorajatise andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) maakasutus- ja ehitustingimus; 6 6) kaitsevööndi ulatus; 7 7) suhteline kõrgus maapinnast; 8 8) suurim lubatud suhteline kõrgus maapinnast; 9 9) väikseim lubatud suhteline kõrgus maapinnast; 10 10) absoluutne kõrgus; 11 11) suurim lubatud absoluutne kõrgus; 12 12) väikseim lubatud absoluutne kõrgus; 13 13) sügavus; 14 14) suurim lubatud sügavus; 15 15) väikseim lubatud sügavus; 16 16) kuja tingimus; 17 17) ruumiandmed. 5 (5) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) maakasutus- ja ehitustingimus; 6 6) kaitsevööndi ulatus; 7 7) suhteline kõrgus maapinnast; 8 8) absoluutne kõrgus; 9 9) kuja tingimus; 10 10) ruumiandmed.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054963_Par_10_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_10_Lg_5"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse järgmised krundi andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) krundi nimetus; 4) maakasutus- ja ehitustingimus; 5) krundi pindala; 6) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogusse kantakse järgmised krundi kasutamise sihtotstarbe andmed: 1) krundi identifikaator; 2) krundi kasutamise sihtotstarve; 3) suurim lubatud osakaal; 4) väikseim lubatud osakaal; 5) kasutamise sihtotstarbe lühend; 6) sihtotstarbe täpsustus ja kasutusotstarve.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogusse kantakse järgmised krundi hoonestusala andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) krundi identifikaator; 5) ehitusõiguse tüüp; 6) ehitusõiguse tingimus; 7) hoonete või olulise avaliku huviga rajatiste suurim lubatud arv; 8) abihoonete suurim lubatud arv; 9) hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 10) maapealsete hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 11) maa-aluste hoonete või olulise avaliku huviga rajatiste suurim lubatud ehitisealune pind; 12) hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne kõrgus maapinnast; 13) hoonete või olulise avaliku huviga rajatiste lubatud maksimaalne absoluutkõrgus; 14) hoonete või olulise avaliku huviga rajatiste suurim lubatud sügavus; 15) hoonestustihedus; 16) täisehituse protsent; 17) kavandatud suletud brutopind kokku; 18) kavandatud maapealne suletud brutopind kokku; 19) kavandatud maa-alune suletud brutopind kokku; 20) kuja tingimus; 21) maakasutus- ja ehitustingimus; 22) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmekogusse kantakse järgmised tehnorajatise andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) objekti nimetus; 5) maakasutus- ja ehitustingimus; 6) kaitsevööndi ulatus; 7) suhteline kõrgus maapinnast; 8) suurim lubatud suhteline kõrgus maapinnast; 9) väikseim lubatud suhteline kõrgus maapinnast; 10) absoluutne kõrgus; 11) suurim lubatud absoluutne kõrgus; 12) väikseim lubatud absoluutne kõrgus; 13) sügavus; 14) suurim lubatud sügavus; 15) väikseim lubatud sügavus; 16) kuja tingimus; 17) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) objekti nimetus; 5) maakasutus- ja ehitustingimus; 6) kaitsevööndi ulatus; 7) suhteline kõrgus maapinnast; 8) absoluutne kõrgus; 9) kuja tingimus; 10) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
       ]
     },
     {
@@ -471,17 +1056,121 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Andmekogusse kantavad üldplaneeringu andmed",
+      "rdfs:label": {
+        "@value": "§ 11. Andmekogusse kantavad üldplaneeringu andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse kantakse järgmised maakasutuse juhtotstarbe andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) maakasutuse juhtotstarbe tähis; 6 6) maakasutuse juhtotstarve; 7 7) ruumiandmed. Andmekogusse kantakse järgmised maakasutuse juhtotstarbe andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; maakasutus- ja ehitustingimus; maakasutuse juhtotstarbe tähis; maakasutuse juhtotstarve",
-      "estleg:legalText": "1 (1) Andmekogusse kantakse järgmised maakasutuse juhtotstarbe andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) maakasutuse juhtotstarbe tähis; 6 6) maakasutuse juhtotstarve; 7 7) ruumiandmed. Andmekogusse kantakse järgmised maakasutuse juhtotstarbe andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; maakasutus- ja ehitustingimus; maakasutuse juhtotstarbe tähis; maakasutuse juhtotstarve; ruumiandmed. 2 (2) Andmekogusse kantakse järgmised detailplaneeringu koostamise kohustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) detailplaneeringu koostamise kohustusega ala kohanimi; 4 4) maakasutus- ja ehitustingimus; 5 5) ruumiandmed. Andmekogusse kantakse järgmised detailplaneeringu koostamise kohustusega ala andmed: objekti identifikaator; tüvikihi koodnimetus; detailplaneeringu koostamise kohustusega ala kohanimi; maakasutus- ja ehitustingimus; ruumiandmed. 3 (3) Andmekogusse kantakse järgmised tiheasustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) tiheasustusala mõiste definitsioon; 4 4) tiheasustusala kohanimi; 5 5) ruumiandmed. Andmekogusse kantakse järgmised tiheasustusega ala andmed: objekti identifikaator; tüvikihi koodnimetus; tiheasustusala mõiste definitsioon; tiheasustusala kohanimi; ruumiandmed. 4 (4) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) maakasutus- ja ehitustingimus; 6 6) kaitsevööndi ulatus; 7 7) ruumiandmed. Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; maakasutus- ja ehitustingimus; kaitsevööndi ulatus; ruumiandmed.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse kantakse järgmised maakasutuse juhtotstarbe andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) maakasutuse juhtotstarbe tähis; 6 6) maakasutuse juhtotstarve; 7 7) ruumiandmed. 2 (2) Andmekogusse kantakse järgmised detailplaneeringu koostamise kohustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) detailplaneeringu koostamise kohustusega ala kohanimi; 4 4)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse kantakse järgmised maakasutuse juhtotstarbe andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) maakasutus- ja ehitustingimus; 5 5) maakasutuse juhtotstarbe tähis; 6 6) maakasutuse juhtotstarve; 7 7) ruumiandmed. 2 (2) Andmekogusse kantakse järgmised detailplaneeringu koostamise kohustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) detailplaneeringu koostamise kohustusega ala kohanimi; 4 4) maakasutus- ja ehitustingimus; 5 5) ruumiandmed. 3 (3) Andmekogusse kantakse järgmised tiheasustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) tiheasustusala mõiste definitsioon; 4 4) tiheasustusala kohanimi; 5 5) ruumiandmed. 4 (4) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) maakasutus- ja ehitustingimus; 6 6) kaitsevööndi ulatus; 7 7) ruumiandmed.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054963_Par_11_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_11_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse järgmised maakasutuse juhtotstarbe andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) maakasutus- ja ehitustingimus; 5) maakasutuse juhtotstarbe tähis; 6) maakasutuse juhtotstarve; 7) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogusse kantakse järgmised detailplaneeringu koostamise kohustusega ala andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) detailplaneeringu koostamise kohustusega ala kohanimi; 4) maakasutus- ja ehitustingimus; 5) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogusse kantakse järgmised tiheasustusega ala andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) tiheasustusala mõiste definitsioon; 4) tiheasustusala kohanimi; 5) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) objekti nimetus; 5) maakasutus- ja ehitustingimus; 6) kaitsevööndi ulatus; 7) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -491,17 +1180,154 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Andmekogusse kantavad maakonnaplaneeringu andmed",
+      "rdfs:label": {
+        "@value": "§ 12. Andmekogusse kantavad maakonnaplaneeringu andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse kantakse järgmised keskuste võrgustiku andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) keskuse kohanimi; 4 4) keskuse tasand; 5 5) koos toimivate keskuste nimi; 6 6) maakasutus- ja ehitustingimus; 7 7) toimepiirkond; 8 8) suunis üldplaneeringu koostamiseks; 9 9) ruumiandmed. Andmekogusse kantakse järgmised keskuste võrgustiku andmed: objekti identifikaator; tüvikihi koodnimetus; keskuse kohanimi; keskuse tasand; koos toimivate keskuste nimi; maakasutus- ja",
-      "estleg:legalText": "1 (1) Andmekogusse kantakse järgmised keskuste võrgustiku andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) keskuse kohanimi; 4 4) keskuse tasand; 5 5) koos toimivate keskuste nimi; 6 6) maakasutus- ja ehitustingimus; 7 7) toimepiirkond; 8 8) suunis üldplaneeringu koostamiseks; 9 9) ruumiandmed. Andmekogusse kantakse järgmised keskuste võrgustiku andmed: objekti identifikaator; tüvikihi koodnimetus; keskuse kohanimi; keskuse tasand; koos toimivate keskuste nimi; maakasutus- ja ehitustingimus; toimepiirkond; suunis üldplaneeringu koostamiseks; ruumiandmed. 2 (2) Andmekogusse kantakse järgmised linnalise asustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) asustusüksuse nimi; 4 4) rahvastikutihedus; 5 5) suunis üldplaneeringu koostamiseks; 6 6) maakasutus- ja ehitustingimus; 7 7) ruumiandmed. Andmekogusse kantakse järgmised linnalise asustusega ala andmed: objekti identifikaator; tüvikihi koodnimetus; asustusüksuse nimi; rahvastikutihedus; suunis üldplaneeringu koostamiseks; maakasutus- ja ehitustingimus; ruumiandmed. 3 (3) Andmekogusse kantakse järgmised rohevõrgustiku ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) tähis; 6 6) suunis üldplaneeringu koostamiseks; 7 7) maakasutus- ja ehitustingimus; 8 8) ruumiandmed. Andmekogusse kantakse järgmised rohevõrgustiku ala andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; tähis; suunis üldplaneeringu koostamiseks; maakasutus- ja ehitustingimus; ruumiandmed. 4 (4) Andmekogusse kantakse järgmised maakonna mereala teemaplaneeringu andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) kasutusfunktsioon; 6 6) sügavus; 7 7) ruumiandmed. Andmekogusse kantakse järgmised maakonna mereala teemaplaneeringu andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; kasutusfunktsioon; sügavus; ruumiandmed. 5 (5) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) kaitsevööndi ulatus; 6 6) suunis üldplaneeringu koostamiseks; 7 7) maakasutus- ja ehitustingimus; 8 8) ruumiandmed. Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; kaitsevööndi ulatus; suunis üldplaneeringu koostamiseks; maakasutus- ja ehitustingimus; ruumiandmed.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse kantakse järgmised keskuste võrgustiku andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) keskuse kohanimi; 4 4) keskuse tasand; 5 5) koos toimivate keskuste nimi; 6 6) maakasutus- ja ehitustingimus; 7 7) toimepiirkond; 8 8) suunis üldplaneeringu koostamiseks; 9 9) ruumiandmed. 2 (2) Andmekogusse kantakse järgmised linnalise asustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) asustusüksuse nimi; 4 4) rahvastikutihedus; 5 5)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse kantakse järgmised keskuste võrgustiku andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) keskuse kohanimi; 4 4) keskuse tasand; 5 5) koos toimivate keskuste nimi; 6 6) maakasutus- ja ehitustingimus; 7 7) toimepiirkond; 8 8) suunis üldplaneeringu koostamiseks; 9 9) ruumiandmed. 2 (2) Andmekogusse kantakse järgmised linnalise asustusega ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) asustusüksuse nimi; 4 4) rahvastikutihedus; 5 5) suunis üldplaneeringu koostamiseks; 6 6) maakasutus- ja ehitustingimus; 7 7) ruumiandmed. 3 (3) Andmekogusse kantakse järgmised rohevõrgustiku ala andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) tähis; 6 6) suunis üldplaneeringu koostamiseks; 7 7) maakasutus- ja ehitustingimus; 8 8) ruumiandmed. 4 (4) Andmekogusse kantakse järgmised maakonna mereala teemaplaneeringu andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) kasutusfunktsioon; 6 6) sügavus; 7 7) ruumiandmed. 5 (5) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) kaitsevööndi ulatus; 6 6) suunis üldplaneeringu koostamiseks; 7 7) maakasutus- ja ehitustingimus; 8 8) ruumiandmed.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054963_Par_12_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_12_Lg_5"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse järgmised keskuste võrgustiku andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) keskuse kohanimi; 4) keskuse tasand; 5) koos toimivate keskuste nimi; 6) maakasutus- ja ehitustingimus; 7) toimepiirkond; 8) suunis üldplaneeringu koostamiseks; 9) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogusse kantakse järgmised linnalise asustusega ala andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) asustusüksuse nimi; 4) rahvastikutihedus; 5) suunis üldplaneeringu koostamiseks; 6) maakasutus- ja ehitustingimus; 7) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogusse kantakse järgmised rohevõrgustiku ala andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) objekti nimetus; 5) tähis; 6) suunis üldplaneeringu koostamiseks; 7) maakasutus- ja ehitustingimus; 8) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmekogusse kantakse järgmised maakonna mereala teemaplaneeringu andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) objekti nimetus; 5) kasutusfunktsioon; 6) sügavus; 7) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_12_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmekogusse kantakse järgmised planeeringulahenduse objektide andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) objekti nimetus; 5) kaitsevööndi ulatus; 6) suunis üldplaneeringu koostamiseks; 7) maakasutus- ja ehitustingimus; 8) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
       ]
     },
     {
@@ -511,17 +1337,48 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Andmekogusse kantavad üleriigilise Eesti mereala teemaplaneeringu andmed",
+      "rdfs:label": {
+        "@value": "§ 13. Andmekogusse kantavad üleriigilise Eesti mereala teemaplaneeringu andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "Andmekogusse kantakse järgmised üleriigilise Eesti mereala teemaplaneeringu planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) ruumiandmed. Andmekogusse kantakse järgmised üleriigilise Eesti mereala teemaplaneeringu planeeringulahenduse objektide andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; ruumiandmed.",
-      "estleg:legalText": "Andmekogusse kantakse järgmised üleriigilise Eesti mereala teemaplaneeringu planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) ruumiandmed. Andmekogusse kantakse järgmised üleriigilise Eesti mereala teemaplaneeringu planeeringulahenduse objektide andmed: objekti identifikaator; tüvikihi koodnimetus; jaotuskihi koodnimetus; objekti nimetus; ruumiandmed.",
+      "estleg:summary": {
+        "@value": "Andmekogusse kantakse järgmised üleriigilise Eesti mereala teemaplaneeringu planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) ruumiandmed.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogusse kantakse järgmised üleriigilise Eesti mereala teemaplaneeringu planeeringulahenduse objektide andmed: 1 1) objekti identifikaator; 2 2) tüvikihi koodnimetus; 3 3) jaotuskihi koodnimetus; 4 4) objekti nimetus; 5 5) ruumiandmed.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054963_Par_13_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_13_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse järgmised üleriigilise Eesti mereala teemaplaneeringu planeeringulahenduse objektide andmed: 1) objekti identifikaator; 2) tüvikihi koodnimetus; 3) jaotuskihi koodnimetus; 4) objekti nimetus; 5) ruumiandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ]
     },
     {
@@ -531,13 +1388,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Andmekogusse kantavad planeeringu esitamisega seotud isikute andmed",
+      "rdfs:label": {
+        "@value": "§ 14. Andmekogusse kantavad planeeringu esitamisega seotud isikute andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "Andmekogusse kantakse järgmised planeeringutega seotud isikute andmed: 1 1) planeeringu koostaja ees- ja perekonnanimi ning isikukood; 2 2) planeeringu esitaja ees- ja perekonnanimi ning isikukood. Andmekogusse kantakse järgmised planeeringutega seotud isikute andmed: planeeringu koostaja ees- ja perekonnanimi ning isikukood; planeeringu esitaja ees- ja perekonnanimi ning isikukood.",
-      "estleg:legalText": "Andmekogusse kantakse järgmised planeeringutega seotud isikute andmed: 1 1) planeeringu koostaja ees- ja perekonnanimi ning isikukood; 2 2) planeeringu esitaja ees- ja perekonnanimi ning isikukood. Andmekogusse kantakse järgmised planeeringutega seotud isikute andmed: planeeringu koostaja ees- ja perekonnanimi ning isikukood; planeeringu esitaja ees- ja perekonnanimi ning isikukood.",
+      "estleg:summary": {
+        "@value": "Andmekogusse kantakse järgmised planeeringutega seotud isikute andmed: 1 1) planeeringu koostaja ees- ja perekonnanimi ning isikukood; 2 2) planeeringu esitaja ees- ja perekonnanimi ning isikukood.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogusse kantakse järgmised planeeringutega seotud isikute andmed: 1 1) planeeringu koostaja ees- ja perekonnanimi ning isikukood; 2 2) planeeringu esitaja ees- ja perekonnanimi ning isikukood.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -556,6 +1419,28 @@
         {
           "@id": "estleg:Reg_1054963_Par_14_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_14_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse järgmised planeeringutega seotud isikute andmed: 1) planeeringu koostaja ees- ja perekonnanimi ning isikukood; 2) planeeringu esitaja ees- ja perekonnanimi ning isikukood.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -565,13 +1450,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Andmetele juurdepääsu õigus",
+      "rdfs:label": {
+        "@value": "§ 15. Andmetele juurdepääsu õigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu on avalik, välja arvatud andmed, millele on nende looja või saaja seadnud seaduse alusel juurdepääsupiirangu. Andmekogu on avalik, välja arvatud andmed, millele on nende looja või saaja seadnud seaduse alusel juurdepääsupiirangu. 2 (2) Andmetele tagatakse ööpäevaringne juurdepääs andmekogu veebilehe kaudu. Andmetele tagatakse ööpäevaringne juurdepääs andmekogu veebilehe kaudu. 3 (3) Andmekogu avalikud andmed, sealhulgas ruumiandmed, on kättesaadavad masinloetaval kujul. Andmekogu",
-      "estleg:legalText": "1 (1) Andmekogu on avalik, välja arvatud andmed, millele on nende looja või saaja seadnud seaduse alusel juurdepääsupiirangu. Andmekogu on avalik, välja arvatud andmed, millele on nende looja või saaja seadnud seaduse alusel juurdepääsupiirangu. 2 (2) Andmetele tagatakse ööpäevaringne juurdepääs andmekogu veebilehe kaudu. Andmetele tagatakse ööpäevaringne juurdepääs andmekogu veebilehe kaudu. 3 (3) Andmekogu avalikud andmed, sealhulgas ruumiandmed, on kättesaadavad masinloetaval kujul. Andmekogu avalikud andmed, sealhulgas ruumiandmed, on kättesaadavad masinloetaval kujul. 4 (4) Andmekogu andmetele on juurdepääs ja andmeid väljastab vastutav töötleja kooskõlas Euroopa Parlamendi ja nõukogu määrusega (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) ja avaliku teabe seadusega. Andmekogu andmetele on juurdepääs ja andmeid väljastab vastutav töötleja kooskõlas Euroopa Parlamendi ja nõukogu määrusega (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) ja avaliku teabe seadusega. 5 (5) Andmete andmekogusse kandmine, sealhulgas andmete muutmine ja muud kasutaja tegevused, sealhulgas failide allalaadimine, logitakse. Logis säilitatakse kande või päringu sisu, kuupäev ja kellaaeg ning tuvastatud kasutaja tehtud kande või päringu tegija. Logifaile säilitatakse seitse aastat. Andmete andmekogusse kandmine, sealhulgas andmete muutmine ja muud kasutaja tegevused, sealhulgas failide allalaadimine, logitakse. Logis säilitatakse kande või päringu sisu, kuupäev ja kellaaeg ning tuvastatud kasutaja tehtud kande või päringu tegija. Logifaile säilitatakse seitse aastat. 6 (6) Vastutava töötleja nõusolekul on andmekogule juurdepääs isikul, kes teeb infotehnoloogilisi arendus- ja hooldustöid kokkulepitud tingimustel, ulatuses ja korras. Vastutava töötleja nõusolekul on andmekogule juurdepääs isikul, kes teeb infotehnoloogilisi arendus- ja hooldustöid kokkulepitud tingimustel, ulatuses ja korras.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu on avalik, välja arvatud andmed, millele on nende looja või saaja seadnud seaduse alusel juurdepääsupiirangu. 2 (2) Andmetele tagatakse ööpäevaringne juurdepääs andmekogu veebilehe kaudu. 3 (3) Andmekogu avalikud andmed, sealhulgas ruumiandmed, on kättesaadavad masinloetaval kujul. 4 (4) Andmekogu andmetele on juurdepääs ja andmeid väljastab vastutav töötleja kooskõlas Euroopa Parlamendi ja nõukogu määrusega (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu on avalik, välja arvatud andmed, millele on nende looja või saaja seadnud seaduse alusel juurdepääsupiirangu. 2 (2) Andmetele tagatakse ööpäevaringne juurdepääs andmekogu veebilehe kaudu. 3 (3) Andmekogu avalikud andmed, sealhulgas ruumiandmed, on kättesaadavad masinloetaval kujul. 4 (4) Andmekogu andmetele on juurdepääs ja andmeid väljastab vastutav töötleja kooskõlas Euroopa Parlamendi ja nõukogu määrusega (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) ja avaliku teabe seadusega. 5 (5) Andmete andmekogusse kandmine, sealhulgas andmete muutmine ja muud kasutaja tegevused, sealhulgas failide allalaadimine, logitakse. Logis säilitatakse kande või päringu sisu, kuupäev ja kellaaeg ning tuvastatud kasutaja tehtud kande või päringu tegija. Logifaile säilitatakse seitse aastat. 6 (6) Vastutava töötleja nõusolekul on andmekogule juurdepääs isikul, kes teeb infotehnoloogilisi arendus- ja hooldustöid kokkulepitud tingimustel, ulatuses ja korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -593,7 +1484,105 @@
         {
           "@id": "estleg:Reg_1054963_Par_15_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_15_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_15_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1054963_Par_15_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu on avalik, välja arvatud andmed, millele on nende looja või saaja seadnud seaduse alusel juurdepääsupiirangu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmetele tagatakse ööpäevaringne juurdepääs andmekogu veebilehe kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu avalikud andmed, sealhulgas ruumiandmed, on kättesaadavad masinloetaval kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmekogu andmetele on juurdepääs ja andmeid väljastab vastutav töötleja kooskõlas Euroopa Parlamendi ja nõukogu määrusega (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) ja avaliku teabe seadusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_15_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmete andmekogusse kandmine, sealhulgas andmete muutmine ja muud kasutaja tegevused, sealhulgas failide allalaadimine, logitakse. Logis säilitatakse kande või päringu sisu, kuupäev ja kellaaeg ning tuvastatud kasutaja tehtud kande või päringu tegija. Logifaile säilitatakse seitse aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_15_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Vastutava töötleja nõusolekul on andmekogule juurdepääs isikul, kes teeb infotehnoloogilisi arendus- ja hooldustöid kokkulepitud tingimustel, ulatuses ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 6"
     },
     {
       "@id": "estleg:Reg_1054963_Par_16",
@@ -602,13 +1591,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Andmete säilitamine ja arhiveerimine",
+      "rdfs:label": {
+        "@value": "§ 16. Andmete säilitamine ja arhiveerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "Vastutav töötleja säilitab andmekogusse kantud kehtivaid andmeid ja nendega seotud andmeid ning kohustuslikke andmeid alaliselt. Andmeid, mis on kehtetuks tunnistatud, mis ei ole kohustuslikud andmed ja mis ei ole seotud teiste kehtivate andmetega, säilitakse seitse aastat pärast andmete või nendega seotud kõikide andmete kehtetuks tunnistamist. Rakenduse ja serveri logi säilitatakse seitse aastat.",
-      "estleg:legalText": "Vastutav töötleja säilitab andmekogusse kantud kehtivaid andmeid ja nendega seotud andmeid ning kohustuslikke andmeid alaliselt. Andmeid, mis on kehtetuks tunnistatud, mis ei ole kohustuslikud andmed ja mis ei ole seotud teiste kehtivate andmetega, säilitakse seitse aastat pärast andmete või nendega seotud kõikide andmete kehtetuks tunnistamist. Rakenduse ja serveri logi säilitatakse seitse aastat. Vastutav töötleja säilitab andmekogusse kantud kehtivaid andmeid ja nendega seotud andmeid ning kohustuslikke andmeid alaliselt. Andmeid, mis on kehtetuks tunnistatud, mis ei ole kohustuslikud andmed ja mis ei ole seotud teiste kehtivate andmetega, säilitakse seitse aastat pärast andmete või nendega seotud kõikide andmete kehtetuks tunnistamist. Rakenduse ja serveri logi säilitatakse seitse aastat.",
+      "estleg:summary": {
+        "@value": "Vastutav töötleja säilitab andmekogusse kantud kehtivaid andmeid ja nendega seotud andmeid ning kohustuslikke andmeid alaliselt. Andmeid, mis on kehtetuks tunnistatud, mis ei ole kohustuslikud andmed ja mis ei ole seotud teiste kehtivate andmetega, säilitakse seitse aastat pärast andmete või nendega seotud kõikide andmete kehtetuks tunnistamist. Rakenduse ja serveri logi säilitatakse seitse aastat.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vastutav töötleja säilitab andmekogusse kantud kehtivaid andmeid ja nendega seotud andmeid ning kohustuslikke andmeid alaliselt. Andmeid, mis on kehtetuks tunnistatud, mis ei ole kohustuslikud andmed ja mis ei ole seotud teiste kehtivate andmetega, säilitakse seitse aastat pärast andmete või nendega seotud kõikide andmete kehtetuks tunnistamist. Rakenduse ja serveri logi säilitatakse seitse aastat.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -622,7 +1617,25 @@
         {
           "@id": "estleg:Reg_1054963_Par_16_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_16_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vastutav töötleja säilitab andmekogusse kantud kehtivaid andmeid ja nendega seotud andmeid ning kohustuslikke andmeid alaliselt. Andmeid, mis on kehtetuks tunnistatud, mis ei ole kohustuslikud andmed ja mis ei ole seotud teiste kehtivate andmetega, säilitakse seitse aastat pärast andmete või nendega seotud kõikide andmete kehtetuks tunnistamist. Rakenduse ja serveri logi säilitatakse seitse aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:Reg_1054963_Par_17",
@@ -631,13 +1644,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Andmekogu likvideerimine",
+      "rdfs:label": {
+        "@value": "§ 17. Andmekogu likvideerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Planeeringute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054963_Map"
       },
-      "estleg:summary": "Andmekogu likvideerimise korral otsustatakse andmete teise andmekogusse või Riigiarhiivi üleandmine või nende hävitamine ja üleandmise või hävitamise tähtaeg.",
-      "estleg:legalText": "Andmekogu likvideerimise korral otsustatakse andmete teise andmekogusse või Riigiarhiivi üleandmine või nende hävitamine ja üleandmise või hävitamise tähtaeg. Andmekogu likvideerimise korral otsustatakse andmete teise andmekogusse või Riigiarhiivi üleandmine või nende hävitamine ja üleandmise või hävitamise tähtaeg.",
+      "estleg:summary": {
+        "@value": "Andmekogu likvideerimise korral otsustatakse andmete teise andmekogusse või Riigiarhiivi üleandmine või nende hävitamine ja üleandmise või hävitamise tähtaeg.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu likvideerimise korral otsustatakse andmete teise andmekogusse või Riigiarhiivi üleandmine või nende hävitamine ja üleandmise või hävitamise tähtaeg.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1049016_Par_38"
@@ -659,6 +1678,11 @@
         {
           "@id": "estleg:Reg_1054963_Par_17_v1054963"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054963_Par_17_Lg_1"
+        }
       ]
     },
     {
@@ -671,6 +1695,19 @@
         "@id": "estleg:PLANEE_2_Par_4"
       },
       "estleg:citationText": "Määrus kehtestatakse planeerimisseaduse § 4"
+    },
+    {
+      "@id": "estleg:Reg_1054963_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu likvideerimise korral otsustatakse andmete teise andmekogusse või Riigiarhiivi üleandmine või nende hävitamine ja üleandmise või hävitamise tähtaeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054963_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
     }
   ]
 }

@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VOEKSLR_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus",
       "dcterms:title": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78635.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78635"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78635/xml"
+      },
+      "estleg:globalId": "78635",
+      "eli:id_local": "78635",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "118576",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "6a981880e5f9caf1692bb338c766a5cd16bb45f18c7e7dbe4fee474630248aa3",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -53,30 +74,39 @@
       ]
     },
     {
-      "@id": "estleg:VOEKSLR_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_VOEKSLR_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_VOEKSLR_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VOEKSLR_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:VOEKSLR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_VOEKSLR_default"
+        }
+      ]
     },
     {
       "@id": "estleg:VOEKSLR_Par_1",
@@ -85,13 +115,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [1(1)Ratifitseerida juurdelisatud välisriikide õigusinfo Euroopa konventsioon./78...]",
+      "rdfs:label": {
+        "@value": "§ 1. [(1) Ratifitseerida juurdelisatud , mis on koostatud 1968. aasta 7. juunil London...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VOEKSLR_Map"
       },
-      "estleg:summary": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1968. aasta 7. juunil Londonis ning alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid: vastavalt konventsiooni artikli 2 lõikele 3 on vastuvõtvaks asutuseks ja edastavaks asutuseks Justiitsministeerium; vastavalt konventsiooni artikli 3 lõikele 2 on õigusasutusteks Eestis kohtud, Riigiprokuratuur, Justiitsministeerium, Siseministeerium ja Tolliamet.",
-      "estleg:legalText": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1968. aasta 7. juunil Londonis ning alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid: vastavalt konventsiooni artikli 2 lõikele 3 on vastuvõtvaks asutuseks ja edastavaks asutuseks Justiitsministeerium; vastavalt konventsiooni artikli 3 lõikele 2 on õigusasutusteks Eestis kohtud, Riigiprokuratuur, Justiitsministeerium, Siseministeerium ja Tolliamet.",
+      "estleg:summary": {
+        "@value": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1968. aasta 7. juunil Londonis ning alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid: 1) vastavalt konventsiooni artikli 2 lõikele 3 on vastuvõtvaks asutuseks ja edastavaks asutuseks Justiitsministeerium; 2) vastavalt konventsiooni artikli 3 lõikele 2 on õigusasutusteks Eestis kohtud, Riigiprokuratuur, Justiitsministeerium, Siseministeerium ja Tolliamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1968. aasta 7. juunil Londonis ning alla kirjutatud Eesti Vabariigi poolt 1993. aasta 4. novembril Strasbourg'is. (2) Ratifitseerimisel teha järgmised deklaratsioonid: 1) vastavalt konventsiooni artikli 2 lõikele 3 on vastuvõtvaks asutuseks ja edastavaks asutuseks Justiitsministeerium; 2) vastavalt konventsiooni artikli 3 lõikele 2 on õigusasutusteks Eestis kohtud, Riigiprokuratuur, Justiitsministeerium, Siseministeerium ja Tolliamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VOEKSLR_default"
       },
@@ -166,11 +202,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ratifitseerimisel teha järgmised deklaratsioonid: vastavalt konventsiooni artikli 2 lõikele 3 on vastuvõtvaks asutuseks ja edastavaks asutuseks Justiitsministeerium; vastavalt konventsiooni artikli 3 lõikele 2 on õigusasutusteks Eestis kohtud, Riigiprokuratuur, Justiitsministeerium, Siseministeerium ja Tolliamet.",
+      "estleg:legalText": "(2) Ratifitseerimisel teha järgmised deklaratsioonid: 1) vastavalt konventsiooni artikli 2 lõikele 3 on vastuvõtvaks asutuseks ja edastavaks asutuseks Justiitsministeerium; 2) vastavalt konventsiooni artikli 3 lõikele 2 on õigusasutusteks Eestis kohtud, Riigiprokuratuur, Justiitsministeerium, Siseministeerium ja Tolliamet.",
       "estleg:parentProvision": {
         "@id": "estleg:VOEKSLR_Par_1"
       },
       "rdfs:label": "§ 1 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -199,12 +239,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [1(1)Ratifitseerida välisriikide õigusinfo Euroopa konventsiooni lisaprotokoll./7...]",
+      "rdfs:label": {
+        "@value": "§ 2. [(1) Ratifitseerida , mis on koostatud 1978. aasta 15. märtsil Strasbourg'is ja a...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriikide õigusinfo Euroopa konventsiooni ning selle lisaprotokolli ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VOEKSLR_Map"
       },
-      "estleg:summary": "(1) Ratifitseerida , mis on koostatud 1978. aasta 15. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is. (2) Ratifitseerimisel teha järgmine deklaratsioon: Vastavalt protokolli artikli 5 lõikele 1 deklareerib Eesti Vabariik, etta on seotud ainult protokolli I peatükiga.",
+      "estleg:summary": {
+        "@value": "(1) Ratifitseerida , mis on koostatud 1978. aasta 15. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is. (2) Ratifitseerimisel teha järgmine deklaratsioon: Vastavalt protokolli artikli 5 lõikele 1 deklareerib Eesti Vabariik, etta on seotud ainult protokolli I peatükiga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ratifitseerida , mis on koostatud 1978. aasta 15. märtsil Strasbourg'is ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is. (2) Ratifitseerimisel teha järgmine deklaratsioon: Vastavalt protokolli artikli 5 lõikele 1 deklareerib Eesti Vabariik, etta on seotud ainult protokolli I peatükiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VOEKSLR_default"
@@ -217,7 +263,7 @@
           "@id": "estleg:VOEKSLR_Par_2_Lg_2"
         },
         {
-          "@id": "estleg:VOEKSLR_Par_2_Lg_1_x2"
+          "@id": "estleg:VOEKSLR_Par_2_Lg_3"
         }
       ],
       "estleg:semanticallySimilarTo": [
@@ -270,15 +316,17 @@
       "rdfs:label": "§ 2 lg 2"
     },
     {
-      "@id": "estleg:VOEKSLR_Par_2_Lg_1_x2",
+      "@id": "estleg:VOEKSLR_Par_2_Lg_3",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vastavalt protokolli artikli 5 lõikele 1 deklareerib Eesti Vabariik, etta on seotud ainult protokolli I peatükiga.",
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vastavalt protokolli artikli 5 lõikele 1 deklareerib Eesti Vabariik, etta on seotud ainult protokolli I peatükiga.",
       "estleg:parentProvision": {
         "@id": "estleg:VOEKSLR_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 3"
     }
   ]
 }

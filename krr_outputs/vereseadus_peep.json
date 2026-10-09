@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VereS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Vereseadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Vereseadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Vereseadus",
-      "dcterms:title": [
-        {
-          "@value": "Vereseadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Blood Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Vereseadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/117032026013.xml"
+        "@id": "https://www.riigiteataja.ee/akt/117032026013"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/117032026013/xml"
+      },
+      "estleg:globalId": "117032026013",
+      "eli:id_local": "117032026013",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "158537",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "d8ce7bd9fe00327fbdb30d801203eb60909f474a9cd2e2a5231f3d0e6806051e",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2005-05-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-04-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-04-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/508052026005"
@@ -128,14 +140,40 @@
         {
           "@id": "estleg:Draft_SOM24_0637"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/508052026005"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_VereS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VereS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:VereS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Vereseadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Vereseadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VereS_1"
@@ -161,26 +199,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VereS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–2 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–2 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:VereS_TopicScheme"
-      },
-      "estleg:provisionCount": 2
-    },
-    {
       "@id": "estleg:Chapter_VereS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
@@ -200,12 +227,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§3–15 VERE KÄITLEMINE",
-      "skos:prefLabel": "§3–15 VERE KÄITLEMINE",
+      "rdfs:label": {
+        "@value": "§3–15 VERE KÄITLEMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§3–15 VERE KÄITLEMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VereS_TopicScheme"
       },
-      "estleg:provisionCount": 13
+      "estleg:provisionCount": 14
     },
     {
       "@id": "estleg:Chapter_VereS_2",
@@ -213,7 +246,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – VERE KÄITLEMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – VERE KÄITLEMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
@@ -233,8 +269,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–18 IMMUNOHEMATOLOOGILISTE UURINGUTE REFERENTLABOR",
-      "skos:prefLabel": "§16–18 IMMUNOHEMATOLOOGILISTE UURINGUTE REFERENTLABOR",
+      "rdfs:label": {
+        "@value": "§16–18 IMMUNOHEMATOLOOGILISTE UURINGUTE REFERENTLABOR",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–18 IMMUNOHEMATOLOOGILISTE UURINGUTE REFERENTLABOR",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VereS_TopicScheme"
       },
@@ -246,7 +288,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – IMMUNOHEMATOLOOGILISTE UURINGUTE REFERENTLABOR",
+      "rdfs:label": {
+        "@value": "3. peatükk – IMMUNOHEMATOLOOGILISTE UURINGUTE REFERENTLABOR",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
@@ -266,8 +311,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§19–19 VERE KÄITLEMISE RAHASTAMINE",
-      "skos:prefLabel": "§19–19 VERE KÄITLEMISE RAHASTAMINE",
+      "rdfs:label": {
+        "@value": "§19–19 VERE KÄITLEMISE RAHASTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§19–19 VERE KÄITLEMISE RAHASTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VereS_TopicScheme"
       },
@@ -279,7 +330,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – VERE KÄITLEMISE RAHASTAMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – VERE KÄITLEMISE RAHASTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
@@ -299,12 +353,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§20–23 RIIKLIK JA HALDUSJÄRELEVALVE",
-      "skos:prefLabel": "§20–23 RIIKLIK JA HALDUSJÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "§20–23 RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§20–23 RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VereS_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:Chapter_VereS_5",
@@ -312,7 +372,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
+      "rdfs:label": {
+        "@value": "5. peatükk – RIIKLIK JA HALDUSJÄRELEVALVE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
@@ -332,8 +395,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§24–26 VASTUTUS",
-      "skos:prefLabel": "§24–26 VASTUTUS",
+      "rdfs:label": {
+        "@value": "§24–26 VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§24–26 VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VereS_TopicScheme"
       },
@@ -345,7 +414,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – VASTUTUS",
+      "rdfs:label": {
+        "@value": "6. peatükk – VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
@@ -365,8 +437,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§27–33 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§27–33 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§27–33 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§27–33 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VereS_TopicScheme"
       },
@@ -378,7 +456,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "7. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
@@ -398,12 +479,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus kehtestab doonori ja retsipiendi tervise kaitse eesmärgil inimvere (edaspidi veri) käitlemise nõuded ning vere käitlemise korralduse. (2) Seadus reguleerib vere käitlemise rahastamist ning käesolevas seaduses ja selle alusel kehtestatud õigusaktides esitatud nõuete üle riikliku ja haldusjärelevalve teostamist. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus kehtestab doonori ja retsipiendi tervise kaitse eesmärgil inimvere (edaspidi veri) käitlemise nõuded ning vere käitlemise korralduse. (2) Seadus reguleerib vere käitlemise rahastamist ning käesolevas seaduses ja selle alusel kehtestatud õigusaktides esitatud nõuete üle riikliku ja haldusjärelevalve teostamist. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus kehtestab doonori ja retsipiendi tervise kaitse eesmärgil inimvere (edaspidi veri) käitlemise nõuded ning vere käitlemise korralduse. (2) Seadus reguleerib vere käitlemise rahastamist ning käesolevas seaduses ja selle alusel kehtestatud õigusaktides esitatud nõuete üle riikliku ja haldusjärelevalve teostamist. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_1"
@@ -483,12 +570,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Verepreparaat",
+      "rdfs:label": {
+        "@value": "§ 2. Verepreparaat",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Verepreparaat on verest valmistatud või toodetud ning nõuetekohaselt pakendatud ja märgistatud ravim, mis sisaldab üht või mitut vere koostisosa. Verepreparaadid on täisveri, verekomponendid ja plasmaderivaadid. Verepreparaatidele kohaldatakse ravimiseadust, arvestades käesolevast seadusest tulenevaid erisusi. (2) Täisveri on verepreparaat, mis sisaldab kõiki vere koostisosi ning verd hüübimatuks muutvat lahust. (3) Verekomponent on verepreparaat, mis on valmistatud täisverest või kogutud",
+      "estleg:summary": {
+        "@value": "(1) Verepreparaat on verest valmistatud või toodetud ning nõuetekohaselt pakendatud ja märgistatud ravim, mis sisaldab üht või mitut vere koostisosa. Verepreparaadid on täisveri, verekomponendid ja plasmaderivaadid. Verepreparaatidele kohaldatakse ravimiseadust, arvestades käesolevast seadusest tulenevaid erisusi. (2) Täisveri on verepreparaat, mis sisaldab kõiki vere koostisosi ning verd hüübimatuks muutvat lahust. (3) Verekomponent on verepreparaat, mis on valmistatud täisverest või kogutud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Verepreparaat on verest valmistatud või toodetud ning nõuetekohaselt pakendatud ja märgistatud ravim, mis sisaldab üht või mitut vere koostisosa. Verepreparaadid on täisveri, verekomponendid ja plasmaderivaadid. Verepreparaatidele kohaldatakse ravimiseadust, arvestades käesolevast seadusest tulenevaid erisusi. (2) Täisveri on verepreparaat, mis sisaldab kõiki vere koostisosi ning verd hüübimatuks muutvat lahust. (3) Verekomponent on verepreparaat, mis on valmistatud täisverest või kogutud otse doonorilt ning mis sisaldab ühe või mitme doonori vere koostisosi. (4) Plasmaderivaat on verepreparaat, mis on tööstuslikult toodetud paljude doonorite vereplasmast ja sisaldab mõnda kindlat vereplasma koostisosa. (5) Vereülekanne käesoleva seaduse tähenduses on raviprotseduur, mille käigus kantakse retsipiendile üle täisverd või verekomponente.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_1"
@@ -594,12 +687,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Vere käitlemine",
+      "rdfs:label": {
+        "@value": "§ 3. Vere käitlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Vere käitlemine on vere kogumine ning verekomponentide valmistamine, uurimine, säilitamine, väljastamine, kasutamine ja müük.",
+      "estleg:summary": {
+        "@value": "Vere käitlemine on vere kogumine ning verekomponentide valmistamine, uurimine, säilitamine, väljastamine, kasutamine ja müük.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vere käitlemine on vere kogumine ning verekomponentide valmistamine, uurimine, säilitamine, väljastamine, kasutamine ja müük.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -624,10 +723,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vere käitlemine on vere kogumine ning verekomponentide valmistamine, uurimine, säilitamine, väljastamine, kasutamine ja müük.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vere käitlemine on vere kogumine ning verekomponentide valmistamine, uurimine, säilitamine, väljastamine, kasutamine ja müük.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:VereS_Par_4",
@@ -636,12 +737,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Verekeskus",
+      "rdfs:label": {
+        "@value": "§ 4. Verekeskus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Verekeskuse ülesanne on koguda verd ning valmistada, uurida, säilitada, väljastada ja müüa verekomponente. Verekeskuse eesmärk on tagada, et Eesti tervishoiuteenuse osutajatele oleksid verekomponendid kättesaadavad ööpäev läbi. (2) Verekeskus võib olla eraõiguslik juriidiline isik või valitsusasutuse hallatav riigiasutus, kes tegutseb ravimiseaduse kohaselt väljastatud ravimite tootmise tegevusloa alusel.",
+      "estleg:summary": {
+        "@value": "(1) Verekeskuse ülesanne on koguda verd ning valmistada, uurida, säilitada, väljastada ja müüa verekomponente. Verekeskuse eesmärk on tagada, et Eesti tervishoiuteenuse osutajatele oleksid verekomponendid kättesaadavad ööpäev läbi. (2) Verekeskus võib olla eraõiguslik juriidiline isik või valitsusasutuse hallatav riigiasutus, kes tegutseb ravimiseaduse kohaselt väljastatud ravimite tootmise tegevusloa alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Verekeskuse ülesanne on koguda verd ning valmistada, uurida, säilitada, väljastada ja müüa verekomponente. Verekeskuse eesmärk on tagada, et Eesti tervishoiuteenuse osutajatele oleksid verekomponendid kättesaadavad ööpäev läbi. (2) Verekeskus võib olla eraõiguslik juriidiline isik või valitsusasutuse hallatav riigiasutus, kes tegutseb ravimiseaduse kohaselt väljastatud ravimite tootmise tegevusloa alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -726,12 +833,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Verekabinet",
+      "rdfs:label": {
+        "@value": "§ 5. Verekabinet",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Verekabineti ülesanne on tellida ja säilitada verekomponente ning väljastada neid haiglasiseselt, teha immunohematoloogilisi uuringuid ning koordineerida ja nõustada vereülekannete raviks kasutamist. (2) Verekabinetil on lubatud koguda verd erakorralistel asjaoludel, kui haiglas ja verekeskuses, kust verekabinet verekomponente tellib, puudub vajalik verevaru ning vereülekande edasilükkamine või tegemata jätmine võib põhjustada abivajaja surma või püsiva tervisekahjustuse.",
+      "estleg:summary": {
+        "@value": "(1) Verekabineti ülesanne on tellida ja säilitada verekomponente ning väljastada neid haiglasiseselt, teha immunohematoloogilisi uuringuid ning koordineerida ja nõustada vereülekannete raviks kasutamist. (2) Verekabinetil on lubatud koguda verd erakorralistel asjaoludel, kui haiglas ja verekeskuses, kust verekabinet verekomponente tellib, puudub vajalik verevaru ning vereülekande edasilükkamine või tegemata jätmine võib põhjustada abivajaja surma või püsiva tervisekahjustuse.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Verekabineti ülesanne on tellida ja säilitada verekomponente ning väljastada neid haiglasiseselt, teha immunohematoloogilisi uuringuid ning koordineerida ja nõustada vereülekannete raviks kasutamist. (2) Verekabinetil on lubatud koguda verd erakorralistel asjaoludel, kui haiglas ja verekeskuses, kust verekabinet verekomponente tellib, puudub vajalik verevaru ning vereülekande edasilükkamine või tegemata jätmine võib põhjustada abivajaja surma või püsiva tervisekahjustuse. (3) Verekabinet on haigla pidaja struktuuriüksus, kes tegutseb haigla pidajale tervishoiuteenuste korraldamise seaduse kohaselt väljastatud tervishoiuteenuste osutamise tegevusloa alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -819,12 +932,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Vere kogumine",
+      "rdfs:label": {
+        "@value": "§ 6. Vere kogumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Verd kogutakse vabatahtlikelt doonoritelt. (2) Verd ei võeta isikult, kes on doonoriks sobivuse hindamiseks tehtavatest uuringutest keeldunud, kelle veri on põetud haiguste või manustatud ravimite tõttu või muul põhjusel vere käitlemiseks kõlbmatu või kui vere loovutamine ohustab isiku tervist.",
+      "estleg:summary": {
+        "@value": "(1) Verd kogutakse vabatahtlikelt doonoritelt. (2) Verd ei võeta isikult, kes on doonoriks sobivuse hindamiseks tehtavatest uuringutest keeldunud, kelle veri on põetud haiguste või manustatud ravimite tõttu või muul põhjusel vere käitlemiseks kõlbmatu või kui vere loovutamine ohustab isiku tervist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Verd kogutakse vabatahtlikelt doonoritelt. (2) Verd ei võeta isikult, kes on doonoriks sobivuse hindamiseks tehtavatest uuringutest keeldunud, kelle veri on põetud haiguste või manustatud ravimite tõttu või muul põhjusel vere käitlemiseks kõlbmatu või kui vere loovutamine ohustab isiku tervist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -897,13 +1016,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Doonor ja retsipient",
+      "rdfs:label": {
+        "@value": "§ 7. Doonor ja retsipient",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Doonor on 18–65-aastane teovõimeline isik, kes teiste inimeste ravi otstarbel loovutab vere käitlejale oma verd tasuta. (2) Doonoril on võlaõigusseaduses sätestatud patsiendi õigused ja kohustused. (3) Doonoril on õigus: saada üldist teavet vere käitlemise ja vereülekande kohta; saada teavet vere loovutamisega kaasneda võivatest ohtudest; loobuda vere loovutamisest igal ajal oma soovil; saada teavet oma tervise seisundi, verele teostatud uuringute tulemuste ja loovutatud vere raviks",
-      "estleg:legalText": "(1) Doonor on 18–65-aastane teovõimeline isik, kes teiste inimeste ravi otstarbel loovutab vere käitlejale oma verd tasuta. (2) Doonoril on võlaõigusseaduses sätestatud patsiendi õigused ja kohustused. (3) Doonoril on õigus: saada üldist teavet vere käitlemise ja vereülekande kohta; saada teavet vere loovutamisega kaasneda võivatest ohtudest; loobuda vere loovutamisest igal ajal oma soovil; saada teavet oma tervise seisundi, verele teostatud uuringute tulemuste ja loovutatud vere raviks kõlblikkuse kohta; saada tööandjalt vaba aega vere loovutamiseks; isikuandmete salastatusele. (4) Doonoril on kohustus: esitada vere käitlejale oma isikuandmed ja kontaktandmed; avaldada vere käitlejale oma parima arusaama järgi kõik vere loovutamise seisukohast tähtsust omavad andmed ja asjaolud; teavitada vere käitlejat vere loovutamise järgselt teatavaks saanud asjaoludest või vere loovutamise järgselt ilmnenud muutustest oma tervise seisundis, mis võivad mõjutada loovutatud vere ja verekomponentide sobivust raviks; kinnitada oma allkirjaga tema poolt esitatud andmete õigsust. (5) Isiku doonoriks sobivuse kriteeriumid, hindamise tingimused ja korra ning vere loovutamist välistavate või piiravate haiguste ja muude tegurite loetelu kehtestab määrusega. (6) Retsipient käesoleva seaduse tähenduses on isik, kellele tehakse vereülekanne. Retsipiendil on võlaõigusseaduses sätestatud patsiendi õigused ja kohustused. (7) Retsipient võib väljendada oma tahet vereülekande tegemise suhtes, kinnitades seda digitaalallkirjaga tervise infosüsteemi kaudu.",
+      "estleg:summary": {
+        "@value": "(1) Doonor on 18–65-aastane teovõimeline isik, kes teiste inimeste ravi otstarbel loovutab vere käitlejale oma verd tasuta. (2) Doonoril on võlaõigusseaduses sätestatud patsiendi õigused ja kohustused. (3) Doonoril on õigus: 1) saada üldist teavet vere käitlemise ja vereülekande kohta; 2) saada teavet vere loovutamisega kaasneda võivatest ohtudest; 3) loobuda vere loovutamisest igal ajal oma soovil; 4) saada teavet oma tervise seisundi, verele teostatud uuringute tulemuste ja loovutatud vere",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Doonor on 18–65-aastane teovõimeline isik, kes teiste inimeste ravi otstarbel loovutab vere käitlejale oma verd tasuta. (2) Doonoril on võlaõigusseaduses sätestatud patsiendi õigused ja kohustused. (3) Doonoril on õigus: 1) saada üldist teavet vere käitlemise ja vereülekande kohta; 2) saada teavet vere loovutamisega kaasneda võivatest ohtudest; 3) loobuda vere loovutamisest igal ajal oma soovil; 4) saada teavet oma tervise seisundi, verele teostatud uuringute tulemuste ja loovutatud vere raviks kõlblikkuse kohta; 5) saada tööandjalt vaba aega vere loovutamiseks; 6) isikuandmete salastatusele. (4) Doonoril on kohustus: 1) esitada vere käitlejale oma isikuandmed ja kontaktandmed; 2) avaldada vere käitlejale oma parima arusaama järgi kõik vere loovutamise seisukohast tähtsust omavad andmed ja asjaolud; 3) teavitada vere käitlejat vere loovutamise järgselt teatavaks saanud asjaoludest või vere loovutamise järgselt ilmnenud muutustest oma tervise seisundis, mis võivad mõjutada loovutatud vere ja verekomponentide sobivust raviks; 4) kinnitada oma allkirjaga tema poolt esitatud andmete õigsust. (5) Isiku doonoriks sobivuse kriteeriumid, hindamise tingimused ja korra ning vere loovutamist välistavate või piiravate haiguste ja muude tegurite loetelu kehtestab määrusega. (6) Retsipient käesoleva seaduse tähenduses on isik, kellele tehakse vereülekanne. Retsipiendil on võlaõigusseaduses sätestatud patsiendi õigused ja kohustused. (7) Retsipient võib väljendada oma tahet vereülekande tegemise suhtes, kinnitades seda digitaalallkirjaga tervise infosüsteemi kaudu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
       },
@@ -1011,11 +1136,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Doonoril on õigus: saada üldist teavet vere käitlemise ja vereülekande kohta; saada teavet vere loovutamisega kaasneda võivatest ohtudest; loobuda vere loovutamisest igal ajal oma soovil; saada teavet oma tervise seisundi, verele teostatud uuringute tulemuste ja loovutatud vere raviks kõlblikkuse kohta; saada tööandjalt vaba aega vere loovutamiseks; isikuandmete salastatusele.",
+      "estleg:legalText": "(3) Doonoril on õigus: 1) saada üldist teavet vere käitlemise ja vereülekande kohta; 2) saada teavet vere loovutamisega kaasneda võivatest ohtudest; 3) loobuda vere loovutamisest igal ajal oma soovil; 4) saada teavet oma tervise seisundi, verele teostatud uuringute tulemuste ja loovutatud vere raviks kõlblikkuse kohta; 5) saada tööandjalt vaba aega vere loovutamiseks; 6) isikuandmete salastatusele.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -1036,11 +1169,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Doonoril on kohustus: esitada vere käitlejale oma isikuandmed ja kontaktandmed; avaldada vere käitlejale oma parima arusaama järgi kõik vere loovutamise seisukohast tähtsust omavad andmed ja asjaolud; teavitada vere käitlejat vere loovutamise järgselt teatavaks saanud asjaoludest või vere loovutamise järgselt ilmnenud muutustest oma tervise seisundis, mis võivad mõjutada loovutatud vere ja verekomponentide sobivust raviks; kinnitada oma allkirjaga tema poolt esitatud andmete õigsust.",
+      "estleg:legalText": "(4) Doonoril on kohustus: 1) esitada vere käitlejale oma isikuandmed ja kontaktandmed; 2) avaldada vere käitlejale oma parima arusaama järgi kõik vere loovutamise seisukohast tähtsust omavad andmed ja asjaolud; 3) teavitada vere käitlejat vere loovutamise järgselt teatavaks saanud asjaoludest või vere loovutamise järgselt ilmnenud muutustest oma tervise seisundis, mis võivad mõjutada loovutatud vere ja verekomponentide sobivust raviks; 4) kinnitada oma allkirjaga tema poolt esitatud andmete õigsust.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_7"
       },
       "rdfs:label": "§ 7 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1131,13 +1270,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Verekomponentide valmistamine",
+      "rdfs:label": {
+        "@value": "§ 8. Verekomponentide valmistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Verekeskuse valmistatud verekomponendid peavad olema kvaliteetsed, retsipiendile ohutud ja kliiniliselt tõhusad. (2) Verekeskuse toodangu kvaliteedi eest vastutav isik on verekeskuse juht. (3) Verekeskuse juht tagab: vere käitlemise vastavuse käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuetele; ravimite tootmise tegevusloa õigeaegse taotlemise ja selles sätestatud nõuete täitmise. (4) Verekeskused ja verekabinetid järgivad oma töös häid tootmistavasid.",
-      "estleg:legalText": "(1) Verekeskuse valmistatud verekomponendid peavad olema kvaliteetsed, retsipiendile ohutud ja kliiniliselt tõhusad. (2) Verekeskuse toodangu kvaliteedi eest vastutav isik on verekeskuse juht. (3) Verekeskuse juht tagab: vere käitlemise vastavuse käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuetele; ravimite tootmise tegevusloa õigeaegse taotlemise ja selles sätestatud nõuete täitmise. (4) Verekeskused ja verekabinetid järgivad oma töös häid tootmistavasid. kehtestab kooskõlas Euroopa Liidus kehtivate heade tootmistavadega verekomponentide valmistamise eeskirja määrusega, milles sätestab verepreparaatide tootmisele, personalile, ruumidele ja seadmetele, dokumentatsioonile, vere kogumisele, uurimisele, verekomponentide valmistamisele, märgistamisele, säilitamisele ja väljastamisele, pretensioonide lahendamisele ja verekomponentide tagasikutsumisele esitatavad nõuded. (5) Verekomponentide kvaliteedi nõuded, verekomponentide kvaliteedi kontrollimise ja mikrobioloogiliste uuringute tingimused ja korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Verekeskuse valmistatud verekomponendid peavad olema kvaliteetsed, retsipiendile ohutud ja kliiniliselt tõhusad. (2) Verekeskuse toodangu kvaliteedi eest vastutav isik on verekeskuse juht. (3) Verekeskuse juht tagab: 1) vere käitlemise vastavuse käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuetele; 2) ravimite tootmise tegevusloa õigeaegse taotlemise ja selles sätestatud nõuete täitmise. (4) Verekeskused ja verekabinetid järgivad oma töös häid tootmistavasid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Verekeskuse valmistatud verekomponendid peavad olema kvaliteetsed, retsipiendile ohutud ja kliiniliselt tõhusad. (2) Verekeskuse toodangu kvaliteedi eest vastutav isik on verekeskuse juht. (3) Verekeskuse juht tagab: 1) vere käitlemise vastavuse käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuetele; 2) ravimite tootmise tegevusloa õigeaegse taotlemise ja selles sätestatud nõuete täitmise. (4) Verekeskused ja verekabinetid järgivad oma töös häid tootmistavasid. kehtestab kooskõlas Euroopa Liidus kehtivate heade tootmistavadega verekomponentide valmistamise eeskirja määrusega, milles sätestab verepreparaatide tootmisele, personalile, ruumidele ja seadmetele, dokumentatsioonile, vere kogumisele, uurimisele, verekomponentide valmistamisele, märgistamisele, säilitamisele ja väljastamisele, pretensioonide lahendamisele ja verekomponentide tagasikutsumisele esitatavad nõuded. (5) Verekomponentide kvaliteedi nõuded, verekomponentide kvaliteedi kontrollimise ja mikrobioloogiliste uuringute tingimused ja korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
       },
@@ -1237,11 +1382,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Verekeskuse juht tagab: vere käitlemise vastavuse käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuetele; ravimite tootmise tegevusloa õigeaegse taotlemise ja selles sätestatud nõuete täitmise.",
+      "estleg:legalText": "(3) Verekeskuse juht tagab: 1) vere käitlemise vastavuse käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuetele; 2) ravimite tootmise tegevusloa õigeaegse taotlemise ja selles sätestatud nõuete täitmise.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 3"
+      "rdfs:label": "§ 8 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:VereS_Par_8_Lg_4",
@@ -1302,12 +1451,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Vereülekanne",
+      "rdfs:label": {
+        "@value": "§ 9. Vereülekanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Vereülekanne tehakse patsiendi tervise taastamise, tervise seisundi halvenemise ärahoidmise ja haigusest tingitud vaevuste leevendamise eesmärgil. (2) Vereülekande tingimused ja korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Vereülekanne tehakse patsiendi tervise taastamise, tervise seisundi halvenemise ärahoidmise ja haigusest tingitud vaevuste leevendamise eesmärgil. (2) Vereülekande tingimused ja korra kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vereülekanne tehakse patsiendi tervise taastamise, tervise seisundi halvenemise ärahoidmise ja haigusest tingitud vaevuste leevendamise eesmärgil. (2) Vereülekande tingimused ja korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -1371,12 +1526,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Vere ja verekomponentide kasutamine teadustöös ja kaubanduslikul eesmärgil",
+      "rdfs:label": {
+        "@value": "§ 10. Vere ja verekomponentide kasutamine teadustöös ja kaubanduslikul eesmärgil",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Doonori verd ja verekomponente võib teadustöös kasutada doonori kirjalikul nõusolekul. (2) Patsiendilt tema enda raviks eemaldatud verd ja verekomponente võib teadustöös või kaubanduslikul eesmärgil kasutada patsiendi kirjalikul nõusolekul.",
+      "estleg:summary": {
+        "@value": "(1) Doonori verd ja verekomponente võib teadustöös kasutada doonori kirjalikul nõusolekul. (2) Patsiendilt tema enda raviks eemaldatud verd ja verekomponente võib teadustöös või kaubanduslikul eesmärgil kasutada patsiendi kirjalikul nõusolekul.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Doonori verd ja verekomponente võib teadustöös kasutada doonori kirjalikul nõusolekul. (2) Patsiendilt tema enda raviks eemaldatud verd ja verekomponente võib teadustöös või kaubanduslikul eesmärgil kasutada patsiendi kirjalikul nõusolekul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -1452,12 +1613,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Verepreparaatide immunohematoloogilised uuringud",
+      "rdfs:label": {
+        "@value": "§ 11. Verepreparaatide immunohematoloogilised uuringud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Patsiendi raviks sobivad doonoriverepreparaadid määratakse kindlaks patsiendi vere ja doonori vere immunohematoloogiliste uuringutega. (2) Immunohematoloogiliste uuringute tegemise tingimused ja korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Patsiendi raviks sobivad doonoriverepreparaadid määratakse kindlaks patsiendi vere ja doonori vere immunohematoloogiliste uuringutega. (2) Immunohematoloogiliste uuringute tegemise tingimused ja korra kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Patsiendi raviks sobivad doonoriverepreparaadid määratakse kindlaks patsiendi vere ja doonori vere immunohematoloogiliste uuringutega. (2) Immunohematoloogiliste uuringute tegemise tingimused ja korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -1529,12 +1696,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Verevalvsus",
+      "rdfs:label": {
+        "@value": "§ 12. Verevalvsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Verevalvsus on vere käitlemisel tekkinud ohtlikest kõrvalekalletest ning vereülekande ajal või pärast seda täheldatud rasketest kõrvaltoimetest teavitamise ja nende tekkepõhjuste väljaselgitamise kord. (2) Tervishoiuteenuse osutaja teavitab vereülekandejärgsest raskest kõrvaltoimest verekeskust, kellelt verekomponendid telliti. Vereülekandejärgse nakkushaigusekahtluse ning haiguse diagnoosimise korral toimub teavitamine nakkushaiguste ennetamise ja tõrje seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Verevalvsus on vere käitlemisel tekkinud ohtlikest kõrvalekalletest ning vereülekande ajal või pärast seda täheldatud rasketest kõrvaltoimetest teavitamise ja nende tekkepõhjuste väljaselgitamise kord. (2) Tervishoiuteenuse osutaja teavitab vereülekandejärgsest raskest kõrvaltoimest verekeskust, kellelt verekomponendid telliti. Vereülekandejärgse nakkushaigusekahtluse ning haiguse diagnoosimise korral toimub teavitamine nakkushaiguste ennetamise ja tõrje seaduses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Verevalvsus on vere käitlemisel tekkinud ohtlikest kõrvalekalletest ning vereülekande ajal või pärast seda täheldatud rasketest kõrvaltoimetest teavitamise ja nende tekkepõhjuste väljaselgitamise kord. (2) Tervishoiuteenuse osutaja teavitab vereülekandejärgsest raskest kõrvaltoimest verekeskust, kellelt verekomponendid telliti. Vereülekandejärgse nakkushaigusekahtluse ning haiguse diagnoosimise korral toimub teavitamine nakkushaiguste ennetamise ja tõrje seaduses sätestatud korras. (3) Verekeskus teavitab talle teatavaks saanud vereülekandejärgsest raskest kõrvaltoimest, vere käitlemisel ilmnenud ohtlikust kõrvalekaldest ja verekomponentide tagasikutsumise algatamisest viivitamata kirjalikult Ravimiametit. Verekeskus teavitab vere käitlemisel ilmnenud ohtlikust kõrvalekaldest ja verekomponentide tagasikutsumise algatamisest ka tervishoiuteenuse osutajat, plasmaderivaatide või uudse ravimi tootjat ja haiglaerandi loa omajat, kes verekeskuselt vereplasmat või verekomponente ostis. (4) Ravimiamet koostab igal aastal talle edastatud info alusel koondaruande vere käitlemise ohtlike kõrvalekallete ning raskete kõrvaltoimete kohta ja edastab selle Sotsiaalministeeriumile, verekeskustele ja asjassepuutuvatele tervishoiuteenuse osutajatele. (5) Verevalvsuse ning verekomponentide tagasikutsumise tingimused ja korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -1702,12 +1875,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Verepreparaatide ohutus",
+      "rdfs:label": {
+        "@value": "§ 13. Verepreparaatide ohutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Vere käitlemisel tagatakse verepreparaatide nakkusohutus nakkushaiguste ennetamise ja tõrje seaduse §-s 14 sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Vere käitlemisel tagatakse verepreparaatide nakkusohutus nakkushaiguste ennetamise ja tõrje seaduse §-s 14 sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vere käitlemisel tagatakse verepreparaatide nakkusohutus nakkushaiguste ennetamise ja tõrje seaduse §-s 14 sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -1751,10 +1930,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vere käitlemisel tagatakse verepreparaatide nakkusohutus nakkushaiguste ennetamise ja tõrje seaduse §-s 14 sätestatud korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vere käitlemisel tagatakse verepreparaatide nakkusohutus nakkushaiguste ennetamise ja tõrje seaduse §-s 14 sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:NETS_Par_14"
@@ -1768,12 +1949,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Kasutamata verepreparaatide kõrvaldamine",
+      "rdfs:label": {
+        "@value": "§ 14. Kasutamata verepreparaatide kõrvaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Kasutamata jäänud verepreparaate käsitatakse jäätmetena ja preparaadid kõrvaldatakse jäätmeseaduse kohaselt.",
+      "estleg:summary": {
+        "@value": "Kasutamata jäänud verepreparaate käsitatakse jäätmetena ja preparaadid kõrvaldatakse jäätmeseaduse kohaselt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kasutamata jäänud verepreparaate käsitatakse jäätmetena ja preparaadid kõrvaldatakse jäätmeseaduse kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
@@ -1801,10 +1988,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kasutamata jäänud verepreparaate käsitatakse jäätmetena ja preparaadid kõrvaldatakse jäätmeseaduse kohaselt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kasutamata jäänud verepreparaate käsitatakse jäätmetena ja preparaadid kõrvaldatakse jäätmeseaduse kohaselt.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_14"
-      }
+      },
+      "rdfs:label": "§ 14 lg 1"
     },
     {
       "@id": "estleg:VereS_Par_15",
@@ -1813,13 +2002,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Riiklik vereteenistuse infosüsteem",
+      "rdfs:label": {
+        "@value": "§ 15. Riiklik vereteenistuse infosüsteem",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Vere kvaliteetse käitlemise ja ravi kvaliteedi tagamise eesmärgil on õigus asutada määrusega riiklik vereteenistuse infosüsteem (edaspidi infosüsteem), mille põhimääruses kehtestatakse: infosüsteemi kaasvastutavate töötlejate ja volitatud töötleja ülesanded; kogutavate andmete koosseis ja andmekogusse kandmise kord; andmetele juurdepääsu ja andmete väljastamise kord; andmeandjate loetelu ja nendelt saadavad andmed, kui andmeid saadakse teistest andmekogudest; andmete säilitamise täpsem kord",
-      "estleg:legalText": "(1) Vere kvaliteetse käitlemise ja ravi kvaliteedi tagamise eesmärgil on õigus asutada määrusega riiklik vereteenistuse infosüsteem (edaspidi infosüsteem), mille põhimääruses kehtestatakse: infosüsteemi kaasvastutavate töötlejate ja volitatud töötleja ülesanded; kogutavate andmete koosseis ja andmekogusse kandmise kord; andmetele juurdepääsu ja andmete väljastamise kord; andmeandjate loetelu ja nendelt saadavad andmed, kui andmeid saadakse teistest andmekogudest; andmete säilitamise täpsem kord ja tingimused ning säilitustähtajad; muud korraldusküsimused. (2) Infosüsteemi kaasvastutavad töötlejad on Sotsiaalministeerium ja Tervisekassa.",
+      "estleg:summary": {
+        "@value": "(1) Vere kvaliteetse käitlemise ja ravi kvaliteedi tagamise eesmärgil on õigus asutada määrusega riiklik vereteenistuse infosüsteem (edaspidi infosüsteem), mille põhimääruses kehtestatakse: 1) infosüsteemi kaasvastutavate töötlejate ja volitatud töötleja ülesanded; 2) kogutavate andmete koosseis ja andmekogusse kandmise kord; 3) andmetele juurdepääsu ja andmete väljastamise kord; 4) andmeandjate loetelu ja nendelt saadavad andmed, kui andmeid saadakse teistest andmekogudest; 5) andmete",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Vere kvaliteetse käitlemise ja ravi kvaliteedi tagamise eesmärgil on õigus asutada määrusega riiklik vereteenistuse infosüsteem (edaspidi infosüsteem), mille põhimääruses kehtestatakse: 1) infosüsteemi kaasvastutavate töötlejate ja volitatud töötleja ülesanded; 2) kogutavate andmete koosseis ja andmekogusse kandmise kord; 3) andmetele juurdepääsu ja andmete väljastamise kord; 4) andmeandjate loetelu ja nendelt saadavad andmed, kui andmeid saadakse teistest andmekogudest; 5) andmete säilitamise täpsem kord ja tingimused ning säilitustähtajad; 6) muud korraldusküsimused. (2) Infosüsteemi kaasvastutavad töötlejad on Sotsiaalministeerium ja Tervisekassa.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
       },
@@ -1895,11 +2090,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Vere kvaliteetse käitlemise ja ravi kvaliteedi tagamise eesmärgil on õigus asutada määrusega riiklik vereteenistuse infosüsteem (edaspidi infosüsteem), mille põhimääruses kehtestatakse: infosüsteemi kaasvastutavate töötlejate ja volitatud töötleja ülesanded; kogutavate andmete koosseis ja andmekogusse kandmise kord; andmetele juurdepääsu ja andmete väljastamise kord; andmeandjate loetelu ja nendelt saadavad andmed, kui andmeid saadakse teistest andmekogudest; andmete säilitamise täpsem kord ja tingimused ning säilitustähtajad; muud korraldusküsimused.",
+      "estleg:legalText": "(1) Vere kvaliteetse käitlemise ja ravi kvaliteedi tagamise eesmärgil on õigus asutada määrusega riiklik vereteenistuse infosüsteem (edaspidi infosüsteem), mille põhimääruses kehtestatakse: 1) infosüsteemi kaasvastutavate töötlejate ja volitatud töötleja ülesanded; 2) kogutavate andmete koosseis ja andmekogusse kandmise kord; 3) andmetele juurdepääsu ja andmete väljastamise kord; 4) andmeandjate loetelu ja nendelt saadavad andmed, kui andmeid saadakse teistest andmekogudest; 5) andmete säilitamise täpsem kord ja tingimused ning säilitustähtajad; 6) muud korraldusküsimused.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_15"
       },
       "rdfs:label": "§ 15 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -1953,13 +2156,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
-      "rdfs:label": "§ 15¹. Vere käitlemise andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 15¹. Vere käitlemise andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse tähenduses tuleb vere käitlemise ohutuse ja verevalvsuse tagamiseks säilitada andmeid alates andmete tekkimisest järgmiselt: vere käitlemise täieliku jälgitavuse tagamiseks vajalikke andmeid 30 aastat; isiku doonoriks sobivuse hindamise käigus kogutud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; doonori immunohematoloogiliste ja nakkusuuringutega seotud andmeid 15",
-      "estleg:legalText": "Käesoleva seaduse tähenduses tuleb vere käitlemise ohutuse ja verevalvsuse tagamiseks säilitada andmeid alates andmete tekkimisest järgmiselt: vere käitlemise täieliku jälgitavuse tagamiseks vajalikke andmeid 30 aastat; isiku doonoriks sobivuse hindamise käigus kogutud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; doonori immunohematoloogiliste ja nakkusuuringutega seotud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed ja uuringutulemused ning doonori veregrupi ning veregrupisüsteemide fenotüüpide ja molekulaardiagnostika uuringutulemused, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; verekaarti, transfusiooniprotokolli ja transfusioonijärgse reaktsiooni protokolli tervishoiuteenuste korraldamise seaduse §-s 42 sätestatud tingimustel ja korras; doonori vereloovutuste kohta peetakse arvestust isiku doonoriks sobivuse ea lõpuni.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse tähenduses tuleb vere käitlemise ohutuse ja verevalvsuse tagamiseks säilitada andmeid alates andmete tekkimisest järgmiselt: 1) vere käitlemise täieliku jälgitavuse tagamiseks vajalikke andmeid 30 aastat; 2) isiku doonoriks sobivuse hindamise käigus kogutud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; 3) doonori immunohematoloogiliste ja nakkusuuringutega seotud",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva seaduse tähenduses tuleb vere käitlemise ohutuse ja verevalvsuse tagamiseks säilitada andmeid alates andmete tekkimisest järgmiselt: 1) vere käitlemise täieliku jälgitavuse tagamiseks vajalikke andmeid 30 aastat; 2) isiku doonoriks sobivuse hindamise käigus kogutud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; 3) doonori immunohematoloogiliste ja nakkusuuringutega seotud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed ja uuringutulemused ning doonori veregrupi ning veregrupisüsteemide fenotüüpide ja molekulaardiagnostika uuringutulemused, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; 4) verekaarti, transfusiooniprotokolli ja transfusioonijärgse reaktsiooni protokolli tervishoiuteenuste korraldamise seaduse §-s 4² sätestatud tingimustel ja korras; 5) doonori vereloovutuste kohta peetakse arvestust isiku doonoriks sobivuse ea lõpuni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_2"
       },
@@ -1995,10 +2204,19 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse tähenduses tuleb vere käitlemise ohutuse ja verevalvsuse tagamiseks säilitada andmeid alates andmete tekkimisest järgmiselt: vere käitlemise täieliku jälgitavuse tagamiseks vajalikke andmeid 30 aastat; isiku doonoriks sobivuse hindamise käigus kogutud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; doonori immunohematoloogiliste ja nakkusuuringutega seotud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed ja uuringutulemused ning doonori veregrupi ning veregrupisüsteemide fenotüüpide ja molekulaardiagnostika uuringutulemused, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; verekaarti, transfusiooniprotokolli ja transfusioonijärgse reaktsiooni protokolli tervishoiuteenuste korraldamise seaduse §-s 42 sätestatud tingimustel ja korras; doonori vereloovutuste kohta peetakse arvestust isiku doonoriks sobivuse ea lõpuni.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse tähenduses tuleb vere käitlemise ohutuse ja verevalvsuse tagamiseks säilitada andmeid alates andmete tekkimisest järgmiselt: 1) vere käitlemise täieliku jälgitavuse tagamiseks vajalikke andmeid 30 aastat; 2) isiku doonoriks sobivuse hindamise käigus kogutud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; 3) doonori immunohematoloogiliste ja nakkusuuringutega seotud andmeid 15 aastat, välja arvatud vere loovutamise alalise piirangu kehtestamise aluseks olevad andmed ja uuringutulemused ning doonori veregrupi ning veregrupisüsteemide fenotüüpide ja molekulaardiagnostika uuringutulemused, mida säilitatakse kuni kehtiva doonorluse ea lõpuni; 4) verekaarti, transfusiooniprotokolli ja transfusioonijärgse reaktsiooni protokolli tervishoiuteenuste korraldamise seaduse §-s 4² sätestatud tingimustel ja korras; 5) doonori vereloovutuste kohta peetakse arvestust isiku doonoriks sobivuse ea lõpuni.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_15_1"
       },
+      "rdfs:label": "§ 15¹ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2024,12 +2242,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Immunohematoloogiliste uuringute referentlabor",
+      "rdfs:label": {
+        "@value": "§ 16. Immunohematoloogiliste uuringute referentlabor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Immunohematoloogiliste uuringute referentlabor (edaspidi referentlabor) on labor, kes osutab referentteenust, sealhulgas määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi ning juhendab metoodiliselt Eestis tegutsevaid teisi selle valdkonna laboreid. Referentlabori eesmärk on tagada immunohematoloogiliste uuringute kvaliteet.",
+      "estleg:summary": {
+        "@value": "Immunohematoloogiliste uuringute referentlabor (edaspidi referentlabor) on labor, kes osutab referentteenust, sealhulgas määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi ning juhendab metoodiliselt Eestis tegutsevaid teisi selle valdkonna laboreid. Referentlabori eesmärk on tagada immunohematoloogiliste uuringute kvaliteet.",
+        "@language": "et"
+      },
       "estleg:legalText": "Immunohematoloogiliste uuringute referentlabor (edaspidi referentlabor) on labor, kes osutab referentteenust, sealhulgas määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi ning juhendab metoodiliselt Eestis tegutsevaid teisi selle valdkonna laboreid. Referentlabori eesmärk on tagada immunohematoloogiliste uuringute kvaliteet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_3"
@@ -2057,10 +2281,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Immunohematoloogiliste uuringute referentlabor (edaspidi referentlabor) on labor, kes osutab referentteenust, sealhulgas määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi ning juhendab metoodiliselt Eestis tegutsevaid teisi selle valdkonna laboreid. Referentlabori eesmärk on tagada immunohematoloogiliste uuringute kvaliteet.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Immunohematoloogiliste uuringute referentlabor (edaspidi referentlabor) on labor, kes osutab referentteenust, sealhulgas määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi ning juhendab metoodiliselt Eestis tegutsevaid teisi selle valdkonna laboreid. Referentlabori eesmärk on tagada immunohematoloogiliste uuringute kvaliteet.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_16"
-      }
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:VereS_Par_17",
@@ -2069,13 +2295,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Referentlabori ülesanded",
+      "rdfs:label": {
+        "@value": "§ 17. Referentlabori ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Referentteenuse osutamisel täidab referentlabor järgmisi ülesandeid: koordineerib, suunab ja kontrollib asjaomaste laborite diagnostikat; määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi; rakendab rutiindiagnostikat immunohematoloogia valdkonnas; valdab ja rakendab referentmeetodeid; valmistab referentmaterjali ja -paneele; juurutab uusi diagnostikameetodeid ja kogub infot erinevate uute meetodite kohta ning võrdleb neid tõhususe seisukohast; korraldab",
-      "estleg:legalText": "Referentteenuse osutamisel täidab referentlabor järgmisi ülesandeid: koordineerib, suunab ja kontrollib asjaomaste laborite diagnostikat; määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi; rakendab rutiindiagnostikat immunohematoloogia valdkonnas; valdab ja rakendab referentmeetodeid; valmistab referentmaterjali ja -paneele; juurutab uusi diagnostikameetodeid ja kogub infot erinevate uute meetodite kohta ning võrdleb neid tõhususe seisukohast; korraldab erialanõustamist ja -õpet ning osaleb teadustöös; osaleb immunohematoloogia valdkonnas tehtud analüüside rahvusvahelises kvaliteedikontrollis.",
+      "estleg:summary": {
+        "@value": "Referentteenuse osutamisel täidab referentlabor järgmisi ülesandeid: 1) koordineerib, suunab ja kontrollib asjaomaste laborite diagnostikat; 2) määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi; 3) rakendab rutiindiagnostikat immunohematoloogia valdkonnas; 4) valdab ja rakendab referentmeetodeid; 5) valmistab referentmaterjali ja -paneele; 6) juurutab uusi diagnostikameetodeid ja kogub infot erinevate uute meetodite kohta ning võrdleb neid tõhususe seisukohast; 7)",
+        "@language": "et"
+      },
+      "estleg:legalText": "Referentteenuse osutamisel täidab referentlabor järgmisi ülesandeid: 1) koordineerib, suunab ja kontrollib asjaomaste laborite diagnostikat; 2) määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi; 3) rakendab rutiindiagnostikat immunohematoloogia valdkonnas; 4) valdab ja rakendab referentmeetodeid; 5) valmistab referentmaterjali ja -paneele; 6) juurutab uusi diagnostikameetodeid ja kogub infot erinevate uute meetodite kohta ning võrdleb neid tõhususe seisukohast; 7) korraldab erialanõustamist ja -õpet ning osaleb teadustöös; 8) osaleb immunohematoloogia valdkonnas tehtud analüüside rahvusvahelises kvaliteedikontrollis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_3"
       },
@@ -2099,10 +2331,22 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Referentteenuse osutamisel täidab referentlabor järgmisi ülesandeid: koordineerib, suunab ja kontrollib asjaomaste laborite diagnostikat; määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi; rakendab rutiindiagnostikat immunohematoloogia valdkonnas; valdab ja rakendab referentmeetodeid; valmistab referentmaterjali ja -paneele; juurutab uusi diagnostikameetodeid ja kogub infot erinevate uute meetodite kohta ning võrdleb neid tõhususe seisukohast; korraldab erialanõustamist ja -õpet ning osaleb teadustöös; osaleb immunohematoloogia valdkonnas tehtud analüüside rahvusvahelises kvaliteedikontrollis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Referentteenuse osutamisel täidab referentlabor järgmisi ülesandeid: 1) koordineerib, suunab ja kontrollib asjaomaste laborite diagnostikat; 2) määrab kliiniliselt olulistes veregruppide süsteemides antigeene ja antikehi; 3) rakendab rutiindiagnostikat immunohematoloogia valdkonnas; 4) valdab ja rakendab referentmeetodeid; 5) valmistab referentmaterjali ja -paneele; 6) juurutab uusi diagnostikameetodeid ja kogub infot erinevate uute meetodite kohta ning võrdleb neid tõhususe seisukohast; 7) korraldab erialanõustamist ja -õpet ning osaleb teadustöös; 8) osaleb immunohematoloogia valdkonnas tehtud analüüside rahvusvahelises kvaliteedikontrollis.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_17"
-      }
+      },
+      "rdfs:label": "§ 17 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
     },
     {
       "@id": "estleg:VereS_Par_18",
@@ -2111,12 +2355,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Referentteenuse osutamise korraldamine",
+      "rdfs:label": {
+        "@value": "§ 18. Referentteenuse osutamise korraldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Referentteenuse osutamist korraldab Terviseamet. Referentteenuse osutamiseks sõlmib Terviseameti peadirektor halduslepingu verekeskusega, millel on käesoleva seaduse nõuetele vastav referentlabor.",
+      "estleg:summary": {
+        "@value": "Referentteenuse osutamist korraldab Terviseamet. Referentteenuse osutamiseks sõlmib Terviseameti peadirektor halduslepingu verekeskusega, millel on käesoleva seaduse nõuetele vastav referentlabor.",
+        "@language": "et"
+      },
       "estleg:legalText": "Referentteenuse osutamist korraldab Terviseamet. Referentteenuse osutamiseks sõlmib Terviseameti peadirektor halduslepingu verekeskusega, millel on käesoleva seaduse nõuetele vastav referentlabor.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_3"
@@ -2165,10 +2415,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Referentteenuse osutamist korraldab Terviseamet. Referentteenuse osutamiseks sõlmib Terviseameti peadirektor halduslepingu verekeskusega, millel on käesoleva seaduse nõuetele vastav referentlabor.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Referentteenuse osutamist korraldab Terviseamet. Referentteenuse osutamiseks sõlmib Terviseameti peadirektor halduslepingu verekeskusega, millel on käesoleva seaduse nõuetele vastav referentlabor.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_18"
       },
+      "rdfs:label": "§ 18 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2192,12 +2444,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Vere käitlemise rahastamine",
+      "rdfs:label": {
+        "@value": "§ 19. Vere käitlemise rahastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Referentlabori tegevuskulud kaetakse Terviseameti eelarvest. (2) Tervishoiuteenuse osutajale hüvitab verekomponentide ostmise kulud Tervisekassa ravikindlustuse seaduse alusel.",
+      "estleg:summary": {
+        "@value": "(1) Referentlabori tegevuskulud kaetakse Terviseameti eelarvest. (2) Tervishoiuteenuse osutajale hüvitab verekomponentide ostmise kulud Tervisekassa ravikindlustuse seaduse alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Referentlabori tegevuskulud kaetakse Terviseameti eelarvest. (2) Tervishoiuteenuse osutajale hüvitab verekomponentide ostmise kulud Tervisekassa ravikindlustuse seaduse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_4"
@@ -2289,12 +2547,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Vere käitlemise üle riikliku ja haldusjärelevalve teostajad",
+      "rdfs:label": {
+        "@value": "§ 20. Vere käitlemise üle riikliku ja haldusjärelevalve teostajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Järelevalvet vere käitlemise üle teostavad Ravimiamet ja Terviseamet. (2) Ravimiamet kontrollib, kas verd käitlevad verekeskused järgivad käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõudeid. (3) Terviseamet kontrollib, kas verekabinetid järgivad käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõudeid, mida kohaldatakse verekomponentide tellimisele, säilitamisele, haiglasisesele väljastamisele, immunohematoloogilistele uuringutele ja",
+      "estleg:summary": {
+        "@value": "(1) Järelevalvet vere käitlemise üle teostavad Ravimiamet ja Terviseamet. (2) Ravimiamet kontrollib, kas verd käitlevad verekeskused järgivad käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõudeid. (3) Terviseamet kontrollib, kas verekabinetid järgivad käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõudeid, mida kohaldatakse verekomponentide tellimisele, säilitamisele, haiglasisesele väljastamisele, immunohematoloogilistele uuringutele ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Järelevalvet vere käitlemise üle teostavad Ravimiamet ja Terviseamet. (2) Ravimiamet kontrollib, kas verd käitlevad verekeskused järgivad käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõudeid. (3) Terviseamet kontrollib, kas verekabinetid järgivad käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõudeid, mida kohaldatakse verekomponentide tellimisele, säilitamisele, haiglasisesele väljastamisele, immunohematoloogilistele uuringutele ja vereülekannete raviks kasutamisele ning erakorralistel asjaoludel vere kogumisele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_5"
@@ -2425,12 +2689,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20¹.",
-      "rdfs:label": "§ 20¹. Riikliku järelevalve erimeetmed",
+      "rdfs:label": {
+        "@value": "§ 20¹. Riikliku järelevalve erimeetmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_5"
@@ -2484,10 +2754,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_20_1"
       },
+      "rdfs:label": "§ 20¹ lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2508,13 +2780,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Haldusjärelevalvet teostava ametiisiku õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 21. Haldusjärelevalvet teostava ametiisiku õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Haldusjärelevalvet teostaval ametiisikul on oma ülesannete täitmiseks õigus: siseneda kontrollitava isiku juuresolekul tema tegevuskohta, seejuures vajadusel ka ette teatamata; tutvuda vere käitlemisega; võtta vajadusel kontrolliks proove ja analüüse; tutvuda vere käitlemist käsitlevate dokumentidega või nende koopiatega ning saada nendest ärakirju; saada kontrollitava isiku juhtorganitelt seletusi; teha kontrollitavale isikule ettepanekuid tegevuse parandamiseks; teha oma pädevuse piires",
-      "estleg:legalText": "(1) Haldusjärelevalvet teostaval ametiisikul on oma ülesannete täitmiseks õigus: siseneda kontrollitava isiku juuresolekul tema tegevuskohta, seejuures vajadusel ka ette teatamata; tutvuda vere käitlemisega; võtta vajadusel kontrolliks proove ja analüüse; tutvuda vere käitlemist käsitlevate dokumentidega või nende koopiatega ning saada nendest ärakirju; saada kontrollitava isiku juhtorganitelt seletusi; teha kontrollitavale isikule ettepanekuid tegevuse parandamiseks; teha oma pädevuse piires ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks või muude toimingute tegemiseks. (2) Haldusjärelevalvet käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete täitmise üle teostatakse vähemalt kord kahe aasta jooksul. (3) Haldusjärelevalvet teostav ametiisik esitab enne tööülesande täitmisele asumist ametitõendi.",
+      "estleg:summary": {
+        "@value": "(1) Haldusjärelevalvet teostaval ametiisikul on oma ülesannete täitmiseks õigus: 1) siseneda kontrollitava isiku juuresolekul tema tegevuskohta, seejuures vajadusel ka ette teatamata; 2) tutvuda vere käitlemisega; 3) võtta vajadusel kontrolliks proove ja analüüse; 4) tutvuda vere käitlemist käsitlevate dokumentidega või nende koopiatega ning saada nendest ärakirju; 5) saada kontrollitava isiku juhtorganitelt seletusi; 6) teha kontrollitavale isikule ettepanekuid tegevuse parandamiseks; 7) teha",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Haldusjärelevalvet teostaval ametiisikul on oma ülesannete täitmiseks õigus: 1) siseneda kontrollitava isiku juuresolekul tema tegevuskohta, seejuures vajadusel ka ette teatamata; 2) tutvuda vere käitlemisega; 3) võtta vajadusel kontrolliks proove ja analüüse; 4) tutvuda vere käitlemist käsitlevate dokumentidega või nende koopiatega ning saada nendest ärakirju; 5) saada kontrollitava isiku juhtorganitelt seletusi; 6) teha kontrollitavale isikule ettepanekuid tegevuse parandamiseks; 7) teha oma pädevuse piires ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks või muude toimingute tegemiseks. (2) Haldusjärelevalvet käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete täitmise üle teostatakse vähemalt kord kahe aasta jooksul. (3) Haldusjärelevalvet teostav ametiisik esitab enne tööülesande täitmisele asumist ametitõendi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_5"
       },
@@ -2560,11 +2838,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Haldusjärelevalvet teostaval ametiisikul on oma ülesannete täitmiseks õigus: siseneda kontrollitava isiku juuresolekul tema tegevuskohta, seejuures vajadusel ka ette teatamata; tutvuda vere käitlemisega; võtta vajadusel kontrolliks proove ja analüüse; tutvuda vere käitlemist käsitlevate dokumentidega või nende koopiatega ning saada nendest ärakirju; saada kontrollitava isiku juhtorganitelt seletusi; teha kontrollitavale isikule ettepanekuid tegevuse parandamiseks; teha oma pädevuse piires ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks või muude toimingute tegemiseks.",
+      "estleg:legalText": "(1) Haldusjärelevalvet teostaval ametiisikul on oma ülesannete täitmiseks õigus: 1) siseneda kontrollitava isiku juuresolekul tema tegevuskohta, seejuures vajadusel ka ette teatamata; 2) tutvuda vere käitlemisega; 3) võtta vajadusel kontrolliks proove ja analüüse; 4) tutvuda vere käitlemist käsitlevate dokumentidega või nende koopiatega ning saada nendest ärakirju; 5) saada kontrollitava isiku juhtorganitelt seletusi; 6) teha kontrollitavale isikule ettepanekuid tegevuse parandamiseks; 7) teha oma pädevuse piires ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja rikkumisega tekitatud tagajärgede kõrvaldamiseks või muude toimingute tegemiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_21"
       },
       "rdfs:label": "§ 21 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2620,13 +2907,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Ettekirjutus",
+      "rdfs:label": {
+        "@value": "§ 22. Ettekirjutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 22. Ettekirjutus",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_5"
       },
@@ -2658,13 +2950,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Ettekirjutuse vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 23. Ettekirjutuse vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 23. Ettekirjutuse vaidlustamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_5"
       },
@@ -2693,18 +2990,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24.",
+      "rdfs:label": {
+        "@value": "§ 24.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
+      "estleg:summary": "§ 24.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_6"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VereS_6"
       },
-      "estleg:summary": "§ 24.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VereS_Par_24_v860567"
@@ -2721,13 +3021,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 26.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 26.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_6"
       },
@@ -2762,13 +3067,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Euroopa Komisjoni teavitamine",
+      "rdfs:label": {
+        "@value": "§ 27. Euroopa Komisjoni teavitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Sotsiaalministeerium peab Euroopa Komisjoni teavitama: vabatahtlikku tasuta doonorlust edendavatest meetmetest iga kolme aasta järel käesoleva seaduse jõustumisest arvates; vere käitlemisega seotud meetmetest, sealhulgas järelevalvemeetmetest 2006. aasta 31. detsembriks ja edaspidi iga kolme aasta järel.",
-      "estleg:legalText": "Sotsiaalministeerium peab Euroopa Komisjoni teavitama: vabatahtlikku tasuta doonorlust edendavatest meetmetest iga kolme aasta järel käesoleva seaduse jõustumisest arvates; vere käitlemisega seotud meetmetest, sealhulgas järelevalvemeetmetest 2006. aasta 31. detsembriks ja edaspidi iga kolme aasta järel.",
+      "estleg:summary": {
+        "@value": "Sotsiaalministeerium peab Euroopa Komisjoni teavitama: 1) vabatahtlikku tasuta doonorlust edendavatest meetmetest iga kolme aasta järel käesoleva seaduse jõustumisest arvates; 2) vere käitlemisega seotud meetmetest, sealhulgas järelevalvemeetmetest 2006. aasta 31. detsembriks ja edaspidi iga kolme aasta järel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sotsiaalministeerium peab Euroopa Komisjoni teavitama: 1) vabatahtlikku tasuta doonorlust edendavatest meetmetest iga kolme aasta järel käesoleva seaduse jõustumisest arvates; 2) vere käitlemisega seotud meetmetest, sealhulgas järelevalvemeetmetest 2006. aasta 31. detsembriks ja edaspidi iga kolme aasta järel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_7"
       },
@@ -2804,10 +3115,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Sotsiaalministeerium peab Euroopa Komisjoni teavitama: vabatahtlikku tasuta doonorlust edendavatest meetmetest iga kolme aasta järel käesoleva seaduse jõustumisest arvates; vere käitlemisega seotud meetmetest, sealhulgas järelevalvemeetmetest 2006. aasta 31. detsembriks ja edaspidi iga kolme aasta järel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sotsiaalministeerium peab Euroopa Komisjoni teavitama: 1) vabatahtlikku tasuta doonorlust edendavatest meetmetest iga kolme aasta järel käesoleva seaduse jõustumisest arvates; 2) vere käitlemisega seotud meetmetest, sealhulgas järelevalvemeetmetest 2006. aasta 31. detsembriks ja edaspidi iga kolme aasta järel.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_27"
       },
+      "rdfs:label": "§ 27 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2828,12 +3145,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Heade tootmistavade rakendamine",
+      "rdfs:label": {
+        "@value": "§ 28. Heade tootmistavade rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "Verekeskused ja verekabinetid peavad viima vere käitlemise vastavusse käesoleva seaduse § 8 lõike 4 alusel sätestatud nõuetega hiljemalt 2006. aasta 1. jaanuariks.",
+      "estleg:summary": {
+        "@value": "Verekeskused ja verekabinetid peavad viima vere käitlemise vastavusse käesoleva seaduse § 8 lõike 4 alusel sätestatud nõuetega hiljemalt 2006. aasta 1. jaanuariks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Verekeskused ja verekabinetid peavad viima vere käitlemise vastavusse käesoleva seaduse § 8 lõike 4 alusel sätestatud nõuetega hiljemalt 2006. aasta 1. jaanuariks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_7"
@@ -2875,10 +3198,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Verekeskused ja verekabinetid peavad viima vere käitlemise vastavusse käesoleva seaduse § 8 lõike 4 alusel sätestatud nõuetega hiljemalt 2006. aasta 1. jaanuariks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Verekeskused ja verekabinetid peavad viima vere käitlemise vastavusse käesoleva seaduse § 8 lõike 4 alusel sätestatud nõuetega hiljemalt 2006. aasta 1. jaanuariks.",
       "estleg:parentProvision": {
         "@id": "estleg:VereS_Par_28"
       },
+      "rdfs:label": "§ 28 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2904,18 +3229,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29.",
+      "rdfs:label": {
+        "@value": "§ 29.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
+      "estleg:summary": "§ 29.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VereS_7"
       },
-      "estleg:summary": "§ 29.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VereS_Par_29_v860567"
@@ -2929,12 +3257,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 32. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_7"
@@ -2958,12 +3292,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 33. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vereseadus",
       "estleg:partOfAct": {
         "@id": "estleg:VereS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub 2005. aasta 1. mail. (2) Käesoleva seaduse §-d 15 ja 24 jõustuvad 2008. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub 2005. aasta 1. mail. (2) Käesoleva seaduse §-d 15 ja 24 jõustuvad 2008. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus jõustub 2005. aasta 1. mail. (2) Käesoleva seaduse §-d 15 ja 24 jõustuvad 2008. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VereS_7"
@@ -3026,6 +3366,22 @@
           "@id": "estleg:VereS_Par_15"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/508052026005",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:VereS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Blood Act",
+        "@language": "en"
+      }
     }
   ]
 }

@@ -70,16 +70,25 @@ def test_active_regulations_excludes_all_temporal_status_repealed() -> None:
 
 
 def test_vangla_example_has_no_provision_legal_text_when_present() -> None:
-    """Ticket example: repeal 2026-05-04, still must not serve legalText."""
+    """Ticket example: a repealed act must not serve legalText.
+
+    The ticket's example (Vangla sisekorraeeskiri, repeal 2026-05-04) is back
+    in force since the 2026-10-09 refresh: the 2026-05-04 date ended an earlier
+    redaction, and Riigi Teataja serves a new one from 2026-10-05. The
+    invariant is therefore stated conditionally: while the act is repealed it
+    carries no provision legalText; once it is in force again its provisions
+    carry text.
+    """
     matches = list(RIIK.glob("vangla_sisekorraeeskiri_t162619_peep.json"))
     if not matches:
         return
     doc = json.loads(matches[0].read_text(encoding="utf-8"))
     ont = generate_regulations._ontology_node(doc) or {}
-    assert ont.get("estleg:temporalStatus") == "repealed"
-    for node in doc.get("@graph", []):
-        if generate_regulations._is_provision_node(node):
-            assert not generate_regulations._node_has_legal_text(node)
+    provisions = [n for n in doc.get("@graph", []) if generate_regulations._is_provision_node(n)]
+    if ont.get("estleg:temporalStatus") == "repealed":
+        assert not any(generate_regulations._node_has_legal_text(n) for n in provisions)
+    else:
+        assert any(generate_regulations._node_has_legal_text(n) for n in provisions)
 
 
 def test_strip_helper_is_idempotent_on_already_tombstoned_doc() -> None:

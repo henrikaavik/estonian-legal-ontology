@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Maastiku kontrollitud põletamise nõuded ja kord (määrus)",
+      "rdfs:label": {
+        "@value": "Maastiku kontrollitud põletamise nõuded ja kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2021-03-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2021-02-11",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -70,7 +72,13 @@
         {
           "@id": "http://eurovoc.europa.eu/517"
         }
-      ]
+      ],
+      "dcterms:title": "Maastiku kontrollitud põletamise nõuded ja kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1051339_Par_1",
@@ -79,18 +87,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1051339_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse kaitstaval loodusobjektil ja Kaitseväe või Kaitseliidu harjutusväljal maastiku kontrollitud põletamise (edaspidi põletamise) nõuded ja kord.",
-      "estleg:legalText": "Määrusega kehtestatakse kaitstaval loodusobjektil ja Kaitseväe või Kaitseliidu harjutusväljal maastiku kontrollitud põletamise (edaspidi põletamise) nõuded ja kord. Määrusega kehtestatakse kaitstaval loodusobjektil ja Kaitseväe või Kaitseliidu harjutusväljal maastiku kontrollitud põletamise (edaspidi põletamise) nõuded ja kord.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse kaitstaval loodusobjektil ja Kaitseväe või Kaitseliidu harjutusväljal maastiku kontrollitud põletamise (edaspidi põletamise) nõuded ja kord.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse kaitstaval loodusobjektil ja Kaitseväe või Kaitseliidu harjutusväljal maastiku kontrollitud põletamise (edaspidi põletamise) nõuded ja kord.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1051339_Par_1_v1051339"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1051339_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse kaitstaval loodusobjektil ja Kaitseväe või Kaitseliidu harjutusväljal maastiku kontrollitud põletamise (edaspidi põletamise) nõuded ja kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1051339_Par_2",
@@ -99,18 +131,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Põletamise üldised nõuded",
+      "rdfs:label": {
+        "@value": "§ 2. Põletamise üldised nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1051339_Map"
       },
-      "estleg:summary": "1 (1) Põletamiseks valitakse põletamise juhendist kindlale kohale sobivaim meetod. Põletamiseks valitakse põletamise juhendist kindlale kohale sobivaim meetod. 2 (2) Põletamisel lähtutakse ohutuimast tuule suunast ja muudest põletamisele mõjuvatest ilmastikutingimustest. Põletamisel lähtutakse ohutuimast tuule suunast ja muudest põletamisele mõjuvatest ilmastikutingimustest. 3 (3) Põletamise ohutuse eest vastutab selle tegija. Põletamise ohutuse eest vastutab selle tegija.",
-      "estleg:legalText": "1 (1) Põletamiseks valitakse põletamise juhendist kindlale kohale sobivaim meetod. Põletamiseks valitakse põletamise juhendist kindlale kohale sobivaim meetod. 2 (2) Põletamisel lähtutakse ohutuimast tuule suunast ja muudest põletamisele mõjuvatest ilmastikutingimustest. Põletamisel lähtutakse ohutuimast tuule suunast ja muudest põletamisele mõjuvatest ilmastikutingimustest. 3 (3) Põletamise ohutuse eest vastutab selle tegija. Põletamise ohutuse eest vastutab selle tegija.",
+      "estleg:summary": {
+        "@value": "1 (1) Põletamiseks valitakse põletamise juhendist kindlale kohale sobivaim meetod. 2 (2) Põletamisel lähtutakse ohutuimast tuule suunast ja muudest põletamisele mõjuvatest ilmastikutingimustest. 3 (3) Põletamise ohutuse eest vastutab selle tegija.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Põletamiseks valitakse põletamise juhendist kindlale kohale sobivaim meetod. 2 (2) Põletamisel lähtutakse ohutuimast tuule suunast ja muudest põletamisele mõjuvatest ilmastikutingimustest. 3 (3) Põletamise ohutuse eest vastutab selle tegija.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1051339_Par_2_v1051339"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1051339_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_2_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Põletamiseks valitakse põletamise juhendist kindlale kohale sobivaim meetod.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Põletamisel lähtutakse ohutuimast tuule suunast ja muudest põletamisele mõjuvatest ilmastikutingimustest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Põletamise ohutuse eest vastutab selle tegija.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:Reg_1051339_Par_3",
@@ -119,13 +207,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Põletamine kaitstaval loodusobjektil",
+      "rdfs:label": {
+        "@value": "§ 3. Põletamine kaitstaval loodusobjektil",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1051339_Map"
       },
-      "estleg:summary": "1 (1) Kaitstaval loodusobjektil teeb põletamist riigimaal Riigimetsa Majandamise Keskus neis kohtades ja ulatuses, mis kaitsekorralduskava alusel on kooskõlastatud kaitstava loodusobjekti valitsejaga. Kaitstaval loodusobjektil teeb põletamist riigimaal Riigimetsa Majandamise Keskus neis kohtades ja ulatuses, mis kaitsekorralduskava alusel on kooskõlastatud kaitstava loodusobjekti valitsejaga. 2 (2) Põletamist tehakse Riigimetsa Majandamise Keskuse koostatud põletamise juhendi kohaselt, mis on ko",
-      "estleg:legalText": "1 (1) Kaitstaval loodusobjektil teeb põletamist riigimaal Riigimetsa Majandamise Keskus neis kohtades ja ulatuses, mis kaitsekorralduskava alusel on kooskõlastatud kaitstava loodusobjekti valitsejaga. Kaitstaval loodusobjektil teeb põletamist riigimaal Riigimetsa Majandamise Keskus neis kohtades ja ulatuses, mis kaitsekorralduskava alusel on kooskõlastatud kaitstava loodusobjekti valitsejaga. 2 (2) Põletamist tehakse Riigimetsa Majandamise Keskuse koostatud põletamise juhendi kohaselt, mis on kooskõlastatud kaitseala valitsejaga ja Keskkonnaministeeriumiga. Põletamist tehakse Riigimetsa Majandamise Keskuse koostatud põletamise juhendi kohaselt, mis on kooskõlastatud kaitseala valitsejaga ja Keskkonnaministeeriumiga. 3 (3) Põletamise kohta koostatakse iga kord objekti ohutusplaan, millel peab olema kaitstava loodusobjekti valitseja nõusolek. Põletamise kohta koostatakse iga kord objekti ohutusplaan, millel peab olema kaitstava loodusobjekti valitseja nõusolek.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitstaval loodusobjektil teeb põletamist riigimaal Riigimetsa Majandamise Keskus neis kohtades ja ulatuses, mis kaitsekorralduskava alusel on kooskõlastatud kaitstava loodusobjekti valitsejaga. 2 (2) Põletamist tehakse Riigimetsa Majandamise Keskuse koostatud põletamise juhendi kohaselt, mis on kooskõlastatud kaitseala valitsejaga ja Keskkonnaministeeriumiga. 3 (3) Põletamise kohta koostatakse iga kord objekti ohutusplaan, millel peab olema kaitstava loodusobjekti valitseja nõusolek.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitstaval loodusobjektil teeb põletamist riigimaal Riigimetsa Majandamise Keskus neis kohtades ja ulatuses, mis kaitsekorralduskava alusel on kooskõlastatud kaitstava loodusobjekti valitsejaga. 2 (2) Põletamist tehakse Riigimetsa Majandamise Keskuse koostatud põletamise juhendi kohaselt, mis on kooskõlastatud kaitseala valitsejaga ja Keskkonnaministeeriumiga. 3 (3) Põletamise kohta koostatakse iga kord objekti ohutusplaan, millel peab olema kaitstava loodusobjekti valitseja nõusolek.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1051339_Par_3_v1051339"
@@ -135,7 +229,57 @@
         {
           "@id": "estleg:Institution_keskkonnaministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1051339_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_3_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitstaval loodusobjektil teeb põletamist riigimaal Riigimetsa Majandamise Keskus neis kohtades ja ulatuses, mis kaitsekorralduskava alusel on kooskõlastatud kaitstava loodusobjekti valitsejaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Põletamist tehakse Riigimetsa Majandamise Keskuse koostatud põletamise juhendi kohaselt, mis on kooskõlastatud kaitseala valitsejaga ja Keskkonnaministeeriumiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Põletamise kohta koostatakse iga kord objekti ohutusplaan, millel peab olema kaitstava loodusobjekti valitseja nõusolek.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:Reg_1051339_Par_4",
@@ -144,18 +288,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Põletamine Kaitseväe või Kaitseliidu harjutusväljal",
+      "rdfs:label": {
+        "@value": "§ 4. Põletamine Kaitseväe või Kaitseliidu harjutusväljal",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1051339_Map"
       },
-      "estleg:summary": "1 (1) Kaitseväe või Kaitseliidu harjutusväljal teeb põletamist Kaitsevägi, Kaitseliit või Riigi Kaitseinvesteeringute Keskus, lähtudes Kaitseväe harjutusväljade põletamise juhendist. Kaitseväe või Kaitseliidu harjutusväljal teeb põletamist Kaitsevägi, Kaitseliit või Riigi Kaitseinvesteeringute Keskus, lähtudes Kaitseväe harjutusväljade põletamise juhendist. 2 (2) Põletamise kohta koostatakse iga kord objekti ohutusplaan. Põletamise kohta koostatakse iga kord objekti ohutusplaan. 3 (3) Kui Kaitse",
-      "estleg:legalText": "1 (1) Kaitseväe või Kaitseliidu harjutusväljal teeb põletamist Kaitsevägi, Kaitseliit või Riigi Kaitseinvesteeringute Keskus, lähtudes Kaitseväe harjutusväljade põletamise juhendist. Kaitseväe või Kaitseliidu harjutusväljal teeb põletamist Kaitsevägi, Kaitseliit või Riigi Kaitseinvesteeringute Keskus, lähtudes Kaitseväe harjutusväljade põletamise juhendist. 2 (2) Põletamise kohta koostatakse iga kord objekti ohutusplaan. Põletamise kohta koostatakse iga kord objekti ohutusplaan. 3 (3) Kui Kaitseväe või Kaitseliidu harjutusvälja alal kohas, kus soovitakse maastikku kontrollitult põletada või mida on vaja kasutada põletamiseks, asub kaitstav loodusobjekt, peab objekti ohutusplaanil olema kaitstava loodusobjekti valitseja nõusolek. Kui Kaitseväe või Kaitseliidu harjutusvälja alal kohas, kus soovitakse maastikku kontrollitult põletada või mida on vaja kasutada põletamiseks, asub kaitstav loodusobjekt, peab objekti ohutusplaanil olema kaitstava loodusobjekti valitseja nõusolek.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseväe või Kaitseliidu harjutusväljal teeb põletamist Kaitsevägi, Kaitseliit või Riigi Kaitseinvesteeringute Keskus, lähtudes Kaitseväe harjutusväljade põletamise juhendist. 2 (2) Põletamise kohta koostatakse iga kord objekti ohutusplaan. 3 (3) Kui Kaitseväe või Kaitseliidu harjutusvälja alal kohas, kus soovitakse maastikku kontrollitult põletada või mida on vaja kasutada põletamiseks, asub kaitstav loodusobjekt, peab objekti ohutusplaanil olema kaitstava loodusobjekti valitseja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseväe või Kaitseliidu harjutusväljal teeb põletamist Kaitsevägi, Kaitseliit või Riigi Kaitseinvesteeringute Keskus, lähtudes Kaitseväe harjutusväljade põletamise juhendist. 2 (2) Põletamise kohta koostatakse iga kord objekti ohutusplaan. 3 (3) Kui Kaitseväe või Kaitseliidu harjutusvälja alal kohas, kus soovitakse maastikku kontrollitult põletada või mida on vaja kasutada põletamiseks, asub kaitstav loodusobjekt, peab objekti ohutusplaanil olema kaitstava loodusobjekti valitseja nõusolek.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1051339_Par_4_v1051339"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1051339_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_4_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseväe või Kaitseliidu harjutusväljal teeb põletamist Kaitsevägi, Kaitseliit või Riigi Kaitseinvesteeringute Keskus, lähtudes Kaitseväe harjutusväljade põletamise juhendist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Põletamise kohta koostatakse iga kord objekti ohutusplaan.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui Kaitseväe või Kaitseliidu harjutusvälja alal kohas, kus soovitakse maastikku kontrollitult põletada või mida on vaja kasutada põletamiseks, asub kaitstav loodusobjekt, peab objekti ohutusplaanil olema kaitstava loodusobjekti valitseja nõusolek.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:Reg_1051339_Par_5",
@@ -164,13 +364,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Põletamise juhend ja objekti ohutusplaan",
+      "rdfs:label": {
+        "@value": "§ 5. Põletamise juhend ja objekti ohutusplaan",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1051339_Map"
       },
-      "estleg:summary": "1 (1) Põletamise juhendis tuuakse välja eduka põletamise looduslikud tingimused, põletamiseks sobivad meetodid, põletamise kavandamine, põletamise eri etapid, võimalikud kaasuvad riskid ja nende maandamise meetmed. Põletamise juhendis esitatakse objekti ohutusplaani näidis. Põletamise juhendis tuuakse välja eduka põletamise looduslikud tingimused, põletamiseks sobivad meetodid, põletamise kavandamine, põletamise eri etapid, võimalikud kaasuvad riskid ja nende maandamise meetmed. Põletamise juhen",
-      "estleg:legalText": "1 (1) Põletamise juhendis tuuakse välja eduka põletamise looduslikud tingimused, põletamiseks sobivad meetodid, põletamise kavandamine, põletamise eri etapid, võimalikud kaasuvad riskid ja nende maandamise meetmed. Põletamise juhendis esitatakse objekti ohutusplaani näidis. Põletamise juhendis tuuakse välja eduka põletamise looduslikud tingimused, põletamiseks sobivad meetodid, põletamise kavandamine, põletamise eri etapid, võimalikud kaasuvad riskid ja nende maandamise meetmed. Põletamise juhendis esitatakse objekti ohutusplaani näidis. 2 (2) Objekti ohutusplaanis peavad olema vähemalt järgmised andmed: 1 1) põletamise juhi ees- ja perekonnanimi ja tema kontaktandmed; 2 2) põletatavale alale jäävate kaitstavate loodusobjektide loetelu; 3 3) põletamise eesmärk; 4 4) ohutusalad osalejatele ja nende transpordivahenditele; 5 5) tuletõrje veevõtukoht; 6 6) päästetehnika juurdepääsuteed; 7 7) ala skeem kaardil; 8 8) põletatava ala keskpunkti koordinaadid; 9 9) põletatava ala suurus; 10 10) põletamisega otse seotud isikud ja nende arv; 11 11) põletamisse kaasatud isikud ja nende arv; 12 12) põletamisel kasutatava tehnika loetelu; 13 13) sobiv tuule suund; 14 14) sobiv süütamise meetod; 15 15) sobiv põletamise suund; 16 16) põletamisalasse kõrvalistele isikutele juurdepääsu tõkestamise meetmed; 17 17) tule kontrollimise ja järelkontrollimise meetod; 18 18) järelevalvetegevused, mida tehakse pärast põletamist; 19 19) tegutsemise kirjeldus tule kontrolli alt väljumise korral. Objekti ohutusplaanis peavad olema vähemalt järgmised andmed: põletamise juhi ees- ja perekonnanimi ja tema kontaktandmed; põletatavale alale jäävate kaitstavate loodusobjektide loetelu; põletamise eesmärk; ohutusalad osalejatele ja nende transpordivahenditele; tuletõrje veevõtukoht; päästetehnika juurdepääsuteed; ala skeem kaardil; põletatava ala keskpunkti koordinaadid; põletatava ala suurus; põletamisega otse seotud isikud ja nende arv; põletamisse kaasatud isikud ja nende arv; põletamisel kasutatava tehnika loetelu; sobiv tuule suund; sobiv süütamise meetod; sobiv põletamise suund; põletamisalasse kõrvalistele isikutele juurdepääsu tõkestamise meetmed; tule kontrollimise ja järelkontrollimise meetod; järelevalvetegevused, mida tehakse pärast põletamist; tegutsemise kirjeldus tule kontrolli alt väljumise korral.",
+      "estleg:summary": {
+        "@value": "1 (1) Põletamise juhendis tuuakse välja eduka põletamise looduslikud tingimused, põletamiseks sobivad meetodid, põletamise kavandamine, põletamise eri etapid, võimalikud kaasuvad riskid ja nende maandamise meetmed. Põletamise juhendis esitatakse objekti ohutusplaani näidis. 2 (2) Objekti ohutusplaanis peavad olema vähemalt järgmised andmed: 1 1) põletamise juhi ees- ja perekonnanimi ja tema kontaktandmed; 2 2) põletatavale alale jäävate kaitstavate loodusobjektide loetelu; 3 3) põletamise…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Põletamise juhendis tuuakse välja eduka põletamise looduslikud tingimused, põletamiseks sobivad meetodid, põletamise kavandamine, põletamise eri etapid, võimalikud kaasuvad riskid ja nende maandamise meetmed. Põletamise juhendis esitatakse objekti ohutusplaani näidis. 2 (2) Objekti ohutusplaanis peavad olema vähemalt järgmised andmed: 1 1) põletamise juhi ees- ja perekonnanimi ja tema kontaktandmed; 2 2) põletatavale alale jäävate kaitstavate loodusobjektide loetelu; 3 3) põletamise eesmärk; 4 4) ohutusalad osalejatele ja nende transpordivahenditele; 5 5) tuletõrje veevõtukoht; 6 6) päästetehnika juurdepääsuteed; 7 7) ala skeem kaardil; 8 8) põletatava ala keskpunkti koordinaadid; 9 9) põletatava ala suurus; 10 10) põletamisega otse seotud isikud ja nende arv; 11 11) põletamisse kaasatud isikud ja nende arv; 12 12) põletamisel kasutatava tehnika loetelu; 13 13) sobiv tuule suund; 14 14) sobiv süütamise meetod; 15 15) sobiv põletamise suund; 16 16) põletamisalasse kõrvalistele isikutele juurdepääsu tõkestamise meetmed; 17 17) tule kontrollimise ja järelkontrollimise meetod; 18 18) järelevalvetegevused, mida tehakse pärast põletamist; 19 19) tegutsemise kirjeldus tule kontrolli alt väljumise korral.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -184,6 +390,61 @@
         {
           "@id": "estleg:Reg_1051339_Par_5_v1051339"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1051339_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_5_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Põletamise juhendis tuuakse välja eduka põletamise looduslikud tingimused, põletamiseks sobivad meetodid, põletamise kavandamine, põletamise eri etapid, võimalikud kaasuvad riskid ja nende maandamise meetmed. Põletamise juhendis esitatakse objekti ohutusplaani näidis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Objekti ohutusplaanis peavad olema vähemalt järgmised andmed: 1) põletamise juhi ees- ja perekonnanimi ja tema kontaktandmed; 2) põletatavale alale jäävate kaitstavate loodusobjektide loetelu; 3) põletamise eesmärk; 4) ohutusalad osalejatele ja nende transpordivahenditele; 5) tuletõrje veevõtukoht; 6) päästetehnika juurdepääsuteed; 7) ala skeem kaardil; 8) põletatava ala keskpunkti koordinaadid; 9) põletatava ala suurus; 10) põletamisega otse seotud isikud ja nende arv; 11) põletamisse kaasatud isikud ja nende arv; 12) põletamisel kasutatava tehnika loetelu; 13) sobiv tuule suund; 14) sobiv süütamise meetod; 15) sobiv põletamise suund; 16) põletamisalasse kõrvalistele isikutele juurdepääsu tõkestamise meetmed; 17) tule kontrollimise ja järelkontrollimise meetod; 18) järelevalvetegevused, mida tehakse pärast põletamist; 19) tegutsemise kirjeldus tule kontrolli alt väljumise korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19"
       ]
     },
     {
@@ -193,13 +454,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Päästeameti ja avalikkuse kaasamine ja teavitamine",
+      "rdfs:label": {
+        "@value": "§ 6. Päästeameti ja avalikkuse kaasamine ja teavitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1051339_Map"
       },
-      "estleg:summary": "1 (1) Maastiku kontrollitud põletamise objekti ohutusplaani koostamisse kaasatakse vajaduse korral asukohajärgne päästekeskus. Maastiku kontrollitud põletamise objekti ohutusplaani koostamisse kaasatakse vajaduse korral asukohajärgne päästekeskus. 2 (2) Vähemalt viis tööpäeva varem teavitab maastiku kontrollitud põletamise tegija põletamise kavandatavast kuupäevast ja kella-ajast asukohajärgset päästekeskust ja kohaliku omavalitsuse üksust kirjalikult ning võimaluse korral avaldab teate kohaliku",
-      "estleg:legalText": "1 (1) Maastiku kontrollitud põletamise objekti ohutusplaani koostamisse kaasatakse vajaduse korral asukohajärgne päästekeskus. Maastiku kontrollitud põletamise objekti ohutusplaani koostamisse kaasatakse vajaduse korral asukohajärgne päästekeskus. 2 (2) Vähemalt viis tööpäeva varem teavitab maastiku kontrollitud põletamise tegija põletamise kavandatavast kuupäevast ja kella-ajast asukohajärgset päästekeskust ja kohaliku omavalitsuse üksust kirjalikult ning võimaluse korral avaldab teate kohalikus ajalehes. Vähemalt viis tööpäeva varem teavitab maastiku kontrollitud põletamise tegija põletamise kavandatavast kuupäevast ja kella-ajast asukohajärgset päästekeskust ja kohaliku omavalitsuse üksust kirjalikult ning võimaluse korral avaldab teate kohalikus ajalehes.",
+      "estleg:summary": {
+        "@value": "1 (1) Maastiku kontrollitud põletamise objekti ohutusplaani koostamisse kaasatakse vajaduse korral asukohajärgne päästekeskus. 2 (2) Vähemalt viis tööpäeva varem teavitab maastiku kontrollitud põletamise tegija põletamise kavandatavast kuupäevast ja kella-ajast asukohajärgset päästekeskust ja kohaliku omavalitsuse üksust kirjalikult ning võimaluse korral avaldab teate kohalikus ajalehes.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Maastiku kontrollitud põletamise objekti ohutusplaani koostamisse kaasatakse vajaduse korral asukohajärgne päästekeskus. 2 (2) Vähemalt viis tööpäeva varem teavitab maastiku kontrollitud põletamise tegija põletamise kavandatavast kuupäevast ja kella-ajast asukohajärgset päästekeskust ja kohaliku omavalitsuse üksust kirjalikult ning võimaluse korral avaldab teate kohalikus ajalehes.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -218,7 +485,41 @@
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1051339_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1051339_Par_6_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maastiku kontrollitud põletamise objekti ohutusplaani koostamisse kaasatakse vajaduse korral asukohajärgne päästekeskus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vähemalt viis tööpäeva varem teavitab maastiku kontrollitud põletamise tegija põletamise kavandatavast kuupäevast ja kella-ajast asukohajärgset päästekeskust ja kohaliku omavalitsuse üksust kirjalikult ning võimaluse korral avaldab teate kohalikus ajalehes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:Reg_1051339_Par_7",
@@ -227,16 +528,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 7. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Maastiku kontrollitud põletamise nõuded ja kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1051339_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. märtsil 2021. aastal.",
-      "estleg:legalText": "Määrus jõustub 1. märtsil 2021. aastal. Määrus jõustub 1. märtsil 2021. aastal.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. märtsil 2021. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. märtsil 2021. aastal.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1051339_Par_7_v1051339"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1051339_Par_7_Lg_1"
         }
       ]
     },
@@ -251,6 +563,19 @@
       },
       "estleg:citationDetail": "lg 8",
       "estleg:citationText": "Määrus kehtestatakse tuleohutuse seaduse § 16 lõike 8"
+    },
+    {
+      "@id": "estleg:Reg_1051339_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. märtsil 2021. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1051339_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
     }
   ]
 }

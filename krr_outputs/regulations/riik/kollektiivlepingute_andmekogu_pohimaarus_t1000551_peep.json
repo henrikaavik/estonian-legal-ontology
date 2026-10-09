@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kollektiivlepingute andmekogu põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Kollektiivlepingute andmekogu põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -40,11 +47,6 @@
         "@value": "2023-06-30",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2011-01-28",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1000551_fb8ceb1ecb"
@@ -93,7 +95,13 @@
         {
           "@id": "http://eurovoc.europa.eu/5188"
         }
-      ]
+      ],
+      "dcterms:title": "Kollektiivlepingute andmekogu põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1000551_Par_1",
@@ -102,13 +110,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Andmekogu",
+      "rdfs:label": {
+        "@value": "§ 1. Andmekogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu nimetus on kollektiivlepingute andmekogu, inglise keeles Estonian Collective Agreements Register. RT I 2018-05-19 1 119052018001 2018-05-22 22 Andmekogu nimetus on kollektiivlepingute andmekogu, inglise keeles Estonian Collective Agreements Register. 2 (2) Andmekogu peetakse sõlmitud kollektiivlepingute säilitamise eesmärgil nende kehtivuse ajal, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning kollektiivlepingu seaduse § 6 lõike 1 ",
-      "estleg:legalText": "1 (1) Andmekogu nimetus on kollektiivlepingute andmekogu, inglise keeles Estonian Collective Agreements Register. RT I 2018-05-19 1 119052018001 2018-05-22 22 Andmekogu nimetus on kollektiivlepingute andmekogu, inglise keeles Estonian Collective Agreements Register. 2 (2) Andmekogu peetakse sõlmitud kollektiivlepingute säilitamise eesmärgil nende kehtivuse ajal, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning kollektiivlepingu seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste kohta tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu tingimuste avaldamiseks. RT I 2018-05-19 1 119052018001 2018-05-22 22 Andmekogu peetakse sõlmitud kollektiivlepingute säilitamise eesmärgil nende kehtivuse ajal, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning kollektiivlepingu seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste kohta tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu tingimuste avaldamiseks. 3 (3) Andmekogu vastutav töötleja on Majandus- ja Kommunikatsiooniministeerium. RT I 2023-07-13 2 113072023002 2023-07-16 Andmekogu vastutav töötleja on Majandus- ja Kommunikatsiooniministeerium. 3 (3¹) Andmekogu volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus. RT I 2018-05-19 1 119052018001 2018-05-22 22 Andmekogu volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus. 4 (4) Andmekogu peetakse ühetasandilise infotehnoloogilise andmebaasina ja andmete töötlemisel kasutatakse automatiseeritud andmetöötlust. Andmekogu peetakse ühetasandilise infotehnoloogilise andmebaasina ja andmete töötlemisel kasutatakse automatiseeritud andmetöötlust.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu nimetus on kollektiivlepingute andmekogu, inglise keeles Estonian Collective Agreements Register. RT I 2018-05-19 1 119052018001 2018-05-22 22 2 (2) Andmekogu peetakse sõlmitud kollektiivlepingute säilitamise eesmärgil nende kehtivuse ajal, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning kollektiivlepingu seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste kohta tööandjate ühingu või liidu ja töötajate ühingu või liidu ning…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu nimetus on kollektiivlepingute andmekogu, inglise keeles Estonian Collective Agreements Register. RT I 2018-05-19 1 119052018001 2018-05-22 22 2 (2) Andmekogu peetakse sõlmitud kollektiivlepingute säilitamise eesmärgil nende kehtivuse ajal, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning kollektiivlepingu seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste kohta tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu tingimuste avaldamiseks. RT I 2018-05-19 1 119052018001 2018-05-22 22 3 (3) Andmekogu vastutav töötleja on Majandus- ja Kommunikatsiooniministeerium. RT I 2023-07-13 2 113072023002 2023-07-16 3 (3<sup>1</sup>) Andmekogu volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus. RT I 2018-05-19 1 119052018001 2018-05-22 22 4 (4) Andmekogu peetakse ühetasandilise infotehnoloogilise andmebaasina ja andmete töötlemisel kasutatakse automatiseeritud andmetöötlust.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -140,7 +154,89 @@
         {
           "@id": "estleg:Institution_majandus_ja_kommunikatsiooniministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_1_Lg_3_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_1_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu nimetus on kollektiivlepingute andmekogu, inglise keeles Estonian Collective Agreements Register.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu peetakse sõlmitud kollektiivlepingute säilitamise eesmärgil nende kehtivuse ajal, kollektiivlepingu pooltele nende kättesaadavaks tegemiseks, statistiliste andmete saamiseks ning kollektiivlepingu seaduse § 6 lõike 1 punktides 1 ja 3 määratud tingimuste kohta tööandjate ühingu või liidu ja töötajate ühingu või liidu ning tööandjate keskliidu ja töötajate keskliidu vahel sõlmitud ja poolte kokkuleppel laiendatud kollektiivlepingu tingimuste avaldamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu vastutav töötleja on Majandus- ja Kommunikatsiooniministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_1_Lg_3_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3¹",
+      "estleg:legalText": "(3¹) Andmekogu volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3¹"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmekogu peetakse ühetasandilise infotehnoloogilise andmebaasina ja andmete töötlemisel kasutatakse automatiseeritud andmetöötlust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
     },
     {
       "@id": "estleg:Reg_1000551_Par_1_1",
@@ -148,14 +244,20 @@
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
-      "estleg:paragrahv": "§ 1¹.",
-      "rdfs:label": "§ 1¹. Vastutava ja volitatud töötleja õigused ja kohustused",
+      "estleg:paragrahv": "§ 1<sup>1</sup>.",
+      "rdfs:label": {
+        "@value": "§ 1<sup>1</sup>. Vastutava ja volitatud töötleja õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Vastutav töötleja: 1 1) juhib andmekogu pidamist, andes selleks volitatud töötlejale vajalikke juhiseid ja korraldusi; 2 2) kehtestab andmekogu andmetele juurdepääsu ja andmete töötlemise korra; 3 3) korraldab koostöös volitatud töötlejaga e-teenuste loomist ja andmekogu elektroonset andmevahetust teiste andmekogudega; 4 4) peab arvestust andmekogu andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate, väljastatud andmete aluse ja andmete väljastamise viisi üle; 5 5) sõlmib",
-      "estleg:legalText": "1 (1) Vastutav töötleja: 1 1) juhib andmekogu pidamist, andes selleks volitatud töötlejale vajalikke juhiseid ja korraldusi; 2 2) kehtestab andmekogu andmetele juurdepääsu ja andmete töötlemise korra; 3 3) korraldab koostöös volitatud töötlejaga e-teenuste loomist ja andmekogu elektroonset andmevahetust teiste andmekogudega; 4 4) peab arvestust andmekogu andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate, väljastatud andmete aluse ja andmete väljastamise viisi üle; 5 5) sõlmib andmevahetuse kokkuleppeid õigusaktides sätestatud ulatuses; 6 6) täidab muid vastutavale töötlejale antud ülesandeid. Vastutav töötleja: juhib andmekogu pidamist, andes selleks volitatud töötlejale vajalikke juhiseid ja korraldusi; kehtestab andmekogu andmetele juurdepääsu ja andmete töötlemise korra; korraldab koostöös volitatud töötlejaga e-teenuste loomist ja andmekogu elektroonset andmevahetust teiste andmekogudega; peab arvestust andmekogu andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate, väljastatud andmete aluse ja andmete väljastamise viisi üle; sõlmib andmevahetuse kokkuleppeid õigusaktides sätestatud ulatuses; täidab muid vastutavale töötlejale antud ülesandeid. 2 (2) Volitatud töötleja: 1 1) teeb või hangib andmekogu pidamiseks vajalikud analüüsi- ja arendustööd ning tööde testimise; 2 2) tagab andmekogu pidamise, haldamise ja majutamise õigusaktides sätestatud nõuete kohaselt; 3 3) rakendab andmete turvalisuse tagamiseks andmekogu turvanõuetele vastavaid turvameetmeid; 4 4) teavitab viivitamata vastutavat töötlejat andmekogu pidamist või kasutamist takistavatest probleemidest; 5 5) kõrvaldab andmekogu kasutamise takistused ja tõrked ning taastab ja tagab andmekogu töö; 6 6) tagab teenust puudutavate intsidentide käsitlemise; 7 7) teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks. RT I 2018-05-19 1 119052018001 2018-05-22 Volitatud töötleja: teeb või hangib andmekogu pidamiseks vajalikud analüüsi- ja arendustööd ning tööde testimise; tagab andmekogu pidamise, haldamise ja majutamise õigusaktides sätestatud nõuete kohaselt; rakendab andmete turvalisuse tagamiseks andmekogu turvanõuetele vastavaid turvameetmeid; teavitab viivitamata vastutavat töötlejat andmekogu pidamist või kasutamist takistavatest probleemidest; kõrvaldab andmekogu kasutamise takistused ja tõrked ning taastab ja tagab andmekogu töö; tagab teenust puudutavate intsidentide käsitlemise; teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) Vastutav töötleja: 1 1) juhib andmekogu pidamist, andes selleks volitatud töötlejale vajalikke juhiseid ja korraldusi; 2 2) kehtestab andmekogu andmetele juurdepääsu ja andmete töötlemise korra; 3 3) korraldab koostöös volitatud töötlejaga e-teenuste loomist ja andmekogu elektroonset andmevahetust teiste andmekogudega; 4 4) peab arvestust andmekogu andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate, väljastatud andmete aluse ja andmete väljastamise viisi üle; 5 5)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Vastutav töötleja: 1 1) juhib andmekogu pidamist, andes selleks volitatud töötlejale vajalikke juhiseid ja korraldusi; 2 2) kehtestab andmekogu andmetele juurdepääsu ja andmete töötlemise korra; 3 3) korraldab koostöös volitatud töötlejaga e-teenuste loomist ja andmekogu elektroonset andmevahetust teiste andmekogudega; 4 4) peab arvestust andmekogu andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate, väljastatud andmete aluse ja andmete väljastamise viisi üle; 5 5) sõlmib andmevahetuse kokkuleppeid õigusaktides sätestatud ulatuses; 6 6) täidab muid vastutavale töötlejale antud ülesandeid. 2 (2) Volitatud töötleja: 1 1) teeb või hangib andmekogu pidamiseks vajalikud analüüsi- ja arendustööd ning tööde testimise; 2 2) tagab andmekogu pidamise, haldamise ja majutamise õigusaktides sätestatud nõuete kohaselt; 3 3) rakendab andmete turvalisuse tagamiseks andmekogu turvanõuetele vastavaid turvameetmeid; 4 4) teavitab viivitamata vastutavat töötlejat andmekogu pidamist või kasutamist takistavatest probleemidest; 5 5) kõrvaldab andmekogu kasutamise takistused ja tõrked ning taastab ja tagab andmekogu töö; 6 6) tagab teenust puudutavate intsidentide käsitlemise; 7 7) teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks. RT I 2018-05-19 1 119052018001 2018-05-22",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -186,6 +288,57 @@
         {
           "@id": "estleg:Reg_1000551_Par_1_1_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_1_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_1_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_1_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vastutav töötleja: 1) juhib andmekogu pidamist, andes selleks volitatud töötlejale vajalikke juhiseid ja korraldusi; 2) kehtestab andmekogu andmetele juurdepääsu ja andmete töötlemise korra; 3) korraldab koostöös volitatud töötlejaga e-teenuste loomist ja andmekogu elektroonset andmevahetust teiste andmekogudega; 4) peab arvestust andmekogu andmete väljastamise aja, väljastatud andmete koosseisu, andmesaajate, väljastatud andmete aluse ja andmete väljastamise viisi üle; 5) sõlmib andmevahetuse kokkuleppeid õigusaktides sätestatud ulatuses; 6) täidab muid vastutavale töötlejale antud ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_1_1"
+      },
+      "rdfs:label": "§ 1<sup>1</sup> lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_1_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Volitatud töötleja: 1) teeb või hangib andmekogu pidamiseks vajalikud analüüsi- ja arendustööd ning tööde testimise; 2) tagab andmekogu pidamise, haldamise ja majutamise õigusaktides sätestatud nõuete kohaselt; 3) rakendab andmete turvalisuse tagamiseks andmekogu turvanõuetele vastavaid turvameetmeid; 4) teavitab viivitamata vastutavat töötlejat andmekogu pidamist või kasutamist takistavatest probleemidest; 5) kõrvaldab andmekogu kasutamise takistused ja tõrked ning taastab ja tagab andmekogu töö; 6) tagab teenust puudutavate intsidentide käsitlemise; 7) teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_1_1"
+      },
+      "rdfs:label": "§ 1<sup>1</sup> lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -195,13 +348,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Andmekogusse andmete esitamine",
+      "rdfs:label": {
+        "@value": "§ 2. Andmekogusse andmete esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Käesoleva määruse § 3 lõigetes 1–3 ja 5 ning lõike 4 punktides 1–9 nimetatud andmete andmekogusse esitamise pädevus on kollektiivlepingu sõlminud töötajate esindajal (andmete esitaja), kui kollektiivlepingus ei ole kokku lepitud teisiti. Käesoleva määruse § 3 lõigetes 1–3 ja 5 ning lõike 4 punktides 1–9 nimetatud andmete andmekogusse esitamise pädevus on kollektiivlepingu sõlminud töötajate esindajal (andmete esitaja), kui kollektiivlepingus ei ole kokku lepitud teisiti. 1 (1¹) ",
-      "estleg:legalText": "1 (1) Käesoleva määruse § 3 lõigetes 1–3 ja 5 ning lõike 4 punktides 1–9 nimetatud andmete andmekogusse esitamise pädevus on kollektiivlepingu sõlminud töötajate esindajal (andmete esitaja), kui kollektiivlepingus ei ole kokku lepitud teisiti. Käesoleva määruse § 3 lõigetes 1–3 ja 5 ning lõike 4 punktides 1–9 nimetatud andmete andmekogusse esitamise pädevus on kollektiivlepingu sõlminud töötajate esindajal (andmete esitaja), kui kollektiivlepingus ei ole kokku lepitud teisiti. 1 (1¹) Käesoleva määruse § 3 lõike 2 punktides 2–9 nimetatud andmete puhul on juriidilise isiku andmete andjaks äriregister. RT I 2018-05-19 1 119052018001 2018-05-22 22 Käesoleva määruse § 3 lõike 2 punktides 2–9 nimetatud andmete puhul on juriidilise isiku andmete andjaks äriregister. 2 (2) Käesoleva määruse § 3 lõike 4 punktides 10–33 nimetatud andmed kannab andmekogusse andmete vastutav töötleja. Käesoleva määruse § 3 lõike 4 punktides 10–33 nimetatud andmed kannab andmekogusse andmete vastutav töötleja. 3 (3) Kollektiivlepingu pooled vastutavad esitatud andmete õigsuse eest. Kollektiivlepingu pooled vastutavad esitatud andmete õigsuse eest. 4 (4) Andmed esitatakse andmekogusse elektrooniliselt. Andmed esitatakse andmekogusse elektrooniliselt.",
+      "estleg:summary": {
+        "@value": "1 (1) Käesoleva määruse § 3 lõigetes 1–3 ja 5 ning lõike 4 punktides 1–9 nimetatud andmete andmekogusse esitamise pädevus on kollektiivlepingu sõlminud töötajate esindajal (andmete esitaja), kui kollektiivlepingus ei ole kokku lepitud teisiti. 1 (1<sup>1</sup>) Käesoleva määruse § 3 lõike 2 punktides 2–9 nimetatud andmete puhul on juriidilise isiku andmete andjaks äriregister.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Käesoleva määruse § 3 lõigetes 1–3 ja 5 ning lõike 4 punktides 1–9 nimetatud andmete andmekogusse esitamise pädevus on kollektiivlepingu sõlminud töötajate esindajal (andmete esitaja), kui kollektiivlepingus ei ole kokku lepitud teisiti. 1 (1<sup>1</sup>) Käesoleva määruse § 3 lõike 2 punktides 2–9 nimetatud andmete puhul on juriidilise isiku andmete andjaks äriregister. RT I 2018-05-19 1 119052018001 2018-05-22 22 2 (2) Käesoleva määruse § 3 lõike 4 punktides 10–33 nimetatud andmed kannab andmekogusse andmete vastutav töötleja. 3 (3) Kollektiivlepingu pooled vastutavad esitatud andmete õigsuse eest. 4 (4) Andmed esitatakse andmekogusse elektrooniliselt.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -223,7 +382,89 @@
         {
           "@id": "estleg:Reg_1000551_Par_2_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_2_Lg_1_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määruse § 3 lõigetes 1–3 ja 5 ning lõike 4 punktides 1–9 nimetatud andmete andmekogusse esitamise pädevus on kollektiivlepingu sõlminud töötajate esindajal (andmete esitaja), kui kollektiivlepingus ei ole kokku lepitud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_2_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1¹",
+      "estleg:legalText": "(1¹) Käesoleva määruse § 3 lõike 2 punktides 2–9 nimetatud andmete puhul on juriidilise isiku andmete andjaks äriregister.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1¹"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva määruse § 3 lõike 4 punktides 10–33 nimetatud andmed kannab andmekogusse andmete vastutav töötleja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kollektiivlepingu pooled vastutavad esitatud andmete õigsuse eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmed esitatakse andmekogusse elektrooniliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1000551_Par_3",
@@ -232,13 +473,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Andmekogusse kantav kollektiivleping ja selle andmed",
+      "rdfs:label": {
+        "@value": "§ 3. Andmekogusse kantav kollektiivleping ja selle andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Andmete esitaja kohta kantakse andmekogusse järgmised andmed: 1 1) eesnimi (eesnimed); 2 2) perekonnanimi (perekonnanimed); 3 3) isikukood; 4 4) e-posti aadress; 5 5) telefon. Andmete esitaja kohta kantakse andmekogusse järgmised andmed: eesnimi (eesnimed); perekonnanimi (perekonnanimed); isikukood; e-posti aadress; telefon. 2 (2) Tööandja kohta kantakse andmekogusse järgmised andmed: 1 1) tööandja tüüp; 2 2) nimi; 3 3) registreerimiskoodi olemasolul registreerimiskood; 4 4) aadress; 5 5) ",
-      "estleg:legalText": "1 (1) Andmete esitaja kohta kantakse andmekogusse järgmised andmed: 1 1) eesnimi (eesnimed); 2 2) perekonnanimi (perekonnanimed); 3 3) isikukood; 4 4) e-posti aadress; 5 5) telefon. Andmete esitaja kohta kantakse andmekogusse järgmised andmed: eesnimi (eesnimed); perekonnanimi (perekonnanimed); isikukood; e-posti aadress; telefon. 2 (2) Tööandja kohta kantakse andmekogusse järgmised andmed: 1 1) tööandja tüüp; 2 2) nimi; 3 3) registreerimiskoodi olemasolul registreerimiskood; 4 4) aadress; 5 5) telefon; 6 6) e-posti aadress; 7 7) õiguslik vorm; 8 8) tegevusala; 9 9) töötajate arv; 10 10) regioon; 11 11) kehtetu - RT I 2018-05-19 1 119052018001 2018-05-22 22 12 12) kuuluvus tööandjate ühendusse või liitu. Tööandja kohta kantakse andmekogusse järgmised andmed: tööandja tüüp; nimi; registreerimiskoodi olemasolul registreerimiskood; aadress; telefon; e-posti aadress; õiguslik vorm; tegevusala; töötajate arv; regioon; kehtetu - kuuluvus tööandjate ühendusse või liitu. 3 (3) Töötajate esindaja, näiteks ametiühingu või töötajate usaldusisiku kohta kantakse andmekogusse järgmised andmed: 1 1) töötajate esindaja tüüp; 2 2) nimi; 3 3) registreerimiskoodi olemasolul registreerimiskood; 4 4) aadress; 5 5) telefon; 6 6) e-posti aadress; 7 7) ametiühingu kuuluvus töötajate ühendusse või liitu. Töötajate esindaja, näiteks ametiühingu või töötajate usaldusisiku kohta kantakse andmekogusse järgmised andmed: töötajate esindaja tüüp; nimi; registreerimiskoodi olemasolul registreerimiskood; aadress; telefon; e-posti aadress; ametiühingu kuuluvus töötajate ühendusse või liitu. 4 (4) Kollektiivlepingu kohta kantakse andmekogusse järgmised põhiandmed: 1 1) sõlmimise kuupäev; 2 2) jõustumise kuupäev; 3 3) kehtivuse aeg; 4 4) avalikkusele kättesaadavus andmekogus; 5 5) info riikliku lepitaja abi kohta lepingu sõlmimisel; 6 6) lepinguga hõlmatud töötajate arv; 7 7) töötajate ühendusse või liitu kuuluvate lepinguga hõlmatud töötajate arv; 8 8) info, kas tegemist on laiendatud kollektiivlepinguga; 9 9) laiendatud lepingu puhul väljaandes Ametlikud Teadaanded avaldamise kuupäev ja info laiendatud tingimuste kohta; 10 10) kokkulepe töötasutingimuste kohta; 11 11) kokkulepe puhkusetingimuste kohta; 12 12) kokkulepe kaugtöö tegemise kohta; 13 13) kokkulepe töö- ja puhkeaja tingimuste kohta; 14 14) kokkulepe lepingu ülesütlemise tingimuste kohta; 15 15) kokkulepe koolitustingimuste kohta; 16 16) kokkulepe lisasoodustuste kohta; 17 17) kokkulepe individuaalsete vaidluste lahendamise tingimuste kohta; 18 18) kokkulepe töötajate võrdse kohtlemise põhimõtete järgimise ja edendamise ning diskrimineerimisest hoidumise kohta; 19 19) kokkulepe töötajate esindaja õiguste ja kohustuste kohta; 20 20) kokkulepe töötajate esindajale ülesannete täitmiseks tööst vaba aja andmise kohta; 21 21) kokkulepe töötajate esindaja koolitustingimuste kohta; 22 22) kokkulepe informeerimise ja konsulteerimise kohta; 23 23) kokkulepe kollektiivlepingu muutmise või uue lepingu sõlmimise korra kohta; 24 24) kokkulepe ametiühingu liikmete soodustuste kohta võrreldes teiste töötajatega; 25 25) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme õiguste ja kohustuste kohta; 26 26) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme ülesannete täitmise aja kohta; 27 27) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme töö tasustamise kohta; 28 28) kokkulepe töötajate esindaja töötervishoiu- ja tööohutustegevusse kaasamise kohta; 29 29) kokkulepe tööolme kohta; 30 30) kokkulepe tööõnnetus- või kutsehaigestumisjuhtumi kindlustamise või tagajärgede kompenseerimise kohta; 31 31) kokkulepe töökeskkonna ohutegurite väärtuste ja nendega seotud tingimuste kohta; 32 32) kokkulepe tervishoiuteenuste kohta; 33 33) kokkulepe tervislikke eluviise toetavate meetmete kohta. Kollektiivlepingu kohta kantakse andmekogusse järgmised põhiandmed: sõlmimise kuupäev; jõustumise kuupäev; kehtivuse aeg; avalikkusele kättesaadavus andmekogus; info riikliku lepitaja abi kohta lepingu sõlmimisel; lepinguga hõlmatud töötajate arv; töötajate ühendusse või liitu kuuluvate lepinguga hõlmatud töötajate arv; info, kas tegemist on laiendatud kollektiivlepinguga; laiendatud lepingu puhul väljaandes Ametlikud Teadaanded avaldamise kuupäev ja info laiendatud tingimuste kohta; kokkulepe töötasutingimuste kohta; kokkulepe puhkusetingimuste kohta; kokkulepe kaugtöö tegemise kohta; kokkulepe töö- ja puhkeaja tingimuste kohta; kokkulepe lepingu ülesütlemise tingimuste kohta; kokkulepe koolitustingimuste kohta; kokkulepe lisasoodustuste kohta; kokkulepe individuaalsete vaidluste lahendamise tingimuste kohta; kokkulepe töötajate võrdse kohtlemise põhimõtete järgimise ja edendamise ning diskrimineerimisest hoidumise kohta; kokkulepe töötajate esindaja õiguste ja kohustuste kohta; kokkulepe töötajate esindajale ülesannete täitmiseks tööst vaba aja andmise kohta; kokkulepe töötajate esindaja koolitustingimuste kohta; kokkulepe informeerimise ja konsulteerimise kohta; kokkulepe kollektiivlepingu muutmise või uue lepingu sõlmimise korra kohta; kokkulepe ametiühingu liikmete soodustuste kohta võrreldes teiste töötajatega; kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme õiguste ja kohustuste kohta; kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme ülesannete täitmise aja kohta; kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme töö tasustamise kohta; kokkulepe töötajate esindaja töötervishoiu- ja tööohutustegevusse kaasamise kohta; kokkulepe tööolme kohta; kokkulepe tööõnnetus- või kutsehaigestumisjuhtumi kindlustamise või tagajärgede kompenseerimise kohta; kokkulepe töökeskkonna ohutegurite väärtuste ja nendega seotud tingimuste kohta; kokkulepe tervishoiuteenuste kohta; kokkulepe tervislikke eluviise toetavate meetmete kohta. 5 (5) Andmekogusse kantakse paberkandjal allkirjastatud ja skaneeritud või digitaalselt allkirjastatud kollektiivlepingu dokument. Andmekogusse kantakse paberkandjal allkirjastatud ja skaneeritud või digitaalselt allkirjastatud kollektiivlepingu dokument. 6 (6) Andmed kollektiivlepingu sõlmimise, muutmise ja lõpetamise kohta esitatakse 15 tööpäeva jooksul arvates lepingu sõlmimisele, muutmisele või lõpetamisele järgnevast päevast. Andmed kollektiivlepingu sõlmimise, muutmise ja lõpetamise kohta esitatakse 15 tööpäeva jooksul arvates lepingu sõlmimisele, muutmisele või lõpetamisele järgnevast päevast.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete esitaja kohta kantakse andmekogusse järgmised andmed: 1 1) eesnimi (eesnimed); 2 2) perekonnanimi (perekonnanimed); 3 3) isikukood; 4 4) e-posti aadress; 5 5) telefon. 2 (2) Tööandja kohta kantakse andmekogusse järgmised andmed: 1 1) tööandja tüüp; 2 2) nimi; 3 3) registreerimiskoodi olemasolul registreerimiskood; 4 4) aadress; 5 5) telefon; 6 6) e-posti aadress; 7 7) õiguslik vorm; 8 8) tegevusala; 9 9) töötajate arv; 10 10) regioon; 11 11) kehtetu - RT I 2018-05-19 1…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete esitaja kohta kantakse andmekogusse järgmised andmed: 1 1) eesnimi (eesnimed); 2 2) perekonnanimi (perekonnanimed); 3 3) isikukood; 4 4) e-posti aadress; 5 5) telefon. 2 (2) Tööandja kohta kantakse andmekogusse järgmised andmed: 1 1) tööandja tüüp; 2 2) nimi; 3 3) registreerimiskoodi olemasolul registreerimiskood; 4 4) aadress; 5 5) telefon; 6 6) e-posti aadress; 7 7) õiguslik vorm; 8 8) tegevusala; 9 9) töötajate arv; 10 10) regioon; 11 11) kehtetu - RT I 2018-05-19 1 119052018001 2018-05-22 22 12 12) kuuluvus tööandjate ühendusse või liitu. 3 (3) Töötajate esindaja, näiteks ametiühingu või töötajate usaldusisiku kohta kantakse andmekogusse järgmised andmed: 1 1) töötajate esindaja tüüp; 2 2) nimi; 3 3) registreerimiskoodi olemasolul registreerimiskood; 4 4) aadress; 5 5) telefon; 6 6) e-posti aadress; 7 7) ametiühingu kuuluvus töötajate ühendusse või liitu. 4 (4) Kollektiivlepingu kohta kantakse andmekogusse järgmised põhiandmed: 1 1) sõlmimise kuupäev; 2 2) jõustumise kuupäev; 3 3) kehtivuse aeg; 4 4) avalikkusele kättesaadavus andmekogus; 5 5) info riikliku lepitaja abi kohta lepingu sõlmimisel; 6 6) lepinguga hõlmatud töötajate arv; 7 7) töötajate ühendusse või liitu kuuluvate lepinguga hõlmatud töötajate arv; 8 8) info, kas tegemist on laiendatud kollektiivlepinguga; 9 9) laiendatud lepingu puhul väljaandes Ametlikud Teadaanded avaldamise kuupäev ja info laiendatud tingimuste kohta; 10 10) kokkulepe töötasutingimuste kohta; 11 11) kokkulepe puhkusetingimuste kohta; 12 12) kokkulepe kaugtöö tegemise kohta; 13 13) kokkulepe töö- ja puhkeaja tingimuste kohta; 14 14) kokkulepe lepingu ülesütlemise tingimuste kohta; 15 15) kokkulepe koolitustingimuste kohta; 16 16) kokkulepe lisasoodustuste kohta; 17 17) kokkulepe individuaalsete vaidluste lahendamise tingimuste kohta; 18 18) kokkulepe töötajate võrdse kohtlemise põhimõtete järgimise ja edendamise ning diskrimineerimisest hoidumise kohta; 19 19) kokkulepe töötajate esindaja õiguste ja kohustuste kohta; 20 20) kokkulepe töötajate esindajale ülesannete täitmiseks tööst vaba aja andmise kohta; 21 21) kokkulepe töötajate esindaja koolitustingimuste kohta; 22 22) kokkulepe informeerimise ja konsulteerimise kohta; 23 23) kokkulepe kollektiivlepingu muutmise või uue lepingu sõlmimise korra kohta; 24 24) kokkulepe ametiühingu liikmete soodustuste kohta võrreldes teiste töötajatega; 25 25) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme õiguste ja kohustuste kohta; 26 26) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme ülesannete täitmise aja kohta; 27 27) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme töö tasustamise kohta; 28 28) kokkulepe töötajate esindaja töötervishoiu- ja tööohutustegevusse kaasamise kohta; 29 29) kokkulepe tööolme kohta; 30 30) kokkulepe tööõnnetus- või kutsehaigestumisjuhtumi kindlustamise või tagajärgede kompenseerimise kohta; 31 31) kokkulepe töökeskkonna ohutegurite väärtuste ja nendega seotud tingimuste kohta; 32 32) kokkulepe tervishoiuteenuste kohta; 33 33) kokkulepe tervislikke eluviise toetavate meetmete kohta. 5 (5) Andmekogusse kantakse paberkandjal allkirjastatud ja skaneeritud või digitaalselt allkirjastatud kollektiivlepingu dokument. 6 (6) Andmed kollektiivlepingu sõlmimise, muutmise ja lõpetamise kohta esitatakse 15 tööpäeva jooksul arvates lepingu sõlmimisele, muutmisele või lõpetamisele järgnevast päevast.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -269,7 +516,170 @@
         {
           "@id": "estleg:Reg_1000551_Par_3_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_3_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete esitaja kohta kantakse andmekogusse järgmised andmed: 1) eesnimi (eesnimed); 2) perekonnanimi (perekonnanimed); 3) isikukood; 4) e-posti aadress; 5) telefon.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tööandja kohta kantakse andmekogusse järgmised andmed: 1) tööandja tüüp; 2) nimi; 3) registreerimiskoodi olemasolul registreerimiskood; 4) aadress; 5) telefon; 6) e-posti aadress; 7) õiguslik vorm; 8) tegevusala; 9) töötajate arv; 10) regioon; 11) 12) kuuluvus tööandjate ühendusse või liitu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Töötajate esindaja, näiteks ametiühingu või töötajate usaldusisiku kohta kantakse andmekogusse järgmised andmed: 1) töötajate esindaja tüüp; 2) nimi; 3) registreerimiskoodi olemasolul registreerimiskood; 4) aadress; 5) telefon; 6) e-posti aadress; 7) ametiühingu kuuluvus töötajate ühendusse või liitu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kollektiivlepingu kohta kantakse andmekogusse järgmised põhiandmed: 1) sõlmimise kuupäev; 2) jõustumise kuupäev; 3) kehtivuse aeg; 4) avalikkusele kättesaadavus andmekogus; 5) info riikliku lepitaja abi kohta lepingu sõlmimisel; 6) lepinguga hõlmatud töötajate arv; 7) töötajate ühendusse või liitu kuuluvate lepinguga hõlmatud töötajate arv; 8) info, kas tegemist on laiendatud kollektiivlepinguga; 9) laiendatud lepingu puhul väljaandes Ametlikud Teadaanded avaldamise kuupäev ja info laiendatud tingimuste kohta; 10) kokkulepe töötasutingimuste kohta; 11) kokkulepe puhkusetingimuste kohta; 12) kokkulepe kaugtöö tegemise kohta; 13) kokkulepe töö- ja puhkeaja tingimuste kohta; 14) kokkulepe lepingu ülesütlemise tingimuste kohta; 15) kokkulepe koolitustingimuste kohta; 16) kokkulepe lisasoodustuste kohta; 17) kokkulepe individuaalsete vaidluste lahendamise tingimuste kohta; 18) kokkulepe töötajate võrdse kohtlemise põhimõtete järgimise ja edendamise ning diskrimineerimisest hoidumise kohta; 19) kokkulepe töötajate esindaja õiguste ja kohustuste kohta; 20) kokkulepe töötajate esindajale ülesannete täitmiseks tööst vaba aja andmise kohta; 21) kokkulepe töötajate esindaja koolitustingimuste kohta; 22) kokkulepe informeerimise ja konsulteerimise kohta; 23) kokkulepe kollektiivlepingu muutmise või uue lepingu sõlmimise korra kohta; 24) kokkulepe ametiühingu liikmete soodustuste kohta võrreldes teiste töötajatega; 25) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme õiguste ja kohustuste kohta; 26) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme ülesannete täitmise aja kohta; 27) kokkulepe töökeskkonnavoliniku ja töökeskkonnanõukogu liikme töö tasustamise kohta; 28) kokkulepe töötajate esindaja töötervishoiu- ja tööohutustegevusse kaasamise kohta; 29) kokkulepe tööolme kohta; 30) kokkulepe tööõnnetus- või kutsehaigestumisjuhtumi kindlustamise või tagajärgede kompenseerimise kohta; 31) kokkulepe töökeskkonna ohutegurite väärtuste ja nendega seotud tingimuste kohta; 32) kokkulepe tervishoiuteenuste kohta; 33) kokkulepe tervislikke eluviise toetavate meetmete kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "30",
+        "31",
+        "32",
+        "33"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmekogusse kantakse paberkandjal allkirjastatud ja skaneeritud või digitaalselt allkirjastatud kollektiivlepingu dokument.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Andmed kollektiivlepingu sõlmimise, muutmise ja lõpetamise kohta esitatakse 15 tööpäeva jooksul arvates lepingu sõlmimisele, muutmisele või lõpetamisele järgnevast päevast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 6"
     },
     {
       "@id": "estleg:Reg_1000551_Par_4",
@@ -278,13 +688,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Andmete muutmine ja parandamine",
+      "rdfs:label": {
+        "@value": "§ 4. Andmete muutmine ja parandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Andmete muutumise korral esitab andmete esitaja andmekogusse viivitamatult uued andmed. Andmete muutumise korral esitab andmete esitaja andmekogusse viivitamatult uued andmed. 2 (2) Kui andmete vastutav töötleja avastab andmekogus ebaõiged andmed või teda teavitatakse andmekogus olevatest ebaõigetest andmetest, peab ta kontrollima andmete õigsust ja ebaõiged andmed parandama. Kui andmete vastutav töötleja avastab andmekogus ebaõiged andmed või teda teavitatakse andmekogus olevatest ebaõige",
-      "estleg:legalText": "1 (1) Andmete muutumise korral esitab andmete esitaja andmekogusse viivitamatult uued andmed. Andmete muutumise korral esitab andmete esitaja andmekogusse viivitamatult uued andmed. 2 (2) Kui andmete vastutav töötleja avastab andmekogus ebaõiged andmed või teda teavitatakse andmekogus olevatest ebaõigetest andmetest, peab ta kontrollima andmete õigsust ja ebaõiged andmed parandama. Kui andmete vastutav töötleja avastab andmekogus ebaõiged andmed või teda teavitatakse andmekogus olevatest ebaõigetest andmetest, peab ta kontrollima andmete õigsust ja ebaõiged andmed parandama. 3 (3) Andmete vastutaval töötlejal on õigus esitada andmete esitajale ja kollektiivlepinguga seotud isikutele järelepärimisi, kui on tekkinud kahtlus andmete tõepärasuses. Andmete vastutaval töötlejal on õigus esitada andmete esitajale ja kollektiivlepinguga seotud isikutele järelepärimisi, kui on tekkinud kahtlus andmete tõepärasuses. 4 (4) Andmete vastutav töötleja kustutab andmekogust selles olevad ebaõiged andmed, mida ei saa parandada. Andmete vastutav töötleja kustutab andmekogust selles olevad ebaõiged andmed, mida ei saa parandada. 5 (5) Andmete vastutav töötleja peab arvestust andmekogu andmete muutmise ning ebaõigete andmete parandamise ja kustutamise kohta. Andmete vastutav töötleja peab arvestust andmekogu andmete muutmise ning ebaõigete andmete parandamise ja kustutamise kohta.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete muutumise korral esitab andmete esitaja andmekogusse viivitamatult uued andmed. 2 (2) Kui andmete vastutav töötleja avastab andmekogus ebaõiged andmed või teda teavitatakse andmekogus olevatest ebaõigetest andmetest, peab ta kontrollima andmete õigsust ja ebaõiged andmed parandama. 3 (3) Andmete vastutaval töötlejal on õigus esitada andmete esitajale ja kollektiivlepinguga seotud isikutele järelepärimisi, kui on tekkinud kahtlus andmete tõepärasuses.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete muutumise korral esitab andmete esitaja andmekogusse viivitamatult uued andmed. 2 (2) Kui andmete vastutav töötleja avastab andmekogus ebaõiged andmed või teda teavitatakse andmekogus olevatest ebaõigetest andmetest, peab ta kontrollima andmete õigsust ja ebaõiged andmed parandama. 3 (3) Andmete vastutaval töötlejal on õigus esitada andmete esitajale ja kollektiivlepinguga seotud isikutele järelepärimisi, kui on tekkinud kahtlus andmete tõepärasuses. 4 (4) Andmete vastutav töötleja kustutab andmekogust selles olevad ebaõiged andmed, mida ei saa parandada. 5 (5) Andmete vastutav töötleja peab arvestust andmekogu andmete muutmise ning ebaõigete andmete parandamise ja kustutamise kohta.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -309,7 +725,89 @@
         {
           "@id": "estleg:Reg_1000551_Par_4_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_4_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete muutumise korral esitab andmete esitaja andmekogusse viivitamatult uued andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui andmete vastutav töötleja avastab andmekogus ebaõiged andmed või teda teavitatakse andmekogus olevatest ebaõigetest andmetest, peab ta kontrollima andmete õigsust ja ebaõiged andmed parandama.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmete vastutaval töötlejal on õigus esitada andmete esitajale ja kollektiivlepinguga seotud isikutele järelepärimisi, kui on tekkinud kahtlus andmete tõepärasuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmete vastutav töötleja kustutab andmekogust selles olevad ebaõiged andmed, mida ei saa parandada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmete vastutav töötleja peab arvestust andmekogu andmete muutmise ning ebaõigete andmete parandamise ja kustutamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5"
     },
     {
       "@id": "estleg:Reg_1000551_Par_5",
@@ -318,13 +816,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Andmete õiguslik tähendus",
+      "rdfs:label": {
+        "@value": "§ 5. Andmete õiguslik tähendus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "Andmekogu andmetel on informatiivne tähendus.",
-      "estleg:legalText": "Andmekogu andmetel on informatiivne tähendus. Andmekogu andmetel on informatiivne tähendus.",
+      "estleg:summary": {
+        "@value": "Andmekogu andmetel on informatiivne tähendus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu andmetel on informatiivne tähendus.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1001946_Par_8"
@@ -343,7 +847,25 @@
         {
           "@id": "estleg:Reg_1000551_Par_5_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu andmetel on informatiivne tähendus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_1000551_Par_6",
@@ -352,18 +874,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Andmekogusse andmete esitaja identifitseerimine ja autoriseerimine",
+      "rdfs:label": {
+        "@value": "§ 6. Andmekogusse andmete esitaja identifitseerimine ja autoriseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Andmete esitamine andmekogusse eeldab esitaja identifitseerimist ja autoriseerimist. Andmete esitamine andmekogusse eeldab esitaja identifitseerimist ja autoriseerimist. 2 (2) Esitaja identifitseeritakse digitaalse isikutunnistuse alusel. Esitaja identifitseeritakse digitaalse isikutunnistuse alusel. 3 (3) Esitaja autoriseeritakse infosüsteemis. Esitaja autoriseeritakse infosüsteemis.",
-      "estleg:legalText": "1 (1) Andmete esitamine andmekogusse eeldab esitaja identifitseerimist ja autoriseerimist. Andmete esitamine andmekogusse eeldab esitaja identifitseerimist ja autoriseerimist. 2 (2) Esitaja identifitseeritakse digitaalse isikutunnistuse alusel. Esitaja identifitseeritakse digitaalse isikutunnistuse alusel. 3 (3) Esitaja autoriseeritakse infosüsteemis. Esitaja autoriseeritakse infosüsteemis.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete esitamine andmekogusse eeldab esitaja identifitseerimist ja autoriseerimist. 2 (2) Esitaja identifitseeritakse digitaalse isikutunnistuse alusel. 3 (3) Esitaja autoriseeritakse infosüsteemis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete esitamine andmekogusse eeldab esitaja identifitseerimist ja autoriseerimist. 2 (2) Esitaja identifitseeritakse digitaalse isikutunnistuse alusel. 3 (3) Esitaja autoriseeritakse infosüsteemis.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1000551_Par_6_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_6_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete esitamine andmekogusse eeldab esitaja identifitseerimist ja autoriseerimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Esitaja identifitseeritakse digitaalse isikutunnistuse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Esitaja autoriseeritakse infosüsteemis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
     },
     {
       "@id": "estleg:Reg_1000551_Par_7",
@@ -372,13 +950,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Andmete avalikkus",
+      "rdfs:label": {
+        "@value": "§ 7. Andmete avalikkus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Kollektiivlepingu dokument on avalik, kui pooled on vastava loa andnud. Kollektiivlepingu dokument on avalik, kui pooled on vastava loa andnud. 2 (2) Kollektiivlepingu dokument, mis ei ole avalik, väljastatakse taotluse alusel, mis esitatakse vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis. Andmeväljastuse taotlust tuleb põhjendada ning näidata andmesaaja seotus kollektiivlepinguga. Kollektiivlepingu dokument, mis ei ole avalik, väljastatakse taotluse alusel, mis esitata",
-      "estleg:legalText": "1 (1) Kollektiivlepingu dokument on avalik, kui pooled on vastava loa andnud. Kollektiivlepingu dokument on avalik, kui pooled on vastava loa andnud. 2 (2) Kollektiivlepingu dokument, mis ei ole avalik, väljastatakse taotluse alusel, mis esitatakse vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis. Andmeväljastuse taotlust tuleb põhjendada ning näidata andmesaaja seotus kollektiivlepinguga. Kollektiivlepingu dokument, mis ei ole avalik, väljastatakse taotluse alusel, mis esitatakse vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis. Andmeväljastuse taotlust tuleb põhjendada ning näidata andmesaaja seotus kollektiivlepinguga. 3 (3) Teadus- ja rakendusuuringute tegemiseks väljastatakse isikustamata andmeid, esitades vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis taotluse. Taotluse esitamisel tuleb selgitada andmesaamise vajadust. RT I 2018-05-19 1 119052018001 2018-05-22 22 Teadus- ja rakendusuuringute tegemiseks väljastatakse isikustamata andmeid, esitades vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis taotluse. Taotluse esitamisel tuleb selgitada andmesaamise vajadust.",
+      "estleg:summary": {
+        "@value": "1 (1) Kollektiivlepingu dokument on avalik, kui pooled on vastava loa andnud. 2 (2) Kollektiivlepingu dokument, mis ei ole avalik, väljastatakse taotluse alusel, mis esitatakse vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis. Andmeväljastuse taotlust tuleb põhjendada ning näidata andmesaaja seotus kollektiivlepinguga. 3 (3) Teadus- ja rakendusuuringute tegemiseks väljastatakse isikustamata andmeid, esitades vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kollektiivlepingu dokument on avalik, kui pooled on vastava loa andnud. 2 (2) Kollektiivlepingu dokument, mis ei ole avalik, väljastatakse taotluse alusel, mis esitatakse vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis. Andmeväljastuse taotlust tuleb põhjendada ning näidata andmesaaja seotus kollektiivlepinguga. 3 (3) Teadus- ja rakendusuuringute tegemiseks väljastatakse isikustamata andmeid, esitades vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis taotluse. Taotluse esitamisel tuleb selgitada andmesaamise vajadust. RT I 2018-05-19 1 119052018001 2018-05-22 22",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -395,7 +979,57 @@
         {
           "@id": "estleg:Reg_1000551_Par_7_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_7_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kollektiivlepingu dokument on avalik, kui pooled on vastava loa andnud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kollektiivlepingu dokument, mis ei ole avalik, väljastatakse taotluse alusel, mis esitatakse vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis. Andmeväljastuse taotlust tuleb põhjendada ning näidata andmesaaja seotus kollektiivlepinguga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Teadus- ja rakendusuuringute tegemiseks väljastatakse isikustamata andmeid, esitades vastutavale töötlejale kirjalikku taasesitamist võimaldavas vormis taotluse. Taotluse esitamisel tuleb selgitada andmesaamise vajadust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
     },
     {
       "@id": "estleg:Reg_1000551_Par_8",
@@ -404,12 +1038,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Juurdepääs kõigile andmetele",
+      "rdfs:label": {
+        "@value": "§ 8. Juurdepääs kõigile andmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
@@ -424,13 +1064,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Andmekogu turvaklass",
+      "rdfs:label": {
+        "@value": "§ 9. Andmekogu turvaklass",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu turvaklass on K1T1S1. Andmekogu turvaklass on K1T1S1. 2 (2) Andmekogu turbeaste on madal (L). RT I 2018-05-19 1 119052018001 2018-05-22 22 Andmekogu turbeaste on madal (L).",
-      "estleg:legalText": "1 (1) Andmekogu turvaklass on K1T1S1. Andmekogu turvaklass on K1T1S1. 2 (2) Andmekogu turbeaste on madal (L). RT I 2018-05-19 1 119052018001 2018-05-22 22 Andmekogu turbeaste on madal (L).",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu turvaklass on K1T1S1. 2 (2) Andmekogu turbeaste on madal (L). RT I 2018-05-19 1 119052018001 2018-05-22 22",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu turvaklass on K1T1S1. 2 (2) Andmekogu turbeaste on madal (L). RT I 2018-05-19 1 119052018001 2018-05-22 22",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1003072_Par_12"
@@ -452,7 +1098,41 @@
         {
           "@id": "estleg:Reg_1000551_Par_9_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu turvaklass on K1T1S1.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu turbeaste on madal (L).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_1000551_Par_10",
@@ -461,13 +1141,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 10. Andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "1 (1) Kõiki andmekogusse kantud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. Kõiki andmekogusse kantud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. 2 (2) Volitatud töötleja logib andmekogus kande vaatamise, muutmise, väljastamise ja päringu tegemise. Logisid säilitatakse 30 päeva viimase töötlemistoimingu tegemisest arvates. RT I 2018-05-19 1 119052018001 2018-05-22 22 Volitatud töötleja logib andmekogus kande vaatamise, muutmise, väljastam",
-      "estleg:legalText": "1 (1) Kõiki andmekogusse kantud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. Kõiki andmekogusse kantud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. 2 (2) Volitatud töötleja logib andmekogus kande vaatamise, muutmise, väljastamise ja päringu tegemise. Logisid säilitatakse 30 päeva viimase töötlemistoimingu tegemisest arvates. RT I 2018-05-19 1 119052018001 2018-05-22 22 Volitatud töötleja logib andmekogus kande vaatamise, muutmise, väljastamise ja päringu tegemise. Logisid säilitatakse 30 päeva viimase töötlemistoimingu tegemisest arvates.",
+      "estleg:summary": {
+        "@value": "1 (1) Kõiki andmekogusse kantud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. 2 (2) Volitatud töötleja logib andmekogus kande vaatamise, muutmise, väljastamise ja päringu tegemise. Logisid säilitatakse 30 päeva viimase töötlemistoimingu tegemisest arvates. RT I 2018-05-19 1 119052018001 2018-05-22 22",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kõiki andmekogusse kantud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates. 2 (2) Volitatud töötleja logib andmekogus kande vaatamise, muutmise, väljastamise ja päringu tegemise. Logisid säilitatakse 30 päeva viimase töötlemistoimingu tegemisest arvates. RT I 2018-05-19 1 119052018001 2018-05-22 22",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -481,7 +1167,41 @@
         {
           "@id": "estleg:Reg_1000551_Par_10_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1000551_Par_10_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kõiki andmekogusse kantud andmeid säilitatakse kümme aastat kollektiivlepingu lõppemisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Volitatud töötleja logib andmekogus kande vaatamise, muutmise, väljastamise ja päringu tegemise. Logisid säilitatakse 30 päeva viimase töötlemistoimingu tegemisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:Reg_1000551_Par_11",
@@ -490,13 +1210,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Järelevalve andmekogu pidamise üle",
+      "rdfs:label": {
+        "@value": "§ 11. Järelevalve andmekogu pidamise üle",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "Järelevalvet andmekogu pidamise üle tehakse õigusaktides sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22",
-      "estleg:legalText": "Järelevalvet andmekogu pidamise üle tehakse õigusaktides sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22 Järelevalvet andmekogu pidamise üle tehakse õigusaktides sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Järelevalvet andmekogu pidamise üle tehakse õigusaktides sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22",
+        "@language": "et"
+      },
+      "estleg:legalText": "Järelevalvet andmekogu pidamise üle tehakse õigusaktides sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1010926_Par_17"
@@ -518,7 +1244,25 @@
         {
           "@id": "estleg:Reg_1000551_Par_11_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_11_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Järelevalvet andmekogu pidamise üle tehakse õigusaktides sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:Reg_1000551_Par_12",
@@ -527,13 +1271,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Andmekogu likvideerimine",
+      "rdfs:label": {
+        "@value": "§ 12. Andmekogu likvideerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "Andmekogu likvideerimise otsustab valdkonna eest vastutav minister. Andmekogu likvideeritakse seaduses sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22",
-      "estleg:legalText": "Andmekogu likvideerimise otsustab valdkonna eest vastutav minister. Andmekogu likvideeritakse seaduses sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22 Andmekogu likvideerimise otsustab valdkonna eest vastutav minister. Andmekogu likvideeritakse seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "Andmekogu likvideerimise otsustab valdkonna eest vastutav minister. Andmekogu likvideeritakse seaduses sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu likvideerimise otsustab valdkonna eest vastutav minister. Andmekogu likvideeritakse seaduses sätestatud korras. RT I 2018-05-19 1 119052018001 2018-05-22 22",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -564,7 +1314,25 @@
         {
           "@id": "estleg:Reg_1000551_Par_12_v1000551"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1000551_Par_12_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1000551_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu likvideerimise otsustab valdkonna eest vastutav minister. Andmekogu likvideeritakse seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1000551_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
     },
     {
       "@id": "estleg:Reg_1000551_Par_13",
@@ -573,12 +1341,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Sotsiaalministri 2. jaanuari 2001. a määruse nr 2 „Kollektiivlepingute andmekogu asutamine ja pidamise kord” kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 13. Sotsiaalministri 2. jaanuari 2001. a määruse nr 2 „Kollektiivlepingute andmekogu asutamine ja pidamise kord” kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kollektiivlepingute andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1000551_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {

@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:Keeleseadus_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Keeleseadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Keeleseadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Keeleseadus",
-      "dcterms:title": [
-        {
-          "@value": "Keeleseadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Language Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Keeleseadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/106032026006.xml"
+        "@id": "https://www.riigiteataja.ee/akt/109072026014"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/109072026014/xml"
+      },
+      "estleg:globalId": "109072026014",
+      "eli:id_local": "109072026014",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "1000784",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "9566b0049dbb94b447b4de324d3aa4d4e09ed5dabaf889d76445cc4986b2cc89",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2011-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2026-03-16",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2026-03-16",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/513032026001"
@@ -236,14 +248,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU18_0635"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/513032026001"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_Keeleseadus_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–2 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:Keeleseadus_TopicScheme"
+      },
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:Keeleseadus_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Keeleseadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Keeleseadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_Keeleseadus_1"
@@ -275,26 +313,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_Keeleseadus_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–2 Üldsätted",
-      "skos:prefLabel": "§1–2 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:Keeleseadus_TopicScheme"
-      },
-      "estleg:provisionCount": 2
-    },
-    {
       "@id": "estleg:Chapter_Keeleseadus_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -314,12 +341,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§3–7 Keelepoliitika ja keelevaldkonna juhtimine",
-      "skos:prefLabel": "§3–7 Keelepoliitika ja keelevaldkonna juhtimine",
+      "rdfs:label": {
+        "@value": "§3–7 Keelepoliitika ja keelevaldkonna juhtimine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§3–7 Keelepoliitika ja keelevaldkonna juhtimine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
-      "estleg:provisionCount": 5
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:Chapter_Keeleseadus_2",
@@ -327,7 +360,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Keelepoliitika ja keelevaldkonna juhtimine",
+      "rdfs:label": {
+        "@value": "2. peatükk – Keelepoliitika ja keelevaldkonna juhtimine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -347,8 +383,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§7–7 Tõlkeandmekogu",
-      "skos:prefLabel": "§7–7 Tõlkeandmekogu",
+      "rdfs:label": {
+        "@value": "§7–7 Tõlkeandmekogu",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§7–7 Tõlkeandmekogu",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
@@ -360,7 +402,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Tõlkeandmekogu",
+      "rdfs:label": {
+        "@value": "2. peatükk – Tõlkeandmekogu",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -380,8 +425,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§8–15 Suuline ja kirjalik asjaajamine",
-      "skos:prefLabel": "§8–15 Suuline ja kirjalik asjaajamine",
+      "rdfs:label": {
+        "@value": "§8–15 Suuline ja kirjalik asjaajamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§8–15 Suuline ja kirjalik asjaajamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
@@ -393,7 +444,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Suuline ja kirjalik asjaajamine",
+      "rdfs:label": {
+        "@value": "3. peatükk – Suuline ja kirjalik asjaajamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -413,8 +467,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–22 Eestikeelne teave ja teenindamine",
-      "skos:prefLabel": "§16–22 Eestikeelne teave ja teenindamine",
+      "rdfs:label": {
+        "@value": "§16–22 Eestikeelne teave ja teenindamine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–22 Eestikeelne teave ja teenindamine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
@@ -426,7 +486,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Eestikeelne teave ja teenindamine",
+      "rdfs:label": {
+        "@value": "4. peatükk – Eestikeelne teave ja teenindamine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -446,12 +509,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§23–29 Eesti keele oskus, selle hindamine ja kontrollimine",
-      "skos:prefLabel": "§23–29 Eesti keele oskus, selle hindamine ja kontrollimine",
+      "rdfs:label": {
+        "@value": "§23–29 Eesti keele oskus, selle hindamine ja kontrollimine",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§23–29 Eesti keele oskus, selle hindamine ja kontrollimine",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
-      "estleg:provisionCount": 7
+      "estleg:provisionCount": 12
     },
     {
       "@id": "estleg:Chapter_Keeleseadus_5",
@@ -459,7 +528,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Eesti keele oskus, selle hindamine ja kontrollimine",
+      "rdfs:label": {
+        "@value": "5. peatükk – Eesti keele oskus, selle hindamine ja kontrollimine",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -479,8 +551,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§30–32 Riiklik ja haldusjärelevalve",
-      "skos:prefLabel": "§30–32 Riiklik ja haldusjärelevalve",
+      "rdfs:label": {
+        "@value": "§30–32 Riiklik ja haldusjärelevalve",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§30–32 Riiklik ja haldusjärelevalve",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
@@ -492,7 +570,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – Riiklik ja haldusjärelevalve",
+      "rdfs:label": {
+        "@value": "6. peatükk – Riiklik ja haldusjärelevalve",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -512,12 +593,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§33–38 Vastutus",
-      "skos:prefLabel": "§33–38 Vastutus",
+      "rdfs:label": {
+        "@value": "§33–38 Vastutus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§33–38 Vastutus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
-      "estleg:provisionCount": 6
+      "estleg:provisionCount": 8
     },
     {
       "@id": "estleg:Chapter_Keeleseadus_7",
@@ -525,7 +612,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – Vastutus",
+      "rdfs:label": {
+        "@value": "7. peatükk – Vastutus",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -545,12 +635,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§39–46 Lõppsätted",
-      "skos:prefLabel": "§39–46 Lõppsätted",
+      "rdfs:label": {
+        "@value": "§39–46 Lõppsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§39–46 Lõppsätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:Keeleseadus_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:Chapter_Keeleseadus_8",
@@ -558,7 +654,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "8. peatükk – Lõppsätted",
+      "rdfs:label": {
+        "@value": "8. peatükk – Lõppsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "8",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
@@ -578,12 +677,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Seaduse eesmärk on arendada, säilitada ja kaitsta eesti keelt ning tagada eesti keele kasutamine peamise suhtluskeelena kõikides avaliku elu valdkondades.",
+      "estleg:summary": {
+        "@value": "Seaduse eesmärk on arendada, säilitada ja kaitsta eesti keelt ning tagada eesti keele kasutamine peamise suhtluskeelena kõikides avaliku elu valdkondades.",
+        "@language": "et"
+      },
       "estleg:legalText": "Seaduse eesmärk on arendada, säilitada ja kaitsta eesti keelt ning tagada eesti keele kasutamine peamise suhtluskeelena kõikides avaliku elu valdkondades.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_1"
@@ -620,10 +725,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Seaduse eesmärk on arendada, säilitada ja kaitsta eesti keelt ning tagada eesti keele kasutamine peamise suhtluskeelena kõikides avaliku elu valdkondades.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seaduse eesmärk on arendada, säilitada ja kaitsta eesti keelt ning tagada eesti keele kasutamine peamise suhtluskeelena kõikides avaliku elu valdkondades.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Keeleseadus_Par_2",
@@ -632,12 +739,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 2. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Seaduses reguleeritakse eesti keele ja võõrkeelte kasutamist suulises ja kirjalikus asjaajamises, avalikus teabes ja teeninduses, eesti viipekeele ja viibeldud eesti keele kasutamist, eesti keele oskuse nõudeid ja hindamist, seaduses ja seaduse alusel sätestatud nõuete täitmise riiklikku ja haldusjärelevalvet ning vastutust seaduse nõuete rikkumise eest. (2) Eraõiguslike juriidiliste isikute ja füüsiliste isikute keelekasutust reguleeritakse, kui see on õigustatud põhiõiguste kaitseks või",
+      "estleg:summary": {
+        "@value": "(1) Seaduses reguleeritakse eesti keele ja võõrkeelte kasutamist suulises ja kirjalikus asjaajamises, avalikus teabes ja teeninduses, eesti viipekeele ja viibeldud eesti keele kasutamist, eesti keele oskuse nõudeid ja hindamist, seaduses ja seaduse alusel sätestatud nõuete täitmise riiklikku ja haldusjärelevalvet ning vastutust seaduse nõuete rikkumise eest. (2) Eraõiguslike juriidiliste isikute ja füüsiliste isikute keelekasutust reguleeritakse, kui see on õigustatud põhiõiguste kaitseks või",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Seaduses reguleeritakse eesti keele ja võõrkeelte kasutamist suulises ja kirjalikus asjaajamises, avalikus teabes ja teeninduses, eesti viipekeele ja viibeldud eesti keele kasutamist, eesti keele oskuse nõudeid ja hindamist, seaduses ja seaduse alusel sätestatud nõuete täitmise riiklikku ja haldusjärelevalvet ning vastutust seaduse nõuete rikkumise eest. (2) Eraõiguslike juriidiliste isikute ja füüsiliste isikute keelekasutust reguleeritakse, kui see on õigustatud põhiõiguste kaitseks või avalikes huvides. Avalikud huvid käesoleva seaduse tähenduses on ühiskonna turvalisus, avalik kord, avalik haldus, haridus, tervishoid, tarbijakaitse ja tööohutus. Eesti keele kasutamise ja keeleoskuse nõue peab olema põhjendatud ning proportsionaalne taotletava eesmärgiga ega tohi moonutada piiratavate õiguste olemust. (3) Võõrkeelt, sealhulgas vähemusrahvuse keelt kasutavate isikute õigused tagatakse kooskõlas teiste seaduste ning välislepingutega. Võõrkeelte toetamise meetmed ei tohi kahjustada eesti keelt. (4) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_1"
@@ -775,13 +888,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Eesti keele staatus",
+      "rdfs:label": {
+        "@value": "§ 3. Eesti keele staatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eesti riigikeel on eesti keel. (2) Eesti viipekeel on iseseisev keel ning viibeldud eesti keel on eesti keele esinemiskuju. (3) Riik toetab eesti keele piirkondlike erikujude (edaspidi murdekeel) kaitset, kasutamist ja arendamist.",
-      "estleg:legalText": "(1) Eesti riigikeel on eesti keel. (2) Eesti viipekeel on iseseisev keel ning viibeldud eesti keel on eesti keele esinemiskuju. (3) Riik toetab eesti keele piirkondlike erikujude (edaspidi murdekeel) kaitset, kasutamist ja arendamist.",
+      "estleg:summary": {
+        "@value": "(1) Eesti riigikeel on eesti keel. (2) Eesti viipekeel on iseseisev keel ning viibeldud eesti keel on eesti keele esinemiskuju. (3) Riik toetab eesti keele piirkondlike erikujude kaitset, kasutamist ja arendamist. Eesti keele piirkondlik erikuju on põhjaeesti või lõunaeesti ajaloolisel keelealal kujunenud keelekuju.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti riigikeel on eesti keel. (2) Eesti viipekeel on iseseisev keel ning viibeldud eesti keel on eesti keele esinemiskuju. (3) Riik toetab eesti keele piirkondlike erikujude kaitset, kasutamist ja arendamist. Eesti keele piirkondlik erikuju on põhjaeesti või lõunaeesti ajaloolisel keelealal kujunenud keelekuju.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_2"
       },
@@ -850,7 +969,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Riik toetab eesti keele piirkondlike erikujude (edaspidi murdekeel) kaitset, kasutamist ja arendamist.",
+      "estleg:legalText": "(3) Riik toetab eesti keele piirkondlike erikujude kaitset, kasutamist ja arendamist. Eesti keele piirkondlik erikuju on põhjaeesti või lõunaeesti ajaloolisel keelealal kujunenud keelekuju.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_3"
       },
@@ -863,13 +982,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Ametlik ja avalik keelekasutus ning eesti kirjakeele norm",
+      "rdfs:label": {
+        "@value": "§ 4. Ametlik ja avalik keelekasutus ning eesti kirjakeele norm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Ametlik keelekasutus on riigi ametiasutuse ja valitsusasutuse hallatava riigiasutuse (edaspidi riigiasutus) ning kohaliku omavalitsuse ametiasutuse ja kohaliku omavalitsuse ametiasutuse hallatava asutuse (edaspidi kohaliku omavalitsuse asutus), notari, kohtutäituri ja vandetõlgi ning nende büroo või muu avaliku halduse ülesandeid täitma volitatud asutuse, kogu või isiku dokumentide, veebilehe, siltide, viitade ja teadaannete keelekasutus.",
-      "estleg:legalText": "(1) Ametlik keelekasutus on riigi ametiasutuse ja valitsusasutuse hallatava riigiasutuse (edaspidi riigiasutus) ning kohaliku omavalitsuse ametiasutuse ja kohaliku omavalitsuse ametiasutuse hallatava asutuse (edaspidi kohaliku omavalitsuse asutus), notari, kohtutäituri ja vandetõlgi ning nende büroo või muu avaliku halduse ülesandeid täitma volitatud asutuse, kogu või isiku dokumentide, veebilehe, siltide, viitade ja teadaannete keelekasutus. Ametlik keelekasutus peab vastama eesti kirjakeele normile (edaspidi kirjakeele norm). Murdekeele põlisel kasutusalal võib kirjakeele normi kohasele tekstile lisada samasisulise teksti vastavas murdekeeles. (2) Kirjakeele normi all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele normi rakendamise korra kehtestab määrusega. (3) Muudes avalikkusele suunatud tekstides, millele ei kohaldata ametliku keelekasutuse nõuet, sealhulgas eesti keele kasutamisel meedias, järgitakse keelekasutuse head tava.",
+      "estleg:summary": {
+        "@value": "(1) Ametlik keelekasutus on riigi ametiasutuse ja valitsusasutuse hallatava riigiasutuse (edaspidi riigiasutus) ning kohaliku omavalitsuse ametiasutuse ja kohaliku omavalitsuse ametiasutuse hallatava asutuse (edaspidi kohaliku omavalitsuse asutus), notari, kohtutäituri ja vandetõlgi ning nende büroo või muu avaliku halduse ülesandeid täitma volitatud asutuse, kogu või isiku dokumentide, veebilehe, siltide, viitade ja teadaannete keelekasutus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametlik keelekasutus on riigi ametiasutuse ja valitsusasutuse hallatava riigiasutuse (edaspidi riigiasutus) ning kohaliku omavalitsuse ametiasutuse ja kohaliku omavalitsuse ametiasutuse hallatava asutuse (edaspidi kohaliku omavalitsuse asutus), notari, kohtutäituri ja vandetõlgi ning nende büroo või muu avaliku halduse ülesandeid täitma volitatud asutuse, kogu või isiku dokumentide, veebilehe, siltide, viitade ja teadaannete keelekasutus. Ametlik keelekasutus peab vastama eesti kirjakeele normile (edaspidi kirjakeele norm). Eesti keele piirkondliku erikuju põlisel kasutusalal võib kirjakeele normi kohasele tekstile lisada samasisulise teksti vastavas erikujus. (2) Kirjakeele normi all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele normi rakendamise korra kehtestab määrusega. (3) Muudes avalikkusele suunatud tekstides, millele ei kohaldata ametliku keelekasutuse nõuet, sealhulgas eesti keele kasutamisel meedias, järgitakse keelekasutuse head tava.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_2"
       },
@@ -935,7 +1060,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ametlik keelekasutus on riigi ametiasutuse ja valitsusasutuse hallatava riigiasutuse (edaspidi riigiasutus) ning kohaliku omavalitsuse ametiasutuse ja kohaliku omavalitsuse ametiasutuse hallatava asutuse (edaspidi kohaliku omavalitsuse asutus), notari, kohtutäituri ja vandetõlgi ning nende büroo või muu avaliku halduse ülesandeid täitma volitatud asutuse, kogu või isiku dokumentide, veebilehe, siltide, viitade ja teadaannete keelekasutus. Ametlik keelekasutus peab vastama eesti kirjakeele normile (edaspidi kirjakeele norm). Murdekeele põlisel kasutusalal võib kirjakeele normi kohasele tekstile lisada samasisulise teksti vastavas murdekeeles.",
+      "estleg:legalText": "(1) Ametlik keelekasutus on riigi ametiasutuse ja valitsusasutuse hallatava riigiasutuse (edaspidi riigiasutus) ning kohaliku omavalitsuse ametiasutuse ja kohaliku omavalitsuse ametiasutuse hallatava asutuse (edaspidi kohaliku omavalitsuse asutus), notari, kohtutäituri ja vandetõlgi ning nende büroo või muu avaliku halduse ülesandeid täitma volitatud asutuse, kogu või isiku dokumentide, veebilehe, siltide, viitade ja teadaannete keelekasutus. Ametlik keelekasutus peab vastama eesti kirjakeele normile (edaspidi kirjakeele norm). Eesti keele piirkondliku erikuju põlisel kasutusalal võib kirjakeele normi kohasele tekstile lisada samasisulise teksti vastavas erikujus.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_4"
       },
@@ -1007,12 +1132,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Võõrkeel ja vähemusrahvuse keel",
+      "rdfs:label": {
+        "@value": "§ 5. Võõrkeel ja vähemusrahvuse keel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Iga muu keel peale eesti keele ja eesti viipekeele on võõrkeel. (2) Vähemusrahvuse keel on võõrkeel, mida vähemusrahvusest isikud on Eestis põliselt kasutanud emakeelena. (3) Vähemusrahvusest isik käesoleva seaduse tähenduses on Eesti kodanik, kes omab kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga ning erineb eestlastest keele poolest.",
+      "estleg:summary": {
+        "@value": "(1) Iga muu keel peale eesti keele ja eesti viipekeele on võõrkeel. (2) Vähemusrahvuse keel on võõrkeel, mida vähemusrahvusest isikud on Eestis põliselt kasutanud emakeelena. (3) Vähemusrahvusest isik käesoleva seaduse tähenduses on Eesti kodanik, kes omab kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga ning erineb eestlastest keele poolest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Iga muu keel peale eesti keele ja eesti viipekeele on võõrkeel. (2) Vähemusrahvuse keel on võõrkeel, mida vähemusrahvusest isikud on Eestis põliselt kasutanud emakeelena. (3) Vähemusrahvusest isik käesoleva seaduse tähenduses on Eesti kodanik, kes omab kauaaegseid, kindlaid ja kestvaid sidemeid Eestiga ning erineb eestlastest keele poolest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_2"
@@ -1128,13 +1259,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Keelevaldkonna korraldamine",
+      "rdfs:label": {
+        "@value": "§ 6. Keelevaldkonna korraldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Keelevaldkonda, sealhulgas keeleõpet, eestikeelse oskussõnavara ja eesti keelele suunatud keeletehnoloogia arendamist ning rakendamist ja eesti keele alast teadus- ja arendustegevust suunab ja koordineerib Haridus- ja Teadusministeerium. (2) Riik toetab eestikeelse laiale kasutajaskonnale suunatud ja õppeotstarbelise tarkvara kasutamist.",
-      "estleg:legalText": "(1) Keelevaldkonda, sealhulgas keeleõpet, eestikeelse oskussõnavara ja eesti keelele suunatud keeletehnoloogia arendamist ning rakendamist ja eesti keele alast teadus- ja arendustegevust suunab ja koordineerib Haridus- ja Teadusministeerium. (2) Riik toetab eestikeelse laiale kasutajaskonnale suunatud ja õppeotstarbelise tarkvara kasutamist.",
+      "estleg:summary": {
+        "@value": "(1) Haridus- ja Teadusministeerium suunab ja viib ellu keeleõpet, eestikeelse oskussõnavara ja eesti keelele suunatud keeletehnoloogia arendamist ja rakendamist ning suunab ja koordineerib eesti keele alast teadus- ja arendustegevust. (2) Riik toetab eestikeelse laiale kasutajaskonnale suunatud ja õppeotstarbelise tarkvara kasutamist. (3) Keelevaldkonna projektide ning keeleuuringute ja -õppe toetamise, toetuse tagasinõudmise ja -maksmise tingimused ja korra kehtestab määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Haridus- ja Teadusministeerium suunab ja viib ellu keeleõpet, eestikeelse oskussõnavara ja eesti keelele suunatud keeletehnoloogia arendamist ja rakendamist ning suunab ja koordineerib eesti keele alast teadus- ja arendustegevust. (2) Riik toetab eestikeelse laiale kasutajaskonnale suunatud ja õppeotstarbelise tarkvara kasutamist. (3) Keelevaldkonna projektide ning keeleuuringute ja -õppe toetamise, toetuse tagasinõudmise ja -maksmise tingimused ja korra kehtestab määrusega. (4) Keelevaldkonna projektide ning keeleuuringute ja -õppega seotud stipendiumide, nende suuruse ja maksmise ning stipendiumi tagasinõudmise ja -maksmise tingimused ja korra kehtestab määrusega. (5) Valdkonna eest vastutav minister võib halduslepinguga volitada ministeeriumi valitsemisala vahendite arvelt toetuste ja stipendiumide andmisega seotud haldusülesannet täitma riigi sihtasutuse, kohaldamata halduskoostöö seaduse § 5 lõikeid 2 ja 3, § 6 lõikeid 1 ja 2 ning § 14 lõiget 1. Käesolevas lõikes nimetatud halduslepingu sõlmimisele ei kohaldata halduskoostöö seaduse §-s 13 ega § 14 lõikes 3 sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_2"
       },
@@ -1147,6 +1284,15 @@
         },
         {
           "@id": "estleg:Keeleseadus_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_6_Lg_5"
         }
       ],
       "estleg:targetGroup": [
@@ -1179,7 +1325,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Keelevaldkonda, sealhulgas keeleõpet, eestikeelse oskussõnavara ja eesti keelele suunatud keeletehnoloogia arendamist ning rakendamist ja eesti keele alast teadus- ja arendustegevust suunab ja koordineerib Haridus- ja Teadusministeerium.",
+      "estleg:legalText": "(1) Haridus- ja Teadusministeerium suunab ja viib ellu keeleõpet, eestikeelse oskussõnavara ja eesti keelele suunatud keeletehnoloogia arendamist ja rakendamist ning suunab ja koordineerib eesti keele alast teadus- ja arendustegevust.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_6"
       },
@@ -1213,18 +1359,163 @@
       }
     },
     {
+      "@id": "estleg:Keeleseadus_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Keelevaldkonna projektide ning keeleuuringute ja -õppe toetamise, toetuse tagasinõudmise ja -maksmise tingimused ja korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Keelevaldkonna projektide ning keeleuuringute ja -õppega seotud stipendiumide, nende suuruse ja maksmise ning stipendiumi tagasinõudmise ja -maksmise tingimused ja korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_6_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Valdkonna eest vastutav minister võib halduslepinguga volitada ministeeriumi valitsemisala vahendite arvelt toetuste ja stipendiumide andmisega seotud haldusülesannet täitma riigi sihtasutuse, kohaldamata halduskoostöö seaduse § 5 lõikeid 2 ja 3, § 6 lõikeid 1 ja 2 ning § 14 lõiget 1. Käesolevas lõikes nimetatud halduslepingu sõlmimisele ei kohaldata halduskoostöö seaduse §-s 13 ega § 14 lõikes 3 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 5"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_6_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 6¹.",
+      "rdfs:label": {
+        "@value": "§ 6¹. Keelevaldkonna toetuse ja stipendiumi tagasinõudmine",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Keeleseadus",
+      "estleg:partOfAct": {
+        "@id": "estleg:Keeleseadus_Map"
+      },
+      "estleg:summary": {
+        "@value": "(1) Toetuse ja stipendiumi andja nõuab toetuse või stipendiumi (edaspidi koos toetus) tagasi, kui pärast toetuse väljamaksmist selgub, et toetuse saaja: 1) on teadlikult esitanud valeandmeid; 2) ei ole täitnud toetuse väljamaksmise aluseks olevaid nõudeid; 3) ei ole kasutanud toetust sihipäraselt; 4) ei täida toetuse saaja kohustusi. (2) Toetuse tagasinõudmise otsuse võib teha kümne aasta jooksul toetuse andmise otsuse tegemise päevast arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Toetuse ja stipendiumi andja nõuab toetuse või stipendiumi (edaspidi koos toetus) tagasi, kui pärast toetuse väljamaksmist selgub, et toetuse saaja: 1) on teadlikult esitanud valeandmeid; 2) ei ole täitnud toetuse väljamaksmise aluseks olevaid nõudeid; 3) ei ole kasutanud toetust sihipäraselt; 4) ei täida toetuse saaja kohustusi. (2) Toetuse tagasinõudmise otsuse võib teha kümne aasta jooksul toetuse andmise otsuse tegemise päevast arvates. (3) Kui toetuse saaja ei ole tagastanud toetuse summat tähtpäevaks, maksab ta tähtpäevaks tasumata summalt viivist 0,06 protsenti iga toetuse tagasimaksmisega viivitatud kalendripäeva eest, kuid kogusummas mitte rohkem kui tagasinõutav toetuse summa. Toetuse tagasimaksetest loetakse kõigepealt tasutuks viivis, seejärel tagastamisele kuuluv toetus. (4) Toetuse andja otsus toetuse tagasinõudmise kohta on täitedokumendiks täitemenetluse seadustiku § 2 lõike 1 punkti 21 tähenduses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_Keeleseadus_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_Keeleseadus_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Keeleseadus_Par_6_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_6_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_6_1_Lg_3"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_6_1_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_6_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Toetuse ja stipendiumi andja nõuab toetuse või stipendiumi (edaspidi koos toetus) tagasi, kui pärast toetuse väljamaksmist selgub, et toetuse saaja: 1) on teadlikult esitanud valeandmeid; 2) ei ole täitnud toetuse väljamaksmise aluseks olevaid nõudeid; 3) ei ole kasutanud toetust sihipäraselt; 4) ei täida toetuse saaja kohustusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_6_1"
+      },
+      "rdfs:label": "§ 6¹ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_6_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Toetuse tagasinõudmise otsuse võib teha kümne aasta jooksul toetuse andmise otsuse tegemise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_6_1"
+      },
+      "rdfs:label": "§ 6¹ lg 2"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_6_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui toetuse saaja ei ole tagastanud toetuse summat tähtpäevaks, maksab ta tähtpäevaks tasumata summalt viivist 0,06 protsenti iga toetuse tagasimaksmisega viivitatud kalendripäeva eest, kuid kogusummas mitte rohkem kui tagasinõutav toetuse summa. Toetuse tagasimaksetest loetakse kõigepealt tasutuks viivis, seejärel tagastamisele kuuluv toetus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_6_1"
+      },
+      "rdfs:label": "§ 6¹ lg 3"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_6_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Toetuse andja otsus toetuse tagasinõudmise kohta on täitedokumendiks täitemenetluse seadustiku § 2 lõike 1 punkti 21 tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_6_1"
+      },
+      "rdfs:label": "§ 6¹ lg 4",
+      "estleg:itemNumber": "21"
+    },
+    {
       "@id": "estleg:Keeleseadus_Par_7",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Eesti keelenõukogu",
+      "rdfs:label": {
+        "@value": "§ 7. Eesti keelenõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Eesti keelenõukogu nõustab Vabariigi Valitsust keelepoliitika arendamisel ja elluviimisel. kehtestab Eesti keelenõukogu põhimääruse ning kinnitab valdkonna eest vastutava ministri ettepanekul selle koosseisu ja esimehe.",
+      "estleg:summary": {
+        "@value": "Eesti keelenõukogu nõustab Vabariigi Valitsust keelepoliitika arendamisel ja elluviimisel. kehtestab Eesti keelenõukogu põhimääruse ning kinnitab valdkonna eest vastutava ministri ettepanekul selle koosseisu ja esimehe.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eesti keelenõukogu nõustab Vabariigi Valitsust keelepoliitika arendamisel ja elluviimisel. kehtestab Eesti keelenõukogu põhimääruse ning kinnitab valdkonna eest vastutava ministri ettepanekul selle koosseisu ja esimehe.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_2"
@@ -1283,10 +1574,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eesti keelenõukogu nõustab Vabariigi Valitsust keelepoliitika arendamisel ja elluviimisel. kehtestab Eesti keelenõukogu põhimääruse ning kinnitab valdkonna eest vastutava ministri ettepanekul selle koosseisu ja esimehe.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti keelenõukogu nõustab Vabariigi Valitsust keelepoliitika arendamisel ja elluviimisel. kehtestab Eesti keelenõukogu põhimääruse ning kinnitab valdkonna eest vastutava ministri ettepanekul selle koosseisu ja esimehe.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_7"
       },
+      "rdfs:label": "§ 7 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1309,18 +1602,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Tõlkeandmekogu",
+      "rdfs:label": {
+        "@value": "§ 7¹. Tõlkeandmekogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Tõlkeandmekogus töödeldakse andmeid eesmärgiga: võimaldada riigiasutusel (edaspidi kasutajaasutus) tõlkida teavet eesti keelest ja eesti keelde ning hallata tõlketöid; toetada vajalike andmetega käesoleva lõike punktis 1 nimetatud kasutajaasutuse tõlketööde planeerimist ja korraldamist. (2) Tõlkeandmekogus töödeldakse järgmisi andmeid: tõlketöö tellija ees- ja perekonnanimi, isikukood ning kontaktandmed; tõlketöö täitja ees- ja perekonnanimi, isikukood, kontaktandmed ning kasutajaasutuse",
-      "estleg:legalText": "(1) Tõlkeandmekogus töödeldakse andmeid eesmärgiga: võimaldada riigiasutusel (edaspidi kasutajaasutus) tõlkida teavet eesti keelest ja eesti keelde ning hallata tõlketöid; toetada vajalike andmetega käesoleva lõike punktis 1 nimetatud kasutajaasutuse tõlketööde planeerimist ja korraldamist. (2) Tõlkeandmekogus töödeldakse järgmisi andmeid: tõlketöö tellija ees- ja perekonnanimi, isikukood ning kontaktandmed; tõlketöö täitja ees- ja perekonnanimi, isikukood, kontaktandmed ning kasutajaasutuse märkus täitja pädevuse kohta; tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis sisalduvad isikuandmed, sealhulgas eriliiki isikuandmed. (3) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis töödeldakse järgmisi andmeid: isiku üldandmed; isiku seosed teiste isikutega; isikuga seotud dokumentide andmed; isikuga seotud menetluste andmed; hariduse ja tööga seotud andmed; varaliste õiguste ja kohustustega seotud andmed, sealhulgas sissetulekute andmed; karistatuse andmed; terviseandmed; poliitilise kuuluvuse ning soolise ja usulise enesemääratluse andmed; maksu-, panga- ja ärisaladust sisaldavad andmed. (4) Tõlkeandmekogu andmeid säilitatakse järgmiselt: tõlketöö tehnilisi andmeid seitse aastat pärast tõlketöö vastuvõtmist selle tellija poolt; käesoleva paragrahvi lõike 2 punktides 1 ja 2 nimetatud andmeid kolm aastat pärast isiku tõlkeandmekogule juurdepääsu lõpetamist; käesoleva paragrahvi lõike 2 punktis 3 nimetatud andmeid kuus kuud pärast tõlketöö valmimist ja vastuvõtmist tellija poolt; sõnastikest, terminibaasidest ja avalikest tõlkemäludest kogutud andmeid anonüümitud kujul tähtajatult. (5) Tõlkeandmekogu kaasvastutavad töötlejad on Eesti Keele Instituut ja kasutajaasutused. (6) Tõlkeandmekogu põhimääruse kehtestab määrusega, milles sätestatakse: kaasvastutavad töötlejad ja nende ülesanded; volitatud töötleja ja tema ülesanded; tõlkeandmekogusse kantavate andmete täpsem koosseis ja edastamise kord; andmeandjad ja nendelt saadavad andmed; juurdepääs tõlkeandmekogule ning sellega liidestamise täpsemad tingimused ja kord; muud korralduslikud küsimused.",
+      "estleg:summary": {
+        "@value": "(1) Tõlkeandmekogus töödeldakse andmeid eesmärgiga: 1) võimaldada riigiasutusel (edaspidi kasutajaasutus) tõlkida teavet eesti keelest ja eesti keelde ning hallata tõlketöid; 2) toetada vajalike andmetega käesoleva lõike punktis 1 nimetatud kasutajaasutuse tõlketööde planeerimist ja korraldamist. (2) Tõlkeandmekogus töödeldakse järgmisi andmeid: 1) tõlketöö tellija ees- ja perekonnanimi, isikukood ning kontaktandmed; 2) tõlketöö täitja ees- ja perekonnanimi, isikukood, kontaktandmed ning",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tõlkeandmekogus töödeldakse andmeid eesmärgiga: 1) võimaldada riigiasutusel (edaspidi kasutajaasutus) tõlkida teavet eesti keelest ja eesti keelde ning hallata tõlketöid; 2) toetada vajalike andmetega käesoleva lõike punktis 1 nimetatud kasutajaasutuse tõlketööde planeerimist ja korraldamist. (2) Tõlkeandmekogus töödeldakse järgmisi andmeid: 1) tõlketöö tellija ees- ja perekonnanimi, isikukood ning kontaktandmed; 2) tõlketöö täitja ees- ja perekonnanimi, isikukood, kontaktandmed ning kasutajaasutuse märkus täitja pädevuse kohta; 3) tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis sisalduvad isikuandmed, sealhulgas eriliiki isikuandmed. (3) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis töödeldakse järgmisi andmeid: 1) isiku üldandmed; 2) isiku seosed teiste isikutega; 3) isikuga seotud dokumentide andmed; 4) isikuga seotud menetluste andmed; 5) hariduse ja tööga seotud andmed; 6) varaliste õiguste ja kohustustega seotud andmed, sealhulgas sissetulekute andmed; 7) karistatuse andmed; 8) terviseandmed; 9) poliitilise kuuluvuse ning soolise ja usulise enesemääratluse andmed; 10) maksu-, panga- ja ärisaladust sisaldavad andmed. (4) Tõlkeandmekogu andmeid säilitatakse järgmiselt: 1) tõlketöö tehnilisi andmeid seitse aastat pärast tõlketöö vastuvõtmist selle tellija poolt; 2) käesoleva paragrahvi lõike 2 punktides 1 ja 2 nimetatud andmeid kolm aastat pärast isiku tõlkeandmekogule juurdepääsu lõpetamist; 3) käesoleva paragrahvi lõike 2 punktis 3 nimetatud andmeid kuus kuud pärast tõlketöö valmimist ja vastuvõtmist tellija poolt; 4) sõnastikest, terminibaasidest ja avalikest tõlkemäludest kogutud andmeid anonüümitud kujul tähtajatult. (5) Tõlkeandmekogu kaasvastutavad töötlejad on Eesti Keele Instituut ja kasutajaasutused. (6) Tõlkeandmekogu põhimääruse kehtestab määrusega, milles sätestatakse: 1) kaasvastutavad töötlejad ja nende ülesanded; 2) volitatud töötleja ja tema ülesanded; 3) tõlkeandmekogusse kantavate andmete täpsem koosseis ja edastamise kord; 4) andmeandjad ja nendelt saadavad andmed; 5) juurdepääs tõlkeandmekogule ning sellega liidestamise täpsemad tingimused ja kord; 6) muud korralduslikud küsimused.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_Keeleseadus_2"
+        "@id": "estleg:Cluster_Keeleseadus_2_7_7"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_Keeleseadus_2"
+        "@id": "estleg:Chapter_Keeleseadus_2_5b9d6f4d"
       },
       "estleg:hasSubsection": [
         {
@@ -1367,12 +1666,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Tõlkeandmekogus töödeldakse andmeid eesmärgiga: võimaldada riigiasutusel (edaspidi kasutajaasutus) tõlkida teavet eesti keelest ja eesti keelde ning hallata tõlketöid; toetada vajalike andmetega käesoleva lõike punktis 1 nimetatud kasutajaasutuse tõlketööde planeerimist ja korraldamist.",
+      "estleg:legalText": "(1) Tõlkeandmekogus töödeldakse andmeid eesmärgiga: 1) võimaldada riigiasutusel (edaspidi kasutajaasutus) tõlkida teavet eesti keelest ja eesti keelde ning hallata tõlketöid; 2) toetada vajalike andmetega käesoleva lõike punktis 1 nimetatud kasutajaasutuse tõlketööde planeerimist ja korraldamist.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 1",
-      "estleg:itemNumber": "1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1390,11 +1692,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Tõlkeandmekogus töödeldakse järgmisi andmeid: tõlketöö tellija ees- ja perekonnanimi, isikukood ning kontaktandmed; tõlketöö täitja ees- ja perekonnanimi, isikukood, kontaktandmed ning kasutajaasutuse märkus täitja pädevuse kohta; tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis sisalduvad isikuandmed, sealhulgas eriliiki isikuandmed.",
+      "estleg:legalText": "(2) Tõlkeandmekogus töödeldakse järgmisi andmeid: 1) tõlketöö tellija ees- ja perekonnanimi, isikukood ning kontaktandmed; 2) tõlketöö täitja ees- ja perekonnanimi, isikukood, kontaktandmed ning kasutajaasutuse märkus täitja pädevuse kohta; 3) tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis sisalduvad isikuandmed, sealhulgas eriliiki isikuandmed.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1412,12 +1719,23 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis töödeldakse järgmisi andmeid: isiku üldandmed; isiku seosed teiste isikutega; isikuga seotud dokumentide andmed; isikuga seotud menetluste andmed; hariduse ja tööga seotud andmed; varaliste õiguste ja kohustustega seotud andmed, sealhulgas sissetulekute andmed; karistatuse andmed; terviseandmed; poliitilise kuuluvuse ning soolise ja usulise enesemääratluse andmed; maksu-, panga- ja ärisaladust sisaldavad andmed.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud tõlkemälus, tõlgitavas teabes ning lisa- ja taustamaterjalis töödeldakse järgmisi andmeid: 1) isiku üldandmed; 2) isiku seosed teiste isikutega; 3) isikuga seotud dokumentide andmed; 4) isikuga seotud menetluste andmed; 5) hariduse ja tööga seotud andmed; 6) varaliste õiguste ja kohustustega seotud andmed, sealhulgas sissetulekute andmed; 7) karistatuse andmed; 8) terviseandmed; 9) poliitilise kuuluvuse ning soolise ja usulise enesemääratluse andmed; 10) maksu-, panga- ja ärisaladust sisaldavad andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 3",
-      "estleg:itemNumber": "3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1435,12 +1753,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Tõlkeandmekogu andmeid säilitatakse järgmiselt: tõlketöö tehnilisi andmeid seitse aastat pärast tõlketöö vastuvõtmist selle tellija poolt; käesoleva paragrahvi lõike 2 punktides 1 ja 2 nimetatud andmeid kolm aastat pärast isiku tõlkeandmekogule juurdepääsu lõpetamist; käesoleva paragrahvi lõike 2 punktis 3 nimetatud andmeid kuus kuud pärast tõlketöö valmimist ja vastuvõtmist tellija poolt; sõnastikest, terminibaasidest ja avalikest tõlkemäludest kogutud andmeid anonüümitud kujul tähtajatult.",
+      "estleg:legalText": "(4) Tõlkeandmekogu andmeid säilitatakse järgmiselt: 1) tõlketöö tehnilisi andmeid seitse aastat pärast tõlketöö vastuvõtmist selle tellija poolt; 2) käesoleva paragrahvi lõike 2 punktides 1 ja 2 nimetatud andmeid kolm aastat pärast isiku tõlkeandmekogule juurdepääsu lõpetamist; 3) käesoleva paragrahvi lõike 2 punktis 3 nimetatud andmeid kuus kuud pärast tõlketöö valmimist ja vastuvõtmist tellija poolt; 4) sõnastikest, terminibaasidest ja avalikest tõlkemäludest kogutud andmeid anonüümitud kujul tähtajatult.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 4",
-      "estleg:itemNumber": "3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1480,11 +1803,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Tõlkeandmekogu põhimääruse kehtestab määrusega, milles sätestatakse: kaasvastutavad töötlejad ja nende ülesanded; volitatud töötleja ja tema ülesanded; tõlkeandmekogusse kantavate andmete täpsem koosseis ja edastamise kord; andmeandjad ja nendelt saadavad andmed; juurdepääs tõlkeandmekogule ning sellega liidestamise täpsemad tingimused ja kord; muud korralduslikud küsimused.",
+      "estleg:legalText": "(6) Tõlkeandmekogu põhimääruse kehtestab määrusega, milles sätestatakse: 1) kaasvastutavad töötlejad ja nende ülesanded; 2) volitatud töötleja ja tema ülesanded; 3) tõlkeandmekogusse kantavate andmete täpsem koosseis ja edastamise kord; 4) andmeandjad ja nendelt saadavad andmed; 5) juurdepääs tõlkeandmekogule ning sellega liidestamise täpsemad tingimused ja kord; 6) muud korralduslikud küsimused.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1502,12 +1833,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Õigus eestikeelsele suulisele ja kirjalikule asjaajamisele ja teabele",
+      "rdfs:label": {
+        "@value": "§ 8. Õigus eestikeelsele suulisele ja kirjalikule asjaajamisele ja teabele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Igaühel on õigus eestikeelsele suulisele ja kirjalikule asjaajamisele (edaspidi koos asjaajamine) riigiasutuses, sealhulgas Eesti välisesinduses, kohaliku omavalitsuse asutuses, notari, kohtutäituri ja vandetõlgi juures ning nende büroos, kultuuriomavalitsuses ning Eestis registreeritud muus asutuses, äriühingus, mittetulundusühingus, korteriühistus ja sihtasutuses. (2) Kurdi või vaegkuulja eesti viipekeelse ja viibeldud eestikeelse suulise asjaajamise õigus käesoleva paragrahvi lõikes 1",
+      "estleg:summary": {
+        "@value": "(1) Igaühel on õigus eestikeelsele suulisele ja kirjalikule asjaajamisele (edaspidi koos asjaajamine) riigiasutuses, sealhulgas Eesti välisesinduses, kohaliku omavalitsuse asutuses, notari, kohtutäituri ja vandetõlgi juures ning nende büroos, kultuuriomavalitsuses ning Eestis registreeritud muus asutuses, äriühingus, mittetulundusühingus, korteriühistus ja sihtasutuses. (2) Kurdi või vaegkuulja eesti viipekeelse ja viibeldud eestikeelse suulise asjaajamise õigus käesoleva paragrahvi lõikes 1",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Igaühel on õigus eestikeelsele suulisele ja kirjalikule asjaajamisele (edaspidi koos asjaajamine) riigiasutuses, sealhulgas Eesti välisesinduses, kohaliku omavalitsuse asutuses, notari, kohtutäituri ja vandetõlgi juures ning nende büroos, kultuuriomavalitsuses ning Eestis registreeritud muus asutuses, äriühingus, mittetulundusühingus, korteriühistus ja sihtasutuses. (2) Kurdi või vaegkuulja eesti viipekeelse ja viibeldud eestikeelse suulise asjaajamise õigus käesoleva paragrahvi lõikes 1 nimetatud asutustes tagatakse tõlketeenuse võimaldamisega õigusaktides sätestatud korras. (3) Töötajale ja ametnikule tagatakse eestikeelne tööalane teave, kui seadus ei sätesta teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
@@ -1654,12 +1991,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Vähemusrahvuse keele kasutamise õigus",
+      "rdfs:label": {
+        "@value": "§ 9. Vähemusrahvuse keele kasutamise õigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Omavalitsusüksuses, kus vähemalt pooled püsielanikud on vähemusrahvusest, on igaühel õigus pöörduda selle omavalitsusüksuse territooriumil tegutseva riigiasutuse ja kohaliku omavalitsuse asutuse poole ning saada nendelt ja nende ametnikult ja töötajalt eesti keeles antavate vastuste kõrval ka vastuseid selle vähemusrahvuse keeles. (2) Omavalitsusüksuse püsielanik käesoleva seaduse tähenduses on Eesti kodanik, alalist elamisõigust omav Euroopa Liidu kodanik ja tema perekonnaliige või",
+      "estleg:summary": {
+        "@value": "(1) Omavalitsusüksuses, kus vähemalt pooled püsielanikud on vähemusrahvusest, on igaühel õigus pöörduda selle omavalitsusüksuse territooriumil tegutseva riigiasutuse ja kohaliku omavalitsuse asutuse poole ning saada nendelt ja nende ametnikult ja töötajalt eesti keeles antavate vastuste kõrval ka vastuseid selle vähemusrahvuse keeles. (2) Omavalitsusüksuse püsielanik käesoleva seaduse tähenduses on Eesti kodanik, alalist elamisõigust omav Euroopa Liidu kodanik ja tema perekonnaliige või",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Omavalitsusüksuses, kus vähemalt pooled püsielanikud on vähemusrahvusest, on igaühel õigus pöörduda selle omavalitsusüksuse territooriumil tegutseva riigiasutuse ja kohaliku omavalitsuse asutuse poole ning saada nendelt ja nende ametnikult ja töötajalt eesti keeles antavate vastuste kõrval ka vastuseid selle vähemusrahvuse keeles. (2) Omavalitsusüksuse püsielanik käesoleva seaduse tähenduses on Eesti kodanik, alalist elamisõigust omav Euroopa Liidu kodanik ja tema perekonnaliige või pikaajalise elaniku elamisloa alusel Eestis elav välismaalane, kelle püsiv elukoht, see on elukoht, mille andmed on kantud Eesti rahvastikuregistrisse (edaspidi rahvastikuregister), asub kõnealuses vallas või linnas. (3) Vähemusrahvusest püsielanike osakaalu määratlemisel omavalitsusüksuses lähtutakse rahvastikuregistri andmetest kõnealuse aasta 1. jaanuari seisuga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
@@ -1810,13 +2153,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Asjaajamiskeel",
+      "rdfs:label": {
+        "@value": "§ 10. Asjaajamiskeel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Riigiasutuse ja kohaliku omavalitsuse asutuse asjaajamine toimub eesti keeles. Eestikeelse asjaajamise nõue laieneb ka riigi enamusosalusega äriühingule, riigi asutatud sihtasutusele ja riigi osalusega mittetulundusühingule. (2) Kaitseväe ja Kaitseliidu teenistus- ja käskluskeel on eesti keel. (3) Kohtueelse menetluse ja kohtumenetluse keelekasutus sätestatakse asjakohaste seadustega. (4) Riigi- ja kohaliku omavalitsuse ametnik esineb Eesti eestikeelses meedias eesti keeles.",
-      "estleg:legalText": "(1) Riigiasutuse ja kohaliku omavalitsuse asutuse asjaajamine toimub eesti keeles. Eestikeelse asjaajamise nõue laieneb ka riigi enamusosalusega äriühingule, riigi asutatud sihtasutusele ja riigi osalusega mittetulundusühingule. (2) Kaitseväe ja Kaitseliidu teenistus- ja käskluskeel on eesti keel. (3) Kohtueelse menetluse ja kohtumenetluse keelekasutus sätestatakse asjakohaste seadustega. (4) Riigi- ja kohaliku omavalitsuse ametnik esineb Eesti eestikeelses meedias eesti keeles.",
+      "estleg:summary": {
+        "@value": "(1) Riigiasutuse, kohaliku omavalitsuse asutuse, valla- ja linnavolikogu, valla- ja linnavalitsuse ning muu avalik-õigusliku juriidilise isiku ja selle asutuse asjaajamine toimub eesti keeles. Eestikeelse asjaajamise nõue kehtib ka riigi enamusosalusega äriühingule, riigi asutatud sihtasutusele ja riigi liikmesusega mittetulundusühingule, mis on registreeritud Eestis. Avalik-õigusliku ülikooli asjaajamises võib võõrkeelse õppe ja rahvusvaheliste lepingutega seotud toimingute korral kasutada",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigiasutuse, kohaliku omavalitsuse asutuse, valla- ja linnavolikogu, valla- ja linnavalitsuse ning muu avalik-õigusliku juriidilise isiku ja selle asutuse asjaajamine toimub eesti keeles. Eestikeelse asjaajamise nõue kehtib ka riigi enamusosalusega äriühingule, riigi asutatud sihtasutusele ja riigi liikmesusega mittetulundusühingule, mis on registreeritud Eestis. Avalik-õigusliku ülikooli asjaajamises võib võõrkeelse õppe ja rahvusvaheliste lepingutega seotud toimingute korral kasutada mõlemale poolele sobivat keelt. (2) Kaitseväe ja Kaitseliidu teenistus- ja käskluskeel on eesti keel. (3) Kohtueelse menetluse ja kohtumenetluse keelekasutus sätestatakse asjakohaste seadustega. (4) Riigi- ja kohaliku omavalitsuse ametnik esineb Eesti eestikeelses meedias eesti keeles.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
       },
@@ -1873,7 +2222,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Riigiasutuse ja kohaliku omavalitsuse asutuse asjaajamine toimub eesti keeles. Eestikeelse asjaajamise nõue laieneb ka riigi enamusosalusega äriühingule, riigi asutatud sihtasutusele ja riigi osalusega mittetulundusühingule.",
+      "estleg:legalText": "(1) Riigiasutuse, kohaliku omavalitsuse asutuse, valla- ja linnavolikogu, valla- ja linnavalitsuse ning muu avalik-õigusliku juriidilise isiku ja selle asutuse asjaajamine toimub eesti keeles. Eestikeelse asjaajamise nõue kehtib ka riigi enamusosalusega äriühingule, riigi asutatud sihtasutusele ja riigi liikmesusega mittetulundusühingule, mis on registreeritud Eestis. Avalik-õigusliku ülikooli asjaajamises võib võõrkeelse õppe ja rahvusvaheliste lepingutega seotud toimingute korral kasutada mõlemale poolele sobivat keelt.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_10"
       },
@@ -1959,12 +2308,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Püsielanike keele kasutamine asjaajamiskeelena",
+      "rdfs:label": {
+        "@value": "§ 11. Püsielanike keele kasutamine asjaajamiskeelena",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Omavalitsusüksuses, mille püsielanike enamiku keel ei ole eesti keel, võib kohaliku omavalitsuse sisemise asjaajamise keelena selle kohaliku omavalitsuse volikogu ettepanekul ja Vabariigi Valitsuse otsusel kasutada lisaks eesti keelele omavalitsusüksuse püsielanike enamiku keelt.",
+      "estleg:summary": {
+        "@value": "Omavalitsusüksuses, mille püsielanike enamiku keel ei ole eesti keel, võib kohaliku omavalitsuse sisemise asjaajamise keelena selle kohaliku omavalitsuse volikogu ettepanekul ja Vabariigi Valitsuse otsusel kasutada lisaks eesti keelele omavalitsusüksuse püsielanike enamiku keelt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Omavalitsusüksuses, mille püsielanike enamiku keel ei ole eesti keel, võib kohaliku omavalitsuse sisemise asjaajamise keelena selle kohaliku omavalitsuse volikogu ettepanekul ja Vabariigi Valitsuse otsusel kasutada lisaks eesti keelele omavalitsusüksuse püsielanike enamiku keelt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
@@ -2020,10 +2375,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Omavalitsusüksuses, mille püsielanike enamiku keel ei ole eesti keel, võib kohaliku omavalitsuse sisemise asjaajamise keelena selle kohaliku omavalitsuse volikogu ettepanekul ja Vabariigi Valitsuse otsusel kasutada lisaks eesti keelele omavalitsusüksuse püsielanike enamiku keelt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Omavalitsusüksuses, mille püsielanike enamiku keel ei ole eesti keel, võib kohaliku omavalitsuse sisemise asjaajamise keelena selle kohaliku omavalitsuse volikogu ettepanekul ja Vabariigi Valitsuse otsusel kasutada lisaks eesti keelele omavalitsusüksuse püsielanike enamiku keelt.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_11"
       },
+      "rdfs:label": "§ 11 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2052,12 +2409,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Asjaajamine võõrkeeles",
+      "rdfs:label": {
+        "@value": "§ 12. Asjaajamine võõrkeeles",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Kui riigiasutusele või kohaliku omavalitsuse asutusele esitatakse võõrkeelne avaldus või muu dokument, on asutusel õigus nõuda dokumendi esitajalt selle tõlget eesti keelde, välja arvatud käesoleva seaduse §-s 9 sätestatud juhul. Tõlke nõudmisest antakse avalduse või muu dokumendi esitajale viivitamata teada. (2) Seaduses sätestatud juhtudel on riigiasutusel või kohaliku omavalitsuse asutusel õigus nõuda vandetõlgi tehtud tõlget. Kui nõutud tõlget ei esitata, võib riigiasutus või kohaliku",
+      "estleg:summary": {
+        "@value": "(1) Kui riigiasutusele või kohaliku omavalitsuse asutusele esitatakse võõrkeelne avaldus või muu dokument, on asutusel õigus nõuda dokumendi esitajalt selle tõlget eesti keelde, välja arvatud käesoleva seaduse §-s 9 sätestatud juhul. Tõlke nõudmisest antakse avalduse või muu dokumendi esitajale viivitamata teada. (2) Seaduses sätestatud juhtudel on riigiasutusel või kohaliku omavalitsuse asutusel õigus nõuda vandetõlgi tehtud tõlget. Kui nõutud tõlget ei esitata, võib riigiasutus või kohaliku",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui riigiasutusele või kohaliku omavalitsuse asutusele esitatakse võõrkeelne avaldus või muu dokument, on asutusel õigus nõuda dokumendi esitajalt selle tõlget eesti keelde, välja arvatud käesoleva seaduse §-s 9 sätestatud juhul. Tõlke nõudmisest antakse avalduse või muu dokumendi esitajale viivitamata teada. (2) Seaduses sätestatud juhtudel on riigiasutusel või kohaliku omavalitsuse asutusel õigus nõuda vandetõlgi tehtud tõlget. Kui nõutud tõlget ei esitata, võib riigiasutus või kohaliku omavalitsuse asutus dokumendi tagastada või esitaja nõusolekul ja kulul tõlkida. (3) Riigiasutus või kohaliku omavalitsuse asutus vastab võõrkeelsele dokumendile eesti keeles, välja arvatud käesoleva seaduse §-s 9 sätestatud juhul. Kui dokumendi saaja avaldab soovi saada võõrkeelset vastust, siis võidakse vastus võõrkeelde tõlkida dokumendi saaja kulul. Dokumendi saaja ja riigiasutuse või kohaliku omavalitsuse asutuse kokkuleppel võib võõrkeelsele dokumendile vastata mõlemale poolele arusaadavas võõrkeeles. (4) Suulisel asjaajamisel riigiasutuse ja kohaliku omavalitsuse asutuse ametniku ning töötajaga, samuti Eesti Vabariigi välisesinduses ning notari, kohtutäituri ja vandetõlgiga ning nende büroos võib poolte kokkuleppel kasutada ka võõrkeelt. Kui kokkulepet ei saavutata, suheldakse tõlgi vahendusel ning kulud katab eesti keelt mittevaldav isik, kui seadusega ei sätestata teisiti. Käesolevat lõiget ei kohaldata käesoleva seaduse §-s 9 sätestatud juhul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
@@ -2266,13 +2629,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Välissuhtluse keel",
+      "rdfs:label": {
+        "@value": "§ 13. Välissuhtluse keel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Riigiasutusel ja kohaliku omavalitsuse asutusel ning nende ametnikul ja töötajal on õigus kasutada välissuhtluses mõlemale poolele sobivat keelt.",
-      "estleg:legalText": "Riigiasutusel ja kohaliku omavalitsuse asutusel ning nende ametnikul ja töötajal on õigus kasutada välissuhtluses mõlemale poolele sobivat keelt.",
+      "estleg:summary": {
+        "@value": "Riigiasutusel, kohaliku omavalitsuse asutusel, valla- ja linnavolikogul, valla- ja linnavalitsusel ning muul avalik-õiguslikul juriidilisel isikul ja selle asutusel ning nende ametnikul, töötajal ja ametiisikul on suhtluses välisriigi esindajaga õigus kasutada mõlemale poolele sobivat keelt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Riigiasutusel, kohaliku omavalitsuse asutusel, valla- ja linnavolikogul, valla- ja linnavalitsusel ning muul avalik-õiguslikul juriidilisel isikul ja selle asutusel ning nende ametnikul, töötajal ja ametiisikul on suhtluses välisriigi esindajaga õigus kasutada mõlemale poolele sobivat keelt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
       },
@@ -2322,10 +2691,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigiasutusel ja kohaliku omavalitsuse asutusel ning nende ametnikul ja töötajal on õigus kasutada välissuhtluses mõlemale poolele sobivat keelt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigiasutusel, kohaliku omavalitsuse asutusel, valla- ja linnavolikogul, valla- ja linnavalitsusel ning muul avalik-õiguslikul juriidilisel isikul ja selle asutusel ning nende ametnikul, töötajal ja ametiisikul on suhtluses välisriigi esindajaga õigus kasutada mõlemale poolele sobivat keelt.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -2354,12 +2725,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Aruandluse keel",
+      "rdfs:label": {
+        "@value": "§ 14. Aruandluse keel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Eestis registreeritud asutus, äriühing, mittetulundusühing, sihtasutus ja füüsilisest isikust ettevõtja esitavad seadustega ettenähtud aruanded eesti keeles.",
+      "estleg:summary": {
+        "@value": "Eestis registreeritud asutus, äriühing, mittetulundusühing, sihtasutus ja füüsilisest isikust ettevõtja esitavad seadustega ettenähtud aruanded eesti keeles.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eestis registreeritud asutus, äriühing, mittetulundusühing, sihtasutus ja füüsilisest isikust ettevõtja esitavad seadustega ettenähtud aruanded eesti keeles.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
@@ -2399,10 +2776,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eestis registreeritud asutus, äriühing, mittetulundusühing, sihtasutus ja füüsilisest isikust ettevõtja esitavad seadustega ettenähtud aruanded eesti keeles.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eestis registreeritud asutus, äriühing, mittetulundusühing, sihtasutus ja füüsilisest isikust ettevõtja esitavad seadustega ettenähtud aruanded eesti keeles.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_14"
       },
+      "rdfs:label": "§ 14 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2423,12 +2802,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Pitsati, templi ja kirjaplangi keel",
+      "rdfs:label": {
+        "@value": "§ 15. Pitsati, templi ja kirjaplangi keel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Eestis registreeritud asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja avalikus suhtluses kasutatav pitsat, tempel ja kirjaplank on eestikeelsed. Eestikeelsele tekstile võib asutus, äriühing, mittetulundusühing, sihtasutus või füüsilisest isikust ettevõtja lisada tõlke võõrkeelde. Suhtlemisel välisriigi isikuga, samuti välissuhtluses võib kasutada võõrkeelset kirjaplanki.",
+      "estleg:summary": {
+        "@value": "Eestis registreeritud asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja avalikus suhtluses kasutatav pitsat, tempel ja kirjaplank on eestikeelsed. Eestikeelsele tekstile võib asutus, äriühing, mittetulundusühing, sihtasutus või füüsilisest isikust ettevõtja lisada tõlke võõrkeelde. Suhtlemisel välisriigi isikuga, samuti välissuhtluses võib kasutada võõrkeelset kirjaplanki.",
+        "@language": "et"
+      },
       "estleg:legalText": "Eestis registreeritud asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja avalikus suhtluses kasutatav pitsat, tempel ja kirjaplank on eestikeelsed. Eestikeelsele tekstile võib asutus, äriühing, mittetulundusühing, sihtasutus või füüsilisest isikust ettevõtja lisada tõlke võõrkeelde. Suhtlemisel välisriigi isikuga, samuti välissuhtluses võib kasutada võõrkeelset kirjaplanki.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_3"
@@ -2471,10 +2856,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Eestis registreeritud asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja avalikus suhtluses kasutatav pitsat, tempel ja kirjaplank on eestikeelsed. Eestikeelsele tekstile võib asutus, äriühing, mittetulundusühing, sihtasutus või füüsilisest isikust ettevõtja lisada tõlke võõrkeelde. Suhtlemisel välisriigi isikuga, samuti välissuhtluses võib kasutada võõrkeelset kirjaplanki.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eestis registreeritud asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja avalikus suhtluses kasutatav pitsat, tempel ja kirjaplank on eestikeelsed. Eestikeelsele tekstile võib asutus, äriühing, mittetulundusühing, sihtasutus või füüsilisest isikust ettevõtja lisada tõlke võõrkeelde. Suhtlemisel välisriigi isikuga, samuti välissuhtluses võib kasutada võõrkeelset kirjaplanki.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_15"
       },
+      "rdfs:label": "§ 15 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2498,12 +2885,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Teabekeel",
+      "rdfs:label": {
+        "@value": "§ 16. Teabekeel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Avalikku kohta paigaldatud viidad, sildid, ettevõtte liiginimetus ja välireklaam, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaam, ning juriidilise isiku teadaanded peavad olema eestikeelsed. (2) Avalikku kohta paigaldatud viitadele, siltidele, ettevõtte liiginimetusele ja välireklaamile võib lisada teksti tõlke võõrkeelde, kusjuures eestikeelne tekst peab olema esikohal ega tohi olla halvemini vaadeldav kui võõrkeelne tekst.",
+      "estleg:summary": {
+        "@value": "(1) Avalikku kohta paigaldatud viidad, sildid, ettevõtte liiginimetus ja välireklaam, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaam, ning juriidilise isiku teadaanded peavad olema eestikeelsed. (2) Avalikku kohta paigaldatud viitadele, siltidele, ettevõtte liiginimetusele ja välireklaamile võib lisada teksti tõlke võõrkeelde, kusjuures eestikeelne tekst peab olema esikohal ega tohi olla halvemini vaadeldav kui võõrkeelne tekst.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Avalikku kohta paigaldatud viidad, sildid, ettevõtte liiginimetus ja välireklaam, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaam, ning juriidilise isiku teadaanded peavad olema eestikeelsed. (2) Avalikku kohta paigaldatud viitadele, siltidele, ettevõtte liiginimetusele ja välireklaamile võib lisada teksti tõlke võõrkeelde, kusjuures eestikeelne tekst peab olema esikohal ega tohi olla halvemini vaadeldav kui võõrkeelne tekst. (3) Kaubamärgi kasutamisel isiku tegevuskoha tähisena või välireklaamis tuleb kaubamärgi võõrkeelne osa, mis sisaldab olulist teavet tegevuskoha, pakutava kauba või teenuse kohta, esitada ka eestikeelsena, kahjustamata seejuures kaubamärgi eristusvõimet ja kohaldamata käesoleva paragrahvi lõiget 2. Nimetatud teabe võib esitada ka tegevuskoha sissepääsu juures. (4) Kui Eestis registreeritud asutusel, äriühingul, mittetulundusühingul, sihtasutusel või füüsilisest isikust ettevõtjal on avalikkusele suunatud võõrkeelne veebileht, peab see sisaldama vähemalt kokkuvõtvat eestikeelset teavet tema tegevusvaldkonna või pakutavate kaupade või teenuste kohta. (5) Avalikel üritustel peab korraldaja tagama olulise võõrkeelse teabe tõlke eesti keelde.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_4"
@@ -2688,12 +3081,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Tarbija õigus eestikeelsele teabele",
+      "rdfs:label": {
+        "@value": "§ 17. Tarbija õigus eestikeelsele teabele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Kaupade ja teenuste tarbijal on õigus eestikeelsele teabele ja teenindamisele tarbijakaitseseaduse alusel. (2) Isikul, kes ei ole tarbija tarbijakaitseseaduse § 2 lõike 1 punkti 1 tähenduses, on õigus saada kauplejalt kauba või teenuse omaduste ja kasutamistingimuste kohta eestikeelset teavet.",
+      "estleg:summary": {
+        "@value": "(1) Kaupade ja teenuste tarbijal on õigus eestikeelsele teabele ja teenindamisele tarbijakaitseseaduse alusel. (2) Isikul, kes ei ole tarbija tarbijakaitseseaduse § 2 lõike 1 punkti 1 tähenduses, on õigus saada kauplejalt kauba või teenuse omaduste ja kasutamistingimuste kohta eestikeelset teavet.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kaupade ja teenuste tarbijal on õigus eestikeelsele teabele ja teenindamisele tarbijakaitseseaduse alusel. (2) Isikul, kes ei ole tarbija tarbijakaitseseaduse § 2 lõike 1 punkti 1 tähenduses, on õigus saada kauplejalt kauba või teenuse omaduste ja kasutamistingimuste kohta eestikeelset teavet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_4"
@@ -2814,13 +3213,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Audiovisuaalse teose, tele- ja raadiosaate ning reklaami võõrkeelse teksti tõlge",
+      "rdfs:label": {
+        "@value": "§ 18. Audiovisuaalse teose, tele- ja raadiosaate ning reklaami võõrkeelse teksti tõlge",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Audiovisuaalse teose, sealhulgas saate ja reklaami avalikul esitamisel ja edastamisel tagab audiovisuaalmeediateenuse osutaja või ettevõtja, et võõrkeelsele tekstile on lisatud sellele sisult ja vormilt vastav eestikeelne tõlge. (2) Eestikeelset tõlget ei nõuta keeleõppesaadete, vahetult taasedastatavate saadete või omatoodetud võõrkeelsete uudiste diktoriteksti ja otsesaadete puhul. Nimetatud eestikeelse tõlketa võõrkeelsete uudiste ja otsesaadete maht ei tohi ületada kümme protsenti",
-      "estleg:legalText": "(1) Audiovisuaalse teose, sealhulgas saate ja reklaami avalikul esitamisel ja edastamisel tagab audiovisuaalmeediateenuse osutaja või ettevõtja, et võõrkeelsele tekstile on lisatud sellele sisult ja vormilt vastav eestikeelne tõlge. (2) Eestikeelset tõlget ei nõuta keeleõppesaadete, vahetult taasedastatavate saadete või omatoodetud võõrkeelsete uudiste diktoriteksti ja otsesaadete puhul. Nimetatud eestikeelse tõlketa võõrkeelsete uudiste ja otsesaadete maht ei tohi ületada kümme protsenti nädala omatoodangu mahust. (3) Eestikeelset tõlget ei nõuta võõrkeelsele kuulajale suunatud raadiosaadete puhul. Eestikeelses raadiosaates sisalduvad võõrkeelsed kõnetekstid tõlgitakse eesti keelde.",
+      "estleg:summary": {
+        "@value": "(1) Audiovisuaalse teose, sealhulgas saate ja reklaami avalikul esitamisel ja edastamisel tagab audiovisuaalmeediateenuse osutaja või ettevõtja, et võõrkeelsele tekstile on lisatud sellele sisult ja vormilt vastav eestikeelne tõlge. Audiovisuaalse teose võõrkeelde dubleeritud, sealhulgas pealelugemisega koopiat võib avalikult esitada ja edastada vaid juhul, kui tegemist on lastele suunatud teosega. (2) Eestikeelset tõlget ei nõuta keeleõppesaadete, vahetult taasedastatavate saadete või",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Audiovisuaalse teose, sealhulgas saate ja reklaami avalikul esitamisel ja edastamisel tagab audiovisuaalmeediateenuse osutaja või ettevõtja, et võõrkeelsele tekstile on lisatud sellele sisult ja vormilt vastav eestikeelne tõlge. Audiovisuaalse teose võõrkeelde dubleeritud, sealhulgas pealelugemisega koopiat võib avalikult esitada ja edastada vaid juhul, kui tegemist on lastele suunatud teosega. (2) Eestikeelset tõlget ei nõuta keeleõppesaadete, vahetult taasedastatavate saadete või omatoodetud võõrkeelsete uudiste diktoriteksti ja otsesaadete puhul. Nimetatud eestikeelse tõlketa võõrkeelsete uudiste ja otsesaadete maht ei tohi ületada kümme protsenti nädala omatoodangu mahust. (3) Eestikeelset tõlget ei nõuta võõrkeelsele kuulajale suunatud raadiosaadete puhul. Eestikeelses raadiosaates sisalduvad võõrkeelsed kõnetekstid tõlgitakse eesti keelde.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_4"
       },
@@ -2875,7 +3280,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Audiovisuaalse teose, sealhulgas saate ja reklaami avalikul esitamisel ja edastamisel tagab audiovisuaalmeediateenuse osutaja või ettevõtja, et võõrkeelsele tekstile on lisatud sellele sisult ja vormilt vastav eestikeelne tõlge.",
+      "estleg:legalText": "(1) Audiovisuaalse teose, sealhulgas saate ja reklaami avalikul esitamisel ja edastamisel tagab audiovisuaalmeediateenuse osutaja või ettevõtja, et võõrkeelsele tekstile on lisatud sellele sisult ja vormilt vastav eestikeelne tõlge. Audiovisuaalse teose võõrkeelde dubleeritud, sealhulgas pealelugemisega koopiat võib avalikult esitada ja edastada vaid juhul, kui tegemist on lastele suunatud teosega.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_18"
       },
@@ -2930,12 +3335,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Lepingu keel",
+      "rdfs:label": {
+        "@value": "§ 19. Lepingu keel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Tööleping ja võlaõigusseaduse alusel sõlmitud leping, mis lepingu ühe poole jaoks ei seondu majandus- ja kutsetegevusega, samuti avaliku teenuse osutamise leping sõlmitakse eesti keeles, kui osapooled ei lepi kokku mõne muu keele kasutamises.",
+      "estleg:summary": {
+        "@value": "Tööleping ja võlaõigusseaduse alusel sõlmitud leping, mis lepingu ühe poole jaoks ei seondu majandus- ja kutsetegevusega, samuti avaliku teenuse osutamise leping sõlmitakse eesti keeles, kui osapooled ei lepi kokku mõne muu keele kasutamises.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tööleping ja võlaõigusseaduse alusel sõlmitud leping, mis lepingu ühe poole jaoks ei seondu majandus- ja kutsetegevusega, samuti avaliku teenuse osutamise leping sõlmitakse eesti keeles, kui osapooled ei lepi kokku mõne muu keele kasutamises.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_4"
@@ -2966,10 +3377,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tööleping ja võlaõigusseaduse alusel sõlmitud leping, mis lepingu ühe poole jaoks ei seondu majandus- ja kutsetegevusega, samuti avaliku teenuse osutamise leping sõlmitakse eesti keeles, kui osapooled ei lepi kokku mõne muu keele kasutamises.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tööleping ja võlaõigusseaduse alusel sõlmitud leping, mis lepingu ühe poole jaoks ei seondu majandus- ja kutsetegevusega, samuti avaliku teenuse osutamise leping sõlmitakse eesti keeles, kui osapooled ei lepi kokku mõne muu keele kasutamises.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_19"
-      }
+      },
+      "rdfs:label": "§ 19 lg 1"
     },
     {
       "@id": "estleg:Keeleseadus_Par_20",
@@ -2978,12 +3391,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Nimed",
+      "rdfs:label": {
+        "@value": "§ 20. Nimed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Kohanime kirjutamisel lähtutakse kohanimeseaduses sätestatust. (2) Isikunime kirjutamisel lähtutakse nimeseaduses sätestatust. (3) Ärinime kirjutamisel lähtutakse äriseadustikus sätestatust. (4) Eesti koha-, isiku- ja ärinime, asutuse või mittetulundusühingu ja sihtasutuse nime rahvusvaheline ladinatäheline kuju on samane Eestis kasutatavaga. Muud tähestikku kasutavas keeles rakendatakse nimeseaduse alusel kehtestatud ümberkirjutusreegleid.",
+      "estleg:summary": {
+        "@value": "(1) Kohanime kirjutamisel lähtutakse kohanimeseaduses sätestatust. (2) Isikunime kirjutamisel lähtutakse nimeseaduses sätestatust. (3) Ärinime kirjutamisel lähtutakse äriseadustikus sätestatust. (4) Eesti koha-, isiku- ja ärinime, asutuse või mittetulundusühingu ja sihtasutuse nime rahvusvaheline ladinatäheline kuju on samane Eestis kasutatavaga. Muud tähestikku kasutavas keeles rakendatakse nimeseaduse alusel kehtestatud ümberkirjutusreegleid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kohanime kirjutamisel lähtutakse kohanimeseaduses sätestatust. (2) Isikunime kirjutamisel lähtutakse nimeseaduses sätestatust. (3) Ärinime kirjutamisel lähtutakse äriseadustikus sätestatust. (4) Eesti koha-, isiku- ja ärinime, asutuse või mittetulundusühingu ja sihtasutuse nime rahvusvaheline ladinatäheline kuju on samane Eestis kasutatavaga. Muud tähestikku kasutavas keeles rakendatakse nimeseaduse alusel kehtestatud ümberkirjutusreegleid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_4"
@@ -3100,12 +3519,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Eesti seadusandliku kogu nime kasutamine",
+      "rdfs:label": {
+        "@value": "§ 21. Eesti seadusandliku kogu nime kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eesti seadusandliku kogu nime Riigikogu ei tõlgita ning see kirjutatakse ladina tähestikku kasutavas võõrkeeles samaselt eesti keelega, muud tähestikku kasutavas keeles vastavuses nimeseaduse alusel kehtestatud ümberkirjutusreeglitega. (2) Eesti seadusandliku kogu nime Riigikogu võib mitteametlikus kasutuses asendada sõnaga „parlament” nii eesti keeles kui ka võõrkeeles.",
+      "estleg:summary": {
+        "@value": "(1) Eesti seadusandliku kogu nime Riigikogu ei tõlgita ning see kirjutatakse ladina tähestikku kasutavas võõrkeeles samaselt eesti keelega, muud tähestikku kasutavas keeles vastavuses nimeseaduse alusel kehtestatud ümberkirjutusreeglitega. (2) Eesti seadusandliku kogu nime Riigikogu võib mitteametlikus kasutuses asendada sõnaga „parlament” nii eesti keeles kui ka võõrkeeles.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eesti seadusandliku kogu nime Riigikogu ei tõlgita ning see kirjutatakse ladina tähestikku kasutavas võõrkeeles samaselt eesti keelega, muud tähestikku kasutavas keeles vastavuses nimeseaduse alusel kehtestatud ümberkirjutusreeglitega. (2) Eesti seadusandliku kogu nime Riigikogu võib mitteametlikus kasutuses asendada sõnaga „parlament” nii eesti keeles kui ka võõrkeeles.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_4"
@@ -3211,12 +3636,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Riiklik registreerimismärk",
+      "rdfs:label": {
+        "@value": "§ 22. Riiklik registreerimismärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Riikliku registreerimismärgi tähelises osas võib kasutada ainult ladina tähti.",
+      "estleg:summary": {
+        "@value": "Riikliku registreerimismärgi tähelises osas võib kasutada ainult ladina tähti.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riikliku registreerimismärgi tähelises osas võib kasutada ainult ladina tähti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_4"
@@ -3251,10 +3682,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riikliku registreerimismärgi tähelises osas võib kasutada ainult ladina tähti.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riikliku registreerimismärgi tähelises osas võib kasutada ainult ladina tähti.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_22"
       },
+      "rdfs:label": "§ 22 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -3270,13 +3703,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Eesti keele oskuse ja kasutamise nõuded",
+      "rdfs:label": {
+        "@value": "§ 23. Eesti keele oskuse ja kasutamise nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Ametnik, riigiasutuse ja kohaliku omavalitsuse asutuse töötaja, samuti avalik-õigusliku juriidilise isiku ja selle asutuse töötaja, avalik-õigusliku juriidilise isiku liige, notar, kohtutäitur, vandetõlk ja nende büroo töötaja peavad oskama ja kasutama eesti keelt tasemel, mis on vajalik teenistuskohustuste või tööülesannete täitmiseks. (2) Äriühingu, mittetulundusühingu ja sihtasutuse töötajale ning füüsilisest isikust ettevõtjale ja tema töötajale, samuti seadusest tuleneva kohustusliku",
-      "estleg:legalText": "(1) Ametnik, riigiasutuse ja kohaliku omavalitsuse asutuse töötaja, samuti avalik-õigusliku juriidilise isiku ja selle asutuse töötaja, avalik-õigusliku juriidilise isiku liige, notar, kohtutäitur, vandetõlk ja nende büroo töötaja peavad oskama ja kasutama eesti keelt tasemel, mis on vajalik teenistuskohustuste või tööülesannete täitmiseks. (2) Äriühingu, mittetulundusühingu ja sihtasutuse töötajale ning füüsilisest isikust ettevõtjale ja tema töötajale, samuti seadusest tuleneva kohustusliku liikmesusega mittetulundusühingu juhatuse liikmele kehtestatakse eesti keele oskuse nõuded, kui see on õigustatud avalikes huvides. (3) Kohustusliku keeleoskustaseme määramisel võetakse aluseks Euroopa Nõukogu koostatud Euroopa keeleõppe raamdokumendis määratletud keeleoskustasemed, mille kirjeldus esitatakse käesoleva seaduse lisas 1. (4) Ametniku, töötaja ja füüsilisest isikust ettevõtja eesti keele oskuse ja kasutamise nõuded kehtestab määrusega. Määruses reguleeritakse käesoleva paragrahvi lõigetes 1 ja 2 nimetatud isikute eesti keele oskuse ja kasutamise nõudeid, lähtudes töö iseloomust ja töö- või ametikoha keelekasutusolukorrast. (5) Eesti keele oskuse nõudeid ei kohaldata isikule, kes töötab Eestis tähtajaliselt väliseksperdi või välisspetsialistina. Välisõppejõule ja välisteadustöötajale ei kohaldata eesti keele oskuse nõudeid, kui ta on Eestis töötanud vähem kui viis aastat.",
+      "estleg:summary": {
+        "@value": "(1) Ametnik, riigiasutuse ja kohaliku omavalitsuse asutuse töötaja, samuti avalik-õigusliku juriidilise isiku ja selle asutuse töötaja, avalik-õigusliku juriidilise isiku liige, notar, kohtutäitur, vandetõlk ja nende büroo töötaja peavad oskama ja kasutama eesti keelt tasemel, mis on vajalik teenistuskohustuste või tööülesannete täitmiseks. (2) Äriühingu, mittetulundusühingu ja sihtasutuse töötajale ning füüsilisest isikust ettevõtjale ja tema töötajale, samuti seadusest tuleneva kohustusliku",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametnik, riigiasutuse ja kohaliku omavalitsuse asutuse töötaja, samuti avalik-õigusliku juriidilise isiku ja selle asutuse töötaja, avalik-õigusliku juriidilise isiku liige, notar, kohtutäitur, vandetõlk ja nende büroo töötaja peavad oskama ja kasutama eesti keelt tasemel, mis on vajalik teenistuskohustuste või tööülesannete täitmiseks. (2) Äriühingu, mittetulundusühingu ja sihtasutuse töötajale ning füüsilisest isikust ettevõtjale ja tema töötajale, samuti seadusest tuleneva kohustusliku liikmesusega mittetulundusühingu juhatuse liikmele kehtestatakse eesti keele oskuse nõuded, kui see on õigustatud avalikes huvides. (3) Kohustusliku keeleoskustaseme määramisel võetakse aluseks Euroopa Nõukogu koostatud Euroopa keeleõppe raamdokumendis määratletud keeleoskustasemed, mille kirjeldus esitatakse käesoleva seaduse lisas 1. (4) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud isikute eesti keele oskuse ja kasutamise nõuded kehtestab määrusega. (4¹) Käesoleva paragrahvi lõikes 4 nimetatud määruses reguleeritakse eesti keele oskuse ja kasutamise nõudeid, lähtudes töö iseloomust ja töö- või ametikoha keelekasutusolukorrast. (5) Käesoleva paragrahvi lõike 4 alusel kehtestatud eesti keele oskuse ja kasutamise nõudeid ei kohaldata välismaalasele, kes viibib Eestis tähtajaliselt kuni viis aastat ning töötab: 1) tippspetsialistina välismaalaste seaduse tähenduses; 2) võõrkeelt või võõrkeeles õpetava akadeemilise töötajana; 3) rahvusvahelise õppekava alusel võõrkeelt või võõrkeeles õpetava õpetaja, abiõpetaja või õpetajat abistava töötajana; 4) võõrkeeleõpetajana.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
       },
@@ -3295,6 +3734,9 @@
         },
         {
           "@id": "estleg:Keeleseadus_Par_23_Lg_4"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_23_Lg_4_1"
         },
         {
           "@id": "estleg:Keeleseadus_Par_23_Lg_5"
@@ -3425,7 +3867,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Ametniku, töötaja ja füüsilisest isikust ettevõtja eesti keele oskuse ja kasutamise nõuded kehtestab määrusega. Määruses reguleeritakse käesoleva paragrahvi lõigetes 1 ja 2 nimetatud isikute eesti keele oskuse ja kasutamise nõudeid, lähtudes töö iseloomust ja töö- või ametikoha keelekasutusolukorrast.",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud isikute eesti keele oskuse ja kasutamise nõuded kehtestab määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_23"
       },
@@ -3450,17 +3892,36 @@
       "estleg:implementedByCount": 1
     },
     {
+      "@id": "estleg:Keeleseadus_Par_23_Lg_4_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4¹",
+      "estleg:legalText": "(4¹) Käesoleva paragrahvi lõikes 4 nimetatud määruses reguleeritakse eesti keele oskuse ja kasutamise nõudeid, lähtudes töö iseloomust ja töö- või ametikoha keelekasutusolukorrast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 4¹"
+    },
+    {
       "@id": "estleg:Keeleseadus_Par_23_Lg_5",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Eesti keele oskuse nõudeid ei kohaldata isikule, kes töötab Eestis tähtajaliselt väliseksperdi või välisspetsialistina. Välisõppejõule ja välisteadustöötajale ei kohaldata eesti keele oskuse nõudeid, kui ta on Eestis töötanud vähem kui viis aastat.",
+      "estleg:legalText": "(5) Käesoleva paragrahvi lõike 4 alusel kehtestatud eesti keele oskuse ja kasutamise nõudeid ei kohaldata välismaalasele, kes viibib Eestis tähtajaliselt kuni viis aastat ning töötab: 1) tippspetsialistina välismaalaste seaduse tähenduses; 2) võõrkeelt või võõrkeeles õpetava akadeemilise töötajana; 3) rahvusvahelise õppekava alusel võõrkeelt või võõrkeeles õpetava õpetaja, abiõpetaja või õpetajat abistava töötajana; 4) võõrkeeleõpetajana.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_23"
       },
       "rdfs:label": "§ 23 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3478,13 +3939,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Eesti keele tasemeeksam",
+      "rdfs:label": {
+        "@value": "§ 24. Eesti keele tasemeeksam",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eesti keele oskust hinnatakse tasemeeksamil. (2) Tasemeeksamite läbiviijate ja hindajate loetelu kinnitab valdkonna eest vastutav minister käskkirjaga. (3) Tasemeeksamite ülesehituse ning läbiviimise korra kehtestab määrusega. (4) Tasemeeksamite koostamise, korraldamise, hindamise ja analüüsimise korraldab Haridus- ja Noorteamet. (5) Kehtetu -",
-      "estleg:legalText": "(1) Eesti keele oskust hinnatakse tasemeeksamil. (2) Tasemeeksamite läbiviijate ja hindajate loetelu kinnitab valdkonna eest vastutav minister käskkirjaga. (3) Tasemeeksamite ülesehituse ning läbiviimise korra kehtestab määrusega. (4) Tasemeeksamite koostamise, korraldamise, hindamise ja analüüsimise korraldab Haridus- ja Noorteamet. (5) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Eesti keele oskust hinnatakse tasemeeksamil. (2) Tasemeeksamite läbiviijate ja hindajate loetelu kinnitab Haridus- ja Noorteameti peadirektor käskkirjaga. (3) Tasemeeksamite ülesehituse ning läbiviimise korra kehtestab määrusega. (4) Tasemeeksamite koostamise, korraldamise, hindamise ja analüüsimise korraldab Haridus- ja Noorteamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti keele oskust hinnatakse tasemeeksamil. (2) Tasemeeksamite läbiviijate ja hindajate loetelu kinnitab Haridus- ja Noorteameti peadirektor käskkirjaga. (3) Tasemeeksamite ülesehituse ning läbiviimise korra kehtestab määrusega. (4) Tasemeeksamite koostamise, korraldamise, hindamise ja analüüsimise korraldab Haridus- ja Noorteamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
       },
@@ -3503,9 +3970,6 @@
         },
         {
           "@id": "estleg:Keeleseadus_Par_24_Lg_4"
-        },
-        {
-          "@id": "estleg:Keeleseadus_Par_24_Lg_5"
         }
       ],
       "estleg:targetGroup": [
@@ -3564,7 +4028,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Tasemeeksamite läbiviijate ja hindajate loetelu kinnitab valdkonna eest vastutav minister käskkirjaga.",
+      "estleg:legalText": "(2) Tasemeeksamite läbiviijate ja hindajate loetelu kinnitab Haridus- ja Noorteameti peadirektor käskkirjaga.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_24"
       },
@@ -3632,17 +4096,65 @@
       "estleg:competenceType": "enforcement"
     },
     {
-      "@id": "estleg:Keeleseadus_Par_24_Lg_5",
+      "@id": "estleg:Keeleseadus_Par_24_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 24¹.",
+      "rdfs:label": {
+        "@value": "§ 24¹. Juurdepääs eksamitööga seotud teabele",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Keeleseadus",
+      "estleg:partOfAct": {
+        "@id": "estleg:Keeleseadus_Map"
+      },
+      "estleg:summary": {
+        "@value": "(1) Eesti keele tasemeeksami töö (edaspidi eksamitöö), selles kasutatavad ülesanded ja eksamitöö hindamist puudutav teave tunnistatakse asutusesiseseks kasutamiseks mõeldud teabeks, kui selle avalikustamine võib kahjustada eksamisüsteemi usaldusväärsust, õiglast hindamist või eksamiülesannete korduvat kasutamist. (2) Eksaminandil on õigus tutvuda oma eksamitööga ja selle hindamist puudutava teabega pärast eksamitulemuse teatavaks tegemist, esitades selleks taotluse Haridus- ja Noorteametile.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti keele tasemeeksami töö (edaspidi eksamitöö), selles kasutatavad ülesanded ja eksamitöö hindamist puudutav teave tunnistatakse asutusesiseseks kasutamiseks mõeldud teabeks, kui selle avalikustamine võib kahjustada eksamisüsteemi usaldusväärsust, õiglast hindamist või eksamiülesannete korduvat kasutamist. (2) Eksaminandil on õigus tutvuda oma eksamitööga ja selle hindamist puudutava teabega pärast eksamitulemuse teatavaks tegemist, esitades selleks taotluse Haridus- ja Noorteametile. Ligipääs võimaldatakse Haridus- ja Noorteameti esindaja juuresolekul, kes annab teabe kohta selgitusi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_Keeleseadus_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_Keeleseadus_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Keeleseadus_Par_24_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_24_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_24_1_Lg_1",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti keele tasemeeksami töö (edaspidi eksamitöö), selles kasutatavad ülesanded ja eksamitöö hindamist puudutav teave tunnistatakse asutusesiseseks kasutamiseks mõeldud teabeks, kui selle avalikustamine võib kahjustada eksamisüsteemi usaldusväärsust, õiglast hindamist või eksamiülesannete korduvat kasutamist.",
       "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_24"
+        "@id": "estleg:Keeleseadus_Par_24_1"
       },
-      "rdfs:label": "§ 24 lg 5"
+      "rdfs:label": "§ 24¹ lg 1"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_24_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eksaminandil on õigus tutvuda oma eksamitööga ja selle hindamist puudutava teabega pärast eksamitulemuse teatavaks tegemist, esitades selleks taotluse Haridus- ja Noorteametile. Ligipääs võimaldatakse Haridus- ja Noorteameti esindaja juuresolekul, kes annab teabe kohta selgitusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_24_1"
+      },
+      "rdfs:label": "§ 24¹ lg 2"
     },
     {
       "@id": "estleg:Keeleseadus_Par_25",
@@ -3651,13 +4163,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Eesti keele tasemeeksami tulemuse vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 25. Eesti keele tasemeeksami tulemuse vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Kui eksaminand ei ole rahul tasemeeksami tulemusega, on tal õigus 30 päeva jooksul pärast selle teatavaks tegemist esitada Haridus- ja Noorteametile vaie. (2) Tasemeeksamite tulemuste kohta esitatud vaiete läbivaatamiseks moodustatakse tasemeeksamite vaidekomisjon, mille koosseisu kinnitab Haridus- ja Noorteameti peadirektor käskkirjaga. (3) Vaidekomisjon lahendab vaide 30 päeva jooksul pärast selle saamist ning teeb ühe järgmistest otsustest: jätta vaie rahuldamata; rahuldada vaie.",
-      "estleg:legalText": "(1) Kui eksaminand ei ole rahul tasemeeksami tulemusega, on tal õigus 30 päeva jooksul pärast selle teatavaks tegemist esitada Haridus- ja Noorteametile vaie. (2) Tasemeeksamite tulemuste kohta esitatud vaiete läbivaatamiseks moodustatakse tasemeeksamite vaidekomisjon, mille koosseisu kinnitab Haridus- ja Noorteameti peadirektor käskkirjaga. (3) Vaidekomisjon lahendab vaide 30 päeva jooksul pärast selle saamist ning teeb ühe järgmistest otsustest: jätta vaie rahuldamata; rahuldada vaie.",
+      "estleg:summary": {
+        "@value": "(1) Kui eksaminand ei ole rahul tasemeeksami tulemusega, on tal õigus 30 päeva jooksul pärast selle teatavaks tegemist esitada Haridus- ja Noorteametile vaie. (2) Tasemeeksamite tulemuste kohta esitatud vaiete läbivaatamiseks moodustatakse tasemeeksamite vaidekomisjon, mille koosseisu kinnitab Haridus- ja Noorteameti peadirektor käskkirjaga. (3) Vaidekomisjon lahendab vaide 30 päeva jooksul pärast selle saamist ning teeb vaidlustatud tasemeeksami tulemuse kohta ühe järgmistest otsustest: 1)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui eksaminand ei ole rahul tasemeeksami tulemusega, on tal õigus 30 päeva jooksul pärast selle teatavaks tegemist esitada Haridus- ja Noorteametile vaie. (2) Tasemeeksamite tulemuste kohta esitatud vaiete läbivaatamiseks moodustatakse tasemeeksamite vaidekomisjon, mille koosseisu kinnitab Haridus- ja Noorteameti peadirektor käskkirjaga. (3) Vaidekomisjon lahendab vaide 30 päeva jooksul pärast selle saamist ning teeb vaidlustatud tasemeeksami tulemuse kohta ühe järgmistest otsustest: 1) jätta eksami tulemus muutmata; 2) parandada eksami tulemust; 3) halvendada eksami tulemust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
       },
@@ -3773,11 +4291,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Vaidekomisjon lahendab vaide 30 päeva jooksul pärast selle saamist ning teeb ühe järgmistest otsustest: jätta vaie rahuldamata; rahuldada vaie.",
+      "estleg:legalText": "(3) Vaidekomisjon lahendab vaide 30 päeva jooksul pärast selle saamist ning teeb vaidlustatud tasemeeksami tulemuse kohta ühe järgmistest otsustest: 1) jätta eksami tulemus muutmata; 2) parandada eksami tulemust; 3) halvendada eksami tulemust.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_25"
       },
-      "rdfs:label": "§ 25 lg 3"
+      "rdfs:label": "§ 25 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:Keeleseadus_Par_26",
@@ -3786,12 +4309,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Eesti keele oskuse tõendamise erisused",
+      "rdfs:label": {
+        "@value": "§ 26. Eesti keele oskuse tõendamise erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Võõrkeelse põhikooli ja gümnaasiumi lõpetamisel väljastatakse eesti keele kui teise keele eksami sooritanule eesti keele tasemeeksami tunnistus põhikooli- ja gümnaasiumiseaduse alusel kehtestatud korras. (2) Kodakondsuse taotleja eesti keele eksami ja eesti keele tasemeeksami ühitamise tingimused kehtestab määrusega. (3) Eesti keele tasemeeksamit ei pea sooritama isik, kes on omandanud eesti keeles põhihariduse, keskhariduse või kõrghariduse.",
+      "estleg:summary": {
+        "@value": "(1) Võõrkeelse põhikooli ja gümnaasiumi lõpetamisel väljastatakse eesti keele kui teise keele eksami sooritanule eesti keele tasemeeksami tunnistus põhikooli- ja gümnaasiumiseaduse alusel kehtestatud korras. (2) Kodakondsuse taotleja eesti keele eksami ja eesti keele tasemeeksami ühitamise tingimused kehtestab määrusega. (3) Eesti keele tasemeeksamit ei pea sooritama isik, kes on omandanud eesti keeles põhihariduse, keskhariduse või kõrghariduse.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Võõrkeelse põhikooli ja gümnaasiumi lõpetamisel väljastatakse eesti keele kui teise keele eksami sooritanule eesti keele tasemeeksami tunnistus põhikooli- ja gümnaasiumiseaduse alusel kehtestatud korras. (2) Kodakondsuse taotleja eesti keele eksami ja eesti keele tasemeeksami ühitamise tingimused kehtestab määrusega. (3) Eesti keele tasemeeksamit ei pea sooritama isik, kes on omandanud eesti keeles põhihariduse, keskhariduse või kõrghariduse. (4) Haridus loetakse omandatuks eesti keeles, kui vähemalt 60 protsenti õppetööst toimus eesti keeles. (5) Eesti keele tasemeeksamit ei pea sooritama isik, kes on sooritanud eestikeelse kutseeksami ja töötab kutsetunnistusel märgitud kutsealal.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
@@ -3962,13 +4491,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Eesti keele tasemetunnistus",
+      "rdfs:label": {
+        "@value": "§ 27. Eesti keele tasemetunnistus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eesti keele tasemeeksami sooritanud isikule väljastab Haridus- ja Noorteamet eesti keele tasemetunnistuse. (1¹) Eesti keele tasemetunnistuse vormi ja väljastamise korra kehtestab määrusega. (1²) Kehtetu - (2) Eesti keele tasemeeksamite ja -tunnistuste üle arvestuse pidamiseks asutab Vabariigi Valitsus andmekogu (edaspidi testide andmekogu). (3) Testide andmekogu asutab ja selle põhimääruse, sealhulgas andmete koosseisu, nende säilitamise tähtaja ja juurdepääsuõigused, kehtestab määrusega.",
-      "estleg:legalText": "(1) Eesti keele tasemeeksami sooritanud isikule väljastab Haridus- ja Noorteamet eesti keele tasemetunnistuse. (1¹) Eesti keele tasemetunnistuse vormi ja väljastamise korra kehtestab määrusega. (1²) Kehtetu - (2) Eesti keele tasemeeksamite ja -tunnistuste üle arvestuse pidamiseks asutab Vabariigi Valitsus andmekogu (edaspidi testide andmekogu). (3) Testide andmekogu asutab ja selle põhimääruse, sealhulgas andmete koosseisu, nende säilitamise tähtaja ja juurdepääsuõigused, kehtestab määrusega. (4) Testide andmekogu vastutav töötleja on Haridus- ja Noorteamet ning volitatud töötleja määratakse andmekogu põhimääruses. (4¹) Kehtetu - (5) Kehtetu - (6) Testide andmekogusse kogutakse järgmisi andmeid: tasemeeksami sooritamise andmed; tasemeeksami läbiviimisega seotud andmed; testiandmed; hindamisandmed; tasemeeksami vaiete andmed; tunnistuste andmed; statistilised andmed. (7) Testide andmekogu põhimääruses võib täpsustada käesoleva paragrahvi lõikes 6 nimetatud andmete koosseisu ja andmekogusse kandmise korda. (8) Testide andmekogusse kantud andmetel on informatiivne ja statistiline tähendus.",
+      "estleg:summary": {
+        "@value": "(1) Eesti keele tasemeeksami sooritanud isikule väljastab Haridus- ja Noorteamet eesti keele tasemetunnistuse. (1¹) Eesti keele tasemetunnistuse vormi ja väljastamise korra kehtestab määrusega. (2) Eesti keele tasemeeksamite ja -tunnistuste üle arvestuse pidamiseks asutab Vabariigi Valitsus andmekogu (edaspidi testide andmekogu). (3) Testide andmekogu asutab ja selle põhimääruse, sealhulgas andmete koosseisu, nende säilitamise tähtaja ja juurdepääsuõigused, kehtestab määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti keele tasemeeksami sooritanud isikule väljastab Haridus- ja Noorteamet eesti keele tasemetunnistuse. (1¹) Eesti keele tasemetunnistuse vormi ja väljastamise korra kehtestab määrusega. (2) Eesti keele tasemeeksamite ja -tunnistuste üle arvestuse pidamiseks asutab Vabariigi Valitsus andmekogu (edaspidi testide andmekogu). (3) Testide andmekogu asutab ja selle põhimääruse, sealhulgas andmete koosseisu, nende säilitamise tähtaja ja juurdepääsuõigused, kehtestab määrusega. (4) Testide andmekogu vastutav töötleja on Haridus- ja Noorteamet ning volitatud töötleja määratakse andmekogu põhimääruses. (6) Testide andmekogusse kogutakse järgmisi andmeid: 1) tasemeeksami sooritamise andmed; 2) tasemeeksami läbiviimisega seotud andmed; 3) testiandmed; 4) hindamisandmed; 5) tasemeeksami vaiete andmed; 6) tunnistuste andmed; 7) statistilised andmed. (7) Testide andmekogu põhimääruses võib täpsustada käesoleva paragrahvi lõikes 6 nimetatud andmete koosseisu ja andmekogusse kandmise korda. (8) Testide andmekogusse kantud andmetel on informatiivne ja statistiline tähendus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
       },
@@ -3983,9 +4518,6 @@
           "@id": "estleg:Keeleseadus_Par_27_Lg_1_1"
         },
         {
-          "@id": "estleg:Keeleseadus_Par_27_Lg_1_2"
-        },
-        {
           "@id": "estleg:Keeleseadus_Par_27_Lg_2"
         },
         {
@@ -3993,12 +4525,6 @@
         },
         {
           "@id": "estleg:Keeleseadus_Par_27_Lg_4"
-        },
-        {
-          "@id": "estleg:Keeleseadus_Par_27_Lg_4_1"
-        },
-        {
-          "@id": "estleg:Keeleseadus_Par_27_Lg_5"
         },
         {
           "@id": "estleg:Keeleseadus_Par_27_Lg_6"
@@ -4122,19 +4648,6 @@
       "rdfs:label": "§ 27 lg 1¹"
     },
     {
-      "@id": "estleg:Keeleseadus_Par_27_Lg_1_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1²",
-      "estleg:legalText": "(1²) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_27"
-      },
-      "rdfs:label": "§ 27 lg 1²"
-    },
-    {
       "@id": "estleg:Keeleseadus_Par_27_Lg_2",
       "@type": [
         "estleg:Subsection",
@@ -4211,43 +4724,26 @@
       ]
     },
     {
-      "@id": "estleg:Keeleseadus_Par_27_Lg_4_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4¹",
-      "estleg:legalText": "(4¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_27"
-      },
-      "rdfs:label": "§ 27 lg 4¹"
-    },
-    {
-      "@id": "estleg:Keeleseadus_Par_27_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_27"
-      },
-      "rdfs:label": "§ 27 lg 5"
-    },
-    {
       "@id": "estleg:Keeleseadus_Par_27_Lg_6",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Testide andmekogusse kogutakse järgmisi andmeid: tasemeeksami sooritamise andmed; tasemeeksami läbiviimisega seotud andmed; testiandmed; hindamisandmed; tasemeeksami vaiete andmed; tunnistuste andmed; statistilised andmed.",
+      "estleg:legalText": "(6) Testide andmekogusse kogutakse järgmisi andmeid: 1) tasemeeksami sooritamise andmed; 2) tasemeeksami läbiviimisega seotud andmed; 3) testiandmed; 4) hindamisandmed; 5) tasemeeksami vaiete andmed; 6) tunnistuste andmed; 7) statistilised andmed.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_27"
       },
-      "rdfs:label": "§ 27 lg 6"
+      "rdfs:label": "§ 27 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
     },
     {
       "@id": "estleg:Keeleseadus_Par_27_Lg_7",
@@ -4289,13 +4785,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Tasemeeksamile saatmine ja eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 28. Tasemeeksamile saatmine ja eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Kui riiklikku või haldusjärelevalvet tegeval ametiisikul (edaspidi keeleametnik) on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et kontrollitava isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele, saadetakse isik keeleametniku ettekirjutusega tasemeeksamile. (2) Tasemeeksamile võib keeleametniku ettekirjutusega saata ka käesoleva seaduse § 26 lõikes 3 või 5 nimetatud isiku, kui keeleametnikul on riikliku või haldusjärelevalve käigus",
-      "estleg:legalText": "(1) Kui riiklikku või haldusjärelevalvet tegeval ametiisikul (edaspidi keeleametnik) on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et kontrollitava isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele, saadetakse isik keeleametniku ettekirjutusega tasemeeksamile. (2) Tasemeeksamile võib keeleametniku ettekirjutusega saata ka käesoleva seaduse § 26 lõikes 3 või 5 nimetatud isiku, kui keeleametnikul on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele. (3) Käesoleva paragrahvi lõikes 1 nimetatud ettekirjutuse täitmiseks tähtaja määramisel võetakse arvesse aega, mis kulub nõutaval tasemel keeleoskuse omandamiseks. Kui isik on sooritanud ettekirjutuses määratud tähtaja jooksul nõutaval tasemel eesti keele eksami, siis on tal õigus taotleda täienduskoolitusasutusele, kellele on antud tegevusluba tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse läbiviimiseks, eesti keele õppe eest tasutud õppemaksu hüvitamist kuni 100 protsendi ulatuses. (4) Käesoleva paragrahvi lõikes 3 nimetatud õppemaks hüvitatakse kodakondsuse seaduse § 81 lõike 1 alusel kehtestatud Vabariigi Valitsuse määruses sätestatud piirmäära ulatuses. (5) Eesti keele tasemetunnistusi väljastava asutuse juht algatab kuus kuud pärast käesoleva paragrahvi lõikes 1 nimetatud ettekirjutuse täitmiseks määratud tähtaja saabumist eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamise menetluse, kui tasemeeksamile saadetud isik ei ole selleks hetkeks sooritanud tasemeeksamit vähemalt keeletunnistusel märgitud tasemel. (6) Kontrollitud isikut teavitatakse eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamise menetluse alustamisest. (7) Eesti keele tasemetunnistusi väljastava asutuse juht ei tee eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamise otsust varem kui 30 päeva möödumisel käesoleva paragrahvi lõikes 6 nimetatud teate saatmise päevast.",
+      "estleg:summary": {
+        "@value": "(1) Kui riiklikku või haldusjärelevalvet tegeval ametnikul (edaspidi keeleametnik) on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et kontrollitava isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele, saadetakse isik keeleametniku ettekirjutusega tasemeeksamile. (2) Tasemeeksamile võib keeleametniku ettekirjutusega saata ka käesoleva seaduse § 26 lõikes 3 või 5 nimetatud isiku, kui keeleametnikul on riikliku või haldusjärelevalve käigus",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui riiklikku või haldusjärelevalvet tegeval ametnikul (edaspidi keeleametnik) on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et kontrollitava isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele, saadetakse isik keeleametniku ettekirjutusega tasemeeksamile. (2) Tasemeeksamile võib keeleametniku ettekirjutusega saata ka käesoleva seaduse § 26 lõikes 3 või 5 nimetatud isiku, kui keeleametnikul on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele. (3) Käesoleva paragrahvi lõikes 1 nimetatud ettekirjutuse täitmiseks tähtaja määramisel võetakse arvesse aega, mis kulub nõutaval tasemel keeleoskuse omandamiseks. Kui isik on sooritanud ettekirjutuses määratud tähtaja jooksul nõutaval tasemel eesti keele eksami, siis on tal õigus taotleda täienduskoolitusasutusele, kellele on antud tegevusluba tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse läbiviimiseks, eesti keele õppe eest tasutud õppemaksu hüvitamist kuni 100 protsendi ulatuses. (4) Käesoleva paragrahvi lõikes 3 nimetatud õppemaks hüvitatakse kodakondsuse seaduse § 8¹ lõike 1 alusel kehtestatud Vabariigi Valitsuse määruses sätestatud piirmäära ulatuses. (5) Eesti keele tasemetunnistusi väljastava asutuse juht algatab kuus kuud pärast käesoleva paragrahvi lõikes 1 nimetatud ettekirjutuse täitmiseks määratud tähtaja saabumist eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamise menetluse, kui tasemeeksamile saadetud isik ei ole selleks hetkeks sooritanud tasemeeksamit vähemalt keeletunnistusel märgitud tasemel. (6) Kontrollitud isikut teavitatakse eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamise menetluse alustamisest. (7) Eesti keele tasemetunnistusi väljastava asutuse juht ei tee eesti keele tasemetunnistuse või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistuse kehtetuks tunnistamise otsust varem kui 30 päeva möödumisel käesoleva paragrahvi lõikes 6 nimetatud teate saatmise päevast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
       },
@@ -4381,7 +4883,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kui riiklikku või haldusjärelevalvet tegeval ametiisikul (edaspidi keeleametnik) on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et kontrollitava isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele, saadetakse isik keeleametniku ettekirjutusega tasemeeksamile.",
+      "estleg:legalText": "(1) Kui riiklikku või haldusjärelevalvet tegeval ametnikul (edaspidi keeleametnik) on riikliku või haldusjärelevalve käigus tekkinud põhjendatud kahtlus, et kontrollitava isiku keeleoskus ei vasta õigusaktides talle kehtestatud keeleoskustaseme nõuetele, saadetakse isik keeleametniku ettekirjutusega tasemeeksamile.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_28"
       },
@@ -4466,7 +4968,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetatud õppemaks hüvitatakse kodakondsuse seaduse § 81 lõike 1 alusel kehtestatud Vabariigi Valitsuse määruses sätestatud piirmäära ulatuses.",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetatud õppemaks hüvitatakse kodakondsuse seaduse § 8¹ lõike 1 alusel kehtestatud Vabariigi Valitsuse määruses sätestatud piirmäära ulatuses.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_28"
       },
@@ -4567,12 +5069,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28¹.",
-      "rdfs:label": "§ 28¹. Loakohustus",
+      "rdfs:label": {
+        "@value": "§ 28¹. Loakohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Isikul peab olema tegevusluba asjaomasel keeleoskustasemel eesti keele täienduskoolituse läbiviimiseks, kui koolitus on suunatud eesti keele tasemeeksamiks ettevalmistamisele. (2) Tegevusloa taotlus lahendatakse käesoleva seaduse ning majandustegevuse seadustiku üldosa seaduse alusel. (3) Käesolevas seaduses ja majandustegevuse seadustiku üldosa seaduses tegevusloa taotlemist, taotluse lahendamist, tegevusloa kehtetuks tunnistamist, andmete muutmisest teatamist ning majandustegevusest",
+      "estleg:summary": {
+        "@value": "(1) Isikul peab olema tegevusluba asjaomasel keeleoskustasemel eesti keele täienduskoolituse läbiviimiseks, kui koolitus on suunatud eesti keele tasemeeksamiks ettevalmistamisele. (2) Tegevusloa taotlus lahendatakse käesoleva seaduse ning majandustegevuse seadustiku üldosa seaduse alusel. (3) Käesolevas seaduses ja majandustegevuse seadustiku üldosa seaduses tegevusloa taotlemist, taotluse lahendamist, tegevusloa kehtetuks tunnistamist, andmete muutmisest teatamist ning majandustegevusest",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isikul peab olema tegevusluba asjaomasel keeleoskustasemel eesti keele täienduskoolituse läbiviimiseks, kui koolitus on suunatud eesti keele tasemeeksamiks ettevalmistamisele. (2) Tegevusloa taotlus lahendatakse käesoleva seaduse ning majandustegevuse seadustiku üldosa seaduse alusel. (3) Käesolevas seaduses ja majandustegevuse seadustiku üldosa seaduses tegevusloa taotlemist, taotluse lahendamist, tegevusloa kehtetuks tunnistamist, andmete muutmisest teatamist ning majandustegevusest loobumist reguleerivaid sätteid kohaldatakse ka isikule ja asutusele, kes ei ole ettevõtja majandustegevuse seadustiku üldosa seaduse § 5 lõike 1 tähenduses, niivõrd, kuivõrd selle eripärast ei tulene teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
@@ -4706,13 +5214,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28².",
-      "rdfs:label": "§ 28². Tegevusloa kontrolliese",
+      "rdfs:label": {
+        "@value": "§ 28². Tegevusloa kontrolliese",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Tegevusluba antakse, kui taotlejal on: käesoleva seaduse § 29 sätestatud nõuetele vastavad täienduskoolituse õppekavad, mis on väljundipõhised ning vastavad täienduskoolituse standardile; õppe eesmärkide ja õpiväljundite saavutamiseks vajalik arv nõutava pädevusega õpetajaid; tagatud õppe eesmärkide ja õpiväljundite saavutamiseks vajalik õppekeskkond, sealhulgas õppevahendid ja muud tingimused.",
-      "estleg:legalText": "Tegevusluba antakse, kui taotlejal on: käesoleva seaduse § 29 sätestatud nõuetele vastavad täienduskoolituse õppekavad, mis on väljundipõhised ning vastavad täienduskoolituse standardile; õppe eesmärkide ja õpiväljundite saavutamiseks vajalik arv nõutava pädevusega õpetajaid; tagatud õppe eesmärkide ja õpiväljundite saavutamiseks vajalik õppekeskkond, sealhulgas õppevahendid ja muud tingimused.",
+      "estleg:summary": {
+        "@value": "Tegevusluba antakse, kui taotlejal on: 1) käesoleva seaduse § 29 sätestatud nõuetele vastavad täienduskoolituse õppekavad, mis on väljundipõhised ning vastavad täienduskoolituse standardile; 2) õppe eesmärkide ja õpiväljundite saavutamiseks vajalik arv nõutava pädevusega õpetajaid; 3) tagatud õppe eesmärkide ja õpiväljundite saavutamiseks vajalik õppekeskkond, sealhulgas õppevahendid ja muud tingimused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tegevusluba antakse, kui taotlejal on: 1) käesoleva seaduse § 29 sätestatud nõuetele vastavad täienduskoolituse õppekavad, mis on väljundipõhised ning vastavad täienduskoolituse standardile; 2) õppe eesmärkide ja õpiväljundite saavutamiseks vajalik arv nõutava pädevusega õpetajaid; 3) tagatud õppe eesmärkide ja õpiväljundite saavutamiseks vajalik õppekeskkond, sealhulgas õppevahendid ja muud tingimused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
       },
@@ -4759,10 +5273,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tegevusluba antakse, kui taotlejal on: käesoleva seaduse § 29 sätestatud nõuetele vastavad täienduskoolituse õppekavad, mis on väljundipõhised ning vastavad täienduskoolituse standardile; õppe eesmärkide ja õpiväljundite saavutamiseks vajalik arv nõutava pädevusega õpetajaid; tagatud õppe eesmärkide ja õpiväljundite saavutamiseks vajalik õppekeskkond, sealhulgas õppevahendid ja muud tingimused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tegevusluba antakse, kui taotlejal on: 1) käesoleva seaduse § 29 sätestatud nõuetele vastavad täienduskoolituse õppekavad, mis on väljundipõhised ning vastavad täienduskoolituse standardile; 2) õppe eesmärkide ja õpiväljundite saavutamiseks vajalik arv nõutava pädevusega õpetajaid; 3) tagatud õppe eesmärkide ja õpiväljundite saavutamiseks vajalik õppekeskkond, sealhulgas õppevahendid ja muud tingimused.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_28_2"
       },
+      "rdfs:label": "§ 28² lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4785,13 +5306,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28³.",
-      "rdfs:label": "§ 28³. Tegevusloa taotlemine",
+      "rdfs:label": {
+        "@value": "§ 28³. Tegevusloa taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Tegevusloa taotluse esitab taotleja Haridus- ja Teadusministeeriumile Eesti Hariduse Infosüsteemi. (2) Tegevusloa taotluse lahendab Haridus- ja Teadusministeerium. Tegevusloa kontrolliesemesse kuuluvate nõuete täitmise tuvastab käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel Keeleamet eelhaldusaktiga. (3) Keeleamet tuvastab 30 päeva jooksul eelhaldusaktiga käesoleva seaduse §-s 282 nimetatud tegevusloa kontrolliesemesse kuuluvate nõuete täitmise käesoleva paragrahvi",
-      "estleg:legalText": "(1) Tegevusloa taotluse esitab taotleja Haridus- ja Teadusministeeriumile Eesti Hariduse Infosüsteemi. (2) Tegevusloa taotluse lahendab Haridus- ja Teadusministeerium. Tegevusloa kontrolliesemesse kuuluvate nõuete täitmise tuvastab käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel Keeleamet eelhaldusaktiga. (3) Keeleamet tuvastab 30 päeva jooksul eelhaldusaktiga käesoleva seaduse §-s 282 nimetatud tegevusloa kontrolliesemesse kuuluvate nõuete täitmise käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel. (4) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised dokumendid: täienduskoolituse õppekava, mille alusel õpetamiseks tegevusluba taotletakse; taotluse esitaja kinnitus vajalike õppevahendite olemasolu kohta. (5) Haridus- ja Teadusministeerium vaatab tegevusloa taotluse läbi kolme kuu jooksul käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide esitamisest arvates. Taotluse lahendamise tähtaeg hakkab kulgema arvates kõigi nõutavate andmete ja dokumentide esitamisest. (6) Käesoleva paragrahvi lõigetes 3 ja 5 nimetatud tähtaegade kulgemine peatub, kui Keeleamet annab taotlejale tähtaja puuduste kõrvaldamiseks. Tähtaegade kulgemine jätkub pärast puuduste kõrvaldamise tähtpäeva saabumist.",
+      "estleg:summary": {
+        "@value": "(1) Tegevusloa taotluse esitab taotleja Haridus- ja Teadusministeeriumile Eesti Hariduse Infosüsteemi. (2) Tegevusloa taotluse lahendab Haridus- ja Teadusministeerium. Tegevusloa kontrolliesemesse kuuluvate nõuete täitmise tuvastab käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel Keeleamet eelhaldusaktiga. (3) Keeleamet tuvastab 30 päeva jooksul eelhaldusaktiga käesoleva seaduse §-s 28² nimetatud tegevusloa kontrolliesemesse kuuluvate nõuete täitmise käesoleva paragrahvi",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tegevusloa taotluse esitab taotleja Haridus- ja Teadusministeeriumile Eesti Hariduse Infosüsteemi. (2) Tegevusloa taotluse lahendab Haridus- ja Teadusministeerium. Tegevusloa kontrolliesemesse kuuluvate nõuete täitmise tuvastab käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel Keeleamet eelhaldusaktiga. (3) Keeleamet tuvastab 30 päeva jooksul eelhaldusaktiga käesoleva seaduse §-s 28² nimetatud tegevusloa kontrolliesemesse kuuluvate nõuete täitmise käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel. (4) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised dokumendid: 1) täienduskoolituse õppekava, mille alusel õpetamiseks tegevusluba taotletakse; 2) taotluse esitaja kinnitus vajalike õppevahendite ja õppekeskkonna olemasolu kohta. (5) Haridus- ja Teadusministeerium vaatab tegevusloa taotluse läbi kolme kuu jooksul käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide esitamisest arvates. Taotluse lahendamise tähtaeg hakkab kulgema arvates kõigi nõutavate andmete ja dokumentide esitamisest. (6) Käesoleva paragrahvi lõigetes 3 ja 5 nimetatud tähtaegade kulgemine peatub, kui Keeleamet annab taotlejale tähtaja puuduste kõrvaldamiseks. Tähtaegade kulgemine jätkub pärast puuduste kõrvaldamise tähtpäeva saabumist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
       },
@@ -4917,7 +5444,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Keeleamet tuvastab 30 päeva jooksul eelhaldusaktiga käesoleva seaduse §-s 282 nimetatud tegevusloa kontrolliesemesse kuuluvate nõuete täitmise käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel.",
+      "estleg:legalText": "(3) Keeleamet tuvastab 30 päeva jooksul eelhaldusaktiga käesoleva seaduse §-s 28² nimetatud tegevusloa kontrolliesemesse kuuluvate nõuete täitmise käesoleva paragrahvi lõikes 4 nimetatud andmete ja dokumentide alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_28_3"
       },
@@ -4935,11 +5462,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised dokumendid: täienduskoolituse õppekava, mille alusel õpetamiseks tegevusluba taotletakse; taotluse esitaja kinnitus vajalike õppevahendite olemasolu kohta.",
+      "estleg:legalText": "(4) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduses sätestatule järgmised dokumendid: 1) täienduskoolituse õppekava, mille alusel õpetamiseks tegevusluba taotletakse; 2) taotluse esitaja kinnitus vajalike õppevahendite ja õppekeskkonna olemasolu kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_28_3"
       },
-      "rdfs:label": "§ 28³ lg 4"
+      "rdfs:label": "§ 28³ lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:Keeleseadus_Par_28_3_Lg_5",
@@ -4995,12 +5526,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28⁴.",
-      "rdfs:label": "§ 28⁴. Tegevusloa kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 28⁴. Tegevusloa kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Haridus- ja Teadusministeerium võib lisaks majandustegevuse seadustiku üldosa seaduses sätestatud alustele tegevusloa kehtetuks tunnistada ka juhul, kui täienduskoolitusasutus ei ole täitnud täiskasvanute koolituse seaduse §-s 8 kehtestatud avalikustamise ja andmete kättesaadavaks tegemise kohustust.",
+      "estleg:summary": {
+        "@value": "Haridus- ja Teadusministeerium võib lisaks majandustegevuse seadustiku üldosa seaduses sätestatud alustele tegevusloa kehtetuks tunnistada ka juhul, kui täienduskoolitusasutus ei ole täitnud täiskasvanute koolituse seaduse §-s 8 kehtestatud avalikustamise ja andmete kättesaadavaks tegemise kohustust.",
+        "@language": "et"
+      },
       "estleg:legalText": "Haridus- ja Teadusministeerium võib lisaks majandustegevuse seadustiku üldosa seaduses sätestatud alustele tegevusloa kehtetuks tunnistada ka juhul, kui täienduskoolitusasutus ei ole täitnud täiskasvanute koolituse seaduse §-s 8 kehtestatud avalikustamise ja andmete kättesaadavaks tegemise kohustust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
@@ -5048,10 +5585,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Haridus- ja Teadusministeerium võib lisaks majandustegevuse seadustiku üldosa seaduses sätestatud alustele tegevusloa kehtetuks tunnistada ka juhul, kui täienduskoolitusasutus ei ole täitnud täiskasvanute koolituse seaduse §-s 8 kehtestatud avalikustamise ja andmete kättesaadavaks tegemise kohustust.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haridus- ja Teadusministeerium võib lisaks majandustegevuse seadustiku üldosa seaduses sätestatud alustele tegevusloa kehtetuks tunnistada ka juhul, kui täienduskoolitusasutus ei ole täitnud täiskasvanute koolituse seaduse §-s 8 kehtestatud avalikustamise ja andmete kättesaadavaks tegemise kohustust.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_28_4"
       },
+      "rdfs:label": "§ 28⁴ lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -5077,12 +5616,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Nõuded eesti keele tasemeeksamiks ettevalmistava koolituse õppekavale",
+      "rdfs:label": {
+        "@value": "§ 29. Nõuded eesti keele tasemeeksamiks ettevalmistava koolituse õppekavale",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse õppekavas peab olema määratud asjaomase keeleoskustaseme õppe eesmärk, õppe sisu ja maht ning kavandatud õpiväljundite seos käesoleva seaduse lisas kirjeldatud keeleoskustasemetega.",
+      "estleg:summary": {
+        "@value": "Tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse õppekavas peab olema määratud asjaomase keeleoskustaseme õppe eesmärk, õppe sisu ja maht ning kavandatud õpiväljundite seos käesoleva seaduse lisas kirjeldatud keeleoskustasemetega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse õppekavas peab olema määratud asjaomase keeleoskustaseme õppe eesmärk, õppe sisu ja maht ning kavandatud õpiväljundite seos käesoleva seaduse lisas kirjeldatud keeleoskustasemetega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_5"
@@ -5131,10 +5676,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse õppekavas peab olema määratud asjaomase keeleoskustaseme õppe eesmärk, õppe sisu ja maht ning kavandatud õpiväljundite seos käesoleva seaduse lisas kirjeldatud keeleoskustasemetega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse õppekavas peab olema määratud asjaomase keeleoskustaseme õppe eesmärk, õppe sisu ja maht ning kavandatud õpiväljundite seos käesoleva seaduse lisas kirjeldatud keeleoskustasemetega.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_29"
       },
+      "rdfs:label": "§ 29 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -5150,13 +5697,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Riiklik ja haldusjärelevalve",
+      "rdfs:label": {
+        "@value": "§ 30. Riiklik ja haldusjärelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete täitmise üle teostab riiklikku ja haldusjärelevalvet Keeleamet (edaspidi amet). (2) Ameti pädevuses on kontrollida eesti keele ja võõrkeelte kasutamist ning eesti keele oskuse ja eesti keele kasutamise nõuete täitmist käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud valdkondades. Ameti pädevuses on kontrollida tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust",
-      "estleg:legalText": "(1) Käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete täitmise üle teostab riiklikku ja haldusjärelevalvet Keeleamet (edaspidi amet). (2) Ameti pädevuses on kontrollida eesti keele ja võõrkeelte kasutamist ning eesti keele oskuse ja eesti keele kasutamise nõuete täitmist käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud valdkondades. Ameti pädevuses on kontrollida tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust läbiviiva täienduskoolitusasutuse tegevuse vastavust käesolevas seaduses ja selle alusel kehtestatud õigusaktide nõuetele. (3) Kehtetu - (4) Amet võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30 ja 50 sätestatud riikliku järelevalve erimeedet korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete täitmise üle teostab riiklikku ja haldusjärelevalvet Keeleamet (edaspidi amet). (2) Ameti pädevuses on kontrollida eesti keele ja võõrkeelte kasutamist ning eesti keele oskuse ja eesti keele kasutamise nõuete täitmist käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud valdkondades. Ameti pädevuses on kontrollida tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete täitmise üle teostab riiklikku ja haldusjärelevalvet Keeleamet (edaspidi amet). (2) Ameti pädevuses on kontrollida eesti keele ja võõrkeelte kasutamist ning eesti keele oskuse ja eesti keele kasutamise nõuete täitmist käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud valdkondades. Ameti pädevuses on kontrollida tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust läbiviiva täienduskoolitusasutuse tegevuse vastavust käesolevas seaduses ja selle alusel kehtestatud õigusaktide nõuetele. Ameti pädevuses on kontrollida ka muudes seadustes kehtestatud keelenõuete täitmist. (4) Amet võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30 ja 50 sätestatud riikliku järelevalve erimeedet korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_6"
       },
@@ -5169,9 +5722,6 @@
         },
         {
           "@id": "estleg:Keeleseadus_Par_30_Lg_2"
-        },
-        {
-          "@id": "estleg:Keeleseadus_Par_30_Lg_3"
         },
         {
           "@id": "estleg:Keeleseadus_Par_30_Lg_4"
@@ -5268,7 +5818,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ameti pädevuses on kontrollida eesti keele ja võõrkeelte kasutamist ning eesti keele oskuse ja eesti keele kasutamise nõuete täitmist käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud valdkondades. Ameti pädevuses on kontrollida tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust läbiviiva täienduskoolitusasutuse tegevuse vastavust käesolevas seaduses ja selle alusel kehtestatud õigusaktide nõuetele.",
+      "estleg:legalText": "(2) Ameti pädevuses on kontrollida eesti keele ja võõrkeelte kasutamist ning eesti keele oskuse ja eesti keele kasutamise nõuete täitmist käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud valdkondades. Ameti pädevuses on kontrollida tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust läbiviiva täienduskoolitusasutuse tegevuse vastavust käesolevas seaduses ja selle alusel kehtestatud õigusaktide nõuetele. Ameti pädevuses on kontrollida ka muudes seadustes kehtestatud keelenõuete täitmist.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_30"
       },
@@ -5282,19 +5832,6 @@
         "@value": "0.65",
         "@type": "xsd:decimal"
       }
-    },
-    {
-      "@id": "estleg:Keeleseadus_Par_30_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_30"
-      },
-      "rdfs:label": "§ 30 lg 3"
     },
     {
       "@id": "estleg:Keeleseadus_Par_30_Lg_4",
@@ -5333,13 +5870,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Ameti õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 31. Ameti õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Ametil on riikliku ja haldusjärelevalve teostamisel õigus: teha tasemeeksameid korraldava asutuse juhile ettepanek tunnistada avaliku teenistuja, töötaja või füüsilisest isikust ettevõtja eesti keele tasemetunnistus või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistus kehtetuks käesoleva seaduse § 28 lõikes 5 kirjeldatud juhul; teha tööandjale ettepanek lõpetada töötajaga tööleping või teha avaliku teenistuja ametisse nimetamise õigust omavale isikule",
-      "estleg:legalText": "(1) Ametil on riikliku ja haldusjärelevalve teostamisel õigus: teha tasemeeksameid korraldava asutuse juhile ettepanek tunnistada avaliku teenistuja, töötaja või füüsilisest isikust ettevõtja eesti keele tasemetunnistus või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistus kehtetuks käesoleva seaduse § 28 lõikes 5 kirjeldatud juhul; teha tööandjale ettepanek lõpetada töötajaga tööleping või teha avaliku teenistuja ametisse nimetamise õigust omavale isikule ettepanek vabastada avalik teenistuja ametikohalt, kui töötaja või avalik teenistuja ei oska eesti keelt nõutaval tasemel; saata nõuetele mittevastava keeleoskusega töötaja või avalik teenistuja tasemeeksamile; teha riigiasutusele, kohaliku omavalitsuse asutusele, riigiasutuse või kohaliku omavalitsuse asutuse hallatavale asutusele, äriühingule, mittetulundusühingule, sihtasutusele või nende ametiisikule või töötajale ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja edasiste rikkumiste ärahoidmiseks; tutvuda tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ning viibida selle koolituse läbiviimise juures. (2) Ameti ametiisik on kohustatud oma tööülesannete täitmisel esitama ametitõendi.",
+      "estleg:summary": {
+        "@value": "(1) Ametil on riikliku ja haldusjärelevalve teostamisel õigus: 1) teha tasemeeksameid korraldava asutuse juhile ettepanek tunnistada ametniku, töötaja või füüsilisest isikust ettevõtja eesti keele tasemetunnistus või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistus kehtetuks käesoleva seaduse § 28 lõikes 5 kirjeldatud juhul; 2) teha tööandjale ettepanek lõpetada töötajaga tööleping või teha ametniku ametisse nimetamise õigust omavale isikule ettepanek vabastada",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ametil on riikliku ja haldusjärelevalve teostamisel õigus: 1) teha tasemeeksameid korraldava asutuse juhile ettepanek tunnistada ametniku, töötaja või füüsilisest isikust ettevõtja eesti keele tasemetunnistus või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistus kehtetuks käesoleva seaduse § 28 lõikes 5 kirjeldatud juhul; 2) teha tööandjale ettepanek lõpetada töötajaga tööleping või teha ametniku ametisse nimetamise õigust omavale isikule ettepanek vabastada ametnik ametikohalt, kui töötaja või ametnik ei oska eesti keelt nõutaval tasemel; 3) saata nõuetele mittevastava keeleoskusega töötaja või ametnik tasemeeksamile; 4) teha riigiasutusele, kohaliku omavalitsuse asutusele, valla- ja linnavolikogule, valla- ja linnavalitsusele, avalik-õiguslikule juriidilisele isikule ja selle asutusele, äriühingule, mittetulundusühingule ja sihtasutusele ning nende ametnikule, töötajale ja ametiisikule ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja edasiste rikkumiste ärahoidmiseks; 5) tutvuda tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ning viibida selle koolituse läbiviimise juures. (2) Keeleametnik on kohustatud oma tööülesannete täitmisel esitama ametitõendi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_6"
       },
@@ -5404,11 +5947,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Ametil on riikliku ja haldusjärelevalve teostamisel õigus: teha tasemeeksameid korraldava asutuse juhile ettepanek tunnistada avaliku teenistuja, töötaja või füüsilisest isikust ettevõtja eesti keele tasemetunnistus või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistus kehtetuks käesoleva seaduse § 28 lõikes 5 kirjeldatud juhul; teha tööandjale ettepanek lõpetada töötajaga tööleping või teha avaliku teenistuja ametisse nimetamise õigust omavale isikule ettepanek vabastada avalik teenistuja ametikohalt, kui töötaja või avalik teenistuja ei oska eesti keelt nõutaval tasemel; saata nõuetele mittevastava keeleoskusega töötaja või avalik teenistuja tasemeeksamile; teha riigiasutusele, kohaliku omavalitsuse asutusele, riigiasutuse või kohaliku omavalitsuse asutuse hallatavale asutusele, äriühingule, mittetulundusühingule, sihtasutusele või nende ametiisikule või töötajale ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja edasiste rikkumiste ärahoidmiseks; tutvuda tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ning viibida selle koolituse läbiviimise juures.",
+      "estleg:legalText": "(1) Ametil on riikliku ja haldusjärelevalve teostamisel õigus: 1) teha tasemeeksameid korraldava asutuse juhile ettepanek tunnistada ametniku, töötaja või füüsilisest isikust ettevõtja eesti keele tasemetunnistus või enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistus kehtetuks käesoleva seaduse § 28 lõikes 5 kirjeldatud juhul; 2) teha tööandjale ettepanek lõpetada töötajaga tööleping või teha ametniku ametisse nimetamise õigust omavale isikule ettepanek vabastada ametnik ametikohalt, kui töötaja või ametnik ei oska eesti keelt nõutaval tasemel; 3) saata nõuetele mittevastava keeleoskusega töötaja või ametnik tasemeeksamile; 4) teha riigiasutusele, kohaliku omavalitsuse asutusele, valla- ja linnavolikogule, valla- ja linnavalitsusele, avalik-õiguslikule juriidilisele isikule ja selle asutusele, äriühingule, mittetulundusühingule ja sihtasutusele ning nende ametnikule, töötajale ja ametiisikule ettekirjutusi käesolevas seaduses ja selle alusel kehtestatud õigusaktides sätestatud nõuete rikkumise lõpetamiseks ja edasiste rikkumiste ärahoidmiseks; 5) tutvuda tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ning viibida selle koolituse läbiviimise juures.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_31"
       },
       "rdfs:label": "§ 31 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -5439,7 +5989,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Ameti ametiisik on kohustatud oma tööülesannete täitmisel esitama ametitõendi.",
+      "estleg:legalText": "(2) Keeleametnik on kohustatud oma tööülesannete täitmisel esitama ametitõendi.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_31"
       },
@@ -5467,12 +6017,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Sunniraha määr",
+      "rdfs:label": {
+        "@value": "§ 32. Sunniraha määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
+      "estleg:summary": {
+        "@value": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_6"
@@ -5532,10 +6088,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 640 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_32"
       },
+      "rdfs:label": "§ 32 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -5559,13 +6117,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Eesti keele kasutamise kohustuse rikkumine",
+      "rdfs:label": {
+        "@value": "§ 33. Eesti keele kasutamise kohustuse rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eesti keele kasutamise kohustuse rikkumise eest riigiasutuse, avalik-õigusliku juriidilise isiku või selle asutuse, kohaliku omavalitsuse asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja asjaajamises, kirjavahetuses, aruandluses, isikutega suhtlemisel või töötajale tööalase teabe edastamisel, samuti pitsatil, templil või kirjaplangil –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui see on toime pandud vähemalt teist korda,",
-      "estleg:legalText": "(1) Eesti keele kasutamise kohustuse rikkumise eest riigiasutuse, avalik-õigusliku juriidilise isiku või selle asutuse, kohaliku omavalitsuse asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja asjaajamises, kirjavahetuses, aruandluses, isikutega suhtlemisel või töötajale tööalase teabe edastamisel, samuti pitsatil, templil või kirjaplangil –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui see on toime pandud vähemalt teist korda, –karistatakse rahatrahviga kuni 300 trahviühikut. (3) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2600 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Eesti keele kasutamise kohustuse rikkumise eest riigiasutuse, avalik-õigusliku juriidilise isiku või selle asutuse, kohaliku omavalitsuse asutuse, valla- või linnavolikogu, valla- või linnavalitsuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja asjaajamises, kirjavahetuses, aruandluses, isikutega suhtlemisel või töötajale tööalase teabe edastamisel, samuti pitsatil, templil või kirjaplangil –karistatakse rahatrahviga kuni 200 trahviühikut.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti keele kasutamise kohustuse rikkumise eest riigiasutuse, avalik-õigusliku juriidilise isiku või selle asutuse, kohaliku omavalitsuse asutuse, valla- või linnavolikogu, valla- või linnavalitsuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja asjaajamises, kirjavahetuses, aruandluses, isikutega suhtlemisel või töötajale tööalase teabe edastamisel, samuti pitsatil, templil või kirjaplangil –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui see on toime pandud vähemalt teist korda, –karistatakse rahatrahviga kuni 300 trahviühikut. (3) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_7"
       },
@@ -5636,7 +6200,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eesti keele kasutamise kohustuse rikkumise eest riigiasutuse, avalik-õigusliku juriidilise isiku või selle asutuse, kohaliku omavalitsuse asutuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja asjaajamises, kirjavahetuses, aruandluses, isikutega suhtlemisel või töötajale tööalase teabe edastamisel, samuti pitsatil, templil või kirjaplangil –karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:legalText": "(1) Eesti keele kasutamise kohustuse rikkumise eest riigiasutuse, avalik-õigusliku juriidilise isiku või selle asutuse, kohaliku omavalitsuse asutuse, valla- või linnavolikogu, valla- või linnavalitsuse, äriühingu, mittetulundusühingu, sihtasutuse või füüsilisest isikust ettevõtja asjaajamises, kirjavahetuses, aruandluses, isikutega suhtlemisel või töötajale tööalase teabe edastamisel, samuti pitsatil, templil või kirjaplangil –karistatakse rahatrahviga kuni 200 trahviühikut.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_33"
       },
@@ -5701,7 +6265,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2600 eurot.",
+      "estleg:legalText": "(3) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_33"
       },
@@ -5732,13 +6296,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Keelenõuete rikkumine audiovisuaalse teose üldsusele kättesaadavaks tegemisel",
+      "rdfs:label": {
+        "@value": "§ 34. Keelenõuete rikkumine audiovisuaalse teose üldsusele kättesaadavaks tegemisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eestikeelse tõlke puudumise eest võõrkeelse audiovisuaalse teose üldsusele kättesaadavaks tegemisel, telejaamade võõrkeelse saate või eestikeelse raadiosaate võõrkeelse osa edastamisel –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot. (3) Kehtetu - (4) Kehtetu -",
-      "estleg:legalText": "(1) Eestikeelse tõlke puudumise eest võõrkeelse audiovisuaalse teose üldsusele kättesaadavaks tegemisel, telejaamade võõrkeelse saate või eestikeelse raadiosaate võõrkeelse osa edastamisel –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot. (3) Kehtetu - (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Eestikeelse tõlke puudumise eest võõrkeelse audiovisuaalse teose või audiovisuaalse teose võõrkeelde dubleeritud, sealhulgas pealelugemisega koopia üldsusele kättesaadavaks tegemisel, telejaamade võõrkeelse saate või eestikeelse raadiosaate võõrkeelse osa edastamisel –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 15 000 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eestikeelse tõlke puudumise eest võõrkeelse audiovisuaalse teose või audiovisuaalse teose võõrkeelde dubleeritud, sealhulgas pealelugemisega koopia üldsusele kättesaadavaks tegemisel, telejaamade võõrkeelse saate või eestikeelse raadiosaate võõrkeelse osa edastamisel –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 15 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_7"
       },
@@ -5751,12 +6321,6 @@
         },
         {
           "@id": "estleg:Keeleseadus_Par_34_Lg_2"
-        },
-        {
-          "@id": "estleg:Keeleseadus_Par_34_Lg_3"
-        },
-        {
-          "@id": "estleg:Keeleseadus_Par_34_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -5804,7 +6368,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eestikeelse tõlke puudumise eest võõrkeelse audiovisuaalse teose üldsusele kättesaadavaks tegemisel, telejaamade võõrkeelse saate või eestikeelse raadiosaate võõrkeelse osa edastamisel –karistatakse rahatrahviga kuni 300 trahviühikut.",
+      "estleg:legalText": "(1) Eestikeelse tõlke puudumise eest võõrkeelse audiovisuaalse teose või audiovisuaalse teose võõrkeelde dubleeritud, sealhulgas pealelugemisega koopia üldsusele kättesaadavaks tegemisel, telejaamade võõrkeelse saate või eestikeelse raadiosaate võõrkeelse osa edastamisel –karistatakse rahatrahviga kuni 300 trahviühikut.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_34"
       },
@@ -5830,7 +6394,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 15 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_34"
       },
@@ -5855,45 +6419,25 @@
       "estleg:enforcedAtLevel": "state"
     },
     {
-      "@id": "estleg:Keeleseadus_Par_34_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_34"
-      },
-      "rdfs:label": "§ 34 lg 3"
-    },
-    {
-      "@id": "estleg:Keeleseadus_Par_34_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_34"
-      },
-      "rdfs:label": "§ 34 lg 4"
-    },
-    {
       "@id": "estleg:Keeleseadus_Par_35",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Eesti keele kasutamise nõuete ja kirjakeele normi rikkumine",
+      "rdfs:label": {
+        "@value": "§ 35. Eesti keele kasutamise nõuete rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eesti keele kasutamise nõuete ja kirjakeele normi rikkumise eest avalikku kohta paigaldatud viidal ja sildil, välireklaamis, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaamis, ning veebilehel, ettevõtte liiginimetuse eksponeerimisel ja nime ümberkirjutamisel, samuti eestikeelse olulise teabe eesti keeles esitamata jätmise eest kaubamärkide kasutamisel tegevuskoha tähisena või reklaamis ning olulise võõrkeelse teabe eesti keelde tõlkimata jätmise eest avalikel üritustel",
-      "estleg:legalText": "(1) Eesti keele kasutamise nõuete ja kirjakeele normi rikkumise eest avalikku kohta paigaldatud viidal ja sildil, välireklaamis, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaamis, ning veebilehel, ettevõtte liiginimetuse eksponeerimisel ja nime ümberkirjutamisel, samuti eestikeelse olulise teabe eesti keeles esitamata jätmise eest kaubamärkide kasutamisel tegevuskoha tähisena või reklaamis ning olulise võõrkeelse teabe eesti keelde tõlkimata jätmise eest avalikel üritustel –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Eesti keele kasutamise nõuete rikkumise eest avalikku kohta paigaldatud viidal ja sildil, välireklaamis, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaamis, ning veebilehel, ettevõtte liiginimetuse eksponeerimisel ja nime ümberkirjutamisel –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti keele kasutamise nõuete rikkumise eest avalikku kohta paigaldatud viidal ja sildil, välireklaamis, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaamis, ning veebilehel, ettevõtte liiginimetuse eksponeerimisel ja nime ümberkirjutamisel –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_7"
       },
@@ -5947,7 +6491,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Eesti keele kasutamise nõuete ja kirjakeele normi rikkumise eest avalikku kohta paigaldatud viidal ja sildil, välireklaamis, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaamis, ning veebilehel, ettevõtte liiginimetuse eksponeerimisel ja nime ümberkirjutamisel, samuti eestikeelse olulise teabe eesti keeles esitamata jätmise eest kaubamärkide kasutamisel tegevuskoha tähisena või reklaamis ning olulise võõrkeelse teabe eesti keelde tõlkimata jätmise eest avalikel üritustel –karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:legalText": "(1) Eesti keele kasutamise nõuete rikkumise eest avalikku kohta paigaldatud viidal ja sildil, välireklaamis, sealhulgas poliitilise agitatsiooni eesmärgil paigaldatud välireklaamis, ning veebilehel, ettevõtte liiginimetuse eksponeerimisel ja nime ümberkirjutamisel –karistatakse rahatrahviga kuni 200 trahviühikut.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_35"
       },
@@ -5973,7 +6517,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot.",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_35"
       },
@@ -5998,19 +6542,147 @@
       "estleg:enforcedAtLevel": "state"
     },
     {
+      "@id": "estleg:Keeleseadus_Par_35_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 35¹.",
+      "rdfs:label": {
+        "@value": "§ 35¹. Olulise teabe esitamise kohustuse rikkumine",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Keeleseadus",
+      "estleg:partOfAct": {
+        "@id": "estleg:Keeleseadus_Map"
+      },
+      "estleg:summary": {
+        "@value": "(1) Olulise teabe eesti keeles esitamata jätmise eest kaubamärgi kasutamisel isiku tegevuskoha tähisena või reklaamis ning olulise võõrkeelse teabe eesti keelde tõlkimata jätmise eest avalikul üritusel –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Olulise teabe eesti keeles esitamata jätmise eest kaubamärgi kasutamisel isiku tegevuskoha tähisena või reklaamis ning olulise võõrkeelse teabe eesti keelde tõlkimata jätmise eest avalikul üritusel –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_Keeleseadus_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_Keeleseadus_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Keeleseadus_Par_35_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_35_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_35_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Olulise teabe eesti keeles esitamata jätmise eest kaubamärgi kasutamisel isiku tegevuskoha tähisena või reklaamis ning olulise võõrkeelse teabe eesti keelde tõlkimata jätmise eest avalikul üritusel –karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_35_1"
+      },
+      "rdfs:label": "§ 35¹ lg 1"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_35_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_35_1"
+      },
+      "rdfs:label": "§ 35¹ lg 2"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_35_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "estleg:paragrahv": "§ 35².",
+      "rdfs:label": {
+        "@value": "§ 35². Kirjakeele normi rikkumine",
+        "@language": "et"
+      },
+      "estleg:sourceAct": "Keeleseadus",
+      "estleg:partOfAct": {
+        "@id": "estleg:Keeleseadus_Map"
+      },
+      "estleg:summary": {
+        "@value": "(1) Kirjakeele normi rikkumise eest ametlikus keelekasutuses –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kirjakeele normi rikkumise eest ametlikus keelekasutuses –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_Keeleseadus_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_Keeleseadus_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Keeleseadus_Par_35_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_35_2_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_35_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kirjakeele normi rikkumise eest ametlikus keelekasutuses –karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_35_2"
+      },
+      "rdfs:label": "§ 35² lg 1"
+    },
+    {
+      "@id": "estleg:Keeleseadus_Par_35_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Keeleseadus_Par_35_2"
+      },
+      "rdfs:label": "§ 35² lg 2"
+    },
+    {
       "@id": "estleg:Keeleseadus_Par_36",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Eesti keele kasutamise nõuete rikkumine tarbija teenindamisel",
+      "rdfs:label": {
+        "@value": "§ 36. Eesti keele kasutamise nõuete rikkumine tarbija teenindamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Eesti keele kasutamise nõuete rikkumise eest tarbija teenindamisel, eestikeelse märgistuse või kasutusjuhendi puudumise eest kaupadel ning käesoleva seaduse § 17 lõikes 2 nimetatud isikutele kauba või teenuse omaduste ja kasutamistingimuste kohta eestikeelse teabe andmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2600 eurot.",
-      "estleg:legalText": "(1) Eesti keele kasutamise nõuete rikkumise eest tarbija teenindamisel, eestikeelse märgistuse või kasutusjuhendi puudumise eest kaupadel ning käesoleva seaduse § 17 lõikes 2 nimetatud isikutele kauba või teenuse omaduste ja kasutamistingimuste kohta eestikeelse teabe andmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2600 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Eesti keele kasutamise nõuete rikkumise eest tarbija teenindamisel, eestikeelse märgistuse või kasutusjuhendi puudumise eest kaupadel ning käesoleva seaduse § 17 lõikes 2 nimetatud isikutele kauba või teenuse omaduste ja kasutamistingimuste kohta eestikeelse teabe andmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Eesti keele kasutamise nõuete rikkumise eest tarbija teenindamisel, eestikeelse märgistuse või kasutusjuhendi puudumise eest kaupadel ning käesoleva seaduse § 17 lõikes 2 nimetatud isikutele kauba või teenuse omaduste ja kasutamistingimuste kohta eestikeelse teabe andmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_7"
       },
@@ -6128,7 +6800,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2600 eurot.",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_36"
       },
@@ -6159,13 +6831,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Keeleoskusnõuete rikkumine",
+      "rdfs:label": {
+        "@value": "§ 37. Keeleoskusnõuete rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Tööandja poolt töötaja suhtes keeleoskusnõuete rakendamata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot.",
-      "estleg:legalText": "(1) Tööandja poolt töötaja suhtes keeleoskusnõuete rakendamata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Tööandja poolt töötaja suhtes keeleoskusnõuete rakendamata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tööandja poolt töötaja suhtes keeleoskusnõuete rakendamata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_7"
       },
@@ -6282,7 +6960,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot.",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 10 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_37"
       },
@@ -6313,13 +6991,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Menetlus",
+      "rdfs:label": {
+        "@value": "§ 38. Menetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Käesoleva seaduse §-des 33–37 sätestatud väärtegude kohtuväline menetleja on Keeleamet.",
-      "estleg:legalText": "(1) Kehtetu - (2) Käesoleva seaduse §-des 33–37 sätestatud väärtegude kohtuväline menetleja on Keeleamet.",
+      "estleg:summary": {
+        "@value": "(2) Käesoleva seaduse §-des 33–37 sätestatud väärtegude kohtuväline menetleja on Keeleamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(2) Käesoleva seaduse §-des 33–37 sätestatud väärtegude kohtuväline menetleja on Keeleamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_7"
       },
@@ -6327,9 +7011,6 @@
         "@id": "estleg:Chapter_Keeleseadus_7"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:Keeleseadus_Par_38_Lg_1"
-        },
         {
           "@id": "estleg:Keeleseadus_Par_38_Lg_2"
         }
@@ -6386,19 +7067,6 @@
       ]
     },
     {
-      "@id": "estleg:Keeleseadus_Par_38_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:Keeleseadus_Par_38"
-      },
-      "rdfs:label": "§ 38 lg 1"
-    },
-    {
       "@id": "estleg:Keeleseadus_Par_38_Lg_2",
       "@type": [
         "estleg:Subsection",
@@ -6440,13 +7108,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39. Eesti keele oskust tõendavate tunnistuste vastavus",
+      "rdfs:label": {
+        "@value": "§ 39. Eesti keele oskust tõendavate tunnistuste vastavus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Enne 2008. aasta 1. juulit väljastatud eesti keele tasemetunnistused loetakse vastavaks järgmiselt: algtaseme keeleoskuse tunnistus eesti keele B1-taseme tunnistusele; kesktaseme keeleoskuse tunnistus eesti keele B2-taseme tunnistusele; kõrgtaseme keeleoskuse tunnistus eesti keele C1-taseme tunnistusele. (2) Enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistust arvestatakse keeleoskusnõude täitmist tõendava dokumendina isiku puhul, kelle keeleoskus on tööandja",
-      "estleg:legalText": "(1) Enne 2008. aasta 1. juulit väljastatud eesti keele tasemetunnistused loetakse vastavaks järgmiselt: algtaseme keeleoskuse tunnistus eesti keele B1-taseme tunnistusele; kesktaseme keeleoskuse tunnistus eesti keele B2-taseme tunnistusele; kõrgtaseme keeleoskuse tunnistus eesti keele C1-taseme tunnistusele. (2) Enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistust arvestatakse keeleoskusnõude täitmist tõendava dokumendina isiku puhul, kelle keeleoskus on tööandja hinnangul piisav vastaval töö- või ametikohal töötamiseks. Tööandjal on kahtluse korral õigus pöörduda ameti poole hinnangu saamiseks isiku keeleoskuse piisavuse kohta.",
+      "estleg:summary": {
+        "@value": "(1) Enne 2008. aasta 1. juulit väljastatud eesti keele tasemetunnistused loetakse vastavaks järgmiselt: 1) algtaseme keeleoskuse tunnistus eesti keele B1-taseme tunnistusele; 2) kesktaseme keeleoskuse tunnistus eesti keele B2-taseme tunnistusele; 3) kõrgtaseme keeleoskuse tunnistus eesti keele C1-taseme tunnistusele. (2) Enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistust arvestatakse keeleoskusnõude täitmist tõendava dokumendina isiku puhul, kelle keeleoskus on",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Enne 2008. aasta 1. juulit väljastatud eesti keele tasemetunnistused loetakse vastavaks järgmiselt: 1) algtaseme keeleoskuse tunnistus eesti keele B1-taseme tunnistusele; 2) kesktaseme keeleoskuse tunnistus eesti keele B2-taseme tunnistusele; 3) kõrgtaseme keeleoskuse tunnistus eesti keele C1-taseme tunnistusele. (2) Enne 1999. aasta 1. juulit välja antud tööalase keeleoskuse kategooriatunnistust arvestatakse keeleoskusnõude täitmist tõendava dokumendina isiku puhul, kelle keeleoskus on tööandja hinnangul piisav vastaval töö- või ametikohal töötamiseks. Tööandjal on kahtluse korral õigus pöörduda ameti poole hinnangu saamiseks isiku keeleoskuse piisavuse kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_8"
       },
@@ -6489,11 +7163,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Enne 2008. aasta 1. juulit väljastatud eesti keele tasemetunnistused loetakse vastavaks järgmiselt: algtaseme keeleoskuse tunnistus eesti keele B1-taseme tunnistusele; kesktaseme keeleoskuse tunnistus eesti keele B2-taseme tunnistusele; kõrgtaseme keeleoskuse tunnistus eesti keele C1-taseme tunnistusele.",
+      "estleg:legalText": "(1) Enne 2008. aasta 1. juulit väljastatud eesti keele tasemetunnistused loetakse vastavaks järgmiselt: 1) algtaseme keeleoskuse tunnistus eesti keele B1-taseme tunnistusele; 2) kesktaseme keeleoskuse tunnistus eesti keele B2-taseme tunnistusele; 3) kõrgtaseme keeleoskuse tunnistus eesti keele C1-taseme tunnistusele.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_39"
       },
-      "rdfs:label": "§ 39 lg 1"
+      "rdfs:label": "§ 39 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:Keeleseadus_Par_39_Lg_2",
@@ -6527,13 +7206,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39¹.",
-      "rdfs:label": "§ 39¹. Üleminekusätted",
+      "rdfs:label": {
+        "@value": "§ 39¹. Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 28 lõikes 3 kehtestatud nõuet, et eesti keele õppe eest tasutud õppemaksu hüvitamist saab taotleda, kui täienduskoolitusasutuse pidajale on antud tegevusluba tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse läbiviimiseks, kohaldatakse pärast 2016. aasta 30. juunit alustatud eesti keele õppe puhul. Varem alustatud eesti keele õppe õppemaksu hüvitamisel lähtutakse enne käesoleva sätte jõustumist kehtinud hüvitamise korrast. (2) Enne 2015. aasta 1.",
-      "estleg:legalText": "(1) Käesoleva seaduse § 28 lõikes 3 kehtestatud nõuet, et eesti keele õppe eest tasutud õppemaksu hüvitamist saab taotleda, kui täienduskoolitusasutuse pidajale on antud tegevusluba tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse läbiviimiseks, kohaldatakse pärast 2016. aasta 30. juunit alustatud eesti keele õppe puhul. Varem alustatud eesti keele õppe õppemaksu hüvitamisel lähtutakse enne käesoleva sätte jõustumist kehtinud hüvitamise korrast. (2) Enne 2015. aasta 1. juulit eesti keele õpet täiskasvanute tööalase või vabaharidusliku koolitusena korraldavale isikule väljastatud tegevusluba kehtib 2016. aasta 30. juunini. Kuni selle kuupäevani võivad käesoleva lõike esimeses lauses nimetatud isikud korraldada tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust ilma käesoleva seaduse §-s 281 nimetatud tegevusloata.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 28 lõikes 3 kehtestatud nõuet, et eesti keele õppe eest tasutud õppemaksu hüvitamist saab taotleda, kui täienduskoolitusasutuse pidajale on antud tegevusluba tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse läbiviimiseks, kohaldatakse pärast 2016. aasta 30. juunit alustatud eesti keele õppe puhul. Varem alustatud eesti keele õppe õppemaksu hüvitamisel lähtutakse enne käesoleva sätte jõustumist kehtinud hüvitamise korrast. (2) Enne 2015. aasta 1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse § 28 lõikes 3 kehtestatud nõuet, et eesti keele õppe eest tasutud õppemaksu hüvitamist saab taotleda, kui täienduskoolitusasutuse pidajale on antud tegevusluba tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse läbiviimiseks, kohaldatakse pärast 2016. aasta 30. juunit alustatud eesti keele õppe puhul. Varem alustatud eesti keele õppe õppemaksu hüvitamisel lähtutakse enne käesoleva sätte jõustumist kehtinud hüvitamise korrast. (2) Enne 2015. aasta 1. juulit eesti keele õpet täiskasvanute tööalase või vabaharidusliku koolitusena korraldavale isikule väljastatud tegevusluba kehtib 2016. aasta 30. juunini. Kuni selle kuupäevani võivad käesoleva lõike esimeses lauses nimetatud isikud korraldada tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust ilma käesoleva seaduse §-s 28¹ nimetatud tegevusloata.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_8"
       },
@@ -6596,7 +7281,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Enne 2015. aasta 1. juulit eesti keele õpet täiskasvanute tööalase või vabaharidusliku koolitusena korraldavale isikule väljastatud tegevusluba kehtib 2016. aasta 30. juunini. Kuni selle kuupäevani võivad käesoleva lõike esimeses lauses nimetatud isikud korraldada tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust ilma käesoleva seaduse §-s 281 nimetatud tegevusloata.",
+      "estleg:legalText": "(2) Enne 2015. aasta 1. juulit eesti keele õpet täiskasvanute tööalase või vabaharidusliku koolitusena korraldavale isikule väljastatud tegevusluba kehtib 2016. aasta 30. juunini. Kuni selle kuupäevani võivad käesoleva lõike esimeses lauses nimetatud isikud korraldada tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolitust ilma käesoleva seaduse §-s 28¹ nimetatud tegevusloata.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_39_1"
       },
@@ -6618,18 +7303,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40.",
+      "rdfs:label": {
+        "@value": "§ 40.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
+      "estleg:summary": "§ 40.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_8"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_Keeleseadus_8"
       },
-      "estleg:summary": "§ 40.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Keeleseadus_Par_40_v102072012013"
@@ -6643,12 +7331,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 45. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_8"
@@ -6675,12 +7369,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
-      "rdfs:label": "§ 46. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 46. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleseadus",
       "estleg:partOfAct": {
         "@id": "estleg:Keeleseadus_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2011. aasta 1. juulil.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2011. aasta 1. juulil.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2011. aasta 1. juulil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_Keeleseadus_8"
@@ -6705,55 +7405,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2011. aasta 1. juulil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2011. aasta 1. juulil.",
       "estleg:parentProvision": {
         "@id": "estleg:Keeleseadus_Par_46"
+      },
+      "rdfs:label": "§ 46 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/513032026001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:Keeleseadus_Map"
+      },
+      "rdfs:label": {
+        "@value": "Language Act",
+        "@language": "en"
       }
-    },
-    {
-      "@id": "estleg:Citation_Keeleseadus_P_28_Lg_4_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:Keeleseadus_Par_28_Lg_4"
-      },
-      "estleg:citationDetail": "kodakondsuse seadus",
-      "estleg:citationText": "kodakondsuse seaduse § 81 lõike 1"
-    },
-    {
-      "@id": "estleg:Citation_Keeleseadus_P_28_3_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:Keeleseadus_Par_28_3"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 282"
-    },
-    {
-      "@id": "estleg:Citation_Keeleseadus_P_28_3_Lg_3_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:Keeleseadus_Par_28_3_Lg_3"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 282"
-    },
-    {
-      "@id": "estleg:Citation_Keeleseadus_P_39_1_Lg_2_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:Keeleseadus_Par_39_1_Lg_2"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 281"
     }
   ]
 }

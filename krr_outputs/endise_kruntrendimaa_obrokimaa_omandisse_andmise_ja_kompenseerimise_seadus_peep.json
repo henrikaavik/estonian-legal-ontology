@@ -5,36 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:OAKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "dcterms:title": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/22267.xml"
+        "@id": "https://www.riigiteataja.ee/akt/22267"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/22267/xml"
+      },
+      "estleg:globalId": "22267",
+      "eli:id_local": "22267",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159226",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "adeb0a0e6ee02ef70e576b14f2bb5d77f9b7b9e1809c4f17c4955f564a07cd89",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1993-12-29",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:references": [
         {
@@ -69,30 +90,39 @@
       ]
     },
     {
-      "@id": "estleg:OAKS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_OAKS_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_OAKS_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–8 Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
-      "skos:prefLabel": "§1–8 Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
+      "rdfs:label": {
+        "@value": "§1–8 Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–8 Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:OAKS_TopicScheme"
       },
       "estleg:provisionCount": 8
+    },
+    {
+      "@id": "estleg:OAKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_OAKS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:OAKS_Par_1",
@@ -101,12 +131,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Käesoleva seaduse eesmärk on hüvitada kahju, mida maa õigusvastane võõrandamine...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Käesoleva seaduse eesmärk on hüvitada kahju, mida maa õigusvastane võõrandamine...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse eesmärk on hüvitada kahju, mida maa õigusvastane võõrandamine (natsionaliseerimine) tekitas kruntrendimaa (obrokimaa) pidajatele ja omanikele.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse eesmärk on hüvitada kahju, mida maa õigusvastane võõrandamine (natsionaliseerimine) tekitas kruntrendimaa (obrokimaa) pidajatele ja omanikele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse eesmärk on hüvitada kahju, mida maa õigusvastane võõrandamine (natsionaliseerimine) tekitas kruntrendimaa (obrokimaa) pidajatele ja omanikele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"
@@ -133,12 +169,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [1 (1) Endise kruntrendimaaõigusena (obrokimaaõigusena) käsitatakse käesolevas se...]",
+      "rdfs:label": {
+        "@value": "§ 2. [(1) Endise kruntrendimaaõigusena (obrokimaaõigusena) käsitatakse käesolevas sead...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "(1) Endise kruntrendimaaõigusena (obrokimaaõigusena) käsitatakse käesolevas seaduses Balti eraseaduse §-des 1324–1334 sätestatud asjaõigust. (2) Endise kruntrendimaa (obrokimaa) pidajana käsitatakse käesolevas seaduses isikut, kellele kuulus kruntrendimaaõigus (obrokimaaõigus) 1940. aasta 16. juunil või kes oli omandanud selle õiguse Balti eraseadusega ettenähtud korras pärast 1940. aasta 16. juunit. (3) Endise kruntrendimaa (obrokimaa) omanikuna käsitatakse käesolevas seaduses isikut, kes oli",
+      "estleg:summary": {
+        "@value": "(1) Endise kruntrendimaaõigusena (obrokimaaõigusena) käsitatakse käesolevas seaduses Balti eraseaduse §-des 1324–1334 sätestatud asjaõigust. (2) Endise kruntrendimaa (obrokimaa) pidajana käsitatakse käesolevas seaduses isikut, kellele kuulus kruntrendimaaõigus (obrokimaaõigus) 1940. aasta 16. juunil või kes oli omandanud selle õiguse Balti eraseadusega ettenähtud korras pärast 1940. aasta 16. juunit. (3) Endise kruntrendimaa (obrokimaa) omanikuna käsitatakse käesolevas seaduses isikut, kes oli",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Endise kruntrendimaaõigusena (obrokimaaõigusena) käsitatakse käesolevas seaduses Balti eraseaduse §-des 1324–1334 sätestatud asjaõigust. (2) Endise kruntrendimaa (obrokimaa) pidajana käsitatakse käesolevas seaduses isikut, kellele kuulus kruntrendimaaõigus (obrokimaaõigus) 1940. aasta 16. juunil või kes oli omandanud selle õiguse Balti eraseadusega ettenähtud korras pärast 1940. aasta 16. juunit. (3) Endise kruntrendimaa (obrokimaa) omanikuna käsitatakse käesolevas seaduses isikut, kes oli andnud maa kasutamiseks kruntrendimaaõiguse (obrokimaaõiguse) alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"
@@ -233,12 +275,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [1 (1) Endine kruntrendimaa (obrokimaa) antakse tasuta endise kruntrendimaa (obro...]",
+      "rdfs:label": {
+        "@value": "§ 3. [(1) Endine kruntrendimaa (obrokimaa) antakse tasuta endise kruntrendimaa (obroki...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "(1) Endine kruntrendimaa (obrokimaa) antakse tasuta endise kruntrendimaa (obrokimaa) pidaja või tema pärijate omandisse või kompenseeritakse neile selle maksumus 95 protsendi ulatuses. (2) Endise kruntrendimaa (obrokimaa) omanikule kompenseeritakse endine kruntrendimaa (obrokimaa) maksumus 5 protsendi ulatuses juhul, kui endise kruntrendimaa (obrokimaa) omanik on maareformi õigustatud subjekt vastavalt maareformi seaduse §-s 5 sätestatule.",
+      "estleg:summary": {
+        "@value": "(1) Endine kruntrendimaa (obrokimaa) antakse tasuta endise kruntrendimaa (obrokimaa) pidaja või tema pärijate omandisse või kompenseeritakse neile selle maksumus 95 protsendi ulatuses. (2) Endise kruntrendimaa (obrokimaa) omanikule kompenseeritakse endine kruntrendimaa (obrokimaa) maksumus 5 protsendi ulatuses juhul, kui endise kruntrendimaa (obrokimaa) omanik on maareformi õigustatud subjekt vastavalt maareformi seaduse §-s 5 sätestatule.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Endine kruntrendimaa (obrokimaa) antakse tasuta endise kruntrendimaa (obrokimaa) pidaja või tema pärijate omandisse või kompenseeritakse neile selle maksumus 95 protsendi ulatuses. (2) Endise kruntrendimaa (obrokimaa) omanikule kompenseeritakse endine kruntrendimaa (obrokimaa) maksumus 5 protsendi ulatuses juhul, kui endise kruntrendimaa (obrokimaa) omanik on maareformi õigustatud subjekt vastavalt maareformi seaduse §-s 5 sätestatule.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"
@@ -323,12 +371,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [1 (1) Käesoleva seaduse õigustatud subjektide kindlaksmääramine ning maa omandik...]",
+      "rdfs:label": {
+        "@value": "§ 4. [(1) Käesoleva seaduse õigustatud subjektide kindlaksmääramine ning maa omandiks...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse õigustatud subjektide kindlaksmääramine ning maa omandiks andmine ja kompenseerimine toimub omandireformi aluste seaduse (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253; 1993, 15, 254) II osas ja maareformi seaduse (RT 1991, 34, 462; 1992, 10, 145; RT I 1993, 20, 354) II osas ning nendest seadustest tulenevates muudes õigusaktides sätestatud korras ja tingimustel, kuivõrd käesolev seadus ei sätesta teisiti.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse õigustatud subjektide kindlaksmääramine ning maa omandiks andmine ja kompenseerimine toimub omandireformi aluste seaduse (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253; 1993, 15, 254) II osas ja maareformi seaduse (RT 1991, 34, 462; 1992, 10, 145; RT I 1993, 20, 354) II osas ning nendest seadustest tulenevates muudes õigusaktides sätestatud korras ja tingimustel, kuivõrd käesolev seadus ei sätesta teisiti.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse õigustatud subjektide kindlaksmääramine ning maa omandiks andmine ja kompenseerimine toimub omandireformi aluste seaduse (RT 1991, 21, 257; 1991, 45, 565; 1992, 19, 275; 1992, 33, 420; 1993, 15, 253; 1993, 15, 254) II osas ja maareformi seaduse (RT 1991, 34, 462; 1992, 10, 145; RT I 1993, 20, 354) II osas ning nendest seadustest tulenevates muudes õigusaktides sätestatud korras ja tingimustel, kuivõrd käesolev seadus ei sätesta teisiti. (2) Kui endise kruntrendimaa (obrokimaa) pidaja on surnud ning õigustatud subjekte on mitu, kohaldatakse maareformi seaduse § 14 sätteid. (3) Käesoleva seaduse § 3 1. lõikes tähendatud pärijad määratakse kindlaks maareformi seaduse § 5 1. lõike punkti 2 sätete kohaselt. Neile käesoleva seaduse alusel omandisse antaval maal asuvate ning endise kruntrendimaa (obrokimaa) pidajale kuuluvate hoonete ja rajatiste tagastamisel kohaldatakse endiste omanike õdedele ja vendadele või nende alanejatele sugulastele endise omaniku maal asuvate endise omaniku hoonete ja rajatiste tagastamise seaduse (RT 1993, 5, 77) sätteid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"
@@ -428,12 +482,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [1 (1) Avaldused käesoleva seaduse alusel maa omandisse andmiseks või kompenseeri...]",
+      "rdfs:label": {
+        "@value": "§ 5. [(1) Avaldused käesoleva seaduse alusel maa omandisse andmiseks või kompenseerimi...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "(1) Avaldused käesoleva seaduse alusel maa omandisse andmiseks või kompenseerimiseks tuleb esitada maa asukohajärgsele õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise linna- või maakonnakomisjonile kahe kuu jooksul käesoleva seaduse jõustumise päevast arvates, kui need juba varem pole esitatud. (2) Kui enne käesoleva seaduse vastuvõtmist esitatud kruntrendimaa (obrokimaa) tagastamise ja kompenseerimise avaldused on juba õigusvastaselt võõrandatud vara tagastamise ja",
+      "estleg:summary": {
+        "@value": "(1) Avaldused käesoleva seaduse alusel maa omandisse andmiseks või kompenseerimiseks tuleb esitada maa asukohajärgsele õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise linna- või maakonnakomisjonile kahe kuu jooksul käesoleva seaduse jõustumise päevast arvates, kui need juba varem pole esitatud. (2) Kui enne käesoleva seaduse vastuvõtmist esitatud kruntrendimaa (obrokimaa) tagastamise ja kompenseerimise avaldused on juba õigusvastaselt võõrandatud vara tagastamise ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Avaldused käesoleva seaduse alusel maa omandisse andmiseks või kompenseerimiseks tuleb esitada maa asukohajärgsele õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise linna- või maakonnakomisjonile kahe kuu jooksul käesoleva seaduse jõustumise päevast arvates, kui need juba varem pole esitatud. (2) Kui enne käesoleva seaduse vastuvõtmist esitatud kruntrendimaa (obrokimaa) tagastamise ja kompenseerimise avaldused on juba õigusvastaselt võõrandatud vara tagastamise ja kompenseerimise kohalike komisjonide poolt läbi vaadatud ja rahuldamata jäetud, tuleb need uuesti läbi vaadata ja lahendada käesoleva seaduse sätete kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"
@@ -511,12 +571,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamiseks määrusi.]",
+      "rdfs:label": {
+        "@value": "§ 6. [Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamiseks määrusi.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamiseks määrusi.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamiseks määrusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Valitsusel on õigus anda käesoleva seaduse rakendamiseks määrusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"
@@ -563,12 +629,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. [[Käesolevast tekstist välja jäetud]]",
+      "rdfs:label": {
+        "@value": "§ 7. [[Käesolevast tekstist välja jäetud]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"
@@ -586,12 +658,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. [Käesolev seadus jõustub Riigi Teatajas avaldamise päeval.]",
+      "rdfs:label": {
+        "@value": "§ 8. [Käesolev seadus jõustub Riigi Teatajas avaldamise päeval.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Endise kruntrendimaa (obrokimaa) omandisse andmise ja kompenseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:OAKS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamise päeval.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub Riigi Teatajas avaldamise päeval.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamise päeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_OAKS_default"

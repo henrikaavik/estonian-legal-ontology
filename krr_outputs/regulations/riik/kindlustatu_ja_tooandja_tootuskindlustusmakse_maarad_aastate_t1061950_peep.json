@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kindlustatu ja tööandja töötuskindlustusmakse määrad aastatel 2026–2029 (määrus)",
+      "rdfs:label": {
+        "@value": "Kindlustatu ja tööandja töötuskindlustusmakse määrad aastatel 2026–2029 (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kindlustatu ja tööandja töötuskindlustusmakse määrad aastatel 2026–2029",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -37,14 +44,9 @@
         "@type": "xsd:date"
       },
       "estleg:repealDate": {
-        "@value": "2029-12-31",
+        "@value": "2026-12-31",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2025-09-30",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -79,7 +81,13 @@
         {
           "@id": "http://eurovoc.europa.eu/3151"
         }
-      ]
+      ],
+      "dcterms:title": "Kindlustatu ja tööandja töötuskindlustusmakse määrad aastatel 2026–2029",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1061950_Par_1",
@@ -88,13 +96,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Töötuskindlustusmakse määr",
+      "rdfs:label": {
+        "@value": "§ 1. Töötuskindlustusmakse määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kindlustatu ja tööandja töötuskindlustusmakse määrad aastatel 2026–2029",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061950_Map"
       },
-      "estleg:summary": "1 (1) Kindlustatu töötuskindlustusmakse määr aastatel 2026–2029 on 1,6 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. Kindlustatu töötuskindlustusmakse määr aastatel 2026–2029 on 1,6 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. 2 (2) Tööandja töötuskindlustusmakse määr aastatel 2026–2029 on 0,8 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. Tööandja töötuskindlustusmakse määr aastatel 2026–2029 on 0,8 protsenti töötuskindlustuse seaduse §-s 40",
-      "estleg:legalText": "1 (1) Kindlustatu töötuskindlustusmakse määr aastatel 2026–2029 on 1,6 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. Kindlustatu töötuskindlustusmakse määr aastatel 2026–2029 on 1,6 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. 2 (2) Tööandja töötuskindlustusmakse määr aastatel 2026–2029 on 0,8 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. Tööandja töötuskindlustusmakse määr aastatel 2026–2029 on 0,8 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt.",
+      "estleg:summary": {
+        "@value": "1 (1) Kindlustatu töötuskindlustusmakse määr aastatel 2026–2029 on 1,6 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. 2 (2) Tööandja töötuskindlustusmakse määr aastatel 2026–2029 on 0,8 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kindlustatu töötuskindlustusmakse määr aastatel 2026–2029 on 1,6 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt. 2 (2) Tööandja töötuskindlustusmakse määr aastatel 2026–2029 on 0,8 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -118,7 +132,41 @@
         {
           "@id": "estleg:Reg_1061950_Par_1_v1061950"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061950_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1061950_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1061950_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kindlustatu töötuskindlustusmakse määr aastatel 2026–2029 on 1,6 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061950_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1061950_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tööandja töötuskindlustusmakse määr aastatel 2026–2029 on 0,8 protsenti töötuskindlustuse seaduse §-s 40 nimetatud summadelt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061950_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1061950_Par_2",
@@ -127,13 +175,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Rakendussätted",
+      "rdfs:label": {
+        "@value": "§ 2. Rakendussätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kindlustatu ja tööandja töötuskindlustusmakse määrad aastatel 2026–2029",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061950_Map"
       },
-      "estleg:summary": "1 (1) Vabariigi Valitsuse 19. septembri 2024. a määrus nr 59 „Kindlustatu ja tööandaja töötuskindlustusmakse määrad aastatel 2025–2028“ tunnistatakse kehtetuks. Vabariigi Valitsuse 19. septembri 2024. a määrus nr 59 „Kindlustatu ja tööandaja töötuskindlustusmakse määrad aastatel 2025–2028“ tunnistatakse kehtetuks. 2 (2) Määrus jõustub 1. jaanuaril 2026. a. Määrus jõustub 1. jaanuaril 2026. a.",
-      "estleg:legalText": "1 (1) Vabariigi Valitsuse 19. septembri 2024. a määrus nr 59 „Kindlustatu ja tööandaja töötuskindlustusmakse määrad aastatel 2025–2028“ tunnistatakse kehtetuks. Vabariigi Valitsuse 19. septembri 2024. a määrus nr 59 „Kindlustatu ja tööandaja töötuskindlustusmakse määrad aastatel 2025–2028“ tunnistatakse kehtetuks. 2 (2) Määrus jõustub 1. jaanuaril 2026. a. Määrus jõustub 1. jaanuaril 2026. a.",
+      "estleg:summary": {
+        "@value": "1 (1) Vabariigi Valitsuse 19. septembri 2024. a määrus nr 59 „Kindlustatu ja tööandaja töötuskindlustusmakse määrad aastatel 2025–2028“ tunnistatakse kehtetuks. 2 (2) Määrus jõustub 1. jaanuaril 2026. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Vabariigi Valitsuse 19. septembri 2024. a määrus nr 59 „Kindlustatu ja tööandaja töötuskindlustusmakse määrad aastatel 2025–2028“ tunnistatakse kehtetuks. 2 (2) Määrus jõustub 1. jaanuaril 2026. a.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -152,6 +206,14 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061950_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1061950_Par_2_Lg_2"
+        }
       ]
     },
     {
@@ -165,6 +227,32 @@
       },
       "estleg:citationDetail": "lg 4",
       "estleg:citationText": "Määrus kehtestatakse töötuskindlustuse seaduse § 41 lõike 4"
+    },
+    {
+      "@id": "estleg:Reg_1061950_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsuse 19. septembri 2024. a määrus nr 59 „Kindlustatu ja tööandaja töötuskindlustusmakse määrad aastatel 2025–2028“ tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061950_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1061950_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Määrus jõustub 1. jaanuaril 2026. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061950_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     }
   ]
 }

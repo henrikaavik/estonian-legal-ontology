@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm (määrus)",
+      "rdfs:label": {
+        "@value": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -35,11 +42,6 @@
         "@value": "2007-01-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2006-12-28",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -73,7 +75,13 @@
         {
           "@id": "estleg:Institution_valisminister"
         }
-      ]
+      ],
+      "dcterms:title": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_308968_Par_1",
@@ -82,13 +90,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_308968_Map"
       },
-      "estleg:summary": "1(1)Määrus reguleerib kinnisomandi ja kinnisasja valduse üleandmist kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse andmise teel (edaspidi kinnisasja üleandmine) välisriigi või rahvusvahelise organisatsiooni esindusele (edaspidi välisriigiesindus). Määrus reguleerib kinnisomandi ja kinnisasja valduse üleandmist kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõigu",
-      "estleg:legalText": "1(1)Määrus reguleerib kinnisomandi ja kinnisasja valduse üleandmist kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse andmise teel (edaspidi kinnisasja üleandmine) välisriigi või rahvusvahelise organisatsiooni esindusele (edaspidi välisriigiesindus). Määrus reguleerib kinnisomandi ja kinnisasja valduse üleandmist kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse andmise teel (edaspidi kinnisasja üleandmine) välisriigi või rahvusvahelise organisatsiooni esindusele (edaspidi välisriigiesindus). 2(2)Välisriigi esindusele üleantavaks kinnisasjaks käesoleva määruse tähenduses on Eesti Vabariigi territooriumil asuv maa ning hooned, hooneosad või rajatised ja nende juurde kuuluv maa, mida välisriigi esindus hakkab kasutama esinduse vajadusteks, sealhulgas esinduse juhi residentsina. Välisriigi esindusele üleantavaks kinnisasjaks käesoleva määruse tähenduses on Eesti Vabariigi territooriumil asuv maa ning hooned, hooneosad või rajatised ja nende juurde kuuluv maa, mida välisriigi esindus hakkab kasutama esinduse vajadusteks, sealhulgas esinduse juhi residentsina. 3(3)Kinnisasja üleandjaks on selle omanik või tema volitatud esindaja. Kinnisasja üleandjaks on selle omanik või tema volitatud esindaja. 4(4)Määrust ei kohaldata:11)Välisministeeriumi valitsemisel oleva kinnisasja üleandmisel välisriigi esindusele;22)kui välislepingus on sätestatud teisiti. Määrust ei kohaldata: Välisministeeriumi valitsemisel oleva kinnisasja üleandmisel välisriigi esindusele; kui välislepingus on sätestatud teisiti.",
+      "estleg:summary": {
+        "@value": "1(1)Määrus reguleerib kinnisomandi ja kinnisasja valduse üleandmist kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse andmise teel (edaspidi kinnisasja üleandmine) välisriigi või rahvusvahelise organisatsiooni esindusele (edaspidi välisriigiesindus). 2(2)Välisriigi esindusele üleantavaks kinnisasjaks käesoleva määruse tähenduses on Eesti Vabariigi territooriumil asuv maa ning hooned, hooneosad või rajatised…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Määrus reguleerib kinnisomandi ja kinnisasja valduse üleandmist kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse andmise teel (edaspidi kinnisasja üleandmine) välisriigi või rahvusvahelise organisatsiooni esindusele (edaspidi välisriigiesindus). 2(2)Välisriigi esindusele üleantavaks kinnisasjaks käesoleva määruse tähenduses on Eesti Vabariigi territooriumil asuv maa ning hooned, hooneosad või rajatised ja nende juurde kuuluv maa, mida välisriigi esindus hakkab kasutama esinduse vajadusteks, sealhulgas esinduse juhi residentsina. 3(3)Kinnisasja üleandjaks on selle omanik või tema volitatud esindaja. 4(4)Määrust ei kohaldata:11)Välisministeeriumi valitsemisel oleva kinnisasja üleandmisel välisriigi esindusele;22)kui välislepingus on sätestatud teisiti.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -107,6 +121,76 @@
         {
           "@id": "estleg:Institution_valisministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_308968_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_1_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus reguleerib kinnisomandi ja kinnisasja valduse üleandmist kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse andmise teel (edaspidi kinnisasja üleandmine) välisriigi või rahvusvahelise organisatsiooni esindusele (edaspidi välisriigiesindus).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Välisriigi esindusele üleantavaks kinnisasjaks käesoleva määruse tähenduses on Eesti Vabariigi territooriumil asuv maa ning hooned, hooneosad või rajatised ja nende juurde kuuluv maa, mida välisriigi esindus hakkab kasutama esinduse vajadusteks, sealhulgas esinduse juhi residentsina.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kinnisasja üleandjaks on selle omanik või tema volitatud esindaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Määrust ei kohaldata: 1) Välisministeeriumi valitsemisel oleva kinnisasja üleandmisel välisriigi esindusele; 2) kui välislepingus on sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -116,13 +200,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Välisriigi esinduse teavitamiskohustus",
+      "rdfs:label": {
+        "@value": "§ 2. Välisriigi esinduse teavitamiskohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_308968_Map"
       },
-      "estleg:summary": "Välisriigi esindus teavitab Välisministeeriumi kirjalikult kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse võtmise kavatsusest ning kinnisasja asukohast ja üleandjast.",
-      "estleg:legalText": "Välisriigi esindus teavitab Välisministeeriumi kirjalikult kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse võtmise kavatsusest ning kinnisasja asukohast ja üleandjast. Välisriigi esindus teavitab Välisministeeriumi kirjalikult kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse võtmise kavatsusest ning kinnisasja asukohast ja üleandjast.",
+      "estleg:summary": {
+        "@value": "Välisriigi esindus teavitab Välisministeeriumi kirjalikult kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse võtmise kavatsusest ning kinnisasja asukohast ja üleandjast.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Välisriigi esindus teavitab Välisministeeriumi kirjalikult kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse võtmise kavatsusest ning kinnisasja asukohast ja üleandjast.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_308968_Par_2_v308968"
@@ -132,7 +222,25 @@
         {
           "@id": "estleg:Institution_valisministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_308968_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Välisriigi esindus teavitab Välisministeeriumi kirjalikult kinnisasja, selle mõttelise osa või hoonestusõiguse omandamise, kasutusvalduse või hoonestusõiguse seadmise, üürimise või tasuta kasutusse võtmise kavatsusest ning kinnisasja asukohast ja üleandjast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_308968_Par_3",
@@ -141,13 +249,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kinnisasja üleandmise loa taotlemine",
+      "rdfs:label": {
+        "@value": "§ 3. Kinnisasja üleandmise loa taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_308968_Map"
       },
-      "estleg:summary": "1(1)Välisministeerium teavitab pärast §-s 2 nimetatud teabe saamist välisriigi esindust ja kinnisasja üleandjat kirjalikult kinnisasja üleandmise loa taotlemise vajadusest. Välisministeerium teavitab pärast §-s 2 nimetatud teabe saamist välisriigi esindust ja kinnisasja üleandjat kirjalikult kinnisasja üleandmise loa taotlemise vajadusest. 2(2)Määruse lisas kehtestatud vormi kohase kinnisasja üleandmise loa taotluse esitab Välisministeeriumile kinnisasja üleandja. Määruse lisas kehtestatud vormi",
-      "estleg:legalText": "1(1)Välisministeerium teavitab pärast §-s 2 nimetatud teabe saamist välisriigi esindust ja kinnisasja üleandjat kirjalikult kinnisasja üleandmise loa taotlemise vajadusest. Välisministeerium teavitab pärast §-s 2 nimetatud teabe saamist välisriigi esindust ja kinnisasja üleandjat kirjalikult kinnisasja üleandmise loa taotlemise vajadusest. 2(2)Määruse lisas kehtestatud vormi kohase kinnisasja üleandmise loa taotluse esitab Välisministeeriumile kinnisasja üleandja. Määruse lisas kehtestatud vormi kohase kinnisasja üleandmise loa taotluse esitab Välisministeeriumile kinnisasja üleandja. 3(3)Välisministeerium vaatab kinnisasja üleandmise loa taotluse läbi 30 kalendripäeva jooksul alates taotluse registreerimise päevast. Taotluse läbivaatamise käigus esitab Välisministeerium vajaduse korral asjakohase päringu kinnisasja asukohajärgsele valla- või linnavalitsusele seisukoha võtmiseks. Välisministeerium vaatab kinnisasja üleandmise loa taotluse läbi 30 kalendripäeva jooksul alates taotluse registreerimise päevast. Taotluse läbivaatamise käigus esitab Välisministeerium vajaduse korral asjakohase päringu kinnisasja asukohajärgsele valla- või linnavalitsusele seisukoha võtmiseks. 4(4)Kinnisasja üleandmise loa taotluse vorm avaldatakse Välisministeeriumi veebilehel. Kinnisasja üleandmise loa taotluse vorm avaldatakse Välisministeeriumi veebilehel.",
+      "estleg:summary": {
+        "@value": "1(1)Välisministeerium teavitab pärast §-s 2 nimetatud teabe saamist välisriigi esindust ja kinnisasja üleandjat kirjalikult kinnisasja üleandmise loa taotlemise vajadusest. 2(2)Määruse lisas kehtestatud vormi kohase kinnisasja üleandmise loa taotluse esitab Välisministeeriumile kinnisasja üleandja. 3(3)Välisministeerium vaatab kinnisasja üleandmise loa taotluse läbi 30 kalendripäeva jooksul alates taotluse registreerimise päevast.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Välisministeerium teavitab pärast §-s 2 nimetatud teabe saamist välisriigi esindust ja kinnisasja üleandjat kirjalikult kinnisasja üleandmise loa taotlemise vajadusest. 2(2)Määruse lisas kehtestatud vormi kohase kinnisasja üleandmise loa taotluse esitab Välisministeeriumile kinnisasja üleandja. 3(3)Välisministeerium vaatab kinnisasja üleandmise loa taotluse läbi 30 kalendripäeva jooksul alates taotluse registreerimise päevast. Taotluse läbivaatamise käigus esitab Välisministeerium vajaduse korral asjakohase päringu kinnisasja asukohajärgsele valla- või linnavalitsusele seisukoha võtmiseks. 4(4)Kinnisasja üleandmise loa taotluse vorm avaldatakse Välisministeeriumi veebilehel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -167,7 +281,73 @@
           "@id": "estleg:Institution_valisministeerium"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_308968_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_3_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Välisministeerium teavitab pärast §-s 2 nimetatud teabe saamist välisriigi esindust ja kinnisasja üleandjat kirjalikult kinnisasja üleandmise loa taotlemise vajadusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Määruse lisas kehtestatud vormi kohase kinnisasja üleandmise loa taotluse esitab Välisministeeriumile kinnisasja üleandja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Välisministeerium vaatab kinnisasja üleandmise loa taotluse läbi 30 kalendripäeva jooksul alates taotluse registreerimise päevast. Taotluse läbivaatamise käigus esitab Välisministeerium vajaduse korral asjakohase päringu kinnisasja asukohajärgsele valla- või linnavalitsusele seisukoha võtmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kinnisasja üleandmise loa taotluse vorm avaldatakse Välisministeeriumi veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
     },
     {
       "@id": "estleg:Reg_308968_Par_4",
@@ -176,13 +356,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kinnisasja üleandmise loa andmine",
+      "rdfs:label": {
+        "@value": "§ 4. Kinnisasja üleandmise loa andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_308968_Map"
       },
-      "estleg:summary": "1(1)Luba välisriigi esindusele kinnisasja üleandmiseks antakse haldusmenetluse korras, välisministri käskkirjaga. Luba välisriigi esindusele kinnisasja üleandmiseks antakse haldusmenetluse korras, välisministri käskkirjaga. 2(2)Kinnisasja välisriigi esindusele üleandmise loa andmisel arvestatakse «Kinnisasja omandamise kitsendamise seaduse» § 3 lõikes 1 sätestatud riigikaitselisi kitsendusi. Kinnisasja välisriigi esindusele üleandmise loa andmisel arvestatakse «Kinnisasja omandamise kitsendamise",
-      "estleg:legalText": "1(1)Luba välisriigi esindusele kinnisasja üleandmiseks antakse haldusmenetluse korras, välisministri käskkirjaga. Luba välisriigi esindusele kinnisasja üleandmiseks antakse haldusmenetluse korras, välisministri käskkirjaga. 2(2)Kinnisasja välisriigi esindusele üleandmise loa andmisel arvestatakse «Kinnisasja omandamise kitsendamise seaduse» § 3 lõikes 1 sätestatud riigikaitselisi kitsendusi. Kinnisasja välisriigi esindusele üleandmise loa andmisel arvestatakse «Kinnisasja omandamise kitsendamise seaduse» § 3 lõikes 1 sätestatud riigikaitselisi kitsendusi. 3(3)Välisminister võib kinnisasja üleandmise loa andmisest keelduda, kui see:11)võib ohustada riigi julgeolekut;22)on vastuolus rahvusvahelise tavast tuleneva vastastikkuse põhimõttega;33)võib sattuda vastuollu avaliku huviga. Välisminister võib kinnisasja üleandmise loa andmisest keelduda, kui see: võib ohustada riigi julgeolekut; on vastuolus rahvusvahelise tavast tuleneva vastastikkuse põhimõttega; võib sattuda vastuollu avaliku huviga. 4(4)Välisministeerium teavitab välisriigi esindust kirjalikult kinnisasjaüleandjale antud loast või loa andmisest keeldumisest 5 tööpäeva jooksul pärast loa andmist või selle andmisest keeldumist. Välisministeerium teavitab välisriigi esindust kirjalikult kinnisasjaüleandjale antud loast või loa andmisest keeldumisest 5 tööpäeva jooksul pärast loa andmist või selle andmisest keeldumist.",
+      "estleg:summary": {
+        "@value": "1(1)Luba välisriigi esindusele kinnisasja üleandmiseks antakse haldusmenetluse korras, välisministri käskkirjaga. 2(2)Kinnisasja välisriigi esindusele üleandmise loa andmisel arvestatakse «Kinnisasja omandamise kitsendamise seaduse» § 3 lõikes 1 sätestatud riigikaitselisi kitsendusi. 3(3)Välisminister võib kinnisasja üleandmise loa andmisest keelduda, kui see:11)võib ohustada riigi julgeolekut;22)on vastuolus rahvusvahelise tavast tuleneva vastastikkuse põhimõttega;33)võib sattuda vastuollu…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Luba välisriigi esindusele kinnisasja üleandmiseks antakse haldusmenetluse korras, välisministri käskkirjaga. 2(2)Kinnisasja välisriigi esindusele üleandmise loa andmisel arvestatakse «Kinnisasja omandamise kitsendamise seaduse» § 3 lõikes 1 sätestatud riigikaitselisi kitsendusi. 3(3)Välisminister võib kinnisasja üleandmise loa andmisest keelduda, kui see:11)võib ohustada riigi julgeolekut;22)on vastuolus rahvusvahelise tavast tuleneva vastastikkuse põhimõttega;33)võib sattuda vastuollu avaliku huviga. 4(4)Välisministeerium teavitab välisriigi esindust kirjalikult kinnisasjaüleandjale antud loast või loa andmisest keeldumisest 5 tööpäeva jooksul pärast loa andmist või selle andmisest keeldumist.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_308968_Par_4_v308968"
@@ -198,7 +384,78 @@
         {
           "@id": "estleg:Institution_valisministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_308968_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_308968_Par_4_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Luba välisriigi esindusele kinnisasja üleandmiseks antakse haldusmenetluse korras, välisministri käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kinnisasja välisriigi esindusele üleandmise loa andmisel arvestatakse «Kinnisasja omandamise kitsendamise seaduse» § 3 lõikes 1 sätestatud riigikaitselisi kitsendusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Välisminister võib kinnisasja üleandmise loa andmisest keelduda, kui see: 1) võib ohustada riigi julgeolekut; 2) on vastuolus rahvusvahelise tavast tuleneva vastastikkuse põhimõttega; 3) võib sattuda vastuollu avaliku huviga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Välisministeerium teavitab välisriigi esindust kirjalikult kinnisasjaüleandjale antud loast või loa andmisest keeldumisest 5 tööpäeva jooksul pärast loa andmist või selle andmisest keeldumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
     },
     {
       "@id": "estleg:Reg_308968_Par_5",
@@ -207,13 +464,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 5. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_308968_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2007. a.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Urmas PAET</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Matti MAASIKAS</b></font> </td> </tr> </tbody></table><table summary=\"seotud dokument\" width=\"100%\"> <tb",
-      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2007. a.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Urmas PAET</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Matti MAASIKAS</b></font> </td> </tr> </tbody></table><table summary=\"seotud dokument\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td align=\"middle\" width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\">Välisministri 20. detsembri 2006. a määruse nr 13 «Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm»</font><br/><font size=\"-1\" style=\"font-size:-1px\">lisa</font> </td> </tr> </tbody></table>Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise loa taotlusFüüsilisest isikust taotleja:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> ees- ja perekonnanimi ______________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> isikukood/sünniaeg ________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> postiaadress _____________________________________________________________ </td> </tr> </tbody></table>Juriidilisest isikust taotleja:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> asukoha aadress __________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> registrikood _____________________________________________________________ </td> </tr> </tbody></table>Taotlen välisriigi / rahvusvahelise organisatsiooni esindusele kinnisasja üleandmise luba, millega seoses teatan järgmised andmed:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Välisriigi / rahvusvahelise organisatsiooni nimetus ja asukoht _________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja asukoht ja nimi (kui on olemas) _____________________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja omaniku nimi ja aadress ___________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja suurus (m²/ha) ja katastritunnus ____________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja senine sihtotstarve _______________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnistul asuvad hooned ja rajatised ning nende sihtotstarve </td> </tr> <tr> <td> </td> <td valign=\"top\"> _______________________________________________________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja üleandmise liik: </td> </tr> </tbody></table><table width=\"394\"> <tbody><tr> <td> </td> <td valign=\"top\"> Kinnisasja omandamine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kinnisasja mõttelise osa omandamine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Hoonestusõiguse omandamine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kasutusvalduse seadmine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Hoonestusõiguse seadmine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kinnisasja üürimine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kinnisasja tasuta kasutusse andmine </td> <td valign=\"top\"> ____________ </td> </tr> </tbody></table>Taotleja esindaja isikuandmed:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> ees- ja perekonnanimi _____________________________________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> isikukood/sünniaeg ________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> postiaadress _____________________________________________________________ </td> </tr> </tbody></table><table> <tbody><tr> <td valign=\"top\"> Kuupäev: ________________ </td> <td valign=\"top\"> Taotleja / taotleja esindaja allkiri: _______________________ </td> </tr> </tbody></table><table> <tbody><tr> <td valign=\"top\"> Lisad: </td> <td valign=\"top\"> 1) väljavõte maaregistrist või väljatrükk elektroonilisest katastriüksuse plaanist; </td> </tr> <tr> <td> </td> <td valign=\"top\"> 2) väljavõte kinnistusraamatust või väljatrükk elektroonilisest kinnistusraamatust; </td> </tr> <tr> <td> </td> <td valign=\"top\"> 3) taotleja esindaja volikiri. </td> </tr> </tbody></table> Määrus jõustub 1. jaanuaril 2007. a. Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise loa taotlus Füüsilisest isikust taotleja: Juriidilisest isikust taotleja: Taotlen välisriigi / rahvusvahelise organisatsiooni esindusele kinnisasja üleandmise luba, millega seoses teatan järgmised andmed: Taotleja esindaja isikuandmed:",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2007. a.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Urmas PAET</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Matti MAASIKAS</b></font> </td> </tr> </tbody></table><table summary=\"seotud dokument\" width=\"100%\">…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2007. a.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Minister Urmas PAET</b></font> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Kantsler Matti MAASIKAS</b></font> </td> </tr> </tbody></table><table summary=\"seotud dokument\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td align=\"middle\" width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\">Välisministri 20. detsembri 2006. a määruse nr 13 «Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise tingimused ja kord ning taotluse vorm»</font><br/><font size=\"-1\" style=\"font-size:-1px\">lisa</font> </td> </tr> </tbody></table>Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise loa taotlusFüüsilisest isikust taotleja:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> ees- ja perekonnanimi ______________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> isikukood/sünniaeg ________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> postiaadress _____________________________________________________________ </td> </tr> </tbody></table>Juriidilisest isikust taotleja:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> asukoha aadress __________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> registrikood _____________________________________________________________ </td> </tr> </tbody></table>Taotlen välisriigi / rahvusvahelise organisatsiooni esindusele kinnisasja üleandmise luba, millega seoses teatan järgmised andmed:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Välisriigi / rahvusvahelise organisatsiooni nimetus ja asukoht _________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja asukoht ja nimi (kui on olemas) _____________________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja omaniku nimi ja aadress ___________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja suurus (m<sup>2</sup>/ha) ja katastritunnus ____________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja senine sihtotstarve _______________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnistul asuvad hooned ja rajatised ning nende sihtotstarve </td> </tr> <tr> <td> </td> <td valign=\"top\"> _______________________________________________________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> Kinnisasja üleandmise liik: </td> </tr> </tbody></table><table width=\"394\"> <tbody><tr> <td> </td> <td valign=\"top\"> Kinnisasja omandamine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kinnisasja mõttelise osa omandamine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Hoonestusõiguse omandamine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kasutusvalduse seadmine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Hoonestusõiguse seadmine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kinnisasja üürimine </td> <td valign=\"top\"> ____________ </td> </tr> <tr> <td> </td> <td valign=\"top\"> Kinnisasja tasuta kasutusse andmine </td> <td valign=\"top\"> ____________ </td> </tr> </tbody></table>Taotleja esindaja isikuandmed:<table width=\"600\"> <tbody><tr> <td valign=\"top\"> – </td> <td valign=\"top\"> ees- ja perekonnanimi _____________________________________________________<br/>_______________________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> isikukood/sünniaeg ________________________________________________________ </td> </tr> <tr> <td valign=\"top\"> – </td> <td valign=\"top\"> postiaadress _____________________________________________________________ </td> </tr> </tbody></table><table> <tbody><tr> <td valign=\"top\"> Kuupäev: ________________ </td> <td valign=\"top\"> Taotleja / taotleja esindaja allkiri: _______________________ </td> </tr> </tbody></table><table> <tbody><tr> <td valign=\"top\"> Lisad: </td> <td valign=\"top\"> 1) väljavõte maaregistrist või väljatrükk elektroonilisest katastriüksuse plaanist; </td> </tr> <tr> <td> </td> <td valign=\"top\"> 2) väljavõte kinnistusraamatust või väljatrükk elektroonilisest kinnistusraamatust; </td> </tr> <tr> <td> </td> <td valign=\"top\"> 3) taotleja esindaja volikiri. </td> </tr> </tbody></table>",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -235,7 +498,25 @@
         {
           "@id": "estleg:Institution_valisminister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_308968_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_308968_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. jaanuaril 2007. a. Välisriigi või rahvusvahelise organisatsiooni esindusele kinnisomandi ja kinnisasja valduse üleandmise loa taotlus Füüsilisest isikust taotleja: Juriidilisest isikust taotleja: Taotlen välisriigi / rahvusvahelise organisatsiooni esindusele kinnisasja üleandmise luba, millega seoses teatan järgmised andmed: Taotleja esindaja isikuandmed:",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_308968_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     }
   ]
 }

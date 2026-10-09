@@ -43,6 +43,7 @@ Documentation checked against `main` at `0cb9ac91bc` on **2026-09-07**:
 | Governance, security reporting, release notes | [GOVERNANCE.md](../GOVERNANCE.md), [SECURITY.md](../SECURITY.md), [RELEASE_NOTES.md](RELEASE_NOTES.md) |
 | Amendment chains and release deltas (#713) | [AMENDMENT_HISTORY.md](AMENDMENT_HISTORY.md) |
 | Legal-reasoning benchmark (#727) | [BENCHMARK.md](BENCHMARK.md) |
+| How often a heuristic layer is wrong: gold sets, accuracy floors, fitness report (#698) | [eval/README.md](../eval/README.md), [FITNESS_REPORT.md](../eval/FITNESS_REPORT.md) |
 | Proposed ADR: Sätla reference-resolution service (#725) | [proposals/2026-10-satla-reference-resolution.md](proposals/2026-10-satla-reference-resolution.md) |
 | Proposed ADR: provision-level draft impact and HÕNTE impact areas (#724) | [proposals/2026-10-draft-provision-impact.md](proposals/2026-10-draft-provision-impact.md) |
 

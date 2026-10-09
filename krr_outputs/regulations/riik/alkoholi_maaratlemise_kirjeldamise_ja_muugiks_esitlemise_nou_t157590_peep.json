@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "157590",
       "estleg:preambleText": "Määrus kehtestatakse alkoholiseaduse § 4 lõike 2 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2004-05-01",
+        "@value": "2024-08-06",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2024-08-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2024-08-03",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_157590_51024f90fe"
@@ -97,7 +99,13 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "dcterms:title": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_157590_Par_1",
@@ -106,18 +114,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse määratlemise, kirjeldamise ja müügiks esitlemise nõuded käideldavatele alkohoolsetele jookidele, mille kohta ei ole nimetatud nõuded kehtestatud Euroopa Liidu asjakohastes määrustes. RT I 2017-09-20 8 120092017008 2017-09-23",
-      "estleg:legalText": "Määrusega kehtestatakse määratlemise, kirjeldamise ja müügiks esitlemise nõuded käideldavatele alkohoolsetele jookidele, mille kohta ei ole nimetatud nõuded kehtestatud Euroopa Liidu asjakohastes määrustes. RT I 2017-09-20 8 120092017008 2017-09-23 Määrusega kehtestatakse määratlemise, kirjeldamise ja müügiks esitlemise nõuded käideldavatele alkohoolsetele jookidele, mille kohta ei ole nimetatud nõuded kehtestatud Euroopa Liidu asjakohastes määrustes.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse määratlemise, kirjeldamise ja müügiks esitlemise nõuded käideldavatele alkohoolsetele jookidele, mille kohta ei ole nimetatud nõuded kehtestatud Euroopa Liidu asjakohastes määrustes. RT I 2017-09-20 8 120092017008 2017-09-23",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse määratlemise, kirjeldamise ja müügiks esitlemise nõuded käideldavatele alkohoolsetele jookidele, mille kohta ei ole nimetatud nõuded kehtestatud Euroopa Liidu asjakohastes määrustes. RT I 2017-09-20 8 120092017008 2017-09-23",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_157590_Par_1_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse määratlemise, kirjeldamise ja müügiks esitlemise nõuded käideldavatele alkohoolsetele jookidele, mille kohta ei ole nimetatud nõuded kehtestatud Euroopa Liidu asjakohastes määrustes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_157590_Par_2",
@@ -126,12 +158,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Alkoholi etanoolisisaldus",
+      "rdfs:label": {
+        "@value": "§ 2. Alkoholi etanoolisisaldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
@@ -146,12 +184,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Nõuded alkohoolse joogi tarbijapakendile",
+      "rdfs:label": {
+        "@value": "§ 3. Nõuded alkohoolse joogi tarbijapakendile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:targetGroup": [
         {
@@ -175,13 +219,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kesknärvisüsteemi mittespetsiifiliste stimulaatoritena toimivate ainete kasutamise keeld",
+      "rdfs:label": {
+        "@value": "§ 4. Kesknärvisüsteemi mittespetsiifiliste stimulaatoritena toimivate ainete kasutamise keeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Tauriini ja guaraana kasutamine alkohoolsete jookide koostises on keelatud. RT I 2017-09-20 8 120092017008 2017-09-23",
-      "estleg:legalText": "Tauriini ja guaraana kasutamine alkohoolsete jookide koostises on keelatud. RT I 2017-09-20 8 120092017008 2017-09-23 Tauriini ja guaraana kasutamine alkohoolsete jookide koostises on keelatud.",
+      "estleg:summary": {
+        "@value": "Tauriini ja guaraana kasutamine alkohoolsete jookide koostises on keelatud. RT I 2017-09-20 8 120092017008 2017-09-23",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tauriini ja guaraana kasutamine alkohoolsete jookide koostises on keelatud. RT I 2017-09-20 8 120092017008 2017-09-23",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -193,7 +243,25 @@
         {
           "@id": "estleg:Reg_157590_Par_4_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tauriini ja guaraana kasutamine alkohoolsete jookide koostises on keelatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_157590_Par_5",
@@ -202,18 +270,170 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Puuvilja- ja marjavein",
+      "rdfs:label": {
+        "@value": "§ 5. Puuvilja- ja marjavein",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Puuvilja- ja marjavein (edaspidi puuviljavein) on kääritamise teel saadud alkohoolne jook, mis on valmistatud marjade, puuviljade või muust taimse materjali mahlast, kontsentreeritud mahlast, tõmmismahlast või püreest. RT I 2017-09-20 8 120092017008 2017-09-23 Puuvilja- ja marjavein (edaspidi puuviljavein) on kääritamise teel saadud alkohoolne jook, mis on valmistatud marjade, puuviljade või muust taimse materjali mahlast, kontsentreeritud mahlast, tõmmismahlast või püreest. 2 (2) Puuvilja",
-      "estleg:legalText": "1 (1) Puuvilja- ja marjavein (edaspidi puuviljavein) on kääritamise teel saadud alkohoolne jook, mis on valmistatud marjade, puuviljade või muust taimse materjali mahlast, kontsentreeritud mahlast, tõmmismahlast või püreest. RT I 2017-09-20 8 120092017008 2017-09-23 Puuvilja- ja marjavein (edaspidi puuviljavein) on kääritamise teel saadud alkohoolne jook, mis on valmistatud marjade, puuviljade või muust taimse materjali mahlast, kontsentreeritud mahlast, tõmmismahlast või püreest. 2 (2) Puuviljavahuvein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 3 baari. Puuviljavahuvein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 3 baari. 3 (3) Vahutav puuviljavein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud või lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 1–3 (kaasa arvatud) baari. Vahutav puuviljavein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud või lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 1–3 (kaasa arvatud) baari. 4 (4) Gaseeritud puuviljavein on puuviljavein, mis sisaldab lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu üle 3 baari. Gaseeritud puuviljavein on puuviljavein, mis sisaldab lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu üle 3 baari. 5 (5) Aromatiseeritud puuviljavein on puuviljavein, mille organoleptilised omadused tulenevad valmistamisel kasutatud lõhna- ja maitseainetest. Aromatiseeritud puuviljavein on puuviljavein, mille organoleptilised omadused tulenevad valmistamisel kasutatud lõhna- ja maitseainetest. 6 (6) Kangendatud puuviljavein on puuviljavein, millele on lisatud põllumajandusliku päritoluga etanooli ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti. Kangendatud puuviljaveini etanoolisisaldusest vähemalt 4 mahuprotsenti peab olema tekkinud kääritamisel. Kangendatud puuviljavein on puuviljavein, millele on lisatud põllumajandusliku päritoluga etanooli ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti. Kangendatud puuviljaveini etanoolisisaldusest vähemalt 4 mahuprotsenti peab olema tekkinud kääritamisel. 6 (6¹) Puuviljaliköörvein on puuviljavein, millele on kangendamise eesmärgil lisatud üksnes puuvilja- ja marjaveinist valmistatud destillaati ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti. RT I 2017-09-20 8 120092017008 2017-09-23 Puuviljaliköörvein on puuviljavein, millele on kangendamise eesmärgil lisatud üksnes puuvilja- ja marjaveinist valmistatud destillaati ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti. 7 (7) Siider on alkohoolne jook, mis on valmistatud õunamahla või kontsentreeritud õunamahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Siidri valmistamisel võib lisada piiratud koguses pirnimahla, vett ja suhkrutooteid enne või pärast kääritamist ning värsket või kontsentreeritud õunamahla pärast kääritamist. Siider võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Siidri kangendamine destilleeritud alkoholiga ei ole lubatud. RT I 2017-09-20 8 120092017008 2017-09-23 Siider on alkohoolne jook, mis on valmistatud õunamahla või kontsentreeritud õunamahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Siidri valmistamisel võib lisada piiratud koguses pirnimahla, vett ja suhkrutooteid enne või pärast kääritamist ning värsket või kontsentreeritud õunamahla pärast kääritamist. Siider võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Siidri kangendamine destilleeritud alkoholiga ei ole lubatud. 8 (8) Perry on alkohoolne jook, mis on valmistatud pirnimahla või kontsentreeritud pirnimahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Perry valmistamisel võib lisada piiratud koguses õunamahla, vett ja suhkrutooteid enne või pärast kääritamist ja värsket või kontsentreeritud pirnimahla pärast kääritamist. Perry võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Perry kangendamine destilleeritud alkoholiga ei ole lubatud. RT I 2017-09-20 8 120092017008 2017-09-23 Perry on alkohoolne jook, mis on valmistatud pirnimahla või kontsentreeritud pirnimahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Perry valmistamisel võib lisada piiratud koguses õunamahla, vett ja suhkrutooteid enne või pärast kääritamist ja värsket või kontsentreeritud pirnimahla pärast kääritamist. Perry võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Perry kangendamine destilleeritud alkoholiga ei ole lubatud.",
+      "estleg:summary": {
+        "@value": "1 (1) Puuvilja- ja marjavein (edaspidi puuviljavein) on kääritamise teel saadud alkohoolne jook, mis on valmistatud marjade, puuviljade või muust taimse materjali mahlast, kontsentreeritud mahlast, tõmmismahlast või püreest. RT I 2017-09-20 8 120092017008 2017-09-23 2 (2) Puuviljavahuvein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 3 baari.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Puuvilja- ja marjavein (edaspidi puuviljavein) on kääritamise teel saadud alkohoolne jook, mis on valmistatud marjade, puuviljade või muust taimse materjali mahlast, kontsentreeritud mahlast, tõmmismahlast või püreest. RT I 2017-09-20 8 120092017008 2017-09-23 2 (2) Puuviljavahuvein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 3 baari. 3 (3) Vahutav puuviljavein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud või lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 1–3 (kaasa arvatud) baari. 4 (4) Gaseeritud puuviljavein on puuviljavein, mis sisaldab lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu üle 3 baari. 5 (5) Aromatiseeritud puuviljavein on puuviljavein, mille organoleptilised omadused tulenevad valmistamisel kasutatud lõhna- ja maitseainetest. 6 (6) Kangendatud puuviljavein on puuviljavein, millele on lisatud põllumajandusliku päritoluga etanooli ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti. Kangendatud puuviljaveini etanoolisisaldusest vähemalt 4 mahuprotsenti peab olema tekkinud kääritamisel. 6 (6<sup>1</sup>) Puuviljaliköörvein on puuviljavein, millele on kangendamise eesmärgil lisatud üksnes puuvilja- ja marjaveinist valmistatud destillaati ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti. RT I 2017-09-20 8 120092017008 2017-09-23 7 (7) Siider on alkohoolne jook, mis on valmistatud õunamahla või kontsentreeritud õunamahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Siidri valmistamisel võib lisada piiratud koguses pirnimahla, vett ja suhkrutooteid enne või pärast kääritamist ning värsket või kontsentreeritud õunamahla pärast kääritamist. Siider võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Siidri kangendamine destilleeritud alkoholiga ei ole lubatud. RT I 2017-09-20 8 120092017008 2017-09-23 8 (8) Perry on alkohoolne jook, mis on valmistatud pirnimahla või kontsentreeritud pirnimahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Perry valmistamisel võib lisada piiratud koguses õunamahla, vett ja suhkrutooteid enne või pärast kääritamist ja värsket või kontsentreeritud pirnimahla pärast kääritamist. Perry võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Perry kangendamine destilleeritud alkoholiga ei ole lubatud. RT I 2017-09-20 8 120092017008 2017-09-23",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_157590_Par_5_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_6_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_5_Lg_8"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Puuvilja- ja marjavein (edaspidi puuviljavein) on kääritamise teel saadud alkohoolne jook, mis on valmistatud marjade, puuviljade või muust taimse materjali mahlast, kontsentreeritud mahlast, tõmmismahlast või püreest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Puuviljavahuvein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 3 baari.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vahutav puuviljavein on puuviljavein, mis sisaldab veini teisesel kääritamisel tekkinud või lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu vähemalt 1–3 (kaasa arvatud) baari.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Gaseeritud puuviljavein on puuviljavein, mis sisaldab lisatud süsihappegaasi ja mille rõhk suletud mahutis temperatuuril 20 °C on joogis lahustunud süsihappegaasi tõttu üle 3 baari.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Aromatiseeritud puuviljavein on puuviljavein, mille organoleptilised omadused tulenevad valmistamisel kasutatud lõhna- ja maitseainetest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kangendatud puuviljavein on puuviljavein, millele on lisatud põllumajandusliku päritoluga etanooli ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti. Kangendatud puuviljaveini etanoolisisaldusest vähemalt 4 mahuprotsenti peab olema tekkinud kääritamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_6_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6¹",
+      "estleg:legalText": "(6¹) Puuviljaliköörvein on puuviljavein, millele on kangendamise eesmärgil lisatud üksnes puuvilja- ja marjaveinist valmistatud destillaati ja mille tegelik etanoolisisaldus on 14–22 (kaasa arvatud) mahuprotsenti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6¹"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Siider on alkohoolne jook, mis on valmistatud õunamahla või kontsentreeritud õunamahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Siidri valmistamisel võib lisada piiratud koguses pirnimahla, vett ja suhkrutooteid enne või pärast kääritamist ning värsket või kontsentreeritud õunamahla pärast kääritamist. Siider võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Siidri kangendamine destilleeritud alkoholiga ei ole lubatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 7"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_5_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Perry on alkohoolne jook, mis on valmistatud pirnimahla või kontsentreeritud pirnimahla lahjendamisel saadud mahla või nimetatud mahlade segu täielikul või osalisel kääritamisel. Perry valmistamisel võib lisada piiratud koguses õunamahla, vett ja suhkrutooteid enne või pärast kääritamist ja värsket või kontsentreeritud pirnimahla pärast kääritamist. Perry võib olla karboniseeritud teisese kääritamise või süsihappegaasi lisamise teel. Perry kangendamine destilleeritud alkoholiga ei ole lubatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 8"
     },
     {
       "@id": "estleg:Reg_157590_Par_6",
@@ -222,13 +442,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Puuviljaveini valmistamine",
+      "rdfs:label": {
+        "@value": "§ 6. Puuviljaveini valmistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Puuviljaveini maitsestamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. RT I 2011-03-01 1 101032011001 2011-03-04 Puuviljaveini maitsestam",
-      "estleg:legalText": "1 (1) Puuviljaveini maitsestamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. RT I 2011-03-01 1 101032011001 2011-03-04 Puuviljaveini maitsestamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. 2 (2) Puuviljaveini valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 Puuviljaveini valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. 3 (3) Puuviljaveini valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. Puuviljaveini valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. 4 (4) Puuviljaveini organoleptilised omadused peavad tulenema põhiliselt kasutatud toorainetest või lõhna- ja maitseainetest. Puuviljaveini valmistamisel võib käärimise parandamiseks või joogi magustamiseks lisada suhkrutooteid või mett. Pärast kääritamist võib lisada vastavate marjade või puuviljade mahla või kontsentreeritud mahla. Puuviljaveini organoleptilised omadused peavad tulenema põhiliselt kasutatud toorainetest või lõhna- ja maitseainetest. Puuviljaveini valmistamisel võib käärimise parandamiseks või joogi magustamiseks lisada suhkrutooteid või mett. Pärast kääritamist võib lisada vastavate marjade või puuviljade mahla või kontsentreeritud mahla.",
+      "estleg:summary": {
+        "@value": "1 (1) Puuviljaveini maitsestamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Puuviljaveini maitsestamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. RT I 2011-03-01 1 101032011001 2011-03-04 2 (2) Puuviljaveini valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 3 (3) Puuviljaveini valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. 4 (4) Puuviljaveini organoleptilised omadused peavad tulenema põhiliselt kasutatud toorainetest või lõhna- ja maitseainetest. Puuviljaveini valmistamisel võib käärimise parandamiseks või joogi magustamiseks lisada suhkrutooteid või mett. Pärast kääritamist võib lisada vastavate marjade või puuviljade mahla või kontsentreeritud mahla.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ToiduS_Par_17"
@@ -245,7 +471,73 @@
         {
           "@id": "estleg:Reg_157590_Par_6_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_6_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Puuviljaveini maitsestamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Puuviljaveini valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Puuviljaveini valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Puuviljaveini organoleptilised omadused peavad tulenema põhiliselt kasutatud toorainetest või lõhna- ja maitseainetest. Puuviljaveini valmistamisel võib käärimise parandamiseks või joogi magustamiseks lisada suhkrutooteid või mett. Pärast kääritamist võib lisada vastavate marjade või puuviljade mahla või kontsentreeritud mahla.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
     },
     {
       "@id": "estleg:Reg_157590_Par_7",
@@ -254,12 +546,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Puuviljaveinis lubatud ainete sisaldus",
+      "rdfs:label": {
+        "@value": "§ 7. Puuviljaveinis lubatud ainete sisaldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
@@ -274,12 +572,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Nõuded puuviljaveini müügiks esitlemisele",
+      "rdfs:label": {
+        "@value": "§ 8. Nõuded puuviljaveini müügiks esitlemisele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
@@ -294,13 +598,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Puuviljaveini märgistusele esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 9. Puuviljaveini märgistusele esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 Kehtetu - 2 (2) Puuviljaveini kirjeldavas liitsõnalises nimetuses peab sõnale „vein” eelnema veini peamise tooraine nimetus. Peamise tooraine nimetuse asemel võib veini nimetuse eesosa sisaldada sõnu „puuvilja-”, „marja-” või „puuvilja-marja-”, kui on kasutatud erinevaid tooraineid, millest ükski ei ole domineeriv. RT I 2017-09-20 8 120092017008 2017-09-23 Puuviljaveini kirjeldavas liitsõnalises nimetuses peab sõnale „vein” eelnema veini ",
-      "estleg:legalText": "1 (1) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 Kehtetu - 2 (2) Puuviljaveini kirjeldavas liitsõnalises nimetuses peab sõnale „vein” eelnema veini peamise tooraine nimetus. Peamise tooraine nimetuse asemel võib veini nimetuse eesosa sisaldada sõnu „puuvilja-”, „marja-” või „puuvilja-marja-”, kui on kasutatud erinevaid tooraineid, millest ükski ei ole domineeriv. RT I 2017-09-20 8 120092017008 2017-09-23 Puuviljaveini kirjeldavas liitsõnalises nimetuses peab sõnale „vein” eelnema veini peamise tooraine nimetus. Peamise tooraine nimetuse asemel võib veini nimetuse eesosa sisaldada sõnu „puuvilja-”, „marja-” või „puuvilja-marja-”, kui on kasutatud erinevaid tooraineid, millest ükski ei ole domineeriv. 3 (3) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 Kehtetu - 4 (4) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 Kehtetu -",
+      "estleg:summary": {
+        "@value": "1 (1) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 2 (2) Puuviljaveini kirjeldavas liitsõnalises nimetuses peab sõnale „vein” eelnema veini peamise tooraine nimetus. Peamise tooraine nimetuse asemel võib veini nimetuse eesosa sisaldada sõnu „puuvilja-”, „marja-” või „puuvilja-marja-”, kui on kasutatud erinevaid tooraineid, millest ükski ei ole domineeriv.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 2 (2) Puuviljaveini kirjeldavas liitsõnalises nimetuses peab sõnale „vein” eelnema veini peamise tooraine nimetus. Peamise tooraine nimetuse asemel võib veini nimetuse eesosa sisaldada sõnu „puuvilja-”, „marja-” või „puuvilja-marja-”, kui on kasutatud erinevaid tooraineid, millest ükski ei ole domineeriv. RT I 2017-09-20 8 120092017008 2017-09-23 3 (3) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 4 (4) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -312,7 +622,25 @@
         {
           "@id": "estleg:Reg_157590_Par_9_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Puuviljaveini kirjeldavas liitsõnalises nimetuses peab sõnale „vein” eelnema veini peamise tooraine nimetus. Peamise tooraine nimetuse asemel võib veini nimetuse eesosa sisaldada sõnu „puuvilja-”, „marja-” või „puuvilja-marja-”, kui on kasutatud erinevaid tooraineid, millest ükski ei ole domineeriv.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_157590_Par_10",
@@ -321,13 +649,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Õlu",
+      "rdfs:label": {
+        "@value": "§ 10. Õlu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Õlu on linnastest või linnastest ja linnastamata materjalist ning humalatest ja veest pärmi abil kääritamisel valmistatud jook. Õlu võib olla pastöriseeritud. Õlu on linnastest või linnastest ja linnastamata materjalist ning humalatest ja veest pärmi abil kääritamisel valmistatud jook. Õlu võib olla pastöriseeritud. 2 (2) Linnased on eritingimustel idandatud, kuivatatud ja töödeldud teravili. Linnased on eritingimustel idandatud, kuivatatud ja töödeldud teravili. 3 (3) Etanoolisisalduse jä",
-      "estleg:legalText": "1 (1) Õlu on linnastest või linnastest ja linnastamata materjalist ning humalatest ja veest pärmi abil kääritamisel valmistatud jook. Õlu võib olla pastöriseeritud. Õlu on linnastest või linnastest ja linnastamata materjalist ning humalatest ja veest pärmi abil kääritamisel valmistatud jook. Õlu võib olla pastöriseeritud. 2 (2) Linnased on eritingimustel idandatud, kuivatatud ja töödeldud teravili. Linnased on eritingimustel idandatud, kuivatatud ja töödeldud teravili. 3 (3) Etanoolisisalduse järgi jaotatakse õlu: 1 1) lahja õlu – etanoolisisaldusega kuni 6 (kaasa arvatud) mahuprotsenti; 2 2) kange õlu – etanoolisisaldusega üle 6 mahuprotsendi. Etanoolisisalduse järgi jaotatakse õlu: lahja õlu – etanoolisisaldusega kuni 6 (kaasa arvatud) mahuprotsenti; kange õlu – etanoolisisaldusega üle 6 mahuprotsendi.",
+      "estleg:summary": {
+        "@value": "1 (1) Õlu on linnastest või linnastest ja linnastamata materjalist ning humalatest ja veest pärmi abil kääritamisel valmistatud jook. Õlu võib olla pastöriseeritud. 2 (2) Linnased on eritingimustel idandatud, kuivatatud ja töödeldud teravili. 3 (3) Etanoolisisalduse järgi jaotatakse õlu: 1 1) lahja õlu – etanoolisisaldusega kuni 6 (kaasa arvatud) mahuprotsenti; 2 2) kange õlu – etanoolisisaldusega üle 6 mahuprotsendi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õlu on linnastest või linnastest ja linnastamata materjalist ning humalatest ja veest pärmi abil kääritamisel valmistatud jook. Õlu võib olla pastöriseeritud. 2 (2) Linnased on eritingimustel idandatud, kuivatatud ja töödeldud teravili. 3 (3) Etanoolisisalduse järgi jaotatakse õlu: 1 1) lahja õlu – etanoolisisaldusega kuni 6 (kaasa arvatud) mahuprotsenti; 2 2) kange õlu – etanoolisisaldusega üle 6 mahuprotsendi.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -339,6 +673,60 @@
         {
           "@id": "estleg:Reg_157590_Par_10_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_10_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õlu on linnastest või linnastest ja linnastamata materjalist ning humalatest ja veest pärmi abil kääritamisel valmistatud jook. Õlu võib olla pastöriseeritud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Linnased on eritingimustel idandatud, kuivatatud ja töödeldud teravili.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Etanoolisisalduse järgi jaotatakse õlu: 1) lahja õlu – etanoolisisaldusega kuni 6 (kaasa arvatud) mahuprotsenti; 2) kange õlu – etanoolisisaldusega üle 6 mahuprotsendi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -348,13 +736,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Õlle valmistamine",
+      "rdfs:label": {
+        "@value": "§ 11. Õlle valmistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Õlle valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. Õlle valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. 2 (2) Õlle valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 Õlle valmistamis",
-      "estleg:legalText": "1 (1) Õlle valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. Õlle valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. 2 (2) Õlle valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 Õlle valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. 3 (3) Õlle valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. RT I 2011-03-01 1 101032011001 2011-03-04 Õlle valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid.",
+      "estleg:summary": {
+        "@value": "1 (1) Õlle valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. 2 (2) Õlle valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 3 (3) Õlle valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna-…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õlle valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. 2 (2) Õlle valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 3 (3) Õlle valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. RT I 2011-03-01 1 101032011001 2011-03-04",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -366,7 +760,57 @@
         {
           "@id": "estleg:Reg_157590_Par_11_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_11_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õlle valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õlle valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Õlle valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
     },
     {
       "@id": "estleg:Reg_157590_Par_12",
@@ -375,13 +819,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Õlle märgistusele esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 12. Õlle märgistusele esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Õlle tarbijapakendi märgistusel peab olema esitatud vähemalt järgmine teave: 1 1) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 2 2) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 3 3) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 4 4) etanoolisisaldus väljendatuna mahuprotsentides, kui etanoolisisaldus on üle 0,5 mahuprotsendi. RT I 2017-09-20 8 120092017008 2017-09-23 5 5) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 6 6) kehtetu - RT I 2017-09-20 8 120092017008 2",
-      "estleg:legalText": "1 (1) Õlle tarbijapakendi märgistusel peab olema esitatud vähemalt järgmine teave: 1 1) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 2 2) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 3 3) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 4 4) etanoolisisaldus väljendatuna mahuprotsentides, kui etanoolisisaldus on üle 0,5 mahuprotsendi. RT I 2017-09-20 8 120092017008 2017-09-23 5 5) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 6 6) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 7 7) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 Õlle tarbijapakendi märgistusel peab olema esitatud vähemalt järgmine teave: kehtetu - kehtetu - kehtetu - etanoolisisaldus väljendatuna mahuprotsentides, kui etanoolisisaldus on üle 0,5 mahuprotsendi. kehtetu - kehtetu - kehtetu - 2 (2) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 Kehtetu - 3 (3) Õlle tarbijapakendi märgistusel võib esitada mõne teise alkohoolse joogi liigi nimetuse, kui selline nimetus iseloomustab õlle teatud valmistamismeetodit ning kui tarbijapakendile on üheselt arusaadavalt märgitud, et toote liik on õlu. RT I 2006 52 392 12754896 2006-12-03 Õlle tarbijapakendi märgistusel võib esitada mõne teise alkohoolse joogi liigi nimetuse, kui selline nimetus iseloomustab õlle teatud valmistamismeetodit ning kui tarbijapakendile on üheselt arusaadavalt märgitud, et toote liik on õlu.",
+      "estleg:summary": {
+        "@value": "1 (1) Õlle tarbijapakendi märgistusel peab olema esitatud vähemalt järgmine teave: 1 1) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 2 2) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 3 3) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 4 4) etanoolisisaldus väljendatuna mahuprotsentides, kui etanoolisisaldus on üle 0,5 mahuprotsendi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õlle tarbijapakendi märgistusel peab olema esitatud vähemalt järgmine teave: 1 1) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 2 2) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 3 3) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 4 4) etanoolisisaldus väljendatuna mahuprotsentides, kui etanoolisisaldus on üle 0,5 mahuprotsendi. RT I 2017-09-20 8 120092017008 2017-09-23 5 5) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 6 6) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 7 7) kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 2 (2) Kehtetu - RT I 2017-09-20 8 120092017008 2017-09-23 3 (3) Õlle tarbijapakendi märgistusel võib esitada mõne teise alkohoolse joogi liigi nimetuse, kui selline nimetus iseloomustab õlle teatud valmistamismeetodit ning kui tarbijapakendile on üheselt arusaadavalt märgitud, et toote liik on õlu. RT I 2006 52 392 12754896 2006-12-03",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -398,7 +848,50 @@
         {
           "@id": "estleg:Reg_157590_Par_12_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_12_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õlle tarbijapakendi märgistusel peab olema esitatud vähemalt järgmine teave: 1) 2) 3) 4) etanoolisisaldus väljendatuna mahuprotsentides, kui etanoolisisaldus on üle 0,5 mahuprotsendi. 5) 6) 7)",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Õlle tarbijapakendi märgistusel võib esitada mõne teise alkohoolse joogi liigi nimetuse, kui selline nimetus iseloomustab õlle teatud valmistamismeetodit ning kui tarbijapakendile on üheselt arusaadavalt märgitud, et toote liik on õlu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
     },
     {
       "@id": "estleg:Reg_157590_Par_13",
@@ -407,13 +900,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Muu alkohoolne jook",
+      "rdfs:label": {
+        "@value": "§ 13. Muu alkohoolne jook",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Muu alkohoolne jook on alkohoolne jook, mis on piirituse, piiritusjoogi, kääritatud joogi, vee või muu mittealkohoolse joogi kokkusegamisel saadud 1,2–22 (kaasa arvatud) mahuprotsendilise etanoolisisaldusega jook, mis võib olla karboniseeritud ning maitsestatud. RT I 2024-08-03 3 103082024003 2024-08-06 Muu alkohoolne jook on alkohoolne jook, mis on piirituse, piiritusjoogi, kääritatud joogi, vee või muu mittealkohoolse joogi kokkusegamisel saadud 1,2–22 (kaasa arvatud) mahuprotsendilise e",
-      "estleg:legalText": "1 (1) Muu alkohoolne jook on alkohoolne jook, mis on piirituse, piiritusjoogi, kääritatud joogi, vee või muu mittealkohoolse joogi kokkusegamisel saadud 1,2–22 (kaasa arvatud) mahuprotsendilise etanoolisisaldusega jook, mis võib olla karboniseeritud ning maitsestatud. RT I 2024-08-03 3 103082024003 2024-08-06 Muu alkohoolne jook on alkohoolne jook, mis on piirituse, piiritusjoogi, kääritatud joogi, vee või muu mittealkohoolse joogi kokkusegamisel saadud 1,2–22 (kaasa arvatud) mahuprotsendilise etanoolisisaldusega jook, mis võib olla karboniseeritud ning maitsestatud. 1 (1¹) Muu alkohoolse joogina ei käsitata alkohoolset jooki, mis vastab nii muu alkohoolse joogi kui ka mõne teise alkohoolse joogi määratlemise, kirjeldamise ja müügiks esitlemise nõuetele. RT I 2006 13 105 1005851 2006-03-24 Muu alkohoolse joogina ei käsitata alkohoolset jooki, mis vastab nii muu alkohoolse joogi kui ka mõne teise alkohoolse joogi määratlemise, kirjeldamise ja müügiks esitlemise nõuetele. 2 (2) Kehtetu - RT I 2019-04-02 2 102042019002 2019-04-05 Kehtetu -",
+      "estleg:summary": {
+        "@value": "1 (1) Muu alkohoolne jook on alkohoolne jook, mis on piirituse, piiritusjoogi, kääritatud joogi, vee või muu mittealkohoolse joogi kokkusegamisel saadud 1,2–22 (kaasa arvatud) mahuprotsendilise etanoolisisaldusega jook, mis võib olla karboniseeritud ning maitsestatud. RT I 2024-08-03 3 103082024003 2024-08-06 1 (1<sup>1</sup>) Muu alkohoolse joogina ei käsitata alkohoolset jooki, mis vastab nii muu alkohoolse joogi kui ka mõne teise alkohoolse joogi määratlemise, kirjeldamise ja müügiks…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Muu alkohoolne jook on alkohoolne jook, mis on piirituse, piiritusjoogi, kääritatud joogi, vee või muu mittealkohoolse joogi kokkusegamisel saadud 1,2–22 (kaasa arvatud) mahuprotsendilise etanoolisisaldusega jook, mis võib olla karboniseeritud ning maitsestatud. RT I 2024-08-03 3 103082024003 2024-08-06 1 (1<sup>1</sup>) Muu alkohoolse joogina ei käsitata alkohoolset jooki, mis vastab nii muu alkohoolse joogi kui ka mõne teise alkohoolse joogi määratlemise, kirjeldamise ja müügiks esitlemise nõuetele. RT I 2006 13 105 1005851 2006-03-24 2 (2) Kehtetu - RT I 2019-04-02 2 102042019002 2019-04-05",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -425,7 +924,41 @@
         {
           "@id": "estleg:Reg_157590_Par_13_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_13_Lg_1_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muu alkohoolne jook on alkohoolne jook, mis on piirituse, piiritusjoogi, kääritatud joogi, vee või muu mittealkohoolse joogi kokkusegamisel saadud 1,2–22 (kaasa arvatud) mahuprotsendilise etanoolisisaldusega jook, mis võib olla karboniseeritud ning maitsestatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_13_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1¹",
+      "estleg:legalText": "(1¹) Muu alkohoolse joogina ei käsitata alkohoolset jooki, mis vastab nii muu alkohoolse joogi kui ka mõne teise alkohoolse joogi määratlemise, kirjeldamise ja müügiks esitlemise nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1¹"
     },
     {
       "@id": "estleg:Reg_157590_Par_14",
@@ -434,13 +967,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Muu alkohoolse joogi valmistamine",
+      "rdfs:label": {
+        "@value": "§ 14. Muu alkohoolse joogi valmistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "1 (1) Muu alkohoolse joogi valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 Muu alkohoolse joogi valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. 2 (2) Muu alkohoolse joogi valmistamisel võib kasutada Euroopa Parla",
-      "estleg:legalText": "1 (1) Muu alkohoolse joogi valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 Muu alkohoolse joogi valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. 2 (2) Muu alkohoolse joogi valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. RT I 2011-03-01 1 101032011001 2011-03-04 Muu alkohoolse joogi valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. 3 (3) Muu alkohoolse joogi valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. RT I 2005 44 374 932022 2005-08-21 Muu alkohoolse joogi valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett.",
+      "estleg:summary": {
+        "@value": "1 (1) Muu alkohoolse joogi valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 2 (2) Muu alkohoolse joogi valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Muu alkohoolse joogi valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid. RT I 2013-02-19 3 119022013003 2013-06-01 2 (2) Muu alkohoolse joogi valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid. RT I 2011-03-01 1 101032011001 2011-03-04 3 (3) Muu alkohoolse joogi valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett. RT I 2005 44 374 932022 2005-08-21",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -452,7 +991,57 @@
         {
           "@id": "estleg:Reg_157590_Par_14_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_157590_Par_14_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muu alkohoolse joogi valmistamisel võib kasutada üksnes Euroopa Parlamendi ja nõukogu määruses (EÜ) nr 1333/2008 toidu lisaainete kohta (ELT L 354, 31.12.2008, lk 16–33) nimetatud lisaaineid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Muu alkohoolse joogi valmistamisel võib kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1334/2008, mis käsitleb toiduainetes kasutatavaid lõhna- ja maitseaineid ning teatavaid lõhna- ja maitseomadustega toidu koostisosi ning millega muudetakse nõukogu määrust (EMÜ) nr 1601/91, määrusi (EÜ) nr 2232/96 ja (EÜ) nr 110/2008 ning direktiivi 2000/13/EÜ (ELT L 354, 31.12.2008, lk 34–50), nõuetele vastavaid lõhna- ja maitseaineid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Muu alkohoolse joogi valmistamisel on lubatud kasutada „Veeseaduse” § 13 lõike 2 alusel kehtestatud joogivee kvaliteedinõuetele vastavat vett.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
     },
     {
       "@id": "estleg:Reg_157590_Par_15",
@@ -461,12 +1050,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Muu alkohoolse joogi märgistusele esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 15. Muu alkohoolse joogi märgistusele esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
@@ -481,18 +1076,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Sake",
+      "rdfs:label": {
+        "@value": "§ 16. Sake",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Sake on riisist valmistatud alkohoolne jook, mida valmistatakse teatud geograafilises piirkonnas traditsioonilisel meetodil kääritamise või sellele järgneva piirituse lisamise teel. RT I 2005 44 374 932022 2005-08-21",
-      "estleg:legalText": "Sake on riisist valmistatud alkohoolne jook, mida valmistatakse teatud geograafilises piirkonnas traditsioonilisel meetodil kääritamise või sellele järgneva piirituse lisamise teel. RT I 2005 44 374 932022 2005-08-21 Sake on riisist valmistatud alkohoolne jook, mida valmistatakse teatud geograafilises piirkonnas traditsioonilisel meetodil kääritamise või sellele järgneva piirituse lisamise teel.",
+      "estleg:summary": {
+        "@value": "Sake on riisist valmistatud alkohoolne jook, mida valmistatakse teatud geograafilises piirkonnas traditsioonilisel meetodil kääritamise või sellele järgneva piirituse lisamise teel. RT I 2005 44 374 932022 2005-08-21",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sake on riisist valmistatud alkohoolne jook, mida valmistatakse teatud geograafilises piirkonnas traditsioonilisel meetodil kääritamise või sellele järgneva piirituse lisamise teel. RT I 2005 44 374 932022 2005-08-21",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_157590_Par_16_v157590"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_16_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sake on riisist valmistatud alkohoolne jook, mida valmistatakse teatud geograafilises piirkonnas traditsioonilisel meetodil kääritamise või sellele järgneva piirituse lisamise teel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:Reg_157590_Par_17",
@@ -501,12 +1120,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Sake märgistusele esitatavad nõuded",
+      "rdfs:label": {
+        "@value": "§ 17. Sake märgistusele esitatavad nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
@@ -521,12 +1146,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Piiritusjookide, aromatiseeritud veini, aromatiseeritud veinijoogi ja aromatiseeritud veinikokteili etanoolisisalduse lubatud hälbed",
+      "rdfs:label": {
+        "@value": "§ 18. Piiritusjookide, aromatiseeritud veini, aromatiseeritud veinijoogi ja aromatiseeritud veinikokteili etanoolisisalduse lubatud hälbed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "Kehtetu -",
+        "@language": "et"
+      },
       "estleg:legalText": "Kehtetu -",
       "estleg:hasVersion": [
         {
@@ -541,12 +1172,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Vabariigi Valitsuse määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 19. Vabariigi Valitsuse määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:targetGroup": [
         {
@@ -570,16 +1207,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 20. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Alkoholi määratlemise, kirjeldamise ja müügiks esitlemise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_157590_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. mail 2004. a.",
-      "estleg:legalText": "Määrus jõustub 1. mail 2004. a. Määrus jõustub 1. mail 2004. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. mail 2004. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. mail 2004. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_157590_Par_20_v157590"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_157590_Par_20_Lg_1"
         }
       ]
     },
@@ -594,6 +1242,19 @@
       },
       "estleg:citationDetail": "lg 2",
       "estleg:citationText": "Määrus kehtestatakse alkoholiseaduse § 4 lõike 2"
+    },
+    {
+      "@id": "estleg:Reg_157590_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. mail 2004. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_157590_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
     }
   ]
 }

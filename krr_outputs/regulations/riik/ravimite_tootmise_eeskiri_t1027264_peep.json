@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Ravimite tootmise eeskiri (määrus)",
+      "rdfs:label": {
+        "@value": "Ravimite tootmise eeskiri (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Ravimite tootmise eeskiri",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1027264",
       "estleg:preambleText": "Määrus kehtestatakse ravimiseaduse § 16 lõike 8 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2014-12-22",
+        "@value": "2022-11-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2022-10-20",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2014-12-19",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1027264_a700f39172"
@@ -96,7 +98,13 @@
         {
           "@id": "estleg:Institution_ravimiamet"
         }
-      ]
+      ],
+      "dcterms:title": "Ravimite tootmise eeskiri",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1027264_Par_1",
@@ -105,18 +113,74 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ravimite tootmise eeskiri (edaspidi eeskiri) kehtestab üldnõuded ravimite tootmisele ja impordile. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ravimite tootmise eeskiri (edaspidi eeskiri) kehtestab üldnõuded ravimite tootmisele ja impordile. 2 (2) Lisaks määruse nõuetele kohaldatakse ravimite tootmisele Euroopa Majanduspiirkonnas kehtestatud heade tootmistavade (Good Manufacturing Practice) nõudeid. Lisaks määruse nõuetele kohaldatakse ravimite tootmisele Euroopa Majanduspiirkonnas kehtes",
-      "estleg:legalText": "1 (1) Ravimite tootmise eeskiri (edaspidi eeskiri) kehtestab üldnõuded ravimite tootmisele ja impordile. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ravimite tootmise eeskiri (edaspidi eeskiri) kehtestab üldnõuded ravimite tootmisele ja impordile. 2 (2) Lisaks määruse nõuetele kohaldatakse ravimite tootmisele Euroopa Majanduspiirkonnas kehtestatud heade tootmistavade (Good Manufacturing Practice) nõudeid. Lisaks määruse nõuetele kohaldatakse ravimite tootmisele Euroopa Majanduspiirkonnas kehtestatud heade tootmistavade (Good Manufacturing Practice) nõudeid. 3 (3) Eeskiri ei kehtesta nõudeid tööohutusele. Eeskiri ei kehtesta nõudeid tööohutusele.",
+      "estleg:summary": {
+        "@value": "1 (1) Ravimite tootmise eeskiri (edaspidi eeskiri) kehtestab üldnõuded ravimite tootmisele ja impordile. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Lisaks määruse nõuetele kohaldatakse ravimite tootmisele Euroopa Majanduspiirkonnas kehtestatud heade tootmistavade (Good Manufacturing Practice) nõudeid. 3 (3) Eeskiri ei kehtesta nõudeid tööohutusele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ravimite tootmise eeskiri (edaspidi eeskiri) kehtestab üldnõuded ravimite tootmisele ja impordile. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Lisaks määruse nõuetele kohaldatakse ravimite tootmisele Euroopa Majanduspiirkonnas kehtestatud heade tootmistavade (Good Manufacturing Practice) nõudeid. 3 (3) Eeskiri ei kehtesta nõudeid tööohutusele.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1027264_Par_1_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_1_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ravimite tootmise eeskiri (edaspidi eeskiri) kehtestab üldnõuded ravimite tootmisele ja impordile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lisaks määruse nõuetele kohaldatakse ravimite tootmisele Euroopa Majanduspiirkonnas kehtestatud heade tootmistavade (Good Manufacturing Practice) nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eeskiri ei kehtesta nõudeid tööohutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:Reg_1027264_Par_2",
@@ -125,17 +189,55 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mõisted",
+      "rdfs:label": {
+        "@value": "§ 2. Mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "Eeskirjas kasutatakse mõisteid järgmises tähenduses: 1 1) tootmisprotsess eeskirja tähenduses hõlmab kõiki ravimite, sealhulgas vahetoodete tootmisega seonduvaid toiminguid; 2 2) lähtematerjal on ravimi tootmiseks kasutatav aine või materjal, välja arvatud pakendi materjal; 3 3) pakendi materjal on ravimi pakendamiseks kasutatav materjal (välja arvatud ainult transportimiseks kasutatav pakend), mis hõlmab esmase ja teisese pakendi materjali, vastavalt sellele, kas see on vahetus kontaktis ravimi",
-      "estleg:legalText": "Eeskirjas kasutatakse mõisteid järgmises tähenduses: 1 1) tootmisprotsess eeskirja tähenduses hõlmab kõiki ravimite, sealhulgas vahetoodete tootmisega seonduvaid toiminguid; 2 2) lähtematerjal on ravimi tootmiseks kasutatav aine või materjal, välja arvatud pakendi materjal; 3 3) pakendi materjal on ravimi pakendamiseks kasutatav materjal (välja arvatud ainult transportimiseks kasutatav pakend), mis hõlmab esmase ja teisese pakendi materjali, vastavalt sellele, kas see on vahetus kontaktis ravimiga või mitte; 4 4) vahetoode on osaliselt töödeldud aine või materjal, mis peab läbima veel tootmisprotsessi etappe enne, kui sellest saab hulgitoode; 5 5) hulgitoode on toode, mis on läbinud kõik tootmisprotsessi etapid, välja arvatud pakendamine ja märgistamine lõpp-pakendis valmistoote saamiseks; 6 6) valideerimine on dokumenteeritud tegevus, millega tõendatakse, et mingi protseduur, protsess, seade või süsteem tagab ootuspärase tulemuse; 7 7) protsessisisene kontrollimine hõlmab tootmisprotsessi käigus tehtavaid teste protsessi pidevaks jälgimiseks ja vajadusel reguleerimiseks, et tagada ravimi vastavus kvaliteedinõuetele; 8 8) pakendamine hõlmab kõiki toiminguid, sealhulgas villimist ehk täitmist (välja arvatud steriilne villimine) ja märgistamist, mida tehakse hulgitootega enne, kui sellest saab lõpp-pakendis valmistoode; steriilsel villimisel on hulgitooteks täidetud esmane pakend, mis ei ole lõpp-pakendiks; 9 9) partii on lähtematerjali, pakendi materjali või toodangu kogus, mis on toodetud ühe (ühtse) tootmisprotsessi või protsesside rea käigus nii, et seda võib määratleda homogeensena; 10 10) protseduurireeglid kirjeldavad ravimite tootmisega otseselt või kaudselt seonduvaid toiminguid, ettevaatusabinõusid ja meetmeid; 11 11) ravimikvaliteedi süsteem on kogu organisatsiooniline korraldus, mille eesmärk on tagada, et ravimite kvaliteet on vastavuses nende kavandatud kasutusega; RT I 2018-04-04 4 104042018004 2018-04-07 12 12 12) hea tootmistava on see osa kvaliteedi tagamisest, millega tagatakse, et ravimite tootmine, import ja kontrollimine on järjepidevalt kooskõlas kvaliteedireeglitega, mis on vastavuses ravimite kavandatud kasutusega. RT I 2018-04-04 4 104042018004 2018-04-07 12 Eeskirjas kasutatakse mõisteid järgmises tähenduses: tootmisprotsess eeskirja tähenduses hõlmab kõiki ravimite, sealhulgas vahetoodete tootmisega seonduvaid toiminguid; lähtematerjal on ravimi tootmiseks kasutatav aine või materjal, välja arvatud pakendi materjal; pakendi materjal on ravimi pakendamiseks kasutatav materjal (välja arvatud ainult transportimiseks kasutatav pakend), mis hõlmab esmase ja teisese pakendi materjali, vastavalt sellele, kas see on vahetus kontaktis ravimiga või mitte; vahetoode on osaliselt töödeldud aine või materjal, mis peab läbima veel tootmisprotsessi etappe enne, kui sellest saab hulgitoode; hulgitoode on toode, mis on läbinud kõik tootmisprotsessi etapid, välja arvatud pakendamine ja märgistamine lõpp-pakendis valmistoote saamiseks; valideerimine on dokumenteeritud tegevus, millega tõendatakse, et mingi protseduur, protsess, seade või süsteem tagab ootuspärase tulemuse; protsessisisene kontrollimine hõlmab tootmisprotsessi käigus tehtavaid teste protsessi pidevaks jälgimiseks ja vajadusel reguleerimiseks, et tagada ravimi vastavus kvaliteedinõuetele; pakendamine hõlmab kõiki toiminguid, sealhulgas villimist ehk täitmist (välja arvatud steriilne villimine) ja märgistamist, mida tehakse hulgitootega enne, kui sellest saab lõpp-pakendis valmistoode; steriilsel villimisel on hulgitooteks täidetud esmane pakend, mis ei ole lõpp-pakendiks; partii on lähtematerjali, pakendi materjali või toodangu kogus, mis on toodetud ühe (ühtse) tootmisprotsessi või protsesside rea käigus nii, et seda võib määratleda homogeensena; protseduurireeglid kirjeldavad ravimite tootmisega otseselt või kaudselt seonduvaid toiminguid, ettevaatusabinõusid ja meetmeid; ravimikvaliteedi süsteem on kogu organisatsiooniline korraldus, mille eesmärk on tagada, et ravimite kvaliteet on vastavuses nende kavandatud kasutusega; hea tootmistava on see osa kvaliteedi tagamisest, millega tagatakse, et ravimite tootmine, import ja kontrollimine on järjepidevalt kooskõlas kvaliteedireeglitega, mis on vastavuses ravimite kavandatud kasutusega.",
+      "estleg:summary": {
+        "@value": "Eeskirjas kasutatakse mõisteid järgmises tähenduses: 1 1) tootmisprotsess eeskirja tähenduses hõlmab kõiki ravimite, sealhulgas vahetoodete tootmisega seonduvaid toiminguid; 2 2) lähtematerjal on ravimi tootmiseks kasutatav aine või materjal, välja arvatud pakendi materjal; 3 3) pakendi materjal on ravimi pakendamiseks kasutatav materjal (välja arvatud ainult transportimiseks kasutatav pakend), mis hõlmab esmase ja teisese pakendi materjali, vastavalt sellele, kas see on vahetus kontaktis…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Eeskirjas kasutatakse mõisteid järgmises tähenduses: 1 1) tootmisprotsess eeskirja tähenduses hõlmab kõiki ravimite, sealhulgas vahetoodete tootmisega seonduvaid toiminguid; 2 2) lähtematerjal on ravimi tootmiseks kasutatav aine või materjal, välja arvatud pakendi materjal; 3 3) pakendi materjal on ravimi pakendamiseks kasutatav materjal (välja arvatud ainult transportimiseks kasutatav pakend), mis hõlmab esmase ja teisese pakendi materjali, vastavalt sellele, kas see on vahetus kontaktis ravimiga või mitte; 4 4) vahetoode on osaliselt töödeldud aine või materjal, mis peab läbima veel tootmisprotsessi etappe enne, kui sellest saab hulgitoode; 5 5) hulgitoode on toode, mis on läbinud kõik tootmisprotsessi etapid, välja arvatud pakendamine ja märgistamine lõpp-pakendis valmistoote saamiseks; 6 6) valideerimine on dokumenteeritud tegevus, millega tõendatakse, et mingi protseduur, protsess, seade või süsteem tagab ootuspärase tulemuse; 7 7) protsessisisene kontrollimine hõlmab tootmisprotsessi käigus tehtavaid teste protsessi pidevaks jälgimiseks ja vajadusel reguleerimiseks, et tagada ravimi vastavus kvaliteedinõuetele; 8 8) pakendamine hõlmab kõiki toiminguid, sealhulgas villimist ehk täitmist (välja arvatud steriilne villimine) ja märgistamist, mida tehakse hulgitootega enne, kui sellest saab lõpp-pakendis valmistoode; steriilsel villimisel on hulgitooteks täidetud esmane pakend, mis ei ole lõpp-pakendiks; 9 9) partii on lähtematerjali, pakendi materjali või toodangu kogus, mis on toodetud ühe (ühtse) tootmisprotsessi või protsesside rea käigus nii, et seda võib määratleda homogeensena; 10 10) protseduurireeglid kirjeldavad ravimite tootmisega otseselt või kaudselt seonduvaid toiminguid, ettevaatusabinõusid ja meetmeid; 11 11) ravimikvaliteedi süsteem on kogu organisatsiooniline korraldus, mille eesmärk on tagada, et ravimite kvaliteet on vastavuses nende kavandatud kasutusega; RT I 2018-04-04 4 104042018004 2018-04-07 12 12 12) hea tootmistava on see osa kvaliteedi tagamisest, millega tagatakse, et ravimite tootmine, import ja kontrollimine on järjepidevalt kooskõlas kvaliteedireeglitega, mis on vastavuses ravimite kavandatud kasutusega. RT I 2018-04-04 4 104042018004 2018-04-07 12",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1027264_Par_2_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_2_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eeskirjas kasutatakse mõisteid järgmises tähenduses: 1) tootmisprotsess eeskirja tähenduses hõlmab kõiki ravimite, sealhulgas vahetoodete tootmisega seonduvaid toiminguid; 2) lähtematerjal on ravimi tootmiseks kasutatav aine või materjal, välja arvatud pakendi materjal; 3) pakendi materjal on ravimi pakendamiseks kasutatav materjal (välja arvatud ainult transportimiseks kasutatav pakend), mis hõlmab esmase ja teisese pakendi materjali, vastavalt sellele, kas see on vahetus kontaktis ravimiga või mitte; 4) vahetoode on osaliselt töödeldud aine või materjal, mis peab läbima veel tootmisprotsessi etappe enne, kui sellest saab hulgitoode; 5) hulgitoode on toode, mis on läbinud kõik tootmisprotsessi etapid, välja arvatud pakendamine ja märgistamine lõpp-pakendis valmistoote saamiseks; 6) valideerimine on dokumenteeritud tegevus, millega tõendatakse, et mingi protseduur, protsess, seade või süsteem tagab ootuspärase tulemuse; 7) protsessisisene kontrollimine hõlmab tootmisprotsessi käigus tehtavaid teste protsessi pidevaks jälgimiseks ja vajadusel reguleerimiseks, et tagada ravimi vastavus kvaliteedinõuetele; 8) pakendamine hõlmab kõiki toiminguid, sealhulgas villimist ehk täitmist (välja arvatud steriilne villimine) ja märgistamist, mida tehakse hulgitootega enne, kui sellest saab lõpp-pakendis valmistoode; steriilsel villimisel on hulgitooteks täidetud esmane pakend, mis ei ole lõpp-pakendiks; 9) partii on lähtematerjali, pakendi materjali või toodangu kogus, mis on toodetud ühe (ühtse) tootmisprotsessi või protsesside rea käigus nii, et seda võib määratleda homogeensena; 10) protseduurireeglid kirjeldavad ravimite tootmisega otseselt või kaudselt seonduvaid toiminguid, ettevaatusabinõusid ja meetmeid; 11) ravimikvaliteedi süsteem on kogu organisatsiooniline korraldus, mille eesmärk on tagada, et ravimite kvaliteet on vastavuses nende kavandatud kasutusega; 12) hea tootmistava on see osa kvaliteedi tagamisest, millega tagatakse, et ravimite tootmine, import ja kontrollimine on järjepidevalt kooskõlas kvaliteedireeglitega, mis on vastavuses ravimite kavandatud kasutusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
       ]
     },
     {
@@ -145,13 +247,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Üldnõuded",
+      "rdfs:label": {
+        "@value": "§ 3. Üldnõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ravimite tootmise ja impordiga tegelev ettevõte ning töökorraldus ettevõttes peavad vastama ravimite tootmise tegevusloale ja heade tootmistavade nõuetele. Ettevõte tagab, et Euroopa Majanduspiirkonna välises riigis toodetud ravimipartii on toodetud ja kontrollitud võrdväärsete heade tootmistavade kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ravimite tootmise ja impordiga tegelev ettevõte ning töökorraldus ettevõttes peavad vastama ravimite tootmise tegevusloale ja heade tootmist",
-      "estleg:legalText": "1 (1) Ravimite tootmise ja impordiga tegelev ettevõte ning töökorraldus ettevõttes peavad vastama ravimite tootmise tegevusloale ja heade tootmistavade nõuetele. Ettevõte tagab, et Euroopa Majanduspiirkonna välises riigis toodetud ravimipartii on toodetud ja kontrollitud võrdväärsete heade tootmistavade kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ravimite tootmise ja impordiga tegelev ettevõte ning töökorraldus ettevõttes peavad vastama ravimite tootmise tegevusloale ja heade tootmistavade nõuetele. Ettevõte tagab, et Euroopa Majanduspiirkonna välises riigis toodetud ravimipartii on toodetud ja kontrollitud võrdväärsete heade tootmistavade kohaselt. 2 (2) Ravimi tootmistegevuse ja impordi korraldus ettevõttes peab vastama ravimi müügiloaga seotud tingimustele. Uuringuravimi tootmise korraldus peab vastama uuringu loa dokumentatsioonile. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ravimi tootmistegevuse ja impordi korraldus ettevõttes peab vastama ravimi müügiloaga seotud tingimustele. Uuringuravimi tootmise korraldus peab vastama uuringu loa dokumentatsioonile. 3 (3) Ettevõte peab ajakohastama ravimi tootmisprotsessi vastavalt teaduse ja tehnika arengule. Vajadusel tuleb taotleda müügiloa või uuringu loa muutmist. Ettevõte peab ajakohastama ravimi tootmisprotsessi vastavalt teaduse ja tehnika arengule. Vajadusel tuleb taotleda müügiloa või uuringu loa muutmist.",
+      "estleg:summary": {
+        "@value": "1 (1) Ravimite tootmise ja impordiga tegelev ettevõte ning töökorraldus ettevõttes peavad vastama ravimite tootmise tegevusloale ja heade tootmistavade nõuetele. Ettevõte tagab, et Euroopa Majanduspiirkonna välises riigis toodetud ravimipartii on toodetud ja kontrollitud võrdväärsete heade tootmistavade kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Ravimi tootmistegevuse ja impordi korraldus ettevõttes peab vastama ravimi müügiloaga seotud tingimustele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ravimite tootmise ja impordiga tegelev ettevõte ning töökorraldus ettevõttes peavad vastama ravimite tootmise tegevusloale ja heade tootmistavade nõuetele. Ettevõte tagab, et Euroopa Majanduspiirkonna välises riigis toodetud ravimipartii on toodetud ja kontrollitud võrdväärsete heade tootmistavade kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Ravimi tootmistegevuse ja impordi korraldus ettevõttes peab vastama ravimi müügiloaga seotud tingimustele. Uuringuravimi tootmise korraldus peab vastama uuringu loa dokumentatsioonile. RT I 2018-04-04 4 104042018004 2018-04-07 12 3 (3) Ettevõte peab ajakohastama ravimi tootmisprotsessi vastavalt teaduse ja tehnika arengule. Vajadusel tuleb taotleda müügiloa või uuringu loa muutmist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -168,7 +276,57 @@
         {
           "@id": "estleg:Reg_1027264_Par_3_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_3_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ravimite tootmise ja impordiga tegelev ettevõte ning töökorraldus ettevõttes peavad vastama ravimite tootmise tegevusloale ja heade tootmistavade nõuetele. Ettevõte tagab, et Euroopa Majanduspiirkonna välises riigis toodetud ravimipartii on toodetud ja kontrollitud võrdväärsete heade tootmistavade kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ravimi tootmistegevuse ja impordi korraldus ettevõttes peab vastama ravimi müügiloaga seotud tingimustele. Uuringuravimi tootmise korraldus peab vastama uuringu loa dokumentatsioonile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ettevõte peab ajakohastama ravimi tootmisprotsessi vastavalt teaduse ja tehnika arengule. Vajadusel tuleb taotleda müügiloa või uuringu loa muutmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:Reg_1027264_Par_4",
@@ -177,13 +335,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Ravimikvaliteedi süsteem",
+      "rdfs:label": {
+        "@value": "§ 4. Ravimikvaliteedi süsteem",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "Ettevõte peab tagama ravimikvaliteedi süsteemi toimimise, milles osalevad nii ettevõtte juhtkond kui ka allüksuste töötajad. RT I 2018-04-04 4 104042018004 2018-04-07 12",
-      "estleg:legalText": "Ettevõte peab tagama ravimikvaliteedi süsteemi toimimise, milles osalevad nii ettevõtte juhtkond kui ka allüksuste töötajad. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõte peab tagama ravimikvaliteedi süsteemi toimimise, milles osalevad nii ettevõtte juhtkond kui ka allüksuste töötajad.",
+      "estleg:summary": {
+        "@value": "Ettevõte peab tagama ravimikvaliteedi süsteemi toimimise, milles osalevad nii ettevõtte juhtkond kui ka allüksuste töötajad. RT I 2018-04-04 4 104042018004 2018-04-07 12",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ettevõte peab tagama ravimikvaliteedi süsteemi toimimise, milles osalevad nii ettevõtte juhtkond kui ka allüksuste töötajad. RT I 2018-04-04 4 104042018004 2018-04-07 12",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -205,7 +369,25 @@
         {
           "@id": "estleg:Reg_1027264_Par_4_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettevõte peab tagama ravimikvaliteedi süsteemi toimimise, milles osalevad nii ettevõtte juhtkond kui ka allüksuste töötajad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1027264_Par_5",
@@ -214,13 +396,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Personal",
+      "rdfs:label": {
+        "@value": "§ 5. Personal",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ravimikvaliteedi süsteemi eesmärkide täitmiseks peab ravimite tootmiskohas või impordiga seotud kohas olema piisav arv vajaliku kvalifikatsiooni ja praktilise kogemusega töötajaid. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ravimikvaliteedi süsteemi eesmärkide täitmiseks peab ravimite tootmiskohas või impordiga seotud kohas olema piisav arv vajaliku kvalifikatsiooni ja praktilise kogemusega töötajaid. 2 (2) Iga töötaja vastutusala peab olema dokumenteeritud ja temale selgelt arusaadav. V",
-      "estleg:legalText": "1 (1) Ravimikvaliteedi süsteemi eesmärkide täitmiseks peab ravimite tootmiskohas või impordiga seotud kohas olema piisav arv vajaliku kvalifikatsiooni ja praktilise kogemusega töötajaid. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ravimikvaliteedi süsteemi eesmärkide täitmiseks peab ravimite tootmiskohas või impordiga seotud kohas olema piisav arv vajaliku kvalifikatsiooni ja praktilise kogemusega töötajaid. 2 (2) Iga töötaja vastutusala peab olema dokumenteeritud ja temale selgelt arusaadav. Vastutavate töötajate kohustused peavad olema dokumenteeritud ametijuhendis. Vastutavale töötajale peab organisatsioonis olema antud piisavalt õigusi, et talle antud kohustusi täita. Vastutava töötaja puudumist ja töötajate vastutusalade põhjendamatut kattumist tuleb vältida. Töötajate alluvussuhted peavad olema ettevõtte organisatsioonikaardil näidatud. Organisatsioonikaart ja ametijuhendid peavad olema kinnitatud ettevõtte protseduuride kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 Iga töötaja vastutusala peab olema dokumenteeritud ja temale selgelt arusaadav. Vastutavate töötajate kohustused peavad olema dokumenteeritud ametijuhendis. Vastutavale töötajale peab organisatsioonis olema antud piisavalt õigusi, et talle antud kohustusi täita. Vastutava töötaja puudumist ja töötajate vastutusalade põhjendamatut kattumist tuleb vältida. Töötajate alluvussuhted peavad olema ettevõtte organisatsioonikaardil näidatud. Organisatsioonikaart ja ametijuhendid peavad olema kinnitatud ettevõtte protseduuride kohaselt. 3 (3) Iga töötaja peab olema teadlik tema vastutusala puudutavatest heade tootmistavade nõuetest, läbima tema vastutusalale vastava sissejuhatava koolituse ning saama regulaarselt täiendkoolitust. Koolituste toimumine ja tulemuslikkus peab olema kontrollitav. Iga töötaja peab olema teadlik tema vastutusala puudutavatest heade tootmistavade nõuetest, läbima tema vastutusalale vastava sissejuhatava koolituse ning saama regulaarselt täiendkoolitust. Koolituste toimumine ja tulemuslikkus peab olema kontrollitav. 4 (4) Ettevõttes peavad olema kehtestatud tootmisprotsessile vastavad hügieeniprogrammid, mis hõlmavad töötajate tervise, hügieeniharjumuste ja riietusega seonduvaid protseduure. Ettevõttes peavad olema kehtestatud tootmisprotsessile vastavad hügieeniprogrammid, mis hõlmavad töötajate tervise, hügieeniharjumuste ja riietusega seonduvaid protseduure.",
+      "estleg:summary": {
+        "@value": "1 (1) Ravimikvaliteedi süsteemi eesmärkide täitmiseks peab ravimite tootmiskohas või impordiga seotud kohas olema piisav arv vajaliku kvalifikatsiooni ja praktilise kogemusega töötajaid. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Iga töötaja vastutusala peab olema dokumenteeritud ja temale selgelt arusaadav. Vastutavate töötajate kohustused peavad olema dokumenteeritud ametijuhendis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ravimikvaliteedi süsteemi eesmärkide täitmiseks peab ravimite tootmiskohas või impordiga seotud kohas olema piisav arv vajaliku kvalifikatsiooni ja praktilise kogemusega töötajaid. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Iga töötaja vastutusala peab olema dokumenteeritud ja temale selgelt arusaadav. Vastutavate töötajate kohustused peavad olema dokumenteeritud ametijuhendis. Vastutavale töötajale peab organisatsioonis olema antud piisavalt õigusi, et talle antud kohustusi täita. Vastutava töötaja puudumist ja töötajate vastutusalade põhjendamatut kattumist tuleb vältida. Töötajate alluvussuhted peavad olema ettevõtte organisatsioonikaardil näidatud. Organisatsioonikaart ja ametijuhendid peavad olema kinnitatud ettevõtte protseduuride kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 3 (3) Iga töötaja peab olema teadlik tema vastutusala puudutavatest heade tootmistavade nõuetest, läbima tema vastutusalale vastava sissejuhatava koolituse ning saama regulaarselt täiendkoolitust. Koolituste toimumine ja tulemuslikkus peab olema kontrollitav. 4 (4) Ettevõttes peavad olema kehtestatud tootmisprotsessile vastavad hügieeniprogrammid, mis hõlmavad töötajate tervise, hügieeniharjumuste ja riietusega seonduvaid protseduure.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -237,7 +425,73 @@
         {
           "@id": "estleg:Reg_1027264_Par_5_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_5_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ravimikvaliteedi süsteemi eesmärkide täitmiseks peab ravimite tootmiskohas või impordiga seotud kohas olema piisav arv vajaliku kvalifikatsiooni ja praktilise kogemusega töötajaid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Iga töötaja vastutusala peab olema dokumenteeritud ja temale selgelt arusaadav. Vastutavate töötajate kohustused peavad olema dokumenteeritud ametijuhendis. Vastutavale töötajale peab organisatsioonis olema antud piisavalt õigusi, et talle antud kohustusi täita. Vastutava töötaja puudumist ja töötajate vastutusalade põhjendamatut kattumist tuleb vältida. Töötajate alluvussuhted peavad olema ettevõtte organisatsioonikaardil näidatud. Organisatsioonikaart ja ametijuhendid peavad olema kinnitatud ettevõtte protseduuride kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Iga töötaja peab olema teadlik tema vastutusala puudutavatest heade tootmistavade nõuetest, läbima tema vastutusalale vastava sissejuhatava koolituse ning saama regulaarselt täiendkoolitust. Koolituste toimumine ja tulemuslikkus peab olema kontrollitav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ettevõttes peavad olema kehtestatud tootmisprotsessile vastavad hügieeniprogrammid, mis hõlmavad töötajate tervise, hügieeniharjumuste ja riietusega seonduvaid protseduure.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     },
     {
       "@id": "estleg:Reg_1027264_Par_6",
@@ -246,13 +500,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Ruumid ja seadmed",
+      "rdfs:label": {
+        "@value": "§ 6. Ruumid ja seadmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ruumide ja seadmete asukoht, disain, konstruktsioon, kohandamine, kasutamine ja hooldamine peavad vastama tootmisoperatsioonidele ning maksimaalselt vältima defektide teket ja materjalide või toodete kahjustumist, saastumist või ristsaastumist, mis võib avaldada kahjulikku mõju ravimite kvaliteedile. Ruumide ja seadmete asukoht, disain, konstruktsioon, kohandamine, kasutamine ja hooldamine peavad vastama tootmisoperatsioonidele ning maksimaalselt vältima defektide teket ja materjalide või ",
-      "estleg:legalText": "1 (1) Ruumide ja seadmete asukoht, disain, konstruktsioon, kohandamine, kasutamine ja hooldamine peavad vastama tootmisoperatsioonidele ning maksimaalselt vältima defektide teket ja materjalide või toodete kahjustumist, saastumist või ristsaastumist, mis võib avaldada kahjulikku mõju ravimite kvaliteedile. Ruumide ja seadmete asukoht, disain, konstruktsioon, kohandamine, kasutamine ja hooldamine peavad vastama tootmisoperatsioonidele ning maksimaalselt vältima defektide teket ja materjalide või toodete kahjustumist, saastumist või ristsaastumist, mis võib avaldada kahjulikku mõju ravimite kvaliteedile. 2 (2) Ruumidele ja seadmetele peavad juurde pääsema vaid asjakohased töötajad. Ruumidele ja seadmetele peavad juurde pääsema vaid asjakohased töötajad. 3 (3) Tootmis- või imporditegevuseks kasutatavad tööruumid ja seadmed peavad olema vastavalt kvalifitseeritud ja valideeritud. Ruumidele tuleb määrata puhtusklass ning sellele vastavust regulaarselt kontrollida. RT I 2018-04-04 4 104042018004 2018-04-07 12 Tootmis- või imporditegevuseks kasutatavad tööruumid ja seadmed peavad olema vastavalt kvalifitseeritud ja valideeritud. Ruumidele tuleb määrata puhtusklass ning sellele vastavust regulaarselt kontrollida.",
+      "estleg:summary": {
+        "@value": "1 (1) Ruumide ja seadmete asukoht, disain, konstruktsioon, kohandamine, kasutamine ja hooldamine peavad vastama tootmisoperatsioonidele ning maksimaalselt vältima defektide teket ja materjalide või toodete kahjustumist, saastumist või ristsaastumist, mis võib avaldada kahjulikku mõju ravimite kvaliteedile. 2 (2) Ruumidele ja seadmetele peavad juurde pääsema vaid asjakohased töötajad.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ruumide ja seadmete asukoht, disain, konstruktsioon, kohandamine, kasutamine ja hooldamine peavad vastama tootmisoperatsioonidele ning maksimaalselt vältima defektide teket ja materjalide või toodete kahjustumist, saastumist või ristsaastumist, mis võib avaldada kahjulikku mõju ravimite kvaliteedile. 2 (2) Ruumidele ja seadmetele peavad juurde pääsema vaid asjakohased töötajad. 3 (3) Tootmis- või imporditegevuseks kasutatavad tööruumid ja seadmed peavad olema vastavalt kvalifitseeritud ja valideeritud. Ruumidele tuleb määrata puhtusklass ning sellele vastavust regulaarselt kontrollida. RT I 2018-04-04 4 104042018004 2018-04-07 12",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -274,7 +534,57 @@
         {
           "@id": "estleg:Reg_1027264_Par_6_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_6_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ruumide ja seadmete asukoht, disain, konstruktsioon, kohandamine, kasutamine ja hooldamine peavad vastama tootmisoperatsioonidele ning maksimaalselt vältima defektide teket ja materjalide või toodete kahjustumist, saastumist või ristsaastumist, mis võib avaldada kahjulikku mõju ravimite kvaliteedile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ruumidele ja seadmetele peavad juurde pääsema vaid asjakohased töötajad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tootmis- või imporditegevuseks kasutatavad tööruumid ja seadmed peavad olema vastavalt kvalifitseeritud ja valideeritud. Ruumidele tuleb määrata puhtusklass ning sellele vastavust regulaarselt kontrollida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
     },
     {
       "@id": "estleg:Reg_1027264_Par_7",
@@ -283,13 +593,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Dokumentatsioon",
+      "rdfs:label": {
+        "@value": "§ 7. Dokumentatsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ettevõte peab looma dokumendisüsteemi, mis põhineb spetsifikatsioonidel, tootmiseeskirjadel, töötlemis- ja pakendusjuhenditel ning korral ja andmetel, mis hõlmavad eri tootmistegevusi, ning seda süsteemi haldama. Andmeterviklus peab olema tagatud. Dokumendid peavad olema selgelt koostatud, vigadeta ja ajakohased ning kinnitatud ettevõtte protseduuride kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõte peab looma dokumendisüsteemi, mis põhineb spetsifikatsioonidel, tootmiseeski",
-      "estleg:legalText": "1 (1) Ettevõte peab looma dokumendisüsteemi, mis põhineb spetsifikatsioonidel, tootmiseeskirjadel, töötlemis- ja pakendusjuhenditel ning korral ja andmetel, mis hõlmavad eri tootmistegevusi, ning seda süsteemi haldama. Andmeterviklus peab olema tagatud. Dokumendid peavad olema selgelt koostatud, vigadeta ja ajakohased ning kinnitatud ettevõtte protseduuride kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõte peab looma dokumendisüsteemi, mis põhineb spetsifikatsioonidel, tootmiseeskirjadel, töötlemis- ja pakendusjuhenditel ning korral ja andmetel, mis hõlmavad eri tootmistegevusi, ning seda süsteemi haldama. Andmeterviklus peab olema tagatud. Dokumendid peavad olema selgelt koostatud, vigadeta ja ajakohased ning kinnitatud ettevõtte protseduuride kohaselt. 2 (2) Enne tootmistoimingute alustamist peavad olema kehtestatud tootmisoperatsioonide ja -tingimuste üldprotseduurid ning dokumendid partiipõhiseks tootmiseks. Iga partii tootmise käik peab olema dokumentides jälgitav. RT I 2018-04-04 4 104042018004 2018-04-07 12 Enne tootmistoimingute alustamist peavad olema kehtestatud tootmisoperatsioonide ja -tingimuste üldprotseduurid ning dokumendid partiipõhiseks tootmiseks. Iga partii tootmise käik peab olema dokumentides jälgitav. 3 (3) Uuringuravimi arenduses tehtud muudatused ja tootmisprotsessi kavandamine peavad olema dokumentatsioonis jälgitavad. Uuringuravimi arenduses tehtud muudatused ja tootmisprotsessi kavandamine peavad olema dokumentatsioonis jälgitavad. 4 (4) Ravimi partii tootmisega seotud dokumente tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt viis aastat pärast partii vabastamist (sertifitseerimist), lähtudes pikemast tähtajast. Uuringuravimi partii dokumente tuleb säilitada vähemalt viis aastat pärast uuringu lõppemist või katkestamist, milles seda partiid kasutati. Sponsor või müügiloa hoidja peavad tagama vajalike dokumentide ja andmete säilitamise müügiloa taotlemise jaoks ning need tuleb nõudmisel esitada Ravimiametile. Ravimi partii tootmisega seotud dokumente tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt viis aastat pärast partii vabastamist (sertifitseerimist), lähtudes pikemast tähtajast. Uuringuravimi partii dokumente tuleb säilitada vähemalt viis aastat pärast uuringu lõppemist või katkestamist, milles seda partiid kasutati. Sponsor või müügiloa hoidja peavad tagama vajalike dokumentide ja andmete säilitamise müügiloa taotlemise jaoks ning need tuleb nõudmisel esitada Ravimiametile. 5 (5) Dokumentatsioon võib olla paberkandjal, elektrooniline, fotograafiline või muul kujul, kuid peab olema tagatud selles esitatud andmete säilimine ettenähtud aja jooksul ning andmete loetavus. Kui kirjalike dokumentide asemel kasutatakse elektroonilisi, fotograafilisi või muid andmesüsteeme, peavad need süsteemid olema valideeritud. Elektrooniliselt säilitatavaid andmeid tuleb dubleerimisega, teise andmesüsteemi siirdamisega või muul moel hävimise eest täiendavalt kaitsta. Elektrooniliselt säilitatavatele andmetele juurdepääs selleks õigustamata isikutele tuleb välistada. Muudatuste tegemine dokumentatsioonis peab olema jälgitav. RT I 2018-04-04 4 104042018004 2018-04-07 12 Dokumentatsioon võib olla paberkandjal, elektrooniline, fotograafiline või muul kujul, kuid peab olema tagatud selles esitatud andmete säilimine ettenähtud aja jooksul ning andmete loetavus. Kui kirjalike dokumentide asemel kasutatakse elektroonilisi, fotograafilisi või muid andmesüsteeme, peavad need süsteemid olema valideeritud. Elektrooniliselt säilitatavaid andmeid tuleb dubleerimisega, teise andmesüsteemi siirdamisega või muul moel hävimise eest täiendavalt kaitsta. Elektrooniliselt säilitatavatele andmetele juurdepääs selleks õigustamata isikutele tuleb välistada. Muudatuste tegemine dokumentatsioonis peab olema jälgitav.",
+      "estleg:summary": {
+        "@value": "1 (1) Ettevõte peab looma dokumendisüsteemi, mis põhineb spetsifikatsioonidel, tootmiseeskirjadel, töötlemis- ja pakendusjuhenditel ning korral ja andmetel, mis hõlmavad eri tootmistegevusi, ning seda süsteemi haldama. Andmeterviklus peab olema tagatud. Dokumendid peavad olema selgelt koostatud, vigadeta ja ajakohased ning kinnitatud ettevõtte protseduuride kohaselt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ettevõte peab looma dokumendisüsteemi, mis põhineb spetsifikatsioonidel, tootmiseeskirjadel, töötlemis- ja pakendusjuhenditel ning korral ja andmetel, mis hõlmavad eri tootmistegevusi, ning seda süsteemi haldama. Andmeterviklus peab olema tagatud. Dokumendid peavad olema selgelt koostatud, vigadeta ja ajakohased ning kinnitatud ettevõtte protseduuride kohaselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Enne tootmistoimingute alustamist peavad olema kehtestatud tootmisoperatsioonide ja -tingimuste üldprotseduurid ning dokumendid partiipõhiseks tootmiseks. Iga partii tootmise käik peab olema dokumentides jälgitav. RT I 2018-04-04 4 104042018004 2018-04-07 12 3 (3) Uuringuravimi arenduses tehtud muudatused ja tootmisprotsessi kavandamine peavad olema dokumentatsioonis jälgitavad. 4 (4) Ravimi partii tootmisega seotud dokumente tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt viis aastat pärast partii vabastamist (sertifitseerimist), lähtudes pikemast tähtajast. Uuringuravimi partii dokumente tuleb säilitada vähemalt viis aastat pärast uuringu lõppemist või katkestamist, milles seda partiid kasutati. Sponsor või müügiloa hoidja peavad tagama vajalike dokumentide ja andmete säilitamise müügiloa taotlemise jaoks ning need tuleb nõudmisel esitada Ravimiametile. 5 (5) Dokumentatsioon võib olla paberkandjal, elektrooniline, fotograafiline või muul kujul, kuid peab olema tagatud selles esitatud andmete säilimine ettenähtud aja jooksul ning andmete loetavus. Kui kirjalike dokumentide asemel kasutatakse elektroonilisi, fotograafilisi või muid andmesüsteeme, peavad need süsteemid olema valideeritud. Elektrooniliselt säilitatavaid andmeid tuleb dubleerimisega, teise andmesüsteemi siirdamisega või muul moel hävimise eest täiendavalt kaitsta. Elektrooniliselt säilitatavatele andmetele juurdepääs selleks õigustamata isikutele tuleb välistada. Muudatuste tegemine dokumentatsioonis peab olema jälgitav. RT I 2018-04-04 4 104042018004 2018-04-07 12",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -316,7 +632,89 @@
         {
           "@id": "estleg:Institution_ravimiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_7_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettevõte peab looma dokumendisüsteemi, mis põhineb spetsifikatsioonidel, tootmiseeskirjadel, töötlemis- ja pakendusjuhenditel ning korral ja andmetel, mis hõlmavad eri tootmistegevusi, ning seda süsteemi haldama. Andmeterviklus peab olema tagatud. Dokumendid peavad olema selgelt koostatud, vigadeta ja ajakohased ning kinnitatud ettevõtte protseduuride kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne tootmistoimingute alustamist peavad olema kehtestatud tootmisoperatsioonide ja -tingimuste üldprotseduurid ning dokumendid partiipõhiseks tootmiseks. Iga partii tootmise käik peab olema dokumentides jälgitav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Uuringuravimi arenduses tehtud muudatused ja tootmisprotsessi kavandamine peavad olema dokumentatsioonis jälgitavad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ravimi partii tootmisega seotud dokumente tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt viis aastat pärast partii vabastamist (sertifitseerimist), lähtudes pikemast tähtajast. Uuringuravimi partii dokumente tuleb säilitada vähemalt viis aastat pärast uuringu lõppemist või katkestamist, milles seda partiid kasutati. Sponsor või müügiloa hoidja peavad tagama vajalike dokumentide ja andmete säilitamise müügiloa taotlemise jaoks ning need tuleb nõudmisel esitada Ravimiametile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Dokumentatsioon võib olla paberkandjal, elektrooniline, fotograafiline või muul kujul, kuid peab olema tagatud selles esitatud andmete säilimine ettenähtud aja jooksul ning andmete loetavus. Kui kirjalike dokumentide asemel kasutatakse elektroonilisi, fotograafilisi või muid andmesüsteeme, peavad need süsteemid olema valideeritud. Elektrooniliselt säilitatavaid andmeid tuleb dubleerimisega, teise andmesüsteemi siirdamisega või muul moel hävimise eest täiendavalt kaitsta. Elektrooniliselt säilitatavatele andmetele juurdepääs selleks õigustamata isikutele tuleb välistada. Muudatuste tegemine dokumentatsioonis peab olema jälgitav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
     },
     {
       "@id": "estleg:Reg_1027264_Par_8",
@@ -325,13 +723,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Tootmine",
+      "rdfs:label": {
+        "@value": "§ 8. Tootmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Kõik tootmisoperatsioonid peavad vastama eelnevalt kinnitatud juhistele, protseduurireeglitele ja tööeeskirjadele ning järgima heade tootmistavade nõudeid. Kõik tootmisoperatsioonid peavad vastama eelnevalt kinnitatud juhistele, protseduurireeglitele ja tööeeskirjadele ning järgima heade tootmistavade nõudeid. 2 (2) Ettevõttes peavad olema sobivad ja töökorras seadmed ning vahendid protsessisisesteks kontrollideks. Kõik kõrvalekalded ettenähtud protsessist ja vead tuleb dokumenteerida ning",
-      "estleg:legalText": "1 (1) Kõik tootmisoperatsioonid peavad vastama eelnevalt kinnitatud juhistele, protseduurireeglitele ja tööeeskirjadele ning järgima heade tootmistavade nõudeid. Kõik tootmisoperatsioonid peavad vastama eelnevalt kinnitatud juhistele, protseduurireeglitele ja tööeeskirjadele ning järgima heade tootmistavade nõudeid. 2 (2) Ettevõttes peavad olema sobivad ja töökorras seadmed ning vahendid protsessisisesteks kontrollideks. Kõik kõrvalekalded ettenähtud protsessist ja vead tuleb dokumenteerida ning neid tuleb põhjalikult uurida. Ettevõttes peavad olema sobivad ja töökorras seadmed ning vahendid protsessisisesteks kontrollideks. Kõik kõrvalekalded ettenähtud protsessist ja vead tuleb dokumenteerida ning neid tuleb põhjalikult uurida. 3 (3) Ettevõttes tuleb võtta piisavaid tehnilisi ja organisatoorseid meetmeid materjalide ja toodete segiajamise ning ristsaastumise välistamiseks. Uuringuravimite korral tuleb võtta lisameetmeid ravimite käitlemiseks pimemenetluses ja selle järgselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõttes tuleb võtta piisavaid tehnilisi ja organisatoorseid meetmeid materjalide ja toodete segiajamise ning ristsaastumise välistamiseks. Uuringuravimite korral tuleb võtta lisameetmeid ravimite käitlemiseks pimemenetluses ja selle järgselt. 4 (4) Enne uue tootmisprotsessi juurutamist või tootmisprotsessis oluliste muudatuste tegemist tuleb tõendada selle sobivust ettenähtud kvaliteediga toodangu järjepidevaks saamiseks. Kõik uued tootmisviisid või olulised muudatused ravimi tootmise protsessis valideeritakse. Tootmisprotsesside olulisi etappe valideeritakse korrapäraselt uuesti. Protsesside valideerimine tuleb dokumenteerida. RT I 2018-04-04 4 104042018004 2018-04-07 12 Enne uue tootmisprotsessi juurutamist või tootmisprotsessis oluliste muudatuste tegemist tuleb tõendada selle sobivust ettenähtud kvaliteediga toodangu järjepidevaks saamiseks. Kõik uued tootmisviisid või olulised muudatused ravimi tootmise protsessis valideeritakse. Tootmisprotsesside olulisi etappe valideeritakse korrapäraselt uuesti. Protsesside valideerimine tuleb dokumenteerida. 5 (5) Ravimi pakendi turvaelemente võib osaliselt või täielikult eemaldada või katta ainult järgmistel tingimustel: 1 1) eelnevalt kontrollitakse, et ravim on ehtne ja seda ei ole rikutud; 2 2) turvaelemendid asendatakse võrdväärsete uute elementidega. Turvaelemendid loetakse võrdväärseteks, kui need võimaldavad teha sama tõhusalt kindlaks ravimi ehtsust ja identsust, tõendada ravimi rikkumist ning vastavad Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ artikli 54a lõikes 2 osutatud eeskirjadele 2001/83/EÜ; 3 3) toiming on dokumenteeritud; RT I 2019-02-06 1 106022019001 2019-02-09 4 4) pakendi rikkumisvastase seadme asendamisel tuleb ravimi saajale edastada teave asendamise kohta. RT I 2019-02-06 1 106022019001 2019-02-09 Ravimi pakendi turvaelemente võib osaliselt või täielikult eemaldada või katta ainult järgmistel tingimustel: eelnevalt kontrollitakse, et ravim on ehtne ja seda ei ole rikutud; turvaelemendid asendatakse võrdväärsete uute elementidega. Turvaelemendid loetakse võrdväärseteks, kui need võimaldavad teha sama tõhusalt kindlaks ravimi ehtsust ja identsust, tõendada ravimi rikkumist ning vastavad Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ artikli 54a lõikes 2 osutatud eeskirjadele 2001/83/EÜ; toiming on dokumenteeritud; pakendi rikkumisvastase seadme asendamisel tuleb ravimi saajale edastada teave asendamise kohta.",
+      "estleg:summary": {
+        "@value": "1 (1) Kõik tootmisoperatsioonid peavad vastama eelnevalt kinnitatud juhistele, protseduurireeglitele ja tööeeskirjadele ning järgima heade tootmistavade nõudeid. 2 (2) Ettevõttes peavad olema sobivad ja töökorras seadmed ning vahendid protsessisisesteks kontrollideks. Kõik kõrvalekalded ettenähtud protsessist ja vead tuleb dokumenteerida ning neid tuleb põhjalikult uurida.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kõik tootmisoperatsioonid peavad vastama eelnevalt kinnitatud juhistele, protseduurireeglitele ja tööeeskirjadele ning järgima heade tootmistavade nõudeid. 2 (2) Ettevõttes peavad olema sobivad ja töökorras seadmed ning vahendid protsessisisesteks kontrollideks. Kõik kõrvalekalded ettenähtud protsessist ja vead tuleb dokumenteerida ning neid tuleb põhjalikult uurida. 3 (3) Ettevõttes tuleb võtta piisavaid tehnilisi ja organisatoorseid meetmeid materjalide ja toodete segiajamise ning ristsaastumise välistamiseks. Uuringuravimite korral tuleb võtta lisameetmeid ravimite käitlemiseks pimemenetluses ja selle järgselt. RT I 2018-04-04 4 104042018004 2018-04-07 12 4 (4) Enne uue tootmisprotsessi juurutamist või tootmisprotsessis oluliste muudatuste tegemist tuleb tõendada selle sobivust ettenähtud kvaliteediga toodangu järjepidevaks saamiseks. Kõik uued tootmisviisid või olulised muudatused ravimi tootmise protsessis valideeritakse. Tootmisprotsesside olulisi etappe valideeritakse korrapäraselt uuesti. Protsesside valideerimine tuleb dokumenteerida. RT I 2018-04-04 4 104042018004 2018-04-07 12 5 (5) Ravimi pakendi turvaelemente võib osaliselt või täielikult eemaldada või katta ainult järgmistel tingimustel: 1 1) eelnevalt kontrollitakse, et ravim on ehtne ja seda ei ole rikutud; 2 2) turvaelemendid asendatakse võrdväärsete uute elementidega. Turvaelemendid loetakse võrdväärseteks, kui need võimaldavad teha sama tõhusalt kindlaks ravimi ehtsust ja identsust, tõendada ravimi rikkumist ning vastavad Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ artikli 54a lõikes 2 osutatud eeskirjadele 2001/83/EÜ; 3 3) toiming on dokumenteeritud; RT I 2019-02-06 1 106022019001 2019-02-09 4 4) pakendi rikkumisvastase seadme asendamisel tuleb ravimi saajale edastada teave asendamise kohta. RT I 2019-02-06 1 106022019001 2019-02-09",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -343,6 +747,94 @@
         {
           "@id": "estleg:Reg_1027264_Par_8_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_8_Lg_5"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kõik tootmisoperatsioonid peavad vastama eelnevalt kinnitatud juhistele, protseduurireeglitele ja tööeeskirjadele ning järgima heade tootmistavade nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ettevõttes peavad olema sobivad ja töökorras seadmed ning vahendid protsessisisesteks kontrollideks. Kõik kõrvalekalded ettenähtud protsessist ja vead tuleb dokumenteerida ning neid tuleb põhjalikult uurida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ettevõttes tuleb võtta piisavaid tehnilisi ja organisatoorseid meetmeid materjalide ja toodete segiajamise ning ristsaastumise välistamiseks. Uuringuravimite korral tuleb võtta lisameetmeid ravimite käitlemiseks pimemenetluses ja selle järgselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Enne uue tootmisprotsessi juurutamist või tootmisprotsessis oluliste muudatuste tegemist tuleb tõendada selle sobivust ettenähtud kvaliteediga toodangu järjepidevaks saamiseks. Kõik uued tootmisviisid või olulised muudatused ravimi tootmise protsessis valideeritakse. Tootmisprotsesside olulisi etappe valideeritakse korrapäraselt uuesti. Protsesside valideerimine tuleb dokumenteerida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_8_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Ravimi pakendi turvaelemente võib osaliselt või täielikult eemaldada või katta ainult järgmistel tingimustel: 1) eelnevalt kontrollitakse, et ravim on ehtne ja seda ei ole rikutud; 2) turvaelemendid asendatakse võrdväärsete uute elementidega. Turvaelemendid loetakse võrdväärseteks, kui need võimaldavad teha sama tõhusalt kindlaks ravimi ehtsust ja identsust, tõendada ravimi rikkumist ning vastavad Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ artikli 54a lõikes 2 osutatud eeskirjadele 2001/83/EÜ; 3) toiming on dokumenteeritud; 4) pakendi rikkumisvastase seadme asendamisel tuleb ravimi saajale edastada teave asendamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -352,13 +844,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Kvaliteedi kontrollimine",
+      "rdfs:label": {
+        "@value": "§ 9. Kvaliteedi kontrollimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ettevõttes peab olema kvaliteedikontrolli üksus, mis on tootmisüksustest sõltumatu. Üksuse töö eest peab vastutama sobiva kvalifikatsiooniga töötaja, kelle kasutuses on üks või mitu piisava varustusega kontrollilaborit lähtematerjali, pakendi materjali, vahe- ja valmistoodete uurimiseks ja testimiseks. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõttes peab olema kvaliteedikontrolli üksus, mis on tootmisüksustest sõltumatu. Üksuse töö eest peab vastutama sobiva kvalifikatsiooniga tööt",
-      "estleg:legalText": "1 (1) Ettevõttes peab olema kvaliteedikontrolli üksus, mis on tootmisüksustest sõltumatu. Üksuse töö eest peab vastutama sobiva kvalifikatsiooniga töötaja, kelle kasutuses on üks või mitu piisava varustusega kontrollilaborit lähtematerjali, pakendi materjali, vahe- ja valmistoodete uurimiseks ja testimiseks. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõttes peab olema kvaliteedikontrolli üksus, mis on tootmisüksustest sõltumatu. Üksuse töö eest peab vastutama sobiva kvalifikatsiooniga töötaja, kelle kasutuses on üks või mitu piisava varustusega kontrollilaborit lähtematerjali, pakendi materjali, vahe- ja valmistoodete uurimiseks ja testimiseks. 2 (2) Põhjendatud juhtudel, sealhulgas materjalide või toodete impordi korral võib kasutada ettevõtteväliseid laboreid, kooskõlas tellimustööde nõuete ja ravimi müügiloaga. Uuringuravimi korral peab uuringu sponsor tagama tellimustöö vastavuse uuringu loale. Uuringuravimi importimisel ei ole selle analüütiline kontroll kohustuslik. Põhjendatud juhtudel, sealhulgas materjalide või toodete impordi korral võib kasutada ettevõtteväliseid laboreid, kooskõlas tellimustööde nõuete ja ravimi müügiloaga. Uuringuravimi korral peab uuringu sponsor tagama tellimustöö vastavuse uuringu loale. Uuringuravimi importimisel ei ole selle analüütiline kontroll kohustuslik. 3 (3) Valmistoote hindamine enne partii vabastamist turustamiseks või kliinilises uuringus kasutamiseks peab hõlmama kõiki asjakohaste tegurite, sealhulgas analüütilise kontrolli tulemuste ja valmistoote kvaliteedinõuetele vastavuse, tootmistingimuste, protsessisiseste kontrollide tulemuste, tootmise (kaasa arvatud pakendamise) dokumentatsiooni ning lõpp-pakendi ülevaatust. Valmistoote hindamine enne partii vabastamist turustamiseks või kliinilises uuringus kasutamiseks peab hõlmama kõiki asjakohaste tegurite, sealhulgas analüütilise kontrolli tulemuste ja valmistoote kvaliteedinõuetele vastavuse, tootmistingimuste, protsessisiseste kontrollide tulemuste, tootmise (kaasa arvatud pakendamise) dokumentatsiooni ning lõpp-pakendi ülevaatust. 4 (4) Valmistoote partii võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist. Uuringuravimi korral tuleb säilitada ka piisavat kogust võrdlusnäidiseid igast valmistoote partii jaoks kasutatud hulgitoote partiist ja olulistest pakendi materjalidest. Uuringuravimi võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt kaks aastat pärast uuringu lõppemist või katkestamist, lähtudes pikemast tähtajast. Valmistoote partii võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist. Uuringuravimi korral tuleb säilitada ka piisavat kogust võrdlusnäidiseid igast valmistoote partii jaoks kasutatud hulgitoote partiist ja olulistest pakendi materjalidest. Uuringuravimi võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt kaks aastat pärast uuringu lõppemist või katkestamist, lähtudes pikemast tähtajast. 5 (5) Tootmises kasutatud lähtematerjalide võrdlusproove (välja arvatud lahustite, gaaside ja vee proovid) tuleb säilitada vähemalt kaks aastat pärast ravimi partii vabastamist. Säilitamise aeg võib olla lühem, kui tooteeristuses nimetatud säilivusaeg on lühem. Tootmises kasutatud lähtematerjalide võrdlusproove (välja arvatud lahustite, gaaside ja vee proovid) tuleb säilitada vähemalt kaks aastat pärast ravimi partii vabastamist. Säilitamise aeg võib olla lühem, kui tooteeristuses nimetatud säilivusaeg on lühem. 6 (6) Võrdlusnäidised ja võrdlusproovid peavad olema Ravimiametile kättesaadavad. Ravimiametiga kooskõlastatult võib lähtematerjalide ja teatud toodete võrdlusnäidistele ja -proovidele kehtestada teistsuguseid säilitamise tingimusi, kui ravim on toodetud eritellimusel või väikeses koguses või kui hoidmiseks on vaja eritingimusi. Võrdlusnäidised ja võrdlusproovid peavad olema Ravimiametile kättesaadavad. Ravimiametiga kooskõlastatult võib lähtematerjalide ja teatud toodete võrdlusnäidistele ja -proovidele kehtestada teistsuguseid säilitamise tingimusi, kui ravim on toodetud eritellimusel või väikeses koguses või kui hoidmiseks on vaja eritingimusi.",
+      "estleg:summary": {
+        "@value": "1 (1) Ettevõttes peab olema kvaliteedikontrolli üksus, mis on tootmisüksustest sõltumatu. Üksuse töö eest peab vastutama sobiva kvalifikatsiooniga töötaja, kelle kasutuses on üks või mitu piisava varustusega kontrollilaborit lähtematerjali, pakendi materjali, vahe- ja valmistoodete uurimiseks ja testimiseks. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Põhjendatud juhtudel, sealhulgas materjalide või toodete impordi korral võib kasutada ettevõtteväliseid laboreid, kooskõlas tellimustööde…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ettevõttes peab olema kvaliteedikontrolli üksus, mis on tootmisüksustest sõltumatu. Üksuse töö eest peab vastutama sobiva kvalifikatsiooniga töötaja, kelle kasutuses on üks või mitu piisava varustusega kontrollilaborit lähtematerjali, pakendi materjali, vahe- ja valmistoodete uurimiseks ja testimiseks. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Põhjendatud juhtudel, sealhulgas materjalide või toodete impordi korral võib kasutada ettevõtteväliseid laboreid, kooskõlas tellimustööde nõuete ja ravimi müügiloaga. Uuringuravimi korral peab uuringu sponsor tagama tellimustöö vastavuse uuringu loale. Uuringuravimi importimisel ei ole selle analüütiline kontroll kohustuslik. 3 (3) Valmistoote hindamine enne partii vabastamist turustamiseks või kliinilises uuringus kasutamiseks peab hõlmama kõiki asjakohaste tegurite, sealhulgas analüütilise kontrolli tulemuste ja valmistoote kvaliteedinõuetele vastavuse, tootmistingimuste, protsessisiseste kontrollide tulemuste, tootmise (kaasa arvatud pakendamise) dokumentatsiooni ning lõpp-pakendi ülevaatust. 4 (4) Valmistoote partii võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist. Uuringuravimi korral tuleb säilitada ka piisavat kogust võrdlusnäidiseid igast valmistoote partii jaoks kasutatud hulgitoote partiist ja olulistest pakendi materjalidest. Uuringuravimi võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt kaks aastat pärast uuringu lõppemist või katkestamist, lähtudes pikemast tähtajast. 5 (5) Tootmises kasutatud lähtematerjalide võrdlusproove (välja arvatud lahustite, gaaside ja vee proovid) tuleb säilitada vähemalt kaks aastat pärast ravimi partii vabastamist. Säilitamise aeg võib olla lühem, kui tooteeristuses nimetatud säilivusaeg on lühem. 6 (6) Võrdlusnäidised ja võrdlusproovid peavad olema Ravimiametile kättesaadavad. Ravimiametiga kooskõlastatult võib lähtematerjalide ja teatud toodete võrdlusnäidistele ja -proovidele kehtestada teistsuguseid säilitamise tingimusi, kui ravim on toodetud eritellimusel või väikeses koguses või kui hoidmiseks on vaja eritingimusi.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -380,7 +878,105 @@
         {
           "@id": "estleg:Institution_ravimiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_9_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettevõttes peab olema kvaliteedikontrolli üksus, mis on tootmisüksustest sõltumatu. Üksuse töö eest peab vastutama sobiva kvalifikatsiooniga töötaja, kelle kasutuses on üks või mitu piisava varustusega kontrollilaborit lähtematerjali, pakendi materjali, vahe- ja valmistoodete uurimiseks ja testimiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Põhjendatud juhtudel, sealhulgas materjalide või toodete impordi korral võib kasutada ettevõtteväliseid laboreid, kooskõlas tellimustööde nõuete ja ravimi müügiloaga. Uuringuravimi korral peab uuringu sponsor tagama tellimustöö vastavuse uuringu loale. Uuringuravimi importimisel ei ole selle analüütiline kontroll kohustuslik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Valmistoote hindamine enne partii vabastamist turustamiseks või kliinilises uuringus kasutamiseks peab hõlmama kõiki asjakohaste tegurite, sealhulgas analüütilise kontrolli tulemuste ja valmistoote kvaliteedinõuetele vastavuse, tootmistingimuste, protsessisiseste kontrollide tulemuste, tootmise (kaasa arvatud pakendamise) dokumentatsiooni ning lõpp-pakendi ülevaatust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Valmistoote partii võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist. Uuringuravimi korral tuleb säilitada ka piisavat kogust võrdlusnäidiseid igast valmistoote partii jaoks kasutatud hulgitoote partiist ja olulistest pakendi materjalidest. Uuringuravimi võrdlusnäidiseid tuleb säilitada vähemalt üks aasta pärast partii kõlblikkusaja möödumist või vähemalt kaks aastat pärast uuringu lõppemist või katkestamist, lähtudes pikemast tähtajast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Tootmises kasutatud lähtematerjalide võrdlusproove (välja arvatud lahustite, gaaside ja vee proovid) tuleb säilitada vähemalt kaks aastat pärast ravimi partii vabastamist. Säilitamise aeg võib olla lühem, kui tooteeristuses nimetatud säilivusaeg on lühem.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Võrdlusnäidised ja võrdlusproovid peavad olema Ravimiametile kättesaadavad. Ravimiametiga kooskõlastatult võib lähtematerjalide ja teatud toodete võrdlusnäidistele ja -proovidele kehtestada teistsuguseid säilitamise tingimusi, kui ravim on toodetud eritellimusel või väikeses koguses või kui hoidmiseks on vaja eritingimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
     },
     {
       "@id": "estleg:Reg_1027264_Par_10",
@@ -389,13 +985,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Tellimustööd",
+      "rdfs:label": {
+        "@value": "§ 10. Tellimustööd",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Tellimustööna tehtavaks tootmiseks, importimiseks, analüüsimiseks või seonduvateks tegevusteks peab olema sõlmitud kirjalik leping. RT I 2018-04-04 4 104042018004 2018-04-07 12 Tellimustööna tehtavaks tootmiseks, importimiseks, analüüsimiseks või seonduvateks tegevusteks peab olema sõlmitud kirjalik leping. 2 (2) Lepingus peavad olema selgelt sätestatud osapoolte vastutused, tellimuse täitja kohustus järgida häid tootmistavasid ning kord, mille järgi iga ravimipartiid vabastav pädev isik t",
-      "estleg:legalText": "1 (1) Tellimustööna tehtavaks tootmiseks, importimiseks, analüüsimiseks või seonduvateks tegevusteks peab olema sõlmitud kirjalik leping. RT I 2018-04-04 4 104042018004 2018-04-07 12 Tellimustööna tehtavaks tootmiseks, importimiseks, analüüsimiseks või seonduvateks tegevusteks peab olema sõlmitud kirjalik leping. 2 (2) Lepingus peavad olema selgelt sätestatud osapoolte vastutused, tellimuse täitja kohustus järgida häid tootmistavasid ning kord, mille järgi iga ravimipartiid vabastav pädev isik täidab oma kohustusi. Lepingus peavad olema selgelt sätestatud osapoolte vastutused, tellimuse täitja kohustus järgida häid tootmistavasid ning kord, mille järgi iga ravimipartiid vabastav pädev isik täidab oma kohustusi. 3 (3) Tellimuse täitja ei tohi kolmandale poolele edasi anda tööd, mis on lepinguga temale määratud, juhul kui tellija ei ole töö edasiandmist kirjalikult heaks kiitnud. Tellimuse täitja ei tohi kolmandale poolele edasi anda tööd, mis on lepinguga temale määratud, juhul kui tellija ei ole töö edasiandmist kirjalikult heaks kiitnud. 4 (4) Ettevõttevälist tootmist ja kontrollimist võib korraldada Ravimiameti loal. Ettevõttevälist tootmist ja kontrollimist võib korraldada Ravimiameti loal. 5 (5) Tellimuse täitja peab järgima häid tootmistavasid ning võimaldama järelevalve teostamist. Ravimiametil on õigus tellimuse täitjat kontrollida. Tellimuse täitja peab järgima häid tootmistavasid ning võimaldama järelevalve teostamist. Ravimiametil on õigus tellimuse täitjat kontrollida.",
+      "estleg:summary": {
+        "@value": "1 (1) Tellimustööna tehtavaks tootmiseks, importimiseks, analüüsimiseks või seonduvateks tegevusteks peab olema sõlmitud kirjalik leping. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Lepingus peavad olema selgelt sätestatud osapoolte vastutused, tellimuse täitja kohustus järgida häid tootmistavasid ning kord, mille järgi iga ravimipartiid vabastav pädev isik täidab oma kohustusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tellimustööna tehtavaks tootmiseks, importimiseks, analüüsimiseks või seonduvateks tegevusteks peab olema sõlmitud kirjalik leping. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Lepingus peavad olema selgelt sätestatud osapoolte vastutused, tellimuse täitja kohustus järgida häid tootmistavasid ning kord, mille järgi iga ravimipartiid vabastav pädev isik täidab oma kohustusi. 3 (3) Tellimuse täitja ei tohi kolmandale poolele edasi anda tööd, mis on lepinguga temale määratud, juhul kui tellija ei ole töö edasiandmist kirjalikult heaks kiitnud. 4 (4) Ettevõttevälist tootmist ja kontrollimist võib korraldada Ravimiameti loal. 5 (5) Tellimuse täitja peab järgima häid tootmistavasid ning võimaldama järelevalve teostamist. Ravimiametil on õigus tellimuse täitjat kontrollida.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -418,7 +1020,89 @@
           "@id": "estleg:Institution_ravimiamet"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_10_Lg_5"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tellimustööna tehtavaks tootmiseks, importimiseks, analüüsimiseks või seonduvateks tegevusteks peab olema sõlmitud kirjalik leping.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lepingus peavad olema selgelt sätestatud osapoolte vastutused, tellimuse täitja kohustus järgida häid tootmistavasid ning kord, mille järgi iga ravimipartiid vabastav pädev isik täidab oma kohustusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tellimuse täitja ei tohi kolmandale poolele edasi anda tööd, mis on lepinguga temale määratud, juhul kui tellija ei ole töö edasiandmist kirjalikult heaks kiitnud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ettevõttevälist tootmist ja kontrollimist võib korraldada Ravimiameti loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Tellimuse täitja peab järgima häid tootmistavasid ning võimaldama järelevalve teostamist. Ravimiametil on õigus tellimuse täitjat kontrollida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
     },
     {
       "@id": "estleg:Reg_1027264_Par_11",
@@ -427,13 +1111,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Kaebused ja ravimite tagasikutsumine",
+      "rdfs:label": {
+        "@value": "§ 11. Kaebused ja ravimite tagasikutsumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ettevõte peab kaebusi ja muud teavet võimalike defektide kohta põhjalikult uurima ja selle dokumenteerima, vastavalt ettevõttes kehtestatud protseduurireeglitele. Ettevõttes peab olema süsteem teadaoleva või kahtlustatava defektiga ravimite viivitamatuks ja efektiivseks tagasikutsumiseks turult. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõte peab kaebusi ja muud teavet võimalike defektide kohta põhjalikult uurima ja selle dokumenteerima, vastavalt ettevõttes kehtestatud protseduurir",
-      "estleg:legalText": "1 (1) Ettevõte peab kaebusi ja muud teavet võimalike defektide kohta põhjalikult uurima ja selle dokumenteerima, vastavalt ettevõttes kehtestatud protseduurireeglitele. Ettevõttes peab olema süsteem teadaoleva või kahtlustatava defektiga ravimite viivitamatuks ja efektiivseks tagasikutsumiseks turult. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõte peab kaebusi ja muud teavet võimalike defektide kohta põhjalikult uurima ja selle dokumenteerima, vastavalt ettevõttes kehtestatud protseduurireeglitele. Ettevõttes peab olema süsteem teadaoleva või kahtlustatava defektiga ravimite viivitamatuks ja efektiivseks tagasikutsumiseks turult. 2 (2) Igast defektist, mis võib viia ravimi tagasikutsumiseni või turustamise piiramiseni, tuleb viivitamata teavitada Ravimiametit ja vajaduse korral müügiloa hoidjat. Teates tuleb muu hulgas kirjeldada defekti teadaolevat või arvatavat põhjust ning nimetada riigid, kus ravimit teadaolevalt turustatakse. RT I 2018-04-04 4 104042018004 2018-04-07 12 Igast defektist, mis võib viia ravimi tagasikutsumiseni või turustamise piiramiseni, tuleb viivitamata teavitada Ravimiametit ja vajaduse korral müügiloa hoidjat. Teates tuleb muu hulgas kirjeldada defekti teadaolevat või arvatavat põhjust ning nimetada riigid, kus ravimit teadaolevalt turustatakse. 3 (3) Tagasikutsumine toimub vastavalt Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ inimtervishoius kasutatavaid ravimeid käsitlevate ühenduse eeskirjade kohta artiklis 123 osutatud nõuetele. RT I 2018-04-04 4 104042018004 2018-04-07 12 Tagasikutsumine toimub vastavalt Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ inimtervishoius kasutatavaid ravimeid käsitlevate ühenduse eeskirjade kohta artiklis 123 osutatud nõuetele.",
+      "estleg:summary": {
+        "@value": "1 (1) Ettevõte peab kaebusi ja muud teavet võimalike defektide kohta põhjalikult uurima ja selle dokumenteerima, vastavalt ettevõttes kehtestatud protseduurireeglitele. Ettevõttes peab olema süsteem teadaoleva või kahtlustatava defektiga ravimite viivitamatuks ja efektiivseks tagasikutsumiseks turult. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Igast defektist, mis võib viia ravimi tagasikutsumiseni või turustamise piiramiseni, tuleb viivitamata teavitada Ravimiametit ja vajaduse korral…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ettevõte peab kaebusi ja muud teavet võimalike defektide kohta põhjalikult uurima ja selle dokumenteerima, vastavalt ettevõttes kehtestatud protseduurireeglitele. Ettevõttes peab olema süsteem teadaoleva või kahtlustatava defektiga ravimite viivitamatuks ja efektiivseks tagasikutsumiseks turult. RT I 2018-04-04 4 104042018004 2018-04-07 12 2 (2) Igast defektist, mis võib viia ravimi tagasikutsumiseni või turustamise piiramiseni, tuleb viivitamata teavitada Ravimiametit ja vajaduse korral müügiloa hoidjat. Teates tuleb muu hulgas kirjeldada defekti teadaolevat või arvatavat põhjust ning nimetada riigid, kus ravimit teadaolevalt turustatakse. RT I 2018-04-04 4 104042018004 2018-04-07 12 3 (3) Tagasikutsumine toimub vastavalt Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ inimtervishoius kasutatavaid ravimeid käsitlevate ühenduse eeskirjade kohta artiklis 123 osutatud nõuetele. RT I 2018-04-04 4 104042018004 2018-04-07 12",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -460,7 +1150,57 @@
         {
           "@id": "estleg:Institution_ravimiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_11_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettevõte peab kaebusi ja muud teavet võimalike defektide kohta põhjalikult uurima ja selle dokumenteerima, vastavalt ettevõttes kehtestatud protseduurireeglitele. Ettevõttes peab olema süsteem teadaoleva või kahtlustatava defektiga ravimite viivitamatuks ja efektiivseks tagasikutsumiseks turult.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Igast defektist, mis võib viia ravimi tagasikutsumiseni või turustamise piiramiseni, tuleb viivitamata teavitada Ravimiametit ja vajaduse korral müügiloa hoidjat. Teates tuleb muu hulgas kirjeldada defekti teadaolevat või arvatavat põhjust ning nimetada riigid, kus ravimit teadaolevalt turustatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tagasikutsumine toimub vastavalt Euroopa Parlamendi ja nõukogu direktiivi 2001/83/EÜ inimtervishoius kasutatavaid ravimeid käsitlevate ühenduse eeskirjade kohta artiklis 123 osutatud nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
     },
     {
       "@id": "estleg:Reg_1027264_Par_12",
@@ -469,13 +1209,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Ettevõttesisene kontroll",
+      "rdfs:label": {
+        "@value": "§ 12. Ettevõttesisene kontroll",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "1 (1) Ettevõttes tuleb korraldada ettevõttesiseseid kontrollimisi, et pidevalt jälgida hea tootmistava nõuete rakendamist ja neile vastavust ning teha ettepanekuid korrigeerivate ja ennetavate meetmete võtmiseks. Ettevõttes tuleb korraldada ettevõttesiseseid kontrollimisi, et pidevalt jälgida hea tootmistava nõuete rakendamist ja neile vastavust ning teha ettepanekuid korrigeerivate ja ennetavate meetmete võtmiseks. 2 (2) Ettevõttesisesed kontrollimised ja meetmed tuleb dokumenteerida. RT I 2018",
-      "estleg:legalText": "1 (1) Ettevõttes tuleb korraldada ettevõttesiseseid kontrollimisi, et pidevalt jälgida hea tootmistava nõuete rakendamist ja neile vastavust ning teha ettepanekuid korrigeerivate ja ennetavate meetmete võtmiseks. Ettevõttes tuleb korraldada ettevõttesiseseid kontrollimisi, et pidevalt jälgida hea tootmistava nõuete rakendamist ja neile vastavust ning teha ettepanekuid korrigeerivate ja ennetavate meetmete võtmiseks. 2 (2) Ettevõttesisesed kontrollimised ja meetmed tuleb dokumenteerida. RT I 2018-04-04 4 104042018004 2018-04-07 12 Ettevõttesisesed kontrollimised ja meetmed tuleb dokumenteerida.",
+      "estleg:summary": {
+        "@value": "1 (1) Ettevõttes tuleb korraldada ettevõttesiseseid kontrollimisi, et pidevalt jälgida hea tootmistava nõuete rakendamist ja neile vastavust ning teha ettepanekuid korrigeerivate ja ennetavate meetmete võtmiseks. 2 (2) Ettevõttesisesed kontrollimised ja meetmed tuleb dokumenteerida. RT I 2018-04-04 4 104042018004 2018-04-07 12",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ettevõttes tuleb korraldada ettevõttesiseseid kontrollimisi, et pidevalt jälgida hea tootmistava nõuete rakendamist ja neile vastavust ning teha ettepanekuid korrigeerivate ja ennetavate meetmete võtmiseks. 2 (2) Ettevõttesisesed kontrollimised ja meetmed tuleb dokumenteerida. RT I 2018-04-04 4 104042018004 2018-04-07 12",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158494_Par_19"
@@ -492,7 +1238,41 @@
         {
           "@id": "estleg:Reg_1027264_Par_12_v1027264"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027264_Par_12_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettevõttes tuleb korraldada ettevõttesiseseid kontrollimisi, et pidevalt jälgida hea tootmistava nõuete rakendamist ja neile vastavust ning teha ettepanekuid korrigeerivate ja ennetavate meetmete võtmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ettevõttesisesed kontrollimised ja meetmed tuleb dokumenteerida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
     },
     {
       "@id": "estleg:Reg_1027264_Par_13",
@@ -501,16 +1281,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 13. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimite tootmise eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027264_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud.] [Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1027264_Par_13_v1027264"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027264_Par_13_Lg_1"
         }
       ]
     },
@@ -525,6 +1316,19 @@
       },
       "estleg:citationDetail": "lg 8",
       "estleg:citationText": "Määrus kehtestatakse ravimiseaduse § 16 lõike 8"
+    },
+    {
+      "@id": "estleg:Reg_1027264_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) [Käesolevast tekstist välja jäetud.]",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027264_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     }
   ]
 }

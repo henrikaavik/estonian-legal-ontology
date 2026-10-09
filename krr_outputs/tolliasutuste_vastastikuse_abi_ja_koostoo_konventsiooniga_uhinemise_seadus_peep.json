@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TVAKKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus",
       "dcterms:title": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/828999.xml"
+        "@id": "https://www.riigiteataja.ee/akt/828999"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/828999/xml"
+      },
+      "estleg:globalId": "828999",
+      "eli:id_local": "828999",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "158311",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "a4bfffa6a586fecfe15425ca4470fe78e72d77b284d3f1956c207618fbda7044",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2005-01-07",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -53,30 +74,39 @@
       ]
     },
     {
-      "@id": "estleg:TVAKKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_TVAKKU_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_TVAKKU_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–4 Lepingu sätted",
-      "skos:prefLabel": "§1–4 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–4 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TVAKKU_TopicScheme"
       },
       "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:TVAKKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TVAKKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:TVAKKU_Par_1",
@@ -85,12 +115,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Konventsiooniga ühinemine",
+      "rdfs:label": {
+        "@value": "§ 1. Konventsiooniga ühinemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TVAKKU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud Brüsselis 1997. aasta 18. detsembril.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud Brüsselis 1997. aasta 18. detsembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud Brüsselis 1997. aasta 18. detsembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TVAKKU_default"
@@ -129,10 +165,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud Brüsselis 1997. aasta 18. detsembril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud (edaspidikonventsioon), mis on koostatud Brüsselis 1997. aasta 18. detsembril.",
       "estleg:parentProvision": {
         "@id": "estleg:TVAKKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:TVAKKU_Par_2",
@@ -141,13 +179,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Deklaratsioonid",
+      "rdfs:label": {
+        "@value": "§ 2. Deklaratsioonid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TVAKKU_Map"
       },
-      "estleg:summary": "Kooskõlas konventsiooni artikli 20 lõikega 6 tehakse ühinemisel järgmised deklaratsioonid: vastavalt konventsiooni artikli 20 lõike 2 punktile a deklareerib Eesti Vabariik, et teise liikmesriigi jälitavatel ametnikel ei ole õigus Eesti Vabariigi territooriumil isikut kinni pidada; vastavalt konventsiooni artikli 20 lõikele 3 deklareerib Eesti Vabariik, et jälitus, mida jätkatakse pärast piiriületamist, ei ole ruumiliselt ega ajaliselt piiratud; vastavalt konventsiooni artikli 20 lõike 4",
-      "estleg:legalText": "Kooskõlas konventsiooni artikli 20 lõikega 6 tehakse ühinemisel järgmised deklaratsioonid: vastavalt konventsiooni artikli 20 lõike 2 punktile a deklareerib Eesti Vabariik, et teise liikmesriigi jälitavatel ametnikel ei ole õigus Eesti Vabariigi territooriumil isikut kinni pidada; vastavalt konventsiooni artikli 20 lõikele 3 deklareerib Eesti Vabariik, et jälitus, mida jätkatakse pärast piiriületamist, ei ole ruumiliselt ega ajaliselt piiratud; vastavalt konventsiooni artikli 20 lõike 4 punktile e deklareerib Eesti Vabariik, et jälitavad ametnikud võivad kanda oma teenistusrelva vastastikkuse põhimõttel; vastavalt konventsiooni artikli 26 lõikele 4 deklareerib Eesti Vabariik, et Eesti kohus võib taotleda pooleliolevas asjas Euroopa Ühenduste Kohtu eelotsust konventsiooni tõlgendamise kohta, kui Eesti kohtu arvates on tõlgendamise küsimus vaja lahendada otsuse tegemiseks; vastavalt konventsiooni artikli 32 lõikele 4 deklareerib Eesti Vabariik, et konventsiooni, välja arvatud artiklit 23, kohaldatakse Eesti Vabariigi ja samasuguse deklaratsiooni teinud liikmesriigi vahelistes suhetes.",
+      "estleg:summary": {
+        "@value": "Kooskõlas konventsiooni artikli 20 lõikega 6 tehakse ühinemisel järgmised deklaratsioonid: 1) vastavalt konventsiooni artikli 20 lõike 2 punktile a deklareerib Eesti Vabariik, et teise liikmesriigi jälitavatel ametnikel ei ole õigus Eesti Vabariigi territooriumil isikut kinni pidada; 2) vastavalt konventsiooni artikli 20 lõikele 3 deklareerib Eesti Vabariik, et jälitus, mida jätkatakse pärast piiriületamist, ei ole ruumiliselt ega ajaliselt piiratud; 3) vastavalt konventsiooni artikli 20 lõike",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kooskõlas konventsiooni artikli 20 lõikega 6 tehakse ühinemisel järgmised deklaratsioonid: 1) vastavalt konventsiooni artikli 20 lõike 2 punktile a deklareerib Eesti Vabariik, et teise liikmesriigi jälitavatel ametnikel ei ole õigus Eesti Vabariigi territooriumil isikut kinni pidada; 2) vastavalt konventsiooni artikli 20 lõikele 3 deklareerib Eesti Vabariik, et jälitus, mida jätkatakse pärast piiriületamist, ei ole ruumiliselt ega ajaliselt piiratud; 3) vastavalt konventsiooni artikli 20 lõike 4 punktile e deklareerib Eesti Vabariik, et jälitavad ametnikud võivad kanda oma teenistusrelva vastastikkuse põhimõttel; 4) vastavalt konventsiooni artikli 26 lõikele 4 deklareerib Eesti Vabariik, et Eesti kohus võib taotleda pooleliolevas asjas Euroopa Ühenduste Kohtu eelotsust konventsiooni tõlgendamise kohta, kui Eesti kohtu arvates on tõlgendamise küsimus vaja lahendada otsuse tegemiseks; 5) vastavalt konventsiooni artikli 32 lõikele 4 deklareerib Eesti Vabariik, et konventsiooni, välja arvatud artiklit 23, kohaldatakse Eesti Vabariigi ja samasuguse deklaratsiooni teinud liikmesriigi vahelistes suhetes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TVAKKU_default"
       },
@@ -185,10 +229,19 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kooskõlas konventsiooni artikli 20 lõikega 6 tehakse ühinemisel järgmised deklaratsioonid: vastavalt konventsiooni artikli 20 lõike 2 punktile a deklareerib Eesti Vabariik, et teise liikmesriigi jälitavatel ametnikel ei ole õigus Eesti Vabariigi territooriumil isikut kinni pidada; vastavalt konventsiooni artikli 20 lõikele 3 deklareerib Eesti Vabariik, et jälitus, mida jätkatakse pärast piiriületamist, ei ole ruumiliselt ega ajaliselt piiratud; vastavalt konventsiooni artikli 20 lõike 4 punktile e deklareerib Eesti Vabariik, et jälitavad ametnikud võivad kanda oma teenistusrelva vastastikkuse põhimõttel; vastavalt konventsiooni artikli 26 lõikele 4 deklareerib Eesti Vabariik, et Eesti kohus võib taotleda pooleliolevas asjas Euroopa Ühenduste Kohtu eelotsust konventsiooni tõlgendamise kohta, kui Eesti kohtu arvates on tõlgendamise küsimus vaja lahendada otsuse tegemiseks; vastavalt konventsiooni artikli 32 lõikele 4 deklareerib Eesti Vabariik, et konventsiooni, välja arvatud artiklit 23, kohaldatakse Eesti Vabariigi ja samasuguse deklaratsiooni teinud liikmesriigi vahelistes suhetes.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kooskõlas konventsiooni artikli 20 lõikega 6 tehakse ühinemisel järgmised deklaratsioonid: 1) vastavalt konventsiooni artikli 20 lõike 2 punktile a deklareerib Eesti Vabariik, et teise liikmesriigi jälitavatel ametnikel ei ole õigus Eesti Vabariigi territooriumil isikut kinni pidada; 2) vastavalt konventsiooni artikli 20 lõikele 3 deklareerib Eesti Vabariik, et jälitus, mida jätkatakse pärast piiriületamist, ei ole ruumiliselt ega ajaliselt piiratud; 3) vastavalt konventsiooni artikli 20 lõike 4 punktile e deklareerib Eesti Vabariik, et jälitavad ametnikud võivad kanda oma teenistusrelva vastastikkuse põhimõttel; 4) vastavalt konventsiooni artikli 26 lõikele 4 deklareerib Eesti Vabariik, et Eesti kohus võib taotleda pooleliolevas asjas Euroopa Ühenduste Kohtu eelotsust konventsiooni tõlgendamise kohta, kui Eesti kohtu arvates on tõlgendamise küsimus vaja lahendada otsuse tegemiseks; 5) vastavalt konventsiooni artikli 32 lõikele 4 deklareerib Eesti Vabariik, et konventsiooni, välja arvatud artiklit 23, kohaldatakse Eesti Vabariigi ja samasuguse deklaratsiooni teinud liikmesriigi vahelistes suhetes.",
       "estleg:parentProvision": {
         "@id": "estleg:TVAKKU_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -217,12 +270,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Juhtimisüksuse määramine",
+      "rdfs:label": {
+        "@value": "§ 3. Juhtimisüksuse määramine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TVAKKU_Map"
       },
-      "estleg:summary": "Maksu- ja Tolliameti peadirektoril määrata konventsiooni artikli 5 lõikes 1 nimetatud keskne juhtimisüksus.",
+      "estleg:summary": {
+        "@value": "Maksu- ja Tolliameti peadirektoril määrata konventsiooni artikli 5 lõikes 1 nimetatud keskne juhtimisüksus.",
+        "@language": "et"
+      },
       "estleg:legalText": "Maksu- ja Tolliameti peadirektoril määrata konventsiooni artikli 5 lõikes 1 nimetatud keskne juhtimisüksus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TVAKKU_default"
@@ -258,10 +317,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Maksu- ja Tolliameti peadirektoril määrata konventsiooni artikli 5 lõikes 1 nimetatud keskne juhtimisüksus.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maksu- ja Tolliameti peadirektoril määrata konventsiooni artikli 5 lõikes 1 nimetatud keskne juhtimisüksus.",
       "estleg:parentProvision": {
         "@id": "estleg:TVAKKU_Par_3"
       },
+      "rdfs:label": "§ 3 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -284,13 +345,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Pädevate asutuste määramine",
+      "rdfs:label": {
+        "@value": "§ 4. Pädevate asutuste määramine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tolliasutuste vastastikuse abi ja koostöö konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TVAKKU_Map"
       },
-      "estleg:summary": "Määrata tolliasutuste vastastikuse abi ja koostöö konventsiooni: artikli 20 lõikes 1 ja artikli 21 lõikes 1 nimetatud teabe edastajaks Maksu- ja Tolliamet; artikli 21 lõikes 1 nimetatud asutuseks, kellele saadetakse piiriülese jälgimise taotlus, Maksu- ja Tolliamet.",
-      "estleg:legalText": "Määrata tolliasutuste vastastikuse abi ja koostöö konventsiooni: artikli 20 lõikes 1 ja artikli 21 lõikes 1 nimetatud teabe edastajaks Maksu- ja Tolliamet; artikli 21 lõikes 1 nimetatud asutuseks, kellele saadetakse piiriülese jälgimise taotlus, Maksu- ja Tolliamet.",
+      "estleg:summary": {
+        "@value": "Määrata tolliasutuste vastastikuse abi ja koostöö konventsiooni: 1) artikli 20 lõikes 1 ja artikli 21 lõikes 1 nimetatud teabe edastajaks Maksu- ja Tolliamet; 2) artikli 21 lõikes 1 nimetatud asutuseks, kellele saadetakse piiriülese jälgimise taotlus, Maksu- ja Tolliamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrata tolliasutuste vastastikuse abi ja koostöö konventsiooni: 1) artikli 20 lõikes 1 ja artikli 21 lõikes 1 nimetatud teabe edastajaks Maksu- ja Tolliamet; 2) artikli 21 lõikes 1 nimetatud asutuseks, kellele saadetakse piiriülese jälgimise taotlus, Maksu- ja Tolliamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TVAKKU_default"
       },
@@ -342,10 +409,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Määrata tolliasutuste vastastikuse abi ja koostöö konventsiooni: artikli 20 lõikes 1 ja artikli 21 lõikes 1 nimetatud teabe edastajaks Maksu- ja Tolliamet; artikli 21 lõikes 1 nimetatud asutuseks, kellele saadetakse piiriülese jälgimise taotlus, Maksu- ja Tolliamet.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrata tolliasutuste vastastikuse abi ja koostöö konventsiooni: 1) artikli 20 lõikes 1 ja artikli 21 lõikes 1 nimetatud teabe edastajaks Maksu- ja Tolliamet; 2) artikli 21 lõikes 1 nimetatud asutuseks, kellele saadetakse piiriülese jälgimise taotlus, Maksu- ja Tolliamet.",
       "estleg:parentProvision": {
         "@id": "estleg:TVAKKU_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"

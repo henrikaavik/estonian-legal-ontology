@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale (määrus)",
+      "rdfs:label": {
+        "@value": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2025-09-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2025-06-17",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -90,7 +92,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2817"
         }
-      ]
+      ],
+      "dcterms:title": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1061187_Par_1",
@@ -99,18 +107,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse terviseohutuse tagamiseks nõuded balneoloogilistes protseduurides kasutatavale looduslikule meremudale, järvemudale (edaspidi koos ravimuda) ja turbale ning nende käitlemisele ja märgistamisele.",
-      "estleg:legalText": "Määrusega kehtestatakse terviseohutuse tagamiseks nõuded balneoloogilistes protseduurides kasutatavale looduslikule meremudale, järvemudale (edaspidi koos ravimuda) ja turbale ning nende käitlemisele ja märgistamisele. Määrusega kehtestatakse terviseohutuse tagamiseks nõuded balneoloogilistes protseduurides kasutatavale looduslikule meremudale, järvemudale (edaspidi koos ravimuda) ja turbale ning nende käitlemisele ja märgistamisele.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse terviseohutuse tagamiseks nõuded balneoloogilistes protseduurides kasutatavale looduslikule meremudale, järvemudale (edaspidi koos ravimuda) ja turbale ning nende käitlemisele ja märgistamisele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse terviseohutuse tagamiseks nõuded balneoloogilistes protseduurides kasutatavale looduslikule meremudale, järvemudale (edaspidi koos ravimuda) ja turbale ning nende käitlemisele ja märgistamisele.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1061187_Par_1_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse terviseohutuse tagamiseks nõuded balneoloogilistes protseduurides kasutatavale looduslikule meremudale, järvemudale (edaspidi koos ravimuda) ja turbale ning nende käitlemisele ja märgistamisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1061187_Par_2",
@@ -119,13 +151,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 2. Kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "Määrusega kehtestatud nõudeid peavad järgima ravimuda ja -turba tootjad ning balneoloogilisi protseduure pakkuvad juriidilised isikud ja füüsilisest isikust ettevõtjad.",
-      "estleg:legalText": "Määrusega kehtestatud nõudeid peavad järgima ravimuda ja -turba tootjad ning balneoloogilisi protseduure pakkuvad juriidilised isikud ja füüsilisest isikust ettevõtjad. Määrusega kehtestatud nõudeid peavad järgima ravimuda ja -turba tootjad ning balneoloogilisi protseduure pakkuvad juriidilised isikud ja füüsilisest isikust ettevõtjad.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatud nõudeid peavad järgima ravimuda ja -turba tootjad ning balneoloogilisi protseduure pakkuvad juriidilised isikud ja füüsilisest isikust ettevõtjad.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatud nõudeid peavad järgima ravimuda ja -turba tootjad ning balneoloogilisi protseduure pakkuvad juriidilised isikud ja füüsilisest isikust ettevõtjad.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -145,7 +183,25 @@
         {
           "@id": "estleg:Reg_1061187_Par_2_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatud nõudeid peavad järgima ravimuda ja -turba tootjad ning balneoloogilisi protseduure pakkuvad juriidilised isikud ja füüsilisest isikust ettevõtjad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1061187_Par_3",
@@ -154,13 +210,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Terminid",
+      "rdfs:label": {
+        "@value": "§ 3. Terminid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) balneoloogiline protseduur – ravimuda ja -turba välispidine kasutamine inimese kehapinnal enesetunde parandamise eesmärgil; 2 2) ravimuda või -turba tootja – tootja toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 9 tähenduses; 3 3) meremuda, järvemuda ja turvast käsitatakse maapõueseaduse § 19 lõike 3, § 20 lõike 3 ja § 22 lõike 3 alusel kehtestatud valdkonna eest vastutava ministri määruse tähenduses ning Eestis kaevandatuna peab see",
-      "estleg:legalText": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) balneoloogiline protseduur – ravimuda ja -turba välispidine kasutamine inimese kehapinnal enesetunde parandamise eesmärgil; 2 2) ravimuda või -turba tootja – tootja toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 9 tähenduses; 3 3) meremuda, järvemuda ja turvast käsitatakse maapõueseaduse § 19 lõike 3, § 20 lõike 3 ja § 22 lõike 3 alusel kehtestatud valdkonna eest vastutava ministri määruse tähenduses ning Eestis kaevandatuna peab see olema maavarana arvele võetud; 4 4) turul kättesaadavaks tegemine – kättesaadavaks tegemine toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 11 tähenduses. Määruses kasutatakse termineid järgmises tähenduses: balneoloogiline protseduur – ravimuda ja -turba välispidine kasutamine inimese kehapinnal enesetunde parandamise eesmärgil; ravimuda või -turba tootja – tootja toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 9 tähenduses; meremuda, järvemuda ja turvast käsitatakse maapõueseaduse § 19 lõike 3, § 20 lõike 3 ja § 22 lõike 3 alusel kehtestatud valdkonna eest vastutava ministri määruse tähenduses ning Eestis kaevandatuna peab see olema maavarana arvele võetud; turul kättesaadavaks tegemine – kättesaadavaks tegemine toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 11 tähenduses.",
+      "estleg:summary": {
+        "@value": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) balneoloogiline protseduur – ravimuda ja -turba välispidine kasutamine inimese kehapinnal enesetunde parandamise eesmärgil; 2 2) ravimuda või -turba tootja – tootja toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 9 tähenduses; 3 3) meremuda, järvemuda ja turvast käsitatakse maapõueseaduse § 19 lõike 3, § 20 lõike 3 ja § 22 lõike 3 alusel kehtestatud valdkonna eest vastutava ministri määruse tähenduses ning Eestis kaevandatuna peab…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määruses kasutatakse termineid järgmises tähenduses: 1 1) balneoloogiline protseduur – ravimuda ja -turba välispidine kasutamine inimese kehapinnal enesetunde parandamise eesmärgil; 2 2) ravimuda või -turba tootja – tootja toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 9 tähenduses; 3 3) meremuda, järvemuda ja turvast käsitatakse maapõueseaduse § 19 lõike 3, § 20 lõike 3 ja § 22 lõike 3 alusel kehtestatud valdkonna eest vastutava ministri määruse tähenduses ning Eestis kaevandatuna peab see olema maavarana arvele võetud; 4 4) turul kättesaadavaks tegemine – kättesaadavaks tegemine toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 11 tähenduses.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -182,6 +244,30 @@
         {
           "@id": "estleg:Reg_1061187_Par_3_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_3_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruses kasutatakse termineid järgmises tähenduses: 1) balneoloogiline protseduur – ravimuda ja -turba välispidine kasutamine inimese kehapinnal enesetunde parandamise eesmärgil; 2) ravimuda või -turba tootja – tootja toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 9 tähenduses; 3) meremuda, järvemuda ja turvast käsitatakse maapõueseaduse § 19 lõike 3, § 20 lõike 3 ja § 22 lõike 3 alusel kehtestatud valdkonna eest vastutava ministri määruse tähenduses ning Eestis kaevandatuna peab see olema maavarana arvele võetud; 4) turul kättesaadavaks tegemine – kättesaadavaks tegemine toote nõuetele vastavuse seaduse § 4 lõike 1 punkti 11 tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -191,13 +277,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Nõuded ravimuda ja -turba kvaliteedile",
+      "rdfs:label": {
+        "@value": "§ 4. Nõuded ravimuda ja -turba kvaliteedile",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "1 (1) Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi olla üle 1,0 mm terasuurusega mineraalseid osakesi. Väiksema terasuurusega mineraalseid osakesi võib meremudas olla kuni 3% ning järvemudas ja turbas kuni 2%. Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi olla üle 1,0 mm terasuurusega mineraalseid osakesi. Väiksema terasuurusega mineraalseid osakesi võib meremudas olla kuni 3% ning järvemudas ja turbas kuni 2%. 2 (2) Balneoloogilistes prot",
-      "estleg:legalText": "1 (1) Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi olla üle 1,0 mm terasuurusega mineraalseid osakesi. Väiksema terasuurusega mineraalseid osakesi võib meremudas olla kuni 3% ning järvemudas ja turbas kuni 2%. Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi olla üle 1,0 mm terasuurusega mineraalseid osakesi. Väiksema terasuurusega mineraalseid osakesi võib meremudas olla kuni 3% ning järvemudas ja turbas kuni 2%. 2 (2) Balneoloogilistes protseduurides kasutatava ravimuda ja -turba füüsikalised omadused ja keemilised näitajad peavad olema järgmised: 1 1) meremudas peab veesisaldus olema 65–85% ja orgaanilise aine sisaldus kuivaines üle 5%; 2 2) järvemudas peab veesisaldus olema 90–95% ja orgaanilise aine sisaldus kuivaines üle 35%; 3 3) turbas peab veesisaldus olema üle 85%, orgaanilise aine sisaldus kuivaines üle 90%, humiinhapete sisaldus kuivaines vähemalt 20%, von Posti humifikatsiooniklass peab olema vähemalt H7 ja tuhasisaldus ei tohi olla üle 12%. Balneoloogilistes protseduurides kasutatava ravimuda ja -turba füüsikalised omadused ja keemilised näitajad peavad olema järgmised: meremudas peab veesisaldus olema 65–85% ja orgaanilise aine sisaldus kuivaines üle 5%; järvemudas peab veesisaldus olema 90–95% ja orgaanilise aine sisaldus kuivaines üle 35%; turbas peab veesisaldus olema üle 85%, orgaanilise aine sisaldus kuivaines üle 90%, humiinhapete sisaldus kuivaines vähemalt 20%, von Posti humifikatsiooniklass peab olema vähemalt H7 ja tuhasisaldus ei tohi olla üle 12%.",
+      "estleg:summary": {
+        "@value": "1 (1) Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi olla üle 1,0 mm terasuurusega mineraalseid osakesi. Väiksema terasuurusega mineraalseid osakesi võib meremudas olla kuni 3% ning järvemudas ja turbas kuni 2%. 2 (2) Balneoloogilistes protseduurides kasutatava ravimuda ja -turba füüsikalised omadused ja keemilised näitajad peavad olema järgmised: 1 1) meremudas peab veesisaldus olema 65–85% ja orgaanilise aine sisaldus kuivaines üle 5%; 2 2) järvemudas peab…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi olla üle 1,0 mm terasuurusega mineraalseid osakesi. Väiksema terasuurusega mineraalseid osakesi võib meremudas olla kuni 3% ning järvemudas ja turbas kuni 2%. 2 (2) Balneoloogilistes protseduurides kasutatava ravimuda ja -turba füüsikalised omadused ja keemilised näitajad peavad olema järgmised: 1 1) meremudas peab veesisaldus olema 65–85% ja orgaanilise aine sisaldus kuivaines üle 5%; 2 2) järvemudas peab veesisaldus olema 90–95% ja orgaanilise aine sisaldus kuivaines üle 35%; 3 3) turbas peab veesisaldus olema üle 85%, orgaanilise aine sisaldus kuivaines üle 90%, humiinhapete sisaldus kuivaines vähemalt 20%, von Posti humifikatsiooniklass peab olema vähemalt H7 ja tuhasisaldus ei tohi olla üle 12%.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -209,6 +301,45 @@
         {
           "@id": "estleg:Reg_1061187_Par_4_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_4_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi olla üle 1,0 mm terasuurusega mineraalseid osakesi. Väiksema terasuurusega mineraalseid osakesi võib meremudas olla kuni 3% ning järvemudas ja turbas kuni 2%.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Balneoloogilistes protseduurides kasutatava ravimuda ja -turba füüsikalised omadused ja keemilised näitajad peavad olema järgmised: 1) meremudas peab veesisaldus olema 65–85% ja orgaanilise aine sisaldus kuivaines üle 5%; 2) järvemudas peab veesisaldus olema 90–95% ja orgaanilise aine sisaldus kuivaines üle 35%; 3) turbas peab veesisaldus olema üle 85%, orgaanilise aine sisaldus kuivaines üle 90%, humiinhapete sisaldus kuivaines vähemalt 20%, von Posti humifikatsiooniklass peab olema vähemalt H7 ja tuhasisaldus ei tohi olla üle 12%.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -218,13 +349,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Mikrobioloogilised kvaliteedinäitajad",
+      "rdfs:label": {
+        "@value": "§ 5. Mikrobioloogilised kvaliteedinäitajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi bakteriaalsete indikaatorite ja patogeenide sisaldus ületada järgmisi piirmäärasid: 1 1) Escherichia coli kuni 10 bakterit ühe grammi ravimuda või -turba märgkaalu kohta, väljendatuna ühikutes MPN ((most probable number) kõige tõenäolisem arv) või PMÜ (pesa moodustav ühik); 2 2) Clostridium perfringens kuni 100 PMÜ ühe grammi ravimuda või -turba märgkaalu kohta; 3 3) Staphylococcus aureus ei tohi ühes grammis või milliliit",
-      "estleg:legalText": "Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi bakteriaalsete indikaatorite ja patogeenide sisaldus ületada järgmisi piirmäärasid: 1 1) Escherichia coli kuni 10 bakterit ühe grammi ravimuda või -turba märgkaalu kohta, väljendatuna ühikutes MPN ((most probable number) kõige tõenäolisem arv) või PMÜ (pesa moodustav ühik); 2 2) Clostridium perfringens kuni 100 PMÜ ühe grammi ravimuda või -turba märgkaalu kohta; 3 3) Staphylococcus aureus ei tohi ühes grammis või milliliitris ravimudas või -turbas esineda. Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi bakteriaalsete indikaatorite ja patogeenide sisaldus ületada järgmisi piirmäärasid: Escherichia coli kuni 10 bakterit ühe grammi ravimuda või -turba märgkaalu kohta, väljendatuna ühikutes MPN ((most probable number) kõige tõenäolisem arv) või PMÜ (pesa moodustav ühik); Clostridium perfringens kuni 100 PMÜ ühe grammi ravimuda või -turba märgkaalu kohta; Staphylococcus aureus ei tohi ühes grammis või milliliitris ravimudas või -turbas esineda.",
+      "estleg:summary": {
+        "@value": "Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi bakteriaalsete indikaatorite ja patogeenide sisaldus ületada järgmisi piirmäärasid: 1 1) Escherichia coli kuni 10 bakterit ühe grammi ravimuda või -turba märgkaalu kohta, väljendatuna ühikutes MPN ((most probable number) kõige tõenäolisem arv) või PMÜ (pesa moodustav ühik); 2 2) Clostridium perfringens kuni 100 PMÜ ühe grammi ravimuda või -turba märgkaalu kohta; 3 3) Staphylococcus aureus ei tohi ühes grammis või…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi bakteriaalsete indikaatorite ja patogeenide sisaldus ületada järgmisi piirmäärasid: 1 1) Escherichia coli kuni 10 bakterit ühe grammi ravimuda või -turba märgkaalu kohta, väljendatuna ühikutes MPN ((most probable number) kõige tõenäolisem arv) või PMÜ (pesa moodustav ühik); 2 2) Clostridium perfringens kuni 100 PMÜ ühe grammi ravimuda või -turba märgkaalu kohta; 3 3) Staphylococcus aureus ei tohi ühes grammis või milliliitris ravimudas või -turbas esineda.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -236,6 +373,29 @@
         {
           "@id": "estleg:Reg_1061187_Par_5_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_5_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Balneoloogilistes protseduurides kasutatavas ravimudas ja -turbas ei tohi bakteriaalsete indikaatorite ja patogeenide sisaldus ületada järgmisi piirmäärasid: 1) Escherichia coli kuni 10 bakterit ühe grammi ravimuda või -turba märgkaalu kohta, väljendatuna ühikutes MPN ((most probable number) kõige tõenäolisem arv) või PMÜ (pesa moodustav ühik); 2) Clostridium perfringens kuni 100 PMÜ ühe grammi ravimuda või -turba märgkaalu kohta; 3) Staphylococcus aureus ei tohi ühes grammis või milliliitris ravimudas või -turbas esineda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -245,13 +405,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Ravimuda ja -turba säilitamine",
+      "rdfs:label": {
+        "@value": "§ 6. Ravimuda ja -turba säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "1 (1) Ravimuda ja -turvast tuleb hoida temperatuuril +4 ºC kuni +15 ºC. Kõrgemal temperatuuril hoidmine on lubatud üksnes vahetult enne protseduuri tegemist. Ravimuda ja -turvast tuleb hoida temperatuuril +4 ºC kuni +15 ºC. Kõrgemal temperatuuril hoidmine on lubatud üksnes vahetult enne protseduuri tegemist. 2 (2) Ravimuda ja -turba kogust, mis on suurem kui üks tonn, tuleb hoida selleks ette nähtud mudahoidlas või mahutis. Ravimuda ja -turba kogust, mis on suurem kui üks tonn, tuleb hoida selle",
-      "estleg:legalText": "1 (1) Ravimuda ja -turvast tuleb hoida temperatuuril +4 ºC kuni +15 ºC. Kõrgemal temperatuuril hoidmine on lubatud üksnes vahetult enne protseduuri tegemist. Ravimuda ja -turvast tuleb hoida temperatuuril +4 ºC kuni +15 ºC. Kõrgemal temperatuuril hoidmine on lubatud üksnes vahetult enne protseduuri tegemist. 2 (2) Ravimuda ja -turba kogust, mis on suurem kui üks tonn, tuleb hoida selleks ette nähtud mudahoidlas või mahutis. Ravimuda ja -turba kogust, mis on suurem kui üks tonn, tuleb hoida selleks ette nähtud mudahoidlas või mahutis.",
+      "estleg:summary": {
+        "@value": "1 (1) Ravimuda ja -turvast tuleb hoida temperatuuril +4 ºC kuni +15 ºC. Kõrgemal temperatuuril hoidmine on lubatud üksnes vahetult enne protseduuri tegemist. 2 (2) Ravimuda ja -turba kogust, mis on suurem kui üks tonn, tuleb hoida selleks ette nähtud mudahoidlas või mahutis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ravimuda ja -turvast tuleb hoida temperatuuril +4 ºC kuni +15 ºC. Kõrgemal temperatuuril hoidmine on lubatud üksnes vahetult enne protseduuri tegemist. 2 (2) Ravimuda ja -turba kogust, mis on suurem kui üks tonn, tuleb hoida selleks ette nähtud mudahoidlas või mahutis.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -263,7 +429,41 @@
         {
           "@id": "estleg:Reg_1061187_Par_6_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_6_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ravimuda ja -turvast tuleb hoida temperatuuril +4 ºC kuni +15 ºC. Kõrgemal temperatuuril hoidmine on lubatud üksnes vahetult enne protseduuri tegemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ravimuda ja -turba kogust, mis on suurem kui üks tonn, tuleb hoida selleks ette nähtud mudahoidlas või mahutis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:Reg_1061187_Par_7",
@@ -272,13 +472,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Ravimuda ja -turba märgistamine",
+      "rdfs:label": {
+        "@value": "§ 7. Ravimuda ja -turba märgistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "1 (1) Turul kättesaadavaks tehtud ravimuda ja -turba märgistus peab sisaldama järgmist teavet: 1 1) tootja nimi või kaubamärk, postiaadress ja e-posti aadress; 2 2) kogus; 3 3) kasutusjuhend ja ohutusteave; 4 4) säilitamise tingimused; 5 5) kuupäev, mis ajani säilitab pakendatud toode nõuetekohastes hoiutingimustes esialgsed omadused ja toime, või märge selle kohta, millise aja jooksul pärast avamist on toode kasutuskõlblik ja ohutu; 6 6) partii-, seerianumber või kaevandamise koht ja aeg, mis v",
-      "estleg:legalText": "1 (1) Turul kättesaadavaks tehtud ravimuda ja -turba märgistus peab sisaldama järgmist teavet: 1 1) tootja nimi või kaubamärk, postiaadress ja e-posti aadress; 2 2) kogus; 3 3) kasutusjuhend ja ohutusteave; 4 4) säilitamise tingimused; 5 5) kuupäev, mis ajani säilitab pakendatud toode nõuetekohastes hoiutingimustes esialgsed omadused ja toime, või märge selle kohta, millise aja jooksul pärast avamist on toode kasutuskõlblik ja ohutu; 6 6) partii-, seerianumber või kaevandamise koht ja aeg, mis võimaldab toodet tuvastada; 7 7) määruse § 8 lõikes 2 sätestatud keeld. Turul kättesaadavaks tehtud ravimuda ja -turba märgistus peab sisaldama järgmist teavet: tootja nimi või kaubamärk, postiaadress ja e-posti aadress; kogus; kasutusjuhend ja ohutusteave; säilitamise tingimused; kuupäev, mis ajani säilitab pakendatud toode nõuetekohastes hoiutingimustes esialgsed omadused ja toime, või märge selle kohta, millise aja jooksul pärast avamist on toode kasutuskõlblik ja ohutu; partii-, seerianumber või kaevandamise koht ja aeg, mis võimaldab toodet tuvastada; määruse § 8 lõikes 2 sätestatud keeld. 2 (2) Lõikes 1 nimetatud teabe võib esitada ravimuda või -turba pakendi märgistusel või ravimuda või -turbaga kaasas olevas dokumendis. Lõikes 1 nimetatud teabe võib esitada ravimuda või -turba pakendi märgistusel või ravimuda või -turbaga kaasas olevas dokumendis.",
+      "estleg:summary": {
+        "@value": "1 (1) Turul kättesaadavaks tehtud ravimuda ja -turba märgistus peab sisaldama järgmist teavet: 1 1) tootja nimi või kaubamärk, postiaadress ja e-posti aadress; 2 2) kogus; 3 3) kasutusjuhend ja ohutusteave; 4 4) säilitamise tingimused; 5 5) kuupäev, mis ajani säilitab pakendatud toode nõuetekohastes hoiutingimustes esialgsed omadused ja toime, või märge selle kohta, millise aja jooksul pärast avamist on toode kasutuskõlblik ja ohutu; 6 6) partii-, seerianumber või kaevandamise koht ja aeg, mis…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Turul kättesaadavaks tehtud ravimuda ja -turba märgistus peab sisaldama järgmist teavet: 1 1) tootja nimi või kaubamärk, postiaadress ja e-posti aadress; 2 2) kogus; 3 3) kasutusjuhend ja ohutusteave; 4 4) säilitamise tingimused; 5 5) kuupäev, mis ajani säilitab pakendatud toode nõuetekohastes hoiutingimustes esialgsed omadused ja toime, või märge selle kohta, millise aja jooksul pärast avamist on toode kasutuskõlblik ja ohutu; 6 6) partii-, seerianumber või kaevandamise koht ja aeg, mis võimaldab toodet tuvastada; 7 7) määruse § 8 lõikes 2 sätestatud keeld. 2 (2) Lõikes 1 nimetatud teabe võib esitada ravimuda või -turba pakendi märgistusel või ravimuda või -turbaga kaasas olevas dokumendis.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -295,7 +501,50 @@
         {
           "@id": "estleg:Reg_1061187_Par_7_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_7_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Turul kättesaadavaks tehtud ravimuda ja -turba märgistus peab sisaldama järgmist teavet: 1) tootja nimi või kaubamärk, postiaadress ja e-posti aadress; 2) kogus; 3) kasutusjuhend ja ohutusteave; 4) säilitamise tingimused; 5) kuupäev, mis ajani säilitab pakendatud toode nõuetekohastes hoiutingimustes esialgsed omadused ja toime, või märge selle kohta, millise aja jooksul pärast avamist on toode kasutuskõlblik ja ohutu; 6) partii-, seerianumber või kaevandamise koht ja aeg, mis võimaldab toodet tuvastada; 7) määruse § 8 lõikes 2 sätestatud keeld.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõikes 1 nimetatud teabe võib esitada ravimuda või -turba pakendi märgistusel või ravimuda või -turbaga kaasas olevas dokumendis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:Reg_1061187_Par_8",
@@ -304,13 +553,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ravimuda ja -turba kasutamine",
+      "rdfs:label": {
+        "@value": "§ 8. Ravimuda ja -turba kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "1 (1) Balneoloogilise protseduuri pakkujal peavad olema järgmised andmed kasutatava ravimuda ja -turba kohta: 1 1) kaevandamise koht; 2 2) tootja; 3 3) kogus; 4 4) saabumise aeg; 5 5) kasutuselevõtmise aeg. Balneoloogilise protseduuri pakkujal peavad olema järgmised andmed kasutatava ravimuda ja -turba kohta: kaevandamise koht; tootja; kogus; saabumise aeg; kasutuselevõtmise aeg. 2 (2) Ravimuda ja -turba korduv kasutamine ja regenereerimine ei ole lubatud. Ravimuda ja -turba korduv kasutamine ja",
-      "estleg:legalText": "1 (1) Balneoloogilise protseduuri pakkujal peavad olema järgmised andmed kasutatava ravimuda ja -turba kohta: 1 1) kaevandamise koht; 2 2) tootja; 3 3) kogus; 4 4) saabumise aeg; 5 5) kasutuselevõtmise aeg. Balneoloogilise protseduuri pakkujal peavad olema järgmised andmed kasutatava ravimuda ja -turba kohta: kaevandamise koht; tootja; kogus; saabumise aeg; kasutuselevõtmise aeg. 2 (2) Ravimuda ja -turba korduv kasutamine ja regenereerimine ei ole lubatud. Ravimuda ja -turba korduv kasutamine ja regenereerimine ei ole lubatud.",
+      "estleg:summary": {
+        "@value": "1 (1) Balneoloogilise protseduuri pakkujal peavad olema järgmised andmed kasutatava ravimuda ja -turba kohta: 1 1) kaevandamise koht; 2 2) tootja; 3 3) kogus; 4 4) saabumise aeg; 5 5) kasutuselevõtmise aeg. 2 (2) Ravimuda ja -turba korduv kasutamine ja regenereerimine ei ole lubatud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Balneoloogilise protseduuri pakkujal peavad olema järgmised andmed kasutatava ravimuda ja -turba kohta: 1 1) kaevandamise koht; 2 2) tootja; 3 3) kogus; 4 4) saabumise aeg; 5 5) kasutuselevõtmise aeg. 2 (2) Ravimuda ja -turba korduv kasutamine ja regenereerimine ei ole lubatud.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -327,7 +582,48 @@
         {
           "@id": "estleg:Reg_1061187_Par_8_v1061187"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_8_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Balneoloogilise protseduuri pakkujal peavad olema järgmised andmed kasutatava ravimuda ja -turba kohta: 1) kaevandamise koht; 2) tootja; 3) kogus; 4) saabumise aeg; 5) kasutuselevõtmise aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ravimuda ja -turba korduv kasutamine ja regenereerimine ei ole lubatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_1061187_Par_9",
@@ -336,13 +632,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Mikrobioloogiliste näitajate ja ohtlike ainete kontrollimine",
+      "rdfs:label": {
+        "@value": "§ 9. Mikrobioloogiliste näitajate ja ohtlike ainete kontrollimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "1 (1) Ravimuda või -turba tootja ja balneoloogilise protseduuri pakkuja peavad kontrollima pakendamata ravimuda ja -turba mikrobioloogilisi näitajaid mudahoidlas või mahutis vähemalt üks kord aastas. Ravimuda või -turba tootja ja balneoloogilise protseduuri pakkuja peavad kontrollima pakendamata ravimuda ja -turba mikrobioloogilisi näitajaid mudahoidlas või mahutis vähemalt üks kord aastas. 2 (2) Ravimuda või -turba mikrobioloogiliste näitajate piirsisalduse ületamisel või põhjendatud ohukahtlus",
-      "estleg:legalText": "1 (1) Ravimuda või -turba tootja ja balneoloogilise protseduuri pakkuja peavad kontrollima pakendamata ravimuda ja -turba mikrobioloogilisi näitajaid mudahoidlas või mahutis vähemalt üks kord aastas. Ravimuda või -turba tootja ja balneoloogilise protseduuri pakkuja peavad kontrollima pakendamata ravimuda ja -turba mikrobioloogilisi näitajaid mudahoidlas või mahutis vähemalt üks kord aastas. 2 (2) Ravimuda või -turba mikrobioloogiliste näitajate piirsisalduse ületamisel või põhjendatud ohukahtluse korral tuleb teha kordusanalüüs. Kordusanalüüsil selgunud piirsisalduse ületamise korral tuleb teha täiendav patogeensete mikroorganismide olemasolu uuring. Ravimuda või -turba mikrobioloogiliste näitajate piirsisalduse ületamisel või põhjendatud ohukahtluse korral tuleb teha kordusanalüüs. Kordusanalüüsil selgunud piirsisalduse ületamise korral tuleb teha täiendav patogeensete mikroorganismide olemasolu uuring. 3 (3) Mikrobioloogiliste näitajate ohutuskontrolli tulemusi säilitatakse kirjalikku taasesitamist võimaldaval kujul viis aastat. Mikrobioloogiliste näitajate ohutuskontrolli tulemusi säilitatakse kirjalikku taasesitamist võimaldaval kujul viis aastat. 4 (4) Balneoloogilise protseduuri pakkuja peab uut ravimuda või -turba partiid kasutusele võttes veenduma selle mikrobioloogilises ohutuses. Balneoloogilise protseduuri pakkuja peab uut ravimuda või -turba partiid kasutusele võttes veenduma selle mikrobioloogilises ohutuses. 5 (5) Ravimuda või -turba tootjal peavad olema andmed ohtlike ainete sisalduse kohta ravimuda või -turba maardlas. Ravimuda ja -turba ohtlike ainete sisalduse andmed ei tohi olla vanemad kui kümme aastat. Ravimuda või -turba tootjal peavad olema andmed ohtlike ainete sisalduse kohta ravimuda või -turba maardlas. Ravimuda ja -turba ohtlike ainete sisalduse andmed ei tohi olla vanemad kui kümme aastat. 6 (6) Ravimudas ja -turbas määratakse raskmetallide (Pb, Cd, Sn, Zn, Hg), naftasaaduste (süsivesinikud C10–C40, summa), fenoolide ja pestitsiidide sisaldus (edaspidi ohtlikud ained). Ohtlike ainete sisalduse hindamisel ravimudas või -turbas võetakse aluseks veeseaduse § 83 alusel kehtestatud valdkonna eest vastutava ministri määrus, millega kehtestatakse ohtlike ainete sisalduse piirväärtused pinnases. Ravimudas ja -turbas määratakse raskmetallide (Pb, Cd, Sn, Zn, Hg), naftasaaduste (süsivesinikud C10–C40, summa), fenoolide ja pestitsiidide sisaldus (edaspidi ohtlikud ained). Ohtlike ainete sisalduse hindamisel ravimudas või -turbas võetakse aluseks veeseaduse § 83 alusel kehtestatud valdkonna eest vastutava ministri määrus, millega kehtestatakse ohtlike ainete sisalduse piirväärtused pinnases. 7 (7) Keskkonnatingimuste olulise halvenemise või põhjendatud ohukahtluse korral peab ravimuda või -turba tootja kontrollima ohtlike ainete sisaldust ravimudas või -turbas. Keskkonnatingimuste olulise halvenemise või põhjendatud ohukahtluse korral peab ravimuda või -turba tootja kontrollima ohtlike ainete sisaldust ravimudas või -turbas. 8 (8) Kui ravimuda või -turvas ei vasta mikrobioloogilistele näitajatele ja ohtlike ainete sisaldusele kehtestatud nõuetele, selgitatakse välja ravimuda või -turba mittevastavuse põhjused ja rakendatakse vajalikke abinõusid mittevastavuse kõrvaldamiseks. Vajaduse korral kõrvaldatakse ravimuda või -turvas turult ja teavitatakse sellest Terviseametit. Kui ravimuda või -turvas ei vasta mikrobioloogilistele näitajatele ja ohtlike ainete sisaldusele kehtestatud nõuetele, selgitatakse välja ravimuda või -turba mittevastavuse põhjused ja rakendatakse vajalikke abinõusid mittevastavuse kõrvaldamiseks. Vajaduse korral kõrvaldatakse ravimuda või -turvas turult ja teavitatakse sellest Terviseametit.",
+      "estleg:summary": {
+        "@value": "1 (1) Ravimuda või -turba tootja ja balneoloogilise protseduuri pakkuja peavad kontrollima pakendamata ravimuda ja -turba mikrobioloogilisi näitajaid mudahoidlas või mahutis vähemalt üks kord aastas. 2 (2) Ravimuda või -turba mikrobioloogiliste näitajate piirsisalduse ületamisel või põhjendatud ohukahtluse korral tuleb teha kordusanalüüs. Kordusanalüüsil selgunud piirsisalduse ületamise korral tuleb teha täiendav patogeensete mikroorganismide olemasolu uuring.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ravimuda või -turba tootja ja balneoloogilise protseduuri pakkuja peavad kontrollima pakendamata ravimuda ja -turba mikrobioloogilisi näitajaid mudahoidlas või mahutis vähemalt üks kord aastas. 2 (2) Ravimuda või -turba mikrobioloogiliste näitajate piirsisalduse ületamisel või põhjendatud ohukahtluse korral tuleb teha kordusanalüüs. Kordusanalüüsil selgunud piirsisalduse ületamise korral tuleb teha täiendav patogeensete mikroorganismide olemasolu uuring. 3 (3) Mikrobioloogiliste näitajate ohutuskontrolli tulemusi säilitatakse kirjalikku taasesitamist võimaldaval kujul viis aastat. 4 (4) Balneoloogilise protseduuri pakkuja peab uut ravimuda või -turba partiid kasutusele võttes veenduma selle mikrobioloogilises ohutuses. 5 (5) Ravimuda või -turba tootjal peavad olema andmed ohtlike ainete sisalduse kohta ravimuda või -turba maardlas. Ravimuda ja -turba ohtlike ainete sisalduse andmed ei tohi olla vanemad kui kümme aastat. 6 (6) Ravimudas ja -turbas määratakse raskmetallide (Pb, Cd, Sn, Zn, Hg), naftasaaduste (süsivesinikud C10–C40, summa), fenoolide ja pestitsiidide sisaldus (edaspidi ohtlikud ained). Ohtlike ainete sisalduse hindamisel ravimudas või -turbas võetakse aluseks veeseaduse § 83 alusel kehtestatud valdkonna eest vastutava ministri määrus, millega kehtestatakse ohtlike ainete sisalduse piirväärtused pinnases. 7 (7) Keskkonnatingimuste olulise halvenemise või põhjendatud ohukahtluse korral peab ravimuda või -turba tootja kontrollima ohtlike ainete sisaldust ravimudas või -turbas. 8 (8) Kui ravimuda või -turvas ei vasta mikrobioloogilistele näitajatele ja ohtlike ainete sisaldusele kehtestatud nõuetele, selgitatakse välja ravimuda või -turba mittevastavuse põhjused ja rakendatakse vajalikke abinõusid mittevastavuse kõrvaldamiseks. Vajaduse korral kõrvaldatakse ravimuda või -turvas turult ja teavitatakse sellest Terviseametit.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -367,7 +669,137 @@
         {
           "@id": "estleg:Institution_terviseamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_1061187_Par_9_Lg_8"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ravimuda või -turba tootja ja balneoloogilise protseduuri pakkuja peavad kontrollima pakendamata ravimuda ja -turba mikrobioloogilisi näitajaid mudahoidlas või mahutis vähemalt üks kord aastas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ravimuda või -turba mikrobioloogiliste näitajate piirsisalduse ületamisel või põhjendatud ohukahtluse korral tuleb teha kordusanalüüs. Kordusanalüüsil selgunud piirsisalduse ületamise korral tuleb teha täiendav patogeensete mikroorganismide olemasolu uuring.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Mikrobioloogiliste näitajate ohutuskontrolli tulemusi säilitatakse kirjalikku taasesitamist võimaldaval kujul viis aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Balneoloogilise protseduuri pakkuja peab uut ravimuda või -turba partiid kasutusele võttes veenduma selle mikrobioloogilises ohutuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Ravimuda või -turba tootjal peavad olema andmed ohtlike ainete sisalduse kohta ravimuda või -turba maardlas. Ravimuda ja -turba ohtlike ainete sisalduse andmed ei tohi olla vanemad kui kümme aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Ravimudas ja -turbas määratakse raskmetallide (Pb, Cd, Sn, Zn, Hg), naftasaaduste (süsivesinikud C10–C40, summa), fenoolide ja pestitsiidide sisaldus (edaspidi ohtlikud ained). Ohtlike ainete sisalduse hindamisel ravimudas või -turbas võetakse aluseks veeseaduse § 83 alusel kehtestatud valdkonna eest vastutava ministri määrus, millega kehtestatakse ohtlike ainete sisalduse piirväärtused pinnases.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Keskkonnatingimuste olulise halvenemise või põhjendatud ohukahtluse korral peab ravimuda või -turba tootja kontrollima ohtlike ainete sisaldust ravimudas või -turbas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 7"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_9_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kui ravimuda või -turvas ei vasta mikrobioloogilistele näitajatele ja ohtlike ainete sisaldusele kehtestatud nõuetele, selgitatakse välja ravimuda või -turba mittevastavuse põhjused ja rakendatakse vajalikke abinõusid mittevastavuse kõrvaldamiseks. Vajaduse korral kõrvaldatakse ravimuda või -turvas turult ja teavitatakse sellest Terviseametit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 8"
     },
     {
       "@id": "estleg:Reg_1061187_Par_10",
@@ -376,16 +808,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 10. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Nõuded balneoloogilistes protseduurides kasutatavale looduslikule mudale ja turbale",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1061187_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. septembril 2025. a.",
-      "estleg:legalText": "Määrus jõustub 1. septembril 2025. a. Määrus jõustub 1. septembril 2025. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. septembril 2025. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. septembril 2025. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1061187_Par_10_v1061187"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1061187_Par_10_Lg_1"
         }
       ]
     },
@@ -412,6 +855,19 @@
       },
       "estleg:citationDetail": "lg 4",
       "estleg:citationText": "ja toote nõuetele vastavuse seaduse § 5 lõike 4"
+    },
+    {
+      "@id": "estleg:Reg_1061187_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. septembril 2025. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1061187_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
     }
   ]
 }

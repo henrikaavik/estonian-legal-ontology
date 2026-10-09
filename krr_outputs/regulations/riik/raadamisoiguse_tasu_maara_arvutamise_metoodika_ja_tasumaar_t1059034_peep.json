@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär (määrus)",
+      "rdfs:label": {
+        "@value": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2024-07-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2024-06-14",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -64,7 +66,13 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "dcterms:title": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1059034_Par_1",
@@ -73,18 +81,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1059034_Map"
       },
-      "estleg:summary": "Käesoleva määrusega kehtestatakse raadamisõiguse tasu määra arvutamise metoodika ning selle alusel arvutatud raadamisõiguse tasu määr.",
-      "estleg:legalText": "Käesoleva määrusega kehtestatakse raadamisõiguse tasu määra arvutamise metoodika ning selle alusel arvutatud raadamisõiguse tasu määr. Käesoleva määrusega kehtestatakse raadamisõiguse tasu määra arvutamise metoodika ning selle alusel arvutatud raadamisõiguse tasu määr.",
+      "estleg:summary": {
+        "@value": "Käesoleva määrusega kehtestatakse raadamisõiguse tasu määra arvutamise metoodika ning selle alusel arvutatud raadamisõiguse tasu määr.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva määrusega kehtestatakse raadamisõiguse tasu määra arvutamise metoodika ning selle alusel arvutatud raadamisõiguse tasu määr.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1059034_Par_1_v1059034"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1059034_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määrusega kehtestatakse raadamisõiguse tasu määra arvutamise metoodika ning selle alusel arvutatud raadamisõiguse tasu määr.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1059034_Par_2",
@@ -93,13 +125,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Raadamisõiguse tasu määra arvutamise metoodika",
+      "rdfs:label": {
+        "@value": "§ 2. Raadamisõiguse tasu määra arvutamise metoodika",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1059034_Map"
       },
-      "estleg:summary": "1 (1) Raadamisõiguse tasu määr arvutatakse järgmise valemiga: RT = (Cvaru kadu * 44/12 + 7,5) * Chind, kus RT – raadamisõiguse tasu määr; Cvaru kadu – keskmine raadatud alade C varu kadu tonni/ha; 44/12 – CO2-le ülemineku tegur; 7,5 – süsiniku sidumise potentsiaal tonni CO2 ekvivalenti hektari kohta 80 aastasel perioodil; Chind – Euroopa Liidu kasvuhoonegaaside heitkoguste kauplemise süsteemis ühiku keskmine turuhind tasumäära arvestamisele eelnenud kümne aasta jooksul. Raadamisõiguse tasu määr ",
-      "estleg:legalText": "1 (1) Raadamisõiguse tasu määr arvutatakse järgmise valemiga: RT = (Cvaru kadu * 44/12 + 7,5) * Chind, kus RT – raadamisõiguse tasu määr; Cvaru kadu – keskmine raadatud alade C varu kadu tonni/ha; 44/12 – CO2-le ülemineku tegur; 7,5 – süsiniku sidumise potentsiaal tonni CO2 ekvivalenti hektari kohta 80 aastasel perioodil; Chind – Euroopa Liidu kasvuhoonegaaside heitkoguste kauplemise süsteemis ühiku keskmine turuhind tasumäära arvestamisele eelnenud kümne aasta jooksul. Raadamisõiguse tasu määr arvutatakse järgmise valemiga: RT = (Cvaru kadu * 44/12 + 7,5) * Chind, kus RT – raadamisõiguse tasu määr; Cvaru kadu – keskmine raadatud alade C varu kadu tonni/ha; 44/12 – CO2-le ülemineku tegur; 7,5 – süsiniku sidumise potentsiaal tonni CO2 ekvivalenti hektari kohta 80 aastasel perioodil; Chind – Euroopa Liidu kasvuhoonegaaside heitkoguste kauplemise süsteemis ühiku keskmine turuhind tasumäära arvestamisele eelnenud kümne aasta jooksul. 2 (2) Raadamisõiguse tasu määr ümardatakse ühe euro täpsusega. Raadamisõiguse tasu määr ümardatakse ühe euro täpsusega. 3 (3) Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on väiksem kui 4000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 4000 eurot/ha. Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on väiksem kui 4000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 4000 eurot/ha. 4 (4) Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on suurem kui 8000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 8000 eurot/ha. Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on suurem kui 8000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 8000 eurot/ha.",
+      "estleg:summary": {
+        "@value": "1 (1) Raadamisõiguse tasu määr arvutatakse järgmise valemiga: RT = (Cvaru kadu * 44/12 + 7,5) * Chind, kus RT – raadamisõiguse tasu määr; Cvaru kadu – keskmine raadatud alade C varu kadu tonni/ha; 44/12 – CO2-le ülemineku tegur; 7,5 – süsiniku sidumise potentsiaal tonni CO2 ekvivalenti hektari kohta 80 aastasel perioodil; Chind – Euroopa Liidu kasvuhoonegaaside heitkoguste kauplemise süsteemis ühiku keskmine turuhind tasumäära arvestamisele eelnenud kümne aasta jooksul.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Raadamisõiguse tasu määr arvutatakse järgmise valemiga: RT = (Cvaru kadu * 44/12 + 7,5) * Chind, kus RT – raadamisõiguse tasu määr; Cvaru kadu – keskmine raadatud alade C varu kadu tonni/ha; 44/12 – CO2-le ülemineku tegur; 7,5 – süsiniku sidumise potentsiaal tonni CO2 ekvivalenti hektari kohta 80 aastasel perioodil; Chind – Euroopa Liidu kasvuhoonegaaside heitkoguste kauplemise süsteemis ühiku keskmine turuhind tasumäära arvestamisele eelnenud kümne aasta jooksul. 2 (2) Raadamisõiguse tasu määr ümardatakse ühe euro täpsusega. 3 (3) Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on väiksem kui 4000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 4000 eurot/ha. 4 (4) Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on suurem kui 8000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 8000 eurot/ha.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -113,7 +151,73 @@
         {
           "@id": "estleg:Reg_1059034_Par_2_v1059034"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1059034_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1059034_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1059034_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1059034_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raadamisõiguse tasu määr arvutatakse järgmise valemiga: RT = (Cvaru kadu * 44/12 + 7,5) * Chind, kus RT – raadamisõiguse tasu määr; Cvaru kadu – keskmine raadatud alade C varu kadu tonni/ha; 44/12 – CO2-le ülemineku tegur; 7,5 – süsiniku sidumise potentsiaal tonni CO2 ekvivalenti hektari kohta 80 aastasel perioodil; Chind – Euroopa Liidu kasvuhoonegaaside heitkoguste kauplemise süsteemis ühiku keskmine turuhind tasumäära arvestamisele eelnenud kümne aasta jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Raadamisõiguse tasu määr ümardatakse ühe euro täpsusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on väiksem kui 4000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 4000 eurot/ha.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui käesoleva paragrahvi lõikes 1 esitatud valemi alusel arvutatud raadamisõiguse tasu määr on suurem kui 8000 eurot/ha, on raadamisõiguse tasu määra väärtuseks 8000 eurot/ha.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1059034_Par_3",
@@ -122,18 +226,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Raadamisõiguse tasu määr",
+      "rdfs:label": {
+        "@value": "§ 3. Raadamisõiguse tasu määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1059034_Map"
       },
-      "estleg:summary": "Raadamisõiguse tasu määr on 4464 eurot raadatava hektari kohta.",
-      "estleg:legalText": "Raadamisõiguse tasu määr on 4464 eurot raadatava hektari kohta. Raadamisõiguse tasu määr on 4464 eurot raadatava hektari kohta.",
+      "estleg:summary": {
+        "@value": "Raadamisõiguse tasu määr on 4464 eurot raadatava hektari kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Raadamisõiguse tasu määr on 4464 eurot raadatava hektari kohta.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1059034_Par_3_v1059034"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1059034_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raadamisõiguse tasu määr on 4464 eurot raadatava hektari kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1059034_Par_4",
@@ -142,13 +270,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Tasumäära muutmise kavandamine",
+      "rdfs:label": {
+        "@value": "§ 4. Tasumäära muutmise kavandamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1059034_Map"
       },
-      "estleg:summary": "Käesoleva määruse §-s 3 sätestatud tasumäära võib muuta, võttes arvesse keskkonnatasude seaduse § 81 lõikes 4 sätestatud piirmäärasid, kui muutuvad tasumäära kehtestamise lähtealused või tasumäära arvutamise metoodika.",
-      "estleg:legalText": "Käesoleva määruse §-s 3 sätestatud tasumäära võib muuta, võttes arvesse keskkonnatasude seaduse § 81 lõikes 4 sätestatud piirmäärasid, kui muutuvad tasumäära kehtestamise lähtealused või tasumäära arvutamise metoodika. Käesoleva määruse §-s 3 sätestatud tasumäära võib muuta, võttes arvesse keskkonnatasude seaduse § 81 lõikes 4 sätestatud piirmäärasid, kui muutuvad tasumäära kehtestamise lähtealused või tasumäära arvutamise metoodika.",
+      "estleg:summary": {
+        "@value": "Käesoleva määruse §-s 3 sätestatud tasumäära võib muuta, võttes arvesse keskkonnatasude seaduse § 81 lõikes 4 sätestatud piirmäärasid, kui muutuvad tasumäära kehtestamise lähtealused või tasumäära arvutamise metoodika.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva määruse §-s 3 sätestatud tasumäära võib muuta, võttes arvesse keskkonnatasude seaduse § 81 lõikes 4 sätestatud piirmäärasid, kui muutuvad tasumäära kehtestamise lähtealused või tasumäära arvutamise metoodika.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1026686_Par_2"
@@ -168,7 +302,25 @@
         {
           "@id": "estleg:Reg_1059034_Par_4_v1059034"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1059034_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määruse §-s 3 sätestatud tasumäära võib muuta, võttes arvesse keskkonnatasude seaduse § 8¹ lõikes 4 sätestatud piirmäärasid, kui muutuvad tasumäära kehtestamise lähtealused või tasumäära arvutamise metoodika.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1059034_Par_5",
@@ -177,16 +329,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 5. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raadamisõiguse tasu määra arvutamise metoodika ja tasumäär",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1059034_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. juulil 2024. aastal.",
-      "estleg:legalText": "Määrus jõustub 1. juulil 2024. aastal. Määrus jõustub 1. juulil 2024. aastal.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. juulil 2024. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. juulil 2024. aastal.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1059034_Par_5_v1059034"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1059034_Par_5_Lg_1"
         }
       ]
     },
@@ -212,6 +375,19 @@
         "@id": "estleg:KESKKO_3_Par_8"
       },
       "estleg:citationText": "Määrus kehtestatakse keskkonnatasude seaduse § 8"
+    },
+    {
+      "@id": "estleg:Reg_1059034_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. juulil 2024. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1059034_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Rehabilitatsioonimeeskonna spetsialisti koolituskava (määrus)",
+      "rdfs:label": {
+        "@value": "Rehabilitatsioonimeeskonna spetsialisti koolituskava (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Rehabilitatsioonimeeskonna spetsialisti koolituskava",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -44,11 +51,6 @@
         "@value": "2016-01-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2015-12-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -88,7 +90,13 @@
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
-      ]
+      ],
+      "dcterms:title": "Rehabilitatsioonimeeskonna spetsialisti koolituskava",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1032366_Annex_1",
@@ -96,7 +104,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Rehabilitatsioonimeeskonna spetsialisti täienduskoolitus 156 tundi",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -105,7 +116,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -115,13 +129,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rehabilitatsioonimeeskonna spetsialisti koolituskava",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1032366_Map"
       },
-      "estleg:summary": "Käesoleva määrusega sätestatakse rehabilitatsioonimeeskonna spetsialisti koolituse täpsustatud maht ja koolituse sisu.",
-      "estleg:legalText": "Käesoleva määrusega sätestatakse rehabilitatsioonimeeskonna spetsialisti koolituse täpsustatud maht ja koolituse sisu. Käesoleva määrusega sätestatakse rehabilitatsioonimeeskonna spetsialisti koolituse täpsustatud maht ja koolituse sisu.",
+      "estleg:summary": {
+        "@value": "Käesoleva määrusega sätestatakse rehabilitatsioonimeeskonna spetsialisti koolituse täpsustatud maht ja koolituse sisu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva määrusega sätestatakse rehabilitatsioonimeeskonna spetsialisti koolituse täpsustatud maht ja koolituse sisu.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1032367_Par_1"
@@ -131,7 +151,25 @@
         {
           "@id": "estleg:Reg_1032366_Par_1_v1032366"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1032366_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määrusega sätestatakse rehabilitatsioonimeeskonna spetsialisti koolituse täpsustatud maht ja koolituse sisu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1032366_Par_2",
@@ -140,18 +178,90 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Koolituse täpsustatud maht ja sisu",
+      "rdfs:label": {
+        "@value": "§ 2. Koolituse täpsustatud maht ja sisu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rehabilitatsioonimeeskonna spetsialisti koolituskava",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1032366_Map"
       },
-      "estleg:summary": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolitus (edaspidi koolitus) koosneb viiest ainest ja lõputööst. Rehabilitatsioonimeeskonna spetsialisti koolitus (edaspidi koolitus) koosneb viiest ainest ja lõputööst. 2 (2) Koolituse kavas on 88 tundi auditoorset tööd, 68 tundi iseseisvat tööd õppematerjalidega, lugemist ja kodutööde ettevalmistamist ning lõputööd rehabilitatsioonivaldkonnas. Koolituse kavas on 88 tundi auditoorset tööd, 68 tundi iseseisvat tööd õppematerjalidega, lugemist ja kodu",
-      "estleg:legalText": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolitus (edaspidi koolitus) koosneb viiest ainest ja lõputööst. Rehabilitatsioonimeeskonna spetsialisti koolitus (edaspidi koolitus) koosneb viiest ainest ja lõputööst. 2 (2) Koolituse kavas on 88 tundi auditoorset tööd, 68 tundi iseseisvat tööd õppematerjalidega, lugemist ja kodutööde ettevalmistamist ning lõputööd rehabilitatsioonivaldkonnas. Koolituse kavas on 88 tundi auditoorset tööd, 68 tundi iseseisvat tööd õppematerjalidega, lugemist ja kodutööde ettevalmistamist ning lõputööd rehabilitatsioonivaldkonnas. 3 (3) Koolituse ainete nõutav maht on 156 tundi. Koolituse täpsustatud sisu on kehtestatud määruse lisas. Koolituse ainete nõutav maht on 156 tundi. Koolituse täpsustatud sisu on kehtestatud määruse lisas. 4 (4) Tunni pikkus on 45 minutit. Tunni pikkus on 45 minutit.",
+      "estleg:summary": {
+        "@value": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolitus (edaspidi koolitus) koosneb viiest ainest ja lõputööst. 2 (2) Koolituse kavas on 88 tundi auditoorset tööd, 68 tundi iseseisvat tööd õppematerjalidega, lugemist ja kodutööde ettevalmistamist ning lõputööd rehabilitatsioonivaldkonnas. 3 (3) Koolituse ainete nõutav maht on 156 tundi. Koolituse täpsustatud sisu on kehtestatud määruse lisas. 4 (4) Tunni pikkus on 45 minutit.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolitus (edaspidi koolitus) koosneb viiest ainest ja lõputööst. 2 (2) Koolituse kavas on 88 tundi auditoorset tööd, 68 tundi iseseisvat tööd õppematerjalidega, lugemist ja kodutööde ettevalmistamist ning lõputööd rehabilitatsioonivaldkonnas. 3 (3) Koolituse ainete nõutav maht on 156 tundi. Koolituse täpsustatud sisu on kehtestatud määruse lisas. 4 (4) Tunni pikkus on 45 minutit.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1032366_Par_2_v1032366"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1032366_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rehabilitatsioonimeeskonna spetsialisti koolitus (edaspidi koolitus) koosneb viiest ainest ja lõputööst.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Koolituse kavas on 88 tundi auditoorset tööd, 68 tundi iseseisvat tööd õppematerjalidega, lugemist ja kodutööde ettevalmistamist ning lõputööd rehabilitatsioonivaldkonnas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Koolituse ainete nõutav maht on 156 tundi. Koolituse täpsustatud sisu on kehtestatud määruse lisas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tunni pikkus on 45 minutit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1032366_Par_3",
@@ -160,13 +270,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Täiendavad õppekava nõuded",
+      "rdfs:label": {
+        "@value": "§ 3. Täiendavad õppekava nõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rehabilitatsioonimeeskonna spetsialisti koolituskava",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1032366_Map"
       },
-      "estleg:summary": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolituskava õppekavarühmaks on sotsiaaltöö ja nõustamine. Rehabilitatsioonimeeskonna spetsialisti koolituskava õppekavarühmaks on sotsiaaltöö ja nõustamine. 2 (2) Koolitusel osalemiseks peab isik vastama sotsiaalhoolekande seaduse § 68 lõikes 1, 2 või 4 kehtestatud nõuetele või omandama kõrgharidust ühel sotsiaalhoolekande seaduse § 68 lõikes 1 või 2 nimetatud erialal. Koolitusel osalemiseks peab isik vastama sotsiaalhoolekande seaduse § 68 lõikes 1",
-      "estleg:legalText": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolituskava õppekavarühmaks on sotsiaaltöö ja nõustamine. Rehabilitatsioonimeeskonna spetsialisti koolituskava õppekavarühmaks on sotsiaaltöö ja nõustamine. 2 (2) Koolitusel osalemiseks peab isik vastama sotsiaalhoolekande seaduse § 68 lõikes 1, 2 või 4 kehtestatud nõuetele või omandama kõrgharidust ühel sotsiaalhoolekande seaduse § 68 lõikes 1 või 2 nimetatud erialal. Koolitusel osalemiseks peab isik vastama sotsiaalhoolekande seaduse § 68 lõikes 1, 2 või 4 kehtestatud nõuetele või omandama kõrgharidust ühel sotsiaalhoolekande seaduse § 68 lõikes 1 või 2 nimetatud erialal. 3 (3) Lõpetamise tingimused ja väljastatavad dokumendid: 1 1) tunnistuse väljastamise tingimuseks on vähemalt 80% ulatuses kontaktõppe läbimine ja õpiväljundite saavutamine täies mahus; 2 2) lõpetamisel väljastatakse isikule tunnistus. Lõpetamise tingimused ja väljastatavad dokumendid: tunnistuse väljastamise tingimuseks on vähemalt 80% ulatuses kontaktõppe läbimine ja õpiväljundite saavutamine täies mahus; lõpetamisel väljastatakse isikule tunnistus. 4 (4) Õpet läbiviival õppejõul peab olema vähemalt magistrikraad või sellele vastav kvalifikatsioon rehabilitatsiooni-, sotsiaal- või haridusvaldkonnas. Õpet läbiviival õppejõul peab olema vähemalt magistrikraad või sellele vastav kvalifikatsioon rehabilitatsiooni-, sotsiaal- või haridusvaldkonnas. 5 (5) Õppejõul on õigus kaasata õppe läbiviimiseks eksperti, kes omab varasemat kogemust rehabilitatsiooniteenuse osutamise või korraldamisega. Õppejõul on õigus kaasata õppe läbiviimiseks eksperti, kes omab varasemat kogemust rehabilitatsiooniteenuse osutamise või korraldamisega. 6 (6) Sotsiaalkindlustusametil on õigus hinnata ja tunnustada varem läbitud õpinguid ning nende vastavust määrusega kinnitatud täiendusõppekava nõuetele. Sotsiaalkindlustusametil on õigus hinnata ja tunnustada varem läbitud õpinguid ning nende vastavust määrusega kinnitatud täiendusõppekava nõuetele.",
+      "estleg:summary": {
+        "@value": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolituskava õppekavarühmaks on sotsiaaltöö ja nõustamine. 2 (2) Koolitusel osalemiseks peab isik vastama sotsiaalhoolekande seaduse § 68 lõikes 1, 2 või 4 kehtestatud nõuetele või omandama kõrgharidust ühel sotsiaalhoolekande seaduse § 68 lõikes 1 või 2 nimetatud erialal. 3 (3) Lõpetamise tingimused ja väljastatavad dokumendid: 1 1) tunnistuse väljastamise tingimuseks on vähemalt 80% ulatuses kontaktõppe läbimine ja õpiväljundite saavutamine täies…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Rehabilitatsioonimeeskonna spetsialisti koolituskava õppekavarühmaks on sotsiaaltöö ja nõustamine. 2 (2) Koolitusel osalemiseks peab isik vastama sotsiaalhoolekande seaduse § 68 lõikes 1, 2 või 4 kehtestatud nõuetele või omandama kõrgharidust ühel sotsiaalhoolekande seaduse § 68 lõikes 1 või 2 nimetatud erialal. 3 (3) Lõpetamise tingimused ja väljastatavad dokumendid: 1 1) tunnistuse väljastamise tingimuseks on vähemalt 80% ulatuses kontaktõppe läbimine ja õpiväljundite saavutamine täies mahus; 2 2) lõpetamisel väljastatakse isikule tunnistus. 4 (4) Õpet läbiviival õppejõul peab olema vähemalt magistrikraad või sellele vastav kvalifikatsioon rehabilitatsiooni-, sotsiaal- või haridusvaldkonnas. 5 (5) Õppejõul on õigus kaasata õppe läbiviimiseks eksperti, kes omab varasemat kogemust rehabilitatsiooniteenuse osutamise või korraldamisega. 6 (6) Sotsiaalkindlustusametil on õigus hinnata ja tunnustada varem läbitud õpinguid ning nende vastavust määrusega kinnitatud täiendusõppekava nõuetele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -194,7 +310,109 @@
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1032366_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1032366_Par_3_Lg_6"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rehabilitatsioonimeeskonna spetsialisti koolituskava õppekavarühmaks on sotsiaaltöö ja nõustamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Koolitusel osalemiseks peab isik vastama sotsiaalhoolekande seaduse § 68 lõikes 1, 2 või 4 kehtestatud nõuetele või omandama kõrgharidust ühel sotsiaalhoolekande seaduse § 68 lõikes 1 või 2 nimetatud erialal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lõpetamise tingimused ja väljastatavad dokumendid: 1) tunnistuse väljastamise tingimuseks on vähemalt 80% ulatuses kontaktõppe läbimine ja õpiväljundite saavutamine täies mahus; 2) lõpetamisel väljastatakse isikule tunnistus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Õpet läbiviival õppejõul peab olema vähemalt magistrikraad või sellele vastav kvalifikatsioon rehabilitatsiooni-, sotsiaal- või haridusvaldkonnas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Õppejõul on õigus kaasata õppe läbiviimiseks eksperti, kes omab varasemat kogemust rehabilitatsiooniteenuse osutamise või korraldamisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Sotsiaalkindlustusametil on õigus hinnata ja tunnustada varem läbitud õpinguid ning nende vastavust määrusega kinnitatud täiendusõppekava nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 6"
     },
     {
       "@id": "estleg:Reg_1032366_Par_4",
@@ -203,13 +421,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Rakendussätted",
+      "rdfs:label": {
+        "@value": "§ 4. Rakendussätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rehabilitatsioonimeeskonna spetsialisti koolituskava",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1032366_Map"
       },
-      "estleg:summary": "Määrust kohaldatakse koolitusele, mida alustatakse pärast määruse jõustumist.",
-      "estleg:legalText": "Määrust kohaldatakse koolitusele, mida alustatakse pärast määruse jõustumist. Määrust kohaldatakse koolitusele, mida alustatakse pärast määruse jõustumist.",
+      "estleg:summary": {
+        "@value": "Määrust kohaldatakse koolitusele, mida alustatakse pärast määruse jõustumist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust kohaldatakse koolitusele, mida alustatakse pärast määruse jõustumist.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1032367_Par_4"
@@ -219,7 +443,25 @@
         {
           "@id": "estleg:Reg_1032366_Par_4_v1032366"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1032366_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust kohaldatakse koolitusele, mida alustatakse pärast määruse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1032366_Par_5",
@@ -228,16 +470,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 5. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rehabilitatsioonimeeskonna spetsialisti koolituskava",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1032366_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2016. a.",
-      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2016. a. Määrus jõustub 1. jaanuaril 2016. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2016. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2016. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1032366_Par_5_v1032366"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1032366_Par_5_Lg_1"
         }
       ]
     },
@@ -252,6 +505,19 @@
       },
       "estleg:citationDetail": "lg 7",
       "estleg:citationText": "Määrus kehtestatakse sotsiaalhoolekande seaduse § 68 lõike 7"
+    },
+    {
+      "@id": "estleg:Reg_1032366_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. jaanuaril 2016. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1032366_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     }
   ]
 }

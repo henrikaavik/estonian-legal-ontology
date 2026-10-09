@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata (määrus)",
+      "rdfs:label": {
+        "@value": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2019-11-03",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2019-10-31",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -81,7 +83,13 @@
         {
           "@id": "http://eurovoc.europa.eu/525"
         }
-      ]
+      ],
+      "dcterms:title": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1047994_Par_1",
@@ -90,13 +98,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Määrusega täpsustatakse nende isikute koosseisu, kelle hoiuseid hoiuste tagamise osafondi arvel ei tagata ega hüvitata.",
-      "estleg:legalText": "Määrusega täpsustatakse nende isikute koosseisu, kelle hoiuseid hoiuste tagamise osafondi arvel ei tagata ega hüvitata. Määrusega täpsustatakse nende isikute koosseisu, kelle hoiuseid hoiuste tagamise osafondi arvel ei tagata ega hüvitata.",
+      "estleg:summary": {
+        "@value": "Määrusega täpsustatakse nende isikute koosseisu, kelle hoiuseid hoiuste tagamise osafondi arvel ei tagata ega hüvitata.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega täpsustatakse nende isikute koosseisu, kelle hoiuseid hoiuste tagamise osafondi arvel ei tagata ega hüvitata.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -110,7 +124,25 @@
         {
           "@id": "estleg:Reg_1047994_Par_1_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega täpsustatakse nende isikute koosseisu, kelle hoiuseid hoiuste tagamise osafondi arvel ei tagata ega hüvitata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1047994_Par_2",
@@ -119,13 +151,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Riigi määratlemine",
+      "rdfs:label": {
+        "@value": "§ 2. Riigi määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud Eesti riigina käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 Euroopa Liidus kasutatava Euroopa rahvamajanduse ja regionaalse arvepidamise süsteemi kohta (ELT L 174, 26.06.2013, lk 1–727) lisa A punktis S.1311 ja S.1314 nimetatud üksuseid (Statistikaameti ESA 2010: institutsionaalsete sektorite (S) klassifikaatorid S.1311 ja S.1314).",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud Eesti riigina käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 Euroopa Liidus kasutatava Euroopa rahvamajanduse ja regionaalse arvepidamise süsteemi kohta (ELT L 174, 26.06.2013, lk 1–727) lisa A punktis S.1311 ja S.1314 nimetatud üksuseid (Statistikaameti ESA 2010: institutsionaalsete sektorite (S) klassifikaatorid S.1311 ja S.1314). Tagatisfondi seaduse § 30 lõikes 1 nimetatud Eesti riigina käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 Euroopa Liidus kasutatava Euroopa rahvamajanduse ja regionaalse arvepidamise süsteemi kohta (ELT L 174, 26.06.2013, lk 1–727) lisa A punktis S.1311 ja S.1314 nimetatud üksuseid (Statistikaameti ESA 2010: institutsionaalsete sektorite (S) klassifikaatorid S.1311 ja S.1314).",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud Eesti riigina käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 Euroopa Liidus kasutatava Euroopa rahvamajanduse ja regionaalse arvepidamise süsteemi kohta (ELT L 174, 26.06.2013, lk 1–727) lisa A punktis S.1311 ja S.1314 nimetatud üksuseid (Statistikaameti ESA 2010: institutsionaalsete sektorite (S) klassifikaatorid S.1311 ja S.1314).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud Eesti riigina käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 Euroopa Liidus kasutatava Euroopa rahvamajanduse ja regionaalse arvepidamise süsteemi kohta (ELT L 174, 26.06.2013, lk 1–727) lisa A punktis S.1311 ja S.1314 nimetatud üksuseid (Statistikaameti ESA 2010: institutsionaalsete sektorite (S) klassifikaatorid S.1311 ja S.1314).",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:REELS_Par_2"
@@ -151,7 +189,25 @@
         {
           "@id": "estleg:Institution_statistikaamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõikes 1 nimetatud Eesti riigina käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 Euroopa Liidus kasutatava Euroopa rahvamajanduse ja regionaalse arvepidamise süsteemi kohta (ELT L 174, 26.06.2013, lk 1–727) lisa A punktis S.1311 ja S.1314 nimetatud üksuseid (Statistikaameti ESA 2010: institutsionaalsete sektorite (S) klassifikaatorid S.1311 ja S.1314).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1047994_Par_3",
@@ -160,13 +216,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kohaliku omavalitsuse üksuse määratlemine",
+      "rdfs:label": {
+        "@value": "§ 3. Kohaliku omavalitsuse üksuse määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud kohaliku omavalitsuse üksusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.1313 nimetatud üksuseid.",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud kohaliku omavalitsuse üksusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.1313 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõikes 1 nimetatud kohaliku omavalitsuse üksusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.1313 nimetatud üksuseid.",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud kohaliku omavalitsuse üksusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.1313 nimetatud üksuseid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõikes 1 nimetatud kohaliku omavalitsuse üksusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.1313 nimetatud üksuseid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -204,7 +266,25 @@
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõikes 1 nimetatud kohaliku omavalitsuse üksusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.1313 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1047994_Par_4",
@@ -213,13 +293,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Teise krediidiasutuse määratlemine",
+      "rdfs:label": {
+        "@value": "§ 4. Teise krediidiasutuse määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõike 1 punktis 2 nimetatud teise krediidiasutuse alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksused.",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 2 nimetatud teise krediidiasutuse alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksused. Tagatisfondi seaduse § 30 lõike 1 punktis 2 nimetatud teise krediidiasutuse alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksused.",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõike 1 punktis 2 nimetatud teise krediidiasutuse alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 2 nimetatud teise krediidiasutuse alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksused.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -255,7 +341,26 @@
         {
           "@id": "estleg:Reg_1047994_Par_4_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõike 1 punktis 2 nimetatud teise krediidiasutuse alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": "2"
     },
     {
       "@id": "estleg:Reg_1047994_Par_5",
@@ -264,13 +369,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Kindlustusandja või edasikindlusandja määratlemine",
+      "rdfs:label": {
+        "@value": "§ 5. Kindlustusandja või edasikindlusandja määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõike 1 punktis 3 nimetatud kindlustusandja või edasikindlustusandja alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.128 nimetatud üksused.",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 3 nimetatud kindlustusandja või edasikindlustusandja alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.128 nimetatud üksused. Tagatisfondi seaduse § 30 lõike 1 punktis 3 nimetatud kindlustusandja või edasikindlustusandja alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.128 nimetatud üksused.",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõike 1 punktis 3 nimetatud kindlustusandja või edasikindlustusandja alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.128 nimetatud üksused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 3 nimetatud kindlustusandja või edasikindlustusandja alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.128 nimetatud üksused.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -300,7 +411,26 @@
         {
           "@id": "estleg:Reg_1047994_Par_5_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõike 1 punktis 3 nimetatud kindlustusandja või edasikindlustusandja alla kuuluvad Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.128 nimetatud üksused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": "3"
     },
     {
       "@id": "estleg:Reg_1047994_Par_6",
@@ -309,13 +439,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Investeerimisühingu, fondivalitseja ja investeerimisfondi määratlemine",
+      "rdfs:label": {
+        "@value": "§ 6. Investeerimisühingu, fondivalitseja ja investeerimisfondi määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "1 (1) Tagatisfondi seaduse § 30 lõikes 1 punktides 4 ja 5 nimetatud investeerimisühingu ja investeerimisfondina, mis ei ole rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.124 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõikes 1 punktides 4 ja 5 nimetatud investeerimisühingu ja investeerimisfondina, mis ei ole rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.124 nimetatud üksuseid. 2 (2) Tagatisf",
-      "estleg:legalText": "1 (1) Tagatisfondi seaduse § 30 lõikes 1 punktides 4 ja 5 nimetatud investeerimisühingu ja investeerimisfondina, mis ei ole rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.124 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõikes 1 punktides 4 ja 5 nimetatud investeerimisühingu ja investeerimisfondina, mis ei ole rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.124 nimetatud üksuseid. 2 (2) Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud investeerimisfondina, mis on rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.123 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud investeerimisfondina, mis on rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.123 nimetatud üksuseid. 3 (3) Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud fondivalitsejana, välja arvatud valitsussektori alla kuuluvad varasid hoidvad finantsasutused, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud fondivalitsejana, välja arvatud valitsussektori alla kuuluvad varasid hoidvad finantsasutused, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid. 4 (4) Tagatisfondi seaduse § 30 lõike 1 punktis 4 nimetatud investeerimisfondina, mis on pensionifond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.129 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõike 1 punktis 4 nimetatud investeerimisfondina, mis on pensionifond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.129 nimetatud üksuseid.",
+      "estleg:summary": {
+        "@value": "1 (1) Tagatisfondi seaduse § 30 lõikes 1 punktides 4 ja 5 nimetatud investeerimisühingu ja investeerimisfondina, mis ei ole rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.124 nimetatud üksuseid. 2 (2) Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud investeerimisfondina, mis on rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.123 nimetatud üksuseid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tagatisfondi seaduse § 30 lõikes 1 punktides 4 ja 5 nimetatud investeerimisühingu ja investeerimisfondina, mis ei ole rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.124 nimetatud üksuseid. 2 (2) Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud investeerimisfondina, mis on rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.123 nimetatud üksuseid. 3 (3) Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud fondivalitsejana, välja arvatud valitsussektori alla kuuluvad varasid hoidvad finantsasutused, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid. 4 (4) Tagatisfondi seaduse § 30 lõike 1 punktis 4 nimetatud investeerimisfondina, mis on pensionifond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.129 nimetatud üksuseid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -342,7 +478,76 @@
         {
           "@id": "estleg:Reg_1047994_Par_6_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1047994_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1047994_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1047994_Par_6_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõikes 1 punktides 4 ja 5 nimetatud investeerimisühingu ja investeerimisfondina, mis ei ole rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.124 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud investeerimisfondina, mis on rahaturufond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.123 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": "4"
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tagatisfondi seaduse § 30 lõikes 1 punktis 4 nimetatud fondivalitsejana, välja arvatud valitsussektori alla kuuluvad varasid hoidvad finantsasutused, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:itemNumber": "4"
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tagatisfondi seaduse § 30 lõike 1 punktis 4 nimetatud investeerimisfondina, mis on pensionifond, käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.129 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4",
+      "estleg:itemNumber": "4"
     },
     {
       "@id": "estleg:Reg_1047994_Par_7",
@@ -351,13 +556,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. E-raha asutuse määratlemine",
+      "rdfs:label": {
+        "@value": "§ 7. E-raha asutuse määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõike 1 punktis 6 nimetatud e-raha asutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksuseid.",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 6 nimetatud e-raha asutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõike 1 punktis 6 nimetatud e-raha asutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksuseid.",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõike 1 punktis 6 nimetatud e-raha asutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksuseid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 6 nimetatud e-raha asutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksuseid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -393,7 +604,26 @@
         {
           "@id": "estleg:Reg_1047994_Par_7_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_7_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõike 1 punktis 6 nimetatud e-raha asutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.122 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": "6"
     },
     {
       "@id": "estleg:Reg_1047994_Par_8",
@@ -402,13 +632,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Makseasutuse määratlemine",
+      "rdfs:label": {
+        "@value": "§ 8. Makseasutuse määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõike 1 punktis 7 nimetatud makseasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.126 nimetatud üksuseid.",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 7 nimetatud makseasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.126 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõike 1 punktis 7 nimetatud makseasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.126 nimetatud üksuseid.",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõike 1 punktis 7 nimetatud makseasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.126 nimetatud üksuseid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 7 nimetatud makseasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.126 nimetatud üksuseid.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ATMOSF_Par_216_1"
@@ -435,7 +671,26 @@
         {
           "@id": "estleg:Reg_1047994_Par_8_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_8_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõike 1 punktis 7 nimetatud makseasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.126 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": "7"
     },
     {
       "@id": "estleg:Reg_1047994_Par_9",
@@ -444,13 +699,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Krediidiandja ja krediidivahendaja määratlemine",
+      "rdfs:label": {
+        "@value": "§ 9. Krediidiandja ja krediidivahendaja määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõike 1 punktis 8 nimetatud krediidiandja või krediidivahendajana käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid.",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 8 nimetatud krediidiandja või krediidivahendajana käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõike 1 punktis 8 nimetatud krediidiandja või krediidivahendajana käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid.",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõike 1 punktis 8 nimetatud krediidiandja või krediidivahendajana käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 8 nimetatud krediidiandja või krediidivahendajana käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -486,7 +747,26 @@
         {
           "@id": "estleg:Reg_1047994_Par_9_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_9_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõike 1 punktis 8 nimetatud krediidiandja või krediidivahendajana käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktis S.127 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": "8"
     },
     {
       "@id": "estleg:Reg_1047994_Par_10",
@@ -495,13 +775,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Finantseerimisasutuse määratlemine",
+      "rdfs:label": {
+        "@value": "§ 10. Finantseerimisasutuse määratlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Tagatisfondi seaduse § 30 lõike 1 punktis 9 nimetatud finantseerimisasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktides S.125 kuni S.127 nimetatud üksuseid.",
-      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 9 nimetatud finantseerimisasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktides S.125 kuni S.127 nimetatud üksuseid. Tagatisfondi seaduse § 30 lõike 1 punktis 9 nimetatud finantseerimisasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktides S.125 kuni S.127 nimetatud üksuseid.",
+      "estleg:summary": {
+        "@value": "Tagatisfondi seaduse § 30 lõike 1 punktis 9 nimetatud finantseerimisasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktides S.125 kuni S.127 nimetatud üksuseid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tagatisfondi seaduse § 30 lõike 1 punktis 9 nimetatud finantseerimisasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktides S.125 kuni S.127 nimetatud üksuseid.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ELUP_Par_36"
@@ -528,7 +814,26 @@
         {
           "@id": "estleg:Reg_1047994_Par_10_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_10_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tagatisfondi seaduse § 30 lõike 1 punktis 9 nimetatud finantseerimisasutusena käsitatakse Euroopa Parlamendi ja nõukogu määruse (EL) nr 549/2013 lisa A punktides S.125 kuni S.127 nimetatud üksuseid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": "9"
     },
     {
       "@id": "estleg:Reg_1047994_Par_11",
@@ -537,13 +842,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Erisused määruse kohaldamisel",
+      "rdfs:label": {
+        "@value": "§ 11. Erisused määruse kohaldamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Täpsustatud isikute koosseis, kelle hoiuseid ei tagata ega hüvitata",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1047994_Map"
       },
-      "estleg:summary": "Täiendava teabe alusel võib krediidiasutus määratleda isiku käesoleva määruse §-des 2–10 sätestatust erinevalt.",
-      "estleg:legalText": "Täiendava teabe alusel võib krediidiasutus määratleda isiku käesoleva määruse §-des 2–10 sätestatust erinevalt. Täiendava teabe alusel võib krediidiasutus määratleda isiku käesoleva määruse §-des 2–10 sätestatust erinevalt.",
+      "estleg:summary": {
+        "@value": "Täiendava teabe alusel võib krediidiasutus määratleda isiku käesoleva määruse §-des 2–10 sätestatust erinevalt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Täiendava teabe alusel võib krediidiasutus määratleda isiku käesoleva määruse §-des 2–10 sätestatust erinevalt.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -563,6 +874,11 @@
         {
           "@id": "estleg:Reg_1047994_Par_11_v1047994"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1047994_Par_11_Lg_1"
+        }
       ]
     },
     {
@@ -576,6 +892,19 @@
       },
       "estleg:citationDetail": "lg 7",
       "estleg:citationText": "Määrus kehtestatakse Tagatisfondi seaduse § 30 lõike 7"
+    },
+    {
+      "@id": "estleg:Reg_1047994_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Täiendava teabe alusel võib krediidiasutus määratleda isiku käesoleva määruse §-des 2–10 sätestatust erinevalt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1047994_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     }
   ]
 }

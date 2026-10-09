@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2014-09-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2014-08-19",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -64,7 +66,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2498"
         }
-      ]
+      ],
+      "dcterms:title": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1025443_Par_1",
@@ -73,13 +81,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu",
+      "rdfs:label": {
+        "@value": "§ 1. Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Veeteede Ametile esitatavad laeva tehnilised dokumendid käesoleva määruse tähenduses on tehniline ülesanne, laeva ülddokumentatsioon, laeva kerekonstruktsiooni joonised, laeva süsteemide joonised, laeva seadmete joonised, laeva mehhanismide dokumentatsioon, laeva raadio- ja navigatsiooniseadmete dokumentatsioon, laeva elektriseadmete dokumentatsioon, laeva ujuvuse ja püstuvuse dokument ja laeva katsetuste dokumentatsioon.",
-      "estleg:legalText": "Veeteede Ametile esitatavad laeva tehnilised dokumendid käesoleva määruse tähenduses on tehniline ülesanne, laeva ülddokumentatsioon, laeva kerekonstruktsiooni joonised, laeva süsteemide joonised, laeva seadmete joonised, laeva mehhanismide dokumentatsioon, laeva raadio- ja navigatsiooniseadmete dokumentatsioon, laeva elektriseadmete dokumentatsioon, laeva ujuvuse ja püstuvuse dokument ja laeva katsetuste dokumentatsioon. Veeteede Ametile esitatavad laeva tehnilised dokumendid käesoleva määruse tähenduses on tehniline ülesanne, laeva ülddokumentatsioon, laeva kerekonstruktsiooni joonised, laeva süsteemide joonised, laeva seadmete joonised, laeva mehhanismide dokumentatsioon, laeva raadio- ja navigatsiooniseadmete dokumentatsioon, laeva elektriseadmete dokumentatsioon, laeva ujuvuse ja püstuvuse dokument ja laeva katsetuste dokumentatsioon.",
+      "estleg:summary": {
+        "@value": "Veeteede Ametile esitatavad laeva tehnilised dokumendid käesoleva määruse tähenduses on tehniline ülesanne, laeva ülddokumentatsioon, laeva kerekonstruktsiooni joonised, laeva süsteemide joonised, laeva seadmete joonised, laeva mehhanismide dokumentatsioon, laeva raadio- ja navigatsiooniseadmete dokumentatsioon, laeva elektriseadmete dokumentatsioon, laeva ujuvuse ja püstuvuse dokument ja laeva katsetuste dokumentatsioon.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Veeteede Ametile esitatavad laeva tehnilised dokumendid käesoleva määruse tähenduses on tehniline ülesanne, laeva ülddokumentatsioon, laeva kerekonstruktsiooni joonised, laeva süsteemide joonised, laeva seadmete joonised, laeva mehhanismide dokumentatsioon, laeva raadio- ja navigatsiooniseadmete dokumentatsioon, laeva elektriseadmete dokumentatsioon, laeva ujuvuse ja püstuvuse dokument ja laeva katsetuste dokumentatsioon.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -93,7 +107,25 @@
         {
           "@id": "estleg:Reg_1025443_Par_1_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Veeteede Ametile esitatavad laeva tehnilised dokumendid käesoleva määruse tähenduses on tehniline ülesanne, laeva ülddokumentatsioon, laeva kerekonstruktsiooni joonised, laeva süsteemide joonised, laeva seadmete joonised, laeva mehhanismide dokumentatsioon, laeva raadio- ja navigatsiooniseadmete dokumentatsioon, laeva elektriseadmete dokumentatsioon, laeva ujuvuse ja püstuvuse dokument ja laeva katsetuste dokumentatsioon.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1025443_Par_2",
@@ -102,17 +134,53 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Tehniline ülesanne",
+      "rdfs:label": {
+        "@value": "§ 2. Tehniline ülesanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Tehniline ülesanne sisaldab järgmisi andmeid: 1 1) laeva põhiandmed, milledeks on tehnilised üldandmed, kasutusotstarve ja sõiduomadused; 2 2) laeva kere andmed, milledeks on konstruktsiooni ja materjalide andmed; 3 3) laeva süsteemide andmed; 4 4) laeva seadmete andmed; 5 5) teave laeva ruumide paigutuse ja nende seadmestamise kohta; 6 6) teave isolatsiooni ja viimistlemise kohta; 7 7) masinate, mehhanismide ja nende süsteemide, käiturite andmed; 8 8) elektrisüsteemide ja -seadmete andmed; 9 9)",
-      "estleg:legalText": "Tehniline ülesanne sisaldab järgmisi andmeid: 1 1) laeva põhiandmed, milledeks on tehnilised üldandmed, kasutusotstarve ja sõiduomadused; 2 2) laeva kere andmed, milledeks on konstruktsiooni ja materjalide andmed; 3 3) laeva süsteemide andmed; 4 4) laeva seadmete andmed; 5 5) teave laeva ruumide paigutuse ja nende seadmestamise kohta; 6 6) teave isolatsiooni ja viimistlemise kohta; 7 7) masinate, mehhanismide ja nende süsteemide, käiturite andmed; 8 8) elektrisüsteemide ja -seadmete andmed; 9 9) raadio-, navigatsiooni- ja alarmseadmete andmed; 10 10) kai- ja käigukatsetuste nimistu. Tehniline ülesanne sisaldab järgmisi andmeid: laeva põhiandmed, milledeks on tehnilised üldandmed, kasutusotstarve ja sõiduomadused; laeva kere andmed, milledeks on konstruktsiooni ja materjalide andmed; laeva süsteemide andmed; laeva seadmete andmed; teave laeva ruumide paigutuse ja nende seadmestamise kohta; teave isolatsiooni ja viimistlemise kohta; masinate, mehhanismide ja nende süsteemide, käiturite andmed; elektrisüsteemide ja -seadmete andmed; raadio-, navigatsiooni- ja alarmseadmete andmed; kai- ja käigukatsetuste nimistu.",
+      "estleg:summary": {
+        "@value": "Tehniline ülesanne sisaldab järgmisi andmeid: 1 1) laeva põhiandmed, milledeks on tehnilised üldandmed, kasutusotstarve ja sõiduomadused; 2 2) laeva kere andmed, milledeks on konstruktsiooni ja materjalide andmed; 3 3) laeva süsteemide andmed; 4 4) laeva seadmete andmed; 5 5) teave laeva ruumide paigutuse ja nende seadmestamise kohta; 6 6) teave isolatsiooni ja viimistlemise kohta; 7 7) masinate, mehhanismide ja nende süsteemide, käiturite andmed; 8 8) elektrisüsteemide ja -seadmete andmed; 9…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tehniline ülesanne sisaldab järgmisi andmeid: 1 1) laeva põhiandmed, milledeks on tehnilised üldandmed, kasutusotstarve ja sõiduomadused; 2 2) laeva kere andmed, milledeks on konstruktsiooni ja materjalide andmed; 3 3) laeva süsteemide andmed; 4 4) laeva seadmete andmed; 5 5) teave laeva ruumide paigutuse ja nende seadmestamise kohta; 6 6) teave isolatsiooni ja viimistlemise kohta; 7 7) masinate, mehhanismide ja nende süsteemide, käiturite andmed; 8 8) elektrisüsteemide ja -seadmete andmed; 9 9) raadio-, navigatsiooni- ja alarmseadmete andmed; 10 10) kai- ja käigukatsetuste nimistu.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_2_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_2_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tehniline ülesanne sisaldab järgmisi andmeid: 1) laeva põhiandmed, milledeks on tehnilised üldandmed, kasutusotstarve ja sõiduomadused; 2) laeva kere andmed, milledeks on konstruktsiooni ja materjalide andmed; 3) laeva süsteemide andmed; 4) laeva seadmete andmed; 5) teave laeva ruumide paigutuse ja nende seadmestamise kohta; 6) teave isolatsiooni ja viimistlemise kohta; 7) masinate, mehhanismide ja nende süsteemide, käiturite andmed; 8) elektrisüsteemide ja -seadmete andmed; 9) raadio-, navigatsiooni- ja alarmseadmete andmed; 10) kai- ja käigukatsetuste nimistu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
       ]
     },
     {
@@ -122,17 +190,47 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Laeva ülddokumentatsioon",
+      "rdfs:label": {
+        "@value": "§ 3. Laeva ülddokumentatsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva ülddokumentatsioon koosneb järgmistest dokumentidest: 1 1) teoreetiline joonis; 2 2) üldasendi joonis; 3 3) dokumendid konstruktiivsete elementide määratlemise kohta; 4 4) tankide plaan. Laeva ülddokumentatsioon koosneb järgmistest dokumentidest: teoreetiline joonis; üldasendi joonis; dokumendid konstruktiivsete elementide määratlemise kohta; tankide plaan.",
-      "estleg:legalText": "Laeva ülddokumentatsioon koosneb järgmistest dokumentidest: 1 1) teoreetiline joonis; 2 2) üldasendi joonis; 3 3) dokumendid konstruktiivsete elementide määratlemise kohta; 4 4) tankide plaan. Laeva ülddokumentatsioon koosneb järgmistest dokumentidest: teoreetiline joonis; üldasendi joonis; dokumendid konstruktiivsete elementide määratlemise kohta; tankide plaan.",
+      "estleg:summary": {
+        "@value": "Laeva ülddokumentatsioon koosneb järgmistest dokumentidest: 1 1) teoreetiline joonis; 2 2) üldasendi joonis; 3 3) dokumendid konstruktiivsete elementide määratlemise kohta; 4 4) tankide plaan.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva ülddokumentatsioon koosneb järgmistest dokumentidest: 1 1) teoreetiline joonis; 2 2) üldasendi joonis; 3 3) dokumendid konstruktiivsete elementide määratlemise kohta; 4 4) tankide plaan.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_3_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_3_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva ülddokumentatsioon koosneb järgmistest dokumentidest: 1) teoreetiline joonis; 2) üldasendi joonis; 3) dokumendid konstruktiivsete elementide määratlemise kohta; 4) tankide plaan.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -142,17 +240,52 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Laeva kerekonstruktsiooni joonised",
+      "rdfs:label": {
+        "@value": "§ 4. Laeva kerekonstruktsiooni joonised",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva kerekonstruktsiooni joonised on: 1 1) kerekonstruktsiooni pikilõike joonis; 2 2) keskkaare joonis; 3 3) tekkide konstruktsiooni joonis; 4 4) sisepõhja konstruktsiooni joonis; 5 5) veekindlate vaheseinte joonised; 6 6) välisplaadistuse joonis metallkerega laeval; 7 7) peamasina ja suuremate seadmete vundamendite joonised; 8 8) luukide, veekindlate uste ja kaante joonised; 9 9) paigaldatud mahutite joonised. Laeva kerekonstruktsiooni joonised on: kerekonstruktsiooni pikilõike joonis; keskkaa",
-      "estleg:legalText": "Laeva kerekonstruktsiooni joonised on: 1 1) kerekonstruktsiooni pikilõike joonis; 2 2) keskkaare joonis; 3 3) tekkide konstruktsiooni joonis; 4 4) sisepõhja konstruktsiooni joonis; 5 5) veekindlate vaheseinte joonised; 6 6) välisplaadistuse joonis metallkerega laeval; 7 7) peamasina ja suuremate seadmete vundamendite joonised; 8 8) luukide, veekindlate uste ja kaante joonised; 9 9) paigaldatud mahutite joonised. Laeva kerekonstruktsiooni joonised on: kerekonstruktsiooni pikilõike joonis; keskkaare joonis; tekkide konstruktsiooni joonis; sisepõhja konstruktsiooni joonis; veekindlate vaheseinte joonised; välisplaadistuse joonis metallkerega laeval; peamasina ja suuremate seadmete vundamendite joonised; luukide, veekindlate uste ja kaante joonised; paigaldatud mahutite joonised.",
+      "estleg:summary": {
+        "@value": "Laeva kerekonstruktsiooni joonised on: 1 1) kerekonstruktsiooni pikilõike joonis; 2 2) keskkaare joonis; 3 3) tekkide konstruktsiooni joonis; 4 4) sisepõhja konstruktsiooni joonis; 5 5) veekindlate vaheseinte joonised; 6 6) välisplaadistuse joonis metallkerega laeval; 7 7) peamasina ja suuremate seadmete vundamendite joonised; 8 8) luukide, veekindlate uste ja kaante joonised; 9 9) paigaldatud mahutite joonised.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva kerekonstruktsiooni joonised on: 1 1) kerekonstruktsiooni pikilõike joonis; 2 2) keskkaare joonis; 3 3) tekkide konstruktsiooni joonis; 4 4) sisepõhja konstruktsiooni joonis; 5 5) veekindlate vaheseinte joonised; 6 6) välisplaadistuse joonis metallkerega laeval; 7 7) peamasina ja suuremate seadmete vundamendite joonised; 8 8) luukide, veekindlate uste ja kaante joonised; 9 9) paigaldatud mahutite joonised.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_4_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_4_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva kerekonstruktsiooni joonised on: 1) kerekonstruktsiooni pikilõike joonis; 2) keskkaare joonis; 3) tekkide konstruktsiooni joonis; 4) sisepõhja konstruktsiooni joonis; 5) veekindlate vaheseinte joonised; 6) välisplaadistuse joonis metallkerega laeval; 7) peamasina ja suuremate seadmete vundamendite joonised; 8) luukide, veekindlate uste ja kaante joonised; 9) paigaldatud mahutite joonised.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
       ]
     },
     {
@@ -162,17 +295,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Laeva süsteemide joonised",
+      "rdfs:label": {
+        "@value": "§ 5. Laeva süsteemide joonised",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva süsteemide joonised on: 1 1) tulekaitsesüsteemide joonis; 2 2) kuivendussüsteemi joonis; 3 3) ballastsüsteemi joonis; 4 4) sanitaarsüsteemide joonis; 5 5) ventilatsiooni- ja konditsioneerimise süsteemi joonis; 6 6) tankide ja tsisternide täite-, õhu- ja mõõtesüsteemide joonis. Laeva süsteemide joonised on: tulekaitsesüsteemide joonis; kuivendussüsteemi joonis; ballastsüsteemi joonis; sanitaarsüsteemide joonis; ventilatsiooni- ja konditsioneerimise süsteemi joonis; tankide ja tsisternide tä",
-      "estleg:legalText": "Laeva süsteemide joonised on: 1 1) tulekaitsesüsteemide joonis; 2 2) kuivendussüsteemi joonis; 3 3) ballastsüsteemi joonis; 4 4) sanitaarsüsteemide joonis; 5 5) ventilatsiooni- ja konditsioneerimise süsteemi joonis; 6 6) tankide ja tsisternide täite-, õhu- ja mõõtesüsteemide joonis. Laeva süsteemide joonised on: tulekaitsesüsteemide joonis; kuivendussüsteemi joonis; ballastsüsteemi joonis; sanitaarsüsteemide joonis; ventilatsiooni- ja konditsioneerimise süsteemi joonis; tankide ja tsisternide täite-, õhu- ja mõõtesüsteemide joonis.",
+      "estleg:summary": {
+        "@value": "Laeva süsteemide joonised on: 1 1) tulekaitsesüsteemide joonis; 2 2) kuivendussüsteemi joonis; 3 3) ballastsüsteemi joonis; 4 4) sanitaarsüsteemide joonis; 5 5) ventilatsiooni- ja konditsioneerimise süsteemi joonis; 6 6) tankide ja tsisternide täite-, õhu- ja mõõtesüsteemide joonis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva süsteemide joonised on: 1 1) tulekaitsesüsteemide joonis; 2 2) kuivendussüsteemi joonis; 3 3) ballastsüsteemi joonis; 4 4) sanitaarsüsteemide joonis; 5 5) ventilatsiooni- ja konditsioneerimise süsteemi joonis; 6 6) tankide ja tsisternide täite-, õhu- ja mõõtesüsteemide joonis.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_5_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_5_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva süsteemide joonised on: 1) tulekaitsesüsteemide joonis; 2) kuivendussüsteemi joonis; 3) ballastsüsteemi joonis; 4) sanitaarsüsteemide joonis; 5) ventilatsiooni- ja konditsioneerimise süsteemi joonis; 6) tankide ja tsisternide täite-, õhu- ja mõõtesüsteemide joonis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -182,17 +347,51 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Laeva seadmete joonised",
+      "rdfs:label": {
+        "@value": "§ 6. Laeva seadmete joonised",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva seadmete joonised on: 1 1) ankruseadme joonis; 2 2) rooliseadme joonis; 3 3) päästevahendite paigutuse joonis; 4 4) veeskamise seadmete joonis; 5 5) reelingu ja umbreelingu joonis; 6 6) lastiseadmete joonis; 7 7) kinnitus- ja puksiirseadmete joonis; 8 8) mastide ja taglase joonis. Laeva seadmete joonised on: ankruseadme joonis; rooliseadme joonis; päästevahendite paigutuse joonis; veeskamise seadmete joonis; reelingu ja umbreelingu joonis; lastiseadmete joonis; kinnitus- ja puksiirseadmete",
-      "estleg:legalText": "Laeva seadmete joonised on: 1 1) ankruseadme joonis; 2 2) rooliseadme joonis; 3 3) päästevahendite paigutuse joonis; 4 4) veeskamise seadmete joonis; 5 5) reelingu ja umbreelingu joonis; 6 6) lastiseadmete joonis; 7 7) kinnitus- ja puksiirseadmete joonis; 8 8) mastide ja taglase joonis. Laeva seadmete joonised on: ankruseadme joonis; rooliseadme joonis; päästevahendite paigutuse joonis; veeskamise seadmete joonis; reelingu ja umbreelingu joonis; lastiseadmete joonis; kinnitus- ja puksiirseadmete joonis; mastide ja taglase joonis.",
+      "estleg:summary": {
+        "@value": "Laeva seadmete joonised on: 1 1) ankruseadme joonis; 2 2) rooliseadme joonis; 3 3) päästevahendite paigutuse joonis; 4 4) veeskamise seadmete joonis; 5 5) reelingu ja umbreelingu joonis; 6 6) lastiseadmete joonis; 7 7) kinnitus- ja puksiirseadmete joonis; 8 8) mastide ja taglase joonis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva seadmete joonised on: 1 1) ankruseadme joonis; 2 2) rooliseadme joonis; 3 3) päästevahendite paigutuse joonis; 4 4) veeskamise seadmete joonis; 5 5) reelingu ja umbreelingu joonis; 6 6) lastiseadmete joonis; 7 7) kinnitus- ja puksiirseadmete joonis; 8 8) mastide ja taglase joonis.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_6_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_6_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva seadmete joonised on: 1) ankruseadme joonis; 2) rooliseadme joonis; 3) päästevahendite paigutuse joonis; 4) veeskamise seadmete joonis; 5) reelingu ja umbreelingu joonis; 6) lastiseadmete joonis; 7) kinnitus- ja puksiirseadmete joonis; 8) mastide ja taglase joonis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
       ]
     },
     {
@@ -202,17 +401,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Laeva mehhanismide dokumentatsioon",
+      "rdfs:label": {
+        "@value": "§ 7. Laeva mehhanismide dokumentatsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva mehhanismide dokumentatsioon koosneb järgmistest dokumentidest: 1 1) masinaruumi üldpaigutuse joonis; 2 2) võllide ja tugilaagrite tugevusarvutus; 3 3) võlliliini koostejoonis; 4 4) käituri koostejoonis; 5 5) peamasina, abimasinate ja muude masinaruumis asuvate mehhanismide süsteemide, see tähendab kütte- ja õlitorustiku, jahutussüsteemide, käivitussüsteemide ning heitgaasitorustike joonised koos katelde ja katalüsaatoriga; 6 6) pea- ja abimasinate juhtimisautomaatika ja kontrollisüsteemid",
-      "estleg:legalText": "Laeva mehhanismide dokumentatsioon koosneb järgmistest dokumentidest: 1 1) masinaruumi üldpaigutuse joonis; 2 2) võllide ja tugilaagrite tugevusarvutus; 3 3) võlliliini koostejoonis; 4 4) käituri koostejoonis; 5 5) peamasina, abimasinate ja muude masinaruumis asuvate mehhanismide süsteemide, see tähendab kütte- ja õlitorustiku, jahutussüsteemide, käivitussüsteemide ning heitgaasitorustike joonised koos katelde ja katalüsaatoriga; 6 6) pea- ja abimasinate juhtimisautomaatika ja kontrollisüsteemide skeemid. Laeva mehhanismide dokumentatsioon koosneb järgmistest dokumentidest: masinaruumi üldpaigutuse joonis; võllide ja tugilaagrite tugevusarvutus; võlliliini koostejoonis; käituri koostejoonis; peamasina, abimasinate ja muude masinaruumis asuvate mehhanismide süsteemide, see tähendab kütte- ja õlitorustiku, jahutussüsteemide, käivitussüsteemide ning heitgaasitorustike joonised koos katelde ja katalüsaatoriga; pea- ja abimasinate juhtimisautomaatika ja kontrollisüsteemide skeemid.",
+      "estleg:summary": {
+        "@value": "Laeva mehhanismide dokumentatsioon koosneb järgmistest dokumentidest: 1 1) masinaruumi üldpaigutuse joonis; 2 2) võllide ja tugilaagrite tugevusarvutus; 3 3) võlliliini koostejoonis; 4 4) käituri koostejoonis; 5 5) peamasina, abimasinate ja muude masinaruumis asuvate mehhanismide süsteemide, see tähendab kütte- ja õlitorustiku, jahutussüsteemide, käivitussüsteemide ning heitgaasitorustike joonised koos katelde ja katalüsaatoriga; 6 6) pea- ja abimasinate juhtimisautomaatika ja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva mehhanismide dokumentatsioon koosneb järgmistest dokumentidest: 1 1) masinaruumi üldpaigutuse joonis; 2 2) võllide ja tugilaagrite tugevusarvutus; 3 3) võlliliini koostejoonis; 4 4) käituri koostejoonis; 5 5) peamasina, abimasinate ja muude masinaruumis asuvate mehhanismide süsteemide, see tähendab kütte- ja õlitorustiku, jahutussüsteemide, käivitussüsteemide ning heitgaasitorustike joonised koos katelde ja katalüsaatoriga; 6 6) pea- ja abimasinate juhtimisautomaatika ja kontrollisüsteemide skeemid.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_7_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_7_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva mehhanismide dokumentatsioon koosneb järgmistest dokumentidest: 1) masinaruumi üldpaigutuse joonis; 2) võllide ja tugilaagrite tugevusarvutus; 3) võlliliini koostejoonis; 4) käituri koostejoonis; 5) peamasina, abimasinate ja muude masinaruumis asuvate mehhanismide süsteemide, see tähendab kütte- ja õlitorustiku, jahutussüsteemide, käivitussüsteemide ning heitgaasitorustike joonised koos katelde ja katalüsaatoriga; 6) pea- ja abimasinate juhtimisautomaatika ja kontrollisüsteemide skeemid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -222,17 +453,48 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Laeva raadio- ja navigatsiooniseadmete dokumentatsioon",
+      "rdfs:label": {
+        "@value": "§ 8. Laeva raadio- ja navigatsiooniseadmete dokumentatsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva raadio- ja navigatsiooniseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) raadio- ja navigatsiooniseadmete paigaldusjoonised; 2 2) antennide paigaldusjoonised; 3 3) seadmete pea- ja reservtoiteskeemid; 4 4) seadmete montaažiskeemid koos spetsifikatsioonidega; 5 5) avariiakude mahutavuse arvutus. Laeva raadio- ja navigatsiooniseadmete dokumentatsioon koosneb järgmistest dokumentidest: raadio- ja navigatsiooniseadmete paigaldusjoonised; antennide paigaldusjoonised; seadmete pe",
-      "estleg:legalText": "Laeva raadio- ja navigatsiooniseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) raadio- ja navigatsiooniseadmete paigaldusjoonised; 2 2) antennide paigaldusjoonised; 3 3) seadmete pea- ja reservtoiteskeemid; 4 4) seadmete montaažiskeemid koos spetsifikatsioonidega; 5 5) avariiakude mahutavuse arvutus. Laeva raadio- ja navigatsiooniseadmete dokumentatsioon koosneb järgmistest dokumentidest: raadio- ja navigatsiooniseadmete paigaldusjoonised; antennide paigaldusjoonised; seadmete pea- ja reservtoiteskeemid; seadmete montaažiskeemid koos spetsifikatsioonidega; avariiakude mahutavuse arvutus.",
+      "estleg:summary": {
+        "@value": "Laeva raadio- ja navigatsiooniseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) raadio- ja navigatsiooniseadmete paigaldusjoonised; 2 2) antennide paigaldusjoonised; 3 3) seadmete pea- ja reservtoiteskeemid; 4 4) seadmete montaažiskeemid koos spetsifikatsioonidega; 5 5) avariiakude mahutavuse arvutus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva raadio- ja navigatsiooniseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) raadio- ja navigatsiooniseadmete paigaldusjoonised; 2 2) antennide paigaldusjoonised; 3 3) seadmete pea- ja reservtoiteskeemid; 4 4) seadmete montaažiskeemid koos spetsifikatsioonidega; 5 5) avariiakude mahutavuse arvutus.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_8_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_8_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva raadio- ja navigatsiooniseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1) raadio- ja navigatsiooniseadmete paigaldusjoonised; 2) antennide paigaldusjoonised; 3) seadmete pea- ja reservtoiteskeemid; 4) seadmete montaažiskeemid koos spetsifikatsioonidega; 5) avariiakude mahutavuse arvutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
       ]
     },
     {
@@ -242,17 +504,47 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Laeva elektriseadmete dokumentatsioon",
+      "rdfs:label": {
+        "@value": "§ 9. Laeva elektriseadmete dokumentatsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva elektriseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) elektrivõrgu, see tähendab jõuseadmete, valgustuse, avariivalgustuse, navigatsioonitulede, kontroll- ja avariisignalisatsiooni skeemid; 2 2) peajaotuskilbi skeem; 3 3) elektrivõrgu koormuste tabelid; 4 4) elektriseadmete maandamise skeem. Laeva elektriseadmete dokumentatsioon koosneb järgmistest dokumentidest: elektrivõrgu, see tähendab jõuseadmete, valgustuse, avariivalgustuse, navigatsioonitulede, kontroll- ja avarii",
-      "estleg:legalText": "Laeva elektriseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) elektrivõrgu, see tähendab jõuseadmete, valgustuse, avariivalgustuse, navigatsioonitulede, kontroll- ja avariisignalisatsiooni skeemid; 2 2) peajaotuskilbi skeem; 3 3) elektrivõrgu koormuste tabelid; 4 4) elektriseadmete maandamise skeem. Laeva elektriseadmete dokumentatsioon koosneb järgmistest dokumentidest: elektrivõrgu, see tähendab jõuseadmete, valgustuse, avariivalgustuse, navigatsioonitulede, kontroll- ja avariisignalisatsiooni skeemid; peajaotuskilbi skeem; elektrivõrgu koormuste tabelid; elektriseadmete maandamise skeem.",
+      "estleg:summary": {
+        "@value": "Laeva elektriseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) elektrivõrgu, see tähendab jõuseadmete, valgustuse, avariivalgustuse, navigatsioonitulede, kontroll- ja avariisignalisatsiooni skeemid; 2 2) peajaotuskilbi skeem; 3 3) elektrivõrgu koormuste tabelid; 4 4) elektriseadmete maandamise skeem.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva elektriseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1 1) elektrivõrgu, see tähendab jõuseadmete, valgustuse, avariivalgustuse, navigatsioonitulede, kontroll- ja avariisignalisatsiooni skeemid; 2 2) peajaotuskilbi skeem; 3 3) elektrivõrgu koormuste tabelid; 4 4) elektriseadmete maandamise skeem.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_9_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_9_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva elektriseadmete dokumentatsioon koosneb järgmistest dokumentidest: 1) elektrivõrgu, see tähendab jõuseadmete, valgustuse, avariivalgustuse, navigatsioonitulede, kontroll- ja avariisignalisatsiooni skeemid; 2) peajaotuskilbi skeem; 3) elektrivõrgu koormuste tabelid; 4) elektriseadmete maandamise skeem.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -262,17 +554,49 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Laeva ujuvuse ja püstuvuse dokument",
+      "rdfs:label": {
+        "@value": "§ 10. Laeva ujuvuse ja püstuvuse dokument",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva ujuvuse ja püstuvuse dokument sisaldab järgmisi andmeid: 1 1) laeva teoreetilise joonise elemendid; 2 2) püstuvuse arvutused; 3 3) vigastatud laeva püstuvuse ja uppumatuse arvutused; 4 4) püstuvuse informatsioon; 5 5) mahutavuse arvutus; 6 6) vabaparda arvutus. Laeva ujuvuse ja püstuvuse dokument sisaldab järgmisi andmeid: laeva teoreetilise joonise elemendid; püstuvuse arvutused; vigastatud laeva püstuvuse ja uppumatuse arvutused; püstuvuse informatsioon; mahutavuse arvutus; vabaparda arv",
-      "estleg:legalText": "Laeva ujuvuse ja püstuvuse dokument sisaldab järgmisi andmeid: 1 1) laeva teoreetilise joonise elemendid; 2 2) püstuvuse arvutused; 3 3) vigastatud laeva püstuvuse ja uppumatuse arvutused; 4 4) püstuvuse informatsioon; 5 5) mahutavuse arvutus; 6 6) vabaparda arvutus. Laeva ujuvuse ja püstuvuse dokument sisaldab järgmisi andmeid: laeva teoreetilise joonise elemendid; püstuvuse arvutused; vigastatud laeva püstuvuse ja uppumatuse arvutused; püstuvuse informatsioon; mahutavuse arvutus; vabaparda arvutus.",
+      "estleg:summary": {
+        "@value": "Laeva ujuvuse ja püstuvuse dokument sisaldab järgmisi andmeid: 1 1) laeva teoreetilise joonise elemendid; 2 2) püstuvuse arvutused; 3 3) vigastatud laeva püstuvuse ja uppumatuse arvutused; 4 4) püstuvuse informatsioon; 5 5) mahutavuse arvutus; 6 6) vabaparda arvutus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva ujuvuse ja püstuvuse dokument sisaldab järgmisi andmeid: 1 1) laeva teoreetilise joonise elemendid; 2 2) püstuvuse arvutused; 3 3) vigastatud laeva püstuvuse ja uppumatuse arvutused; 4 4) püstuvuse informatsioon; 5 5) mahutavuse arvutus; 6 6) vabaparda arvutus.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_10_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_10_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva ujuvuse ja püstuvuse dokument sisaldab järgmisi andmeid: 1) laeva teoreetilise joonise elemendid; 2) püstuvuse arvutused; 3) vigastatud laeva püstuvuse ja uppumatuse arvutused; 4) püstuvuse informatsioon; 5) mahutavuse arvutus; 6) vabaparda arvutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -282,17 +606,47 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Laeva katsetuste dokumentatsioon",
+      "rdfs:label": {
+        "@value": "§ 11. Laeva katsetuste dokumentatsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Laeva katsetuste dokumentatsioon koosneb järgmistest dokumentidest: 1 1) kaikatsetuste programm; 2 2) käigukatsetuste programm; 3 3) kreenikatse protokoll; 4 4) spetsiaalsete katsetuste programmid. Laeva katsetuste dokumentatsioon koosneb järgmistest dokumentidest: kaikatsetuste programm; käigukatsetuste programm; kreenikatse protokoll; spetsiaalsete katsetuste programmid.",
-      "estleg:legalText": "Laeva katsetuste dokumentatsioon koosneb järgmistest dokumentidest: 1 1) kaikatsetuste programm; 2 2) käigukatsetuste programm; 3 3) kreenikatse protokoll; 4 4) spetsiaalsete katsetuste programmid. Laeva katsetuste dokumentatsioon koosneb järgmistest dokumentidest: kaikatsetuste programm; käigukatsetuste programm; kreenikatse protokoll; spetsiaalsete katsetuste programmid.",
+      "estleg:summary": {
+        "@value": "Laeva katsetuste dokumentatsioon koosneb järgmistest dokumentidest: 1 1) kaikatsetuste programm; 2 2) käigukatsetuste programm; 3 3) kreenikatse protokoll; 4 4) spetsiaalsete katsetuste programmid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Laeva katsetuste dokumentatsioon koosneb järgmistest dokumentidest: 1 1) kaikatsetuste programm; 2 2) käigukatsetuste programm; 3 3) kreenikatse protokoll; 4 4) spetsiaalsete katsetuste programmid.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_11_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_11_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva katsetuste dokumentatsioon koosneb järgmistest dokumentidest: 1) kaikatsetuste programm; 2) käigukatsetuste programm; 3) kreenikatse protokoll; 4) spetsiaalsete katsetuste programmid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -302,13 +656,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Dokumentide esitamise kord",
+      "rdfs:label": {
+        "@value": "§ 12. Dokumentide esitamise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "1 (1) Käesolevas määruses nimetatud dokumendid tuleb esitada Veeteede Ametile kooskõlastamiseks enne ehitamise alustamist. Määruse §-s 2 nimetatud tehnilise ülesande võib esitada Veeteede Ametile eraldiseisvalt kooskõlastamiseks enne projekteerimise alustamist. Käesolevas määruses nimetatud dokumendid tuleb esitada Veeteede Ametile kooskõlastamiseks enne ehitamise alustamist. Määruse §-s 2 nimetatud tehnilise ülesande võib esitada Veeteede Ametile eraldiseisvalt kooskõlastamiseks enne projekteer",
-      "estleg:legalText": "1 (1) Käesolevas määruses nimetatud dokumendid tuleb esitada Veeteede Ametile kooskõlastamiseks enne ehitamise alustamist. Määruse §-s 2 nimetatud tehnilise ülesande võib esitada Veeteede Ametile eraldiseisvalt kooskõlastamiseks enne projekteerimise alustamist. Käesolevas määruses nimetatud dokumendid tuleb esitada Veeteede Ametile kooskõlastamiseks enne ehitamise alustamist. Määruse §-s 2 nimetatud tehnilise ülesande võib esitada Veeteede Ametile eraldiseisvalt kooskõlastamiseks enne projekteerimise alustamist. 2 (2) Tehniline dokumentatsioon esitatakse Veeteede Ametile arvestades laevatüübist tingitud erisustega. Tehniline dokumentatsioon esitatakse Veeteede Ametile arvestades laevatüübist tingitud erisustega. 3 (3) Dokumendid esitatakse Veeteede Ametile elektrooniliselt või posti teel. Dokumendid esitatakse Veeteede Ametile elektrooniliselt või posti teel. 4 (4) Välisriigist soetatud või prahitud laeva kohta esitatakse kogu olemasolev ning käesolevas määruses nimetatud dokumendid, seejuures vähemalt need dokumendid, mis on nimetatud käesoleva määruse § 3 punktides 2 ja 4, § 4 punktides 1, 5, 6 ja 8, § 5 punktides 1 ja 3, § 6 punktis 3, § 7 punktis 1, § 8 punktides 1 ja 2, § 9 punktis 2, § 10 punktides 4, 5 ja 6 ning § 11 punktis 3. Välisriigist soetatud või prahitud laeva kohta esitatakse kogu olemasolev ning käesolevas määruses nimetatud dokumendid, seejuures vähemalt need dokumendid, mis on nimetatud käesoleva määruse § 3 punktides 2 ja 4, § 4 punktides 1, 5, 6 ja 8, § 5 punktides 1 ja 3, § 6 punktis 3, § 7 punktis 1, § 8 punktides 1 ja 2, § 9 punktis 2, § 10 punktides 4, 5 ja 6 ning § 11 punktis 3. 5 (5) Veeteede Ametil on õigus nõuda ning reederil on kohustus esitada projekti kohta käivaid lisadokumente, kui esitatud dokumentide alusel ei ole võimalik hinnata laeva või selle seadmete vastavust ohutusnõuetele. Veeteede Ametil on õigus nõuda ning reederil on kohustus esitada projekti kohta käivaid lisadokumente, kui esitatud dokumentide alusel ei ole võimalik hinnata laeva või selle seadmete vastavust ohutusnõuetele.",
+      "estleg:summary": {
+        "@value": "1 (1) Käesolevas määruses nimetatud dokumendid tuleb esitada Veeteede Ametile kooskõlastamiseks enne ehitamise alustamist. Määruse §-s 2 nimetatud tehnilise ülesande võib esitada Veeteede Ametile eraldiseisvalt kooskõlastamiseks enne projekteerimise alustamist. 2 (2) Tehniline dokumentatsioon esitatakse Veeteede Ametile arvestades laevatüübist tingitud erisustega. 3 (3) Dokumendid esitatakse Veeteede Ametile elektrooniliselt või posti teel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Käesolevas määruses nimetatud dokumendid tuleb esitada Veeteede Ametile kooskõlastamiseks enne ehitamise alustamist. Määruse §-s 2 nimetatud tehnilise ülesande võib esitada Veeteede Ametile eraldiseisvalt kooskõlastamiseks enne projekteerimise alustamist. 2 (2) Tehniline dokumentatsioon esitatakse Veeteede Ametile arvestades laevatüübist tingitud erisustega. 3 (3) Dokumendid esitatakse Veeteede Ametile elektrooniliselt või posti teel. 4 (4) Välisriigist soetatud või prahitud laeva kohta esitatakse kogu olemasolev ning käesolevas määruses nimetatud dokumendid, seejuures vähemalt need dokumendid, mis on nimetatud käesoleva määruse § 3 punktides 2 ja 4, § 4 punktides 1, 5, 6 ja 8, § 5 punktides 1 ja 3, § 6 punktis 3, § 7 punktis 1, § 8 punktides 1 ja 2, § 9 punktis 2, § 10 punktides 4, 5 ja 6 ning § 11 punktis 3. 5 (5) Veeteede Ametil on õigus nõuda ning reederil on kohustus esitada projekti kohta käivaid lisadokumente, kui esitatud dokumentide alusel ei ole võimalik hinnata laeva või selle seadmete vastavust ohutusnõuetele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -328,7 +688,94 @@
         {
           "@id": "estleg:Reg_1025443_Par_12_v1025443"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1025443_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1025443_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1025443_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1025443_Par_12_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas määruses nimetatud dokumendid tuleb esitada Veeteede Ametile kooskõlastamiseks enne ehitamise alustamist. Määruse §-s 2 nimetatud tehnilise ülesande võib esitada Veeteede Ametile eraldiseisvalt kooskõlastamiseks enne projekteerimise alustamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tehniline dokumentatsioon esitatakse Veeteede Ametile arvestades laevatüübist tingitud erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Dokumendid esitatakse Veeteede Ametile elektrooniliselt või posti teel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Välisriigist soetatud või prahitud laeva kohta esitatakse kogu olemasolev ning käesolevas määruses nimetatud dokumendid, seejuures vähemalt need dokumendid, mis on nimetatud käesoleva määruse § 3 punktides 2 ja 4, § 4 punktides 1, 5, 6 ja 8, § 5 punktides 1 ja 3, § 6 punktis 3, § 7 punktis 1, § 8 punktides 1 ja 2, § 9 punktis 2, § 10 punktides 4, 5 ja 6 ning § 11 punktis 3.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4",
+      "estleg:itemNumber": [
+        "3",
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_12_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Veeteede Ametil on õigus nõuda ning reederil on kohustus esitada projekti kohta käivaid lisadokumente, kui esitatud dokumentide alusel ei ole võimalik hinnata laeva või selle seadmete vastavust ohutusnõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 5"
     },
     {
       "@id": "estleg:Reg_1025443_Par_13",
@@ -337,13 +784,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 13. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Majandus- ja kommunikatsiooniministri 5. detsembri 2002. a määrus nr 21 „Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu” (RTL 2002, 137, 2014; 2009, 42, 569) tunnistatakse kehtetuks.",
-      "estleg:legalText": "Majandus- ja kommunikatsiooniministri 5. detsembri 2002. a määrus nr 21 „Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu” (RTL 2002, 137, 2014; 2009, 42, 569) tunnistatakse kehtetuks. Majandus- ja kommunikatsiooniministri 5. detsembri 2002. a määrus nr 21 „Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu” (RTL 2002, 137, 2014; 2009, 42, 569) tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Majandus- ja kommunikatsiooniministri 5. detsembri 2002. a määrus nr 21 „Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu” (RTL 2002, 137, 2014; 2009, 42, 569) tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Majandus- ja kommunikatsiooniministri 5. detsembri 2002. a määrus nr 21 „Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu” (RTL 2002, 137, 2014; 2009, 42, 569) tunnistatakse kehtetuks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -362,7 +815,25 @@
         {
           "@id": "estleg:Institution_kommunikatsiooniminister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_13_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Majandus- ja kommunikatsiooniministri 5. detsembri 2002. a määrus nr 21 „Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu” (RTL 2002, 137, 2014; 2009, 42, 569) tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:Reg_1025443_Par_14",
@@ -371,16 +842,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 14. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Veeteede Ametile esitatavate laeva tehniliste dokumentide loetelu ja dokumentide esitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1025443_Map"
       },
-      "estleg:summary": "Käesolev määrus jõustub 2014. aasta 1. septembril.",
-      "estleg:legalText": "Käesolev määrus jõustub 2014. aasta 1. septembril. Käesolev määrus jõustub 2014. aasta 1. septembril.",
+      "estleg:summary": {
+        "@value": "Käesolev määrus jõustub 2014. aasta 1. septembril.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev määrus jõustub 2014. aasta 1. septembril.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1025443_Par_14_v1025443"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1025443_Par_14_Lg_1"
         }
       ]
     },
@@ -395,6 +877,19 @@
       },
       "estleg:citationDetail": "lg 3",
       "estleg:citationText": "Määrus kehtestatakse meresõiduohutuse seaduse § 14 lõike 3"
+    },
+    {
+      "@id": "estleg:Reg_1025443_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev määrus jõustub 2014. aasta 1. septembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1025443_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
     }
   ]
 }

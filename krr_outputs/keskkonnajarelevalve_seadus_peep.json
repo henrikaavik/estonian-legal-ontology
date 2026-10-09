@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KeJS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Keskkonnajärelevalve seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Keskkonnajärelevalve seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Keskkonnajärelevalve seadus",
-      "dcterms:title": [
-        {
-          "@value": "Keskkonnajärelevalve seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Environmental Supervision Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Keskkonnajärelevalve seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/110072020098.xml"
+        "@id": "https://www.riigiteataja.ee/akt/112052026024"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/112052026024/xml"
+      },
+      "estleg:globalId": "112052026024",
+      "eli:id_local": "112052026024",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "153432",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "e736b79da97bf36f70eff68d0bb804b0aa2db751218eaf1ea6bf8d32a268e482",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2001-07-07",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2021-01-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -45,10 +61,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2021-01-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/504122020004"
@@ -133,14 +145,40 @@
         {
           "@id": "estleg:Draft_KLIM09_0916"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/504122020004"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_KeJS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:KeJS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:KeJS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Keskkonnajärelevalve seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Keskkonnajärelevalve seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_KeJS_1"
@@ -163,26 +201,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_KeJS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–2 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–2 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:KeJS_TopicScheme"
-      },
-      "estleg:provisionCount": 2
-    },
-    {
       "@id": "estleg:Chapter_KeJS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
@@ -202,12 +229,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§3–8 KESKKONNAJÄRELEVALVE ASUTUSED JA NENDE ÜLESANDED",
-      "skos:prefLabel": "§3–8 KESKKONNAJÄRELEVALVE ASUTUSED JA NENDE ÜLESANDED",
+      "rdfs:label": {
+        "@value": "§3–8 KESKKONNAJÄRELEVALVE ASUTUSED JA NENDE ÜLESANDED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§3–8 KESKKONNAJÄRELEVALVE ASUTUSED JA NENDE ÜLESANDED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KeJS_TopicScheme"
       },
-      "estleg:provisionCount": 6
+      "estleg:provisionCount": 10
     },
     {
       "@id": "estleg:Chapter_KeJS_2",
@@ -215,7 +248,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – KESKKONNAJÄRELEVALVE ASUTUSED JA NENDE ÜLESANDED",
+      "rdfs:label": {
+        "@value": "2. peatükk – KESKKONNAJÄRELEVALVE ASUTUSED JA NENDE ÜLESANDED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
@@ -235,12 +271,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§9–16 KESKKONNAKAITSEINSPEKTORID",
-      "skos:prefLabel": "§9–16 KESKKONNAKAITSEINSPEKTORID",
+      "rdfs:label": {
+        "@value": "§9–16 KESKKONNAKAITSEINSPEKTORID",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§9–16 KESKKONNAKAITSEINSPEKTORID",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KeJS_TopicScheme"
       },
-      "estleg:provisionCount": 8
+      "estleg:provisionCount": 9
     },
     {
       "@id": "estleg:Chapter_KeJS_3",
@@ -248,7 +290,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – KESKKONNAKAITSEINSPEKTORID",
+      "rdfs:label": {
+        "@value": "3. peatükk – KESKKONNAKAITSEINSPEKTORID",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
@@ -268,8 +313,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§17–24 JÄRELEVALVETOIMINGUD",
-      "skos:prefLabel": "§17–24 JÄRELEVALVETOIMINGUD",
+      "rdfs:label": {
+        "@value": "§17–24 JÄRELEVALVETOIMINGUD",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§17–24 JÄRELEVALVETOIMINGUD",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KeJS_TopicScheme"
       },
@@ -281,7 +332,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – JÄRELEVALVETOIMINGUD",
+      "rdfs:label": {
+        "@value": "4. peatükk – JÄRELEVALVETOIMINGUD",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
@@ -301,8 +355,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§25–34 TOIMINGUD SELGUSETA KUULUVUSEGA LOODUSSAADUSE JA LOODUSSAADUSE HANKIMISE VAHENDI VÕI RIISTAGA",
-      "skos:prefLabel": "§25–34 TOIMINGUD SELGUSETA KUULUVUSEGA LOODUSSAADUSE JA LOODUSSAADUSE HANKIMISE VAHENDI VÕI RIISTAGA",
+      "rdfs:label": {
+        "@value": "§25–34 TOIMINGUD SELGUSETA KUULUVUSEGA LOODUSSAADUSE JA LOODUSSAADUSE HANKIMISE VAHENDI VÕI RIISTAGA",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§25–34 TOIMINGUD SELGUSETA KUULUVUSEGA LOODUSSAADUSE JA LOODUSSAADUSE HANKIMISE VAHENDI VÕI RIISTAGA",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KeJS_TopicScheme"
       },
@@ -314,7 +374,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – TOIMINGUD SELGUSETA KUULUVUSEGA LOODUSSAADUSE JA LOODUSSAADUSE HANKIMISE VAHENDI VÕI RIISTAGA",
+      "rdfs:label": {
+        "@value": "5. peatükk – TOIMINGUD SELGUSETA KUULUVUSEGA LOODUSSAADUSE JA LOODUSSAADUSE HANKIMISE VAHENDI VÕI RIISTAGA",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
@@ -334,8 +397,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§35–38 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§35–38 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§35–38 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§35–38 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KeJS_TopicScheme"
       },
@@ -347,7 +416,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "6. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
@@ -367,12 +439,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus määratleb keskkonnajärelevalve olemuse ja kehtestab keskkonnajärelevalvet teostavate asutuste ülesanded. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus määratleb keskkonnajärelevalve olemuse ja kehtestab keskkonnajärelevalvet teostavate asutuste ülesanded. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus määratleb keskkonnajärelevalve olemuse ja kehtestab keskkonnajärelevalvet teostavate asutuste ülesanded. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_1"
@@ -468,13 +546,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Keskkonnajärelevalve",
+      "rdfs:label": {
+        "@value": "§ 2. Keskkonnajärelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Keskkonnajärelevalve on Keskkonnaameti ja kohaliku omavalitsuse üksuse organi või asutuse tegevus eesmärgiga ennetada, selgitada välja ja tõrjuda oht ning kõrvaldada korrarikkumine keskkonnakaitse valdkonnas. (2) Kehtetu -",
-      "estleg:legalText": "(1) Keskkonnajärelevalve on Keskkonnaameti ja kohaliku omavalitsuse üksuse organi või asutuse tegevus eesmärgiga ennetada, selgitada välja ja tõrjuda oht ning kõrvaldada korrarikkumine keskkonnakaitse valdkonnas. (2) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Keskkonnajärelevalve on Keskkonnaameti ja kohaliku omavalitsuse üksuse organi või asutuse tegevus eesmärgiga ennetada, selgitada välja ja tõrjuda oht ning kõrvaldada korrarikkumine keskkonnakaitse valdkonnas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Keskkonnajärelevalve on Keskkonnaameti ja kohaliku omavalitsuse üksuse organi või asutuse tegevus eesmärgiga ennetada, selgitada välja ja tõrjuda oht ning kõrvaldada korrarikkumine keskkonnakaitse valdkonnas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_1"
       },
@@ -484,9 +568,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:KeJS_Par_2_Lg_1"
-        },
-        {
-          "@id": "estleg:KeJS_Par_2_Lg_2"
         }
       ],
       "estleg:targetGroup": [
@@ -554,31 +635,24 @@
       ]
     },
     {
-      "@id": "estleg:KeJS_Par_2_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KeJS_Par_2"
-      },
-      "rdfs:label": "§ 2 lg 2"
-    },
-    {
       "@id": "estleg:KeJS_Par_3",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Keskkonnajärelevalve teostajad",
+      "rdfs:label": {
+        "@value": "§ 3. Keskkonnajärelevalve teostajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Keskkonnajärelevalvet teostavad Keskkonnaamet ja kohalik omavalitsusorgan või -asutus. (2) Seadusega võidakse ka teistele valitsusasutustele anda keskkonnajärelevalve ülesandeid.",
+      "estleg:summary": {
+        "@value": "(1) Keskkonnajärelevalvet teostavad Keskkonnaamet ja kohalik omavalitsusorgan või -asutus. (2) Seadusega võidakse ka teistele valitsusasutustele anda keskkonnajärelevalve ülesandeid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Keskkonnajärelevalvet teostavad Keskkonnaamet ja kohalik omavalitsusorgan või -asutus. (2) Seadusega võidakse ka teistele valitsusasutustele anda keskkonnajärelevalve ülesandeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
@@ -678,13 +752,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Keskkonnaamet keskkonnajärelevalve teostajana",
+      "rdfs:label": {
+        "@value": "§ 4. Keskkonnaamet keskkonnajärelevalve teostajana",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Keskkonnaamet teostab keskkonnajärelevalvet seaduses või määruses sätestatud alusel ja korras. (2) Kehtetu -",
-      "estleg:legalText": "(1) Keskkonnaamet teostab keskkonnajärelevalvet seaduses või määruses sätestatud alusel ja korras. (2) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Keskkonnaamet teostab keskkonnajärelevalvet seaduses või määruses sätestatud alusel ja korras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Keskkonnaamet teostab keskkonnajärelevalvet seaduses või määruses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
       },
@@ -694,9 +774,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:KeJS_Par_4_Lg_1"
-        },
-        {
-          "@id": "estleg:KeJS_Par_4_Lg_2"
         }
       ],
       "estleg:targetGroup": [
@@ -771,32 +848,24 @@
       "estleg:competenceType": "enforcement"
     },
     {
-      "@id": "estleg:KeJS_Par_4_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KeJS_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 2"
-    },
-    {
       "@id": "estleg:KeJS_Par_5",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Maa-amet keskkonnajärelevalve teostajana",
+      "rdfs:label": {
+        "@value": "§ 5. Maa-amet keskkonnajärelevalve teostajana",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 5. Maa-amet keskkonnajärelevalve teostajana",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
       },
@@ -837,13 +906,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Omavalitsuslik keskkonnajärelevalve",
+      "rdfs:label": {
+        "@value": "§ 6. Omavalitsuslik keskkonnajärelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Kohaliku omavalitsusüksuse volikogu kehtestatud keskkonnakaitse- ja -kasutusalaste otsuste järgimist kontrollivad volikogu poolt selleks volitatud isikud või asutused, või kui neid ei ole määratud, valla- ja linnavalitsus. (2) Kui kohalikule omavalitsusüksusele on pandud seadusega ka käesoleva paragrahvi lõikes 1 nimetamata keskkonnajärelevalve ülesandeid, või kui ta on need endale seaduse alusel ise võtnud, määrab volikogu ka nende teostamiseks vajalikud isikud või asutused või teostab",
-      "estleg:legalText": "(1) Kohaliku omavalitsusüksuse volikogu kehtestatud keskkonnakaitse- ja -kasutusalaste otsuste järgimist kontrollivad volikogu poolt selleks volitatud isikud või asutused, või kui neid ei ole määratud, valla- ja linnavalitsus. (2) Kui kohalikule omavalitsusüksusele on pandud seadusega ka käesoleva paragrahvi lõikes 1 nimetamata keskkonnajärelevalve ülesandeid, või kui ta on need endale seaduse alusel ise võtnud, määrab volikogu ka nende teostamiseks vajalikud isikud või asutused või teostab järelevalvet valla- või linnavalitsus. (3) Kohalik omavalitsusüksus: rakendab seaduses sätestatud abinõusid ebaseadusliku tegevuse tõkestamiseks ja kohustuslike keskkonnakaitseabinõude elluviimiseks; teavitab Keskkonnaametit keskkonda kahjustavast või ohustavast õigusvastasest tegevusest või loodusressursi kasutamisega seotud õiguspärasest tegevusest, kui selline tegevus seab ohtu inimeste elu, tervise või vara. (4) Kui kohaliku omavalitsusüksuse volikogu ei ole otsustanud teisiti, toimub käesoleva paragrahvi lõigetes 1 ja 2 nimetatud keskkonnajärelevalve samaselt riigiasutuse korraldatava järelevalvega ning järelevalve teostajal on oma haldusterritooriumil võrdsed õigused riigi keskkonnajärelevalve asutuse ja keskkonnakaitseinspektoriga.",
+      "estleg:summary": {
+        "@value": "(1) Kohaliku omavalitsusüksuse volikogu kehtestatud keskkonnakaitse- ja -kasutusalaste otsuste järgimist kontrollivad volikogu poolt selleks volitatud isikud või asutused, või kui neid ei ole määratud, valla- ja linnavalitsus. (2) Kui kohalikule omavalitsusüksusele on pandud seadusega ka käesoleva paragrahvi lõikes 1 nimetamata keskkonnajärelevalve ülesandeid, või kui ta on need endale seaduse alusel ise võtnud, määrab volikogu ka nende teostamiseks vajalikud isikud või asutused või teostab",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kohaliku omavalitsusüksuse volikogu kehtestatud keskkonnakaitse- ja -kasutusalaste otsuste järgimist kontrollivad volikogu poolt selleks volitatud isikud või asutused, või kui neid ei ole määratud, valla- ja linnavalitsus. (2) Kui kohalikule omavalitsusüksusele on pandud seadusega ka käesoleva paragrahvi lõikes 1 nimetamata keskkonnajärelevalve ülesandeid, või kui ta on need endale seaduse alusel ise võtnud, määrab volikogu ka nende teostamiseks vajalikud isikud või asutused või teostab järelevalvet valla- või linnavalitsus. (3) Kohalik omavalitsusüksus: 1) rakendab seaduses sätestatud abinõusid ebaseadusliku tegevuse tõkestamiseks ja kohustuslike keskkonnakaitseabinõude elluviimiseks; 2) teavitab Keskkonnaametit keskkonda kahjustavast või ohustavast õigusvastasest tegevusest või loodusressursi kasutamisega seotud õiguspärasest tegevusest, kui selline tegevus seab ohtu inimeste elu, tervise või vara. (4) Kui kohaliku omavalitsusüksuse volikogu ei ole otsustanud teisiti, toimub käesoleva paragrahvi lõigetes 1 ja 2 nimetatud keskkonnajärelevalve samaselt riigiasutuse korraldatava järelevalvega ning järelevalve teostajal on oma haldusterritooriumil võrdsed õigused riigi keskkonnajärelevalve asutuse ja keskkonnakaitseinspektoriga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
       },
@@ -964,11 +1039,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kohalik omavalitsusüksus: rakendab seaduses sätestatud abinõusid ebaseadusliku tegevuse tõkestamiseks ja kohustuslike keskkonnakaitseabinõude elluviimiseks; teavitab Keskkonnaametit keskkonda kahjustavast või ohustavast õigusvastasest tegevusest või loodusressursi kasutamisega seotud õiguspärasest tegevusest, kui selline tegevus seab ohtu inimeste elu, tervise või vara.",
+      "estleg:legalText": "(3) Kohalik omavalitsusüksus: 1) rakendab seaduses sätestatud abinõusid ebaseadusliku tegevuse tõkestamiseks ja kohustuslike keskkonnakaitseabinõude elluviimiseks; 2) teavitab Keskkonnaametit keskkonda kahjustavast või ohustavast õigusvastasest tegevusest või loodusressursi kasutamisega seotud õiguspärasest tegevusest, kui selline tegevus seab ohtu inimeste elu, tervise või vara.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_6"
       },
       "rdfs:label": "§ 6 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1013,12 +1092,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Keskkonnaameti järelevalvepädevus kohaliku omavalitsusüksuse tegevuse üle",
+      "rdfs:label": {
+        "@value": "§ 7. Keskkonnaameti järelevalvepädevus kohaliku omavalitsusüksuse tegevuse üle",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Keskkonnaametil on õigus kontrollida seadusega kohalikule omavalitsusüksusele pandud või kohaliku omavalitsusüksuse poolt halduslepinguga võetud keskkonnakaitse- ja -kasutusalaste ülesannete täitmist ning kohaliku omavalitsusüksuse volikogu ja valitsuse keskkonnakaitse- ja -kasutusalaste üksikaktide seaduslikkust. (2) Keskkonnaametil on õigus nõuda kohaliku omavalitsusüksuse volikogu ja valitsuse poolt antud, käesoleva paragrahvi lõikes 1 nimetatud üksikakti ärakirja, Keskkonnaametil on",
+      "estleg:summary": {
+        "@value": "(1) Keskkonnaametil on õigus kontrollida seadusega kohalikule omavalitsusüksusele pandud või kohaliku omavalitsusüksuse poolt halduslepinguga võetud keskkonnakaitse- ja -kasutusalaste ülesannete täitmist ning kohaliku omavalitsusüksuse volikogu ja valitsuse keskkonnakaitse- ja -kasutusalaste üksikaktide seaduslikkust. (2) Keskkonnaametil on õigus nõuda kohaliku omavalitsusüksuse volikogu ja valitsuse poolt antud, käesoleva paragrahvi lõikes 1 nimetatud üksikakti ärakirja, Keskkonnaametil on",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Keskkonnaametil on õigus kontrollida seadusega kohalikule omavalitsusüksusele pandud või kohaliku omavalitsusüksuse poolt halduslepinguga võetud keskkonnakaitse- ja -kasutusalaste ülesannete täitmist ning kohaliku omavalitsusüksuse volikogu ja valitsuse keskkonnakaitse- ja -kasutusalaste üksikaktide seaduslikkust. (2) Keskkonnaametil on õigus nõuda kohaliku omavalitsusüksuse volikogu ja valitsuse poolt antud, käesoleva paragrahvi lõikes 1 nimetatud üksikakti ärakirja, Keskkonnaametil on õigus nõuda antud keskkonnaloa ärakirja. (3) Kohaliku omavalitsusüksuse volikogu ja valitsus on käesoleva paragrahvi lõikes 2 nimetatud ärakirja kohustatud esitama hiljemalt seitsmendal päeval, arvates Keskkonnaameti kirjaliku nõude saamisest. (4) Kui Keskkonnaamet leiab, et kohaliku omavalitsusüksuse keskkonnaalane haldusakt või selle andmata jätmine on õigusvastane ja rikub avalikku huvi, võib ta 30 päeva jooksul haldusakti andmisest või sellest keeldumisest teadasaamisest arvates teha kirjaliku ettepaneku tunnistada haldusakt kehtetuks, viia see õigusnormidega vastavusse või anda nõutav haldusakt välja. Kui Keskkonnaamet leiab, et kehtetuks tunnistatud või kehtetuks tunnistamisele või muutmisele kuuluva haldusakti õigusvastased tagajärjed rikuvad avalikku huvi, võib ta kolme aasta jooksul haldusakti andmisest arvates teha kirjaliku ettepaneku kõrvaldada haldusakti tagajärjed. (5) Kui kohalik omavalitsusüksus ei ole 30 päeva jooksul pärast Keskkonnaameti kirjaliku ettepaneku saamist haldusakti kehtetuks tunnistanud või seda õigusnormidega kooskõlla viinud, nõutavat haldusakti andnud või haldusakti tagajärgede kõrvaldamist otsustanud, võib Keskkonnaamet esitada protesti halduskohtumenetluse seadustikus sätestatud tingimustel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
@@ -1259,13 +1344,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Keskkonnaõigusnormide rakendamise analüüs",
+      "rdfs:label": {
+        "@value": "§ 8. Keskkonnaõigusnormide rakendamise analüüs",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Keskkonnaamet analüüsib oma tegutsemisvaldkonnas keskkonnaõigusnormide toimet enda vaatluste ning teistelt isikutelt, asutustelt ja andmekogudelt saadud andmete ja ettepanekute alusel, kusjuures Keskkonnaametil lasub kohustus koguda keskkonnajärelevalve andmeid. (2) Keskkonnaõigusnormide analüüsi tulemusel teeb Keskkonnaamet ettepanekuid õiguskaitse tõhustamiseks ning õigusaktide muutmiseks või täiendamiseks. (3) Kehtetu -",
-      "estleg:legalText": "(1) Keskkonnaamet analüüsib oma tegutsemisvaldkonnas keskkonnaõigusnormide toimet enda vaatluste ning teistelt isikutelt, asutustelt ja andmekogudelt saadud andmete ja ettepanekute alusel, kusjuures Keskkonnaametil lasub kohustus koguda keskkonnajärelevalve andmeid. (2) Keskkonnaõigusnormide analüüsi tulemusel teeb Keskkonnaamet ettepanekuid õiguskaitse tõhustamiseks ning õigusaktide muutmiseks või täiendamiseks. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Keskkonnaamet analüüsib oma tegutsemisvaldkonnas keskkonnaõigusnormide toimet enda vaatluste ning teistelt isikutelt, asutustelt ja andmekogudelt saadud andmete ja ettepanekute alusel, kusjuures Keskkonnaametil lasub kohustus koguda keskkonnajärelevalve andmeid. (2) Keskkonnaõigusnormide analüüsi tulemusel teeb Keskkonnaamet ettepanekuid õiguskaitse tõhustamiseks ning õigusaktide muutmiseks või täiendamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Keskkonnaamet analüüsib oma tegutsemisvaldkonnas keskkonnaõigusnormide toimet enda vaatluste ning teistelt isikutelt, asutustelt ja andmekogudelt saadud andmete ja ettepanekute alusel, kusjuures Keskkonnaametil lasub kohustus koguda keskkonnajärelevalve andmeid. (2) Keskkonnaõigusnormide analüüsi tulemusel teeb Keskkonnaamet ettepanekuid õiguskaitse tõhustamiseks ning õigusaktide muutmiseks või täiendamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
       },
@@ -1278,9 +1369,6 @@
         },
         {
           "@id": "estleg:KeJS_Par_8_Lg_2"
-        },
-        {
-          "@id": "estleg:KeJS_Par_8_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -1376,32 +1464,25 @@
       ]
     },
     {
-      "@id": "estleg:KeJS_Par_8_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KeJS_Par_8"
-      },
-      "rdfs:label": "§ 8 lg 3"
-    },
-    {
       "@id": "estleg:KeJS_Par_8_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8¹.",
-      "rdfs:label": "§ 8¹. Keskkonnaameti andmekogud",
+      "rdfs:label": {
+        "@value": "§ 8¹. Keskkonnaameti andmekogud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Keskkonnaamet peab järgmisi andmekogusid: objekti kontrollimise andmekogu süsteem (edaspidi objekti kontrollimise andmekogu), mille eesmärk on Keskkonnaametile seadusega pandud eesmärkide täitmiseks järelevalvemenetlusega seotud andmete, keskkonnakasutuse kohta esitatud teadete ning kalalaevade sadamasse saabumise eelteadete töötlemine ja analüüs; õiguserikkumiste andmekogu, mille eesmärk on enne 2014. aasta 1. jaanuari alustatud haldusmenetlusega, enne 2011. aasta 1.",
-      "estleg:legalText": "Keskkonnaamet peab järgmisi andmekogusid: objekti kontrollimise andmekogu süsteem (edaspidi objekti kontrollimise andmekogu), mille eesmärk on Keskkonnaametile seadusega pandud eesmärkide täitmiseks järelevalvemenetlusega seotud andmete, keskkonnakasutuse kohta esitatud teadete ning kalalaevade sadamasse saabumise eelteadete töötlemine ja analüüs; õiguserikkumiste andmekogu, mille eesmärk on enne 2014. aasta 1. jaanuari alustatud haldusmenetlusega, enne 2011. aasta 1. juulit alustatud väärteomenetlusega ning enne 2011. aasta 1. septembrit alustatud kriminaalmenetlusega seotud andmete töötlemine ja analüüs.",
+      "estleg:summary": {
+        "@value": "Keskkonnaamet peab järgmisi andmekogusid: 1) objekti kontrollimise andmekogu süsteem (edaspidi objekti kontrollimise andmekogu), mille eesmärk on Keskkonnaametile seadusega pandud eesmärkide täitmiseks järelevalvemenetlusega seotud andmete, keskkonnakasutuse kohta esitatud teadete ning kalalaevade sadamasse saabumise eelteadete töötlemine ja analüüs; 2) õiguserikkumiste andmekogu, mille eesmärk on enne 2014. aasta 1. jaanuari alustatud haldusmenetlusega, enne 2011. aasta 1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Keskkonnaamet peab järgmisi andmekogusid: 1) objekti kontrollimise andmekogu süsteem (edaspidi objekti kontrollimise andmekogu), mille eesmärk on Keskkonnaametile seadusega pandud eesmärkide täitmiseks järelevalvemenetlusega seotud andmete, keskkonnakasutuse kohta esitatud teadete ning kalalaevade sadamasse saabumise eelteadete töötlemine ja analüüs; 2) õiguserikkumiste andmekogu, mille eesmärk on enne 2014. aasta 1. jaanuari alustatud haldusmenetlusega, enne 2011. aasta 1. juulit alustatud väärteomenetlusega ning enne 2011. aasta 1. septembrit alustatud kriminaalmenetlusega seotud andmete töötlemine ja analüüs.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
       },
@@ -1450,10 +1531,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Keskkonnaamet peab järgmisi andmekogusid: objekti kontrollimise andmekogu süsteem (edaspidi objekti kontrollimise andmekogu), mille eesmärk on Keskkonnaametile seadusega pandud eesmärkide täitmiseks järelevalvemenetlusega seotud andmete, keskkonnakasutuse kohta esitatud teadete ning kalalaevade sadamasse saabumise eelteadete töötlemine ja analüüs; õiguserikkumiste andmekogu, mille eesmärk on enne 2014. aasta 1. jaanuari alustatud haldusmenetlusega, enne 2011. aasta 1. juulit alustatud väärteomenetlusega ning enne 2011. aasta 1. septembrit alustatud kriminaalmenetlusega seotud andmete töötlemine ja analüüs.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Keskkonnaamet peab järgmisi andmekogusid: 1) objekti kontrollimise andmekogu süsteem (edaspidi objekti kontrollimise andmekogu), mille eesmärk on Keskkonnaametile seadusega pandud eesmärkide täitmiseks järelevalvemenetlusega seotud andmete, keskkonnakasutuse kohta esitatud teadete ning kalalaevade sadamasse saabumise eelteadete töötlemine ja analüüs; 2) õiguserikkumiste andmekogu, mille eesmärk on enne 2014. aasta 1. jaanuari alustatud haldusmenetlusega, enne 2011. aasta 1. juulit alustatud väärteomenetlusega ning enne 2011. aasta 1. septembrit alustatud kriminaalmenetlusega seotud andmete töötlemine ja analüüs.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_8_1"
       },
+      "rdfs:label": "§ 8¹ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1476,13 +1563,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8².",
-      "rdfs:label": "§ 8². Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu andmekategooriad",
+      "rdfs:label": {
+        "@value": "§ 8². Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu andmekategooriad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Objekti kontrollimise andmekogu andmekategooriad on: andmed kontrollitud objekti kohta; objekti kontrollimise tulemused; teated võimaliku ebaseadusliku keskkonnakasutuse kohta; ettekirjutused; andmed ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta; eelteated kalalaevade sadamasse saabumise kohta; teated eripüügi kohta; Keskkonnaameti keskkonnajärelevalve tööplaan; haldusmenetlused; nõuded; erimeetmete kohaldamise protokollid.",
-      "estleg:legalText": "(1) Objekti kontrollimise andmekogu andmekategooriad on: andmed kontrollitud objekti kohta; objekti kontrollimise tulemused; teated võimaliku ebaseadusliku keskkonnakasutuse kohta; ettekirjutused; andmed ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta; eelteated kalalaevade sadamasse saabumise kohta; teated eripüügi kohta; Keskkonnaameti keskkonnajärelevalve tööplaan; haldusmenetlused; nõuded; erimeetmete kohaldamise protokollid. (2) Õiguserikkumiste andmekogu andmekategooriad on: enne 2011. aasta 1. juulit alustatud väärteoasjad; enne 2011. aasta 1. septembrit alustatud kriminaalasjad; enne 2014. aasta 1. jaanuari koostatud ettekirjutused; enne 2011. aasta 1. aprilli koostatud saastetasunõuded; andmed enne 2014. aasta 1. jaanuari ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta. (3) Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu pidamise kord, sealhulgas andmekogusse kantavate andmete täpsem koosseis, andmete väljastamise kord ja säilitamise tähtaeg sätestatakse vastava andmekogu põhimääruses. (4) Andmekogudesse kantud andmetel on informatiivne tähendus.",
+      "estleg:summary": {
+        "@value": "(1) Objekti kontrollimise andmekogu andmekategooriad on: 1) andmed kontrollitud objekti kohta; 2) objekti kontrollimise tulemused; 3) teated võimaliku ebaseadusliku keskkonnakasutuse kohta; 4) ettekirjutused; 5) andmed ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta; 6) eelteated kalalaevade sadamasse saabumise kohta; 7) teated eripüügi kohta; 8) Keskkonnaameti keskkonnajärelevalve tööplaan; 9) haldusmenetlused; 10) nõuded; 11) erimeetmete kohaldamise protokollid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Objekti kontrollimise andmekogu andmekategooriad on: 1) andmed kontrollitud objekti kohta; 2) objekti kontrollimise tulemused; 3) teated võimaliku ebaseadusliku keskkonnakasutuse kohta; 4) ettekirjutused; 5) andmed ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta; 6) eelteated kalalaevade sadamasse saabumise kohta; 7) teated eripüügi kohta; 8) Keskkonnaameti keskkonnajärelevalve tööplaan; 9) haldusmenetlused; 10) nõuded; 11) erimeetmete kohaldamise protokollid. (2) Õiguserikkumiste andmekogu andmekategooriad on: 1) enne 2011. aasta 1. juulit alustatud väärteoasjad; 2) enne 2011. aasta 1. septembrit alustatud kriminaalasjad; 3) enne 2014. aasta 1. jaanuari koostatud ettekirjutused; 4) enne 2011. aasta 1. aprilli koostatud saastetasunõuded; 5) andmed enne 2014. aasta 1. jaanuari ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta. (3) Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu pidamise kord, sealhulgas andmekogusse kantavate andmete täpsem koosseis, andmete väljastamise kord ja säilitamise tähtaeg sätestatakse vastava andmekogu põhimääruses. (4) Andmekogudesse kantud andmetel on informatiivne tähendus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
       },
@@ -1536,11 +1629,24 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Objekti kontrollimise andmekogu andmekategooriad on: andmed kontrollitud objekti kohta; objekti kontrollimise tulemused; teated võimaliku ebaseadusliku keskkonnakasutuse kohta; ettekirjutused; andmed ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta; eelteated kalalaevade sadamasse saabumise kohta; teated eripüügi kohta; Keskkonnaameti keskkonnajärelevalve tööplaan; haldusmenetlused; nõuded; erimeetmete kohaldamise protokollid.",
+      "estleg:legalText": "(1) Objekti kontrollimise andmekogu andmekategooriad on: 1) andmed kontrollitud objekti kohta; 2) objekti kontrollimise tulemused; 3) teated võimaliku ebaseadusliku keskkonnakasutuse kohta; 4) ettekirjutused; 5) andmed ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta; 6) eelteated kalalaevade sadamasse saabumise kohta; 7) teated eripüügi kohta; 8) Keskkonnaameti keskkonnajärelevalve tööplaan; 9) haldusmenetlused; 10) nõuded; 11) erimeetmete kohaldamise protokollid.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_8_2"
       },
       "rdfs:label": "§ 8² lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1563,11 +1669,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Õiguserikkumiste andmekogu andmekategooriad on: enne 2011. aasta 1. juulit alustatud väärteoasjad; enne 2011. aasta 1. septembrit alustatud kriminaalasjad; enne 2014. aasta 1. jaanuari koostatud ettekirjutused; enne 2011. aasta 1. aprilli koostatud saastetasunõuded; andmed enne 2014. aasta 1. jaanuari ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta.",
+      "estleg:legalText": "(2) Õiguserikkumiste andmekogu andmekategooriad on: 1) enne 2011. aasta 1. juulit alustatud väärteoasjad; 2) enne 2011. aasta 1. septembrit alustatud kriminaalasjad; 3) enne 2014. aasta 1. jaanuari koostatud ettekirjutused; 4) enne 2011. aasta 1. aprilli koostatud saastetasunõuded; 5) andmed enne 2014. aasta 1. jaanuari ebaseaduslikult püügile asetatud püügivahendite eemaldamise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_8_2"
       },
-      "rdfs:label": "§ 8² lg 2"
+      "rdfs:label": "§ 8² lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
     },
     {
       "@id": "estleg:KeJS_Par_8_2_Lg_3",
@@ -1602,12 +1715,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8³.",
-      "rdfs:label": "§ 8³. Keskkonnaameti andmekogude põhimäärused",
+      "rdfs:label": {
+        "@value": "§ 8³. Keskkonnaameti andmekogude põhimäärused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu asutab ning nende andmekogude põhimäärused kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu asutab ning nende andmekogude põhimäärused kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu asutab ning nende andmekogude põhimäärused kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
@@ -1661,10 +1780,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu asutab ning nende andmekogude põhimäärused kehtestab määrusega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu asutab ning nende andmekogude põhimäärused kehtestab määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_8_3"
-      }
+      },
+      "rdfs:label": "§ 8³ lg 1"
     },
     {
       "@id": "estleg:KeJS_Par_8_4",
@@ -1673,12 +1794,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8⁴.",
-      "rdfs:label": "§ 8⁴. Andmekogude vastutav ja volitatud töötleja",
+      "rdfs:label": {
+        "@value": "§ 8⁴. Andmekogude vastutav ja volitatud töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu vastutav töötleja on Keskkonnaamet ning volitatud töötleja on Keskkonnaameti määratud isik.",
+      "estleg:summary": {
+        "@value": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu vastutav töötleja on Keskkonnaamet ning volitatud töötleja on Keskkonnaameti määratud isik.",
+        "@language": "et"
+      },
       "estleg:legalText": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu vastutav töötleja on Keskkonnaamet ning volitatud töötleja on Keskkonnaameti määratud isik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_2"
@@ -1728,10 +1855,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu vastutav töötleja on Keskkonnaamet ning volitatud töötleja on Keskkonnaameti määratud isik.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Objekti kontrollimise andmekogu ja õiguserikkumiste andmekogu vastutav töötleja on Keskkonnaamet ning volitatud töötleja on Keskkonnaameti määratud isik.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_8_4"
       },
+      "rdfs:label": "§ 8⁴ lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1757,13 +1886,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Keskkonnakaitseinspektor",
+      "rdfs:label": {
+        "@value": "§ 9. Keskkonnakaitseinspektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Keskkonnakaitseinspektor on: riigi keskkonnakaitseinspektor; kohaliku omavalitsuse keskkonnakaitseinspektor.",
-      "estleg:legalText": "Keskkonnakaitseinspektor on: riigi keskkonnakaitseinspektor; kohaliku omavalitsuse keskkonnakaitseinspektor.",
+      "estleg:summary": {
+        "@value": "Keskkonnakaitseinspektor on: 1) riigi keskkonnakaitseinspektor; 2) kohaliku omavalitsuse keskkonnakaitseinspektor.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Keskkonnakaitseinspektor on: 1) riigi keskkonnakaitseinspektor; 2) kohaliku omavalitsuse keskkonnakaitseinspektor.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
       },
@@ -1809,10 +1944,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Keskkonnakaitseinspektor on: riigi keskkonnakaitseinspektor; kohaliku omavalitsuse keskkonnakaitseinspektor.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Keskkonnakaitseinspektor on: 1) riigi keskkonnakaitseinspektor; 2) kohaliku omavalitsuse keskkonnakaitseinspektor.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1835,12 +1976,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Riigi keskkonnakaitseinspektor",
+      "rdfs:label": {
+        "@value": "§ 10. Riigi keskkonnakaitseinspektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Riigi keskkonnakaitseinspektor on Keskkonnaameti ametnik, kellele järelevalvekohustus on pandud ametijuhendiga.",
+      "estleg:summary": {
+        "@value": "Riigi keskkonnakaitseinspektor on Keskkonnaameti ametnik, kellele järelevalvekohustus on pandud ametijuhendiga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Riigi keskkonnakaitseinspektor on Keskkonnaameti ametnik, kellele järelevalvekohustus on pandud ametijuhendiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
@@ -1888,10 +2035,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riigi keskkonnakaitseinspektor on Keskkonnaameti ametnik, kellele järelevalvekohustus on pandud ametijuhendiga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi keskkonnakaitseinspektor on Keskkonnaameti ametnik, kellele järelevalvekohustus on pandud ametijuhendiga.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_10"
       },
+      "rdfs:label": "§ 10 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1917,12 +2066,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Kohaliku omavalitsuse keskkonnakaitseinspektor",
+      "rdfs:label": {
+        "@value": "§ 11. Kohaliku omavalitsuse keskkonnakaitseinspektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Kohaliku omavalitsuse keskkonnakaitseinspektor on linna- või vallavalitsuse või muu omavalitsusasutuse ametnik, kellele järelevalvekohustus on pandud tööülesannete asutusesisese jaotuse või volikogu otsusega.",
+      "estleg:summary": {
+        "@value": "Kohaliku omavalitsuse keskkonnakaitseinspektor on linna- või vallavalitsuse või muu omavalitsusasutuse ametnik, kellele järelevalvekohustus on pandud tööülesannete asutusesisese jaotuse või volikogu otsusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kohaliku omavalitsuse keskkonnakaitseinspektor on linna- või vallavalitsuse või muu omavalitsusasutuse ametnik, kellele järelevalvekohustus on pandud tööülesannete asutusesisese jaotuse või volikogu otsusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
@@ -1964,10 +2119,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kohaliku omavalitsuse keskkonnakaitseinspektor on linna- või vallavalitsuse või muu omavalitsusasutuse ametnik, kellele järelevalvekohustus on pandud tööülesannete asutusesisese jaotuse või volikogu otsusega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse keskkonnakaitseinspektor on linna- või vallavalitsuse või muu omavalitsusasutuse ametnik, kellele järelevalvekohustus on pandud tööülesannete asutusesisese jaotuse või volikogu otsusega.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_11"
       },
+      "rdfs:label": "§ 11 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1993,12 +2150,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Keskkonnakaitseinspektori järelevalvepiirkond",
+      "rdfs:label": {
+        "@value": "§ 12. Keskkonnakaitseinspektori järelevalvepiirkond",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Riigi keskkonnakaitseinspektoril on tegutsemisõigus kogu Eesti Vabariigi jurisdiktsiooni all oleval alal ning Eesti Vabariigis registreeritud laevadel, sõltumata nende asukohast. (2) Kohaliku omavalitsuse keskkonnakaitseinspektoril on tegutsemisõigus töökohajärgse omavalitsusüksuse territooriumil.",
+      "estleg:summary": {
+        "@value": "(1) Riigi keskkonnakaitseinspektoril on tegutsemisõigus kogu Eesti Vabariigi jurisdiktsiooni all oleval alal ning Eesti Vabariigis registreeritud laevadel, sõltumata nende asukohast. (2) Kohaliku omavalitsuse keskkonnakaitseinspektoril on tegutsemisõigus töökohajärgse omavalitsusüksuse territooriumil.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigi keskkonnakaitseinspektoril on tegutsemisõigus kogu Eesti Vabariigi jurisdiktsiooni all oleval alal ning Eesti Vabariigis registreeritud laevadel, sõltumata nende asukohast. (2) Kohaliku omavalitsuse keskkonnakaitseinspektoril on tegutsemisõigus töökohajärgse omavalitsusüksuse territooriumil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
@@ -2081,13 +2244,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Keskkonnakaitseinspektori tegutsemisõiguse tõendamine",
+      "rdfs:label": {
+        "@value": "§ 13. Keskkonnakaitseinspektori tegutsemisõiguse tõendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Riigi keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendavad inspektori tõend ja tunnusmärk. Kohaliku omavalitsuse keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab kohaliku omavalitsuse inspektori tõend. (2) Riigi keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab , omavalitsuse keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab valla- või linnavalitsus.",
-      "estleg:legalText": "(1) Riigi keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendavad inspektori tõend ja tunnusmärk. Kohaliku omavalitsuse keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab kohaliku omavalitsuse inspektori tõend. (2) Riigi keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab , omavalitsuse keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab valla- või linnavalitsus. (3) Riigi keskkonnakaitseinspektori tunnusmärgi kujunduse ning valmistamise, väljaandmise ja äravõtmise korra kehtestab",
+      "estleg:summary": {
+        "@value": "(1) Riigi keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab inspektori tõend. Kohaliku omavalitsuse keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab kohaliku omavalitsuse inspektori tõend. (2) Riigi keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab , omavalitsuse keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab valla- või linnavalitsus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigi keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab inspektori tõend. Kohaliku omavalitsuse keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab kohaliku omavalitsuse inspektori tõend. (2) Riigi keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab , omavalitsuse keskkonnakaitseinspektori tõendi vormi ning valmistamise, väljaandmise ja äravõtmise korra kehtestab valla- või linnavalitsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
       },
@@ -2100,9 +2269,6 @@
         },
         {
           "@id": "estleg:KeJS_Par_13_Lg_2"
-        },
-        {
-          "@id": "estleg:KeJS_Par_13_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -2144,7 +2310,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Riigi keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendavad inspektori tõend ja tunnusmärk. Kohaliku omavalitsuse keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab kohaliku omavalitsuse inspektori tõend.",
+      "estleg:legalText": "(1) Riigi keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab inspektori tõend. Kohaliku omavalitsuse keskkonnakaitseinspektori tegutsemisõigust keskkonna kaitsel tõendab kohaliku omavalitsuse inspektori tõend.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_13"
       },
@@ -2196,31 +2362,24 @@
       "estleg:implementedByCount": 2
     },
     {
-      "@id": "estleg:KeJS_Par_13_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Riigi keskkonnakaitseinspektori tunnusmärgi kujunduse ning valmistamise, väljaandmise ja äravõtmise korra kehtestab",
-      "estleg:parentProvision": {
-        "@id": "estleg:KeJS_Par_13"
-      },
-      "rdfs:label": "§ 13 lg 3"
-    },
-    {
       "@id": "estleg:KeJS_Par_14",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Keskkonnakaitseinspektori vormi- ja eririietus",
+      "rdfs:label": {
+        "@value": "§ 14. Keskkonnakaitseinspektori vormi- ja eririietus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Riigi keskkonnakaitseinspektorile väljastatakse tasuta vormi- ja eririietus. Riigi keskkonnakaitseinspektori vormiriietuse ja ametitunnuste kirjelduse ning vormi- ja eririietuse väljaandmise ja kandmise korra kehtestab . Vormi- ja eririietuse valmistamise kulud kaetakse riigieelarvest. (2) Kohaliku omavalitsuse keskkonnakaitseinspektorile väljastatakse vormi- ja eririietus kohaliku omavalitsuse kehtestatud korras ja kujunduses.",
+      "estleg:summary": {
+        "@value": "(1) Riigi keskkonnakaitseinspektorile väljastatakse tasuta vormi- ja eririietus. Riigi keskkonnakaitseinspektori vormiriietuse ja ametitunnuste kirjelduse ning vormi- ja eririietuse väljaandmise ja kandmise korra kehtestab . Vormi- ja eririietuse valmistamise kulud kaetakse riigieelarvest. (2) Kohaliku omavalitsuse keskkonnakaitseinspektorile väljastatakse vormi- ja eririietus kohaliku omavalitsuse kehtestatud korras ja kujunduses.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigi keskkonnakaitseinspektorile väljastatakse tasuta vormi- ja eririietus. Riigi keskkonnakaitseinspektori vormiriietuse ja ametitunnuste kirjelduse ning vormi- ja eririietuse väljaandmise ja kandmise korra kehtestab . Vormi- ja eririietuse valmistamise kulud kaetakse riigieelarvest. (2) Kohaliku omavalitsuse keskkonnakaitseinspektorile väljastatakse vormi- ja eririietus kohaliku omavalitsuse kehtestatud korras ja kujunduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
@@ -2329,13 +2488,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Keskkonnakaitseinspektori relvad ja erivahendid",
+      "rdfs:label": {
+        "@value": "§ 15. Riigi keskkonnakaitseinspektori õigus vahetu sunni kohaldamiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Riigi ja kohaliku omavalitsuse keskkonnakaitseinspektoril, kelle ametikohustuseks on kasvava metsa, jahiuluki- ja kalavaru kaitse, on lubatud ametiülesannete täitmisel kanda teenistusrelva ning kasutada erivahendina teenistuskoera ja käeraudu. (2) Kehtetu - (3) Teenistusrelva soetamine ja relvaloa andmine toimub vastavalt relvaseadusele (RT I 2001, 65, 377; 88, 531; 102, 673; 2002, 29, 175; 53, 336; 61, 375; 63, 387) ja selle alusel kehtestatud korrale.",
-      "estleg:legalText": "(1) Riigi ja kohaliku omavalitsuse keskkonnakaitseinspektoril, kelle ametikohustuseks on kasvava metsa, jahiuluki- ja kalavaru kaitse, on lubatud ametiülesannete täitmisel kanda teenistusrelva ning kasutada erivahendina teenistuskoera ja käeraudu. (2) Kehtetu - (3) Teenistusrelva soetamine ja relvaloa andmine toimub vastavalt relvaseadusele (RT I 2001, 65, 377; 88, 531; 102, 673; 2002, 29, 175; 53, 336; 61, 375; 63, 387) ja selle alusel kehtestatud korrale.",
+      "estleg:summary": {
+        "@value": "(1) Riigi keskkonnakaitseinspektoril on lubatud keskkonnajärelevalves ametiülesannete täitmisel kasutada seaduses sätestatud juhul füüsilist jõudu ning kanda ja kasutada seaduses sätestatud juhul ja liiki teenistusrelva ja erivahendeid korrakaitseseaduses sätestatud alusel ja korras. (2) Teenistusrelva ja selle laskemoona käideldakse ja antakse üle ning relvaluba antakse relvaseaduses ja selle alusel kehtestatud korras. (3) Riigi keskkonnakaitseinspektori erivahendite kandmise ja hoidmise korra",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigi keskkonnakaitseinspektoril on lubatud keskkonnajärelevalves ametiülesannete täitmisel kasutada seaduses sätestatud juhul füüsilist jõudu ning kanda ja kasutada seaduses sätestatud juhul ja liiki teenistusrelva ja erivahendeid korrakaitseseaduses sätestatud alusel ja korras. (2) Teenistusrelva ja selle laskemoona käideldakse ja antakse üle ning relvaluba antakse relvaseaduses ja selle alusel kehtestatud korras. (3) Riigi keskkonnakaitseinspektori erivahendite kandmise ja hoidmise korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
       },
@@ -2395,7 +2560,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Riigi ja kohaliku omavalitsuse keskkonnakaitseinspektoril, kelle ametikohustuseks on kasvava metsa, jahiuluki- ja kalavaru kaitse, on lubatud ametiülesannete täitmisel kanda teenistusrelva ning kasutada erivahendina teenistuskoera ja käeraudu.",
+      "estleg:legalText": "(1) Riigi keskkonnakaitseinspektoril on lubatud keskkonnajärelevalves ametiülesannete täitmisel kasutada seaduses sätestatud juhul füüsilist jõudu ning kanda ja kasutada seaduses sätestatud juhul ja liiki teenistusrelva ja erivahendeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_15"
       },
@@ -2425,7 +2590,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:legalText": "(2) Teenistusrelva ja selle laskemoona käideldakse ja antakse üle ning relvaluba antakse relvaseaduses ja selle alusel kehtestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_15"
       },
@@ -2438,7 +2603,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Teenistusrelva soetamine ja relvaloa andmine toimub vastavalt relvaseadusele (RT I 2001, 65, 377; 88, 531; 102, 673; 2002, 29, 175; 53, 336; 61, 375; 63, 387) ja selle alusel kehtestatud korrale.",
+      "estleg:legalText": "(3) Riigi keskkonnakaitseinspektori erivahendite kandmise ja hoidmise korra kehtestab määrusega.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_15"
       },
@@ -2451,13 +2616,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Keskkonnakaitseinspektori õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 16. Keskkonnakaitseinspektori õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 16. Keskkonnakaitseinspektori õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
       },
@@ -2492,12 +2662,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16¹.",
-      "rdfs:label": "§ 16¹. Riigi keskkonnakaitseinspektori valveaeg",
+      "rdfs:label": {
+        "@value": "§ 16¹. Riigi keskkonnakaitseinspektori valveaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Riigi keskkonnakaitseinspektorile ei kohaldata valveaja rakendamisel avaliku teenistuse seaduse § 38 lõikes 6 sätestatut. (2) Valveaja kestus ei tohi ületada 250 tundi kuus.",
+      "estleg:summary": {
+        "@value": "(1) Riigi keskkonnakaitseinspektorile ei kohaldata valveaja rakendamisel avaliku teenistuse seaduse § 38 lõikes 6 sätestatut. (2) Valveaja kestus ei tohi ületada 250 tundi kuus.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigi keskkonnakaitseinspektorile ei kohaldata valveaja rakendamisel avaliku teenistuse seaduse § 38 lõikes 6 sätestatut. (2) Valveaja kestus ei tohi ületada 250 tundi kuus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_3"
@@ -2576,18 +2752,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17.",
+      "rdfs:label": {
+        "@value": "§ 17.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
+      "estleg:summary": "1 (1) Keskkonnakaitseinspektoril on õigus kontrollida sõidukit, traktorit, liikurmasinat, eritöömasinat või ujuvvahendit, sõltumata selle paiknemise kohast, kui on alust arvata, et: 1 1) see kahjustas, kahjustab või võib kahjustada keskkonda; 2 2) seda kasutatakse jahipidamisel, kalapüügil või loodussaaduse loodusest muul viisil hankimisel; 3 3) sellega veetakse loodussaadust, kaitsealuse või muu liigi isendit, geneetiliselt muundatud organismi või seda sisaldavat või sellest koosnevat toodet, k",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_4"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KeJS_4"
       },
-      "estleg:summary": "1 (1) Keskkonnakaitseinspektoril on õigus kontrollida sõidukit, traktorit, liikurmasinat, eritöömasinat või ujuvvahendit, sõltumata selle paiknemise kohast, kui on alust arvata, et: 1 1) see kahjustas, kahjustab või võib kahjustada keskkonda; 2 2) seda kasutatakse jahipidamisel, kalapüügil või loodussaaduse loodusest muul viisil hankimisel; 3 3) sellega veetakse loodussaadust, kaitsealuse või muu liigi isendit, geneetiliselt muundatud organismi või seda sisaldavat või sellest koosnevat toodet, k",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -2617,13 +2796,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 24.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 24.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_4"
       },
@@ -2649,18 +2833,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25.",
+      "rdfs:label": {
+        "@value": "§ 25.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
+      "estleg:summary": "1 (1) Looduses märgatud selguseta kuuluvusega kalapüügi- või jahipidamisvahendi või muu loodussaaduse ebaseadusliku hankimise eseme või aine võtab keskkonnakaitseinspektor paiknemiskohast ära. Looduses märgatud selguseta kuuluvusega kalapüügi- või jahipidamisvahendi või muu loodussaaduse ebaseadusliku hankimise eseme või aine võtab keskkonnakaitseinspektor paiknemiskohast ära. 2 (2) Samuti võtab keskkonnakaitseinspektor ära loodussaaduse, mida võib loodusest hankida, vedada, töödelda või hoiusta",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_5"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KeJS_5"
       },
-      "estleg:summary": "1 (1) Looduses märgatud selguseta kuuluvusega kalapüügi- või jahipidamisvahendi või muu loodussaaduse ebaseadusliku hankimise eseme või aine võtab keskkonnakaitseinspektor paiknemiskohast ära. Looduses märgatud selguseta kuuluvusega kalapüügi- või jahipidamisvahendi või muu loodussaaduse ebaseadusliku hankimise eseme või aine võtab keskkonnakaitseinspektor paiknemiskohast ära. 2 (2) Samuti võtab keskkonnakaitseinspektor ära loodussaaduse, mida võib loodusest hankida, vedada, töödelda või hoiusta",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2681,13 +2868,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 34.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 34.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_5"
       },
@@ -2710,12 +2902,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Riigi keskkonnakaitseinspektorite varustamine vormiriietusega",
+      "rdfs:label": {
+        "@value": "§ 35. Riigi keskkonnakaitseinspektorite varustamine vormiriietusega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 14 kohast riigi keskkonnakaitseinspektorite vormiriietusega täies ulatuses varustamist alustatakse 2003. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 14 kohast riigi keskkonnakaitseinspektorite vormiriietusega täies ulatuses varustamist alustatakse 2003. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse § 14 kohast riigi keskkonnakaitseinspektorite vormiriietusega täies ulatuses varustamist alustatakse 2003. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_6"
@@ -2745,10 +2943,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 14 kohast riigi keskkonnakaitseinspektorite vormiriietusega täies ulatuses varustamist alustatakse 2003. aasta 1. jaanuaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 14 kohast riigi keskkonnakaitseinspektorite vormiriietusega täies ulatuses varustamist alustatakse 2003. aasta 1. jaanuaril.",
       "estleg:parentProvision": {
         "@id": "estleg:KeJS_Par_35"
       },
+      "rdfs:label": "§ 35 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:KeJS_Par_14"
@@ -2762,18 +2962,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36.",
+      "rdfs:label": {
+        "@value": "§ 36.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
+      "estleg:summary": "Kaitstavate loodusobjektide seaduse (RT I 1994, 46, 773; 1998, 36/37, 555; 1999, 54, 583; 95, 843; 2001, 50, 286) § 6 lõige 5 tunnistatakse kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_6"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_KeJS_6"
       },
-      "estleg:summary": "Kaitstavate loodusobjektide seaduse (RT I 1994, 46, 773; 1998, 36/37, 555; 1999, 54, 583; 95, 843; 2001, 50, 286) § 6 lõige 5 tunnistatakse kehtetuks.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:KeJS_Par_36_v27116"
@@ -2787,12 +2990,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 37. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_6"
@@ -2816,13 +3025,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Senise keskkonnajärelevalve seaduse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 38. Senise keskkonnajärelevalve seaduse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keskkonnajärelevalve seadus",
       "estleg:partOfAct": {
         "@id": "estleg:KeJS_Map"
       },
-      "estleg:summary": "(1) Keskkonnajärelevalve seadus (RT I 1997, 86, 1460; 1999, 54, 583; 95, 843; 2000, 51, 319; 2001, 50, 283) tunnistatakse kehtetuks. (2) Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel kehtestatud Vabariigi Valitsuse ja keskkonnaministri määrused kehtivad niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega, kuni nende muutmise või kehtetuks tunnistamiseni. (3) Kehtetu -",
-      "estleg:legalText": "(1) Keskkonnajärelevalve seadus (RT I 1997, 86, 1460; 1999, 54, 583; 95, 843; 2000, 51, 319; 2001, 50, 283) tunnistatakse kehtetuks. (2) Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel kehtestatud Vabariigi Valitsuse ja keskkonnaministri määrused kehtivad niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega, kuni nende muutmise või kehtetuks tunnistamiseni. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Keskkonnajärelevalve seadus (RT I 1997, 86, 1460; 1999, 54, 583; 95, 843; 2000, 51, 319; 2001, 50, 283) tunnistatakse kehtetuks. (2) Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel kehtestatud Vabariigi Valitsuse ja keskkonnaministri määrused kehtivad niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega, kuni nende muutmise või kehtetuks tunnistamiseni.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Keskkonnajärelevalve seadus (RT I 1997, 86, 1460; 1999, 54, 583; 95, 843; 2000, 51, 319; 2001, 50, 283) tunnistatakse kehtetuks. (2) Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel kehtestatud Vabariigi Valitsuse ja keskkonnaministri määrused kehtivad niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega, kuni nende muutmise või kehtetuks tunnistamiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KeJS_6"
       },
@@ -2835,9 +3050,6 @@
         },
         {
           "@id": "estleg:KeJS_Par_38_Lg_2"
-        },
-        {
-          "@id": "estleg:KeJS_Par_38_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -2919,17 +3131,20 @@
       ]
     },
     {
-      "@id": "estleg:KeJS_Par_38_Lg_3",
+      "@id": "https://www.riigiteataja.ee/en/eli/504122020004",
       "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
+        "eli:LegalExpression"
       ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:KeJS_Par_38"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "rdfs:label": "§ 38 lg 3"
+      "eli:realizes": {
+        "@id": "estleg:KeJS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Environmental Supervision Act",
+        "@language": "en"
+      }
     }
   ]
 }

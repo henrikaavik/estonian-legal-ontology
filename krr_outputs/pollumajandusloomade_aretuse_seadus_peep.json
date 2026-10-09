@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:POLLUM_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Põllumajandusloomade aretuse seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Põllumajandusloomade aretuse seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Põllumajandusloomade aretuse seadus",
-      "dcterms:title": [
-        {
-          "@value": "Põllumajandusloomade aretuse seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Farm Animals Breeding Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Põllumajandusloomade aretuse seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/125032025002.xml"
+        "@id": "https://www.riigiteataja.ee/akt/125032025002"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/125032025002/xml"
+      },
+      "estleg:globalId": "125032025002",
+      "eli:id_local": "125032025002",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "1045609",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "894888774a9a5ee06abba47e42a1fe728538793e4220d64d3ea601bf2c338801",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2019-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-04-04",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -51,10 +67,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-04-04",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/504042025001"
@@ -130,14 +142,40 @@
         {
           "@id": "estleg:Draft_REM17_0846"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/504042025001"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_POLLUM_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:POLLUM_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:POLLUM_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Põllumajandusloomade aretuse seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Põllumajandusloomade aretuse seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_POLLUM_1"
@@ -157,26 +195,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_POLLUM_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 Üldsätted",
-      "skos:prefLabel": "§1–4 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:POLLUM_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_POLLUM_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
@@ -196,8 +223,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–11 Tegevusluba ja aretusprogramm",
-      "skos:prefLabel": "§5–11 Tegevusluba ja aretusprogramm",
+      "rdfs:label": {
+        "@value": "§5–11 Tegevusluba ja aretusprogramm",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–11 Tegevusluba ja aretusprogramm",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:POLLUM_TopicScheme"
       },
@@ -209,7 +242,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Tegevusluba ja aretusprogramm",
+      "rdfs:label": {
+        "@value": "2. peatükk – Tegevusluba ja aretusprogramm",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
@@ -229,12 +265,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§11–11 Hobuslased",
-      "skos:prefLabel": "§11–11 Hobuslased",
+      "rdfs:label": {
+        "@value": "§11–11 Hobuslased",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§11–11 Hobuslased",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:POLLUM_TopicScheme"
       },
-      "estleg:provisionCount": 1
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:Chapter_POLLUM_2_c26caaaf",
@@ -242,7 +284,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Hobuslased",
+      "rdfs:label": {
+        "@value": "2. peatükk – Hobuslased",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
@@ -262,8 +307,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§12–14 Riiklik järelevalve",
-      "skos:prefLabel": "§12–14 Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "§12–14 Riiklik järelevalve",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§12–14 Riiklik järelevalve",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:POLLUM_TopicScheme"
       },
@@ -275,7 +326,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "3. peatükk – Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
@@ -295,8 +349,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§15–20 Rakendussätted",
-      "skos:prefLabel": "§15–20 Rakendussätted",
+      "rdfs:label": {
+        "@value": "§15–20 Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§15–20 Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:POLLUM_TopicScheme"
       },
@@ -308,7 +368,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "4. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
@@ -328,12 +391,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimis- ja kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimis- ja kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus reguleerib põllumajandusloomade aretust ulatuses, mis on vajalik asjakohaste Euroopa Liidu õigusaktide rakendamiseks, ning ulatuses, mis ei ole reguleeritud asjakohaste Euroopa Liidu õigusaktidega. (2) Käesolevat seadust kohaldatakse Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 tõupuhaste aretusloomade, ristandaretussigade ja nende aretusmaterjali aretuse, turustamise ning nende liitu sissetoomise suhtes kehtivate zootehniliste ja genealoogiliste tingimuste kohta,",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus reguleerib põllumajandusloomade aretust ulatuses, mis on vajalik asjakohaste Euroopa Liidu õigusaktide rakendamiseks, ning ulatuses, mis ei ole reguleeritud asjakohaste Euroopa Liidu õigusaktidega. (2) Käesolevat seadust kohaldatakse Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 tõupuhaste aretusloomade, ristandaretussigade ja nende aretusmaterjali aretuse, turustamise ning nende liitu sissetoomise suhtes kehtivate zootehniliste ja genealoogiliste tingimuste kohta,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus reguleerib põllumajandusloomade aretust ulatuses, mis on vajalik asjakohaste Euroopa Liidu õigusaktide rakendamiseks, ning ulatuses, mis ei ole reguleeritud asjakohaste Euroopa Liidu õigusaktidega. (2) Käesolevat seadust kohaldatakse Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 tõupuhaste aretusloomade, ristandaretussigade ja nende aretusmaterjali aretuse, turustamise ning nende liitu sissetoomise suhtes kehtivate zootehniliste ja genealoogiliste tingimuste kohta, millega muudetakse määrust (EL) nr 652/2014, nõukogu direktiive 89/608/EMÜ ja 90/425/EMÜ ning tunnistatakse kehtetuks teatavad õigusaktid tõuaretuse valdkonnas (tõuaretuse määrus) (ELT L 171, 29.06.2016, lk 66–143), artikli 2 punkti 1 tähenduses loomade ning ohustatud tõugu põllumajanduslindude (edaspidi koos põllumajandusloom) aretuse suhtes. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_1"
@@ -411,12 +480,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Tõug ja tõunimetus",
+      "rdfs:label": {
+        "@value": "§ 2. Tõug ja tõunimetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Tõul Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 2 tähenduses on nimetus (edaspidi tõunimetus), mis erineb teistest kasutatavatest tõunimetustest ja registreeritud kaubamärkidest või tootenimetustest. (2) Kui tõusiseselt on looma omaduste alusel eristatud kaks või enam erineva aretuseesmärgiga aretussuunda, moodustavad need igaüks eraldi alampopulatsiooni. Igal sellisel alampopulatsioonil on eristatav nimetus, mis lisatakse põlvnemist tõendaval dokumendil",
+      "estleg:summary": {
+        "@value": "(1) Tõul Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 2 tähenduses on nimetus (edaspidi tõunimetus), mis erineb teistest kasutatavatest tõunimetustest ja registreeritud kaubamärkidest või tootenimetustest. (2) Kui tõusiseselt on looma omaduste alusel eristatud kaks või enam erineva aretuseesmärgiga aretussuunda, moodustavad need igaüks eraldi alampopulatsiooni. Igal sellisel alampopulatsioonil on eristatav nimetus, mis lisatakse põlvnemist tõendaval dokumendil",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tõul Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 2 tähenduses on nimetus (edaspidi tõunimetus), mis erineb teistest kasutatavatest tõunimetustest ja registreeritud kaubamärkidest või tootenimetustest. (2) Kui tõusiseselt on looma omaduste alusel eristatud kaks või enam erineva aretuseesmärgiga aretussuunda, moodustavad need igaüks eraldi alampopulatsiooni. Igal sellisel alampopulatsioonil on eristatav nimetus, mis lisatakse põlvnemist tõendaval dokumendil tõunimetuse järele või sellele järgnevale reale. (3) Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 2 tähenduses tõu määratlust kohaldatakse ka ohustatud tõugu põllumajanduslindude suhtes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_1"
@@ -503,13 +578,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ohustatud tõug",
+      "rdfs:label": {
+        "@value": "§ 3. Ohustatud tõug",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Tõug või eristatud osa ühte tõugu kuuluvate loomade populatsioonist loetakse ohustatuks, kui aretuses kasutatavate emasloomade arv on alla tuhande või isasloomade arv alla kahekümne ja emaslindude arv alla kümne tuhande või isaslindude arv alla tuhande (edaspidi ohustatud tõug). (2) Ohustatud tõugude loetelu kehtestab määrusega. (3) Ohustatud tõugude loetellu kantakse: põllumajanduslooma tõug, mille ajalooline Eesti päritolu ja populatsiooni olemasolu on teaduslikult tõendatud; kohalik",
-      "estleg:legalText": "(1) Tõug või eristatud osa ühte tõugu kuuluvate loomade populatsioonist loetakse ohustatuks, kui aretuses kasutatavate emasloomade arv on alla tuhande või isasloomade arv alla kahekümne ja emaslindude arv alla kümne tuhande või isaslindude arv alla tuhande (edaspidi ohustatud tõug). (2) Ohustatud tõugude loetelu kehtestab määrusega. (3) Ohustatud tõugude loetellu kantakse: põllumajanduslooma tõug, mille ajalooline Eesti päritolu ja populatsiooni olemasolu on teaduslikult tõendatud; kohalik põllumajanduslooma tõug või tõu alampopulatsioon, mille aretus Eestis on kestnud veiste ja hobuslaste puhul vähemalt 50 aastat ning sigade, kitsede ja lammaste puhul vähemalt 30 aastat. (4) Ohustatud tõugu põllumajanduslooma aretuses tohib kasutada üksnes sama tõugu põllumajanduslooma, või kui tõusiseselt on moodustatud mitu alampopulatsiooni, siis sama tõu samasse alampopulatsiooni kuuluvat põllumajanduslooma ning nende spermat, munarakku ja embrüot (edaspidi aretusmaterjal). (5) Ohustatud tõugu põllumajanduslooma aretuses tohib aretusprogrammis ettenähtud teist tõugu põllumajanduslooma aretusmaterjali kasutada üksnes teaduslikult tõendatud juhul ühekordsel ristamisel sugulusaretuse vältimiseks.",
+      "estleg:summary": {
+        "@value": "(1) Tõug või eristatud osa ühte tõugu kuuluvate loomade populatsioonist loetakse ohustatuks, kui aretuses kasutatavate emasloomade arv on alla tuhande või isasloomade arv alla kahekümne ja emaslindude arv alla kümne tuhande või isaslindude arv alla tuhande (edaspidi ohustatud tõug). (2) Ohustatud tõugude loetelu kehtestab määrusega. (3) Ohustatud tõugude loetellu kantakse: 1) põllumajanduslooma tõug, mille ajalooline Eesti päritolu ja populatsiooni olemasolu on teaduslikult tõendatud; 2)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tõug või eristatud osa ühte tõugu kuuluvate loomade populatsioonist loetakse ohustatuks, kui aretuses kasutatavate emasloomade arv on alla tuhande või isasloomade arv alla kahekümne ja emaslindude arv alla kümne tuhande või isaslindude arv alla tuhande (edaspidi ohustatud tõug). (2) Ohustatud tõugude loetelu kehtestab määrusega. (3) Ohustatud tõugude loetellu kantakse: 1) põllumajanduslooma tõug, mille ajalooline Eesti päritolu ja populatsiooni olemasolu on teaduslikult tõendatud; 2) kohalik põllumajanduslooma tõug või tõu alampopulatsioon, mille aretus Eestis on kestnud veiste ja hobuslaste puhul vähemalt 50 aastat ning sigade, kitsede ja lammaste puhul vähemalt 30 aastat. (4) Ohustatud tõugu põllumajanduslooma aretuses tohib kasutada üksnes sama tõugu põllumajanduslooma, või kui tõusiseselt on moodustatud mitu alampopulatsiooni, siis sama tõu samasse alampopulatsiooni kuuluvat põllumajanduslooma ning nende spermat, munarakku ja embrüot (edaspidi aretusmaterjal). (5) Ohustatud tõugu põllumajanduslooma aretuses tohib aretusprogrammis ettenähtud teist tõugu põllumajanduslooma aretusmaterjali kasutada üksnes teaduslikult tõendatud juhul ühekordsel ristamisel sugulusaretuse vältimiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_1"
       },
@@ -596,11 +677,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Ohustatud tõugude loetellu kantakse: põllumajanduslooma tõug, mille ajalooline Eesti päritolu ja populatsiooni olemasolu on teaduslikult tõendatud; kohalik põllumajanduslooma tõug või tõu alampopulatsioon, mille aretus Eestis on kestnud veiste ja hobuslaste puhul vähemalt 50 aastat ning sigade, kitsede ja lammaste puhul vähemalt 30 aastat.",
+      "estleg:legalText": "(3) Ohustatud tõugude loetellu kantakse: 1) põllumajanduslooma tõug, mille ajalooline Eesti päritolu ja populatsiooni olemasolu on teaduslikult tõendatud; 2) kohalik põllumajanduslooma tõug või tõu alampopulatsioon, mille aretus Eestis on kestnud veiste ja hobuslaste puhul vähemalt 50 aastat ning sigade, kitsede ja lammaste puhul vähemalt 30 aastat.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_3"
       },
-      "rdfs:label": "§ 3 lg 3"
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:POLLUM_Par_3_Lg_4",
@@ -649,12 +734,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Pädev asutus",
+      "rdfs:label": {
+        "@value": "§ 4. Pädev asutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "Pädev asutus Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 8 tähenduses on Põllumajandus- ja Toiduamet.",
+      "estleg:summary": {
+        "@value": "Pädev asutus Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 8 tähenduses on Põllumajandus- ja Toiduamet.",
+        "@language": "et"
+      },
       "estleg:legalText": "Pädev asutus Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 8 tähenduses on Põllumajandus- ja Toiduamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_1"
@@ -728,10 +819,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Pädev asutus Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 8 tähenduses on Põllumajandus- ja Toiduamet.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pädev asutus Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 8 tähenduses on Põllumajandus- ja Toiduamet.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:itemNumber": "8",
       "estleg:targetGroup": [
         {
@@ -755,12 +848,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Tegevusluba",
+      "rdfs:label": {
+        "@value": "§ 5. Tegevusluba",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Tõupuhaste veiste, sigade, lammaste, kitsede, hobuslaste ja ohustatud põllumajanduslindude aretusega tegeleval isikul, kes soovib tegutseda aretusühinguna Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 5 tähenduses, peab olema põllumajandusloomade aretuse tegevusluba (edaspidi tegevusluba). (2) Ristandaretussigade aretusega tegeleval isikul, kes soovib tegutseda aretusettevõtjana Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 6 tähenduses, peab",
+      "estleg:summary": {
+        "@value": "(1) Tõupuhaste veiste, sigade, lammaste, kitsede, hobuslaste ja ohustatud põllumajanduslindude aretusega tegeleval isikul, kes soovib tegutseda aretusühinguna Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 5 tähenduses, peab olema põllumajandusloomade aretuse tegevusluba (edaspidi tegevusluba). (2) Ristandaretussigade aretusega tegeleval isikul, kes soovib tegutseda aretusettevõtjana Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 6 tähenduses, peab",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tõupuhaste veiste, sigade, lammaste, kitsede, hobuslaste ja ohustatud põllumajanduslindude aretusega tegeleval isikul, kes soovib tegutseda aretusühinguna Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 5 tähenduses, peab olema põllumajandusloomade aretuse tegevusluba (edaspidi tegevusluba). (2) Ristandaretussigade aretusega tegeleval isikul, kes soovib tegutseda aretusettevõtjana Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 6 tähenduses, peab olema tegevusluba. (3) Lisaks tegevusloale peab aretusühingul ja aretusettevõtjal põllumajandusloomade aretusega tegelemiseks olema Põllumajandus- ja Toiduameti heaks kiidetud aretusprogramm Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 2 punkti 26 tähenduses. Iga järgmise aretusprogrammi puhul ei pea tegevusluba taotlema.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_2"
@@ -915,12 +1014,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Tegevusloa taotlemine",
+      "rdfs:label": {
+        "@value": "§ 6. Tegevusloa taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Tegevusloa taotluse lahendab Põllumajandus- ja Toiduamet tegevusloa andmise või andmisest keeldumisega 60 päeva jooksul taotluse esitamisest arvates. (2) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduse § 19 lõikes 2 sätestatud andmetele Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud andmed ja samas lõikes sätestatud nõuetele vastavust tõendavad dokumendid. (3) Koos tegevusloa taotlusega esitatakse ka vähemalt üks",
+      "estleg:summary": {
+        "@value": "(1) Tegevusloa taotluse lahendab Põllumajandus- ja Toiduamet tegevusloa andmise või andmisest keeldumisega 60 päeva jooksul taotluse esitamisest arvates. (2) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduse § 19 lõikes 2 sätestatud andmetele Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud andmed ja samas lõikes sätestatud nõuetele vastavust tõendavad dokumendid. (3) Koos tegevusloa taotlusega esitatakse ka vähemalt üks",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tegevusloa taotluse lahendab Põllumajandus- ja Toiduamet tegevusloa andmise või andmisest keeldumisega 60 päeva jooksul taotluse esitamisest arvates. (2) Tegevusloa taotluses esitatakse lisaks majandustegevuse seadustiku üldosa seaduse § 19 lõikes 2 sätestatud andmetele Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud andmed ja samas lõikes sätestatud nõuetele vastavust tõendavad dokumendid. (3) Koos tegevusloa taotlusega esitatakse ka vähemalt üks käesoleva seaduse § 10 kohane aretusprogrammi heakskiitmise taotlus. (4) Käesoleva paragrahvi lõikes 2 nimetatud andmed kantakse põllumajandusloomade registrisse. (5) Taotleja ei tasu käesoleva seaduse §-s 5 nimetatud tegevusloa taotluse lahendamise eest riigilõivu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_2"
@@ -1126,12 +1231,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Tegevusloa kontrolliese",
+      "rdfs:label": {
+        "@value": "§ 7. Tegevusloa kontrolliese",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "Tegevusloa saamiseks peavad aretusühing ja aretusettevõtja ning nende kavandatav aretustegevus vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud nõuetele.",
+      "estleg:summary": {
+        "@value": "Tegevusloa saamiseks peavad aretusühing ja aretusettevõtja ning nende kavandatav aretustegevus vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud nõuetele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tegevusloa saamiseks peavad aretusühing ja aretusettevõtja ning nende kavandatav aretustegevus vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud nõuetele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_2"
@@ -1180,10 +1291,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tegevusloa saamiseks peavad aretusühing ja aretusettevõtja ning nende kavandatav aretustegevus vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud nõuetele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tegevusloa saamiseks peavad aretusühing ja aretusettevõtja ning nende kavandatav aretustegevus vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 4 lõikes 3 sätestatud nõuetele.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_7"
       },
+      "rdfs:label": "§ 7 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1204,12 +1317,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Aretusprogrammi kohustus",
+      "rdfs:label": {
+        "@value": "§ 8. Aretusprogrammi kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Aretusühingul ja aretusettevõtjal peab põllumajandusloomade aretusega tegelemiseks olema lisaks tegevusloale Põllumajandus- ja Toiduameti heaks kiidetud aretusprogramm, millele nende tegevus peab vastama. (2) Kui tõusiseselt on eristatud käesoleva seaduse § 2 lõike 2 kohaselt mitu alampopulatsiooni, peab iga alampopulatsiooni kohta olema selle aretuseesmärgile vastav aretusprogramm.",
+      "estleg:summary": {
+        "@value": "(1) Aretusühingul ja aretusettevõtjal peab põllumajandusloomade aretusega tegelemiseks olema lisaks tegevusloale Põllumajandus- ja Toiduameti heaks kiidetud aretusprogramm, millele nende tegevus peab vastama. (2) Kui tõusiseselt on eristatud käesoleva seaduse § 2 lõike 2 kohaselt mitu alampopulatsiooni, peab iga alampopulatsiooni kohta olema selle aretuseesmärgile vastav aretusprogramm.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Aretusühingul ja aretusettevõtjal peab põllumajandusloomade aretusega tegelemiseks olema lisaks tegevusloale Põllumajandus- ja Toiduameti heaks kiidetud aretusprogramm, millele nende tegevus peab vastama. (2) Kui tõusiseselt on eristatud käesoleva seaduse § 2 lõike 2 kohaselt mitu alampopulatsiooni, peab iga alampopulatsiooni kohta olema selle aretuseesmärgile vastav aretusprogramm.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_2"
@@ -1336,13 +1455,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Nõuded aretusprogrammi kohta",
+      "rdfs:label": {
+        "@value": "§ 9. Nõuded aretusprogrammi kohta",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogramm peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele ja muudele nimetatud määruses ja selle alusel kehtestatud õigusaktis ning käesolevas seaduses ja selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (2) Nõuded ohustatud tõugu põllumajandusloomade aretusprogrammi jaoks piisava aretusloomade arvu määramiseks kehtestab määrusega.",
-      "estleg:legalText": "(1) Veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogramm peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele ja muudele nimetatud määruses ja selle alusel kehtestatud õigusaktis ning käesolevas seaduses ja selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (2) Nõuded ohustatud tõugu põllumajandusloomade aretusprogrammi jaoks piisava aretusloomade arvu määramiseks kehtestab määrusega. (3) Ohustatud tõugu põllumajanduslindude aretusprogramm peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 8 lõikes 3 sätestatud nõuetele ning käesolevas seaduses ja selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (4) Ohustatud tõugu põllumajanduslindude aretusprogrammi osad on: põllumajanduslindude välimiku, jõudlusomaduste ja muude iseloomulike tunnuste kirjeldus; andmed põllumajanduslindude populatsiooni suuruse kohta ning populatsiooni paiknemise ja struktuuri kirjeldus; tõu säilitamise meetodite kirjeldus; tõu propageerimise kord; jõudluskontrolli läbiviimise kord; põllumajanduslindude jõudlusandmete ja geneetilise väärtuse hindamise tulemuste kasutamise kord; põllumajanduslindude ja aretusmaterjali aretuseks sobivaks tunnistamise kord.",
+      "estleg:summary": {
+        "@value": "(1) Veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogramm peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele ja muudele nimetatud määruses ja selle alusel kehtestatud õigusaktis ning käesolevas seaduses ja selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (2) Nõuded ohustatud tõugu põllumajandusloomade aretusprogrammi jaoks piisava aretusloomade arvu määramiseks kehtestab määrusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogramm peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele ja muudele nimetatud määruses ja selle alusel kehtestatud õigusaktis ning käesolevas seaduses ja selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (2) Nõuded ohustatud tõugu põllumajandusloomade aretusprogrammi jaoks piisava aretusloomade arvu määramiseks kehtestab määrusega. (3) Ohustatud tõugu põllumajanduslindude aretusprogramm peab vastama Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 8 lõikes 3 sätestatud nõuetele ning käesolevas seaduses ja selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (4) Ohustatud tõugu põllumajanduslindude aretusprogrammi osad on: 1) põllumajanduslindude välimiku, jõudlusomaduste ja muude iseloomulike tunnuste kirjeldus; 2) andmed põllumajanduslindude populatsiooni suuruse kohta ning populatsiooni paiknemise ja struktuuri kirjeldus; 3) tõu säilitamise meetodite kirjeldus; 4) tõu propageerimise kord; 5) jõudluskontrolli läbiviimise kord; 6) põllumajanduslindude jõudlusandmete ja geneetilise väärtuse hindamise tulemuste kasutamise kord; 7) põllumajanduslindude ja aretusmaterjali aretuseks sobivaks tunnistamise kord.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_2"
       },
@@ -1471,11 +1596,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Ohustatud tõugu põllumajanduslindude aretusprogrammi osad on: põllumajanduslindude välimiku, jõudlusomaduste ja muude iseloomulike tunnuste kirjeldus; andmed põllumajanduslindude populatsiooni suuruse kohta ning populatsiooni paiknemise ja struktuuri kirjeldus; tõu säilitamise meetodite kirjeldus; tõu propageerimise kord; jõudluskontrolli läbiviimise kord; põllumajanduslindude jõudlusandmete ja geneetilise väärtuse hindamise tulemuste kasutamise kord; põllumajanduslindude ja aretusmaterjali aretuseks sobivaks tunnistamise kord.",
+      "estleg:legalText": "(4) Ohustatud tõugu põllumajanduslindude aretusprogrammi osad on: 1) põllumajanduslindude välimiku, jõudlusomaduste ja muude iseloomulike tunnuste kirjeldus; 2) andmed põllumajanduslindude populatsiooni suuruse kohta ning populatsiooni paiknemise ja struktuuri kirjeldus; 3) tõu säilitamise meetodite kirjeldus; 4) tõu propageerimise kord; 5) jõudluskontrolli läbiviimise kord; 6) põllumajanduslindude jõudlusandmete ja geneetilise väärtuse hindamise tulemuste kasutamise kord; 7) põllumajanduslindude ja aretusmaterjali aretuseks sobivaks tunnistamise kord.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_9"
       },
-      "rdfs:label": "§ 9 lg 4"
+      "rdfs:label": "§ 9 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
     },
     {
       "@id": "estleg:POLLUM_Par_10",
@@ -1484,12 +1618,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Aretusprogrammi heakskiitmise taotlemine",
+      "rdfs:label": {
+        "@value": "§ 10. Aretusprogrammi heakskiitmise taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Aretusprogrammi heakskiitmise taotluse lahendab Põllumajandus- ja Toiduamet. (2) Aretusprogrammi heakskiitmiseks esitatakse Põllumajandus- ja Toiduametile aretusprogramm ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuete kohane taotlus, milles märgitakse ka taotleja nimi ja registrikood. (3) Vähemalt üks aretusprogrammi heakskiitmise taotlus esitatakse koos tegevusloa taotlusega. (4) Tegevusluba omav aretusühing või aretusettevõtja ei pea iga järgmise",
+      "estleg:summary": {
+        "@value": "(1) Aretusprogrammi heakskiitmise taotluse lahendab Põllumajandus- ja Toiduamet. (2) Aretusprogrammi heakskiitmiseks esitatakse Põllumajandus- ja Toiduametile aretusprogramm ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuete kohane taotlus, milles märgitakse ka taotleja nimi ja registrikood. (3) Vähemalt üks aretusprogrammi heakskiitmise taotlus esitatakse koos tegevusloa taotlusega. (4) Tegevusluba omav aretusühing või aretusettevõtja ei pea iga järgmise",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Aretusprogrammi heakskiitmise taotluse lahendab Põllumajandus- ja Toiduamet. (2) Aretusprogrammi heakskiitmiseks esitatakse Põllumajandus- ja Toiduametile aretusprogramm ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuete kohane taotlus, milles märgitakse ka taotleja nimi ja registrikood. (3) Vähemalt üks aretusprogrammi heakskiitmise taotlus esitatakse koos tegevusloa taotlusega. (4) Tegevusluba omav aretusühing või aretusettevõtja ei pea iga järgmise aretusprogrammi puhul tegevusluba taotlema.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_2"
@@ -1657,13 +1797,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Aretusprogrammi heakskiitmine",
+      "rdfs:label": {
+        "@value": "§ 11. Aretusprogrammi heakskiitmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Põllumajandus- ja Toiduamet teeb aretusprogrammi heakskiitmise või heakskiitmisest keeldumise otsuse 60 päeva jooksul taotluse saamisest arvates. (2) Põllumajandus- ja Toiduamet teeb veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogrammi heakskiitmisest keeldumise otsuse, kui aretusprogramm ei vasta Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele või muudele nimetatud määruses või selle alusel kehtestatud õigusaktis või käesolevas seaduses või",
-      "estleg:legalText": "(1) Põllumajandus- ja Toiduamet teeb aretusprogrammi heakskiitmise või heakskiitmisest keeldumise otsuse 60 päeva jooksul taotluse saamisest arvates. (2) Põllumajandus- ja Toiduamet teeb veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogrammi heakskiitmisest keeldumise otsuse, kui aretusprogramm ei vasta Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele või muudele nimetatud määruses või selle alusel kehtestatud õigusaktis või käesolevas seaduses või selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (3) Põllumajandus- ja Toiduamet teeb ohustatud tõugu põllumajanduslindude aretusprogrammi heakskiitmisest keeldumise otsuse, kui aretusprogramm ei vasta Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 8 lõikes 3 sätestatud nõuetele või käesolevas seaduses või selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (4) Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 19 lõikes 2, I lisa 3. osa lõikes 1 ja II lisa 1. osa III peatüki lõikes 2 sätestatud juhul ja tingimustel võib Põllumajandus- ja Toiduamet kiita heaks erisustega aretusprogrammi. (5) Aretusprogrammi heakskiitmise otsuse kohta kantakse põllumajandusloomade registrisse järgmised andmed: otsuse tegemise kuupäev ja number; otsuse tegemise õiguslik alus; otsuse kehtima hakkamise kuupäev; otsuse saanud aretusühingu või aretusettevõtja nimi ja kontaktandmed; aretusprogrammis käsitletava tõu nimetus või ristandaretussigade puhul tõu, liini või ristandite nimetus; aretusprogrammi täitmise geograafiline piirkond; olemasolu korral aretusprogrammi täitmise tähtaeg; aretusprogrammi heakskiitmise peatamise otsuse kehtima hakkamise ja kehtivuse lõppemise kuupäev. (6) Aretusühing, kes tegeleb ohustatud tõugu loomade aretusega, esitab iga aasta 30. juuniks Põllumajandus- ja Toiduametile analüüsi aretusprogrammi täitmise kohta eelmisel aastal.",
+      "estleg:summary": {
+        "@value": "(1) Põllumajandus- ja Toiduamet teeb aretusprogrammi heakskiitmise või heakskiitmisest keeldumise otsuse 60 päeva jooksul taotluse saamisest arvates. (2) Põllumajandus- ja Toiduamet teeb veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogrammi heakskiitmisest keeldumise otsuse, kui aretusprogramm ei vasta Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele või muudele nimetatud määruses või selle alusel kehtestatud õigusaktis või käesolevas seaduses või",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Põllumajandus- ja Toiduamet teeb aretusprogrammi heakskiitmise või heakskiitmisest keeldumise otsuse 60 päeva jooksul taotluse saamisest arvates. (2) Põllumajandus- ja Toiduamet teeb veiste, sigade, lammaste, kitsede ja hobuslaste aretusprogrammi heakskiitmisest keeldumise otsuse, kui aretusprogramm ei vasta Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artiklis 8 sätestatud nõuetele või muudele nimetatud määruses või selle alusel kehtestatud õigusaktis või käesolevas seaduses või selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (3) Põllumajandus- ja Toiduamet teeb ohustatud tõugu põllumajanduslindude aretusprogrammi heakskiitmisest keeldumise otsuse, kui aretusprogramm ei vasta Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 8 lõikes 3 sätestatud nõuetele või käesolevas seaduses või selle alusel kehtestatud õigusaktis sätestatud asjakohastele nõuetele. (4) Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 artikli 19 lõikes 2, I lisa 3. osa lõikes 1 ja II lisa 1. osa III peatüki lõikes 2 sätestatud juhul ja tingimustel võib Põllumajandus- ja Toiduamet kiita heaks erisustega aretusprogrammi. (5) Aretusprogrammi heakskiitmise otsuse kohta kantakse põllumajandusloomade registrisse järgmised andmed: 1) otsuse tegemise kuupäev ja number; 2) otsuse tegemise õiguslik alus; 3) otsuse kehtima hakkamise kuupäev; 4) otsuse saanud aretusühingu või aretusettevõtja nimi ja kontaktandmed; 5) aretusprogrammis käsitletava tõu nimetus või ristandaretussigade puhul tõu, liini või ristandite nimetus; 6) aretusprogrammi täitmise geograafiline piirkond; 7) olemasolu korral aretusprogrammi täitmise tähtaeg; 8) aretusprogrammi heakskiitmise peatamise otsuse kehtima hakkamise ja kehtivuse lõppemise kuupäev. (6) Aretusühing, kes tegeleb ohustatud tõugu loomade aretusega, esitab iga aasta 30. juuniks Põllumajandus- ja Toiduametile analüüsi aretusprogrammi täitmise kohta eelmisel aastal.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_2"
       },
@@ -1846,11 +1992,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Aretusprogrammi heakskiitmise otsuse kohta kantakse põllumajandusloomade registrisse järgmised andmed: otsuse tegemise kuupäev ja number; otsuse tegemise õiguslik alus; otsuse kehtima hakkamise kuupäev; otsuse saanud aretusühingu või aretusettevõtja nimi ja kontaktandmed; aretusprogrammis käsitletava tõu nimetus või ristandaretussigade puhul tõu, liini või ristandite nimetus; aretusprogrammi täitmise geograafiline piirkond; olemasolu korral aretusprogrammi täitmise tähtaeg; aretusprogrammi heakskiitmise peatamise otsuse kehtima hakkamise ja kehtivuse lõppemise kuupäev.",
+      "estleg:legalText": "(5) Aretusprogrammi heakskiitmise otsuse kohta kantakse põllumajandusloomade registrisse järgmised andmed: 1) otsuse tegemise kuupäev ja number; 2) otsuse tegemise õiguslik alus; 3) otsuse kehtima hakkamise kuupäev; 4) otsuse saanud aretusühingu või aretusettevõtja nimi ja kontaktandmed; 5) aretusprogrammis käsitletava tõu nimetus või ristandaretussigade puhul tõu, liini või ristandite nimetus; 6) aretusprogrammi täitmise geograafiline piirkond; 7) olemasolu korral aretusprogrammi täitmise tähtaeg; 8) aretusprogrammi heakskiitmise peatamise otsuse kehtima hakkamise ja kehtivuse lõppemise kuupäev.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_11"
       },
       "rdfs:label": "§ 11 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1895,18 +2051,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
-      "rdfs:label": "§ 11¹. Hobuslaste võistlus",
+      "rdfs:label": {
+        "@value": "§ 11¹. Hobuslaste võistlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "Hobuslaste võistlus käesoleva seaduse tähenduses on hobuslastega peetav võistlus, sealhulgas: võidusõit; takistussõit; kolmevõistlus; koolisõit; rakendivõistlus; demonstratsioonklass.",
-      "estleg:legalText": "Hobuslaste võistlus käesoleva seaduse tähenduses on hobuslastega peetav võistlus, sealhulgas: võidusõit; takistussõit; kolmevõistlus; koolisõit; rakendivõistlus; demonstratsioonklass.",
+      "estleg:summary": {
+        "@value": "Hobuslaste võistlus käesoleva seaduse tähenduses on hobuslastega peetav võistlus, sealhulgas: 1) võidusõit; 2) takistussõit; 3) kolmevõistlus; 4) koolisõit; 5) rakendivõistlus; 6) demonstratsioonklass.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Hobuslaste võistlus käesoleva seaduse tähenduses on hobuslastega peetav võistlus, sealhulgas: 1) võidusõit; 2) takistussõit; 3) kolmevõistlus; 4) koolisõit; 5) rakendivõistlus; 6) demonstratsioonklass.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_POLLUM_2"
+        "@id": "estleg:Cluster_POLLUM_2_11_11"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_POLLUM_2"
+        "@id": "estleg:Chapter_POLLUM_2_c26caaaf"
       },
       "estleg:hasSubsection": [
         {
@@ -1925,10 +2087,20 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Hobuslaste võistlus käesoleva seaduse tähenduses on hobuslastega peetav võistlus, sealhulgas: võidusõit; takistussõit; kolmevõistlus; koolisõit; rakendivõistlus; demonstratsioonklass.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hobuslaste võistlus käesoleva seaduse tähenduses on hobuslastega peetav võistlus, sealhulgas: 1) võidusõit; 2) takistussõit; 3) kolmevõistlus; 4) koolisõit; 5) rakendivõistlus; 6) demonstratsioonklass.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_11_1"
-      }
+      },
+      "rdfs:label": "§ 11¹ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
     },
     {
       "@id": "estleg:POLLUM_Par_11_2",
@@ -1937,18 +2109,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11².",
-      "rdfs:label": "§ 11². Hobuslaste võistlustingimused",
+      "rdfs:label": {
+        "@value": "§ 11². Hobuslaste võistlustingimused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Hobuslaste võistlustingimustes ei või vahet teha Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel. (2) Käesoleva paragrahvi lõiget 1 ei kohaldata järgmistele hobuslaste võistlustele või üritustele: tõuraamatusse kantud hobuslastele tõu parandamiseks korraldatav võistlus; hobuslaste valimiseks korraldatav piirkondlik võistlus; ajalooline või traditsiooniline üritus.",
-      "estleg:legalText": "(1) Hobuslaste võistlustingimustes ei või vahet teha Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel. (2) Käesoleva paragrahvi lõiget 1 ei kohaldata järgmistele hobuslaste võistlustele või üritustele: tõuraamatusse kantud hobuslastele tõu parandamiseks korraldatav võistlus; hobuslaste valimiseks korraldatav piirkondlik võistlus; ajalooline või traditsiooniline üritus.",
+      "estleg:summary": {
+        "@value": "(1) Hobuslaste võistlustingimustes ei või vahet teha Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel. (2) Käesoleva paragrahvi lõiget 1 ei kohaldata järgmistele hobuslaste võistlustele või üritustele: 1) tõuraamatusse kantud hobuslastele tõu parandamiseks korraldatav võistlus; 2) hobuslaste valimiseks korraldatav piirkondlik võistlus; 3) ajalooline või traditsiooniline üritus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Hobuslaste võistlustingimustes ei või vahet teha Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel. (2) Käesoleva paragrahvi lõiget 1 ei kohaldata järgmistele hobuslaste võistlustele või üritustele: 1) tõuraamatusse kantud hobuslastele tõu parandamiseks korraldatav võistlus; 2) hobuslaste valimiseks korraldatav piirkondlik võistlus; 3) ajalooline või traditsiooniline üritus.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_POLLUM_2"
+        "@id": "estleg:Cluster_POLLUM_2_11_11"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_POLLUM_2"
+        "@id": "estleg:Chapter_POLLUM_2_c26caaaf"
       },
       "estleg:hasSubsection": [
         {
@@ -1998,11 +2176,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva paragrahvi lõiget 1 ei kohaldata järgmistele hobuslaste võistlustele või üritustele: tõuraamatusse kantud hobuslastele tõu parandamiseks korraldatav võistlus; hobuslaste valimiseks korraldatav piirkondlik võistlus; ajalooline või traditsiooniline üritus.",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõiget 1 ei kohaldata järgmistele hobuslaste võistlustele või üritustele: 1) tõuraamatusse kantud hobuslastele tõu parandamiseks korraldatav võistlus; 2) hobuslaste valimiseks korraldatav piirkondlik võistlus; 3) ajalooline või traditsiooniline üritus.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_11_2"
       },
-      "rdfs:label": "§ 11² lg 2"
+      "rdfs:label": "§ 11² lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:POLLUM_Par_11_3",
@@ -2011,18 +2194,24 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11³.",
-      "rdfs:label": "§ 11³. Teavitamine hobuslaste võistlustest",
+      "rdfs:label": {
+        "@value": "§ 11³. Teavitamine hobuslaste võistlustest",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Korraldaja teavitab hiljemalt 15. detsembriks Põllumajandus- ja Toiduametit järgmisel aastal kavandatavatest käesoleva seaduse § 112 lõikes 2 nimetatud võistlustest ja üritustest, mille võistlustingimustes tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, edastades järgmise teabe: käesoleva seaduse § 112 lõikes 2 nimetatud võistluse või ürituse liik; võistluse või ürituse toimumise aeg ja koht;",
-      "estleg:legalText": "(1) Korraldaja teavitab hiljemalt 15. detsembriks Põllumajandus- ja Toiduametit järgmisel aastal kavandatavatest käesoleva seaduse § 112 lõikes 2 nimetatud võistlustest ja üritustest, mille võistlustingimustes tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, edastades järgmise teabe: käesoleva seaduse § 112 lõikes 2 nimetatud võistluse või ürituse liik; võistluse või ürituse toimumise aeg ja koht; võistlustingimused, milles tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, lisades vahetegemise vajaduse kohta põhjenduse. (2) Nõukogu direktiivi 90/428/EMÜ võistlushobustega kauplemise ja võistlustel osalemise tingimuste kohta (EÜT L 224, 18.08.1990, lk 60–61) artikli 4 lõikes 2 nimetatud andmete kogumise eest vastutab ning nendest teavitab Euroopa Komisjoni ja teisi Euroopa Liidu liikmesriike Põllumajandus- ja Toiduamet.",
+      "estleg:summary": {
+        "@value": "(1) Korraldaja teavitab hiljemalt 15. detsembriks Põllumajandus- ja Toiduametit järgmisel aastal kavandatavatest käesoleva seaduse § 11² lõikes 2 nimetatud võistlustest ja üritustest, mille võistlustingimustes tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, edastades järgmise teabe: 1) käesoleva seaduse § 11² lõikes 2 nimetatud võistluse või ürituse liik; 2) võistluse või ürituse toimumise aeg ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Korraldaja teavitab hiljemalt 15. detsembriks Põllumajandus- ja Toiduametit järgmisel aastal kavandatavatest käesoleva seaduse § 11² lõikes 2 nimetatud võistlustest ja üritustest, mille võistlustingimustes tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, edastades järgmise teabe: 1) käesoleva seaduse § 11² lõikes 2 nimetatud võistluse või ürituse liik; 2) võistluse või ürituse toimumise aeg ja koht; 3) võistlustingimused, milles tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, lisades vahetegemise vajaduse kohta põhjenduse. (2) Nõukogu direktiivi 90/428/EMÜ võistlushobustega kauplemise ja võistlustel osalemise tingimuste kohta (EÜT L 224, 18.08.1990, lk 60–61) artikli 4 lõikes 2 nimetatud andmete kogumise eest vastutab ning nendest teavitab Euroopa Komisjoni ja teisi Euroopa Liidu liikmesriike Põllumajandus- ja Toiduamet.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_POLLUM_2"
+        "@id": "estleg:Cluster_POLLUM_2_11_11"
       },
       "estleg:isPartOf": {
-        "@id": "estleg:Chapter_POLLUM_2"
+        "@id": "estleg:Chapter_POLLUM_2_c26caaaf"
       },
       "estleg:hasSubsection": [
         {
@@ -2062,11 +2251,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Korraldaja teavitab hiljemalt 15. detsembriks Põllumajandus- ja Toiduametit järgmisel aastal kavandatavatest käesoleva seaduse § 112 lõikes 2 nimetatud võistlustest ja üritustest, mille võistlustingimustes tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, edastades järgmise teabe: käesoleva seaduse § 112 lõikes 2 nimetatud võistluse või ürituse liik; võistluse või ürituse toimumise aeg ja koht; võistlustingimused, milles tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, lisades vahetegemise vajaduse kohta põhjenduse.",
+      "estleg:legalText": "(1) Korraldaja teavitab hiljemalt 15. detsembriks Põllumajandus- ja Toiduametit järgmisel aastal kavandatavatest käesoleva seaduse § 11² lõikes 2 nimetatud võistlustest ja üritustest, mille võistlustingimustes tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, edastades järgmise teabe: 1) käesoleva seaduse § 11² lõikes 2 nimetatud võistluse või ürituse liik; 2) võistluse või ürituse toimumise aeg ja koht; 3) võistlustingimused, milles tehakse vahet Eestis registreeritud või siit pärit hobuslasel ja teises Euroopa Liidu liikmesriigis registreeritud või sealt pärit hobuslasel, lisades vahetegemise vajaduse kohta põhjenduse.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_11_3"
       },
       "rdfs:label": "§ 11³ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2119,12 +2313,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "§ 12. Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Põllumajandus- ja Toiduamet (edaspidi korrakaitseorgan).",
+      "estleg:summary": {
+        "@value": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Põllumajandus- ja Toiduamet (edaspidi korrakaitseorgan).",
+        "@language": "et"
+      },
       "estleg:legalText": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Põllumajandus- ja Toiduamet (edaspidi korrakaitseorgan).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_3"
@@ -2193,10 +2393,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Põllumajandus- ja Toiduamet (edaspidi korrakaitseorgan).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide ning Euroopa Parlamendi ja nõukogu määruse (EL) 2016/1012 ja selle alusel kehtestatud õigusaktide nõuete täitmise üle teostab Põllumajandus- ja Toiduamet (edaspidi korrakaitseorgan).",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_12"
       },
+      "rdfs:label": "§ 12 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2220,12 +2422,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Riikliku järelevalve erimeetmed",
+      "rdfs:label": {
+        "@value": "§ 13. Riikliku järelevalve erimeetmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32 ja 49–52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32 ja 49–52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32 ja 49–52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_3"
@@ -2285,10 +2493,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32 ja 49–52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32 ja 49–52 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2309,12 +2519,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Riikliku järelevalve erisused",
+      "rdfs:label": {
+        "@value": "§ 14. Riikliku järelevalve erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda aretusühingu ja aretusettevõtja ning nendega seotud loomapidaja territooriumile ja ruumidesse. (2) Korrakaitseorganil on õigus keelata aretuseks aretusmaterjali kasutamine, kui see kahjustab aretusprogrammi elluviimist ega taga aretusedu. (3) Põlvnemisandmete õigsuse geneetiline ekspertiis tehakse rahvusvaheliselt tunnustatud metoodika järgi.",
+      "estleg:summary": {
+        "@value": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda aretusühingu ja aretusettevõtja ning nendega seotud loomapidaja territooriumile ja ruumidesse. (2) Korrakaitseorganil on õigus keelata aretuseks aretusmaterjali kasutamine, kui see kahjustab aretusprogrammi elluviimist ega taga aretusedu. (3) Põlvnemisandmete õigsuse geneetiline ekspertiis tehakse rahvusvaheliselt tunnustatud metoodika järgi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda aretusühingu ja aretusettevõtja ning nendega seotud loomapidaja territooriumile ja ruumidesse. (2) Korrakaitseorganil on õigus keelata aretuseks aretusmaterjali kasutamine, kui see kahjustab aretusprogrammi elluviimist ega taga aretusedu. (3) Põlvnemisandmete õigsuse geneetiline ekspertiis tehakse rahvusvaheliselt tunnustatud metoodika järgi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_3"
@@ -2435,18 +2651,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15.",
+      "rdfs:label": {
+        "@value": "§ 15.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
+      "estleg:summary": "1 (1) Tõuraamat jaguneb põhiosaks ja lisadeks. Tõuraamat jaguneb põhiosaks ja lisadeks. 2 (2) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 3 (3) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 4 (4) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 5 (5) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 6 (6) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 7 (7) Aretuslooma tõuraamatusse kandmine peab vastama lisaks käesolevas seaduses sätestatud nõuetele EÜ Nõu",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_4"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_POLLUM_4"
       },
-      "estleg:summary": "1 (1) Tõuraamat jaguneb põhiosaks ja lisadeks. Tõuraamat jaguneb põhiosaks ja lisadeks. 2 (2) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 3 (3) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 4 (4) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 5 (5) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 6 (6) Kehtetu - RT I 2005 61 477 958534 2005-12-01 Kehtetu - 7 (7) Aretuslooma tõuraamatusse kandmine peab vastama lisaks käesolevas seaduses sätestatud nõuetele EÜ Nõu",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2485,12 +2704,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 19. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_4"
@@ -2529,12 +2754,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 20. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Põllumajandusloomade aretuse seadus",
       "estleg:partOfAct": {
         "@id": "estleg:POLLUM_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2019. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2019. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2019. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_POLLUM_4"
@@ -2565,54 +2796,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2019. aasta 1. jaanuaril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2019. aasta 1. jaanuaril.",
       "estleg:parentProvision": {
         "@id": "estleg:POLLUM_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/504042025001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:POLLUM_Map"
+      },
+      "rdfs:label": {
+        "@value": "Farm Animals Breeding Act",
+        "@language": "en"
       }
-    },
-    {
-      "@id": "estleg:Citation_POLLUM_P_11_3_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:POLLUM_Par_11_3"
-      },
-      "estleg:citationText": "käesoleva seaduse § 112 lõikes 2"
-    },
-    {
-      "@id": "estleg:Citation_POLLUM_P_11_3_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:POLLUM_Par_11_3"
-      },
-      "estleg:citationText": "käesoleva seaduse § 112 lõikes 2"
-    },
-    {
-      "@id": "estleg:Citation_POLLUM_P_11_3_Lg_1_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:POLLUM_Par_11_3_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 112 lõikes 2"
-    },
-    {
-      "@id": "estleg:Citation_POLLUM_P_11_3_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:POLLUM_Par_11_3_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse § 112 lõikes 2"
     }
   ]
 }

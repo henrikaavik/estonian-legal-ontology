@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Küttesüsteemi puhastamise nõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Küttesüsteemi puhastamise nõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Küttesüsteemi puhastamise nõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -41,18 +48,13 @@
         }
       ],
       "estleg:entryIntoForce": {
-        "@value": "2010-09-04",
+        "@value": "2021-03-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2021-02-16",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2010-09-01",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_346079_2c33b758ac"
@@ -93,7 +95,13 @@
         {
           "@id": "http://eurovoc.europa.eu/5188"
         }
-      ]
+      ],
+      "dcterms:title": "Küttesüsteemi puhastamise nõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_346079_Annex_1",
@@ -101,7 +109,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Korstnapühkimise akt\n\t\t\t\n\t\t\t\tKehtetu - \n\t\t\t\t\n\t\t\t\t\tRT I\n\t\t\t\t\t2021-02-23\n\t\t\t\t\t9\n\t\t\t\t\t123022021009\n\t\t\t\t\n\t\t\t\t2021-03-01",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -110,7 +121,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2 – Ettepanek\n\t\t\t\n\t\t\t\tKehtetu - \n\t\t\t\t\n\t\t\t\t\tRT I\n\t\t\t\t\t2021-02-23\n\t\t\t\t\t9\n\t\t\t\t\t123022021009\n\t\t\t\t\n\t\t\t\t2021-03-01",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -120,18 +134,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "1 (1) Käesoleva määrusega reguleeritakse nõudeid tahkekütusel töötava ahju, kamina, pliidi või muu kütteseadme ning korstna ja ühenduslõõri (edaspidi küttesüsteem) puhastamisele. Käesoleva määrusega reguleeritakse nõudeid tahkekütusel töötava ahju, kamina, pliidi või muu kütteseadme ning korstna ja ühenduslõõri (edaspidi küttesüsteem) puhastamisele. 2 (2) Määruse nõudeid kohaldatakse ka muul kütusel töötava küttesüsteemi korstna ja ühenduslõõri puhastamisele, kui küttesüsteemi kasutamisel tekib ",
-      "estleg:legalText": "1 (1) Käesoleva määrusega reguleeritakse nõudeid tahkekütusel töötava ahju, kamina, pliidi või muu kütteseadme ning korstna ja ühenduslõõri (edaspidi küttesüsteem) puhastamisele. Käesoleva määrusega reguleeritakse nõudeid tahkekütusel töötava ahju, kamina, pliidi või muu kütteseadme ning korstna ja ühenduslõõri (edaspidi küttesüsteem) puhastamisele. 2 (2) Määruse nõudeid kohaldatakse ka muul kütusel töötava küttesüsteemi korstna ja ühenduslõõri puhastamisele, kui küttesüsteemi kasutamisel tekib tahma või muid ladestuvaid põlemisjääke. Määruse nõudeid kohaldatakse ka muul kütusel töötava küttesüsteemi korstna ja ühenduslõõri puhastamisele, kui küttesüsteemi kasutamisel tekib tahma või muid ladestuvaid põlemisjääke.",
+      "estleg:summary": {
+        "@value": "1 (1) Käesoleva määrusega reguleeritakse nõudeid tahkekütusel töötava ahju, kamina, pliidi või muu kütteseadme ning korstna ja ühenduslõõri (edaspidi küttesüsteem) puhastamisele. 2 (2) Määruse nõudeid kohaldatakse ka muul kütusel töötava küttesüsteemi korstna ja ühenduslõõri puhastamisele, kui küttesüsteemi kasutamisel tekib tahma või muid ladestuvaid põlemisjääke.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Käesoleva määrusega reguleeritakse nõudeid tahkekütusel töötava ahju, kamina, pliidi või muu kütteseadme ning korstna ja ühenduslõõri (edaspidi küttesüsteem) puhastamisele. 2 (2) Määruse nõudeid kohaldatakse ka muul kütusel töötava küttesüsteemi korstna ja ühenduslõõri puhastamisele, kui küttesüsteemi kasutamisel tekib tahma või muid ladestuvaid põlemisjääke.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_346079_Par_1_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva määrusega reguleeritakse nõudeid tahkekütusel töötava ahju, kamina, pliidi või muu kütteseadme ning korstna ja ühenduslõõri (edaspidi küttesüsteem) puhastamisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Määruse nõudeid kohaldatakse ka muul kütusel töötava küttesüsteemi korstna ja ühenduslõõri puhastamisele, kui küttesüsteemi kasutamisel tekib tahma või muid ladestuvaid põlemisjääke.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_346079_Par_2",
@@ -140,13 +194,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mõisted",
+      "rdfs:label": {
+        "@value": "§ 2. Mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "1 (1) Korstnapühkimine – küttesüsteemi puhastamiseks tehtavad tööd tagamaks selle korrashoid ning vältimaks tuleohu tekkimist. Korstnapühkimine – küttesüsteemi puhastamiseks tehtavad tööd tagamaks selle korrashoid ning vältimaks tuleohu tekkimist. 2 (2) Korstnapühkija – korstnapühkimise teenust osutav isik, kes on läbinud korstnapühkimise koolituse ning kellele on omistatud korstnapühkija kutsetunnistus. Korstnapühkija – korstnapühkimise teenust osutav isik, kes on läbinud korstnapühkimise kooli",
-      "estleg:legalText": "1 (1) Korstnapühkimine – küttesüsteemi puhastamiseks tehtavad tööd tagamaks selle korrashoid ning vältimaks tuleohu tekkimist. Korstnapühkimine – küttesüsteemi puhastamiseks tehtavad tööd tagamaks selle korrashoid ning vältimaks tuleohu tekkimist. 2 (2) Korstnapühkija – korstnapühkimise teenust osutav isik, kes on läbinud korstnapühkimise koolituse ning kellele on omistatud korstnapühkija kutsetunnistus. Korstnapühkija – korstnapühkimise teenust osutav isik, kes on läbinud korstnapühkimise koolituse ning kellele on omistatud korstnapühkija kutsetunnistus. 3 (3) Tahma põletamine – puhastatava küttesüsteemi suitsulõõride seintele kinnitunud tahma ja pigi eemaldamine põletamise teel korstnapühkija poolt vältimaks kontrollimatu tahmapõlengu teket. Tahma põletamine – puhastatava küttesüsteemi suitsulõõride seintele kinnitunud tahma ja pigi eemaldamine põletamise teel korstnapühkija poolt vältimaks kontrollimatu tahmapõlengu teket.",
+      "estleg:summary": {
+        "@value": "1 (1) Korstnapühkimine – küttesüsteemi puhastamiseks tehtavad tööd tagamaks selle korrashoid ning vältimaks tuleohu tekkimist. 2 (2) Korstnapühkija – korstnapühkimise teenust osutav isik, kes on läbinud korstnapühkimise koolituse ning kellele on omistatud korstnapühkija kutsetunnistus. 3 (3) Tahma põletamine – puhastatava küttesüsteemi suitsulõõride seintele kinnitunud tahma ja pigi eemaldamine põletamise teel korstnapühkija poolt vältimaks kontrollimatu tahmapõlengu teket.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Korstnapühkimine – küttesüsteemi puhastamiseks tehtavad tööd tagamaks selle korrashoid ning vältimaks tuleohu tekkimist. 2 (2) Korstnapühkija – korstnapühkimise teenust osutav isik, kes on läbinud korstnapühkimise koolituse ning kellele on omistatud korstnapühkija kutsetunnistus. 3 (3) Tahma põletamine – puhastatava küttesüsteemi suitsulõõride seintele kinnitunud tahma ja pigi eemaldamine põletamise teel korstnapühkija poolt vältimaks kontrollimatu tahmapõlengu teket.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -163,7 +223,57 @@
         {
           "@id": "estleg:Reg_346079_Par_2_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_2_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korstnapühkimine – küttesüsteemi puhastamiseks tehtavad tööd tagamaks selle korrashoid ning vältimaks tuleohu tekkimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Korstnapühkija – korstnapühkimise teenust osutav isik, kes on läbinud korstnapühkimise koolituse ning kellele on omistatud korstnapühkija kutsetunnistus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tahma põletamine – puhastatava küttesüsteemi suitsulõõride seintele kinnitunud tahma ja pigi eemaldamine põletamise teel korstnapühkija poolt vältimaks kontrollimatu tahmapõlengu teket.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:Reg_346079_Par_3",
@@ -172,13 +282,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Korstnapühkija pädevus",
+      "rdfs:label": {
+        "@value": "§ 3. Korstnapühkija pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "Korstnapühkija võib korstnapühkimise teenust osutades teostada neid töid, mis vastavad tema korstnapühkija kutsekvalifikatsiooni tasemega omistatud pädevusele.",
-      "estleg:legalText": "Korstnapühkija võib korstnapühkimise teenust osutades teostada neid töid, mis vastavad tema korstnapühkija kutsekvalifikatsiooni tasemega omistatud pädevusele. Korstnapühkija võib korstnapühkimise teenust osutades teostada neid töid, mis vastavad tema korstnapühkija kutsekvalifikatsiooni tasemega omistatud pädevusele.",
+      "estleg:summary": {
+        "@value": "Korstnapühkija võib korstnapühkimise teenust osutades teostada neid töid, mis vastavad tema korstnapühkija kutsekvalifikatsiooni tasemega omistatud pädevusele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Korstnapühkija võib korstnapühkimise teenust osutades teostada neid töid, mis vastavad tema korstnapühkija kutsekvalifikatsiooni tasemega omistatud pädevusele.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -190,7 +306,25 @@
         {
           "@id": "estleg:Reg_346079_Par_3_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korstnapühkija võib korstnapühkimise teenust osutades teostada neid töid, mis vastavad tema korstnapühkija kutsekvalifikatsiooni tasemega omistatud pädevusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_346079_Par_4",
@@ -199,17 +333,47 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Korstnapühkimisele eelnevad tegevused",
+      "rdfs:label": {
+        "@value": "§ 4. Korstnapühkimisele eelnevad tegevused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "Enne korstnapühkimisele asumist: 1 1) tutvub korstnapühkija puhastatava küttesüsteemi ja selle lõõride ehitusega; 2 2) vastavalt vajadusele avatakse või sulgetakse suitsusiibrid ning fikseeritakse need vastavas asendis; 3 3) kontrollitakse ühenduslõõride ja puhastusluukide korrasolekut; 4 4) kontrollitakse ja veendutakse, et küttekoldes ei toimuks põlemisprotsessi. Enne korstnapühkimisele asumist: tutvub korstnapühkija puhastatava küttesüsteemi ja selle lõõride ehitusega; vastavalt vajadusele av",
-      "estleg:legalText": "Enne korstnapühkimisele asumist: 1 1) tutvub korstnapühkija puhastatava küttesüsteemi ja selle lõõride ehitusega; 2 2) vastavalt vajadusele avatakse või sulgetakse suitsusiibrid ning fikseeritakse need vastavas asendis; 3 3) kontrollitakse ühenduslõõride ja puhastusluukide korrasolekut; 4 4) kontrollitakse ja veendutakse, et küttekoldes ei toimuks põlemisprotsessi. Enne korstnapühkimisele asumist: tutvub korstnapühkija puhastatava küttesüsteemi ja selle lõõride ehitusega; vastavalt vajadusele avatakse või sulgetakse suitsusiibrid ning fikseeritakse need vastavas asendis; kontrollitakse ühenduslõõride ja puhastusluukide korrasolekut; kontrollitakse ja veendutakse, et küttekoldes ei toimuks põlemisprotsessi.",
+      "estleg:summary": {
+        "@value": "Enne korstnapühkimisele asumist: 1 1) tutvub korstnapühkija puhastatava küttesüsteemi ja selle lõõride ehitusega; 2 2) vastavalt vajadusele avatakse või sulgetakse suitsusiibrid ning fikseeritakse need vastavas asendis; 3 3) kontrollitakse ühenduslõõride ja puhastusluukide korrasolekut; 4 4) kontrollitakse ja veendutakse, et küttekoldes ei toimuks põlemisprotsessi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Enne korstnapühkimisele asumist: 1 1) tutvub korstnapühkija puhastatava küttesüsteemi ja selle lõõride ehitusega; 2 2) vastavalt vajadusele avatakse või sulgetakse suitsusiibrid ning fikseeritakse need vastavas asendis; 3 3) kontrollitakse ühenduslõõride ja puhastusluukide korrasolekut; 4 4) kontrollitakse ja veendutakse, et küttekoldes ei toimuks põlemisprotsessi.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_346079_Par_4_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_4_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne korstnapühkimisele asumist: 1) tutvub korstnapühkija puhastatava küttesüsteemi ja selle lõõride ehitusega; 2) vastavalt vajadusele avatakse või sulgetakse suitsusiibrid ning fikseeritakse need vastavas asendis; 3) kontrollitakse ühenduslõõride ja puhastusluukide korrasolekut; 4) kontrollitakse ja veendutakse, et küttekoldes ei toimuks põlemisprotsessi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -219,13 +383,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Korstnapühkimise teostamine",
+      "rdfs:label": {
+        "@value": "§ 5. Korstnapühkimise teostamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "1 (1) Korstnapühkimisel korstnapühkija: 1 1) puhastab küttesüsteemi põlemisjääkidest; 2 2) vajadusel teeb avasid küttesüsteemi välispinda ummistuse likvideerimiseks ja sulgeb need viisil, mis tagab ohutuse küttesüsteemi kasutamisel; 3 3) puhastab suitsusiibrid ja kontrollib nende toimimist ning küttesüsteemi tõmmet; 4 4) kontrollib ning puhastab korstna ventilatsioonilõõre ja nendega ühendatud ventilatsioonikanaleid; 5 5) kontrollib puhastatud küttesüsteemi tuleohutust. Korstnapühkimisel korstna",
-      "estleg:legalText": "1 (1) Korstnapühkimisel korstnapühkija: 1 1) puhastab küttesüsteemi põlemisjääkidest; 2 2) vajadusel teeb avasid küttesüsteemi välispinda ummistuse likvideerimiseks ja sulgeb need viisil, mis tagab ohutuse küttesüsteemi kasutamisel; 3 3) puhastab suitsusiibrid ja kontrollib nende toimimist ning küttesüsteemi tõmmet; 4 4) kontrollib ning puhastab korstna ventilatsioonilõõre ja nendega ühendatud ventilatsioonikanaleid; 5 5) kontrollib puhastatud küttesüsteemi tuleohutust. Korstnapühkimisel korstnapühkija: puhastab küttesüsteemi põlemisjääkidest; vajadusel teeb avasid küttesüsteemi välispinda ummistuse likvideerimiseks ja sulgeb need viisil, mis tagab ohutuse küttesüsteemi kasutamisel; puhastab suitsusiibrid ja kontrollib nende toimimist ning küttesüsteemi tõmmet; kontrollib ning puhastab korstna ventilatsioonilõõre ja nendega ühendatud ventilatsioonikanaleid; kontrollib puhastatud küttesüsteemi tuleohutust. 2 (2) Korstnapühkimise teostamisel korstnapühkija hindab küttesüsteemi tehnilist seisukorda ja ohutust. Korstnapühkija informeerib avastatud puudustest ja vigadest töö tellijat või ehitise valdajat. Korstnapühkimise teostamisel korstnapühkija hindab küttesüsteemi tehnilist seisukorda ja ohutust. Korstnapühkija informeerib avastatud puudustest ja vigadest töö tellijat või ehitise valdajat.",
+      "estleg:summary": {
+        "@value": "1 (1) Korstnapühkimisel korstnapühkija: 1 1) puhastab küttesüsteemi põlemisjääkidest; 2 2) vajadusel teeb avasid küttesüsteemi välispinda ummistuse likvideerimiseks ja sulgeb need viisil, mis tagab ohutuse küttesüsteemi kasutamisel; 3 3) puhastab suitsusiibrid ja kontrollib nende toimimist ning küttesüsteemi tõmmet; 4 4) kontrollib ning puhastab korstna ventilatsioonilõõre ja nendega ühendatud ventilatsioonikanaleid; 5 5) kontrollib puhastatud küttesüsteemi tuleohutust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Korstnapühkimisel korstnapühkija: 1 1) puhastab küttesüsteemi põlemisjääkidest; 2 2) vajadusel teeb avasid küttesüsteemi välispinda ummistuse likvideerimiseks ja sulgeb need viisil, mis tagab ohutuse küttesüsteemi kasutamisel; 3 3) puhastab suitsusiibrid ja kontrollib nende toimimist ning küttesüsteemi tõmmet; 4 4) kontrollib ning puhastab korstna ventilatsioonilõõre ja nendega ühendatud ventilatsioonikanaleid; 5 5) kontrollib puhastatud küttesüsteemi tuleohutust. 2 (2) Korstnapühkimise teostamisel korstnapühkija hindab küttesüsteemi tehnilist seisukorda ja ohutust. Korstnapühkija informeerib avastatud puudustest ja vigadest töö tellijat või ehitise valdajat.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -239,7 +409,48 @@
         {
           "@id": "estleg:Reg_346079_Par_5_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_5_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korstnapühkimisel korstnapühkija: 1) puhastab küttesüsteemi põlemisjääkidest; 2) vajadusel teeb avasid küttesüsteemi välispinda ummistuse likvideerimiseks ja sulgeb need viisil, mis tagab ohutuse küttesüsteemi kasutamisel; 3) puhastab suitsusiibrid ja kontrollib nende toimimist ning küttesüsteemi tõmmet; 4) kontrollib ning puhastab korstna ventilatsioonilõõre ja nendega ühendatud ventilatsioonikanaleid; 5) kontrollib puhastatud küttesüsteemi tuleohutust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Korstnapühkimise teostamisel korstnapühkija hindab küttesüsteemi tehnilist seisukorda ja ohutust. Korstnapühkija informeerib avastatud puudustest ja vigadest töö tellijat või ehitise valdajat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
     },
     {
       "@id": "estleg:Reg_346079_Par_6",
@@ -248,13 +459,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Korstnapühkimise järgsed tegevused",
+      "rdfs:label": {
+        "@value": "§ 6. Korstnapühkimise järgsed tegevused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "1 (1) Teostatud tööde lõpetamisel seatakse küttesüsteem toimimisvalmis seisundisse. Teostatud tööde lõpetamisel seatakse küttesüsteem toimimisvalmis seisundisse. 2 (2) Korstnapühkija esitab päästeinfosüsteemi andmed küttesüsteemi puhastamisega seotud tegevuste, küttesüsteemi tehnilise seisukorra ja ohutuse kohta ning küttesüsteemi puhastamisega seotud isiku ees- ja perekonnanime, isikukoodi või nime ja registrikoodi, e-posti aadressi ning korstnapühkija ees- ja perekonnanime, isikukoodi, kvalifi",
-      "estleg:legalText": "1 (1) Teostatud tööde lõpetamisel seatakse küttesüsteem toimimisvalmis seisundisse. Teostatud tööde lõpetamisel seatakse küttesüsteem toimimisvalmis seisundisse. 2 (2) Korstnapühkija esitab päästeinfosüsteemi andmed küttesüsteemi puhastamisega seotud tegevuste, küttesüsteemi tehnilise seisukorra ja ohutuse kohta ning küttesüsteemi puhastamisega seotud isiku ees- ja perekonnanime, isikukoodi või nime ja registrikoodi, e-posti aadressi ning korstnapühkija ees- ja perekonnanime, isikukoodi, kvalifikatsiooni nimetuse, kutsetunnistuse numbri ja selle kehtivuse andmed, e-posti aadressi ja telefoninumbri. RT I 2021-02-23 9 123022021009 2021-03-01 Korstnapühkija esitab päästeinfosüsteemi andmed küttesüsteemi puhastamisega seotud tegevuste, küttesüsteemi tehnilise seisukorra ja ohutuse kohta ning küttesüsteemi puhastamisega seotud isiku ees- ja perekonnanime, isikukoodi või nime ja registrikoodi, e-posti aadressi ning korstnapühkija ees- ja perekonnanime, isikukoodi, kvalifikatsiooni nimetuse, kutsetunnistuse numbri ja selle kehtivuse andmed, e-posti aadressi ja telefoninumbri. 3 (3) Kehtetu - RT I 2021-02-23 9 123022021009 2021-03-01 Kehtetu -",
+      "estleg:summary": {
+        "@value": "1 (1) Teostatud tööde lõpetamisel seatakse küttesüsteem toimimisvalmis seisundisse. 2 (2) Korstnapühkija esitab päästeinfosüsteemi andmed küttesüsteemi puhastamisega seotud tegevuste, küttesüsteemi tehnilise seisukorra ja ohutuse kohta ning küttesüsteemi puhastamisega seotud isiku ees- ja perekonnanime, isikukoodi või nime ja registrikoodi, e-posti aadressi ning korstnapühkija ees- ja perekonnanime, isikukoodi, kvalifikatsiooni nimetuse, kutsetunnistuse numbri ja selle kehtivuse andmed, e-posti…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Teostatud tööde lõpetamisel seatakse küttesüsteem toimimisvalmis seisundisse. 2 (2) Korstnapühkija esitab päästeinfosüsteemi andmed küttesüsteemi puhastamisega seotud tegevuste, küttesüsteemi tehnilise seisukorra ja ohutuse kohta ning küttesüsteemi puhastamisega seotud isiku ees- ja perekonnanime, isikukoodi või nime ja registrikoodi, e-posti aadressi ning korstnapühkija ees- ja perekonnanime, isikukoodi, kvalifikatsiooni nimetuse, kutsetunnistuse numbri ja selle kehtivuse andmed, e-posti aadressi ja telefoninumbri. RT I 2021-02-23 9 123022021009 2021-03-01 3 (3) Kehtetu - RT I 2021-02-23 9 123022021009 2021-03-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -268,7 +485,41 @@
         {
           "@id": "estleg:Reg_346079_Par_6_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_6_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teostatud tööde lõpetamisel seatakse küttesüsteem toimimisvalmis seisundisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Korstnapühkija esitab päästeinfosüsteemi andmed küttesüsteemi puhastamisega seotud tegevuste, küttesüsteemi tehnilise seisukorra ja ohutuse kohta ning küttesüsteemi puhastamisega seotud isiku ees- ja perekonnanime, isikukoodi või nime ja registrikoodi, e-posti aadressi ning korstnapühkija ees- ja perekonnanime, isikukoodi, kvalifikatsiooni nimetuse, kutsetunnistuse numbri ja selle kehtivuse andmed, e-posti aadressi ja telefoninumbri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:Reg_346079_Par_7",
@@ -277,13 +528,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Üksikelamu, suvila, aiamaja, taluhoone ja väikeehitise korstnapühkimine korstnapühkija kutsetunnistuseta isiku poolt",
+      "rdfs:label": {
+        "@value": "§ 7. Üksikelamu, suvila, aiamaja, taluhoone ja väikeehitise korstnapühkimine korstnapühkija kutsetunnistuseta isiku poolt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "1 (1) Üksikelamus, suvilas, aiamajas, taluhoones ja väikeehitises võib korstnapühkimist teostada korstnapühkija kutsetunnistuseta isik enda tarbeks. Üksikelamus, suvilas, aiamajas, taluhoones ja väikeehitises võib korstnapühkimist teostada korstnapühkija kutsetunnistuseta isik enda tarbeks. 2 (2) Korstnapühkimise teostamisel käesoleva paragrahvi lõikes 1 nimetatud ehitistes järgib korstnapühkija kutsetunnistuseta isik käesoleva määruse § 4, § 5 lõike 1 ning § 6 lõike 1 nõudeid. Korstnapühkimise ",
-      "estleg:legalText": "1 (1) Üksikelamus, suvilas, aiamajas, taluhoones ja väikeehitises võib korstnapühkimist teostada korstnapühkija kutsetunnistuseta isik enda tarbeks. Üksikelamus, suvilas, aiamajas, taluhoones ja väikeehitises võib korstnapühkimist teostada korstnapühkija kutsetunnistuseta isik enda tarbeks. 2 (2) Korstnapühkimise teostamisel käesoleva paragrahvi lõikes 1 nimetatud ehitistes järgib korstnapühkija kutsetunnistuseta isik käesoleva määruse § 4, § 5 lõike 1 ning § 6 lõike 1 nõudeid. Korstnapühkimise teostamisel käesoleva paragrahvi lõikes 1 nimetatud ehitistes järgib korstnapühkija kutsetunnistuseta isik käesoleva määruse § 4, § 5 lõike 1 ning § 6 lõike 1 nõudeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Üksikelamus, suvilas, aiamajas, taluhoones ja väikeehitises võib korstnapühkimist teostada korstnapühkija kutsetunnistuseta isik enda tarbeks. 2 (2) Korstnapühkimise teostamisel käesoleva paragrahvi lõikes 1 nimetatud ehitistes järgib korstnapühkija kutsetunnistuseta isik käesoleva määruse § 4, § 5 lõike 1 ning § 6 lõike 1 nõudeid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Üksikelamus, suvilas, aiamajas, taluhoones ja väikeehitises võib korstnapühkimist teostada korstnapühkija kutsetunnistuseta isik enda tarbeks. 2 (2) Korstnapühkimise teostamisel käesoleva paragrahvi lõikes 1 nimetatud ehitistes järgib korstnapühkija kutsetunnistuseta isik käesoleva määruse § 4, § 5 lõike 1 ning § 6 lõike 1 nõudeid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -300,7 +557,41 @@
         {
           "@id": "estleg:Reg_346079_Par_7_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_7_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Üksikelamus, suvilas, aiamajas, taluhoones ja väikeehitises võib korstnapühkimist teostada korstnapühkija kutsetunnistuseta isik enda tarbeks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Korstnapühkimise teostamisel käesoleva paragrahvi lõikes 1 nimetatud ehitistes järgib korstnapühkija kutsetunnistuseta isik käesoleva määruse § 4, § 5 lõike 1 ning § 6 lõike 1 nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:Reg_346079_Par_8",
@@ -309,13 +600,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Tahma põletamise vajaduse ja võimalikkuse määramine",
+      "rdfs:label": {
+        "@value": "§ 8. Tahma põletamise vajaduse ja võimalikkuse määramine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "1 (1) Puhastatava küttesüsteemi suitsulõõri seintele kinnistunud tahma ja pigi põletamise vajaduse ning võimalikkuse määrab pädeva kutsekvalifikatsiooni tasemega korstnapühkija. Puhastatava küttesüsteemi suitsulõõri seintele kinnistunud tahma ja pigi põletamise vajaduse ning võimalikkuse määrab pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Tahma põletamise vajadusest informeerib korstnapühkija viivitamata ehitise omanikku või valdajat. Tahma põletamise vajadusest informeerib korstn",
-      "estleg:legalText": "1 (1) Puhastatava küttesüsteemi suitsulõõri seintele kinnistunud tahma ja pigi põletamise vajaduse ning võimalikkuse määrab pädeva kutsekvalifikatsiooni tasemega korstnapühkija. Puhastatava küttesüsteemi suitsulõõri seintele kinnistunud tahma ja pigi põletamise vajaduse ning võimalikkuse määrab pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Tahma põletamise vajadusest informeerib korstnapühkija viivitamata ehitise omanikku või valdajat. Tahma põletamise vajadusest informeerib korstnapühkija viivitamata ehitise omanikku või valdajat.",
+      "estleg:summary": {
+        "@value": "1 (1) Puhastatava küttesüsteemi suitsulõõri seintele kinnistunud tahma ja pigi põletamise vajaduse ning võimalikkuse määrab pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Tahma põletamise vajadusest informeerib korstnapühkija viivitamata ehitise omanikku või valdajat.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Puhastatava küttesüsteemi suitsulõõri seintele kinnistunud tahma ja pigi põletamise vajaduse ning võimalikkuse määrab pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Tahma põletamise vajadusest informeerib korstnapühkija viivitamata ehitise omanikku või valdajat.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -329,7 +626,41 @@
         {
           "@id": "estleg:Reg_346079_Par_8_v346079"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_8_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Puhastatava küttesüsteemi suitsulõõri seintele kinnistunud tahma ja pigi põletamise vajaduse ning võimalikkuse määrab pädeva kutsekvalifikatsiooni tasemega korstnapühkija.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tahma põletamise vajadusest informeerib korstnapühkija viivitamata ehitise omanikku või valdajat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_346079_Par_9",
@@ -338,16 +669,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Tahma põletamise teostamine",
+      "rdfs:label": {
+        "@value": "§ 9. Tahma põletamise teostamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Küttesüsteemi puhastamise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_346079_Map"
       },
-      "estleg:summary": "1 (1) Tahma põletamist küttesüsteemi suitsulõõris teostab ainult pädeva kutsekvalifikatsiooni tasemega korstnapühkija. Tahma põletamist küttesüsteemi suitsulõõris teostab ainult pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Enne tahma põletamisele asumist veendub korstnapühkija, et: 1 1) küttesüsteemi ühenduskohtades puuduvad praod ja ei ole muud tuleohtu; 2 2) kergestisüttivad esemed on suitsulõõri lähedusest eemaldatud; 3 3) põlevmaterjalidest ehituskonstruktsioonid ja -materjali",
-      "estleg:legalText": "1 (1) Tahma põletamist küttesüsteemi suitsulõõris teostab ainult pädeva kutsekvalifikatsiooni tasemega korstnapühkija. Tahma põletamist küttesüsteemi suitsulõõris teostab ainult pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Enne tahma põletamisele asumist veendub korstnapühkija, et: 1 1) küttesüsteemi ühenduskohtades puuduvad praod ja ei ole muud tuleohtu; 2 2) kergestisüttivad esemed on suitsulõõri lähedusest eemaldatud; 3 3) põlevmaterjalidest ehituskonstruktsioonid ja -materjalid asuvad suitsulõõrist ohutus kauguses; 4 4) tahmaluugid on kõikides ruumides, mida läbib suitsulõõr, suletud; 5 5) ilmastikutingimused on tahma põletamiseks sobivad. Enne tahma põletamisele asumist veendub korstnapühkija, et: küttesüsteemi ühenduskohtades puuduvad praod ja ei ole muud tuleohtu; kergestisüttivad esemed on suitsulõõri lähedusest eemaldatud; põlevmaterjalidest ehituskonstruktsioonid ja -materjalid asuvad suitsulõõrist ohutus kauguses; tahmaluugid on kõikides ruumides, mida läbib suitsulõõr, suletud; ilmastikutingimused on tahma põletamiseks sobivad. 3 (3) Korstnapühkija varustab tuleohu vältimiseks esmaste tulekustutusvahenditega kõik ruumid, mida läbib suitsulõõr või korsten ning vajadusel rakendab muid abinõusid ohutuse tagamiseks. Korstnapühkija varustab tuleohu vältimiseks esmaste tulekustutusvahenditega kõik ruumid, mida läbib suitsulõõr või korsten ning vajadusel rakendab muid abinõusid ohutuse tagamiseks. 4 (4) Tahma põletamist teostatakse sobivate ilmastikutingimuste korral. Tahmapõletamisel võib tuule kiirus olla kuni 5,4 meetrit sekundis. Tahma põletamist teostatakse sobivate ilmastikutingimuste korral. Tahmapõletamisel võib tuule kiirus olla kuni 5,4 meetrit sekundis. 5 (5) Tahma põletamisel tagatakse järelevalve kogu küttesüsteemi välispinna ulatuses ning tuleohu vältimiseks teostatakse tahma põletamist eraldi korruste või küttesüsteemi üksikute lõõride kaupa. Tahma põletamisel tagatakse järelevalve kogu küttesüsteemi välispinna ulatuses ning tuleohu vältimiseks teostatakse tahma põletamist eraldi korruste või küttesüsteemi üksikute lõõride kaupa. 6 (6) Tahma põletamise lõpetamisel puhastab korstnapühkija küttesüsteemi põlemisjääkidest ning kontrollib tuleohu esinemise võimalikkust küttesüsteemis ja selle vahetus läheduses. Tahma põletamise lõpetamisel puhastab korstnapühkija küttesüsteemi põlemisjääkidest ning kontrollib tuleohu esinemise võimalikkust küttesüsteemis ja selle vahetus läheduses.",
+      "estleg:summary": {
+        "@value": "1 (1) Tahma põletamist küttesüsteemi suitsulõõris teostab ainult pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Enne tahma põletamisele asumist veendub korstnapühkija, et: 1 1) küttesüsteemi ühenduskohtades puuduvad praod ja ei ole muud tuleohtu; 2 2) kergestisüttivad esemed on suitsulõõri lähedusest eemaldatud; 3 3) põlevmaterjalidest ehituskonstruktsioonid ja -materjalid asuvad suitsulõõrist ohutus kauguses; 4 4) tahmaluugid on kõikides ruumides, mida läbib suitsulõõr, suletud; 5…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tahma põletamist küttesüsteemi suitsulõõris teostab ainult pädeva kutsekvalifikatsiooni tasemega korstnapühkija. 2 (2) Enne tahma põletamisele asumist veendub korstnapühkija, et: 1 1) küttesüsteemi ühenduskohtades puuduvad praod ja ei ole muud tuleohtu; 2 2) kergestisüttivad esemed on suitsulõõri lähedusest eemaldatud; 3 3) põlevmaterjalidest ehituskonstruktsioonid ja -materjalid asuvad suitsulõõrist ohutus kauguses; 4 4) tahmaluugid on kõikides ruumides, mida läbib suitsulõõr, suletud; 5 5) ilmastikutingimused on tahma põletamiseks sobivad. 3 (3) Korstnapühkija varustab tuleohu vältimiseks esmaste tulekustutusvahenditega kõik ruumid, mida läbib suitsulõõr või korsten ning vajadusel rakendab muid abinõusid ohutuse tagamiseks. 4 (4) Tahma põletamist teostatakse sobivate ilmastikutingimuste korral. Tahmapõletamisel võib tuule kiirus olla kuni 5,4 meetrit sekundis. 5 (5) Tahma põletamisel tagatakse järelevalve kogu küttesüsteemi välispinna ulatuses ning tuleohu vältimiseks teostatakse tahma põletamist eraldi korruste või küttesüsteemi üksikute lõõride kaupa. 6 (6) Tahma põletamise lõpetamisel puhastab korstnapühkija küttesüsteemi põlemisjääkidest ning kontrollib tuleohu esinemise võimalikkust küttesüsteemis ja selle vahetus läheduses.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_346079_Par_9_v346079"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_346079_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_346079_Par_9_Lg_6"
         }
       ]
     },
@@ -361,6 +718,91 @@
         "@id": "estleg:TULEOH_Par_11"
       },
       "estleg:citationText": "Määrus kehtestatakse tuleohutuse seaduse § 11"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tahma põletamist küttesüsteemi suitsulõõris teostab ainult pädeva kutsekvalifikatsiooni tasemega korstnapühkija.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne tahma põletamisele asumist veendub korstnapühkija, et: 1) küttesüsteemi ühenduskohtades puuduvad praod ja ei ole muud tuleohtu; 2) kergestisüttivad esemed on suitsulõõri lähedusest eemaldatud; 3) põlevmaterjalidest ehituskonstruktsioonid ja -materjalid asuvad suitsulõõrist ohutus kauguses; 4) tahmaluugid on kõikides ruumides, mida läbib suitsulõõr, suletud; 5) ilmastikutingimused on tahma põletamiseks sobivad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Korstnapühkija varustab tuleohu vältimiseks esmaste tulekustutusvahenditega kõik ruumid, mida läbib suitsulõõr või korsten ning vajadusel rakendab muid abinõusid ohutuse tagamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tahma põletamist teostatakse sobivate ilmastikutingimuste korral. Tahmapõletamisel võib tuule kiirus olla kuni 5,4 meetrit sekundis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Tahma põletamisel tagatakse järelevalve kogu küttesüsteemi välispinna ulatuses ning tuleohu vältimiseks teostatakse tahma põletamist eraldi korruste või küttesüsteemi üksikute lõõride kaupa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_346079_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Tahma põletamise lõpetamisel puhastab korstnapühkija küttesüsteemi põlemisjääkidest ning kontrollib tuleohu esinemise võimalikkust küttesüsteemis ja selle vahetus läheduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_346079_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
     }
   ]
 }

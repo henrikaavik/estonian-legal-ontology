@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:ROS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvusooperi seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvusooperi seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvusooperi seadus",
-      "dcterms:title": [
-        {
-          "@value": "Rahvusooperi seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "National Opera Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Rahvusooperi seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/106082022008.xml"
+        "@id": "https://www.riigiteataja.ee/akt/106082022008"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/106082022008/xml"
+      },
+      "estleg:globalId": "106082022008",
+      "eli:id_local": "106082022008",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159347",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "1835bef34ac9bb375ba85bb82b5786930f844e66229d48af5a006b3e8c3d5065",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1998-01-03",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2022-11-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -45,10 +61,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2022-11-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/530092022001"
@@ -104,14 +116,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU14_1502"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/530092022001"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_ROS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:ROS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:ROS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvusooperi seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Rahvusooperi seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_ROS_1"
@@ -131,26 +169,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_ROS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–4 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:ROS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_ROS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
@@ -170,12 +197,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–12 JUHTIMINE",
-      "skos:prefLabel": "§5–12 JUHTIMINE",
+      "rdfs:label": {
+        "@value": "§5–12 JUHTIMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–12 JUHTIMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:ROS_TopicScheme"
       },
-      "estleg:provisionCount": 8
+      "estleg:provisionCount": 11
     },
     {
       "@id": "estleg:Chapter_ROS_2",
@@ -183,7 +216,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – JUHTIMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – JUHTIMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
@@ -203,8 +239,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§13–14 TEGEVUSE KORRALDUS",
-      "skos:prefLabel": "§13–14 TEGEVUSE KORRALDUS",
+      "rdfs:label": {
+        "@value": "§13–14 TEGEVUSE KORRALDUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§13–14 TEGEVUSE KORRALDUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:ROS_TopicScheme"
       },
@@ -216,7 +258,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – TEGEVUSE KORRALDUS",
+      "rdfs:label": {
+        "@value": "3. peatükk – TEGEVUSE KORRALDUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
@@ -236,12 +281,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§15–17 VARA, FINANTSEERIMINE, EELARVE, KONTROLL JA ARUANDLUS",
-      "skos:prefLabel": "§15–17 VARA, FINANTSEERIMINE, EELARVE, KONTROLL JA ARUANDLUS",
+      "rdfs:label": {
+        "@value": "§15–17 VARA, FINANTSEERIMINE, EELARVE, KONTROLL JA ARUANDLUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§15–17 VARA, FINANTSEERIMINE, EELARVE, KONTROLL JA ARUANDLUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:ROS_TopicScheme"
       },
-      "estleg:provisionCount": 3
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Chapter_ROS_4",
@@ -249,7 +300,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – VARA, FINANTSEERIMINE, EELARVE, KONTROLL JA ARUANDLUS",
+      "rdfs:label": {
+        "@value": "4. peatükk – VARA, FINANTSEERIMINE, EELARVE, KONTROLL JA ARUANDLUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
@@ -269,8 +323,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§18–24 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§18–24 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§18–24 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§18–24 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:ROS_TopicScheme"
       },
@@ -282,7 +342,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "5. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
@@ -302,12 +365,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse ülesanne",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse ülesanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses sätestatakse rahvusooperi eesmärk, ülesanded, õiguslik seisund ning juhtimise ja tegevuse korraldus. Rahvusooperi nimi on „Estonia”.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses sätestatakse rahvusooperi eesmärk, ülesanded, õiguslik seisund ning juhtimise ja tegevuse korraldus. Rahvusooperi nimi on „Estonia”.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas seaduses sätestatakse rahvusooperi eesmärk, ülesanded, õiguslik seisund ning juhtimise ja tegevuse korraldus. Rahvusooperi nimi on „Estonia”.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_1"
@@ -352,10 +421,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses sätestatakse rahvusooperi eesmärk, ülesanded, õiguslik seisund ning juhtimise ja tegevuse korraldus. Rahvusooperi nimi on „Estonia”.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatakse rahvusooperi eesmärk, ülesanded, õiguslik seisund ning juhtimise ja tegevuse korraldus. Rahvusooperi nimi on „Estonia”.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:ROS_Par_2",
@@ -364,12 +435,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Rahvusooperi eesmärk",
+      "rdfs:label": {
+        "@value": "§ 2. Rahvusooperi eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Rahvusooperi eesmärk on edendada eesti rahvuslikku teatri- ja muusikakultuuri, propageerida ja tutvustada seda Eestis ja välismaal ning teha maailma muusika- ja teatrikultuuri saavutused kättesaadavaks Eestis.",
+      "estleg:summary": {
+        "@value": "Rahvusooperi eesmärk on edendada eesti rahvuslikku teatri- ja muusikakultuuri, propageerida ja tutvustada seda Eestis ja välismaal ning teha maailma muusika- ja teatrikultuuri saavutused kättesaadavaks Eestis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvusooperi eesmärk on edendada eesti rahvuslikku teatri- ja muusikakultuuri, propageerida ja tutvustada seda Eestis ja välismaal ning teha maailma muusika- ja teatrikultuuri saavutused kättesaadavaks Eestis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_1"
@@ -394,10 +471,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvusooperi eesmärk on edendada eesti rahvuslikku teatri- ja muusikakultuuri, propageerida ja tutvustada seda Eestis ja välismaal ning teha maailma muusika- ja teatrikultuuri saavutused kättesaadavaks Eestis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusooperi eesmärk on edendada eesti rahvuslikku teatri- ja muusikakultuuri, propageerida ja tutvustada seda Eestis ja välismaal ning teha maailma muusika- ja teatrikultuuri saavutused kättesaadavaks Eestis.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:ROS_Par_3",
@@ -406,13 +485,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Rahvusooperi ülesanded",
+      "rdfs:label": {
+        "@value": "§ 3. Rahvusooperi ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Rahvusooperi ülesanded on: ooperi-, balleti-, opereti- ja muusikaližanris loodud teoste avalike esituste regulaarne korraldamine etenduste ja kontsertide näol; etenduste ja kontsertide kõrge kunstilise taseme tagamine; eesti algupärase muusikateatri repertuaari sihipärane propageerimine, autoritelt uute teoste tellimine ja nende teoste kasutamine; maailma muusika- ja teatrikultuuri väärtteoste ning kõrgetasemeliste külalisesinejate tutvustamine etenduste ja kontsertide kaudu; oma etenduste ning",
-      "estleg:legalText": "Rahvusooperi ülesanded on: ooperi-, balleti-, opereti- ja muusikaližanris loodud teoste avalike esituste regulaarne korraldamine etenduste ja kontsertide näol; etenduste ja kontsertide kõrge kunstilise taseme tagamine; eesti algupärase muusikateatri repertuaari sihipärane propageerimine, autoritelt uute teoste tellimine ja nende teoste kasutamine; maailma muusika- ja teatrikultuuri väärtteoste ning kõrgetasemeliste külalisesinejate tutvustamine etenduste ja kontsertide kaudu; oma etenduste ning lauljate, tantsijate ja muusikute tutvustamine välismaal; Eestis koolituse saanud lauljate, tantsijate ja muusikute rakendamise tagamine, nendele täiendõppe võimaldamine; tingimuste loomine rahvusooperi kunstilise kollektiivi loominguliseks arenguks; oma etenduste ja kontsertide jäädvustamise korraldamine; osalemine muusikateatrite rahvusvahelises koostöös.",
+      "estleg:summary": {
+        "@value": "Rahvusooperi ülesanded on: 1) ooperi-, balleti-, opereti- ja muusikaližanris loodud teoste avalike esituste regulaarne korraldamine etenduste ja kontsertide näol; 2) etenduste ja kontsertide kõrge kunstilise taseme tagamine; 3) eesti algupärase muusikateatri repertuaari sihipärane propageerimine, autoritelt uute teoste tellimine ja nende teoste kasutamine; 4) maailma muusika- ja teatrikultuuri väärtteoste ning kõrgetasemeliste külalisesinejate tutvustamine etenduste ja kontsertide kaudu; 5) oma",
+        "@language": "et"
+      },
+      "estleg:legalText": "Rahvusooperi ülesanded on: 1) ooperi-, balleti-, opereti- ja muusikaližanris loodud teoste avalike esituste regulaarne korraldamine etenduste ja kontsertide näol; 2) etenduste ja kontsertide kõrge kunstilise taseme tagamine; 3) eesti algupärase muusikateatri repertuaari sihipärane propageerimine, autoritelt uute teoste tellimine ja nende teoste kasutamine; 4) maailma muusika- ja teatrikultuuri väärtteoste ning kõrgetasemeliste külalisesinejate tutvustamine etenduste ja kontsertide kaudu; 5) oma etenduste ning lauljate, tantsijate ja muusikute tutvustamine välismaal; 6) Eestis koolituse saanud lauljate, tantsijate ja muusikute rakendamise tagamine, nendele täiendõppe võimaldamine; 7) tingimuste loomine rahvusooperi kunstilise kollektiivi loominguliseks arenguks; 8) oma etenduste ja kontsertide jäädvustamise korraldamine; 9) osalemine muusikateatrite rahvusvahelises koostöös.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_1"
       },
@@ -436,10 +521,23 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvusooperi ülesanded on: ooperi-, balleti-, opereti- ja muusikaližanris loodud teoste avalike esituste regulaarne korraldamine etenduste ja kontsertide näol; etenduste ja kontsertide kõrge kunstilise taseme tagamine; eesti algupärase muusikateatri repertuaari sihipärane propageerimine, autoritelt uute teoste tellimine ja nende teoste kasutamine; maailma muusika- ja teatrikultuuri väärtteoste ning kõrgetasemeliste külalisesinejate tutvustamine etenduste ja kontsertide kaudu; oma etenduste ning lauljate, tantsijate ja muusikute tutvustamine välismaal; Eestis koolituse saanud lauljate, tantsijate ja muusikute rakendamise tagamine, nendele täiendõppe võimaldamine; tingimuste loomine rahvusooperi kunstilise kollektiivi loominguliseks arenguks; oma etenduste ja kontsertide jäädvustamise korraldamine; osalemine muusikateatrite rahvusvahelises koostöös.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusooperi ülesanded on: 1) ooperi-, balleti-, opereti- ja muusikaližanris loodud teoste avalike esituste regulaarne korraldamine etenduste ja kontsertide näol; 2) etenduste ja kontsertide kõrge kunstilise taseme tagamine; 3) eesti algupärase muusikateatri repertuaari sihipärane propageerimine, autoritelt uute teoste tellimine ja nende teoste kasutamine; 4) maailma muusika- ja teatrikultuuri väärtteoste ning kõrgetasemeliste külalisesinejate tutvustamine etenduste ja kontsertide kaudu; 5) oma etenduste ning lauljate, tantsijate ja muusikute tutvustamine välismaal; 6) Eestis koolituse saanud lauljate, tantsijate ja muusikute rakendamise tagamine, nendele täiendõppe võimaldamine; 7) tingimuste loomine rahvusooperi kunstilise kollektiivi loominguliseks arenguks; 8) oma etenduste ja kontsertide jäädvustamise korraldamine; 9) osalemine muusikateatrite rahvusvahelises koostöös.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
     },
     {
       "@id": "estleg:ROS_Par_4",
@@ -448,12 +546,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Rahvusooperi õiguslik seisund",
+      "rdfs:label": {
+        "@value": "§ 4. Rahvusooperi õiguslik seisund",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Rahvusooper on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. Käesolevas seaduses nimetatud juhtudel kohaldatakse rahvusooperile etendusasutuse seaduse sätteid. (2) Rahvusooper lõpetatakse seadusega. (3) Rahvusooper registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "(1) Rahvusooper on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. Käesolevas seaduses nimetatud juhtudel kohaldatakse rahvusooperile etendusasutuse seaduse sätteid. (2) Rahvusooper lõpetatakse seadusega. (3) Rahvusooper registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvusooper on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. Käesolevas seaduses nimetatud juhtudel kohaldatakse rahvusooperile etendusasutuse seaduse sätteid. (2) Rahvusooper lõpetatakse seadusega. (3) Rahvusooper registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_1"
@@ -593,12 +697,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Juhtimine",
+      "rdfs:label": {
+        "@value": "§ 5. Juhtimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Rahvusooperit juhivad nõukogu, peadirektor ja loominguline juht.",
+      "estleg:summary": {
+        "@value": "Rahvusooperit juhivad nõukogu, peadirektor ja loominguline juht.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvusooperit juhivad nõukogu, peadirektor ja loominguline juht.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
@@ -623,10 +733,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvusooperit juhivad nõukogu, peadirektor ja loominguline juht.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusooperit juhivad nõukogu, peadirektor ja loominguline juht.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_5"
-      }
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:ROS_Par_6",
@@ -635,13 +747,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Nõukogu",
+      "rdfs:label": {
+        "@value": "§ 6. Nõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Nõukogu on rahvusooperi kõrgeim juhtimisorgan, kes koosneb üheteistkümnest liikmest. (2) Nõukogusse kuuluvad: kolm Riigikogu nimetatud Riigikogu liiget Riigikogu kultuurikomisjoni ettepanekul; kaks kunstide edendamise valdkonna eest vastutava ministri nimetatud liiget; üks hariduspoliitika kavandamise ja korraldamise valdkonna eest vastutava ministri nimetatud liige; üks eelarvepoliitika kavandamise koordineerimise ja elluviimise valdkonna eest vastutava ministri nimetatud liige; üks Eesti",
-      "estleg:legalText": "(1) Nõukogu on rahvusooperi kõrgeim juhtimisorgan, kes koosneb üheteistkümnest liikmest. (2) Nõukogusse kuuluvad: kolm Riigikogu nimetatud Riigikogu liiget Riigikogu kultuurikomisjoni ettepanekul; kaks kunstide edendamise valdkonna eest vastutava ministri nimetatud liiget; üks hariduspoliitika kavandamise ja korraldamise valdkonna eest vastutava ministri nimetatud liige; üks eelarvepoliitika kavandamise koordineerimise ja elluviimise valdkonna eest vastutava ministri nimetatud liige; üks Eesti Muusika- ja Teatriakadeemia nõukogu nimetatud liige; üks Eesti Teatriliidu juhatuse nimetatud liige; üks Eesti Heliloojate Liidu juhatuse nimetatud liige; üks Estonia Seltsi juhatuse nimetatud liige. (3) Käesoleva paragrahvi lõike 2 punktides 6, 7 ja 8 nimetatud mittetulundusühingute lõppemisel nimetab nõukogu liikme nende õigusjärglane. Õigusjärglase puudumisel väheneb nõukogu liikmete arv. (4) Nõukogu liikme volituste tähtaeg on neli aastat. Nõukogu liikme volituste tähtaja lõppemisel jätkab nõukogu liige tegevust kuni tema asemele uue liikme nimetamiseni. Kui nelja kuu jooksul nõukogu liikme volituste tähtaja lõppemisest arvates ei ole tema asemele nimetatud uut liiget, loetakse senine nõukogu liige uueks tähtajaks nimetatuks. (5) Nõukogu liikme nimetaja võib enda nimetatud liikme põhjendatud juhul enne volituste tähtaja lõppu tagasi kutsuda. (6) Nõukogu liikme tagasikutsumisel, omal soovil tagasiastumisel või surma tõttu väljalangemisel nimetatakse tema asemele viivitamata uus nõukogu liige ajani, mis on jäänud asendatava nõukogu liikme volituste lõpuni.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu on rahvusooperi kõrgeim juhtimisorgan, kes koosneb üheteistkümnest liikmest. (2) Nõukogusse kuuluvad: 1) kolm Riigikogu nimetatud Riigikogu liiget Riigikogu kultuurikomisjoni ettepanekul; 2) kaks kunstide edendamise valdkonna eest vastutava ministri nimetatud liiget; 3) üks hariduspoliitika kavandamise ja korraldamise valdkonna eest vastutava ministri nimetatud liige; 4) üks eelarvepoliitika kavandamise koordineerimise ja elluviimise valdkonna eest vastutava ministri nimetatud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Nõukogu on rahvusooperi kõrgeim juhtimisorgan, kes koosneb üheteistkümnest liikmest. (2) Nõukogusse kuuluvad: 1) kolm Riigikogu nimetatud Riigikogu liiget Riigikogu kultuurikomisjoni ettepanekul; 2) kaks kunstide edendamise valdkonna eest vastutava ministri nimetatud liiget; 3) üks hariduspoliitika kavandamise ja korraldamise valdkonna eest vastutava ministri nimetatud liige; 4) üks eelarvepoliitika kavandamise koordineerimise ja elluviimise valdkonna eest vastutava ministri nimetatud liige; 5) üks Eesti Muusika- ja Teatriakadeemia nõukogu nimetatud liige; 6) üks Eesti Teatriliidu juhatuse nimetatud liige; 7) üks Eesti Heliloojate Liidu juhatuse nimetatud liige; 8) üks Estonia Seltsi juhatuse nimetatud liige. (3) Käesoleva paragrahvi lõike 2 punktides 6, 7 ja 8 nimetatud mittetulundusühingute lõppemisel nimetab nõukogu liikme nende õigusjärglane. Õigusjärglase puudumisel väheneb nõukogu liikmete arv. (4) Nõukogu liikme volituste tähtaeg on neli aastat. Nõukogu liikme volituste tähtaja lõppemisel jätkab nõukogu liige tegevust kuni tema asemele uue liikme nimetamiseni. Kui nelja kuu jooksul nõukogu liikme volituste tähtaja lõppemisest arvates ei ole tema asemele nimetatud uut liiget, loetakse senine nõukogu liige uueks tähtajaks nimetatuks. (5) Nõukogu liikme nimetaja võib enda nimetatud liikme põhjendatud juhul enne volituste tähtaja lõppu tagasi kutsuda. (6) Nõukogu liikme tagasikutsumisel, omal soovil tagasiastumisel või surma tõttu väljalangemisel nimetatakse tema asemele viivitamata uus nõukogu liige ajani, mis on jäänud asendatava nõukogu liikme volituste lõpuni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
       },
@@ -726,11 +844,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Nõukogusse kuuluvad: kolm Riigikogu nimetatud Riigikogu liiget Riigikogu kultuurikomisjoni ettepanekul; kaks kunstide edendamise valdkonna eest vastutava ministri nimetatud liiget; üks hariduspoliitika kavandamise ja korraldamise valdkonna eest vastutava ministri nimetatud liige; üks eelarvepoliitika kavandamise koordineerimise ja elluviimise valdkonna eest vastutava ministri nimetatud liige; üks Eesti Muusika- ja Teatriakadeemia nõukogu nimetatud liige; üks Eesti Teatriliidu juhatuse nimetatud liige; üks Eesti Heliloojate Liidu juhatuse nimetatud liige; üks Estonia Seltsi juhatuse nimetatud liige.",
+      "estleg:legalText": "(2) Nõukogusse kuuluvad: 1) kolm Riigikogu nimetatud Riigikogu liiget Riigikogu kultuurikomisjoni ettepanekul; 2) kaks kunstide edendamise valdkonna eest vastutava ministri nimetatud liiget; 3) üks hariduspoliitika kavandamise ja korraldamise valdkonna eest vastutava ministri nimetatud liige; 4) üks eelarvepoliitika kavandamise koordineerimise ja elluviimise valdkonna eest vastutava ministri nimetatud liige; 5) üks Eesti Muusika- ja Teatriakadeemia nõukogu nimetatud liige; 6) üks Eesti Teatriliidu juhatuse nimetatud liige; 7) üks Eesti Heliloojate Liidu juhatuse nimetatud liige; 8) üks Estonia Seltsi juhatuse nimetatud liige.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_6"
       },
       "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -832,13 +960,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Nõukogu ja nõukogu liikme volituste tähtaeg",
+      "rdfs:label": {
+        "@value": "§ 7. Nõukogu ja nõukogu liikme volituste tähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 7. Nõukogu ja nõukogu liikme volituste tähtaeg",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
       },
@@ -864,12 +997,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Nõukogu esimees ja aseesimees",
+      "rdfs:label": {
+        "@value": "§ 8. Nõukogu esimees ja aseesimees",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Nõukogu liikmed valivad endi hulgast nõukogu esimehe ja aseesimehe nõukogu uue koosseisu esimesel istungil. Nõukogu esimehe ja aseesimehe valimiseni täidab nõukogu esimehe ülesandeid nõukogu vanim liige. (2) Nõukogu esimees ja aseesimees valitakse nõukogu koosseisu lihthäälteenamusega. (3) Nõukogu esimees korraldab nõukogu tööd, juhatab nõukogu istungeid, esindab nõukogu, kontrollib nõukogu otsuste täitmist. (4) Nõukogu esimehe äraolekul täidab tema ülesandeid aseesimees.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu liikmed valivad endi hulgast nõukogu esimehe ja aseesimehe nõukogu uue koosseisu esimesel istungil. Nõukogu esimehe ja aseesimehe valimiseni täidab nõukogu esimehe ülesandeid nõukogu vanim liige. (2) Nõukogu esimees ja aseesimees valitakse nõukogu koosseisu lihthäälteenamusega. (3) Nõukogu esimees korraldab nõukogu tööd, juhatab nõukogu istungeid, esindab nõukogu, kontrollib nõukogu otsuste täitmist. (4) Nõukogu esimehe äraolekul täidab tema ülesandeid aseesimees.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nõukogu liikmed valivad endi hulgast nõukogu esimehe ja aseesimehe nõukogu uue koosseisu esimesel istungil. Nõukogu esimehe ja aseesimehe valimiseni täidab nõukogu esimehe ülesandeid nõukogu vanim liige. (2) Nõukogu esimees ja aseesimees valitakse nõukogu koosseisu lihthäälteenamusega. (3) Nõukogu esimees korraldab nõukogu tööd, juhatab nõukogu istungeid, esindab nõukogu, kontrollib nõukogu otsuste täitmist. (4) Nõukogu esimehe äraolekul täidab tema ülesandeid aseesimees.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
@@ -1006,13 +1145,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Nõukogu pädevus",
+      "rdfs:label": {
+        "@value": "§ 9. Nõukogu pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Nõukogu: kinnitab rahvusooperi põhikirja ja teeb selles muudatusi; kinnitab rahvusooperi tegevuse põhisuunad ja teostab järelevalvet nende täitmise üle; kinnitab rahvusooperi struktuuri ja töötajate koosseisu, määrab kindlaks loomingulise juhi ametinimetuse; [kehtetu]; määrab kindlaks peadirektori ja loomingulise juhi töötasu ning peadirektori asendamise korra; kinnitab rahvusooperi finantsplaani, eelarve ja eelarve täitmise aruande; kinnitab rahvusooperi vara valdamise, kasutamise ja",
-      "estleg:legalText": "(1) Nõukogu: kinnitab rahvusooperi põhikirja ja teeb selles muudatusi; kinnitab rahvusooperi tegevuse põhisuunad ja teostab järelevalvet nende täitmise üle; kinnitab rahvusooperi struktuuri ja töötajate koosseisu, määrab kindlaks loomingulise juhi ametinimetuse; [kehtetu]; määrab kindlaks peadirektori ja loomingulise juhi töötasu ning peadirektori asendamise korra; kinnitab rahvusooperi finantsplaani, eelarve ja eelarve täitmise aruande; kinnitab rahvusooperi vara valdamise, kasutamise ja käsutamise korra; otsustab käesoleva seadusega sätestatud ulatuses ja korras rahvusooperi varaga seotud küsimusi; määrab kindlaks rahvusooperi tegevuse sisekontrolli teostamise korra; kuulab ära peadirektori ja loomingulise juhi aruanded; otsustab rahvusooperi rahvusvahelises muusikateatrite koostöös osalemise küsimusi; annab hinnangu rahvusooperi tegevusele; esitab vajadusel riigiorganitele ettepanekuid rahvusooperi tegevust puudutavates küsimustes; kehtetu - otsustab muud küsimused, mis käesoleva seaduse kohaselt kuuluvad nõukogu pädevusse. (2) Rahvusooperi peadirektori ja loomingulise juhi ettepanekul võib nõukogu vastu võtta otsuseid muudes rahvusooperi tegevust puudutavates küsimustes.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu: 1) kinnitab rahvusooperi põhikirja ja teeb selles muudatusi; 2) kinnitab rahvusooperi tegevuse põhisuunad ja teostab järelevalvet nende täitmise üle; 3) kinnitab rahvusooperi struktuuri ja töötajate koosseisu, määrab kindlaks loomingulise juhi ametinimetuse; 4) [kehtetu]; 5) määrab kindlaks peadirektori ja loomingulise juhi töötasu ning peadirektori asendamise korra; 6) kinnitab rahvusooperi finantsplaani, eelarve ja eelarve täitmise aruande; 7) kinnitab rahvusooperi vara",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Nõukogu: 1) kinnitab rahvusooperi põhikirja ja teeb selles muudatusi; 2) kinnitab rahvusooperi tegevuse põhisuunad ja teostab järelevalvet nende täitmise üle; 3) kinnitab rahvusooperi struktuuri ja töötajate koosseisu, määrab kindlaks loomingulise juhi ametinimetuse; 4) [kehtetu]; 5) määrab kindlaks peadirektori ja loomingulise juhi töötasu ning peadirektori asendamise korra; 6) kinnitab rahvusooperi finantsplaani, eelarve ja eelarve täitmise aruande; 7) kinnitab rahvusooperi vara valdamise, kasutamise ja käsutamise korra; 8) otsustab käesoleva seadusega sätestatud ulatuses ja korras rahvusooperi varaga seotud küsimusi; 9) määrab kindlaks rahvusooperi tegevuse sisekontrolli teostamise korra; 10) kuulab ära peadirektori ja loomingulise juhi aruanded; 11) otsustab rahvusooperi rahvusvahelises muusikateatrite koostöös osalemise küsimusi; 12) annab hinnangu rahvusooperi tegevusele; 13) esitab vajadusel riigiorganitele ettepanekuid rahvusooperi tegevust puudutavates küsimustes; 14) 15) otsustab muud küsimused, mis käesoleva seaduse kohaselt kuuluvad nõukogu pädevusse. (2) Rahvusooperi peadirektori ja loomingulise juhi ettepanekul võib nõukogu vastu võtta otsuseid muudes rahvusooperi tegevust puudutavates küsimustes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
       },
@@ -1058,11 +1203,28 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Nõukogu: kinnitab rahvusooperi põhikirja ja teeb selles muudatusi; kinnitab rahvusooperi tegevuse põhisuunad ja teostab järelevalvet nende täitmise üle; kinnitab rahvusooperi struktuuri ja töötajate koosseisu, määrab kindlaks loomingulise juhi ametinimetuse; [kehtetu]; määrab kindlaks peadirektori ja loomingulise juhi töötasu ning peadirektori asendamise korra; kinnitab rahvusooperi finantsplaani, eelarve ja eelarve täitmise aruande; kinnitab rahvusooperi vara valdamise, kasutamise ja käsutamise korra; otsustab käesoleva seadusega sätestatud ulatuses ja korras rahvusooperi varaga seotud küsimusi; määrab kindlaks rahvusooperi tegevuse sisekontrolli teostamise korra; kuulab ära peadirektori ja loomingulise juhi aruanded; otsustab rahvusooperi rahvusvahelises muusikateatrite koostöös osalemise küsimusi; annab hinnangu rahvusooperi tegevusele; esitab vajadusel riigiorganitele ettepanekuid rahvusooperi tegevust puudutavates küsimustes; kehtetu - otsustab muud küsimused, mis käesoleva seaduse kohaselt kuuluvad nõukogu pädevusse.",
+      "estleg:legalText": "(1) Nõukogu: 1) kinnitab rahvusooperi põhikirja ja teeb selles muudatusi; 2) kinnitab rahvusooperi tegevuse põhisuunad ja teostab järelevalvet nende täitmise üle; 3) kinnitab rahvusooperi struktuuri ja töötajate koosseisu, määrab kindlaks loomingulise juhi ametinimetuse; 4) [kehtetu]; 5) määrab kindlaks peadirektori ja loomingulise juhi töötasu ning peadirektori asendamise korra; 6) kinnitab rahvusooperi finantsplaani, eelarve ja eelarve täitmise aruande; 7) kinnitab rahvusooperi vara valdamise, kasutamise ja käsutamise korra; 8) otsustab käesoleva seadusega sätestatud ulatuses ja korras rahvusooperi varaga seotud küsimusi; 9) määrab kindlaks rahvusooperi tegevuse sisekontrolli teostamise korra; 10) kuulab ära peadirektori ja loomingulise juhi aruanded; 11) otsustab rahvusooperi rahvusvahelises muusikateatrite koostöös osalemise küsimusi; 12) annab hinnangu rahvusooperi tegevusele; 13) esitab vajadusel riigiorganitele ettepanekuid rahvusooperi tegevust puudutavates küsimustes; 14) 15) otsustab muud küsimused, mis käesoleva seaduse kohaselt kuuluvad nõukogu pädevusse.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_9"
       },
       "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1105,12 +1267,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Nõukogu töökord",
+      "rdfs:label": {
+        "@value": "§ 10. Nõukogu töökord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Nõukogu istungid toimuvad vastavalt vajadusele, kuid mitte harvemini kui kord kvartalis. Istungi kutsub kokku nõukogu esimees, tema äraolekul aseesimees. Nõukogu istungi päevakord tehakse teatavaks kirjalikult vähemalt 10 päeva ette. (2) Nõukogu erakorraline istung kutsutakse kokku kahe nädala jooksul, kui seda nõuab vähemalt kuus nõukogu liiget. (3) Nõukogu on otsustusvõimeline, kui kohal on vähemalt kuus nõukogu liiget, sealhulgas esimees või aseesimees.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu istungid toimuvad vastavalt vajadusele, kuid mitte harvemini kui kord kvartalis. Istungi kutsub kokku nõukogu esimees, tema äraolekul aseesimees. Nõukogu istungi päevakord tehakse teatavaks kirjalikult vähemalt 10 päeva ette. (2) Nõukogu erakorraline istung kutsutakse kokku kahe nädala jooksul, kui seda nõuab vähemalt kuus nõukogu liiget. (3) Nõukogu on otsustusvõimeline, kui kohal on vähemalt kuus nõukogu liiget, sealhulgas esimees või aseesimees.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nõukogu istungid toimuvad vastavalt vajadusele, kuid mitte harvemini kui kord kvartalis. Istungi kutsub kokku nõukogu esimees, tema äraolekul aseesimees. Nõukogu istungi päevakord tehakse teatavaks kirjalikult vähemalt 10 päeva ette. (2) Nõukogu erakorraline istung kutsutakse kokku kahe nädala jooksul, kui seda nõuab vähemalt kuus nõukogu liiget. (3) Nõukogu on otsustusvõimeline, kui kohal on vähemalt kuus nõukogu liiget, sealhulgas esimees või aseesimees. (4) Nõukogu võtab otsuseid vastu kohalviibivate liikmete lihthäälteenamusega. Käesoleva seaduse § 9 lõike 1 punktides 1, 2, 5, 6, 7, 8, 9 ja 12 nimetatud küsimustes on vajalik nõukogu koosseisu lihthäälteenamus. Häälte võrdse jaotumise korral on otsustav esimehe või teda asendava aseesimehe hääl. (5) Nõukogu otsused vormistatakse kirjalikult ja tehakse viie tööpäeva jooksul teatavaks peadirektorile ja loomingulisele juhile. (6) Nõukogu istungitest võtavad sõnaõigusega osa peadirektor ja loominguline juht.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
@@ -1281,12 +1449,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10¹.",
-      "rdfs:label": "§ 10¹. Nõukogu tegevuskulud ja nõukogu liikmete tasustamine",
+      "rdfs:label": {
+        "@value": "§ 10¹. Nõukogu tegevuskulud ja nõukogu liikmete tasustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Nõukogu tegevuskulud ja nõukogu liikmete tasu kaetakse rahvusooperi eelarvest. (2) Nõukogu liikmele makstakse tasu 0,5 kuutasu alammäära kuus ja nõukogu esimehele üks kuutasu alammäär kuus vastavalt koosolekutest osavõtule.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu tegevuskulud ja nõukogu liikmete tasu kaetakse rahvusooperi eelarvest. (2) Nõukogu liikmele makstakse tasu 0,5 kuutasu alammäära kuus ja nõukogu esimehele üks kuutasu alammäär kuus vastavalt koosolekutest osavõtule.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nõukogu tegevuskulud ja nõukogu liikmete tasu kaetakse rahvusooperi eelarvest. (2) Nõukogu liikmele makstakse tasu 0,5 kuutasu alammäära kuus ja nõukogu esimehele üks kuutasu alammäär kuus vastavalt koosolekutest osavõtule.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
@@ -1346,12 +1520,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10².",
-      "rdfs:label": "§ 10². Nõukogu liikme vastutus",
+      "rdfs:label": {
+        "@value": "§ 10². Nõukogu liikme vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Nõukogu liige peab oma kohustusi täitma rahvusooperile lojaalselt ja nõukogu liikmele vajaliku hoolsusega. (2) Nõukogu liige vabaneb vastutusest, kui ta tõendab, et on oma kohustusi täitnud nõukogu liikmele vajaliku hoolsusega.",
+      "estleg:summary": {
+        "@value": "(1) Nõukogu liige peab oma kohustusi täitma rahvusooperile lojaalselt ja nõukogu liikmele vajaliku hoolsusega. (2) Nõukogu liige vabaneb vastutusest, kui ta tõendab, et on oma kohustusi täitnud nõukogu liikmele vajaliku hoolsusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nõukogu liige peab oma kohustusi täitma rahvusooperile lojaalselt ja nõukogu liikmele vajaliku hoolsusega. (2) Nõukogu liige vabaneb vastutusest, kui ta tõendab, et on oma kohustusi täitnud nõukogu liikmele vajaliku hoolsusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
@@ -1437,13 +1617,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Peadirektor",
+      "rdfs:label": {
+        "@value": "§ 11. Peadirektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Peadirektor juhib rahvusooperi täitev-korraldavat tegevust. Peadirektor kannab vastutust rahvusooperi üldise arengu, tegevuse ning vara ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest. (2) Peadirektor: esindab rahvusooperit ja teostab tema nimel tehinguid, annab volituse rahvusooperi esindamiseks; annab aru nõukogule ja tagab nõukogu otsuste täitmise ; tagab eelarveprojekti koostamise; tagab eelarve täitmise ja esitab selle kohta aruande nõukogule; korraldab",
-      "estleg:legalText": "(1) Peadirektor juhib rahvusooperi täitev-korraldavat tegevust. Peadirektor kannab vastutust rahvusooperi üldise arengu, tegevuse ning vara ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest. (2) Peadirektor: esindab rahvusooperit ja teostab tema nimel tehinguid, annab volituse rahvusooperi esindamiseks; annab aru nõukogule ja tagab nõukogu otsuste täitmise ; tagab eelarveprojekti koostamise; tagab eelarve täitmise ja esitab selle kohta aruande nõukogule; korraldab raamatupidamist; sõlmib töölepinguid rahvusooperi töötajatega ja määrab kindlaks nende töötasu; annab oma pädevuse piires käskkirju; kinnitab pääsmete hinnad, töösisekorra- ja asjaajamiseeskirjad ning tööjuhendid; lahendab muid rahvusooperi juhtimisega seotud küsimusi, mis käesoleva seadusega ei ole antud kellegi teise pädevusse. (3) Loomingulise tegevusega seotud küsimusi otsustab peadirektor loomingulise juhi ettepanekul. (4) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Peadirektor juhib rahvusooperi täitev-korraldavat tegevust. Peadirektor kannab vastutust rahvusooperi üldise arengu, tegevuse ning vara ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest. (2) Peadirektor: 1) esindab rahvusooperit ja teostab tema nimel tehinguid, annab volituse rahvusooperi esindamiseks; 2) annab aru nõukogule ja tagab nõukogu otsuste täitmise ; 3) tagab eelarveprojekti koostamise; 4) tagab eelarve täitmise ja esitab selle kohta aruande nõukogule; 5) korraldab",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Peadirektor juhib rahvusooperi täitev-korraldavat tegevust. Peadirektor kannab vastutust rahvusooperi üldise arengu, tegevuse ning vara ja rahaliste vahendite õiguspärase ja otstarbeka kasutamise eest. (2) Peadirektor: 1) esindab rahvusooperit ja teostab tema nimel tehinguid, annab volituse rahvusooperi esindamiseks; 2) annab aru nõukogule ja tagab nõukogu otsuste täitmise ; 3) tagab eelarveprojekti koostamise; 4) tagab eelarve täitmise ja esitab selle kohta aruande nõukogule; 5) korraldab raamatupidamist; 6) sõlmib töölepinguid rahvusooperi töötajatega ja määrab kindlaks nende töötasu; 7) annab oma pädevuse piires käskkirju; 8) kinnitab pääsmete hinnad, töösisekorra- ja asjaajamiseeskirjad ning tööjuhendid; 9) lahendab muid rahvusooperi juhtimisega seotud küsimusi, mis käesoleva seadusega ei ole antud kellegi teise pädevusse. (3) Loomingulise tegevusega seotud küsimusi otsustab peadirektor loomingulise juhi ettepanekul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
       },
@@ -1459,9 +1645,6 @@
         },
         {
           "@id": "estleg:ROS_Par_11_Lg_3"
-        },
-        {
-          "@id": "estleg:ROS_Par_11_Lg_4"
         }
       ],
       "estleg:targetGroup": [
@@ -1507,11 +1690,22 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Peadirektor: esindab rahvusooperit ja teostab tema nimel tehinguid, annab volituse rahvusooperi esindamiseks; annab aru nõukogule ja tagab nõukogu otsuste täitmise ; tagab eelarveprojekti koostamise; tagab eelarve täitmise ja esitab selle kohta aruande nõukogule; korraldab raamatupidamist; sõlmib töölepinguid rahvusooperi töötajatega ja määrab kindlaks nende töötasu; annab oma pädevuse piires käskkirju; kinnitab pääsmete hinnad, töösisekorra- ja asjaajamiseeskirjad ning tööjuhendid; lahendab muid rahvusooperi juhtimisega seotud küsimusi, mis käesoleva seadusega ei ole antud kellegi teise pädevusse.",
+      "estleg:legalText": "(2) Peadirektor: 1) esindab rahvusooperit ja teostab tema nimel tehinguid, annab volituse rahvusooperi esindamiseks; 2) annab aru nõukogule ja tagab nõukogu otsuste täitmise ; 3) tagab eelarveprojekti koostamise; 4) tagab eelarve täitmise ja esitab selle kohta aruande nõukogule; 5) korraldab raamatupidamist; 6) sõlmib töölepinguid rahvusooperi töötajatega ja määrab kindlaks nende töötasu; 7) annab oma pädevuse piires käskkirju; 8) kinnitab pääsmete hinnad, töösisekorra- ja asjaajamiseeskirjad ning tööjuhendid; 9) lahendab muid rahvusooperi juhtimisega seotud küsimusi, mis käesoleva seadusega ei ole antud kellegi teise pädevusse.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_11"
       },
       "rdfs:label": "§ 11 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1536,31 +1730,24 @@
       "rdfs:label": "§ 11 lg 3"
     },
     {
-      "@id": "estleg:ROS_Par_11_Lg_4",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:ROS_Par_11"
-      },
-      "rdfs:label": "§ 11 lg 4"
-    },
-    {
       "@id": "estleg:ROS_Par_11_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
-      "rdfs:label": "§ 11¹. Peadirektori ametikoha täitmine, lepingu sõlmimine ja lõpetamine ning tasustamine",
+      "rdfs:label": {
+        "@value": "§ 11¹. Peadirektori ametikoha täitmine, lepingu sõlmimine ja lõpetamine ning tasustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Peadirektori ametikoha täitmise kord sätestatakse rahvusooperi põhikirjas. (2) Nõukogu esimees sõlmib peadirektoriga kuni viieks aastaks lepingu, milles määratakse kindlaks peadirektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kohaldatakse võlaõigusseaduses käsunduslepingu kohta sätestatut. (3) Tasu suuruse määramisel peab peadirektorile tehtavate maksete kogusumma olema mõistlikus vastavuses peadirektori ülesannetega.",
+      "estleg:summary": {
+        "@value": "(1) Peadirektori ametikoha täitmise kord sätestatakse rahvusooperi põhikirjas. (2) Nõukogu esimees sõlmib peadirektoriga kuni viieks aastaks lepingu, milles määratakse kindlaks peadirektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kohaldatakse võlaõigusseaduses käsunduslepingu kohta sätestatut. (3) Tasu suuruse määramisel peab peadirektorile tehtavate maksete kogusumma olema mõistlikus vastavuses peadirektori ülesannetega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Peadirektori ametikoha täitmise kord sätestatakse rahvusooperi põhikirjas. (2) Nõukogu esimees sõlmib peadirektoriga kuni viieks aastaks lepingu, milles määratakse kindlaks peadirektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kohaldatakse võlaõigusseaduses käsunduslepingu kohta sätestatut. (3) Tasu suuruse määramisel peab peadirektorile tehtavate maksete kogusumma olema mõistlikus vastavuses peadirektori ülesannetega. (4) Peadirektorile võib maksta täiendavat tasu, arvestades tema töö tulemuslikkust. Tasu suurus peab olema põhjendatud ega või majandusaasta jooksul kokku ületada peadirektori nelja kuu tasu. (5) Peadirektor kutsutakse tagasi, kui nõukogu on avaldanud oma koosseisu kahekolmandikulise häälteenamusega peadirektorile umbusaldust. (6) Nõukogu lõpetab peadirektoriga lepingu lepingutähtaja möödumisel, enne lepingutähtaja möödumist tema omal soovil või peadirektori tagasikutsumisel. (7) Peadirektorile võib nõukogu otsusel maksta lahkumishüvitist, kui peadirektor kutsutakse tagasi enne käesoleva paragrahvi lõike 2 alusel sõlmitud lepingu tähtaja lõppu. Hüvitise suurus kokku ei või ületada peadirektori kolme kuu tasu. Hüvitist ei maksta, kui peadirektor kutsutakse tagasi raske juhtimisvea ilmnemise tõttu või käesoleva seaduse või muu õigusakti nõuete rikkumise tõttu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
@@ -1745,13 +1932,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Loominguline juht",
+      "rdfs:label": {
+        "@value": "§ 12. Loominguline juht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Loominguline juht korraldab ja koordineerib rahvusooperi loomingulist tegevust ning kannab vastutust rahvusooperi kunstilise taseme ja loominguliste eesmärkide elluviimise eest. (2) Loominguline juht: kavandab rahvusooperi kunstilise kontseptsiooni ja töötab välja arengukava; koostab repertuaariplaani ja koordineerib etendustegevuse korraldamist; korraldab loominguliste töötajate valikut ja rakendamist, lahendab nende täiendõppega seotud küsimusi; kavandab autoritelt uudisteoste tellimist",
-      "estleg:legalText": "(1) Loominguline juht korraldab ja koordineerib rahvusooperi loomingulist tegevust ning kannab vastutust rahvusooperi kunstilise taseme ja loominguliste eesmärkide elluviimise eest. (2) Loominguline juht: kavandab rahvusooperi kunstilise kontseptsiooni ja töötab välja arengukava; koostab repertuaariplaani ja koordineerib etendustegevuse korraldamist; korraldab loominguliste töötajate valikut ja rakendamist, lahendab nende täiendõppega seotud küsimusi; kavandab autoritelt uudisteoste tellimist ja nende kasutamist; kavandab külalisesinemisi ning külalisesinejate kutsumist; määrab kindlaks jäädvustamisele kuuluvad etendused ja kontserdid; esindab rahvusooperit oma pädevuse piires; lahendab muid rahvusooperi loomingulist tegevust puudutavaid küsimusi. (3) Loominguline juht lahendab tema pädevuses olevaid küsimusi koostöös peadirektori ja loominguliste alajuhtidega. (4) Loomingulise juhi ametikoha täitmise kord sätestatakse rahvusooperi põhikirjas. Loomingulise juhiga sõlmib ja lõpetab töölepingu nõukogu esimees. Tööleping sõlmitakse kuni viieks aastaks.",
+      "estleg:summary": {
+        "@value": "(1) Loominguline juht korraldab ja koordineerib rahvusooperi loomingulist tegevust ning kannab vastutust rahvusooperi kunstilise taseme ja loominguliste eesmärkide elluviimise eest. (2) Loominguline juht: 1) kavandab rahvusooperi kunstilise kontseptsiooni ja töötab välja arengukava; 2) koostab repertuaariplaani ja koordineerib etendustegevuse korraldamist; 3) korraldab loominguliste töötajate valikut ja rakendamist, lahendab nende täiendõppega seotud küsimusi; 4) kavandab autoritelt uudisteoste",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Loominguline juht korraldab ja koordineerib rahvusooperi loomingulist tegevust ning kannab vastutust rahvusooperi kunstilise taseme ja loominguliste eesmärkide elluviimise eest. (2) Loominguline juht: 1) kavandab rahvusooperi kunstilise kontseptsiooni ja töötab välja arengukava; 2) koostab repertuaariplaani ja koordineerib etendustegevuse korraldamist; 3) korraldab loominguliste töötajate valikut ja rakendamist, lahendab nende täiendõppega seotud küsimusi; 4) kavandab autoritelt uudisteoste tellimist ja nende kasutamist; 5) kavandab külalisesinemisi ning külalisesinejate kutsumist; 6) määrab kindlaks jäädvustamisele kuuluvad etendused ja kontserdid; 7) esindab rahvusooperit oma pädevuse piires; 8) lahendab muid rahvusooperi loomingulist tegevust puudutavaid küsimusi. (3) Loominguline juht lahendab tema pädevuses olevaid küsimusi koostöös peadirektori ja loominguliste alajuhtidega. (4) Loomingulise juhi ametikoha täitmise kord sätestatakse rahvusooperi põhikirjas. Loomingulise juhiga sõlmib ja lõpetab töölepingu nõukogu esimees. Tööleping sõlmitakse kuni viieks aastaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_2"
       },
@@ -1810,11 +2003,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Loominguline juht: kavandab rahvusooperi kunstilise kontseptsiooni ja töötab välja arengukava; koostab repertuaariplaani ja koordineerib etendustegevuse korraldamist; korraldab loominguliste töötajate valikut ja rakendamist, lahendab nende täiendõppega seotud küsimusi; kavandab autoritelt uudisteoste tellimist ja nende kasutamist; kavandab külalisesinemisi ning külalisesinejate kutsumist; määrab kindlaks jäädvustamisele kuuluvad etendused ja kontserdid; esindab rahvusooperit oma pädevuse piires; lahendab muid rahvusooperi loomingulist tegevust puudutavaid küsimusi.",
+      "estleg:legalText": "(2) Loominguline juht: 1) kavandab rahvusooperi kunstilise kontseptsiooni ja töötab välja arengukava; 2) koostab repertuaariplaani ja koordineerib etendustegevuse korraldamist; 3) korraldab loominguliste töötajate valikut ja rakendamist, lahendab nende täiendõppega seotud küsimusi; 4) kavandab autoritelt uudisteoste tellimist ja nende kasutamist; 5) kavandab külalisesinemisi ning külalisesinejate kutsumist; 6) määrab kindlaks jäädvustamisele kuuluvad etendused ja kontserdid; 7) esindab rahvusooperit oma pädevuse piires; 8) lahendab muid rahvusooperi loomingulist tegevust puudutavaid küsimusi.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_12"
       },
       "rdfs:label": "§ 12 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1867,12 +2070,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Töökorraldus",
+      "rdfs:label": {
+        "@value": "§ 13. Töökorraldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Rahvusooper korraldab etendusi ja kontserte hooaegade kaupa. (2) Rahvusooperi repertuaarivalikule, etenduste ja kontsertide planeerimisele, repertuaariplaani koostamisele ning etendustest ja kontsertidest teavitamisele kohaldatakse etendusasutuse seaduse § 10, § 11 lõiget 1 ja § 12 lõiget 1. (3) Rahvusooperi loomingulise tegevuse kavandamise ja hindamisega seotud küsimuste läbivaatamiseks võib moodustada loomenõukogu. Loomenõukogu moodustamise otsustab nõukogu, kes määrab kindlaks",
+      "estleg:summary": {
+        "@value": "(1) Rahvusooper korraldab etendusi ja kontserte hooaegade kaupa. (2) Rahvusooperi repertuaarivalikule, etenduste ja kontsertide planeerimisele, repertuaariplaani koostamisele ning etendustest ja kontsertidest teavitamisele kohaldatakse etendusasutuse seaduse § 10, § 11 lõiget 1 ja § 12 lõiget 1. (3) Rahvusooperi loomingulise tegevuse kavandamise ja hindamisega seotud küsimuste läbivaatamiseks võib moodustada loomenõukogu. Loomenõukogu moodustamise otsustab nõukogu, kes määrab kindlaks",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvusooper korraldab etendusi ja kontserte hooaegade kaupa. (2) Rahvusooperi repertuaarivalikule, etenduste ja kontsertide planeerimisele, repertuaariplaani koostamisele ning etendustest ja kontsertidest teavitamisele kohaldatakse etendusasutuse seaduse § 10, § 11 lõiget 1 ja § 12 lõiget 1. (3) Rahvusooperi loomingulise tegevuse kavandamise ja hindamisega seotud küsimuste läbivaatamiseks võib moodustada loomenõukogu. Loomenõukogu moodustamise otsustab nõukogu, kes määrab kindlaks loomenõukogu ülesanded ja töökorra. Loomenõukogu koosseisule kohaldatakse etendusasutuse seaduse § 8 lõiget 3.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_3"
@@ -1978,13 +2187,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Loomingulised töötajad",
+      "rdfs:label": {
+        "@value": "§ 14. Loomingulised töötajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Rahvusooperi loomingulistele töötajatele ja nendega sõlmitavatele töölepingutele kohaldatakse etendusasutuse seaduse § 7 ja 71.",
-      "estleg:legalText": "Rahvusooperi loomingulistele töötajatele ja nendega sõlmitavatele töölepingutele kohaldatakse etendusasutuse seaduse § 7 ja 71.",
+      "estleg:summary": {
+        "@value": "Rahvusooperi loomingulistele töötajatele ja nendega sõlmitavatele töölepingutele kohaldatakse etendusasutuse seaduse § 7 ja 7¹.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Rahvusooperi loomingulistele töötajatele ja nendega sõlmitavatele töölepingutele kohaldatakse etendusasutuse seaduse § 7 ja 7¹.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_3"
       },
@@ -2031,10 +2246,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvusooperi loomingulistele töötajatele ja nendega sõlmitavatele töölepingutele kohaldatakse etendusasutuse seaduse § 7 ja 71.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusooperi loomingulistele töötajatele ja nendega sõlmitavatele töölepingutele kohaldatakse etendusasutuse seaduse § 7 ja 7¹.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_14"
       },
+      "rdfs:label": "§ 14 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2057,13 +2274,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Rahvusooperi vara",
+      "rdfs:label": {
+        "@value": "§ 15. Rahvusooperi vara",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Kehtetu - (2) Kehtetu - (3) Rahvusooper võib kinnisvara võõrandada, hoonestusõiguse ja kasutusvaldusega koormata ning laenu võtta nõukogu otsusel ja Vabariigi Valitsuse loal. (4) Rahvusooperi omandis olevaid ruume võib rahvusooperi nõukogu otsusel ettevõtluseks rendile anda, kui see ei kahjusta rahvusooperi mainet. (5) Rahvusooper ei või anda laenusid, osutada sponsortoetust ja tagada oma varaga teise isiku kohustusi. (6) Rahvusooper võib oma tegevuse toetamiseks asutada sihtasutuse.",
-      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Rahvusooper võib kinnisvara võõrandada, hoonestusõiguse ja kasutusvaldusega koormata ning laenu võtta nõukogu otsusel ja Vabariigi Valitsuse loal. (4) Rahvusooperi omandis olevaid ruume võib rahvusooperi nõukogu otsusel ettevõtluseks rendile anda, kui see ei kahjusta rahvusooperi mainet. (5) Rahvusooper ei või anda laenusid, osutada sponsortoetust ja tagada oma varaga teise isiku kohustusi. (6) Rahvusooper võib oma tegevuse toetamiseks asutada sihtasutuse. Sihtasutusele kinnisvara üleandmise suhtes rakendatakse käesoleva paragrahvi lõikes 3 sätestatut.",
+      "estleg:summary": {
+        "@value": "(3) Rahvusooper võib kinnisvara võõrandada, hoonestusõiguse ja kasutusvaldusega koormata ning laenu võtta nõukogu otsusel ja Vabariigi Valitsuse loal. (4) Rahvusooperi omandis olevaid ruume võib rahvusooperi nõukogu otsusel ettevõtluseks rendile anda, kui see ei kahjusta rahvusooperi mainet. (5) Rahvusooper ei või anda laenusid, osutada sponsortoetust ja tagada oma varaga teise isiku kohustusi. (6) Rahvusooper võib oma tegevuse toetamiseks asutada sihtasutuse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(3) Rahvusooper võib kinnisvara võõrandada, hoonestusõiguse ja kasutusvaldusega koormata ning laenu võtta nõukogu otsusel ja Vabariigi Valitsuse loal. (4) Rahvusooperi omandis olevaid ruume võib rahvusooperi nõukogu otsusel ettevõtluseks rendile anda, kui see ei kahjusta rahvusooperi mainet. (5) Rahvusooper ei või anda laenusid, osutada sponsortoetust ja tagada oma varaga teise isiku kohustusi. (6) Rahvusooper võib oma tegevuse toetamiseks asutada sihtasutuse. Sihtasutusele kinnisvara üleandmise suhtes rakendatakse käesoleva paragrahvi lõikes 3 sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_4"
       },
@@ -2071,12 +2294,6 @@
         "@id": "estleg:Chapter_ROS_4"
       },
       "estleg:hasSubsection": [
-        {
-          "@id": "estleg:ROS_Par_15_Lg_1"
-        },
-        {
-          "@id": "estleg:ROS_Par_15_Lg_2"
-        },
         {
           "@id": "estleg:ROS_Par_15_Lg_3"
         },
@@ -2126,32 +2343,6 @@
           "@id": "estleg:Institution_vabariigivalitsus"
         }
       ]
-    },
-    {
-      "@id": "estleg:ROS_Par_15_Lg_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:ROS_Par_15"
-      },
-      "rdfs:label": "§ 15 lg 1"
-    },
-    {
-      "@id": "estleg:ROS_Par_15_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:ROS_Par_15"
-      },
-      "rdfs:label": "§ 15 lg 2"
     },
     {
       "@id": "estleg:ROS_Par_15_Lg_3",
@@ -2260,12 +2451,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Finantseerimine ja eelarve",
+      "rdfs:label": {
+        "@value": "§ 16. Finantseerimine ja eelarve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Rahvusooperi tegevust finantseeritakse pääsmete müügist saadavast tulust, toetusena riigieelarvest ja muudest allikatest. (2) Rahvusooperil on õigus korraldada oma põhitegevusega kaasnevat majandustegevust, millest saadud tulu läheb rahvusooperi eelarvesse. (3) Rahvusooperi rahalisi vahendeid käsutab peadirektor nõukogu kehtestatud tingimustel ja korras. (4) Rahvusooperi kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama rahvusooperi finantsplaanile, riigieelarve",
+      "estleg:summary": {
+        "@value": "(1) Rahvusooperi tegevust finantseeritakse pääsmete müügist saadavast tulust, toetusena riigieelarvest ja muudest allikatest. (2) Rahvusooperil on õigus korraldada oma põhitegevusega kaasnevat majandustegevust, millest saadud tulu läheb rahvusooperi eelarvesse. (3) Rahvusooperi rahalisi vahendeid käsutab peadirektor nõukogu kehtestatud tingimustel ja korras. (4) Rahvusooperi kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama rahvusooperi finantsplaanile, riigieelarve",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvusooperi tegevust finantseeritakse pääsmete müügist saadavast tulust, toetusena riigieelarvest ja muudest allikatest. (2) Rahvusooperil on õigus korraldada oma põhitegevusega kaasnevat majandustegevust, millest saadud tulu läheb rahvusooperi eelarvesse. (3) Rahvusooperi rahalisi vahendeid käsutab peadirektor nõukogu kehtestatud tingimustel ja korras. (4) Rahvusooperi kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama rahvusooperi finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. (5) Käesoleva paragrahvi lõikes 4 esitatud nõuetele vastava rahvusooperi eelarve ja selle täitmise aruande kinnitab nõukogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_4"
@@ -2397,12 +2594,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16¹.",
-      "rdfs:label": "§ 16¹. Rahvusooperi finantsplaan",
+      "rdfs:label": {
+        "@value": "§ 16¹. Rahvusooperi finantsplaan",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Rahvusooper koostab igal aastal finantsplaani, mis on aluseks rahvusooperi eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:summary": {
+        "@value": "(1) Rahvusooper koostab igal aastal finantsplaani, mis on aluseks rahvusooperi eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvusooper koostab igal aastal finantsplaani, mis on aluseks rahvusooperi eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_4"
@@ -2484,12 +2687,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Kontroll, järelevalve ja aruandlus",
+      "rdfs:label": {
+        "@value": "§ 17. Kontroll, järelevalve ja aruandlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Rahvusooper peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) Riigikontroll kontrollib Rahvusooperi tegevust vastavalt Riigikontrolli seadusele. (3) Haldusjärelevalvet rahvusooperi tegevuse seaduslikkuse üle teostavad Kultuuriministeerium ning teised seadusega selleks volitatud ametiasutused ja ametnikud. (4) Valdkonna eest vastutaval ministril on õigus peatada nõukogu ja peadirektori seadusevastase toimingu sooritamine",
+      "estleg:summary": {
+        "@value": "(1) Rahvusooper peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) Riigikontroll kontrollib Rahvusooperi tegevust vastavalt Riigikontrolli seadusele. (3) Haldusjärelevalvet rahvusooperi tegevuse seaduslikkuse üle teostavad Kultuuriministeerium ning teised seadusega selleks volitatud ametiasutused ja ametnikud. (4) Valdkonna eest vastutaval ministril on õigus peatada nõukogu ja peadirektori seadusevastase toimingu sooritamine",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvusooper peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) Riigikontroll kontrollib Rahvusooperi tegevust vastavalt Riigikontrolli seadusele. (3) Haldusjärelevalvet rahvusooperi tegevuse seaduslikkuse üle teostavad Kultuuriministeerium ning teised seadusega selleks volitatud ametiasutused ja ametnikud. (4) Valdkonna eest vastutaval ministril on õigus peatada nõukogu ja peadirektori seadusevastase toimingu sooritamine või õigusakti kehtivus ja teha ettekirjutus toimingu või õigusakti puuduste kõrvaldamiseks. (5) Rahvusooper annab oma tegevusest aru seaduses või seaduse alusel sätestatud mahus ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_4"
@@ -2656,12 +2865,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Riigietendusasutuse Estonia Teater tegevuse lõpetamine ja peadirektorile volituse andmine",
+      "rdfs:label": {
+        "@value": "§ 18. Riigietendusasutuse Estonia Teater tegevuse lõpetamine ja peadirektorile volituse andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Riigietendusasutuse Estonia Teater tegevus loetakse käesoleva seaduse jõustumisel lõpetatuks. (2) Riigietendusasutuse Estonia Teater peadirektor on volitatud tegutsema rahvusooperi nimel kuni rahvusooperi peadirektori valimiseni.",
+      "estleg:summary": {
+        "@value": "(1) Riigietendusasutuse Estonia Teater tegevus loetakse käesoleva seaduse jõustumisel lõpetatuks. (2) Riigietendusasutuse Estonia Teater peadirektor on volitatud tegutsema rahvusooperi nimel kuni rahvusooperi peadirektori valimiseni.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigietendusasutuse Estonia Teater tegevus loetakse käesoleva seaduse jõustumisel lõpetatuks. (2) Riigietendusasutuse Estonia Teater peadirektor on volitatud tegutsema rahvusooperi nimel kuni rahvusooperi peadirektori valimiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_5"
@@ -2716,12 +2931,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Nõukogu",
+      "rdfs:label": {
+        "@value": "§ 19. Nõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 6 lõike 2 punktides 1, 3, 4, 5, 6, 7 ja 8 nimetatud institutsioonid teatavad hiljemalt ühe kuu jooksul käesoleva seaduse jõustumisest arvates kultuuriministrile nende poolt nõukogu koosseisu nimetatud isikud. (2) Kultuuriminister kinnitab nõukogu koosseisu ja kutsub nõukogu kokku hiljemalt kahe kuu jooksul käesoleva seaduse jõustumisest arvates. (3) Nõukogu viib läbi avaliku konkursi rahvusooperi peadirektori ja loomingulise juhi valimiseks hiljemalt nelja kuu jooksul",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 6 lõike 2 punktides 1, 3, 4, 5, 6, 7 ja 8 nimetatud institutsioonid teatavad hiljemalt ühe kuu jooksul käesoleva seaduse jõustumisest arvates kultuuriministrile nende poolt nõukogu koosseisu nimetatud isikud. (2) Kultuuriminister kinnitab nõukogu koosseisu ja kutsub nõukogu kokku hiljemalt kahe kuu jooksul käesoleva seaduse jõustumisest arvates. (3) Nõukogu viib läbi avaliku konkursi rahvusooperi peadirektori ja loomingulise juhi valimiseks hiljemalt nelja kuu jooksul",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 6 lõike 2 punktides 1, 3, 4, 5, 6, 7 ja 8 nimetatud institutsioonid teatavad hiljemalt ühe kuu jooksul käesoleva seaduse jõustumisest arvates kultuuriministrile nende poolt nõukogu koosseisu nimetatud isikud. (2) Kultuuriminister kinnitab nõukogu koosseisu ja kutsub nõukogu kokku hiljemalt kahe kuu jooksul käesoleva seaduse jõustumisest arvates. (3) Nõukogu viib läbi avaliku konkursi rahvusooperi peadirektori ja loomingulise juhi valimiseks hiljemalt nelja kuu jooksul käesoleva seaduse jõustumisest arvates. (4) Enne 2015. aasta 1. aprilli kinnitatud rahvusooperi nõukogu koosseisu volitused lõppevad 2015. aasta 31. märtsil, kuid selle liikmed jätkavad nõukogu liikmete ülesannete täitmist kuni nõukogu uute liikmete nimetamiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_5"
@@ -2859,13 +3080,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Vara ja riigieelarve-assigneeringud",
+      "rdfs:label": {
+        "@value": "§ 20. Vara ja riigieelarve-assigneeringud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Riigivara, mis käesoleva seaduse jõustumise ajal on riigietendusasutuse Estonia Teater valduses, võõrandatakse tasuta hiljemalt nelja kuu jooksul käesoleva seaduse jõustumisest arvates Vabariigi Valitsuse otsuse alusel rahvusooperile tema ülesannete täitmiseks. (2) Kehtetu - - Riigikohtu põhiseaduslikkuse järelevalve kolleegiumi kohtuotsus tunnistab rahvusooperi seaduse § 20 lg 2 kehtetuks. (3) Riigietendusasutuse Estonia Teater kasutamata jäänud riigieelarve-assigneeringud suunab Vabariigi",
-      "estleg:legalText": "(1) Riigivara, mis käesoleva seaduse jõustumise ajal on riigietendusasutuse Estonia Teater valduses, võõrandatakse tasuta hiljemalt nelja kuu jooksul käesoleva seaduse jõustumisest arvates Vabariigi Valitsuse otsuse alusel rahvusooperile tema ülesannete täitmiseks. (2) Kehtetu - - Riigikohtu põhiseaduslikkuse järelevalve kolleegiumi kohtuotsus tunnistab rahvusooperi seaduse § 20 lg 2 kehtetuks. (3) Riigietendusasutuse Estonia Teater kasutamata jäänud riigieelarve-assigneeringud suunab Vabariigi Valitsus oma reservfondi rahvusooperi tegevuse finantseerimiseks.",
+      "estleg:summary": {
+        "@value": "(1) Riigivara, mis käesoleva seaduse jõustumise ajal on riigietendusasutuse Estonia Teater valduses, võõrandatakse tasuta hiljemalt nelja kuu jooksul käesoleva seaduse jõustumisest arvates Vabariigi Valitsuse otsuse alusel rahvusooperile tema ülesannete täitmiseks. (3) Riigietendusasutuse Estonia Teater kasutamata jäänud riigieelarve-assigneeringud suunab Vabariigi Valitsus oma reservfondi rahvusooperi tegevuse finantseerimiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Riigivara, mis käesoleva seaduse jõustumise ajal on riigietendusasutuse Estonia Teater valduses, võõrandatakse tasuta hiljemalt nelja kuu jooksul käesoleva seaduse jõustumisest arvates Vabariigi Valitsuse otsuse alusel rahvusooperile tema ülesannete täitmiseks. (3) Riigietendusasutuse Estonia Teater kasutamata jäänud riigieelarve-assigneeringud suunab Vabariigi Valitsus oma reservfondi rahvusooperi tegevuse finantseerimiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_5"
       },
@@ -2875,9 +3102,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:ROS_Par_20_Lg_1"
-        },
-        {
-          "@id": "estleg:ROS_Par_20_Lg_2"
         },
         {
           "@id": "estleg:ROS_Par_20_Lg_3"
@@ -2953,40 +3177,6 @@
       ]
     },
     {
-      "@id": "estleg:ROS_Par_20_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu - - Riigikohtu põhiseaduslikkuse järelevalve kolleegiumi kohtuotsus tunnistab rahvusooperi seaduse § 20 lg 2 kehtetuks.",
-      "estleg:parentProvision": {
-        "@id": "estleg:ROS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 2",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:ROS_Par_20"
-        },
-        {
-          "@id": "estleg:ROS_Par_21"
-        },
-        {
-          "@id": "estleg:ROS_Par_21_Lg_1"
-        }
-      ],
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_2_1_114_01"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_riigikohus"
-        }
-      ]
-    },
-    {
       "@id": "estleg:ROS_Par_20_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -3020,12 +3210,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 21. Õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 20 lõikes 2 nimetatud rendilepingute lõpetamisest tekkinud kahju hüvitatakse rentnikele kahe kuu jooksul rentniku poolt ruumide vabastamise päevast arvates. Hüvitise suurus määratakse kindlaks poolte kokkuleppel, kuid see ei või olla suurem kui lepingus sätestatud kolme kuu rent. (2) Kui rahvusooper on sõlminud endise rentnikuga uue rendilepingu, ei ole rentnikul õigus nõuda käesoleva paragrahvi lõikes 1 sätestatud kahju hüvitamist.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 20 lõikes 2 nimetatud rendilepingute lõpetamisest tekkinud kahju hüvitatakse rentnikele kahe kuu jooksul rentniku poolt ruumide vabastamise päevast arvates. Hüvitise suurus määratakse kindlaks poolte kokkuleppel, kuid see ei või olla suurem kui lepingus sätestatud kolme kuu rent. (2) Kui rahvusooper on sõlminud endise rentnikuga uue rendilepingu, ei ole rentnikul õigus nõuda käesoleva paragrahvi lõikes 1 sätestatud kahju hüvitamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 20 lõikes 2 nimetatud rendilepingute lõpetamisest tekkinud kahju hüvitatakse rentnikele kahe kuu jooksul rentniku poolt ruumide vabastamise päevast arvates. Hüvitise suurus määratakse kindlaks poolte kokkuleppel, kuid see ei või olla suurem kui lepingus sätestatud kolme kuu rent. (2) Kui rahvusooper on sõlminud endise rentnikuga uue rendilepingu, ei ole rentnikul õigus nõuda käesoleva paragrahvi lõikes 1 sätestatud kahju hüvitamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_5"
@@ -3109,13 +3305,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Loominguliste töötajate töölepingud",
+      "rdfs:label": {
+        "@value": "§ 22. Loominguliste töötajate töölepingud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Enne 2015. aasta 1. jaanuari rahvusooperi loominguliste töötajatega sõlmitud tähtajalistele töölepingutele kohaldatakse etendusasutuse seaduse § 231.",
-      "estleg:legalText": "Enne 2015. aasta 1. jaanuari rahvusooperi loominguliste töötajatega sõlmitud tähtajalistele töölepingutele kohaldatakse etendusasutuse seaduse § 231.",
+      "estleg:summary": {
+        "@value": "Enne 2015. aasta 1. jaanuari rahvusooperi loominguliste töötajatega sõlmitud tähtajalistele töölepingutele kohaldatakse etendusasutuse seaduse § 23¹.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Enne 2015. aasta 1. jaanuari rahvusooperi loominguliste töötajatega sõlmitud tähtajalistele töölepingutele kohaldatakse etendusasutuse seaduse § 23¹.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_5"
       },
@@ -3148,10 +3350,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Enne 2015. aasta 1. jaanuari rahvusooperi loominguliste töötajatega sõlmitud tähtajalistele töölepingutele kohaldatakse etendusasutuse seaduse § 231.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne 2015. aasta 1. jaanuari rahvusooperi loominguliste töötajatega sõlmitud tähtajalistele töölepingutele kohaldatakse etendusasutuse seaduse § 23¹.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_22"
       },
+      "rdfs:label": "§ 22 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3169,13 +3373,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Nõukogu liikmete tasumäärad",
+      "rdfs:label": {
+        "@value": "§ 23. Nõukogu liikmete tasumäärad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 101 lõikes 2 sätestatud nõukogu liikme tasumäärasid kohaldatakse nõukogu liikmetele, kes nimetatakse ametisse pärast 2015. aasta 31. märtsi",
-      "estleg:legalText": "Käesoleva seaduse § 101 lõikes 2 sätestatud nõukogu liikme tasumäärasid kohaldatakse nõukogu liikmetele, kes nimetatakse ametisse pärast 2015. aasta 31. märtsi",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 10¹ lõikes 2 sätestatud nõukogu liikme tasumäärasid kohaldatakse nõukogu liikmetele, kes nimetatakse ametisse pärast 2015. aasta 31. märtsi",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva seaduse § 10¹ lõikes 2 sätestatud nõukogu liikme tasumäärasid kohaldatakse nõukogu liikmetele, kes nimetatakse ametisse pärast 2015. aasta 31. märtsi",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_5"
       },
@@ -3204,10 +3414,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 101 lõikes 2 sätestatud nõukogu liikme tasumäärasid kohaldatakse nõukogu liikmetele, kes nimetatakse ametisse pärast 2015. aasta 31. märtsi",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 10¹ lõikes 2 sätestatud nõukogu liikme tasumäärasid kohaldatakse nõukogu liikmetele, kes nimetatakse ametisse pärast 2015. aasta 31. märtsi",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_23"
-      }
+      },
+      "rdfs:label": "§ 23 lg 1"
     },
     {
       "@id": "estleg:ROS_Par_24",
@@ -3216,12 +3428,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Peadirektori töölepingu kehtivus",
+      "rdfs:label": {
+        "@value": "§ 24. Peadirektori töölepingu kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvusooperi seadus",
       "estleg:partOfAct": {
         "@id": "estleg:ROS_Map"
       },
-      "estleg:summary": "2015. aasta 1. aprillil ametis oleva peadirektoriga sõlmitud tööleping kehtib kuni töölepingus sätestatud tähtaja saabumiseni või töölepingu ennetähtaegse lõpetamiseni.",
+      "estleg:summary": {
+        "@value": "2015. aasta 1. aprillil ametis oleva peadirektoriga sõlmitud tööleping kehtib kuni töölepingus sätestatud tähtaja saabumiseni või töölepingu ennetähtaegse lõpetamiseni.",
+        "@language": "et"
+      },
       "estleg:legalText": "2015. aasta 1. aprillil ametis oleva peadirektoriga sõlmitud tööleping kehtib kuni töölepingus sätestatud tähtaja saabumiseni või töölepingu ennetähtaegse lõpetamiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ROS_5"
@@ -3246,56 +3464,28 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "2015. aasta 1. aprillil ametis oleva peadirektoriga sõlmitud tööleping kehtib kuni töölepingus sätestatud tähtaja saabumiseni või töölepingu ennetähtaegse lõpetamiseni.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) 2015. aasta 1. aprillil ametis oleva peadirektoriga sõlmitud tööleping kehtib kuni töölepingus sätestatud tähtaja saabumiseni või töölepingu ennetähtaegse lõpetamiseni.",
       "estleg:parentProvision": {
         "@id": "estleg:ROS_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/530092022001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:ROS_Map"
+      },
+      "rdfs:label": {
+        "@value": "National Opera Act",
+        "@language": "en"
       }
-    },
-    {
-      "@id": "estleg:Citation_ROS_P_22_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:ROS_Par_22"
-      },
-      "estleg:citationDetail": "etendusasutuse seadus",
-      "estleg:citationText": "etendusasutuse seaduse § 231"
-    },
-    {
-      "@id": "estleg:Citation_ROS_P_22_Lg_1_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:ROS_Par_22_Lg_1"
-      },
-      "estleg:citationDetail": "etendusasutuse seadus",
-      "estleg:citationText": "etendusasutuse seaduse § 231"
-    },
-    {
-      "@id": "estleg:Citation_ROS_P_23_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:ROS_Par_23"
-      },
-      "estleg:citationText": "Käesoleva seaduse § 101 lõikes 2"
-    },
-    {
-      "@id": "estleg:Citation_ROS_P_23_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:ROS_Par_23_Lg_1"
-      },
-      "estleg:citationText": "Käesoleva seaduse § 101 lõikes 2"
     }
   ]
 }

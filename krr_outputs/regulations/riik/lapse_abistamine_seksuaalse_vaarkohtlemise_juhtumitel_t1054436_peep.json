@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel (määrus)",
+      "rdfs:label": {
+        "@value": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2022-07-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-06-28",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -81,7 +83,13 @@
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
-      ]
+      ],
+      "dcterms:title": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054436_Par_1",
@@ -90,13 +98,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054436_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse seksuaalselt väärkoheldud lapse ja seksuaalselt väärkohtlevalt käituva lapse (edaspidi laps) abistamise tingimused ja kord Sotsiaalkindlustusametis.",
-      "estleg:legalText": "Määrusega kehtestatakse seksuaalselt väärkoheldud lapse ja seksuaalselt väärkohtlevalt käituva lapse (edaspidi laps) abistamise tingimused ja kord Sotsiaalkindlustusametis. Määrusega kehtestatakse seksuaalselt väärkoheldud lapse ja seksuaalselt väärkohtlevalt käituva lapse (edaspidi laps) abistamise tingimused ja kord Sotsiaalkindlustusametis.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse seksuaalselt väärkoheldud lapse ja seksuaalselt väärkohtlevalt käituva lapse (edaspidi laps) abistamise tingimused ja kord Sotsiaalkindlustusametis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse seksuaalselt väärkoheldud lapse ja seksuaalselt väärkohtlevalt käituva lapse (edaspidi laps) abistamise tingimused ja kord Sotsiaalkindlustusametis.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033034_Par_1"
@@ -111,7 +125,25 @@
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054436_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse seksuaalselt väärkoheldud lapse ja seksuaalselt väärkohtlevalt käituva lapse (edaspidi laps) abistamise tingimused ja kord Sotsiaalkindlustusametis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1054436_Par_2",
@@ -120,13 +152,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Lapsesõbraliku keskkonna pakkumine",
+      "rdfs:label": {
+        "@value": "§ 2. Lapsesõbraliku keskkonna pakkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054436_Map"
       },
-      "estleg:summary": "1 (1) Sotsiaalkindlustusamet pakub lapse suhtes lastekaitse- ja süüteomenetluse toimingute tegemiseks ning lapse taastumist toetavate teenuste osutamiseks lapse heaolu toetavat ja tema vajadustega arvestavat keskkonda (edaspidi lastemaja), mis hõlmab nimetatud tegevusteks vajalikke ruume ja seadmeid ning pädevat personali. Sotsiaalkindlustusamet pakub lapse suhtes lastekaitse- ja süüteomenetluse toimingute tegemiseks ning lapse taastumist toetavate teenuste osutamiseks lapse heaolu toetavat ja t",
-      "estleg:legalText": "1 (1) Sotsiaalkindlustusamet pakub lapse suhtes lastekaitse- ja süüteomenetluse toimingute tegemiseks ning lapse taastumist toetavate teenuste osutamiseks lapse heaolu toetavat ja tema vajadustega arvestavat keskkonda (edaspidi lastemaja), mis hõlmab nimetatud tegevusteks vajalikke ruume ja seadmeid ning pädevat personali. Sotsiaalkindlustusamet pakub lapse suhtes lastekaitse- ja süüteomenetluse toimingute tegemiseks ning lapse taastumist toetavate teenuste osutamiseks lapse heaolu toetavat ja tema vajadustega arvestavat keskkonda (edaspidi lastemaja), mis hõlmab nimetatud tegevusteks vajalikke ruume ja seadmeid ning pädevat personali. 2 (2) Lastemaja ruumid peavad olema planeeritud, kujundatud ja sisustatud lapsesõbralikult, et laps tunneks end seal võimalikult mugavalt ja turvaliselt. Kui ruumid ei asu eraldi hoones, peavad need olema teistest hoone ruumidest ja nende kasutusotstarbest piisavalt eraldatud. Lastemaja ruumid peavad olema planeeritud, kujundatud ja sisustatud lapsesõbralikult, et laps tunneks end seal võimalikult mugavalt ja turvaliselt. Kui ruumid ei asu eraldi hoones, peavad need olema teistest hoone ruumidest ja nende kasutusotstarbest piisavalt eraldatud. 3 (3) Lastemaja ruumides peab olema võimalik teha süüteomenetluse toiminguid, eelkõige lapse ülekuulamist ja kohtuarstlikku läbivaatust. Lapse ja tema võimaliku väärkohtleja kokkupuude lastemajas peab olema välistatud. Lastemaja ruumides peab olema võimalik teha süüteomenetluse toiminguid, eelkõige lapse ülekuulamist ja kohtuarstlikku läbivaatust. Lapse ja tema võimaliku väärkohtleja kokkupuude lastemajas peab olema välistatud. 4 (4) Lastemajas töötavad Sotsiaalkindlustusameti lastekaitsetöötajad (edaspidi lastemaja töötaja), kes on kompetentsed laste ja noorte seksuaalkäitumise ning seksuaalse väärkohtlemise küsimustes. Lastemajas töötavad Sotsiaalkindlustusameti lastekaitsetöötajad (edaspidi lastemaja töötaja), kes on kompetentsed laste ja noorte seksuaalkäitumise ning seksuaalse väärkohtlemise küsimustes.",
+      "estleg:summary": {
+        "@value": "1 (1) Sotsiaalkindlustusamet pakub lapse suhtes lastekaitse- ja süüteomenetluse toimingute tegemiseks ning lapse taastumist toetavate teenuste osutamiseks lapse heaolu toetavat ja tema vajadustega arvestavat keskkonda (edaspidi lastemaja), mis hõlmab nimetatud tegevusteks vajalikke ruume ja seadmeid ning pädevat personali. 2 (2) Lastemaja ruumid peavad olema planeeritud, kujundatud ja sisustatud lapsesõbralikult, et laps tunneks end seal võimalikult mugavalt ja turvaliselt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sotsiaalkindlustusamet pakub lapse suhtes lastekaitse- ja süüteomenetluse toimingute tegemiseks ning lapse taastumist toetavate teenuste osutamiseks lapse heaolu toetavat ja tema vajadustega arvestavat keskkonda (edaspidi lastemaja), mis hõlmab nimetatud tegevusteks vajalikke ruume ja seadmeid ning pädevat personali. 2 (2) Lastemaja ruumid peavad olema planeeritud, kujundatud ja sisustatud lapsesõbralikult, et laps tunneks end seal võimalikult mugavalt ja turvaliselt. Kui ruumid ei asu eraldi hoones, peavad need olema teistest hoone ruumidest ja nende kasutusotstarbest piisavalt eraldatud. 3 (3) Lastemaja ruumides peab olema võimalik teha süüteomenetluse toiminguid, eelkõige lapse ülekuulamist ja kohtuarstlikku läbivaatust. Lapse ja tema võimaliku väärkohtleja kokkupuude lastemajas peab olema välistatud. 4 (4) Lastemajas töötavad Sotsiaalkindlustusameti lastekaitsetöötajad (edaspidi lastemaja töötaja), kes on kompetentsed laste ja noorte seksuaalkäitumise ning seksuaalse väärkohtlemise küsimustes.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -145,7 +183,73 @@
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054436_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sotsiaalkindlustusamet pakub lapse suhtes lastekaitse- ja süüteomenetluse toimingute tegemiseks ning lapse taastumist toetavate teenuste osutamiseks lapse heaolu toetavat ja tema vajadustega arvestavat keskkonda (edaspidi lastemaja), mis hõlmab nimetatud tegevusteks vajalikke ruume ja seadmeid ning pädevat personali.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lastemaja ruumid peavad olema planeeritud, kujundatud ja sisustatud lapsesõbralikult, et laps tunneks end seal võimalikult mugavalt ja turvaliselt. Kui ruumid ei asu eraldi hoones, peavad need olema teistest hoone ruumidest ja nende kasutusotstarbest piisavalt eraldatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lastemaja ruumides peab olema võimalik teha süüteomenetluse toiminguid, eelkõige lapse ülekuulamist ja kohtuarstlikku läbivaatust. Lapse ja tema võimaliku väärkohtleja kokkupuude lastemajas peab olema välistatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lastemajas töötavad Sotsiaalkindlustusameti lastekaitsetöötajad (edaspidi lastemaja töötaja), kes on kompetentsed laste ja noorte seksuaalkäitumise ning seksuaalse väärkohtlemise küsimustes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1054436_Par_3",
@@ -154,13 +258,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Lapse ärakuulamine",
+      "rdfs:label": {
+        "@value": "§ 3. Lapse ärakuulamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054436_Map"
       },
-      "estleg:summary": "1 (1) Ärakuulamine on lapse küsitlemise põhimõtetest lähtuv ning lapse vanust ja arengulist eripära arvestav lapsega tehtav lastemaja töötaja intervjuu, millega kogutakse teavet lapse suhtes või lapse poolt väärkohtlemise toimumisest ning teavet lapse abivajadusest. Ärakuulamine on lapse küsitlemise põhimõtetest lähtuv ning lapse vanust ja arengulist eripära arvestav lapsega tehtav lastemaja töötaja intervjuu, millega kogutakse teavet lapse suhtes või lapse poolt väärkohtlemise toimumisest ning ",
-      "estleg:legalText": "1 (1) Ärakuulamine on lapse küsitlemise põhimõtetest lähtuv ning lapse vanust ja arengulist eripära arvestav lapsega tehtav lastemaja töötaja intervjuu, millega kogutakse teavet lapse suhtes või lapse poolt väärkohtlemise toimumisest ning teavet lapse abivajadusest. Ärakuulamine on lapse küsitlemise põhimõtetest lähtuv ning lapse vanust ja arengulist eripära arvestav lapsega tehtav lastemaja töötaja intervjuu, millega kogutakse teavet lapse suhtes või lapse poolt väärkohtlemise toimumisest ning teavet lapse abivajadusest. 2 (2) Lastemaja töötaja kuulab lapse ära väärkohtlemise toimumise kahtluse korral, kui puudub kriminaalmenetluse alus või kui seksuaalselt väärkohtlevalt käituv laps on oma ea tõttu süüvõimetu. Ärakuulamine peab üldjuhul toimuma kümne tööpäeva jooksul ärakuulamise vajaduse ilmnemisest. Lastemaja töötaja kuulab lapse ära väärkohtlemise toimumise kahtluse korral, kui puudub kriminaalmenetluse alus või kui seksuaalselt väärkohtlevalt käituv laps on oma ea tõttu süüvõimetu. Ärakuulamine peab üldjuhul toimuma kümne tööpäeva jooksul ärakuulamise vajaduse ilmnemisest. 3 (3) Ärakuulamine toimub üldjuhul lastemaja ruumides. Ärakuulamise võib korraldada muus selleks sobivas ja lapse jaoks turvalises kohas, kui see on lastemaja töötaja hinnangul lapse parimates huvides. Ärakuulamine toimub üldjuhul lastemaja ruumides. Ärakuulamise võib korraldada muus selleks sobivas ja lapse jaoks turvalises kohas, kui see on lastemaja töötaja hinnangul lapse parimates huvides. 4 (4) Eesmärgiga vältida lapse korduvat küsitlemist seoses juhtumi asjaoludega, võivad lastemaja ruumides toimuvat ärakuulamist selle toimumise ajal kõrvalruumis või videosilla vahendusel jälgida teised lastemaja töötajad ja nende kaasatud spetsialistid, kes osalevad lapse väärkohtlemise juhtumi menetlemises või lapse abivajaduse hindamises või osutavad lapsele teenuseid või muud abi. Eesmärgiga vältida lapse korduvat küsitlemist seoses juhtumi asjaoludega, võivad lastemaja ruumides toimuvat ärakuulamist selle toimumise ajal kõrvalruumis või videosilla vahendusel jälgida teised lastemaja töötajad ja nende kaasatud spetsialistid, kes osalevad lapse väärkohtlemise juhtumi menetlemises või lapse abivajaduse hindamises või osutavad lapsele teenuseid või muud abi. 5 (5) Kui laps avaldab ärakuulamisel seksuaalsele väärkohtlemisele viitavat teavet, lõpetab lastemaja töötaja ärakuulamise ning edastab saadud teabe viivitamata Politsei- ja Piirivalveametile. Kui laps avaldab ärakuulamisel seksuaalsele väärkohtlemisele viitavat teavet, lõpetab lastemaja töötaja ärakuulamise ning edastab saadud teabe viivitamata Politsei- ja Piirivalveametile.",
+      "estleg:summary": {
+        "@value": "1 (1) Ärakuulamine on lapse küsitlemise põhimõtetest lähtuv ning lapse vanust ja arengulist eripära arvestav lapsega tehtav lastemaja töötaja intervjuu, millega kogutakse teavet lapse suhtes või lapse poolt väärkohtlemise toimumisest ning teavet lapse abivajadusest. 2 (2) Lastemaja töötaja kuulab lapse ära väärkohtlemise toimumise kahtluse korral, kui puudub kriminaalmenetluse alus või kui seksuaalselt väärkohtlevalt käituv laps on oma ea tõttu süüvõimetu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ärakuulamine on lapse küsitlemise põhimõtetest lähtuv ning lapse vanust ja arengulist eripära arvestav lapsega tehtav lastemaja töötaja intervjuu, millega kogutakse teavet lapse suhtes või lapse poolt väärkohtlemise toimumisest ning teavet lapse abivajadusest. 2 (2) Lastemaja töötaja kuulab lapse ära väärkohtlemise toimumise kahtluse korral, kui puudub kriminaalmenetluse alus või kui seksuaalselt väärkohtlevalt käituv laps on oma ea tõttu süüvõimetu. Ärakuulamine peab üldjuhul toimuma kümne tööpäeva jooksul ärakuulamise vajaduse ilmnemisest. 3 (3) Ärakuulamine toimub üldjuhul lastemaja ruumides. Ärakuulamise võib korraldada muus selleks sobivas ja lapse jaoks turvalises kohas, kui see on lastemaja töötaja hinnangul lapse parimates huvides. 4 (4) Eesmärgiga vältida lapse korduvat küsitlemist seoses juhtumi asjaoludega, võivad lastemaja ruumides toimuvat ärakuulamist selle toimumise ajal kõrvalruumis või videosilla vahendusel jälgida teised lastemaja töötajad ja nende kaasatud spetsialistid, kes osalevad lapse väärkohtlemise juhtumi menetlemises või lapse abivajaduse hindamises või osutavad lapsele teenuseid või muud abi. 5 (5) Kui laps avaldab ärakuulamisel seksuaalsele väärkohtlemisele viitavat teavet, lõpetab lastemaja töötaja ärakuulamise ning edastab saadud teabe viivitamata Politsei- ja Piirivalveametile.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -182,7 +292,89 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054436_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_3_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ärakuulamine on lapse küsitlemise põhimõtetest lähtuv ning lapse vanust ja arengulist eripära arvestav lapsega tehtav lastemaja töötaja intervjuu, millega kogutakse teavet lapse suhtes või lapse poolt väärkohtlemise toimumisest ning teavet lapse abivajadusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lastemaja töötaja kuulab lapse ära väärkohtlemise toimumise kahtluse korral, kui puudub kriminaalmenetluse alus või kui seksuaalselt väärkohtlevalt käituv laps on oma ea tõttu süüvõimetu. Ärakuulamine peab üldjuhul toimuma kümne tööpäeva jooksul ärakuulamise vajaduse ilmnemisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ärakuulamine toimub üldjuhul lastemaja ruumides. Ärakuulamise võib korraldada muus selleks sobivas ja lapse jaoks turvalises kohas, kui see on lastemaja töötaja hinnangul lapse parimates huvides.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Eesmärgiga vältida lapse korduvat küsitlemist seoses juhtumi asjaoludega, võivad lastemaja ruumides toimuvat ärakuulamist selle toimumise ajal kõrvalruumis või videosilla vahendusel jälgida teised lastemaja töötajad ja nende kaasatud spetsialistid, kes osalevad lapse väärkohtlemise juhtumi menetlemises või lapse abivajaduse hindamises või osutavad lapsele teenuseid või muud abi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui laps avaldab ärakuulamisel seksuaalsele väärkohtlemisele viitavat teavet, lõpetab lastemaja töötaja ärakuulamise ning edastab saadud teabe viivitamata Politsei- ja Piirivalveametile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5"
     },
     {
       "@id": "estleg:Reg_1054436_Par_4",
@@ -191,13 +383,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Lapse ärakuulamise video- ja helisalvestamine ning salvestise säilitamine ja väljastamine",
+      "rdfs:label": {
+        "@value": "§ 4. Lapse ärakuulamise video- ja helisalvestamine ning salvestise säilitamine ja väljastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054436_Map"
       },
-      "estleg:summary": "1 (1) Lapse ärakuulamine videosalvestatakse, välja arvatud juhul, kui laps sellega ei nõustu. Sellisel juhul ärakuulamine helisalvestatakse lapse nõusolekul. Lapse ärakuulamine videosalvestatakse, välja arvatud juhul, kui laps sellega ei nõustu. Sellisel juhul ärakuulamine helisalvestatakse lapse nõusolekul. 2 (2) Sotsiaalkindlustusamet väljastab ärakuulamise salvestise Politsei- ja Piirivalveametile, prokuratuurile või kohtule nende nõudmise korral, mille kohta koostatakse kirjalik üleandmisakt",
-      "estleg:legalText": "1 (1) Lapse ärakuulamine videosalvestatakse, välja arvatud juhul, kui laps sellega ei nõustu. Sellisel juhul ärakuulamine helisalvestatakse lapse nõusolekul. Lapse ärakuulamine videosalvestatakse, välja arvatud juhul, kui laps sellega ei nõustu. Sellisel juhul ärakuulamine helisalvestatakse lapse nõusolekul. 2 (2) Sotsiaalkindlustusamet väljastab ärakuulamise salvestise Politsei- ja Piirivalveametile, prokuratuurile või kohtule nende nõudmise korral, mille kohta koostatakse kirjalik üleandmisakt. Sotsiaalkindlustusamet väljastab ärakuulamise salvestise Politsei- ja Piirivalveametile, prokuratuurile või kohtule nende nõudmise korral, mille kohta koostatakse kirjalik üleandmisakt. 3 (3) Ärakuulamise salvestist säilitatakse Sotsiaalkindlustusametis digitaalsel andmekandjal kuni kuus kuud ärakuulamisest arvates. Ärakuulamise salvestis hävitatakse andmekandjalt kustutamise teel pärast salvestise väljastamist menetlejale lõike 2 kohaselt või nimetatud aluse puudumise korral kuue kuu möödumisel ärakuulamisest. Ärakuulamise salvestist säilitatakse Sotsiaalkindlustusametis digitaalsel andmekandjal kuni kuus kuud ärakuulamisest arvates. Ärakuulamise salvestis hävitatakse andmekandjalt kustutamise teel pärast salvestise väljastamist menetlejale lõike 2 kohaselt või nimetatud aluse puudumise korral kuue kuu möödumisel ärakuulamisest.",
+      "estleg:summary": {
+        "@value": "1 (1) Lapse ärakuulamine videosalvestatakse, välja arvatud juhul, kui laps sellega ei nõustu. Sellisel juhul ärakuulamine helisalvestatakse lapse nõusolekul. 2 (2) Sotsiaalkindlustusamet väljastab ärakuulamise salvestise Politsei- ja Piirivalveametile, prokuratuurile või kohtule nende nõudmise korral, mille kohta koostatakse kirjalik üleandmisakt. 3 (3) Ärakuulamise salvestist säilitatakse Sotsiaalkindlustusametis digitaalsel andmekandjal kuni kuus kuud ärakuulamisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Lapse ärakuulamine videosalvestatakse, välja arvatud juhul, kui laps sellega ei nõustu. Sellisel juhul ärakuulamine helisalvestatakse lapse nõusolekul. 2 (2) Sotsiaalkindlustusamet väljastab ärakuulamise salvestise Politsei- ja Piirivalveametile, prokuratuurile või kohtule nende nõudmise korral, mille kohta koostatakse kirjalik üleandmisakt. 3 (3) Ärakuulamise salvestist säilitatakse Sotsiaalkindlustusametis digitaalsel andmekandjal kuni kuus kuud ärakuulamisest arvates. Ärakuulamise salvestis hävitatakse andmekandjalt kustutamise teel pärast salvestise väljastamist menetlejale lõike 2 kohaselt või nimetatud aluse puudumise korral kuue kuu möödumisel ärakuulamisest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -222,7 +420,57 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054436_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054436_Par_4_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lapse ärakuulamine videosalvestatakse, välja arvatud juhul, kui laps sellega ei nõustu. Sellisel juhul ärakuulamine helisalvestatakse lapse nõusolekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sotsiaalkindlustusamet väljastab ärakuulamise salvestise Politsei- ja Piirivalveametile, prokuratuurile või kohtule nende nõudmise korral, mille kohta koostatakse kirjalik üleandmisakt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ärakuulamise salvestist säilitatakse Sotsiaalkindlustusametis digitaalsel andmekandjal kuni kuus kuud ärakuulamisest arvates. Ärakuulamise salvestis hävitatakse andmekandjalt kustutamise teel pärast salvestise väljastamist menetlejale lõike 2 kohaselt või nimetatud aluse puudumise korral kuue kuu möödumisel ärakuulamisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:Reg_1054436_Par_5",
@@ -231,13 +479,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Meetmete tulemuslikkuse jälgimine",
+      "rdfs:label": {
+        "@value": "§ 5. Meetmete tulemuslikkuse jälgimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054436_Map"
       },
-      "estleg:summary": "Lastemaja töötaja jälgib lapse abistamiseks rakendatud meetmete mõju ja tulemuslikkust kolme kuu jooksul viimasest Sotsiaalkindlustusameti menetlustoimingust lapse suhtes.",
-      "estleg:legalText": "Lastemaja töötaja jälgib lapse abistamiseks rakendatud meetmete mõju ja tulemuslikkust kolme kuu jooksul viimasest Sotsiaalkindlustusameti menetlustoimingust lapse suhtes. Lastemaja töötaja jälgib lapse abistamiseks rakendatud meetmete mõju ja tulemuslikkust kolme kuu jooksul viimasest Sotsiaalkindlustusameti menetlustoimingust lapse suhtes.",
+      "estleg:summary": {
+        "@value": "Lastemaja töötaja jälgib lapse abistamiseks rakendatud meetmete mõju ja tulemuslikkust kolme kuu jooksul viimasest Sotsiaalkindlustusameti menetlustoimingust lapse suhtes.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Lastemaja töötaja jälgib lapse abistamiseks rakendatud meetmete mõju ja tulemuslikkust kolme kuu jooksul viimasest Sotsiaalkindlustusameti menetlustoimingust lapse suhtes.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -256,7 +510,25 @@
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054436_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lastemaja töötaja jälgib lapse abistamiseks rakendatud meetmete mõju ja tulemuslikkust kolme kuu jooksul viimasest Sotsiaalkindlustusameti menetlustoimingust lapse suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_1054436_Par_6",
@@ -265,13 +537,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Koostöö",
+      "rdfs:label": {
+        "@value": "§ 6. Koostöö",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Lapse abistamine seksuaalse väärkohtlemise juhtumitel",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054436_Map"
       },
-      "estleg:summary": "Seksuaalse väärkohtlemise juhtumitel laste heaolu toetavate meetmete arendamiseks teeb Sotsiaalkindlustusamet püsivat koostööd Politsei- ja Piirivalveameti, prokuratuuri, Eesti Kohtuekspertiisi Instituudi ja seksuaalvägivalla kriisiabi osutavate tervishoiuasutustega.",
-      "estleg:legalText": "Seksuaalse väärkohtlemise juhtumitel laste heaolu toetavate meetmete arendamiseks teeb Sotsiaalkindlustusamet püsivat koostööd Politsei- ja Piirivalveameti, prokuratuuri, Eesti Kohtuekspertiisi Instituudi ja seksuaalvägivalla kriisiabi osutavate tervishoiuasutustega. Seksuaalse väärkohtlemise juhtumitel laste heaolu toetavate meetmete arendamiseks teeb Sotsiaalkindlustusamet püsivat koostööd Politsei- ja Piirivalveameti, prokuratuuri, Eesti Kohtuekspertiisi Instituudi ja seksuaalvägivalla kriisiabi osutavate tervishoiuasutustega.",
+      "estleg:summary": {
+        "@value": "Seksuaalse väärkohtlemise juhtumitel laste heaolu toetavate meetmete arendamiseks teeb Sotsiaalkindlustusamet püsivat koostööd Politsei- ja Piirivalveameti, prokuratuuri, Eesti Kohtuekspertiisi Instituudi ja seksuaalvägivalla kriisiabi osutavate tervishoiuasutustega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Seksuaalse väärkohtlemise juhtumitel laste heaolu toetavate meetmete arendamiseks teeb Sotsiaalkindlustusamet püsivat koostööd Politsei- ja Piirivalveameti, prokuratuuri, Eesti Kohtuekspertiisi Instituudi ja seksuaalvägivalla kriisiabi osutavate tervishoiuasutustega.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -293,6 +571,11 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054436_Par_6_Lg_1"
+        }
       ]
     },
     {
@@ -305,6 +588,19 @@
         "@id": "estleg:LasteKS_Par_29"
       },
       "estleg:citationText": "Määrus kehtestatakse lastekaitseseaduse § 29"
+    },
+    {
+      "@id": "estleg:Reg_1054436_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seksuaalse väärkohtlemise juhtumitel laste heaolu toetavate meetmete arendamiseks teeb Sotsiaalkindlustusamet püsivat koostööd Politsei- ja Piirivalveameti, prokuratuuri, Eesti Kohtuekspertiisi Instituudi ja seksuaalvägivalla kriisiabi osutavate tervishoiuasutustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054436_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     }
   ]
 }

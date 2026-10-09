@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TVKOKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus",
       "dcterms:title": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/78853.xml"
+        "@id": "https://www.riigiteataja.ee/akt/78853"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/78853/xml"
+      },
+      "estleg:globalId": "78853",
+      "eli:id_local": "78853",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "118769",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "9bab2104c354e2957218bd0db051f65d7d009792125cc18078cf9d39fae5e549",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -53,30 +74,39 @@
       ]
     },
     {
-      "@id": "estleg:TVKOKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_TVKOKU_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_TVKOKU_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TVKOKU_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:TVKOKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TVKOKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:TVKOKU_Par_1",
@@ -85,12 +115,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud testamendi vormile kohaldatava õiguse konventsiooniga./788...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 5. oktoobril Haagis.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TVKOKU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 5. oktoobril Haagis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 5. oktoobril Haagis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 5. oktoobril Haagis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TVKOKU_default"
@@ -129,10 +165,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 5. oktoobril Haagis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud , mis on sõlmitud 1961. aasta 5. oktoobril Haagis.",
       "estleg:parentProvision": {
         "@id": "estleg:TVKOKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:TVKOKU_Par_2",
@@ -141,12 +179,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ühinemisel teha konventsiooni artikli 18 alusel artiklile 10 reservatsioon, et E...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ühinemisel teha konventsiooni artikli 18 alusel artiklile 10 reservatsioon, et E...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Testamendi vormile kohaldatava õiguse konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TVKOKU_Map"
       },
-      "estleg:summary": "Ühinemisel teha konventsiooni artikli 18 alusel artiklile 10 reservatsioon, et Eestis ei tunnustata Eesti kodaniku, kellel ei ole muud kodakondsust, suuliselt tehtud testamenti, välja arvatud erandlikel asjaoludel. Akti metaandmed muudetud. Teksti liik algtekst/terviktekst; redaktsiooni jõustumise kuupäev: 01.06.2002 (eRT kasutuselevõtmine). Akt tehniliselt korrastatud.",
+      "estleg:summary": {
+        "@value": "Ühinemisel teha konventsiooni artikli 18 alusel artiklile 10 reservatsioon, et Eestis ei tunnustata Eesti kodaniku, kellel ei ole muud kodakondsust, suuliselt tehtud testamenti, välja arvatud erandlikel asjaoludel. Akti metaandmed muudetud. Teksti liik algtekst/terviktekst; redaktsiooni jõustumise kuupäev: 01.06.2002 (eRT kasutuselevõtmine). Akt tehniliselt korrastatud.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühinemisel teha konventsiooni artikli 18 alusel artiklile 10 reservatsioon, et Eestis ei tunnustata Eesti kodaniku, kellel ei ole muud kodakondsust, suuliselt tehtud testamenti, välja arvatud erandlikel asjaoludel. Akti metaandmed muudetud. Teksti liik algtekst/terviktekst; redaktsiooni jõustumise kuupäev: 01.06.2002 (eRT kasutuselevõtmine). Akt tehniliselt korrastatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TVKOKU_default"
@@ -185,10 +229,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühinemisel teha konventsiooni artikli 18 alusel artiklile 10 reservatsioon, et Eestis ei tunnustata Eesti kodaniku, kellel ei ole muud kodakondsust, suuliselt tehtud testamenti, välja arvatud erandlikel asjaoludel. Akti metaandmed muudetud. Teksti liik algtekst/terviktekst; redaktsiooni jõustumise kuupäev: 01.06.2002 (eRT kasutuselevõtmine). Akt tehniliselt korrastatud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühinemisel teha konventsiooni artikli 18 alusel artiklile 10 reservatsioon, et Eestis ei tunnustata Eesti kodaniku, kellel ei ole muud kodakondsust, suuliselt tehtud testamenti, välja arvatud erandlikel asjaoludel. Akti metaandmed muudetud. Teksti liik algtekst/terviktekst; redaktsiooni jõustumise kuupäev: 01.06.2002 (eRT kasutuselevõtmine). Akt tehniliselt korrastatud.",
       "estleg:parentProvision": {
         "@id": "estleg:TVKOKU_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"

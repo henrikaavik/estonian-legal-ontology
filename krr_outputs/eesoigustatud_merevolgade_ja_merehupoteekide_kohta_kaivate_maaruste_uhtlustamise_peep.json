@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:EMMKMURKD_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
       "dcterms:title": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/79346.xml"
+        "@id": "https://www.riigiteataja.ee/akt/79346"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/79346/xml"
+      },
+      "estleg:globalId": "79346",
+      "eli:id_local": "79346",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "154396",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "fe129f10701a48bfebf64341f51fb6e2cb82454c089a60305e1128d7a672a313",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -48,30 +69,39 @@
       ]
     },
     {
-      "@id": "estleg:EMMKMURKD_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_EMMKMURKD_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_EMMKMURKD_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
-      "skos:prefLabel": "§1–2 Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:EMMKMURKD_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:EMMKMURKD_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EMMKMURKD_default"
+        }
+      ]
     },
     {
       "@id": "estleg:EMMKMURKD_Par_1",
@@ -80,12 +110,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Denonsseerida rahvusvaheline konventsioon eesõigustatud merevõlgade ja merehüpot...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Denonsseerida rahvusvaheline konventsioon eesõigustatud merevõlgade ja merehüpot...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMMKMURKD_Map"
       },
-      "estleg:summary": "Denonsseerida rahvusvaheline konventsioon eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamiseks ja selle allakirjutamise protokoll, mille Eesti Vabariik ratifitseeris 1928. aasta 8. mail eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni kinnitamise seadusega (RT 1928, 42, 244).",
+      "estleg:summary": {
+        "@value": "Denonsseerida rahvusvaheline konventsioon eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamiseks ja selle allakirjutamise protokoll, mille Eesti Vabariik ratifitseeris 1928. aasta 8. mail eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni kinnitamise seadusega (RT 1928, 42, 244).",
+        "@language": "et"
+      },
       "estleg:legalText": "Denonsseerida rahvusvaheline konventsioon eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamiseks ja selle allakirjutamise protokoll, mille Eesti Vabariik ratifitseeris 1928. aasta 8. mail eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni kinnitamise seadusega (RT 1928, 42, 244).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EMMKMURKD_default"
@@ -107,10 +143,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Denonsseerida rahvusvaheline konventsioon eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamiseks ja selle allakirjutamise protokoll, mille Eesti Vabariik ratifitseeris 1928. aasta 8. mail eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni kinnitamise seadusega (RT 1928, 42, 244).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Denonsseerida rahvusvaheline konventsioon eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamiseks ja selle allakirjutamise protokoll, mille Eesti Vabariik ratifitseeris 1928. aasta 8. mail eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni kinnitamise seadusega (RT 1928, 42, 244).",
       "estleg:parentProvision": {
         "@id": "estleg:EMMKMURKD_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:EMMKMURKD_Par_2",
@@ -119,7 +157,10 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Seadus jõustub ühe aasta möödumisel denonsseerimise teate saabumisest Belgia val...]",
+      "rdfs:label": {
+        "@value": "§ 2.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesõigustatud merevõlgade ja merehüpoteekide kohta käivate määruste ühtlustamise rahvusvahelise konventsiooni denonsseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:EMMKMURKD_Map"

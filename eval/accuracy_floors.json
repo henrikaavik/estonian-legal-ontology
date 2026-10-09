@@ -1,0 +1,16 @@
+{
+  "issue": "#698",
+  "description": "Per-layer accuracy floors for the legal gold sets in eval/gold_sets/. `scripts/eval_harness.py --gold-set eval/gold_sets --floors eval/accuracy_floors.json --gate` exits 1 when a layer with at least `min_adjudicated` adjudicated items (mechanical + reviewer verdicts) has a measured precision or recall below its floor, or when a gold-set file is invalid. A layer with fewer adjudicated items is reported as 'not enough adjudicated items' and does not fail. A null floor is not gated.",
+  "initial_rule": "Set 2026-10-09 from the mechanically pre-filled verdicts only (no reviewer verdicts yet): precision floor = min(0.60, 95% Wilson lower bound of the pre-filled precision, rounded down to 0.05). Every gated layer's lower bound was 0.879 or higher, so the 0.60 cap applies everywhere. The cap is deliberate: mechanical rules only confirm easy cases, and Cycle 2 (#576/#577) measured heuristic layers 31-35% wrong, so a floor near the mechanical precision would fail as soon as a reviewer adjudicates the hard items. Recall floors are null because the pre-filled subset contains no recall misses by construction (mechanical negatives are confirmations only).",
+  "ratchet_rule": "Floors only rise. After each signed-off adjudication round, set precision (and, once reviewer-adjudicated negatives exist, recall) to max(current floor, the 95% Wilson lower bound over all adjudicated items rounded down to 0.05), and raise min_adjudicated towards 100. Record the round in eval/README.md.",
+  "layers": {
+    "crossReferences": {"precision": 0.6, "recall": null, "min_adjudicated": 30},
+    "sanctions": {"precision": 0.6, "recall": null, "min_adjudicated": 30},
+    "eurovoc": {"precision": 0.6, "recall": null, "min_adjudicated": 30},
+    "deontic": {"precision": 0.6, "recall": null, "min_adjudicated": 30},
+    "targetGroup": {"precision": 0.6, "recall": null, "min_adjudicated": 30},
+    "competence": {"precision": 0.6, "recall": null, "min_adjudicated": 30},
+    "courtLinks": {"precision": 0.6, "recall": null, "min_adjudicated": 30},
+    "altLabelFolds": {"precision": 0.6, "recall": null, "min_adjudicated": 25}
+  }
+}

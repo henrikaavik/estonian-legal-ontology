@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VKVS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Vedelkütusevaru seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Vedelkütusevaru seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Vedelkütusevaru seadus",
-      "dcterms:title": [
-        {
-          "@value": "Vedelkütusevaru seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Liquid Fuel Stocks Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Vedelkütusevaru seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/130062023099.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130062026046"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130062026046/xml"
+      },
+      "estleg:globalId": "130062026046",
+      "eli:id_local": "130062026046",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "158536",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "e13165141d04612dab27b479fff9e4f164b526d1cc96b449c0c35b13800f0977",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2005-03-09",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-07-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -51,10 +67,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-07-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/506072023010"
@@ -199,14 +211,40 @@
         {
           "@id": "estleg:Draft_MKM12_0714"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/506072023010"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_VKVS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–3 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VKVS_TopicScheme"
+      },
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:VKVS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Vedelkütusevaru seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Vedelkütusevaru seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VKVS_1"
@@ -232,26 +270,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VKVS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–3 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–3 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:VKVS_TopicScheme"
-      },
-      "estleg:provisionCount": 3
-    },
-    {
       "@id": "estleg:Chapter_VKVS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
@@ -271,12 +298,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§4–7 VARU MOODUSTAMINE, HALDAMINE JA KASUTAMINE",
-      "skos:prefLabel": "§4–7 VARU MOODUSTAMINE, HALDAMINE JA KASUTAMINE",
+      "rdfs:label": {
+        "@value": "§4–7 VARU MOODUSTAMINE, HALDAMINE JA KASUTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§4–7 VARU MOODUSTAMINE, HALDAMINE JA KASUTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VKVS_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 7
     },
     {
       "@id": "estleg:Chapter_VKVS_2",
@@ -284,7 +317,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – VARU MOODUSTAMINE, HALDAMINE JA KASUTAMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – VARU MOODUSTAMINE, HALDAMINE JA KASUTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
@@ -304,8 +340,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§8–10 VARU MOODUSTAMISE JA HALDAMISE RAHASTAMINE NING VARUMAKSE",
-      "skos:prefLabel": "§8–10 VARU MOODUSTAMISE JA HALDAMISE RAHASTAMINE NING VARUMAKSE",
+      "rdfs:label": {
+        "@value": "§8–10 VARU MOODUSTAMISE JA HALDAMISE RAHASTAMINE NING VARUMAKSE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§8–10 VARU MOODUSTAMISE JA HALDAMISE RAHASTAMINE NING VARUMAKSE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VKVS_TopicScheme"
       },
@@ -317,7 +359,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – VARU MOODUSTAMISE JA HALDAMISE RAHASTAMINE NING VARUMAKSE",
+      "rdfs:label": {
+        "@value": "3. peatükk – VARU MOODUSTAMISE JA HALDAMISE RAHASTAMINE NING VARUMAKSE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
@@ -337,12 +382,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§11–12 ARUANDLUS",
-      "skos:prefLabel": "§11–12 ARUANDLUS",
+      "rdfs:label": {
+        "@value": "§11–12 ARUANDLUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§11–12 ARUANDLUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VKVS_TopicScheme"
       },
-      "estleg:provisionCount": 2
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Chapter_VKVS_4",
@@ -350,7 +401,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – ARUANDLUS",
+      "rdfs:label": {
+        "@value": "4. peatükk – ARUANDLUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
@@ -370,12 +424,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§13–19 VARU HALDAJA",
-      "skos:prefLabel": "§13–19 VARU HALDAJA",
+      "rdfs:label": {
+        "@value": "§13–19 VARU HALDAJA",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§13–19 VARU HALDAJA",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VKVS_TopicScheme"
       },
-      "estleg:provisionCount": 7
+      "estleg:provisionCount": 8
     },
     {
       "@id": "estleg:Chapter_VKVS_5",
@@ -383,7 +443,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – VARU HALDAJA",
+      "rdfs:label": {
+        "@value": "5. peatükk – VARU HALDAJA",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
@@ -403,12 +466,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§20–22 VASTUTUS",
-      "skos:prefLabel": "§20–22 VASTUTUS",
+      "rdfs:label": {
+        "@value": "§20–22 VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§20–22 VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VKVS_TopicScheme"
       },
-      "estleg:provisionCount": 3
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:Chapter_VKVS_6",
@@ -416,7 +485,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – VASTUTUS",
+      "rdfs:label": {
+        "@value": "6. peatükk – VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
@@ -436,12 +508,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§23–27 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§23–27 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§23–27 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§23–27 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VKVS_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:Chapter_VKVS_7",
@@ -449,7 +527,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "7. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "7. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "7",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
@@ -469,12 +550,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Seadus sätestab kohustusliku vedelkütusevaru moodustamise, hoidmise ja haldamise alused. (2) Vedelkütusevaru (edaspidi varu) on riigi käsutuses või kontrolli all olev käesoleva seadusega kindlaksmääratud energiatoodete kogus, mis moodustatakse riigi varustuskindluse kõrge taseme, riigi julgeoleku ning rahvusvaheliste lepingute alusel võetud kohustuste täitmise ja elanikkonna toimetuleku tagamiseks, kasutades rahvusvaheliste organisatsioonide ja Euroopa Liidu liikmesriikide solidaarsusel",
+      "estleg:summary": {
+        "@value": "(1) Seadus sätestab kohustusliku vedelkütusevaru moodustamise, hoidmise ja haldamise alused. (2) Vedelkütusevaru (edaspidi varu) on riigi käsutuses või kontrolli all olev käesoleva seadusega kindlaksmääratud energiatoodete kogus, mis moodustatakse riigi varustuskindluse kõrge taseme, riigi julgeoleku ning rahvusvaheliste lepingute alusel võetud kohustuste täitmise ja elanikkonna toimetuleku tagamiseks, kasutades rahvusvaheliste organisatsioonide ja Euroopa Liidu liikmesriikide solidaarsusel",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Seadus sätestab kohustusliku vedelkütusevaru moodustamise, hoidmise ja haldamise alused. (2) Vedelkütusevaru (edaspidi varu) on riigi käsutuses või kontrolli all olev käesoleva seadusega kindlaksmääratud energiatoodete kogus, mis moodustatakse riigi varustuskindluse kõrge taseme, riigi julgeoleku ning rahvusvaheliste lepingute alusel võetud kohustuste täitmise ja elanikkonna toimetuleku tagamiseks, kasutades rahvusvaheliste organisatsioonide ja Euroopa Liidu liikmesriikide solidaarsusel põhinevaid usaldusväärseid ja läbipaistvaid mehhanisme. (3) Energiatooted on Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1099/2008 energiastatistika kohta (ELT L 304, 14.11.2008, lk 1–62) lisa A punktis 3.4 loetletud energiatooted.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_1"
@@ -573,12 +660,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1¹.",
-      "rdfs:label": "§ 1¹. Varustamisraskus",
+      "rdfs:label": {
+        "@value": "§ 1¹. Varustamisraskus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varustamisraskus on Euroopa Liitu või tema liikmesriiki, Rahvusvahelise Energiaagentuuri liikmesriiki või liikmesriikidesse tehtavate energiatoodete tarnete märkimisväärne ja järsk vähenemine, millega võib kaasneda kehtiv rahvusvaheline otsus varu kasutusele võtmise kohta. (2) Kehtiv rahvusvaheline otsus varude kasutusele võtmise kohta on igasugune Rahvusvahelise Energiaagentuuri haldusnõukogu jõus olev otsus teha energiatooted turul kättesaadavaks, võttes kasutusele oma liikmete varud ja",
+      "estleg:summary": {
+        "@value": "(1) Varustamisraskus on Euroopa Liitu või tema liikmesriiki, Rahvusvahelise Energiaagentuuri liikmesriiki või liikmesriikidesse tehtavate energiatoodete tarnete märkimisväärne ja järsk vähenemine, millega võib kaasneda kehtiv rahvusvaheline otsus varu kasutusele võtmise kohta. (2) Kehtiv rahvusvaheline otsus varude kasutusele võtmise kohta on igasugune Rahvusvahelise Energiaagentuuri haldusnõukogu jõus olev otsus teha energiatooted turul kättesaadavaks, võttes kasutusele oma liikmete varud ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varustamisraskus on Euroopa Liitu või tema liikmesriiki, Rahvusvahelise Energiaagentuuri liikmesriiki või liikmesriikidesse tehtavate energiatoodete tarnete märkimisväärne ja järsk vähenemine, millega võib kaasneda kehtiv rahvusvaheline otsus varu kasutusele võtmise kohta. (2) Kehtiv rahvusvaheline otsus varude kasutusele võtmise kohta on igasugune Rahvusvahelise Energiaagentuuri haldusnõukogu jõus olev otsus teha energiatooted turul kättesaadavaks, võttes kasutusele oma liikmete varud ja vajaduse korral rakendades täiendavaid meetmeid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_1"
@@ -647,13 +740,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Varu koosseis",
+      "rdfs:label": {
+        "@value": "§ 2. Varu koosseis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu moodustatakse järgmistest energiatoodetest: bensiin; reaktiivkütus; diislikütus. kehtetu - (2) Käesolevas seaduses nimetatud energiatoodetele kohalduvad nõukogu määrusega (EMÜ) nr 2658/87 tariifi- ja statistikanomenklatuuri ning ühise tollitariifistiku kohta (EÜT L 256, 07.09.1987, lk 1–675) 2012. aasta 1. jaanuari seisuga kehtestatud kombineeritud nomenklatuuri kaubakoodid (edaspidi KN kood) järgmiselt: bensiin – kütus, mille KN kood on 2710 12 41, 2710 12 45, 2710 12 49, 2710 12 51",
-      "estleg:legalText": "(1) Varu moodustatakse järgmistest energiatoodetest: bensiin; reaktiivkütus; diislikütus. kehtetu - (2) Käesolevas seaduses nimetatud energiatoodetele kohalduvad nõukogu määrusega (EMÜ) nr 2658/87 tariifi- ja statistikanomenklatuuri ning ühise tollitariifistiku kohta (EÜT L 256, 07.09.1987, lk 1–675) 2012. aasta 1. jaanuari seisuga kehtestatud kombineeritud nomenklatuuri kaubakoodid (edaspidi KN kood) järgmiselt: bensiin – kütus, mille KN kood on 2710 12 41, 2710 12 45, 2710 12 49, 2710 12 51 või 2710 12 59; reaktiivkütus – kütus, mille KN kood on 2710 19 21; petrool – kütus, mille KN kood on 2710 19 25; diislikütus – kütus, mille KN kood on 2710 19 29, 2710 19 43, 2710 19 46, 2710 19 47, 2710 20 11, 2710 20 15 või 2710 20 17; kerge kütteõli – kütus, mille KN kood on 2710 19 48 või 2710 20 19; raske kütteõli – kütus, mille KN kood on 2710 19 62, 2710 19 64, 2710 19 68, 2710 20 31, 2710 20 35 või 2710 20 39, välja arvatud põlevkivikütteõli.",
+      "estleg:summary": {
+        "@value": "(1) Varu moodustatakse järgmistest energiatoodetest: 1) bensiin; 2) reaktiivkütus; 3) diislikütus. 4) (2) Käesolevas seaduses nimetatud energiatoodetele kohalduvad nõukogu määrusega (EMÜ) nr 2658/87 tariifi- ja statistikanomenklatuuri ning ühise tollitariifistiku kohta (EÜT L 256, 07.09.1987, lk 1–675) 2012. aasta 1. jaanuari seisuga kehtestatud kombineeritud nomenklatuuri kaubakoodid (edaspidi KN kood) järgmiselt: 1) bensiin – kütus, mille KN kood on 2710 12 41, 2710 12 45, 2710 12 49, 2710 12",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varu moodustatakse järgmistest energiatoodetest: 1) bensiin; 2) reaktiivkütus; 3) diislikütus. 4) (2) Käesolevas seaduses nimetatud energiatoodetele kohalduvad nõukogu määrusega (EMÜ) nr 2658/87 tariifi- ja statistikanomenklatuuri ning ühise tollitariifistiku kohta (EÜT L 256, 07.09.1987, lk 1–675) 2012. aasta 1. jaanuari seisuga kehtestatud kombineeritud nomenklatuuri kaubakoodid (edaspidi KN kood) järgmiselt: 1) bensiin – kütus, mille KN kood on 2710 12 41, 2710 12 45, 2710 12 49, 2710 12 51 või 2710 12 59; 2) reaktiivkütus – kütus, mille KN kood on 2710 19 21; 3) petrool – kütus, mille KN kood on 2710 19 25; 4) diislikütus – kütus, mille KN kood on 2710 19 29, 2710 19 43, 2710 19 46, 2710 19 47, 2710 20 11, 2710 20 15 või 2710 20 17; 5) kerge kütteõli – kütus, mille KN kood on 2710 19 48 või 2710 20 19; 6) raske kütteõli – kütus, mille KN kood on 2710 19 62, 2710 19 64, 2710 19 68, 2710 20 31, 2710 20 35 või 2710 20 39, välja arvatud põlevkivikütteõli.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_1"
       },
@@ -704,11 +803,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Varu moodustatakse järgmistest energiatoodetest: bensiin; reaktiivkütus; diislikütus. kehtetu -",
+      "estleg:legalText": "(1) Varu moodustatakse järgmistest energiatoodetest: 1) bensiin; 2) reaktiivkütus; 3) diislikütus. 4)",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:Reg_1037161_Par_4"
@@ -728,11 +833,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesolevas seaduses nimetatud energiatoodetele kohalduvad nõukogu määrusega (EMÜ) nr 2658/87 tariifi- ja statistikanomenklatuuri ning ühise tollitariifistiku kohta (EÜT L 256, 07.09.1987, lk 1–675) 2012. aasta 1. jaanuari seisuga kehtestatud kombineeritud nomenklatuuri kaubakoodid (edaspidi KN kood) järgmiselt: bensiin – kütus, mille KN kood on 2710 12 41, 2710 12 45, 2710 12 49, 2710 12 51 või 2710 12 59; reaktiivkütus – kütus, mille KN kood on 2710 19 21; petrool – kütus, mille KN kood on 2710 19 25; diislikütus – kütus, mille KN kood on 2710 19 29, 2710 19 43, 2710 19 46, 2710 19 47, 2710 20 11, 2710 20 15 või 2710 20 17; kerge kütteõli – kütus, mille KN kood on 2710 19 48 või 2710 20 19; raske kütteõli – kütus, mille KN kood on 2710 19 62, 2710 19 64, 2710 19 68, 2710 20 31, 2710 20 35 või 2710 20 39, välja arvatud põlevkivikütteõli.",
+      "estleg:legalText": "(2) Käesolevas seaduses nimetatud energiatoodetele kohalduvad nõukogu määrusega (EMÜ) nr 2658/87 tariifi- ja statistikanomenklatuuri ning ühise tollitariifistiku kohta (EÜT L 256, 07.09.1987, lk 1–675) 2012. aasta 1. jaanuari seisuga kehtestatud kombineeritud nomenklatuuri kaubakoodid (edaspidi KN kood) järgmiselt: 1) bensiin – kütus, mille KN kood on 2710 12 41, 2710 12 45, 2710 12 49, 2710 12 51 või 2710 12 59; 2) reaktiivkütus – kütus, mille KN kood on 2710 19 21; 3) petrool – kütus, mille KN kood on 2710 19 25; 4) diislikütus – kütus, mille KN kood on 2710 19 29, 2710 19 43, 2710 19 46, 2710 19 47, 2710 20 11, 2710 20 15 või 2710 20 17; 5) kerge kütteõli – kütus, mille KN kood on 2710 19 48 või 2710 20 19; 6) raske kütteõli – kütus, mille KN kood on 2710 19 62, 2710 19 64, 2710 19 68, 2710 20 31, 2710 20 35 või 2710 20 39, välja arvatud põlevkivikütteõli.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_2"
       },
-      "rdfs:label": "§ 2 lg 2"
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
     },
     {
       "@id": "estleg:VKVS_Par_3",
@@ -741,12 +854,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Varu hoidmise kohustuse arvutamine",
+      "rdfs:label": {
+        "@value": "§ 3. Varu hoidmise kohustuse arvutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu tuleb hoida pidevalt tasemel, mis vastab vähemalt 90 päeva keskmisele päevasele energiatoodete puhasimpordile või vähemalt 61 päeva keskmisele päevasele energiatoodete sisetarbimisele, olenevalt sellest, kumb kogus on suurem (edaspidi varu hoidmise kohustus). (2) Kalendriaasta keskmine päevane puhasimport arvutatakse energiatoodete eelmise kalendriaasta impordi toornafta ekvivalendi põhjal, mis määratakse kindlaks nõukogu direktiivi 2009/119/EÜ, millega kohustatakse liikmesriike",
+      "estleg:summary": {
+        "@value": "(1) Varu tuleb hoida pidevalt tasemel, mis vastab vähemalt 90 päeva keskmisele päevasele energiatoodete puhasimpordile või vähemalt 61 päeva keskmisele päevasele energiatoodete sisetarbimisele, olenevalt sellest, kumb kogus on suurem (edaspidi varu hoidmise kohustus). (2) Kalendriaasta keskmine päevane puhasimport arvutatakse energiatoodete eelmise kalendriaasta impordi toornafta ekvivalendi põhjal, mis määratakse kindlaks nõukogu direktiivi 2009/119/EÜ, millega kohustatakse liikmesriike",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varu tuleb hoida pidevalt tasemel, mis vastab vähemalt 90 päeva keskmisele päevasele energiatoodete puhasimpordile või vähemalt 61 päeva keskmisele päevasele energiatoodete sisetarbimisele, olenevalt sellest, kumb kogus on suurem (edaspidi varu hoidmise kohustus). (2) Kalendriaasta keskmine päevane puhasimport arvutatakse energiatoodete eelmise kalendriaasta impordi toornafta ekvivalendi põhjal, mis määratakse kindlaks nõukogu direktiivi 2009/119/EÜ, millega kohustatakse liikmesriike säilitama toornafta ja/või naftatoodete miinimumvarusid (ELT L 265, 09.10.2009, lk 9–23), I lisas nimetatud meetodi järgi. (3) Kalendriaasta keskmine päevane sisetarbimine arvutatakse energiatoodete eelmise kalendriaasta sisetarbimise toornafta ekvivalendi põhjal, mis määratakse kindlaks nõukogu direktiivi 2009/119/EÜ II lisas nimetatud meetodi järgi. (4) Sisetarbimine on energiatoodete üldkogus, mis on tarnitud muundamiseks teisteks energialiikideks, lõpptarbimiseks tööstus- ja transpordisektorile ning kodumajapidamistele ja muudele sektoritele. Sisetarbimine hõlmab ka energiasektori oma tarbimist, välja arvatud rafineerimistehaste kütus. (5) Varu hoidmise kohustuse arvutamisel võetakse biokütus ja lisaained arvesse üksnes juhul, kui need on segatud asjaomaste energiatoodetega. (6) Lisaained on muud ühendid kui süsivesinikühendid, mida lisatakse energiatootele või segatakse tootega selle omaduste muutmiseks. (7) Biokütus on atmosfääriõhu kaitse seaduse § 120 lõikes 3 nimetatud kütus. (8) Biomass on atmosfääriõhu kaitse seaduse § 120 lõikes 5 nimetatud toode. (9) Diislikütuse varu hoidmise kohustuse käesoleva paragrahvi lõigete 2 ja 3 kohane toornafta ekvivalent arvutatakse diislikütuse, kerge kütteõli ja petrooli sisetarbimise või puhasimpordi kogusumma põhjal. (10) Sisetarbimise ja puhasimpordi hulka ei arvata rahvusvahelise laevasõiduga tegelevatele laevadele punkrivaruna tarnitud kütuse kogust. (11) Olenemata käesoleva paragrahvi lõigetes 2 ja 3 sätestatust, määratakse ajavahemikul 1. jaanuarist kuni 30. juunini vastava kalendriaasta varu hoidmise kohustus üle-eelmise kalendriaasta andmete alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_1"
@@ -1030,12 +1149,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3¹.",
-      "rdfs:label": "§ 3¹. Erivaru",
+      "rdfs:label": {
+        "@value": "§ 3¹. Erivaru",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Vabariigi Valitsus võib korraldusega otsustada käesoleva seaduse § 3 lõikes 1 nimetatud kohustuse ühe osana erivaru moodustamise. (2) Vabariigi Valitsuse korralduses peab sisalduma nende energiatoodete loetelu, millest erivaru moodustatakse, erivaru tase päevades ja erivaru hoidmise kohustuse kestus. (3) Erivaru moodustamise korral kestab selle hoidmise kohustus vähemalt ühe aasta. (4) Erivaru võib koosneda ühest või mitmest käesoleva seaduse §-s 2 sätestatud energiatootest.",
+      "estleg:summary": {
+        "@value": "(1) Vabariigi Valitsus võib korraldusega otsustada käesoleva seaduse § 3 lõikes 1 nimetatud kohustuse ühe osana erivaru moodustamise. (2) Vabariigi Valitsuse korralduses peab sisalduma nende energiatoodete loetelu, millest erivaru moodustatakse, erivaru tase päevades ja erivaru hoidmise kohustuse kestus. (3) Erivaru moodustamise korral kestab selle hoidmise kohustus vähemalt ühe aasta. (4) Erivaru võib koosneda ühest või mitmest käesoleva seaduse §-s 2 sätestatud energiatootest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vabariigi Valitsus võib korraldusega otsustada käesoleva seaduse § 3 lõikes 1 nimetatud kohustuse ühe osana erivaru moodustamise. (2) Vabariigi Valitsuse korralduses peab sisalduma nende energiatoodete loetelu, millest erivaru moodustatakse, erivaru tase päevades ja erivaru hoidmise kohustuse kestus. (3) Erivaru moodustamise korral kestab selle hoidmise kohustus vähemalt ühe aasta. (4) Erivaru võib koosneda ühest või mitmest käesoleva seaduse §-s 2 sätestatud energiatootest. Erivaru võib moodustada energiatoodetest, mille käesoleva paragrahvi lõike 5 kohaselt määratud võrdlusaasta jooksul tarbitud koguste toornafta ekvivalentide summa moodustab vähemalt 75 protsenti sisetarbimisest. (5) Võrdlusaasta on kalendriaasta, mille tarbimis- või puhasimpordi andmeid kasutatakse kohustusliku varu koguse või teatud ajal reaalselt olemasoleva varu arvutamiseks. (6) Erivarusse kuuluvate energiatoodete loetelu peab kehtima vähemalt ühe aasta. Energiatoodete loetelu muutmise korral tuleb muudatus jõustada kalendrikuu esimesest päevast. (7) Erivaru tase energiatoodete kaupa peab vastama teatud arvu päevade varule keskmise päevase sisetarbimise alusel, mida mõõdetakse nende toornafta ekvivalendi põhjal käesoleva paragrahvi lõikes 5 sätestatud võrdlusaasta jooksul. Erivaru taset päevades kohaldatakse võrdselt kõikide erivaru koosseisu kuuluvate energiatoodete suhtes. (8) Kui on otsustatud moodustada erivaru, saadab Kliimaministeerium Euroopa Komisjonile teatise, milles märgitakse erivaru koosseis, tase päevades ja erivaru hoidmise kohustuse kestus. (9) Käesoleva paragrahvi lõikes 3 nimetatud erivaru hoidmise kohustuse kestuse jooksul võib erivaru koguseid ajutiselt vähendada vaid varu roteerimiseks. (10) Kui erivaru ei moodustata või selle tase on alla 30 päeva, peab käesoleva seaduse § 3 lõikes 1 nimetatud varust üks kolmandik olema moodustatud käesoleva paragrahvi lõikes 4 sätestatud põhimõtete järgi. (11) Käesoleva paragrahvi lõikes 10 nimetatud juhul esitab varu moodustamise ja haldamise eest vastutav isik Euroopa Komisjonile aruande, milles märgitakse rakendatud meetmed varu kättesaadavuse, sellele füüsilise ligipääsetavuse ja selle kontrollimise tagamiseks varustamisraskuste korral. Aruanne esitatakse käsitletava kalendriaasta esimese kuu lõpuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_1"
@@ -1370,13 +1495,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3².",
-      "rdfs:label": "§ 3². Varu koguse arvutamine",
+      "rdfs:label": {
+        "@value": "§ 3². Varu koguse arvutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Olemasoleva varu kogus arvutatakse nõukogu direktiivi 2009/119/EÜ III lisas nimetatud meetodi järgi. (2) Teatud ajal hoitava varu kogus arvutatakse käesoleva seaduse §-s 31 sätestatud võrdlusaasta andmete põhjal. (3) Varu võib samal ajal arvesse võtta nii käesoleva seaduse § 3 kohase kui ka § 31 kohase varu arvutamisel eeldusel, et varu vastab sellele kehtestatud tingimustele. (4) Olemasoleva varu koguse arvutamisel võetakse biokütus ja lisaained arvesse, kui need on segatud asjaomaste",
-      "estleg:legalText": "(1) Olemasoleva varu kogus arvutatakse nõukogu direktiivi 2009/119/EÜ III lisas nimetatud meetodi järgi. (2) Teatud ajal hoitava varu kogus arvutatakse käesoleva seaduse §-s 31 sätestatud võrdlusaasta andmete põhjal. (3) Varu võib samal ajal arvesse võtta nii käesoleva seaduse § 3 kohase kui ka § 31 kohase varu arvutamisel eeldusel, et varu vastab sellele kehtestatud tingimustele. (4) Olemasoleva varu koguse arvutamisel võetakse biokütus ja lisaained arvesse, kui need on segatud asjaomaste energiatoodetega või neid hoitakse Eestis ja on tagatud nende segamine varuna hoitavate energiatoodetega ning need on mõeldud kasutamiseks transpordis.",
+      "estleg:summary": {
+        "@value": "(1) Olemasoleva varu kogus arvutatakse nõukogu direktiivi 2009/119/EÜ III lisas nimetatud meetodi järgi. (2) Teatud ajal hoitava varu kogus arvutatakse käesoleva seaduse §-s 3¹ sätestatud võrdlusaasta andmete põhjal. (3) Varu võib samal ajal arvesse võtta nii käesoleva seaduse § 3 kohase kui ka § 3¹ kohase varu arvutamisel eeldusel, et varu vastab sellele kehtestatud tingimustele. (4) Olemasoleva varu koguse arvutamisel võetakse biokütus ja lisaained arvesse, kui need on segatud asjaomaste",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Olemasoleva varu kogus arvutatakse nõukogu direktiivi 2009/119/EÜ III lisas nimetatud meetodi järgi. (2) Teatud ajal hoitava varu kogus arvutatakse käesoleva seaduse §-s 3¹ sätestatud võrdlusaasta andmete põhjal. (3) Varu võib samal ajal arvesse võtta nii käesoleva seaduse § 3 kohase kui ka § 3¹ kohase varu arvutamisel eeldusel, et varu vastab sellele kehtestatud tingimustele. (4) Olemasoleva varu koguse arvutamisel võetakse biokütus ja lisaained arvesse, kui need on segatud asjaomaste energiatoodetega või neid hoitakse Eestis ja on tagatud nende segamine varuna hoitavate energiatoodetega ning need on mõeldud kasutamiseks transpordis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_1"
       },
@@ -1435,7 +1566,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Teatud ajal hoitava varu kogus arvutatakse käesoleva seaduse §-s 31 sätestatud võrdlusaasta andmete põhjal.",
+      "estleg:legalText": "(2) Teatud ajal hoitava varu kogus arvutatakse käesoleva seaduse §-s 3¹ sätestatud võrdlusaasta andmete põhjal.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_3_2"
       },
@@ -1448,7 +1579,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Varu võib samal ajal arvesse võtta nii käesoleva seaduse § 3 kohase kui ka § 31 kohase varu arvutamisel eeldusel, et varu vastab sellele kehtestatud tingimustele.",
+      "estleg:legalText": "(3) Varu võib samal ajal arvesse võtta nii käesoleva seaduse § 3 kohase kui ka § 3¹ kohase varu arvutamisel eeldusel, et varu vastab sellele kehtestatud tingimustele.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_3_2"
       },
@@ -1486,13 +1617,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Varu moodustamine ja haldamine",
+      "rdfs:label": {
+        "@value": "§ 4. Varu moodustamine ja haldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Varu moodustab ja seda haldab hädaolukorra seaduse § 181 lõikes 1 sätestatud äriühing (edaspidi varu haldaja).",
-      "estleg:legalText": "Varu moodustab ja seda haldab hädaolukorra seaduse § 181 lõikes 1 sätestatud äriühing (edaspidi varu haldaja).",
+      "estleg:summary": {
+        "@value": "Varu moodustab ning seda haldab kriisiolukorra ja riigikaitse seaduse § 99 lõikes 3 nimetatud äriühing (edaspidi varu haldaja).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Varu moodustab ning seda haldab kriisiolukorra ja riigikaitse seaduse § 99 lõikes 3 nimetatud äriühing (edaspidi varu haldaja).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_2"
       },
@@ -1558,10 +1695,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Varu moodustab ja seda haldab hädaolukorra seaduse § 181 lõikes 1 sätestatud äriühing (edaspidi varu haldaja).",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Varu moodustab ning seda haldab kriisiolukorra ja riigikaitse seaduse § 99 lõikes 3 nimetatud äriühing (edaspidi varu haldaja).",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1579,13 +1718,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Varu hoidmine ja uuendamine",
+      "rdfs:label": {
+        "@value": "§ 5. Varu hoidmine ja uuendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu hoitakse viisil, mis tagab varustamisraskuste korral varu kättesaadavuse. (2) Varu haldaja võib varu hoida Eestis või teises Euroopa Liidu liikmesriigis (edaspidi liikmesriik) või teise liikmesriigi varu hoidmise kesküksuses (edaspidi kesküksus). (2¹) Käesoleva seaduse § 3 lõikes 1 nimetatud varust tuleb hoida Eestis kogus, mis vastab vähemalt 30 päeva keskmisele vastava energiatoote sisetarbimise kogusele eelmisel kalendriaastal.",
-      "estleg:legalText": "(1) Varu hoitakse viisil, mis tagab varustamisraskuste korral varu kättesaadavuse. (2) Varu haldaja võib varu hoida Eestis või teises Euroopa Liidu liikmesriigis (edaspidi liikmesriik) või teise liikmesriigi varu hoidmise kesküksuses (edaspidi kesküksus). (2¹) Käesoleva seaduse § 3 lõikes 1 nimetatud varust tuleb hoida Eestis kogus, mis vastab vähemalt 30 päeva keskmisele vastava energiatoote sisetarbimise kogusele eelmisel kalendriaastal. Kohustus kehtib selle energiatoote varu kohta, mille sisetarbimine eelmisel kalendriaastal moodustas vähemalt 75 protsenti kõigi energiatoodete sisetarbimise kogusummast. (3) Varu haldaja võib varu hoida ise või anda hoida äriühingule või muule juriidilisele isikule vastavalt äriühingu või muu juriidilise isikuga sõlmitud hoiulepingule. (4) Hoiulepingus peab olema sätestatud vähemalt: varu hoidmise tingimused ja kord, et tagada kontroll varu üle ja selle kättesaadavus; varu asukoht: aadress, mahuti number või muu identifitseerimist võimaldav tunnus; varu väljastamise tingimused; varu kontrollimise kord; nõue, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada. (5) Varu haldaja uuendab varu rotatsiooni korras ning tagab igal ajal varu koguse olemasolu ja kütuse vastavuse kehtivatele nõuetele. (6) Varu hoidmise kohustuse täitmiseks või varu roteerimise korral varu hoidmise kohustuse täitmise tagamiseks võib varu haldaja sõlmida tähtajalise lepingu, mille alusel teine äriühing, teine liikmesriik, teise liikmesriigi kesküksus või muu juriidiline isik võtab endale varu hoidmise kohustuse ning varu haldaja omandab õiguse osta lepinguga hõlmatud varu (edaspidi delegeeritud varu). (7) Delegeeritud varu lepingus peab olema sätestatud: varu haldaja õigus varu omandamiseks igal ajahetkel kogu lepingu kehtivusaja jooksul, arvestades samas, et varu omandamise korral oleks tagatud ka varu kättesaadavus; varu omandamisel varu eest makstava hinna kujunemise metoodika; varu asukoht; lepingu kehtivusaeg. (8) Delegeeritud varu kogumaht ei tohi ületada 20 protsenti käesoleva seaduse § 3 lõikes 1 sätestatud varu kogusest. Delegeeritud varu koguseline piirang ei kehti varu moodustamise ajal, varu uuendamise eesmärgil kütusele esitatud nõuetele vastavuse tagamiseks sõlmitavate delegeeritud varu lepingute korral ega juhul, kui ühe kütuse liigi varu hoidmise kohustus on väiksem kui 20 000 tonni. (9) Kehtetu - (10) Valdkonna eest vastutava ministri poolt volitatud ametiisikul on õigus igal ajal kontrollida varu olemasolu, selle hoidmist, uuendamist ning vastavust kehtestatud kvaliteedinõuetele.",
+      "estleg:summary": {
+        "@value": "(1) Varu hoitakse viisil, mis tagab varustamisraskuste korral varu kättesaadavuse. (2) Varu haldaja võib varu hoida Eestis või teises Euroopa Liidu liikmesriigis (edaspidi liikmesriik) või teise liikmesriigi varu hoidmise kesküksuses (edaspidi kesküksus). (2¹) Käesoleva seaduse § 3 lõikes 1 nimetatud varust tuleb hoida Eestis kogus, mis vastab vähemalt 30 päeva keskmisele vastava energiatoote sisetarbimise kogusele eelmisel kalendriaastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varu hoitakse viisil, mis tagab varustamisraskuste korral varu kättesaadavuse. (2) Varu haldaja võib varu hoida Eestis või teises Euroopa Liidu liikmesriigis (edaspidi liikmesriik) või teise liikmesriigi varu hoidmise kesküksuses (edaspidi kesküksus). (2¹) Käesoleva seaduse § 3 lõikes 1 nimetatud varust tuleb hoida Eestis kogus, mis vastab vähemalt 30 päeva keskmisele vastava energiatoote sisetarbimise kogusele eelmisel kalendriaastal. Kohustus kehtib selle energiatoote varu kohta, mille sisetarbimine eelmisel kalendriaastal moodustas vähemalt 75 protsenti kõigi energiatoodete sisetarbimise kogusummast. (3) Varu haldaja võib varu hoida ise või anda hoida äriühingule või muule juriidilisele isikule vastavalt äriühingu või muu juriidilise isikuga sõlmitud hoiulepingule. (4) Hoiulepingus peab olema sätestatud vähemalt: 1) varu hoidmise tingimused ja kord, et tagada kontroll varu üle ja selle kättesaadavus; 2) varu asukoht: aadress, mahuti number või muu identifitseerimist võimaldav tunnus; 3) varu väljastamise tingimused; 4) varu kontrollimise kord; 5) nõue, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada. (5) Varu haldaja uuendab varu rotatsiooni korras ning tagab igal ajal varu koguse olemasolu ja kütuse vastavuse kehtivatele nõuetele. (6) Varu hoidmise kohustuse täitmiseks või varu roteerimise korral varu hoidmise kohustuse täitmise tagamiseks võib varu haldaja sõlmida tähtajalise lepingu, mille alusel teine äriühing, teine liikmesriik, teise liikmesriigi kesküksus või muu juriidiline isik võtab endale varu hoidmise kohustuse ning varu haldaja omandab õiguse osta lepinguga hõlmatud varu (edaspidi delegeeritud varu). (7) Delegeeritud varu lepingus peab olema sätestatud: 1) varu haldaja õigus varu omandamiseks igal ajahetkel kogu lepingu kehtivusaja jooksul, arvestades samas, et varu omandamise korral oleks tagatud ka varu kättesaadavus; 2) varu omandamisel varu eest makstava hinna kujunemise metoodika; 3) varu asukoht; 4) lepingu kehtivusaeg. (8) Delegeeritud varu kogumaht ei tohi ületada 20 protsenti käesoleva seaduse § 3 lõikes 1 sätestatud varu kogusest. Delegeeritud varu koguseline piirang ei kehti varu moodustamise ajal, varu uuendamise eesmärgil kütusele esitatud nõuetele vastavuse tagamiseks sõlmitavate delegeeritud varu lepingute korral ega juhul, kui ühe kütuse liigi varu hoidmise kohustus on väiksem kui 20 000 tonni. (10) Valdkonna eest vastutava ministri poolt volitatud ametiisikul on õigus igal ajal kontrollida varu olemasolu, selle hoidmist, uuendamist ning vastavust kehtestatud kvaliteedinõuetele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_2"
       },
@@ -1619,9 +1764,6 @@
         },
         {
           "@id": "estleg:VKVS_Par_5_Lg_8"
-        },
-        {
-          "@id": "estleg:VKVS_Par_5_Lg_9"
         },
         {
           "@id": "estleg:VKVS_Par_5_Lg_10"
@@ -1763,11 +1905,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Hoiulepingus peab olema sätestatud vähemalt: varu hoidmise tingimused ja kord, et tagada kontroll varu üle ja selle kättesaadavus; varu asukoht: aadress, mahuti number või muu identifitseerimist võimaldav tunnus; varu väljastamise tingimused; varu kontrollimise kord; nõue, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada.",
+      "estleg:legalText": "(4) Hoiulepingus peab olema sätestatud vähemalt: 1) varu hoidmise tingimused ja kord, et tagada kontroll varu üle ja selle kättesaadavus; 2) varu asukoht: aadress, mahuti number või muu identifitseerimist võimaldav tunnus; 3) varu väljastamise tingimused; 4) varu kontrollimise kord; 5) nõue, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_5"
       },
       "rdfs:label": "§ 5 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1832,11 +1981,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Delegeeritud varu lepingus peab olema sätestatud: varu haldaja õigus varu omandamiseks igal ajahetkel kogu lepingu kehtivusaja jooksul, arvestades samas, et varu omandamise korral oleks tagatud ka varu kättesaadavus; varu omandamisel varu eest makstava hinna kujunemise metoodika; varu asukoht; lepingu kehtivusaeg.",
+      "estleg:legalText": "(7) Delegeeritud varu lepingus peab olema sätestatud: 1) varu haldaja õigus varu omandamiseks igal ajahetkel kogu lepingu kehtivusaja jooksul, arvestades samas, et varu omandamise korral oleks tagatud ka varu kättesaadavus; 2) varu omandamisel varu eest makstava hinna kujunemise metoodika; 3) varu asukoht; 4) lepingu kehtivusaeg.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_5"
       },
       "rdfs:label": "§ 5 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1871,19 +2026,6 @@
       ]
     },
     {
-      "@id": "estleg:VKVS_Par_5_Lg_9",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "9",
-      "estleg:legalText": "(9) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VKVS_Par_5"
-      },
-      "rdfs:label": "§ 5 lg 9"
-    },
-    {
       "@id": "estleg:VKVS_Par_5_Lg_10",
       "@type": [
         "estleg:Subsection",
@@ -1915,13 +2057,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Varu hoidmine liikmesriigis",
+      "rdfs:label": {
+        "@value": "§ 6. Varu hoidmine liikmesriigis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Teises liikmesriigis on varu hoidmise aluseks riikidevaheline välisleping või selle liikmesriigi heakskiit, kelle territooriumil varu hoidma hakatakse, kui liikmesriik on heakskiidu andmise ette näinud. (2) Riikide vahel sõlmitav välisleping peab vastama järgmistele nõuetele: hõlmama kõiki käesoleva seaduse §-s 2 nimetatud kütuseid; sisaldama kinnitust, et lepingupooled ei takista lepinguga hõlmatud varu väljaviimist oma territooriumilt vastavalt teise lepingupoole väljastatud juhistele;",
-      "estleg:legalText": "(1) Teises liikmesriigis on varu hoidmise aluseks riikidevaheline välisleping või selle liikmesriigi heakskiit, kelle territooriumil varu hoidma hakatakse, kui liikmesriik on heakskiidu andmise ette näinud. (2) Riikide vahel sõlmitav välisleping peab vastama järgmistele nõuetele: hõlmama kõiki käesoleva seaduse §-s 2 nimetatud kütuseid; sisaldama kinnitust, et lepingupooled ei takista lepinguga hõlmatud varu väljaviimist oma territooriumilt vastavalt teise lepingupoole väljastatud juhistele; sätestama varu hoidmise tingimused ja korra, et tagada kontroll varu üle ja selle kättesaadavus; sätestama varu kontrollimise korra ning varu kontrollimiseks tehtava koostöö meetodid; sätestama varu statistilise kokkuvõtte koostamiseks vajalike andmete edastamise korra; olema sõlmitud määramata ajaks; sisaldama nõuet, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Teises liikmesriigis on varu hoidmise aluseks riikidevaheline välisleping või selle liikmesriigi heakskiit, kelle territooriumil varu hoidma hakatakse, kui liikmesriik on heakskiidu andmise ette näinud. (2) Riikide vahel sõlmitav välisleping peab vastama järgmistele nõuetele: 1) hõlmama kõiki käesoleva seaduse §-s 2 nimetatud kütuseid; 2) sisaldama kinnitust, et lepingupooled ei takista lepinguga hõlmatud varu väljaviimist oma territooriumilt vastavalt teise lepingupoole väljastatud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Teises liikmesriigis on varu hoidmise aluseks riikidevaheline välisleping või selle liikmesriigi heakskiit, kelle territooriumil varu hoidma hakatakse, kui liikmesriik on heakskiidu andmise ette näinud. (2) Riikide vahel sõlmitav välisleping peab vastama järgmistele nõuetele: 1) hõlmama kõiki käesoleva seaduse §-s 2 nimetatud kütuseid; 2) sisaldama kinnitust, et lepingupooled ei takista lepinguga hõlmatud varu väljaviimist oma territooriumilt vastavalt teise lepingupoole väljastatud juhistele; 3) sätestama varu hoidmise tingimused ja korra, et tagada kontroll varu üle ja selle kättesaadavus; 4) sätestama varu kontrollimise korra ning varu kontrollimiseks tehtava koostöö meetodid; 4¹) sätestama varu statistilise kokkuvõtte koostamiseks vajalike andmete edastamise korra; 5) olema sõlmitud määramata ajaks; 6) sisaldama nõuet, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_2"
       },
@@ -1934,9 +2082,6 @@
         },
         {
           "@id": "estleg:VKVS_Par_6_Lg_2"
-        },
-        {
-          "@id": "estleg:VKVS_Par_6_Lg_3"
         }
       ],
       "estleg:normativeType": {
@@ -1980,11 +2125,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Riikide vahel sõlmitav välisleping peab vastama järgmistele nõuetele: hõlmama kõiki käesoleva seaduse §-s 2 nimetatud kütuseid; sisaldama kinnitust, et lepingupooled ei takista lepinguga hõlmatud varu väljaviimist oma territooriumilt vastavalt teise lepingupoole väljastatud juhistele; sätestama varu hoidmise tingimused ja korra, et tagada kontroll varu üle ja selle kättesaadavus; sätestama varu kontrollimise korra ning varu kontrollimiseks tehtava koostöö meetodid; sätestama varu statistilise kokkuvõtte koostamiseks vajalike andmete edastamise korra; olema sõlmitud määramata ajaks; sisaldama nõuet, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada.",
+      "estleg:legalText": "(2) Riikide vahel sõlmitav välisleping peab vastama järgmistele nõuetele: 1) hõlmama kõiki käesoleva seaduse §-s 2 nimetatud kütuseid; 2) sisaldama kinnitust, et lepingupooled ei takista lepinguga hõlmatud varu väljaviimist oma territooriumilt vastavalt teise lepingupoole väljastatud juhistele; 3) sätestama varu hoidmise tingimused ja korra, et tagada kontroll varu üle ja selle kättesaadavus; 4) sätestama varu kontrollimise korra ning varu kontrollimiseks tehtava koostöö meetodid; 4¹) sätestama varu statistilise kokkuvõtte koostamiseks vajalike andmete edastamise korra; 5) olema sõlmitud määramata ajaks; 6) sisaldama nõuet, et varustamisraskuste ajal ei saa lepingut ühepoolselt lõpetada.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_6"
       },
       "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "4¹",
+        "5",
+        "6"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1999,32 +2153,25 @@
       ]
     },
     {
-      "@id": "estleg:VKVS_Par_6_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VKVS_Par_6"
-      },
-      "rdfs:label": "§ 6 lg 3"
-    },
-    {
       "@id": "estleg:VKVS_Par_6_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6¹.",
-      "rdfs:label": "§ 6¹. Heakskiidu andmine varu hoidmiseks Eestis",
+      "rdfs:label": {
+        "@value": "§ 6¹. Heakskiidu andmine varu hoidmiseks Eestis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Kui teine liikmesriik, teise liikmesriigi kesküksus või teise liikmesriigi varu hoidmise kohustusega majandustegevuses osaleja soovib hoida varu Eestis või soovib varu hoidmise kohustuse delegeerida Eesti territooriumil asuvale majandustegevuses osalejale ning puudub riikidevaheline leping, peab tal selleks olema varu haldaja heakskiit. (2) Varu haldaja annab heakskiidu vaid juhul, kui käesoleva paragrahvi lõikes 1 nimetatud isik on esitanud vähemalt 30 tööpäeva enne selle ajavahemiku",
-      "estleg:legalText": "(1) Kui teine liikmesriik, teise liikmesriigi kesküksus või teise liikmesriigi varu hoidmise kohustusega majandustegevuses osaleja soovib hoida varu Eestis või soovib varu hoidmise kohustuse delegeerida Eesti territooriumil asuvale majandustegevuses osalejale ning puudub riikidevaheline leping, peab tal selleks olema varu haldaja heakskiit. (2) Varu haldaja annab heakskiidu vaid juhul, kui käesoleva paragrahvi lõikes 1 nimetatud isik on esitanud vähemalt 30 tööpäeva enne selle ajavahemiku algust, milleks heakskiitu taotletakse, järgmised andmed: heakskiidu taotleja nimi ja kontaktandmed; varu koosseis ja kogus; varu täpne hoidmiskoht ja varu hoidja kontaktandmed või selle isiku kontaktandmed, kellele varu hoidmise kohustus soovitakse delegeerida; ajavahemik, mille jooksul varu hoitakse või milleks varu hoidmise kohustus delegeeritakse; statistilise kokkuvõtte koostamiseks vajalike andmete edastamise kord; heakskiidu taotleja asukohariigi varu hoidmise kohustuse täitmise üle järelevalvet teostava asutuse nimi ja kontaktandmed. (3) Varu haldaja teavitab oma heakskiidu andmisest asjakohase liikmesriigi vastavat asutust.",
+      "estleg:summary": {
+        "@value": "(1) Kui teine liikmesriik, teise liikmesriigi kesküksus või teise liikmesriigi varu hoidmise kohustusega majandustegevuses osaleja soovib hoida varu Eestis või soovib varu hoidmise kohustuse delegeerida Eesti territooriumil asuvale majandustegevuses osalejale ning puudub riikidevaheline leping, peab tal selleks olema varu haldaja heakskiit. (2) Varu haldaja annab heakskiidu vaid juhul, kui käesoleva paragrahvi lõikes 1 nimetatud isik on esitanud vähemalt 30 tööpäeva enne selle ajavahemiku",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kui teine liikmesriik, teise liikmesriigi kesküksus või teise liikmesriigi varu hoidmise kohustusega majandustegevuses osaleja soovib hoida varu Eestis või soovib varu hoidmise kohustuse delegeerida Eesti territooriumil asuvale majandustegevuses osalejale ning puudub riikidevaheline leping, peab tal selleks olema varu haldaja heakskiit. (2) Varu haldaja annab heakskiidu vaid juhul, kui käesoleva paragrahvi lõikes 1 nimetatud isik on esitanud vähemalt 30 tööpäeva enne selle ajavahemiku algust, milleks heakskiitu taotletakse, järgmised andmed: 1) heakskiidu taotleja nimi ja kontaktandmed; 2) varu koosseis ja kogus; 3) varu täpne hoidmiskoht ja varu hoidja kontaktandmed või selle isiku kontaktandmed, kellele varu hoidmise kohustus soovitakse delegeerida; 4) ajavahemik, mille jooksul varu hoitakse või milleks varu hoidmise kohustus delegeeritakse; 5) statistilise kokkuvõtte koostamiseks vajalike andmete edastamise kord; 6) heakskiidu taotleja asukohariigi varu hoidmise kohustuse täitmise üle järelevalvet teostava asutuse nimi ja kontaktandmed. (3) Varu haldaja teavitab oma heakskiidu andmisest asjakohase liikmesriigi vastavat asutust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_2"
       },
@@ -2090,11 +2237,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Varu haldaja annab heakskiidu vaid juhul, kui käesoleva paragrahvi lõikes 1 nimetatud isik on esitanud vähemalt 30 tööpäeva enne selle ajavahemiku algust, milleks heakskiitu taotletakse, järgmised andmed: heakskiidu taotleja nimi ja kontaktandmed; varu koosseis ja kogus; varu täpne hoidmiskoht ja varu hoidja kontaktandmed või selle isiku kontaktandmed, kellele varu hoidmise kohustus soovitakse delegeerida; ajavahemik, mille jooksul varu hoitakse või milleks varu hoidmise kohustus delegeeritakse; statistilise kokkuvõtte koostamiseks vajalike andmete edastamise kord; heakskiidu taotleja asukohariigi varu hoidmise kohustuse täitmise üle järelevalvet teostava asutuse nimi ja kontaktandmed.",
+      "estleg:legalText": "(2) Varu haldaja annab heakskiidu vaid juhul, kui käesoleva paragrahvi lõikes 1 nimetatud isik on esitanud vähemalt 30 tööpäeva enne selle ajavahemiku algust, milleks heakskiitu taotletakse, järgmised andmed: 1) heakskiidu taotleja nimi ja kontaktandmed; 2) varu koosseis ja kogus; 3) varu täpne hoidmiskoht ja varu hoidja kontaktandmed või selle isiku kontaktandmed, kellele varu hoidmise kohustus soovitakse delegeerida; 4) ajavahemik, mille jooksul varu hoitakse või milleks varu hoidmise kohustus delegeeritakse; 5) statistilise kokkuvõtte koostamiseks vajalike andmete edastamise kord; 6) heakskiidu taotleja asukohariigi varu hoidmise kohustuse täitmise üle järelevalvet teostava asutuse nimi ja kontaktandmed.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_6_1"
       },
       "rdfs:label": "§ 6¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2137,13 +2292,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Varu kasutamine",
+      "rdfs:label": {
+        "@value": "§ 7. Varu kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu kasutatakse varustamisraskuste korral. (2) Varustamisraskuste korral võetakse varu kasutusele hädaolukorra seaduse § 183 lõikes 1 või 2 sätestatud korras. (3) Varu kasutusele võtmise otsuses peavad sisalduma: varu kasutusele võtmise põhjus; varustamisraskuse eeldatav kestus kalendrikuudes, mille jooksul kasutusele võetavat varu kasutatakse; varu kasutusele võtmise tingimused; varu taastamiseks vajalikud toimingud; kasutusele võetava varu kogus.",
-      "estleg:legalText": "(1) Varu kasutatakse varustamisraskuste korral. (2) Varustamisraskuste korral võetakse varu kasutusele hädaolukorra seaduse § 183 lõikes 1 või 2 sätestatud korras. (3) Varu kasutusele võtmise otsuses peavad sisalduma: varu kasutusele võtmise põhjus; varustamisraskuse eeldatav kestus kalendrikuudes, mille jooksul kasutusele võetavat varu kasutatakse; varu kasutusele võtmise tingimused; varu taastamiseks vajalikud toimingud; kasutusele võetava varu kogus. (4) Kui varu kasutusele võtmise kohta on olemas kehtiv rahvusvaheline otsus, on varu kasutusele võtmise otsustajal õigus otsustada võtta varu kasutusele oma rahvusvaheliste kohustuste täitmiseks. Kliimaministeerium teavitab varu kasutusele võtmise otsustaja otsusest viivitamata Euroopa Komisjoni. (5) Kui varu kasutusele võtmise kohta ei ole kehtivat rahvusvahelist otsust, kuid riiki tehtavate energiatoodete tarned on märkimisväärselt ja järsult vähenenud, esitab Kliimaministeerium Euroopa Komisjonile taotluse lubada varu täielikult või osaliselt kasutusele võtta. Loa saamisel annab Vabariigi Valitsus korralduse varu kasutusele võtmise kohta. (6) Kui varustamisraskused on tekkinud Euroopa Liitu või teise liikmesriiki energiatoodete tarnimisel, võib varu kasutusele võtmise otsustaja Euroopa Komisjoni soovituse täitmiseks otsustada võtta varu täielikult või osaliselt kasutusele. (7) Kiireloomulistel juhtudel võib varu kasutusele võtmise otsustaja otsustada võtta kasutusele varu koguses, mis on vajalik sellistele juhtudele viivitamatuks reageerimiseks, ja vähendada varu allapoole käesoleva seaduse § 3 lõikes 1 sätestatud taset. Sellisel juhul teavitab Kliimaministeerium viivitamata Euroopa Komisjoni kasutusele võetud varu kogusest. (8) Käesoleva paragrahvi lõigetes 4–7 sätestatud varu kasutusele võtmise otsustaja otsusest varu kasutusele võtta teavitab Kliimaministeerium viivitamata Rahvusvahelist Energiaagentuuri. (9) Varu kasutusele võtmisel käesoleva paragrahvi lõigetes 4–7 sätestatud juhtudel tuleb varu taas nõutavale tasemele viia Euroopa Komisjoni määratud aja jooksul.",
+      "estleg:summary": {
+        "@value": "(1) Varu kasutatakse varustamisraskuste korral. (2) Varustamisraskuste korral võetakse varu kasutusele kriisiolukorra ja riigikaitse seaduse § 101 lõikes 1, 2 või 3 sätestatud korras. (3) Varu kasutusele võtmise otsuses peavad sisalduma: 1) varu kasutusele võtmise põhjus; 2) varustamisraskuse eeldatav kestus kalendrikuudes, mille jooksul kasutusele võetavat varu kasutatakse; 3) varu kasutusele võtmise tingimused; 4) varu taastamiseks vajalikud toimingud; 5) kasutusele võetava varu kogus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varu kasutatakse varustamisraskuste korral. (2) Varustamisraskuste korral võetakse varu kasutusele kriisiolukorra ja riigikaitse seaduse § 101 lõikes 1, 2 või 3 sätestatud korras. (3) Varu kasutusele võtmise otsuses peavad sisalduma: 1) varu kasutusele võtmise põhjus; 2) varustamisraskuse eeldatav kestus kalendrikuudes, mille jooksul kasutusele võetavat varu kasutatakse; 3) varu kasutusele võtmise tingimused; 4) varu taastamiseks vajalikud toimingud; 5) kasutusele võetava varu kogus. (4) Kui varu kasutusele võtmise kohta on olemas kehtiv rahvusvaheline otsus, on varu kasutusele võtmise otsustajal õigus otsustada võtta varu kasutusele oma rahvusvaheliste kohustuste täitmiseks. Kliimaministeerium teavitab varu kasutusele võtmise otsustaja otsusest viivitamata Euroopa Komisjoni. (5) Kui varu kasutusele võtmise kohta ei ole kehtivat rahvusvahelist otsust, kuid riiki tehtavate energiatoodete tarned on märkimisväärselt ja järsult vähenenud, esitab Kliimaministeerium Euroopa Komisjonile taotluse lubada varu täielikult või osaliselt kasutusele võtta. Loa saamisel annab Vabariigi Valitsus korralduse varu kasutusele võtmise kohta. (6) Kui varustamisraskused on tekkinud Euroopa Liitu või teise liikmesriiki energiatoodete tarnimisel, võib varu kasutusele võtmise otsustaja Euroopa Komisjoni soovituse täitmiseks otsustada võtta varu täielikult või osaliselt kasutusele. (7) Kiireloomulistel juhtudel võib varu kasutusele võtmise otsustaja otsustada võtta kasutusele varu koguses, mis on vajalik sellistele juhtudele viivitamatuks reageerimiseks, ja vähendada varu allapoole käesoleva seaduse § 3 lõikes 1 sätestatud taset. Sellisel juhul teavitab Kliimaministeerium viivitamata Euroopa Komisjoni kasutusele võetud varu kogusest. (8) Käesoleva paragrahvi lõigetes 4–7 sätestatud varu kasutusele võtmise otsustaja otsusest varu kasutusele võtta teavitab Kliimaministeerium viivitamata Rahvusvahelist Energiaagentuuri. (9) Varu kasutusele võtmisel käesoleva paragrahvi lõigetes 4–7 sätestatud juhtudel tuleb varu taas nõutavale tasemele viia Euroopa Komisjoni määratud aja jooksul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_2"
       },
@@ -2283,7 +2444,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Varustamisraskuste korral võetakse varu kasutusele hädaolukorra seaduse § 183 lõikes 1 või 2 sätestatud korras.",
+      "estleg:legalText": "(2) Varustamisraskuste korral võetakse varu kasutusele kriisiolukorra ja riigikaitse seaduse § 101 lõikes 1, 2 või 3 sätestatud korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_7"
       },
@@ -2313,11 +2474,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Varu kasutusele võtmise otsuses peavad sisalduma: varu kasutusele võtmise põhjus; varustamisraskuse eeldatav kestus kalendrikuudes, mille jooksul kasutusele võetavat varu kasutatakse; varu kasutusele võtmise tingimused; varu taastamiseks vajalikud toimingud; kasutusele võetava varu kogus.",
+      "estleg:legalText": "(3) Varu kasutusele võtmise otsuses peavad sisalduma: 1) varu kasutusele võtmise põhjus; 2) varustamisraskuse eeldatav kestus kalendrikuudes, mille jooksul kasutusele võetavat varu kasutatakse; 3) varu kasutusele võtmise tingimused; 4) varu taastamiseks vajalikud toimingud; 5) kasutusele võetava varu kogus.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_7"
       },
       "rdfs:label": "§ 7 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2470,13 +2638,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7¹.",
-      "rdfs:label": "§ 7¹. Tegevus varustamisraskuste korral",
+      "rdfs:label": {
+        "@value": "§ 7¹. Tegevus varustamisraskuste korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varustamisraskuste korral on Vabariigi Valitsusel õigus korraldusega tähtajaliselt kehtestada: sõidukiiruse piirangud asulasisesel ja -välisel teel; luba mitte rakendada kütuse müügil kliimatingimustest tulenevaid nõudeid; muu käesoleva seaduse §-s 72 nimetatud nõuandva komisjoni ettepanekul esitatud vedelkütuse kasutamist vähendav meede. (2) Piirangute kehtestamisel võib eelistada operatiivteenistusi ning ettevõtjaid, kes tagavad riigile elutähtsate teenuste toimimise hädaolukorra seaduse",
-      "estleg:legalText": "(1) Varustamisraskuste korral on Vabariigi Valitsusel õigus korraldusega tähtajaliselt kehtestada: sõidukiiruse piirangud asulasisesel ja -välisel teel; luba mitte rakendada kütuse müügil kliimatingimustest tulenevaid nõudeid; muu käesoleva seaduse §-s 72 nimetatud nõuandva komisjoni ettepanekul esitatud vedelkütuse kasutamist vähendav meede. (2) Piirangute kehtestamisel võib eelistada operatiivteenistusi ning ettevõtjaid, kes tagavad riigile elutähtsate teenuste toimimise hädaolukorra seaduse tähenduses. (3) Käesoleva seaduse § 7 lõikes 2 nimetatud korraldusega on Vabariigi Valitsusel õigus: lubada varu haldajal varuna hoitavat kütust müüa; lubada varu haldajal teha pakkumine rahvusvahelisele kütuseturule. (4) Käesoleva seaduse § 7 lõigetes 4 ja 6 nimetatud juhtudel teeb varu haldaja müügipakkumise kütuse müüjatele. Reaktiivkütuse müügipakkumine tehakse isikutele, kes on selle kütuse varumakse maksjad. Müügiks pakutava kütuse kogus on võrdeline nimetatud isikute turuosaga, mille arvutamisel lähtutakse eelneva nelja kvartali jooksul nende isikute poolt tarbimisse lubatud kütuse kogustest, reaktiivkütuse korral eelnimetatud isikute poolt müüdud kütuse kogustest. (5) Kütuse müüja käesoleva seaduse tähenduses on isik, kellel on kütuse müügiks tegevusluba vedelkütuse seaduse tähenduses ning sama seaduse § 13 lõikele 2 vastav märge kütuse tarbimisse lubamiseks. (6) Kui ükski kütuse müüja või reaktiivkütuse varumakse maksja ei soovi osta müügiks pakutavat kütuse kogust, võib varu haldaja teha müügipakkumise teistele juriidilistele isikutele. (7) Käesoleva seaduse § 7 lõigetes 4 ja 6 nimetatud juhtudel võib varu haldaja teha müügipakkumise rahvusvahelisele kütuseturule mahus, mis vastab Rahvusvahelise Energiaagentuuri või Euroopa Komisjoni soovitustele. (8) kehtestab määrusega varu haldaja tegutsemispõhimõtted ning käesoleva paragrahvi lõikes 4 nimetatud isikutele varu haldaja poolt müügiks pakutava varu müümise korra varustamisraskuste puhul. (9) Käesoleva paragrahvi lõikes 4 nimetatud isikud on kohustatud varu haldaja nõudmisel esitama andmeid, mis on vajalikud varu müümise korra järgimiseks.",
+      "estleg:summary": {
+        "@value": "(1) Varustamisraskuste korral on Vabariigi Valitsusel õigus korraldusega tähtajaliselt kehtestada: 1) sõidukiiruse piirangud asulasisesel ja -välisel teel; 2) luba mitte rakendada kütuse müügil kliimatingimustest tulenevaid nõudeid; 3) muu käesoleva seaduse §-s 7² nimetatud nõuandva komisjoni ettepanekul esitatud vedelkütuse kasutamist vähendav meede. (2) Piirangute kehtestamisel võib eelistada operatiivteenistusi ning ettevõtjaid, kes tagavad riigile elutähtsate teenuste toimimise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varustamisraskuste korral on Vabariigi Valitsusel õigus korraldusega tähtajaliselt kehtestada: 1) sõidukiiruse piirangud asulasisesel ja -välisel teel; 2) luba mitte rakendada kütuse müügil kliimatingimustest tulenevaid nõudeid; 3) muu käesoleva seaduse §-s 7² nimetatud nõuandva komisjoni ettepanekul esitatud vedelkütuse kasutamist vähendav meede. (2) Piirangute kehtestamisel võib eelistada operatiivteenistusi ning ettevõtjaid, kes tagavad riigile elutähtsate teenuste toimimise kriisiolukorra ja riigikaitse seaduse tähenduses. (3) Käesoleva seaduse § 7 lõikes 2 nimetatud korraldusega on Vabariigi Valitsusel õigus: 1) lubada varu haldajal varuna hoitavat kütust müüa; 2) lubada varu haldajal teha pakkumine rahvusvahelisele kütuseturule. (4) Käesoleva seaduse § 7 lõigetes 4 ja 6 nimetatud juhtudel teeb varu haldaja müügipakkumise kütuse müüjatele. Reaktiivkütuse müügipakkumine tehakse isikutele, kes on selle kütuse varumakse maksjad. Müügiks pakutava kütuse kogus on võrdeline nimetatud isikute turuosaga, mille arvutamisel lähtutakse eelneva nelja kvartali jooksul nende isikute poolt tarbimisse lubatud kütuse kogustest, reaktiivkütuse korral eelnimetatud isikute poolt müüdud kütuse kogustest. (5) Kütuse müüja käesoleva seaduse tähenduses on isik, kellel on kütuse müügiks tegevusluba vedelkütuse seaduse tähenduses ning sama seaduse § 13 lõikele 2 vastav märge kütuse tarbimisse lubamiseks. (6) Kui ükski kütuse müüja või reaktiivkütuse varumakse maksja ei soovi osta müügiks pakutavat kütuse kogust, võib varu haldaja teha müügipakkumise teistele juriidilistele isikutele. (7) Käesoleva seaduse § 7 lõigetes 4 ja 6 nimetatud juhtudel võib varu haldaja teha müügipakkumise rahvusvahelisele kütuseturule mahus, mis vastab Rahvusvahelise Energiaagentuuri või Euroopa Komisjoni soovitustele. (8) kehtestab määrusega varu haldaja tegutsemispõhimõtted ning käesoleva paragrahvi lõikes 4 nimetatud isikutele varu haldaja poolt müügiks pakutava varu müümise korra varustamisraskuste puhul. (9) Käesoleva paragrahvi lõikes 4 nimetatud isikud on kohustatud varu haldaja nõudmisel esitama andmeid, mis on vajalikud varu müümise korra järgimiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_2"
       },
@@ -2554,11 +2728,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Varustamisraskuste korral on Vabariigi Valitsusel õigus korraldusega tähtajaliselt kehtestada: sõidukiiruse piirangud asulasisesel ja -välisel teel; luba mitte rakendada kütuse müügil kliimatingimustest tulenevaid nõudeid; muu käesoleva seaduse §-s 72 nimetatud nõuandva komisjoni ettepanekul esitatud vedelkütuse kasutamist vähendav meede.",
+      "estleg:legalText": "(1) Varustamisraskuste korral on Vabariigi Valitsusel õigus korraldusega tähtajaliselt kehtestada: 1) sõidukiiruse piirangud asulasisesel ja -välisel teel; 2) luba mitte rakendada kütuse müügil kliimatingimustest tulenevaid nõudeid; 3) muu käesoleva seaduse §-s 7² nimetatud nõuandva komisjoni ettepanekul esitatud vedelkütuse kasutamist vähendav meede.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2581,7 +2760,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Piirangute kehtestamisel võib eelistada operatiivteenistusi ning ettevõtjaid, kes tagavad riigile elutähtsate teenuste toimimise hädaolukorra seaduse tähenduses.",
+      "estleg:legalText": "(2) Piirangute kehtestamisel võib eelistada operatiivteenistusi ning ettevõtjaid, kes tagavad riigile elutähtsate teenuste toimimise kriisiolukorra ja riigikaitse seaduse tähenduses.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_7_1"
       },
@@ -2606,11 +2785,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva seaduse § 7 lõikes 2 nimetatud korraldusega on Vabariigi Valitsusel õigus: lubada varu haldajal varuna hoitavat kütust müüa; lubada varu haldajal teha pakkumine rahvusvahelisele kütuseturule.",
+      "estleg:legalText": "(3) Käesoleva seaduse § 7 lõikes 2 nimetatud korraldusega on Vabariigi Valitsusel õigus: 1) lubada varu haldajal varuna hoitavat kütust müüa; 2) lubada varu haldajal teha pakkumine rahvusvahelisele kütuseturule.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_7_1"
       },
       "rdfs:label": "§ 7¹ lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2775,13 +2958,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7².",
-      "rdfs:label": "§ 7². Nõuandev komisjon",
+      "rdfs:label": {
+        "@value": "§ 7². Nõuandev komisjon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 7 lõikes 2 nimetatud ettepaneku koostamiseks moodustab valdkonna eest vastutav minister nõuandva komisjoni. (2) Nõuandva komisjoni liikmeteks nimetatakse vähemalt: varu haldaja juhatuse liikmed; kütuse müüjate poolt esitatud kandidaatide hulgast valitud varu haldaja nõukogu liikmed; Majandus- ja Kommunikatsiooniministeeriumi esindaja; Välisministeeriumi esindaja; Rahandusministeeriumi esindaja; Siseministeeriumi esindaja; Maksu- ja Tolliameti esindaja; tööandjate",
-      "estleg:legalText": "(1) Käesoleva seaduse § 7 lõikes 2 nimetatud ettepaneku koostamiseks moodustab valdkonna eest vastutav minister nõuandva komisjoni. (2) Nõuandva komisjoni liikmeteks nimetatakse vähemalt: varu haldaja juhatuse liikmed; kütuse müüjate poolt esitatud kandidaatide hulgast valitud varu haldaja nõukogu liikmed; Majandus- ja Kommunikatsiooniministeeriumi esindaja; Välisministeeriumi esindaja; Rahandusministeeriumi esindaja; Siseministeeriumi esindaja; Maksu- ja Tolliameti esindaja; tööandjate organisatsiooni esindaja. (3) Nõuandvat komisjoni juhib Kliimaministeeriumi esindaja.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 7 lõikes 2 nimetatud ettepaneku koostamiseks moodustab valdkonna eest vastutav minister nõuandva komisjoni. (2) Nõuandva komisjoni liikmeteks nimetatakse vähemalt: 1) varu haldaja juhatuse liikmed; 2) kütuse müüjate poolt esitatud kandidaatide hulgast valitud varu haldaja nõukogu liikmed; 3) Majandus- ja Kommunikatsiooniministeeriumi esindaja; 4) Välisministeeriumi esindaja; 5) Rahandusministeeriumi esindaja; 6) Siseministeeriumi esindaja; 7) Maksu- ja Tolliameti",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesoleva seaduse § 7 lõikes 2 nimetatud ettepaneku koostamiseks moodustab valdkonna eest vastutav minister nõuandva komisjoni. (2) Nõuandva komisjoni liikmeteks nimetatakse vähemalt: 1) varu haldaja juhatuse liikmed; 2) kütuse müüjate poolt esitatud kandidaatide hulgast valitud varu haldaja nõukogu liikmed; 3) Majandus- ja Kommunikatsiooniministeeriumi esindaja; 4) Välisministeeriumi esindaja; 5) Rahandusministeeriumi esindaja; 6) Siseministeeriumi esindaja; 7) Maksu- ja Tolliameti esindaja; 8) tööandjate organisatsiooni esindaja. (3) Nõuandvat komisjoni juhib Kliimaministeeriumi esindaja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_2"
       },
@@ -2882,11 +3071,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Nõuandva komisjoni liikmeteks nimetatakse vähemalt: varu haldaja juhatuse liikmed; kütuse müüjate poolt esitatud kandidaatide hulgast valitud varu haldaja nõukogu liikmed; Majandus- ja Kommunikatsiooniministeeriumi esindaja; Välisministeeriumi esindaja; Rahandusministeeriumi esindaja; Siseministeeriumi esindaja; Maksu- ja Tolliameti esindaja; tööandjate organisatsiooni esindaja.",
+      "estleg:legalText": "(2) Nõuandva komisjoni liikmeteks nimetatakse vähemalt: 1) varu haldaja juhatuse liikmed; 2) kütuse müüjate poolt esitatud kandidaatide hulgast valitud varu haldaja nõukogu liikmed; 3) Majandus- ja Kommunikatsiooniministeeriumi esindaja; 4) Välisministeeriumi esindaja; 5) Rahandusministeeriumi esindaja; 6) Siseministeeriumi esindaja; 7) Maksu- ja Tolliameti esindaja; 8) tööandjate organisatsiooni esindaja.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_7_2"
       },
       "rdfs:label": "§ 7² lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2942,13 +3141,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Varu moodustamise ja haldamise rahastamine",
+      "rdfs:label": {
+        "@value": "§ 8. Varu moodustamise ja haldamise rahastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu soetamine kaetakse riigieelarvest varu haldaja osa- või aktsiakapitali suurendamise teel ja varu müügist saadud vahendite arvelt. (2) Varu haldamiskulud kaetakse varumakse maksja poolt tasutavast varumaksest. Varumakse maksja on alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse § 22 lõikes 1 sätestatud aktsiisimaksja. Aktsiisimaksja puudumise korral on varumakse maksjaks isik, kes kütuse tarbimisse lubab. Varumakse maksjaks loetakse ka isik, kes varustab reaktiivkütusega Eestis",
-      "estleg:legalText": "(1) Varu soetamine kaetakse riigieelarvest varu haldaja osa- või aktsiakapitali suurendamise teel ja varu müügist saadud vahendite arvelt. (2) Varu haldamiskulud kaetakse varumakse maksja poolt tasutavast varumaksest. Varumakse maksja on alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse § 22 lõikes 1 sätestatud aktsiisimaksja. Aktsiisimaksja puudumise korral on varumakse maksjaks isik, kes kütuse tarbimisse lubab. Varumakse maksjaks loetakse ka isik, kes varustab reaktiivkütusega Eestis tangitavat õhusõidukit. (3) Importija on isik, kelle nimel on kütus Eestis tarbimisse lubatud või kelle nimel on kütus liikmesriigist ilma ajutise aktsiisivabastuseta Eestisse toimetatud alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse tähenduses. (4) Varu haldamiskulud on: varu hoidmisega seotud kulu; varu kindlustamise kulu; varu koguse ja varu nõuetele vastavuse kontrollimise kulu; varu haldaja tegevuskulu; varu haldaja finantskulu; muud käesolevast seadusest tulenevad varu hoidmise kohustuse täitmisega seotud kulud, välja arvatud varu soetamine.",
+      "estleg:summary": {
+        "@value": "(1) Varu soetamine kaetakse riigieelarvest varu haldaja osa- või aktsiakapitali suurendamise teel ja varu müügist saadud vahendite arvelt. (2) Varu haldamiskulud kaetakse varumakse maksja poolt tasutavast varumaksest. Varumakse maksja on alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse § 22 lõikes 1 sätestatud aktsiisimaksja. Aktsiisimaksja puudumise korral on varumakse maksjaks isik, kes kütuse tarbimisse lubab. Varumakse maksjaks loetakse ka isik, kes varustab reaktiivkütusega Eestis",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varu soetamine kaetakse riigieelarvest varu haldaja osa- või aktsiakapitali suurendamise teel ja varu müügist saadud vahendite arvelt. (2) Varu haldamiskulud kaetakse varumakse maksja poolt tasutavast varumaksest. Varumakse maksja on alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse § 22 lõikes 1 sätestatud aktsiisimaksja. Aktsiisimaksja puudumise korral on varumakse maksjaks isik, kes kütuse tarbimisse lubab. Varumakse maksjaks loetakse ka isik, kes varustab reaktiivkütusega Eestis tangitavat õhusõidukit. (3) Importija on isik, kelle nimel on kütus Eestis tarbimisse lubatud või kelle nimel on kütus liikmesriigist ilma ajutise aktsiisivabastuseta Eestisse toimetatud alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse tähenduses. (4) Varu haldamiskulud on: 1) varu hoidmisega seotud kulu; 2) varu kindlustamise kulu; 3) varu koguse ja varu nõuetele vastavuse kontrollimise kulu; 4) varu haldaja tegevuskulu; 5) varu haldaja finantskulu; 6) muud käesolevast seadusest tulenevad varu hoidmise kohustuse täitmisega seotud kulud, välja arvatud varu soetamine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_3"
       },
@@ -3076,11 +3281,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Varu haldamiskulud on: varu hoidmisega seotud kulu; varu kindlustamise kulu; varu koguse ja varu nõuetele vastavuse kontrollimise kulu; varu haldaja tegevuskulu; varu haldaja finantskulu; muud käesolevast seadusest tulenevad varu hoidmise kohustuse täitmisega seotud kulud, välja arvatud varu soetamine.",
+      "estleg:legalText": "(4) Varu haldamiskulud on: 1) varu hoidmisega seotud kulu; 2) varu kindlustamise kulu; 3) varu koguse ja varu nõuetele vastavuse kontrollimise kulu; 4) varu haldaja tegevuskulu; 5) varu haldaja finantskulu; 6) muud käesolevast seadusest tulenevad varu hoidmise kohustuse täitmisega seotud kulud, välja arvatud varu soetamine.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_8"
       },
-      "rdfs:label": "§ 8 lg 4"
+      "rdfs:label": "§ 8 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
     },
     {
       "@id": "estleg:VKVS_Par_9",
@@ -3089,13 +3302,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Varumakse ja selle tasumine",
+      "rdfs:label": {
+        "@value": "§ 9. Varumakse ja selle tasumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varumakse on varu haldamiskulude katmiseks varumakse maksja poolt tasutav makse. (2) Varumakse tasumise kohustus tekib bensiini, diislikütuse, kerge kütteõli, raske kütteõli, petrooli ja reaktiivkütuse tarbimisse lubamisel või teisest liikmesriigist ilma ajutise aktsiisivabastuseta Eestisse toimetamisel alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse tähenduses või reaktiivkütuse korral kütuse aktsiisi- või tollilaost õhusõiduki tankimiseks lähetamisel või muudel juhtudel",
-      "estleg:legalText": "(1) Varumakse on varu haldamiskulude katmiseks varumakse maksja poolt tasutav makse. (2) Varumakse tasumise kohustus tekib bensiini, diislikütuse, kerge kütteõli, raske kütteõli, petrooli ja reaktiivkütuse tarbimisse lubamisel või teisest liikmesriigist ilma ajutise aktsiisivabastuseta Eestisse toimetamisel alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse tähenduses või reaktiivkütuse korral kütuse aktsiisi- või tollilaost õhusõiduki tankimiseks lähetamisel või muudel juhtudel reaktiivkütuse üleandmisel. (2¹) Isikule, kes lähetas Eestis tarbimisse lubatud kütuse teise liikmesriiki, makstakse varumakse tagasi, kui: varu haldajat on teavitatud Eestis tarbimisse lubatud kütuse lähetamise kavatsusest teise liikmesriiki enne kütuse lähetamist; varu haldajale on esitatud enne kütuse lähetamist teise liikmesriiki varumakse tagastamise taotlus; varu haldajale on esitatud kütuse saatedokument, millel on kütuse saaja kinnitus kütuse vastuvõtmise kohta. (2²) Varu haldajal on õigus nõuda lisaks käesoleva paragrahvi lõikes 21 nimetatud andmetele ja dokumentidele täiendavaid asjassepuutuvaid andmeid ja dokumente, mis on vajalikud varumakse tagastamiseks. (2³) Varumakse tagastatakse varumakse maksja arvelduskontole ühe kuu jooksul taotluse saamisest arvates. (2⁴) Varumakse tasumise kohustust ei teki, kui käesoleva paragrahvi lõikes 2 nimetatud energiatoodet ei kasutata kütusena ja isik on esitanud varu haldajale Maksu- ja Tolliameti väljastatud kehtiva aktsiisivabastuse loa koopia. (3) Varumakse tasutakse ilma eelneva nõudeta varu haldaja arvelduskontole hiljemalt iga kuu 15. kuupäevaks suuruses, mis vastab varumakse maksja poolt eelneval kalendrikuul tarbimisse lubatud kütuse kogusele ja kehtivale varumakse määrale. Maksekorralduse selgitusse tuleb märkida «varumakse» ning kalendrikuu nimetus, mille eest varumakset tasutakse. (3¹) Varumakse maksjal on õigus saada varu haldajalt varumakse maksmise kohustusega seonduvat teavet. (4) Mahu järgi arvutatava varumakse puhul lähtutakse mahust, mis kütusel oleks 15 °C juures. (5) Kui varumakse maksja ei ole tasunud varumakset ettenähtud tähtpäevaks, on ta kohustatud maksma tähtpäevaks tasumata summalt viivist 0,06 protsenti päevas, kuid kokku mitte rohkem kui tasumisele kuuluv varumakse summa. (6) Kehtetu - (7) Vajaduse korral on varu haldajal õigus nõuda asjakohaseid tagatisi varumakse tasumise tagamiseks. Tagatise olemasolu tõendatakse krediidi- või finantseerimisasutuse või kindlustusandja garantiiga või rahasumma deponeerimisega varu haldaja arvelduskontole.",
+      "estleg:summary": {
+        "@value": "(1) Varumakse on varu haldamiskulude katmiseks varumakse maksja poolt tasutav makse. (2) Varumakse tasumise kohustus tekib bensiini, diislikütuse, kerge kütteõli, raske kütteõli, petrooli ja reaktiivkütuse tarbimisse lubamisel või teisest liikmesriigist ilma ajutise aktsiisivabastuseta Eestisse toimetamisel alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse tähenduses või reaktiivkütuse korral kütuse aktsiisi- või tollilaost õhusõiduki tankimiseks lähetamisel või muudel juhtudel",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varumakse on varu haldamiskulude katmiseks varumakse maksja poolt tasutav makse. (2) Varumakse tasumise kohustus tekib bensiini, diislikütuse, kerge kütteõli, raske kütteõli, petrooli ja reaktiivkütuse tarbimisse lubamisel või teisest liikmesriigist ilma ajutise aktsiisivabastuseta Eestisse toimetamisel alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seaduse tähenduses või reaktiivkütuse korral kütuse aktsiisi- või tollilaost õhusõiduki tankimiseks lähetamisel või muudel juhtudel reaktiivkütuse üleandmisel. (2¹) Isikule, kes lähetas Eestis tarbimisse lubatud kütuse teise liikmesriiki, makstakse varumakse tagasi, kui: 1) varu haldajat on teavitatud Eestis tarbimisse lubatud kütuse lähetamise kavatsusest teise liikmesriiki enne kütuse lähetamist; 2) varu haldajale on esitatud enne kütuse lähetamist teise liikmesriiki varumakse tagastamise taotlus; 3) varu haldajale on esitatud kütuse saatedokument, millel on kütuse saaja kinnitus kütuse vastuvõtmise kohta. (2²) Varu haldajal on õigus nõuda lisaks käesoleva paragrahvi lõikes 2¹ nimetatud andmetele ja dokumentidele täiendavaid asjassepuutuvaid andmeid ja dokumente, mis on vajalikud varumakse tagastamiseks. (2³) Varumakse tagastatakse varumakse maksja arvelduskontole ühe kuu jooksul taotluse saamisest arvates. (2⁴) Varumakse tasumise kohustust ei teki, kui käesoleva paragrahvi lõikes 2 nimetatud energiatoodet ei kasutata kütusena ja isik on esitanud varu haldajale Maksu- ja Tolliameti väljastatud kehtiva aktsiisivabastuse loa koopia. (3) Varumakse tasutakse ilma eelneva nõudeta varu haldaja arvelduskontole hiljemalt iga kuu 15. kuupäevaks suuruses, mis vastab varumakse maksja poolt eelneval kalendrikuul tarbimisse lubatud kütuse kogusele ja kehtivale varumakse määrale. Maksekorralduse selgitusse tuleb märkida «varumakse» ning kalendrikuu nimetus, mille eest varumakset tasutakse. (3¹) Varumakse maksjal on õigus saada varu haldajalt varumakse maksmise kohustusega seonduvat teavet. (4) Mahu järgi arvutatava varumakse puhul lähtutakse mahust, mis kütusel oleks 15 °C juures. (5) Kui varumakse maksja ei ole tasunud varumakset ettenähtud tähtpäevaks, on ta kohustatud maksma tähtpäevaks tasumata summalt viivist 0,06 protsenti päevas, kuid kokku mitte rohkem kui tasumisele kuuluv varumakse summa. (7) Vajaduse korral on varu haldajal õigus nõuda asjakohaseid tagatisi varumakse tasumise tagamiseks. Tagatise olemasolu tõendatakse krediidi- või finantseerimisasutuse või kindlustusandja garantiiga või rahasumma deponeerimisega varu haldaja arvelduskontole.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_3"
       },
@@ -3132,9 +3351,6 @@
         },
         {
           "@id": "estleg:VKVS_Par_9_Lg_5"
-        },
-        {
-          "@id": "estleg:VKVS_Par_9_Lg_6"
         },
         {
           "@id": "estleg:VKVS_Par_9_Lg_7"
@@ -3224,11 +3440,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2¹",
-      "estleg:legalText": "(2¹) Isikule, kes lähetas Eestis tarbimisse lubatud kütuse teise liikmesriiki, makstakse varumakse tagasi, kui: varu haldajat on teavitatud Eestis tarbimisse lubatud kütuse lähetamise kavatsusest teise liikmesriiki enne kütuse lähetamist; varu haldajale on esitatud enne kütuse lähetamist teise liikmesriiki varumakse tagastamise taotlus; varu haldajale on esitatud kütuse saatedokument, millel on kütuse saaja kinnitus kütuse vastuvõtmise kohta.",
+      "estleg:legalText": "(2¹) Isikule, kes lähetas Eestis tarbimisse lubatud kütuse teise liikmesriiki, makstakse varumakse tagasi, kui: 1) varu haldajat on teavitatud Eestis tarbimisse lubatud kütuse lähetamise kavatsusest teise liikmesriiki enne kütuse lähetamist; 2) varu haldajale on esitatud enne kütuse lähetamist teise liikmesriiki varumakse tagastamise taotlus; 3) varu haldajale on esitatud kütuse saatedokument, millel on kütuse saaja kinnitus kütuse vastuvõtmise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_9"
       },
       "rdfs:label": "§ 9 lg 2¹",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3246,7 +3467,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2²",
-      "estleg:legalText": "(2²) Varu haldajal on õigus nõuda lisaks käesoleva paragrahvi lõikes 21 nimetatud andmetele ja dokumentidele täiendavaid asjassepuutuvaid andmeid ja dokumente, mis on vajalikud varumakse tagastamiseks.",
+      "estleg:legalText": "(2²) Varu haldajal on õigus nõuda lisaks käesoleva paragrahvi lõikes 2¹ nimetatud andmetele ja dokumentidele täiendavaid asjassepuutuvaid andmeid ja dokumente, mis on vajalikud varumakse tagastamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_9"
       },
@@ -3366,19 +3587,6 @@
       "rdfs:label": "§ 9 lg 5"
     },
     {
-      "@id": "estleg:VKVS_Par_9_Lg_6",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VKVS_Par_9"
-      },
-      "rdfs:label": "§ 9 lg 6"
-    },
-    {
       "@id": "estleg:VKVS_Par_9_Lg_7",
       "@type": [
         "estleg:Subsection",
@@ -3407,13 +3615,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Varumakse määr",
+      "rdfs:label": {
+        "@value": "§ 10. Varumakse määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varumakse määra kehtestab varu haldaja ettepanekul määrusega käesolevas paragrahvis sätestatud varumakse alam- ja ülemmäära piirides. (1¹) Kehtetu - (1²) Varumakse määr, väljendatuna eurodes 1000 liitri kütuse kohta bensiini, reaktiivkütuse, diislikütuse, kerge kütteõli ja petrooli korral ning 1000 kilogrammi kütuse kohta raske kütteõli korral, kehtestatakse igale nimetatud energiatootele kalendriaastaks vähemalt üks kuu enne kalendriaasta algust.",
-      "estleg:legalText": "(1) Varumakse määra kehtestab varu haldaja ettepanekul määrusega käesolevas paragrahvis sätestatud varumakse alam- ja ülemmäära piirides. (1¹) Kehtetu - (1²) Varumakse määr, väljendatuna eurodes 1000 liitri kütuse kohta bensiini, reaktiivkütuse, diislikütuse, kerge kütteõli ja petrooli korral ning 1000 kilogrammi kütuse kohta raske kütteõli korral, kehtestatakse igale nimetatud energiatootele kalendriaastaks vähemalt üks kuu enne kalendriaasta algust. (2) Varumakse määra kehtestamise aluseks on käesoleva seaduse § 3 lõike 1 kohase varu koguse haldamiseks vajalik eeldatav kulu järgneval kalendriaastal ning järgneval kalendriaastal tarbimisse lubatava kütuse eeldatav kogus. (3) Varumakse määra võib täpsustada üks kord kalendriaasta jooksul vastavalt kujunenud kuludele. Täpsustus tuleb teha, kui haldamiskulude katmine seda nõuab. Täpsustatud varumakse määr hakkab kehtima ülejärgmisest kuust selle kehtestamisest arvates. (4) Kui kalendriaastal tasutud varumakse kogusumma ületab vastava kalendriaasta varu haldamiskulud, võetakse ülelaekunud summa arvesse järgmisel varumakse määra kehtestamisel. (5) Varumakse määr avaldatakse viivitamatult varu haldaja veebilehel. Varu haldaja veebilehel avaldatakse ka varu haldaja arvelduskonto. (6) Varumakse alam- ja ülemmäär on seotud ühe päeva varu kogusele vastavate varu haldamiskuludega eurodes 1000 liitri kütuse kohta bensiini, reaktiivkütuse, diislikütuse, kerge kütteõli ja petrooli korral ning 1000 kilogrammi kütuse kohta raske kütteõli korral. (7) Bensiini, diislikütuse, kerge kütteõli ja petrooli ühe päeva varu kogusele vastav varumakse alammäär on 0,01 eurot ning ülemmäär 0,16 eurot 1000 liitri kütuse kohta. Reaktiivkütuse ühe päeva varu kogusele vastav varumakse alammäär on 0,01 eurot ning ülemmäär 0,19 eurot 1000 liitri kütuse kohta. (8) Raske kütteõli ühe päeva varu kogusele vastav varumakse alammäär on 0,01 eurot ning ülemmäär 0,26 eurot 1000 kilogrammi kütuse kohta.",
+      "estleg:summary": {
+        "@value": "(1) Varumakse määra kehtestab varu haldaja ettepanekul määrusega käesolevas paragrahvis sätestatud varumakse alam- ja ülemmäära piirides. (1²) Varumakse määr, väljendatuna eurodes 1000 liitri kütuse kohta bensiini, reaktiivkütuse, diislikütuse, kerge kütteõli ja petrooli korral ning 1000 kilogrammi kütuse kohta raske kütteõli korral, kehtestatakse igale nimetatud energiatootele kalendriaastaks vähemalt üks kuu enne kalendriaasta algust. (2) Varumakse määra kehtestamise aluseks on käesoleva",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varumakse määra kehtestab varu haldaja ettepanekul määrusega käesolevas paragrahvis sätestatud varumakse alam- ja ülemmäära piirides. (1²) Varumakse määr, väljendatuna eurodes 1000 liitri kütuse kohta bensiini, reaktiivkütuse, diislikütuse, kerge kütteõli ja petrooli korral ning 1000 kilogrammi kütuse kohta raske kütteõli korral, kehtestatakse igale nimetatud energiatootele kalendriaastaks vähemalt üks kuu enne kalendriaasta algust. (2) Varumakse määra kehtestamise aluseks on käesoleva seaduse § 3 lõike 1 kohase varu koguse haldamiseks vajalik eeldatav kulu järgneval kalendriaastal ning järgneval kalendriaastal tarbimisse lubatava kütuse eeldatav kogus. (3) Varumakse määra võib täpsustada üks kord kalendriaasta jooksul vastavalt kujunenud kuludele. Täpsustus tuleb teha, kui haldamiskulude katmine seda nõuab. Täpsustatud varumakse määr hakkab kehtima ülejärgmisest kuust selle kehtestamisest arvates. (4) Kui kalendriaastal tasutud varumakse kogusumma ületab vastava kalendriaasta varu haldamiskulud, võetakse ülelaekunud summa arvesse järgmisel varumakse määra kehtestamisel. (5) Varumakse määr avaldatakse viivitamatult varu haldaja veebilehel. Varu haldaja veebilehel avaldatakse ka varu haldaja arvelduskonto. (6) Varumakse alam- ja ülemmäär on seotud ühe päeva varu kogusele vastavate varu haldamiskuludega eurodes 1000 liitri kütuse kohta bensiini, reaktiivkütuse, diislikütuse, kerge kütteõli ja petrooli korral ning 1000 kilogrammi kütuse kohta raske kütteõli korral. (7) Bensiini, diislikütuse, kerge kütteõli ja petrooli ühe päeva varu kogusele vastav varumakse alammäär on 0,01 eurot ning ülemmäär 0,16 eurot 1000 liitri kütuse kohta. Reaktiivkütuse ühe päeva varu kogusele vastav varumakse alammäär on 0,01 eurot ning ülemmäär 0,19 eurot 1000 liitri kütuse kohta. (8) Raske kütteõli ühe päeva varu kogusele vastav varumakse alammäär on 0,01 eurot ning ülemmäär 0,26 eurot 1000 kilogrammi kütuse kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_3"
       },
@@ -3423,9 +3637,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:VKVS_Par_10_Lg_1"
-        },
-        {
-          "@id": "estleg:VKVS_Par_10_Lg_1_1"
         },
         {
           "@id": "estleg:VKVS_Par_10_Lg_1_2"
@@ -3514,19 +3725,6 @@
         }
       ],
       "estleg:implementedByCount": 1
-    },
-    {
-      "@id": "estleg:VKVS_Par_10_Lg_1_1",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "1¹",
-      "estleg:legalText": "(1¹) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VKVS_Par_10"
-      },
-      "rdfs:label": "§ 10 lg 1¹"
     },
     {
       "@id": "estleg:VKVS_Par_10_Lg_1_2",
@@ -3678,12 +3876,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Varu andmed ja statistiline kokkuvõte",
+      "rdfs:label": {
+        "@value": "§ 11. Varu andmed ja statistiline kokkuvõte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu haldaja peab üksikasjalikku ja pidevalt ajakohastatavat arvestust kogu enda poolt hoitava varu ja kogu Eesti territooriumil hoitava varu kohta. (2) Arvestus peab sisaldama andmeid hoidlate asukoha kohta ning hoidlate kaupa teavet hoitavate energiatoodete, neile vastava varu koguse ja varu omaniku kohta. (3) Varu haldaja esitab iga aasta 25. veebruariks Kliimaministeeriumile, Statistikaametile ning Euroopa Komisjonile kokkuvõtlikud andmed varu koosseisu kuuluvate energiatoodete ja neile",
+      "estleg:summary": {
+        "@value": "(1) Varu haldaja peab üksikasjalikku ja pidevalt ajakohastatavat arvestust kogu enda poolt hoitava varu ja kogu Eesti territooriumil hoitava varu kohta. (2) Arvestus peab sisaldama andmeid hoidlate asukoha kohta ning hoidlate kaupa teavet hoitavate energiatoodete, neile vastava varu koguse ja varu omaniku kohta. (3) Varu haldaja esitab iga aasta 25. veebruariks Kliimaministeeriumile, Statistikaametile ning Euroopa Komisjonile kokkuvõtlikud andmed varu koosseisu kuuluvate energiatoodete ja neile",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varu haldaja peab üksikasjalikku ja pidevalt ajakohastatavat arvestust kogu enda poolt hoitava varu ja kogu Eesti territooriumil hoitava varu kohta. (2) Arvestus peab sisaldama andmeid hoidlate asukoha kohta ning hoidlate kaupa teavet hoitavate energiatoodete, neile vastava varu koguse ja varu omaniku kohta. (3) Varu haldaja esitab iga aasta 25. veebruariks Kliimaministeeriumile, Statistikaametile ning Euroopa Komisjonile kokkuvõtlikud andmed varu koosseisu kuuluvate energiatoodete ja neile vastavate varu koguste kohta eelneva aasta viimase päeva seisuga. (4) Kui Euroopa Komisjon nõuab, esitab varu haldaja 15 päeva jooksul taotluse saamisest arvates komisjonile käesoleva paragrahvi lõikes 2 nimetatud andmed. Esitatavatest andmetest võib varu asukohta käsitlevad tundlikud andmed välja jätta. (5) Varu haldaja esitab Statistikaametile iga kuu lõpus käesoleva seaduse § 3 kohaselt olemasoleva varu kohta statistilise kokkuvõtte vastavalt nõukogu direktiivi 2009/119/EÜ IV lisale ja Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1099/2008 lisale C. Statistiline kokkuvõte esitatakse aruandekuule järgneva kuu 25. kuupäevaks. (6) Käesoleva paragrahvi lõikes 5 nimetatud statistiline kokkuvõte esitatakse ka Euroopa Komisjonile kahe kuu jooksul pärast komisjonilt taotluse saamist. (7) Varu haldaja säilitab kõiki varuga seotud andmeid, kokkuvõtteid ja muid dokumente vähemalt viis aastat alates nende saamisest või loomisest. (8) Käesoleva seaduse § 7 lõigetes 3–6 sätestatud juhtudel on kütuse müüjad kohustatud andma varu haldaja nõudel andmeid, mis on vajalikud Rahvusvahelisele Energiaagentuurile ja Euroopa Komisjonile informatsiooni esitamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_4"
@@ -3914,12 +4118,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11¹.",
-      "rdfs:label": "§ 11¹. Erivaru statistiline kokkuvõte",
+      "rdfs:label": {
+        "@value": "§ 11¹. Erivaru statistiline kokkuvõte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu haldaja esitab Kliimaministeeriumile ning Euroopa Komisjonile statistilise kokkuvõtte erivaru iga tootekategooria kohta, näidates iga kalendrikuu viimasel päeval olemasoleva erivaru ja täpsustades varu võrdlusaasta keskmise tarbimise kogused ja päevade arvu. (2) Kui erivaru või osa sellest hoitakse teises liikmesriigis, esitatakse statistilises kokkuvõttes andmed asjaomase liikmesriigi, seal hoitava erivaru koguse ja tootekategooria kohta.",
+      "estleg:summary": {
+        "@value": "(1) Varu haldaja esitab Kliimaministeeriumile ning Euroopa Komisjonile statistilise kokkuvõtte erivaru iga tootekategooria kohta, näidates iga kalendrikuu viimasel päeval olemasoleva erivaru ja täpsustades varu võrdlusaasta keskmise tarbimise kogused ja päevade arvu. (2) Kui erivaru või osa sellest hoitakse teises liikmesriigis, esitatakse statistilises kokkuvõttes andmed asjaomase liikmesriigi, seal hoitava erivaru koguse ja tootekategooria kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varu haldaja esitab Kliimaministeeriumile ning Euroopa Komisjonile statistilise kokkuvõtte erivaru iga tootekategooria kohta, näidates iga kalendrikuu viimasel päeval olemasoleva erivaru ja täpsustades varu võrdlusaasta keskmise tarbimise kogused ja päevade arvu. (2) Kui erivaru või osa sellest hoitakse teises liikmesriigis, esitatakse statistilises kokkuvõttes andmed asjaomase liikmesriigi, seal hoitava erivaru koguse ja tootekategooria kohta. Samad andmed esitatakse ka juhul, kui teise liikmesriigi erivaru hoitakse Eestis. (3) Käesoleva paragrahvi lõikes 1 nimetatud statistiline kokkuvõte esitatakse aruandekuule järgneva kalendrikuu jooksul Euroopa Komisjoni määratud viisil ja korras. (4) Statistiline kokkuvõte esitatakse Euroopa Komisjonile viivitamata ka pärast komisjoni taotluse saamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_4"
@@ -4019,12 +4229,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11².",
-      "rdfs:label": "§ 11². Kaubandusliku varu statistiline kokkuvõte",
+      "rdfs:label": {
+        "@value": "§ 11². Kaubandusliku varu statistiline kokkuvõte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Statistikaamet esitab Euroopa Komisjonile igakuise statistilise kokkuvõtte Eesti territooriumil hoitava kaubandusliku varu kohta vastavalt Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1099/2008 lisa C punktile 3.2.4. (2) Kaubanduslik varu on majandustegevuses osalejate energiatoodete varu, mille hoidmine ei ole käesoleva seaduse alusel kohustuslik.",
+      "estleg:summary": {
+        "@value": "(1) Statistikaamet esitab Euroopa Komisjonile igakuise statistilise kokkuvõtte Eesti territooriumil hoitava kaubandusliku varu kohta vastavalt Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1099/2008 lisa C punktile 3.2.4. (2) Kaubanduslik varu on majandustegevuses osalejate energiatoodete varu, mille hoidmine ei ole käesoleva seaduse alusel kohustuslik.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Statistikaamet esitab Euroopa Komisjonile igakuise statistilise kokkuvõtte Eesti territooriumil hoitava kaubandusliku varu kohta vastavalt Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1099/2008 lisa C punktile 3.2.4. (2) Kaubanduslik varu on majandustegevuses osalejate energiatoodete varu, mille hoidmine ei ole käesoleva seaduse alusel kohustuslik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_4"
@@ -4092,12 +4308,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Aruandlus varu kasutuselevõtu valmisoleku tagamiseks ning varumakse tasumise kontrollimiseks",
+      "rdfs:label": {
+        "@value": "§ 12. Aruandlus varu kasutuselevõtu valmisoleku tagamiseks ning varumakse tasumise kontrollimiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varumakse tasumise kontrollimiseks esitab Maksu- ja Tolliamet iga kuu viimaseks kuupäevaks varu haldajale andmed eelmisel kalendrikuul tarbimisse lubatud kütuste, samuti Eestis õhusõiduki tankimiseks lähetatud kütuse koguste kohta. (2) Käesoleva paragrahvi lõikes 1 nimetatud andmed esitatakse iga varumakse maksja kohta käesoleva seaduse § 9 lõikes 2 nimetatud energiatoodete kaupa. (3) Kütuse müüja turuosa määramiseks ning varu kasutuselevõtu valmisoleku tagamiseks on varu haldajal õigus",
+      "estleg:summary": {
+        "@value": "(1) Varumakse tasumise kontrollimiseks esitab Maksu- ja Tolliamet iga kuu viimaseks kuupäevaks varu haldajale andmed eelmisel kalendrikuul tarbimisse lubatud kütuste, samuti Eestis õhusõiduki tankimiseks lähetatud kütuse koguste kohta. (2) Käesoleva paragrahvi lõikes 1 nimetatud andmed esitatakse iga varumakse maksja kohta käesoleva seaduse § 9 lõikes 2 nimetatud energiatoodete kaupa. (3) Kütuse müüja turuosa määramiseks ning varu kasutuselevõtu valmisoleku tagamiseks on varu haldajal õigus",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varumakse tasumise kontrollimiseks esitab Maksu- ja Tolliamet iga kuu viimaseks kuupäevaks varu haldajale andmed eelmisel kalendrikuul tarbimisse lubatud kütuste, samuti Eestis õhusõiduki tankimiseks lähetatud kütuse koguste kohta. (2) Käesoleva paragrahvi lõikes 1 nimetatud andmed esitatakse iga varumakse maksja kohta käesoleva seaduse § 9 lõikes 2 nimetatud energiatoodete kaupa. (3) Kütuse müüja turuosa määramiseks ning varu kasutuselevõtu valmisoleku tagamiseks on varu haldajal õigus saada andmeid Maksu- ja Tolliametilt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_4"
@@ -4226,12 +4448,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Varu haldaja põhikiri",
+      "rdfs:label": {
+        "@value": "§ 13. Varu haldaja põhikiri",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Varu haldaja põhikirjas sätestatakse varu haldaja nõukogu ja juhatuse kohustused varu moodustamise ja haldamise korraldamisel.",
+      "estleg:summary": {
+        "@value": "Varu haldaja põhikirjas sätestatakse varu haldaja nõukogu ja juhatuse kohustused varu moodustamise ja haldamise korraldamisel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Varu haldaja põhikirjas sätestatakse varu haldaja nõukogu ja juhatuse kohustused varu moodustamise ja haldamise korraldamisel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
@@ -4256,10 +4484,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Varu haldaja põhikirjas sätestatakse varu haldaja nõukogu ja juhatuse kohustused varu moodustamise ja haldamise korraldamisel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Varu haldaja põhikirjas sätestatakse varu haldaja nõukogu ja juhatuse kohustused varu moodustamise ja haldamise korraldamisel.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_13"
-      }
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:VKVS_Par_14",
@@ -4268,13 +4498,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Erisused varu haldaja tegevuses",
+      "rdfs:label": {
+        "@value": "§ 14. Erisused varu haldaja tegevuses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Osaluse valitseja riigivaraseaduse tähenduses hoolitseb aktsionäriõiguste teostamisel, et varu haldaja põhikirjas on sätestatud järgmised nõuded: vähemalt üks nõukogu liige valitakse kütuse müüjaid ühendava organisatsiooni esitatud kandidaatide hulgast, kes esindavad käesoleva seaduse § 8 lõikes 2 sätestatud varumakse maksjaid; kui kütuse müüjaid ühendav organisatsioon ei esita nõukogu liikme kandidaate, valib kõik nõukogu liikmed osaluse valitseja.",
-      "estleg:legalText": "(1) Osaluse valitseja riigivaraseaduse tähenduses hoolitseb aktsionäriõiguste teostamisel, et varu haldaja põhikirjas on sätestatud järgmised nõuded: vähemalt üks nõukogu liige valitakse kütuse müüjaid ühendava organisatsiooni esitatud kandidaatide hulgast, kes esindavad käesoleva seaduse § 8 lõikes 2 sätestatud varumakse maksjaid; kui kütuse müüjaid ühendav organisatsioon ei esita nõukogu liikme kandidaate, valib kõik nõukogu liikmed osaluse valitseja. (2) Kehtetu - (3) Kehtetu - (4) Osaluse valitseja ei pea oma aktsionäriõiguste teostamisel järgima riigivaraseaduse § 80 lõikes 2 sätestatut. (5) Varule ja Eesti territooriumil hoitavale teise liikmesriigi varule ei saa pöörata sissenõuet ning kumbagi varu ei saa kasutada tagatisena. (6) Varu haldaja võib kütust importida ja müüa ilma tegevusloata vedelkütuse seaduse tähenduses.",
+      "estleg:summary": {
+        "@value": "(1) Osaluse valitseja riigivaraseaduse tähenduses hoolitseb aktsionäriõiguste teostamisel, et varu haldaja põhikirjas on sätestatud järgmised nõuded: 1) vähemalt üks nõukogu liige valitakse kütuse müüjaid ühendava organisatsiooni esitatud kandidaatide hulgast, kes esindavad käesoleva seaduse § 8 lõikes 2 sätestatud varumakse maksjaid; 2) kui kütuse müüjaid ühendav organisatsioon ei esita nõukogu liikme kandidaate, valib kõik nõukogu liikmed osaluse valitseja.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Osaluse valitseja riigivaraseaduse tähenduses hoolitseb aktsionäriõiguste teostamisel, et varu haldaja põhikirjas on sätestatud järgmised nõuded: 1) vähemalt üks nõukogu liige valitakse kütuse müüjaid ühendava organisatsiooni esitatud kandidaatide hulgast, kes esindavad käesoleva seaduse § 8 lõikes 2 sätestatud varumakse maksjaid; 2) kui kütuse müüjaid ühendav organisatsioon ei esita nõukogu liikme kandidaate, valib kõik nõukogu liikmed osaluse valitseja. (4) Osaluse valitseja ei pea oma aktsionäriõiguste teostamisel järgima riigivaraseaduse § 80 lõikes 2 sätestatut. (5) Varule ja Eesti territooriumil hoitavale teise liikmesriigi varule ei saa pöörata sissenõuet ning kumbagi varu ei saa kasutada tagatisena. (6) Varu haldaja võib kütust importida ja müüa ilma tegevusloata vedelkütuse seaduse tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
       },
@@ -4284,12 +4520,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:VKVS_Par_14_Lg_1"
-        },
-        {
-          "@id": "estleg:VKVS_Par_14_Lg_2"
-        },
-        {
-          "@id": "estleg:VKVS_Par_14_Lg_3"
         },
         {
           "@id": "estleg:VKVS_Par_14_Lg_4"
@@ -4349,11 +4579,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Osaluse valitseja riigivaraseaduse tähenduses hoolitseb aktsionäriõiguste teostamisel, et varu haldaja põhikirjas on sätestatud järgmised nõuded: vähemalt üks nõukogu liige valitakse kütuse müüjaid ühendava organisatsiooni esitatud kandidaatide hulgast, kes esindavad käesoleva seaduse § 8 lõikes 2 sätestatud varumakse maksjaid; kui kütuse müüjaid ühendav organisatsioon ei esita nõukogu liikme kandidaate, valib kõik nõukogu liikmed osaluse valitseja.",
+      "estleg:legalText": "(1) Osaluse valitseja riigivaraseaduse tähenduses hoolitseb aktsionäriõiguste teostamisel, et varu haldaja põhikirjas on sätestatud järgmised nõuded: 1) vähemalt üks nõukogu liige valitakse kütuse müüjaid ühendava organisatsiooni esitatud kandidaatide hulgast, kes esindavad käesoleva seaduse § 8 lõikes 2 sätestatud varumakse maksjaid; 2) kui kütuse müüjaid ühendav organisatsioon ei esita nõukogu liikme kandidaate, valib kõik nõukogu liikmed osaluse valitseja.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_14"
       },
       "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -4368,32 +4602,6 @@
           "@id": "estleg:VKVS_Par_8_Lg_2"
         }
       ]
-    },
-    {
-      "@id": "estleg:VKVS_Par_14_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VKVS_Par_14"
-      },
-      "rdfs:label": "§ 14 lg 2"
-    },
-    {
-      "@id": "estleg:VKVS_Par_14_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VKVS_Par_14"
-      },
-      "rdfs:label": "§ 14 lg 3"
     },
     {
       "@id": "estleg:VKVS_Par_14_Lg_4",
@@ -4462,12 +4670,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Varu kindlustamine",
+      "rdfs:label": {
+        "@value": "§ 15. Varu kindlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Varu haldaja on kohustatud varu kindlustama.",
+      "estleg:summary": {
+        "@value": "Varu haldaja on kohustatud varu kindlustama.",
+        "@language": "et"
+      },
       "estleg:legalText": "Varu haldaja on kohustatud varu kindlustama.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
@@ -4499,10 +4713,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Varu haldaja on kohustatud varu kindlustama.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Varu haldaja on kohustatud varu kindlustama.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_15"
       },
+      "rdfs:label": "§ 15 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -4518,12 +4734,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Varuga seotud lepingute sõlmimine",
+      "rdfs:label": {
+        "@value": "§ 16. Varuga seotud lepingute sõlmimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu moodustamise ja hoidmisega seotud lepingute sõlmimiseks korraldatavaid hankeid loetakse riigi olulise huvi kaitsmisega seotud riigihangeteks riigihangete seaduse § 11 lõike 1 punkti 20 tähenduses. (2) Varu moodustamiseks ja hoidmiseks korraldatavate hangete läbiviimise põhimõtted kehtestab . Kütuse ostu-, müügi-, hoiu- ja delegeeritud varu lepingute üldtingimused kehtestab valdkonna eest vastutav minister, eritingimused nõukogu juhatuse ettepanekul.",
+      "estleg:summary": {
+        "@value": "(1) Varu moodustamise ja hoidmisega seotud lepingute sõlmimiseks korraldatavaid hankeid loetakse riigi olulise huvi kaitsmisega seotud riigihangeteks riigihangete seaduse § 11 lõike 1 punkti 20 tähenduses. (2) Varu moodustamiseks ja hoidmiseks korraldatavate hangete läbiviimise põhimõtted kehtestab . Kütuse ostu-, müügi-, hoiu- ja delegeeritud varu lepingute üldtingimused kehtestab valdkonna eest vastutav minister, eritingimused nõukogu juhatuse ettepanekul.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varu moodustamise ja hoidmisega seotud lepingute sõlmimiseks korraldatavaid hankeid loetakse riigi olulise huvi kaitsmisega seotud riigihangeteks riigihangete seaduse § 11 lõike 1 punkti 20 tähenduses. (2) Varu moodustamiseks ja hoidmiseks korraldatavate hangete läbiviimise põhimõtted kehtestab . Kütuse ostu-, müügi-, hoiu- ja delegeeritud varu lepingute üldtingimused kehtestab valdkonna eest vastutav minister, eritingimused nõukogu juhatuse ettepanekul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
@@ -4631,12 +4853,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Varu müük",
+      "rdfs:label": {
+        "@value": "§ 17. Varu müük",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu roteerimisel võib varu müüa turuhinnaga ning tingimusel, et varu müügil ja taassoetamisel on energiatoote hinnarisk maandatud. Sama kehtib ka juhul, kui hoiulepingu lõppemise tõttu varu ühes hoiukohas müüakse ja uues hoiukohas taassoetatakse. (2) Varu haldajal on õigus varu vähendamiseks varu müüa, kui varu olemasolev kogus ületab käesoleva seaduse § 3 lõikes 1 sätestatud varu koguse viie protsendi ulatuses. Varu vähendamiseks võib varu müüa turuhinnaga selle koguse ulatuses, mis",
+      "estleg:summary": {
+        "@value": "(1) Varu roteerimisel võib varu müüa turuhinnaga ning tingimusel, et varu müügil ja taassoetamisel on energiatoote hinnarisk maandatud. Sama kehtib ka juhul, kui hoiulepingu lõppemise tõttu varu ühes hoiukohas müüakse ja uues hoiukohas taassoetatakse. (2) Varu haldajal on õigus varu vähendamiseks varu müüa, kui varu olemasolev kogus ületab käesoleva seaduse § 3 lõikes 1 sätestatud varu koguse viie protsendi ulatuses. Varu vähendamiseks võib varu müüa turuhinnaga selle koguse ulatuses, mis",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varu roteerimisel võib varu müüa turuhinnaga ning tingimusel, et varu müügil ja taassoetamisel on energiatoote hinnarisk maandatud. Sama kehtib ka juhul, kui hoiulepingu lõppemise tõttu varu ühes hoiukohas müüakse ja uues hoiukohas taassoetatakse. (2) Varu haldajal on õigus varu vähendamiseks varu müüa, kui varu olemasolev kogus ületab käesoleva seaduse § 3 lõikes 1 sätestatud varu koguse viie protsendi ulatuses. Varu vähendamiseks võib varu müüa turuhinnaga selle koguse ulatuses, mis ületab kohustusliku varu koguse rohkem kui viis protsenti. Kui turuhind on madalam vastava energiatoote kaalutud keskmisest soetushinnast, on varu müük lubatud valdkonna eest vastutava ministri loal. (3) Varu vähendamisel tuleb arvestada, et ka tulevikus oleks varu hoidmise kohustus täidetud 90 päeva keskmise päevase puhasimpordi alusel tingimusel, et riigisiseselt toodetud energiatoodete eksport puudub. (4) Varu vähendamine tähendab olukorda, kus varu müügi otsustamisel ei ole varu plaanis taassoetada. Varu vähendamisega ei ole tegemist, kui varu müügi otsustamisel otsustatakse ka varu taassoetamine ning varu müügil ja taassoetamisel on energiatoote hinnarisk maandatud. (5) Varus hoitavate energiatoodete koguste omavaheliseks tasakaalustamiseks võib ühe energiatoote asendada teisega vastavate energiatoodete ostu ja müügi teel tingimusel, et ostul ja müügil on energiatoodete hinnarisk maandatud. (6) Varu müügi ja taassoetamise ajastamisel ning energiatoodete koguste omavahelisel tasakaalustamisel peab varu haldaja tagama rahaliste vahendite mõistliku ja säästliku kasutamise. (7) Varustamisraskuste korral ei ole käesoleva paragrahvi lõikes 2 sätestatud müük lubatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
@@ -4836,12 +5064,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Kütusega varustamise olukorra analüüs",
+      "rdfs:label": {
+        "@value": "§ 18. Kütusega varustamise olukorra analüüs",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu haldaja on kohustatud koostöös kütusemüüjatega analüüsima riigi kütusega varustamise olukorda ning varustamisraskuste ilmnemisel informeerima kohe Kliimaministeeriumi. (2) Kütusemüüja on kohustatud andma varu haldaja nõudel andmeid, mis on vajalikud käesoleva paragrahvi lõikes 1 nimetatud analüüsiks.",
+      "estleg:summary": {
+        "@value": "(1) Varu haldaja on kohustatud koostöös kütusemüüjatega analüüsima riigi kütusega varustamise olukorda ning varustamisraskuste ilmnemisel informeerima kohe Kliimaministeeriumi. (2) Kütusemüüja on kohustatud andma varu haldaja nõudel andmeid, mis on vajalikud käesoleva paragrahvi lõikes 1 nimetatud analüüsiks.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Varu haldaja on kohustatud koostöös kütusemüüjatega analüüsima riigi kütusega varustamise olukorda ning varustamisraskuste ilmnemisel informeerima kohe Kliimaministeeriumi. (2) Kütusemüüja on kohustatud andma varu haldaja nõudel andmeid, mis on vajalikud käesoleva paragrahvi lõikes 1 nimetatud analüüsiks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
@@ -4930,12 +5164,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Teabe saamise õigus",
+      "rdfs:label": {
+        "@value": "§ 19. Teabe saamise õigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Varu haldajal on õigus käesolevast seadusest tulenevate ülesannete täitmiseks saada teavet Maksu- ja Tolliametilt.",
+      "estleg:summary": {
+        "@value": "Varu haldajal on õigus käesolevast seadusest tulenevate ülesannete täitmiseks saada teavet Maksu- ja Tolliametilt.",
+        "@language": "et"
+      },
       "estleg:legalText": "Varu haldajal on õigus käesolevast seadusest tulenevate ülesannete täitmiseks saada teavet Maksu- ja Tolliametilt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
@@ -4982,10 +5222,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Varu haldajal on õigus käesolevast seadusest tulenevate ülesannete täitmiseks saada teavet Maksu- ja Tolliametilt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Varu haldajal on õigus käesolevast seadusest tulenevate ülesannete täitmiseks saada teavet Maksu- ja Tolliametilt.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_19"
       },
+      "rdfs:label": "§ 19 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -5011,12 +5253,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19¹.",
-      "rdfs:label": "§ 19¹. Osalemine Euroopa Komisjoni ülevaadete koostamises",
+      "rdfs:label": {
+        "@value": "§ 19¹. Osalemine Euroopa Komisjoni ülevaadete koostamises",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Valdkonna eest vastutav minister nimetab ametnikud, kes osalevad Euroopa Komisjoni kutsel teises liikmesriigis varu hoidmise ja kättesaadavuse ülevaate koostamises. (2) Käesoleva paragrahvi lõikes 1 nimetatud isikud on kohustatud osutama Euroopa Komisjoni volitatud isikutele abi Eesti Vabariiki puudutava ülevaate koostamiseks ning tagama nende juurdepääsu varu käsitlevatele dokumentidele ja varu asukohtadele. (3) Varu haldaja võimaldab käesoleva paragrahvi lõigetes 1 ja 2 nimetatud",
+      "estleg:summary": {
+        "@value": "(1) Valdkonna eest vastutav minister nimetab ametnikud, kes osalevad Euroopa Komisjoni kutsel teises liikmesriigis varu hoidmise ja kättesaadavuse ülevaate koostamises. (2) Käesoleva paragrahvi lõikes 1 nimetatud isikud on kohustatud osutama Euroopa Komisjoni volitatud isikutele abi Eesti Vabariiki puudutava ülevaate koostamiseks ning tagama nende juurdepääsu varu käsitlevatele dokumentidele ja varu asukohtadele. (3) Varu haldaja võimaldab käesoleva paragrahvi lõigetes 1 ja 2 nimetatud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valdkonna eest vastutav minister nimetab ametnikud, kes osalevad Euroopa Komisjoni kutsel teises liikmesriigis varu hoidmise ja kättesaadavuse ülevaate koostamises. (2) Käesoleva paragrahvi lõikes 1 nimetatud isikud on kohustatud osutama Euroopa Komisjoni volitatud isikutele abi Eesti Vabariiki puudutava ülevaate koostamiseks ning tagama nende juurdepääsu varu käsitlevatele dokumentidele ja varu asukohtadele. (3) Varu haldaja võimaldab käesoleva paragrahvi lõigetes 1 ja 2 nimetatud isikutele ligipääsu käesoleva paragrahvi lõikes 2 nimetatud Eesti Vabariiki puudutava ülevaate koostamisel. (4) Käesoleva paragrahvi lõikes 1 nimetatud ülevaate koostamises osalevad isikud ei või avaldada kolmandatele isikutele ameti- ega ärisaladust sisaldavat teavet, mida on kogutud või vahetatud käesoleva paragrahvi lõigetes 1 ja 2 sätestatud tegevuse käigus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_5"
@@ -5154,13 +5402,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Vedelkütusevaru omavoliline kasutamine",
+      "rdfs:label": {
+        "@value": "§ 20. Vedelkütusevaru omavoliline kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 20. Vedelkütusevaru omavoliline kasutamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_6"
       },
@@ -5197,13 +5450,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20¹.",
-      "rdfs:label": "§ 20¹. Varumakse tasumata jätmine",
+      "rdfs:label": {
+        "@value": "§ 20¹. Varumakse tasumata jätmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 20¹. Varumakse tasumata jätmine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_6"
       },
@@ -5232,12 +5490,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Vedelkütusevaru kohta või kütusega varustamise olukorra analüüsiks vajalike andmete esitamata jätmine või valeandmete esitamine",
+      "rdfs:label": {
+        "@value": "§ 21. Vedelkütusevaru kohta või kütusega varustamise olukorra analüüsiks vajalike andmete esitamata jätmine või valeandmete esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Vedelkütusevaru kohta või kütusega varustamise olukorra analüüsiks vajalike andmete tähtajaks esitamata jätmise või valeandmete esitamise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Vedelkütusevaru kohta või kütusega varustamise olukorra analüüsiks vajalike andmete tähtajaks esitamata jätmise või valeandmete esitamise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vedelkütusevaru kohta või kütusega varustamise olukorra analüüsiks vajalike andmete tähtajaks esitamata jätmise või valeandmete esitamise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 2000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_6"
@@ -5367,12 +5631,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Menetlus",
+      "rdfs:label": {
+        "@value": "§ 22. Menetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Kliimaministeerium.",
+      "estleg:summary": {
+        "@value": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Kliimaministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Kliimaministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_6"
@@ -5431,10 +5701,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Kliimaministeerium.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas peatükis sätestatud väärtegude kohtuväline menetleja on Kliimaministeerium.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_22"
       },
+      "rdfs:label": "§ 22 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kliimaministeerium"
@@ -5448,13 +5720,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Üleminekusäte",
+      "rdfs:label": {
+        "@value": "§ 23. Üleminekusäte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Varu tuleb iga käesoleva seaduse § 2 lõikes 1 nimetatud kategooria kaupa hoida pidevalt tasemel, mis vastab: alates käesoleva seaduse jõustumisest vähemalt 20 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2006. aasta 1. jaanuarist vähemalt 35 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2007. aasta 1. jaanuarist vähemalt 45 päeva keskmisele vastava kategooria",
-      "estleg:legalText": "(1) Varu tuleb iga käesoleva seaduse § 2 lõikes 1 nimetatud kategooria kaupa hoida pidevalt tasemel, mis vastab: alates käesoleva seaduse jõustumisest vähemalt 20 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2006. aasta 1. jaanuarist vähemalt 35 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2007. aasta 1. jaanuarist vähemalt 45 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2008. aasta 1. jaanuarist vähemalt 50 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2009. aasta 1. jaanuarist vähemalt 65 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal. (2) Käesoleva seaduse § 3 lõikes 1 sätestatud tasemel tuleb varu hoida alates 2010. aasta 1. jaanuarist. (3) Käesoleva seaduse §-s 4 nimetatud äriühingu asutab Vabariigi Valitsus hiljemalt ühe kuu jooksul käesoleva seaduse jõustumisest arvates. (4) Kuni käesoleva seaduse §-s 4 nimetatud äriühingu asutamiseni on varu haldajaks ja riigivara valitsejaks Majandus- ja Kommunikatsiooniministeerium koos käesolevast seadusest tulenevate õiguste ja kohustustega. (5) Enne käesoleva seaduse jõustumist Majandus- ja Kommunikatsiooniministeeriumi poolt vastavalt vedelkütuse miinimumvaru seadusele soetatud kütus antakse äriühingu asutamisel üle mitterahalise sissemaksena osa- või aktsiakapitali. (6) Varu haldaja hüvitab riigile Majandus- ja Kommunikatsiooniministeeriumi poolt 2005. aastal varu haldamiseks tehtud kulutused. (7) Majandus- ja Kommunikatsiooniministeeriumi poolt 2005. aastal varu haldamiseks tehtud kulutused kuni varu haldaja asutamiseni hüvitatakse Vabariigi Valitsuse reservi kaudu. (8) Importijad on kohustatud kuni 2007. aasta 1. jaanuarini hoidma varu 10 päeva koguses, mis arvutatakse nende nimel eelmisel aastal Eestis tarbimisse lubatud kütuse keskmisest kogusest lähtudes. Importijate hoitav varu arvestatakse käesoleva paragrahvi lõike 1 punktides 1 ja 2 sätestatud varu koguse hulka. (9) Käesoleva paragrahvi lõikes 8 nimetatud tähtpäevani peavad importijad esitama varu haldajale iga kuu 5. kuupäevaks statistilise kokkuvõtte eelmise kuu lõpu varu kohta. Statistilise kokkuvõtte vormi kehtestab (10) Varu hoidmise kohustuse täitmiseks peavad importijad hoidma varu Eestis. (11) 2005. aasta varumakse määr kehtestatakse kahe nädala jooksul käesoleva seaduse jõustumisest arvates. Esimene varumakse tasutakse hiljemalt käesoleva seaduse jõustumisele järgneva kuu 15. kuupäevaks.",
+      "estleg:summary": {
+        "@value": "(1) Varu tuleb iga käesoleva seaduse § 2 lõikes 1 nimetatud kategooria kaupa hoida pidevalt tasemel, mis vastab: 1) alates käesoleva seaduse jõustumisest vähemalt 20 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 2) alates 2006. aasta 1. jaanuarist vähemalt 35 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 3) alates 2007. aasta 1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Varu tuleb iga käesoleva seaduse § 2 lõikes 1 nimetatud kategooria kaupa hoida pidevalt tasemel, mis vastab: 1) alates käesoleva seaduse jõustumisest vähemalt 20 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 2) alates 2006. aasta 1. jaanuarist vähemalt 35 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 3) alates 2007. aasta 1. jaanuarist vähemalt 45 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 4) alates 2008. aasta 1. jaanuarist vähemalt 50 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 5) alates 2009. aasta 1. jaanuarist vähemalt 65 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal. (2) Käesoleva seaduse § 3 lõikes 1 sätestatud tasemel tuleb varu hoida alates 2010. aasta 1. jaanuarist. (3) Käesoleva seaduse §-s 4 nimetatud äriühingu asutab Vabariigi Valitsus hiljemalt ühe kuu jooksul käesoleva seaduse jõustumisest arvates. (4) Kuni käesoleva seaduse §-s 4 nimetatud äriühingu asutamiseni on varu haldajaks ja riigivara valitsejaks Majandus- ja Kommunikatsiooniministeerium koos käesolevast seadusest tulenevate õiguste ja kohustustega. (5) Enne käesoleva seaduse jõustumist Majandus- ja Kommunikatsiooniministeeriumi poolt vastavalt vedelkütuse miinimumvaru seadusele soetatud kütus antakse äriühingu asutamisel üle mitterahalise sissemaksena osa- või aktsiakapitali. (6) Varu haldaja hüvitab riigile Majandus- ja Kommunikatsiooniministeeriumi poolt 2005. aastal varu haldamiseks tehtud kulutused. (7) Majandus- ja Kommunikatsiooniministeeriumi poolt 2005. aastal varu haldamiseks tehtud kulutused kuni varu haldaja asutamiseni hüvitatakse Vabariigi Valitsuse reservi kaudu. (8) Importijad on kohustatud kuni 2007. aasta 1. jaanuarini hoidma varu 10 päeva koguses, mis arvutatakse nende nimel eelmisel aastal Eestis tarbimisse lubatud kütuse keskmisest kogusest lähtudes. Importijate hoitav varu arvestatakse käesoleva paragrahvi lõike 1 punktides 1 ja 2 sätestatud varu koguse hulka. (9) Käesoleva paragrahvi lõikes 8 nimetatud tähtpäevani peavad importijad esitama varu haldajale iga kuu 5. kuupäevaks statistilise kokkuvõtte eelmise kuu lõpu varu kohta. Statistilise kokkuvõtte vormi kehtestab (10) Varu hoidmise kohustuse täitmiseks peavad importijad hoidma varu Eestis. (11) 2005. aasta varumakse määr kehtestatakse kahe nädala jooksul käesoleva seaduse jõustumisest arvates. Esimene varumakse tasutakse hiljemalt käesoleva seaduse jõustumisele järgneva kuu 15. kuupäevaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_7"
       },
@@ -5552,11 +5830,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Varu tuleb iga käesoleva seaduse § 2 lõikes 1 nimetatud kategooria kaupa hoida pidevalt tasemel, mis vastab: alates käesoleva seaduse jõustumisest vähemalt 20 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2006. aasta 1. jaanuarist vähemalt 35 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2007. aasta 1. jaanuarist vähemalt 45 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2008. aasta 1. jaanuarist vähemalt 50 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; alates 2009. aasta 1. jaanuarist vähemalt 65 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal.",
+      "estleg:legalText": "(1) Varu tuleb iga käesoleva seaduse § 2 lõikes 1 nimetatud kategooria kaupa hoida pidevalt tasemel, mis vastab: 1) alates käesoleva seaduse jõustumisest vähemalt 20 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 2) alates 2006. aasta 1. jaanuarist vähemalt 35 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 3) alates 2007. aasta 1. jaanuarist vähemalt 45 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 4) alates 2008. aasta 1. jaanuarist vähemalt 50 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal; 5) alates 2009. aasta 1. jaanuarist vähemalt 65 päeva keskmisele vastava kategooria summaarsele sisemaise tarbimise kogusele eelmisel kalendriaastal.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_23"
       },
       "rdfs:label": "§ 23 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -5812,12 +6097,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23¹.",
-      "rdfs:label": "§ 23¹. Paragrahvi 7 lõike 8 rakendamine",
+      "rdfs:label": {
+        "@value": "§ 23¹. Paragrahvi 7 lõike 8 rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse § 7 lõiget 8 rakendatakse, kui on jõustunud otsus Eesti Vabariigi ühinemise kohta Rahvusvahelise Energiaagentuuriga.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse § 7 lõiget 8 rakendatakse, kui on jõustunud otsus Eesti Vabariigi ühinemise kohta Rahvusvahelise Energiaagentuuriga.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse § 7 lõiget 8 rakendatakse, kui on jõustunud otsus Eesti Vabariigi ühinemise kohta Rahvusvahelise Energiaagentuuriga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_7"
@@ -5852,10 +6143,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse § 7 lõiget 8 rakendatakse, kui on jõustunud otsus Eesti Vabariigi ühinemise kohta Rahvusvahelise Energiaagentuuriga.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 7 lõiget 8 rakendatakse, kui on jõustunud otsus Eesti Vabariigi ühinemise kohta Rahvusvahelise Energiaagentuuriga.",
       "estleg:parentProvision": {
         "@id": "estleg:VKVS_Par_23_1"
       },
+      "rdfs:label": "§ 23¹ lg 1",
       "estleg:references": [
         {
           "@id": "estleg:VKVS_Par_7"
@@ -5869,18 +6162,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24.",
+      "rdfs:label": {
+        "@value": "§ 24.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
+      "estleg:summary": "§ 24.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_7"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VKVS_7"
       },
-      "estleg:summary": "§ 24.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VKVS_Par_24_v860541"
@@ -5894,12 +6190,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 26. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_7"
@@ -5923,12 +6225,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 27. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vedelkütusevaru seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VKVS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval. (2) Käesoleva seaduse § 3 lõige 4 jõustub 2006. aasta 1. jaanuaril. (3) Käesoleva seaduse § 5 lõige 9 jõustub 2010. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval. (2) Käesoleva seaduse § 3 lõige 4 jõustub 2006. aasta 1. jaanuaril. (3) Käesoleva seaduse § 5 lõige 9 jõustub 2010. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval. (2) Käesoleva seaduse § 3 lõige 4 jõustub 2006. aasta 1. jaanuaril. (3) Käesoleva seaduse § 5 lõige 9 jõustub 2010. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VKVS_7"
@@ -6020,96 +6328,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_VKVS_P_3_2_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/506072023010",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_3_2"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationText": "käesoleva seaduse §-s 31"
-    },
-    {
-      "@id": "estleg:Citation_VKVS_P_3_2_Lg_2_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_3_2_Lg_2"
+      "eli:realizes": {
+        "@id": "estleg:VKVS_Map"
       },
-      "estleg:citationText": "käesoleva seaduse §-s 31"
-    },
-    {
-      "@id": "estleg:Citation_VKVS_P_4_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_4"
-      },
-      "estleg:citationDetail": "RHS_HÄDA",
-      "estleg:citationText": "hädaolukorra seaduse § 181 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_VKVS_P_4_Lg_1_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_4_Lg_1"
-      },
-      "estleg:citationDetail": "RHS_HÄDA",
-      "estleg:citationText": "hädaolukorra seaduse § 181 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_VKVS_P_7_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_7"
-      },
-      "estleg:citationDetail": "RHS_HÄDA",
-      "estleg:citationText": "hädaolukorra seaduse § 183 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_VKVS_P_7_Lg_2_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_7_Lg_2"
-      },
-      "estleg:citationDetail": "RHS_HÄDA",
-      "estleg:citationText": "hädaolukorra seaduse § 183 lõikes 1"
-    },
-    {
-      "@id": "estleg:Citation_VKVS_P_7_1_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_7_1"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 72"
-    },
-    {
-      "@id": "estleg:Citation_VKVS_P_7_1_Lg_1_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VKVS_Par_7_1_Lg_1"
-      },
-      "estleg:citationText": "käesoleva seaduse §-s 72"
+      "rdfs:label": {
+        "@value": "Liquid Fuel Stocks Act",
+        "@language": "en"
+      }
     }
   ]
 }

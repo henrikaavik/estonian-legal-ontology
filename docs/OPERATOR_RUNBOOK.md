@@ -47,7 +47,38 @@ python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01 --regen-state
 python3 scripts/generate_all_laws.py --from-manifest krr_outputs/generation_manifest_laws.json
 # The run writes counts, the unchanged-vs-refreshed split and source-removed
 # files (reported, never deleted) to krr_outputs/generation_manifest_laws.json.
+```
 
+What a laws run leaves behind, and what to commit (#692, #695, #707):
+
+- `krr_outputs/generation_manifest_laws.json` is **committed**. It is the run's
+  provenance, the slug freeze for later runs (#238) and the
+  `--from-manifest` replay list.
+- `krr_outputs/fetch_content_hashes.json` is committed. One row per law slug
+  attests the cached XML file the peep was parsed from: its SHA-256 (the
+  root's `estleg:contentHash`), size, public-API URL, globaalID, terviktekst
+  group id, validity start and the `--kehtiv` snapshot.
+- The XML itself stays out of git under `data/riigiteataja/`.
+  `build_release_assets.py` packs it into `release/rt_xml_<kehtiv>.tar.gz` and
+  fails if a hash row no longer matches its file. Keep the cache until the
+  release is cut.
+- A refresh keeps every committed slug and act IRI. Slugs come from the
+  manifest, else from the peep already on disk; act prefixes come from the
+  on-disk root's `@id`. Only a law new to the snapshot gets a derived IRI.
+- `missing-only` treats a root without `estleg:terviktekstId` or
+  `estleg:globalId` as stale, and so does a root whose stored globaalID differs
+  from the search row's (a new redaction under the same `--kehtiv`).
+- Multipart acts: the whole-act `<slug>_map_peep.json` root is restamped in place.
+
+After a laws refresh, re-publish the legacy IRI bridge and repair any root the
+run did not reach (dry run first; `--apply` writes):
+
+```bash
+python3 scripts/backfill_rt_eli.py
+python3 scripts/backfill_rt_eli.py --apply
+```
+
+```bash
 # State and municipal regulations. Source-list failures are fatal unless
 # --allow-partial is given.
 python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01

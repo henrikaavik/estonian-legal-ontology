@@ -117,6 +117,8 @@ def test_build_writes_every_asset_and_a_v1_format_sha256sums(tree: dict[str, Pat
         "rdf-dumps": "--skip-rdf-dumps",
         "named-graphs": "--skip-rdf-dumps (the laws slot needs a fresh combined_ontology.nq)",
         "chunks": "--skip-chunks",
+        # #692: the fixture tree has no cached RT XML.
+        "rt-xml": "no RT XML under data/riigiteataja/ (run generate_all_laws.py first)",
     }
 
 

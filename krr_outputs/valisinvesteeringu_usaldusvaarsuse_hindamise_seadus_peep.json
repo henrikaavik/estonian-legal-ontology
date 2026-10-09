@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VUHS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Välisinvesteeringu usaldusväärsuse hindamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Välisinvesteeringu usaldusväärsuse hindamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Foreign Investment Reliability Assessment Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/110022023003.xml"
+        "@id": "https://www.riigiteataja.ee/akt/111072026100"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/111072026100/xml"
+      },
+      "estleg:globalId": "111072026100",
+      "eli:id_local": "111072026100",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "1055952",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "4c6f0cd4b891bd2b1081151df2cb2fec79064389c2cb6443f3d39f4cb4925c27",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2023-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-09-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-09-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/504042023002"
@@ -236,14 +248,40 @@
         {
           "@id": "estleg:Draft_MKM21_1544"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/504042023002"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_VUHS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Üldsätted",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VUHS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:VUHS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Välisinvesteeringu usaldusväärsuse hindamise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Välisinvesteeringu usaldusväärsuse hindamise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VUHS_1"
@@ -266,26 +304,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VUHS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 Üldsätted",
-      "skos:prefLabel": "§1–4 Üldsätted",
-      "skos:inScheme": {
-        "@id": "estleg:VUHS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_VUHS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – Üldsätted",
+      "rdfs:label": {
+        "@value": "1. peatükk – Üldsätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
@@ -305,8 +332,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–13 Välisinvesteeringu loamenetlus",
-      "skos:prefLabel": "§5–13 Välisinvesteeringu loamenetlus",
+      "rdfs:label": {
+        "@value": "§5–13 Välisinvesteeringu loamenetlus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–13 Välisinvesteeringu loamenetlus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VUHS_TopicScheme"
       },
@@ -318,7 +351,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – Välisinvesteeringu loamenetlus",
+      "rdfs:label": {
+        "@value": "2. peatükk – Välisinvesteeringu loamenetlus",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
@@ -338,8 +374,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§14–15 Välisinvesteeringukomisjon",
-      "skos:prefLabel": "§14–15 Välisinvesteeringukomisjon",
+      "rdfs:label": {
+        "@value": "§14–15 Välisinvesteeringukomisjon",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§14–15 Välisinvesteeringukomisjon",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VUHS_TopicScheme"
       },
@@ -351,7 +393,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – Välisinvesteeringukomisjon",
+      "rdfs:label": {
+        "@value": "3. peatükk – Välisinvesteeringukomisjon",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
@@ -371,8 +416,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§16–19 Koostöö Euroopa Liidus välisinvesteeringute menetlemisel",
-      "skos:prefLabel": "§16–19 Koostöö Euroopa Liidus välisinvesteeringute menetlemisel",
+      "rdfs:label": {
+        "@value": "§16–19 Koostöö Euroopa Liidus välisinvesteeringute menetlemisel",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§16–19 Koostöö Euroopa Liidus välisinvesteeringute menetlemisel",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VUHS_TopicScheme"
       },
@@ -384,7 +435,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – Koostöö Euroopa Liidus välisinvesteeringute menetlemisel",
+      "rdfs:label": {
+        "@value": "4. peatükk – Koostöö Euroopa Liidus välisinvesteeringute menetlemisel",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
@@ -404,8 +458,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§20–24 Riiklik järelevalve",
-      "skos:prefLabel": "§20–24 Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "§20–24 Riiklik järelevalve",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§20–24 Riiklik järelevalve",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VUHS_TopicScheme"
       },
@@ -417,7 +477,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "5. peatükk – Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
@@ -437,12 +500,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§25–32 Rakendussätted",
-      "skos:prefLabel": "§25–32 Rakendussätted",
+      "rdfs:label": {
+        "@value": "§25–32 Rakendussätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§25–32 Rakendussätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VUHS_TopicScheme"
       },
-      "estleg:provisionCount": 8
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:Chapter_VUHS_6",
@@ -450,7 +519,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "6. peatükk – Rakendussätted",
+      "rdfs:label": {
+        "@value": "6. peatükk – Rakendussätted",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "6",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
@@ -470,12 +542,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala ja eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala ja eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab välisinvesteeringu tegemise loa kohustuse, välisinvesteeringu usaldusväärsuse hindamise ning vastavate nõuete täitmise üle riikliku järelevalve teostamise tingimused ja korra. (2) Käesoleva seaduse eesmärk on välisinvesteeringu usaldusväärsuse hindamisega tagada Eesti ja muu Euroopa Liidu liikmesriigi julgeolek ning avalik kord. (3) Käesolevas seaduses ettenähtud loamenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevas seaduses sätestatud erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab välisinvesteeringu tegemise loa kohustuse, välisinvesteeringu usaldusväärsuse hindamise ning vastavate nõuete täitmise üle riikliku järelevalve teostamise tingimused ja korra. (2) Käesoleva seaduse eesmärk on välisinvesteeringu usaldusväärsuse hindamisega tagada Eesti ja muu Euroopa Liidu liikmesriigi julgeolek ning avalik kord. (3) Käesolevas seaduses ettenähtud loamenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevas seaduses sätestatud erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab välisinvesteeringu tegemise loa kohustuse, välisinvesteeringu usaldusväärsuse hindamise ning vastavate nõuete täitmise üle riikliku järelevalve teostamise tingimused ja korra. (2) Käesoleva seaduse eesmärk on välisinvesteeringu usaldusväärsuse hindamisega tagada Eesti ja muu Euroopa Liidu liikmesriigi julgeolek ning avalik kord. (3) Käesolevas seaduses ettenähtud loamenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevas seaduses sätestatud erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_1"
@@ -554,13 +632,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Välisinvesteering",
+      "rdfs:label": {
+        "@value": "§ 2. Välisinvesteering",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Välisinvesteering käesoleva seaduse tähenduses on tehing või seotud tehingud, mille kaudu välisinvestor: omandab otsese või kaudse olulise osaluse sihtettevõtjas; saavutab otsese või kaudse kontrolli sihtettevõtja üle või omandab sihtettevõtja osa. (2) Olulist osalust käsitatakse väärtpaberituru seaduse § 9 tähenduses. (3) Käesolevas seaduses nimetatud kontrolli ja kontrollitava ettevõtja määratlemisel lähtutakse väärtpaberituru seaduse §-s 10 sätestatust.",
-      "estleg:legalText": "(1) Välisinvesteering käesoleva seaduse tähenduses on tehing või seotud tehingud, mille kaudu välisinvestor: omandab otsese või kaudse olulise osaluse sihtettevõtjas; saavutab otsese või kaudse kontrolli sihtettevõtja üle või omandab sihtettevõtja osa. (2) Olulist osalust käsitatakse väärtpaberituru seaduse § 9 tähenduses. (3) Käesolevas seaduses nimetatud kontrolli ja kontrollitava ettevõtja määratlemisel lähtutakse väärtpaberituru seaduse §-s 10 sätestatust. (4) Käesolevas seaduses käsitatakse ettevõtjat konkurentsiseaduse tähenduses.",
+      "estleg:summary": {
+        "@value": "(1) Välisinvesteering käesoleva seaduse tähenduses on tehing või seotud tehingud, mille kaudu välisinvestor: 1) omandab otsese või kaudse olulise osaluse sihtettevõtjas; 2) saavutab otsese või kaudse kontrolli sihtettevõtja üle või 3) omandab sihtettevõtja osa. (2) Olulist osalust käsitatakse väärtpaberituru seaduse § 9 tähenduses. (3) Käesolevas seaduses nimetatud kontrolli ja kontrollitava ettevõtja määratlemisel lähtutakse väärtpaberituru seaduse §-s 10 sätestatust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Välisinvesteering käesoleva seaduse tähenduses on tehing või seotud tehingud, mille kaudu välisinvestor: 1) omandab otsese või kaudse olulise osaluse sihtettevõtjas; 2) saavutab otsese või kaudse kontrolli sihtettevõtja üle või 3) omandab sihtettevõtja osa. (2) Olulist osalust käsitatakse väärtpaberituru seaduse § 9 tähenduses. (3) Käesolevas seaduses nimetatud kontrolli ja kontrollitava ettevõtja määratlemisel lähtutakse väärtpaberituru seaduse §-s 10 sätestatust. (4) Käesolevas seaduses käsitatakse ettevõtjat konkurentsiseaduse tähenduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_1"
       },
@@ -619,11 +703,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Välisinvesteering käesoleva seaduse tähenduses on tehing või seotud tehingud, mille kaudu välisinvestor: omandab otsese või kaudse olulise osaluse sihtettevõtjas; saavutab otsese või kaudse kontrolli sihtettevõtja üle või omandab sihtettevõtja osa.",
+      "estleg:legalText": "(1) Välisinvesteering käesoleva seaduse tähenduses on tehing või seotud tehingud, mille kaudu välisinvestor: 1) omandab otsese või kaudse olulise osaluse sihtettevõtjas; 2) saavutab otsese või kaudse kontrolli sihtettevõtja üle või 3) omandab sihtettevõtja osa.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_2"
       },
       "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -708,13 +797,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Välisinvestor",
+      "rdfs:label": {
+        "@value": "§ 3. Välisinvestor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Välisinvestor käesoleva seaduse tähenduses on: füüsiline isik, kellel on kolmanda riigi kodakondsus, füüsiline isik, kellel on mitu kodakondsust, millest vähemalt üks on kolmanda riigi kodakondsus, ja kodakondsuseta füüsiline isik; ettevõtja, kes on asutatud kolmanda riigi õiguse alusel; käesoleva lõike punktis 1 nimetatud füüsilise isiku või punktis 2 nimetatud ettevõtja kontrollitav ettevõtja olenemata tema asutamiskohast. (2) Kolmas riik käesoleva seaduse tähenduses on riik, kes ei ole",
-      "estleg:legalText": "(1) Välisinvestor käesoleva seaduse tähenduses on: füüsiline isik, kellel on kolmanda riigi kodakondsus, füüsiline isik, kellel on mitu kodakondsust, millest vähemalt üks on kolmanda riigi kodakondsus, ja kodakondsuseta füüsiline isik; ettevõtja, kes on asutatud kolmanda riigi õiguse alusel; käesoleva lõike punktis 1 nimetatud füüsilise isiku või punktis 2 nimetatud ettevõtja kontrollitav ettevõtja olenemata tema asutamiskohast. (2) Kolmas riik käesoleva seaduse tähenduses on riik, kes ei ole Euroopa Liidu liikmesriik.",
+      "estleg:summary": {
+        "@value": "(1) Välisinvestor käesoleva seaduse tähenduses on: 1) füüsiline isik, kellel on kolmanda riigi kodakondsus, füüsiline isik, kellel on mitu kodakondsust, millest vähemalt üks on kolmanda riigi kodakondsus, ja kodakondsuseta füüsiline isik; 2) ettevõtja, kes on asutatud kolmanda riigi õiguse alusel; 3) käesoleva lõike punktis 1 nimetatud füüsilise isiku või punktis 2 nimetatud ettevõtja kontrollitav ettevõtja olenemata tema asutamiskohast.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Välisinvestor käesoleva seaduse tähenduses on: 1) füüsiline isik, kellel on kolmanda riigi kodakondsus, füüsiline isik, kellel on mitu kodakondsust, millest vähemalt üks on kolmanda riigi kodakondsus, ja kodakondsuseta füüsiline isik; 2) ettevõtja, kes on asutatud kolmanda riigi õiguse alusel; 3) käesoleva lõike punktis 1 nimetatud füüsilise isiku või punktis 2 nimetatud ettevõtja kontrollitav ettevõtja olenemata tema asutamiskohast. (2) Kolmas riik käesoleva seaduse tähenduses on riik, kes ei ole Euroopa Liidu liikmesriik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_1"
       },
@@ -762,14 +857,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Välisinvestor käesoleva seaduse tähenduses on: füüsiline isik, kellel on kolmanda riigi kodakondsus, füüsiline isik, kellel on mitu kodakondsust, millest vähemalt üks on kolmanda riigi kodakondsus, ja kodakondsuseta füüsiline isik; ettevõtja, kes on asutatud kolmanda riigi õiguse alusel; käesoleva lõike punktis 1 nimetatud füüsilise isiku või punktis 2 nimetatud ettevõtja kontrollitav ettevõtja olenemata tema asutamiskohast.",
+      "estleg:legalText": "(1) Välisinvestor käesoleva seaduse tähenduses on: 1) füüsiline isik, kellel on kolmanda riigi kodakondsus, füüsiline isik, kellel on mitu kodakondsust, millest vähemalt üks on kolmanda riigi kodakondsus, ja kodakondsuseta füüsiline isik; 2) ettevõtja, kes on asutatud kolmanda riigi õiguse alusel; 3) käesoleva lõike punktis 1 nimetatud füüsilise isiku või punktis 2 nimetatud ettevõtja kontrollitav ettevõtja olenemata tema asutamiskohast.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_3"
       },
       "rdfs:label": "§ 3 lg 1",
       "estleg:itemNumber": [
         "1",
-        "2"
+        "2",
+        "3"
       ],
       "estleg:targetGroup": [
         {
@@ -804,13 +900,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Sihtettevõtja ja sihtettevõtja osa",
+      "rdfs:label": {
+        "@value": "§ 4. Sihtettevõtja ja sihtettevõtja osa",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Sihtettevõtja käesoleva seaduse tähenduses on: elutähtsa teenuse osutaja; äriühing, milles riigil on oluline osalus; ettevõtja, kes toodab või kehtiva lepingu alusel tarnib riigiasutusele strateegilise kauba seaduses nimetatud sõjaliste kaupade või kahesuguse kasutusega kaupade nimekirjas sätestatud kaupa või osutab sellise kaubaga seotud tehnilist abi, välja arvatud relvaseaduse 111. peatüki 2. jaos nimetatud sõjarelva, laskemoona ja lahingumoona käitlemisega tegelev ettevõtja;",
-      "estleg:legalText": "(1) Sihtettevõtja käesoleva seaduse tähenduses on: elutähtsa teenuse osutaja; äriühing, milles riigil on oluline osalus; ettevõtja, kes toodab või kehtiva lepingu alusel tarnib riigiasutusele strateegilise kauba seaduses nimetatud sõjaliste kaupade või kahesuguse kasutusega kaupade nimekirjas sätestatud kaupa või osutab sellise kaubaga seotud tehnilist abi, välja arvatud relvaseaduse 111. peatüki 2. jaos nimetatud sõjarelva, laskemoona ja lahingumoona käitlemisega tegelev ettevõtja; üleriigilise televisiooni- või raadioteenuse osutaja ja tellitava audiovisuaalmeedia teenuse osutaja meediateenuste seaduse tähenduses, samuti trükimeedias ja internetis uudiste, ajalehtede ja ajakirjade kirjastaja, kelle vastava tegevusega seotud käive Eestis eelneval kalendriaastal oli vähemalt kolm miljonit eurot; ettevõtja, kellel on geoloogilise uuringu või kaevandamisluba põlevkivi või Eestis leiduva Euroopa Komisjoni koostatud Euroopa Liidu kriitilise tähtsusega toorainete loetelus sisalduva toorme uurimiseks või kaevandamiseks; ettevõtja, kellega on sõlmitud riigi tegevusvaru hoiuleping või delegeeritud varu leping; ettevõtja, kes omab alalist riigikaitseobjekti riigikaitseseaduse tähenduses; ettevõtja, kes omab riigiside toimimist tagavat või ringhäälinguprogrammide edastamiseks vajalikku vähemalt 200 meetri kõrguste mastide taristut; raudteeinfrastruktuuriettevõtja, kes majandab avalikku raudteed raudteeseaduse tähenduses; sertifitseeritud lennuvälja või kopteriväljaku käitaja, kelle käitatav lennuväli või kopteriväljak on avatud rahvusvaheliseks regulaarseks lennuliikluseks, ja Tallinna lennuinfopiirkonnas lennuliikluse teenindamist tagava aeronavigatsiooniteenuse osutaja lennundusseaduse tähenduses; üleeuroopalisse transpordivõrku kuuluva Eesti meresadama pidaja vastavalt Euroopa Parlamendi ja nõukogu määruse (EL) nr 1315/2013 üleeuroopalise transpordivõrgu arendamist käsitlevate liidu suuniste kohta ja millega tunnistatakse kehtetuks otsus nr 661/2010/EL (ELT L 348, 20.12.2013, lk 1–128) II lisas nimetatud sadamate nimekirjale. (2) Sihtettevõtja osa käesoleva seaduse tähenduses on sihtettevõtja vara või sihtettevõtja organisatsiooniliselt iseseisev osa, sealhulgas ettevõte või käitis, mis on asjakohase majandustegevuse aluseks ja tegutsemiseks vajalik käesoleva paragrahvi lõikes 1 nimetatud sihtettevõtjale.",
+      "estleg:summary": {
+        "@value": "(1) Sihtettevõtja käesoleva seaduse tähenduses on: 1) elutähtsa teenuse osutaja; 2) äriühing, milles riigil on oluline osalus; 3) ettevõtja, kes toodab või kehtiva lepingu alusel tarnib riigiasutusele strateegilise kauba seaduses nimetatud sõjaliste kaupade või kahesuguse kasutusega kaupade nimekirjas sätestatud kaupa või osutab sellise kaubaga seotud tehnilist abi, välja arvatud relvaseaduse 11¹. peatüki 2. jaos nimetatud sõjarelva, laskemoona ja lahingumoona käitlemisega tegelev ettevõtja; 4)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Sihtettevõtja käesoleva seaduse tähenduses on: 1) elutähtsa teenuse osutaja; 2) äriühing, milles riigil on oluline osalus; 3) ettevõtja, kes toodab või kehtiva lepingu alusel tarnib riigiasutusele strateegilise kauba seaduses nimetatud sõjaliste kaupade või kahesuguse kasutusega kaupade nimekirjas sätestatud kaupa või osutab sellise kaubaga seotud tehnilist abi, välja arvatud relvaseaduse 11¹. peatüki 2. jaos nimetatud sõjarelva, laskemoona ja lahingumoona käitlemisega tegelev ettevõtja; 4) üleriigilise televisiooni- või raadioteenuse osutaja ja tellitava audiovisuaalmeedia teenuse osutaja meediateenuste seaduse tähenduses, samuti trükimeedias ja internetis uudiste, ajalehtede ja ajakirjade kirjastaja, kelle vastava tegevusega seotud käive Eestis eelneval kalendriaastal oli vähemalt kolm miljonit eurot; 5) ettevõtja, kellel on geoloogilise uuringu või kaevandamisluba põlevkivi või Eestis leiduva Euroopa Komisjoni koostatud Euroopa Liidu kriitilise tähtsusega toorainete loetelus sisalduva toorme uurimiseks või kaevandamiseks; 6) ettevõtja, kellega on sõlmitud riigi tegevusvaru hoiuleping või delegeeritud varu leping; 7) ettevõtja, kes omab alalist riigikaitseobjekti riigikaitseseaduse tähenduses; 8) ettevõtja, kes omab riigiside toimimist tagavat või ringhäälinguprogrammide edastamiseks vajalikku vähemalt 200 meetri kõrguste mastide taristut; 9) raudteeinfrastruktuuriettevõtja, kes majandab avalikku raudteed raudteeseaduse tähenduses; 10) sertifitseeritud lennuvälja või kopteriväljaku käitaja, kelle käitatav lennuväli või kopteriväljak on avatud rahvusvaheliseks regulaarseks lennuliikluseks, ja Tallinna lennuinfopiirkonnas lennuliikluse teenindamist tagava aeronavigatsiooniteenuse osutaja lennundusseaduse tähenduses; 11) üleeuroopalisse transpordivõrku kuuluva Eesti meresadama pidaja vastavalt Euroopa Parlamendi ja nõukogu määruse (EL) nr 1315/2013 üleeuroopalise transpordivõrgu arendamist käsitlevate liidu suuniste kohta ja millega tunnistatakse kehtetuks otsus nr 661/2010/EL (ELT L 348, 20.12.2013, lk 1–128) II lisas nimetatud sadamate nimekirjale. (2) Sihtettevõtja osa käesoleva seaduse tähenduses on sihtettevõtja vara või sihtettevõtja organisatsiooniliselt iseseisev osa, sealhulgas ettevõte või käitis, mis on asjakohase majandustegevuse aluseks ja tegutsemiseks vajalik käesoleva paragrahvi lõikes 1 nimetatud sihtettevõtjale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_1"
       },
@@ -855,11 +957,24 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Sihtettevõtja käesoleva seaduse tähenduses on: elutähtsa teenuse osutaja; äriühing, milles riigil on oluline osalus; ettevõtja, kes toodab või kehtiva lepingu alusel tarnib riigiasutusele strateegilise kauba seaduses nimetatud sõjaliste kaupade või kahesuguse kasutusega kaupade nimekirjas sätestatud kaupa või osutab sellise kaubaga seotud tehnilist abi, välja arvatud relvaseaduse 111. peatüki 2. jaos nimetatud sõjarelva, laskemoona ja lahingumoona käitlemisega tegelev ettevõtja; üleriigilise televisiooni- või raadioteenuse osutaja ja tellitava audiovisuaalmeedia teenuse osutaja meediateenuste seaduse tähenduses, samuti trükimeedias ja internetis uudiste, ajalehtede ja ajakirjade kirjastaja, kelle vastava tegevusega seotud käive Eestis eelneval kalendriaastal oli vähemalt kolm miljonit eurot; ettevõtja, kellel on geoloogilise uuringu või kaevandamisluba põlevkivi või Eestis leiduva Euroopa Komisjoni koostatud Euroopa Liidu kriitilise tähtsusega toorainete loetelus sisalduva toorme uurimiseks või kaevandamiseks; ettevõtja, kellega on sõlmitud riigi tegevusvaru hoiuleping või delegeeritud varu leping; ettevõtja, kes omab alalist riigikaitseobjekti riigikaitseseaduse tähenduses; ettevõtja, kes omab riigiside toimimist tagavat või ringhäälinguprogrammide edastamiseks vajalikku vähemalt 200 meetri kõrguste mastide taristut; raudteeinfrastruktuuriettevõtja, kes majandab avalikku raudteed raudteeseaduse tähenduses; sertifitseeritud lennuvälja või kopteriväljaku käitaja, kelle käitatav lennuväli või kopteriväljak on avatud rahvusvaheliseks regulaarseks lennuliikluseks, ja Tallinna lennuinfopiirkonnas lennuliikluse teenindamist tagava aeronavigatsiooniteenuse osutaja lennundusseaduse tähenduses; üleeuroopalisse transpordivõrku kuuluva Eesti meresadama pidaja vastavalt Euroopa Parlamendi ja nõukogu määruse (EL) nr 1315/2013 üleeuroopalise transpordivõrgu arendamist käsitlevate liidu suuniste kohta ja millega tunnistatakse kehtetuks otsus nr 661/2010/EL (ELT L 348, 20.12.2013, lk 1–128) II lisas nimetatud sadamate nimekirjale.",
+      "estleg:legalText": "(1) Sihtettevõtja käesoleva seaduse tähenduses on: 1) elutähtsa teenuse osutaja; 2) äriühing, milles riigil on oluline osalus; 3) ettevõtja, kes toodab või kehtiva lepingu alusel tarnib riigiasutusele strateegilise kauba seaduses nimetatud sõjaliste kaupade või kahesuguse kasutusega kaupade nimekirjas sätestatud kaupa või osutab sellise kaubaga seotud tehnilist abi, välja arvatud relvaseaduse 11¹. peatüki 2. jaos nimetatud sõjarelva, laskemoona ja lahingumoona käitlemisega tegelev ettevõtja; 4) üleriigilise televisiooni- või raadioteenuse osutaja ja tellitava audiovisuaalmeedia teenuse osutaja meediateenuste seaduse tähenduses, samuti trükimeedias ja internetis uudiste, ajalehtede ja ajakirjade kirjastaja, kelle vastava tegevusega seotud käive Eestis eelneval kalendriaastal oli vähemalt kolm miljonit eurot; 5) ettevõtja, kellel on geoloogilise uuringu või kaevandamisluba põlevkivi või Eestis leiduva Euroopa Komisjoni koostatud Euroopa Liidu kriitilise tähtsusega toorainete loetelus sisalduva toorme uurimiseks või kaevandamiseks; 6) ettevõtja, kellega on sõlmitud riigi tegevusvaru hoiuleping või delegeeritud varu leping; 7) ettevõtja, kes omab alalist riigikaitseobjekti riigikaitseseaduse tähenduses; 8) ettevõtja, kes omab riigiside toimimist tagavat või ringhäälinguprogrammide edastamiseks vajalikku vähemalt 200 meetri kõrguste mastide taristut; 9) raudteeinfrastruktuuriettevõtja, kes majandab avalikku raudteed raudteeseaduse tähenduses; 10) sertifitseeritud lennuvälja või kopteriväljaku käitaja, kelle käitatav lennuväli või kopteriväljak on avatud rahvusvaheliseks regulaarseks lennuliikluseks, ja Tallinna lennuinfopiirkonnas lennuliikluse teenindamist tagava aeronavigatsiooniteenuse osutaja lennundusseaduse tähenduses; 11) üleeuroopalisse transpordivõrku kuuluva Eesti meresadama pidaja vastavalt Euroopa Parlamendi ja nõukogu määruse (EL) nr 1315/2013 üleeuroopalise transpordivõrgu arendamist käsitlevate liidu suuniste kohta ja millega tunnistatakse kehtetuks otsus nr 661/2010/EL (ELT L 348, 20.12.2013, lk 1–128) II lisas nimetatud sadamate nimekirjale.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_4"
       },
       "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -899,13 +1014,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Välisinvesteeringu loakohustus",
+      "rdfs:label": {
+        "@value": "§ 5. Välisinvesteeringu loakohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Välisinvesteeringuks on vaja Tarbijakaitse ja Tehnilise Järelevalve Ameti luba (edaspidi välisinvesteeringu luba), mille andmisel hinnatakse välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale. (2) Käesoleva seaduse alusel loakohustusega välisinvesteeringu lõpuleviimine on keelatud enne välisinvesteeringu loa saamist. (3) Käesoleva paragrahvi lõikes 2 sätestatu ei keela väärtpaberite avaliku pakkumise tehingu või seeriatena väärtpaberitehingute",
-      "estleg:legalText": "(1) Välisinvesteeringuks on vaja Tarbijakaitse ja Tehnilise Järelevalve Ameti luba (edaspidi välisinvesteeringu luba), mille andmisel hinnatakse välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale. (2) Käesoleva seaduse alusel loakohustusega välisinvesteeringu lõpuleviimine on keelatud enne välisinvesteeringu loa saamist. (3) Käesoleva paragrahvi lõikes 2 sätestatu ei keela väärtpaberite avaliku pakkumise tehingu või seeriatena väärtpaberitehingute tegemist, sealhulgas teisteks väärtpaberibörsil noteeritud väärtpaberiteks konverteeritavate väärtpaberitega tehingute tegemist, kui Tarbijakaitse ja Tehnilise Järelevalve Ametile esitatakse viivitamata taotlus välisinvesteeringu loa saamiseks ning välisinvestor ei kasuta kuni välisinvesteeringu loa saamiseni omandatava olulise osaluse või saavutatava kontrolliga kaasnevaid õigusi, eelkõige hääleõigust.",
+      "estleg:summary": {
+        "@value": "(1) Välisinvesteeringuks on vaja Tarbijakaitse ja Tehnilise Järelevalve Ameti luba (edaspidi välisinvesteeringu luba), mille andmisel hinnatakse välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale. (2) Käesoleva seaduse alusel loakohustusega välisinvesteeringu lõpuleviimine on keelatud enne välisinvesteeringu loa saamist. (3) Käesoleva paragrahvi lõikes 2 sätestatu ei keela väärtpaberite avaliku pakkumise tehingu või seeriatena väärtpaberitehingute",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Välisinvesteeringuks on vaja Tarbijakaitse ja Tehnilise Järelevalve Ameti luba (edaspidi välisinvesteeringu luba), mille andmisel hinnatakse välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale. (2) Käesoleva seaduse alusel loakohustusega välisinvesteeringu lõpuleviimine on keelatud enne välisinvesteeringu loa saamist. (3) Käesoleva paragrahvi lõikes 2 sätestatu ei keela väärtpaberite avaliku pakkumise tehingu või seeriatena väärtpaberitehingute tegemist, sealhulgas teisteks reguleeritud väärtpaberiturul kauplemisele võetud väärtpaberiteks konverteeritavate väärtpaberitega tehingute tegemist, kui Tarbijakaitse ja Tehnilise Järelevalve Ametile esitatakse viivitamata taotlus välisinvesteeringu loa saamiseks ning välisinvestor ei kasuta kuni välisinvesteeringu loa saamiseni omandatava olulise osaluse või saavutatava kontrolliga kaasnevaid õigusi, eelkõige hääleõigust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
       },
@@ -1014,7 +1135,7 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 sätestatu ei keela väärtpaberite avaliku pakkumise tehingu või seeriatena väärtpaberitehingute tegemist, sealhulgas teisteks väärtpaberibörsil noteeritud väärtpaberiteks konverteeritavate väärtpaberitega tehingute tegemist, kui Tarbijakaitse ja Tehnilise Järelevalve Ametile esitatakse viivitamata taotlus välisinvesteeringu loa saamiseks ning välisinvestor ei kasuta kuni välisinvesteeringu loa saamiseni omandatava olulise osaluse või saavutatava kontrolliga kaasnevaid õigusi, eelkõige hääleõigust.",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 sätestatu ei keela väärtpaberite avaliku pakkumise tehingu või seeriatena väärtpaberitehingute tegemist, sealhulgas teisteks reguleeritud väärtpaberiturul kauplemisele võetud väärtpaberiteks konverteeritavate väärtpaberitega tehingute tegemist, kui Tarbijakaitse ja Tehnilise Järelevalve Ametile esitatakse viivitamata taotlus välisinvesteeringu loa saamiseks ning välisinvestor ei kasuta kuni välisinvesteeringu loa saamiseni omandatava olulise osaluse või saavutatava kontrolliga kaasnevaid õigusi, eelkõige hääleõigust.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_5"
       },
@@ -1044,12 +1165,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Välisinvesteeringu loa taotlemine",
+      "rdfs:label": {
+        "@value": "§ 6. Välisinvesteeringu loa taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Välisinvesteeringu loa saamiseks esitab välisinvestor (edaspidi ka taotleja) Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse koos lisadokumentidega käesoleva seaduse §-s 13 nimetatud infosüsteemi kaudu pärast välisinvesteeringu aluseks oleva lepingu sõlmimist või muu tehingu tegemist, kuid enne välisinvesteeringu lõpuleviimist. Kui infosüsteemile ei ole taotlejast mitteoleneval põhjusel juurdepääsu, võib taotluse esitada elektrooniliselt selleks ettenähtud e-posti",
+      "estleg:summary": {
+        "@value": "(1) Välisinvesteeringu loa saamiseks esitab välisinvestor (edaspidi ka taotleja) Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse koos lisadokumentidega käesoleva seaduse §-s 13 nimetatud infosüsteemi kaudu pärast välisinvesteeringu aluseks oleva lepingu sõlmimist või muu tehingu tegemist, kuid enne välisinvesteeringu lõpuleviimist. Kui infosüsteemile ei ole taotlejast mitteoleneval põhjusel juurdepääsu, võib taotluse esitada elektrooniliselt selleks ettenähtud e-posti",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Välisinvesteeringu loa saamiseks esitab välisinvestor (edaspidi ka taotleja) Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse koos lisadokumentidega käesoleva seaduse §-s 13 nimetatud infosüsteemi kaudu pärast välisinvesteeringu aluseks oleva lepingu sõlmimist või muu tehingu tegemist, kuid enne välisinvesteeringu lõpuleviimist. Kui infosüsteemile ei ole taotlejast mitteoleneval põhjusel juurdepääsu, võib taotluse esitada elektrooniliselt selleks ettenähtud e-posti aadressil, mis on avaldatud Tarbijakaitse ja Tehnilise Järelevalve Ameti veebilehel. (2) Kui sihtettevõtjale või välisinvesteeringu muule osalisele saab teatavaks, et välisinvestor ei ole välisinvesteeringu luba taotlenud, teavitab ta sellest esimesel võimalusel Tarbijakaitse ja Tehnilise Järelevalve Ametit, esitades temale kättesaadavad käesoleva seaduse §-s 7 nimetatud andmed. (3) Välisinvestor, sihtettevõtja ja välisinvesteeringu muu osaline võib enne välisinvesteeringu loa taotlemist või loamenetluses pöörduda Tarbijakaitse ja Tehnilise Järelevalve Ameti poole selgituste saamiseks, samuti küsida ametilt nõu, kas välisinvesteering on loakohustusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
@@ -1220,12 +1347,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Taotluses esitatavad andmed",
+      "rdfs:label": {
+        "@value": "§ 7. Taotluses esitatavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Taotluses esitatakse välisinvesteeringu kirjeldus ning välisinvestori, sihtettevõtja, sihtettevõtja osa, nende omandistruktuuri, tegeliku kasusaaja ja majandustegevuse andmed ning välisinvesteeringu väärtus, rahastamisallikas ja ajakava. (2) Taotleja teatab Tarbijakaitse ja Tehnilise Järelevalve Ametile viivitamata taotluses esitatud andmete või sellele lisatud dokumentide muutumisest. (3) Tarbijakaitse ja Tehnilise Järelevalve Amet, välisinvesteeringukomisjon (edaspidi ka komisjon) ja",
+      "estleg:summary": {
+        "@value": "(1) Taotluses esitatakse välisinvesteeringu kirjeldus ning välisinvestori, sihtettevõtja, sihtettevõtja osa, nende omandistruktuuri, tegeliku kasusaaja ja majandustegevuse andmed ning välisinvesteeringu väärtus, rahastamisallikas ja ajakava. (2) Taotleja teatab Tarbijakaitse ja Tehnilise Järelevalve Ametile viivitamata taotluses esitatud andmete või sellele lisatud dokumentide muutumisest. (3) Tarbijakaitse ja Tehnilise Järelevalve Amet, välisinvesteeringukomisjon (edaspidi ka komisjon) ja",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Taotluses esitatakse välisinvesteeringu kirjeldus ning välisinvestori, sihtettevõtja, sihtettevõtja osa, nende omandistruktuuri, tegeliku kasusaaja ja majandustegevuse andmed ning välisinvesteeringu väärtus, rahastamisallikas ja ajakava. (2) Taotleja teatab Tarbijakaitse ja Tehnilise Järelevalve Ametile viivitamata taotluses esitatud andmete või sellele lisatud dokumentide muutumisest. (3) Tarbijakaitse ja Tehnilise Järelevalve Amet, välisinvesteeringukomisjon (edaspidi ka komisjon) ja selle liige võib taotlusega seotud andmeid töödelda üksnes välisinvesteeringu usaldusväärsuse hindamise eesmärgil ning sihtettevõtja või välisinvestori poolt käesoleva seaduse alusel esitatud andmete kontrollimiseks vajalikus ulatuses. (4) Taotluse andmekoosseisu, sellele lisatavate dokumentide loetelu ja taotluse esitamise korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
@@ -1398,12 +1531,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Teabe küsimine",
+      "rdfs:label": {
+        "@value": "§ 8. Teabe küsimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda taotlejalt lisaks käesoleva seaduse §-s 7 nimetatud andmetele ja dokumentidele täiendavaid andmeid ja dokumente, kui need on vajalikud välisinvesteeringu usaldusväärsuse hindamiseks. (2) Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda sihtettevõtjalt, välisinvesteeringu muult osaliselt, isikult ja riigi- või kohaliku omavalitsuse asutuselt välisinvesteeringu usaldusväärsuse hindamiseks vajalikke andmeid ja dokumente.",
+      "estleg:summary": {
+        "@value": "(1) Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda taotlejalt lisaks käesoleva seaduse §-s 7 nimetatud andmetele ja dokumentidele täiendavaid andmeid ja dokumente, kui need on vajalikud välisinvesteeringu usaldusväärsuse hindamiseks. (2) Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda sihtettevõtjalt, välisinvesteeringu muult osaliselt, isikult ja riigi- või kohaliku omavalitsuse asutuselt välisinvesteeringu usaldusväärsuse hindamiseks vajalikke andmeid ja dokumente.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda taotlejalt lisaks käesoleva seaduse §-s 7 nimetatud andmetele ja dokumentidele täiendavaid andmeid ja dokumente, kui need on vajalikud välisinvesteeringu usaldusväärsuse hindamiseks. (2) Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda sihtettevõtjalt, välisinvesteeringu muult osaliselt, isikult ja riigi- või kohaliku omavalitsuse asutuselt välisinvesteeringu usaldusväärsuse hindamiseks vajalikke andmeid ja dokumente.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
@@ -1554,13 +1693,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Taotluse menetlemine ja menetlustähtajad",
+      "rdfs:label": {
+        "@value": "§ 9. Taotluse menetlemine ja menetlustähtajad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet edastab taotluse ja sellele lisatud dokumendid komisjonile välisinvesteeringu loa andmise kooskõlastamiseks, määrates tähtajaks vähemalt 21 kalendripäeva. (2) 30 kalendripäeva jooksul puudusteta taotluse esitamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Amet: annab välisinvesteeringu loa; keeldub välisinvesteeringu loa andmisest või teatab taotlejale, et välisinvesteering ei ole käesoleva seaduse alusel loakohustusega.",
-      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet edastab taotluse ja sellele lisatud dokumendid komisjonile välisinvesteeringu loa andmise kooskõlastamiseks, määrates tähtajaks vähemalt 21 kalendripäeva. (2) 30 kalendripäeva jooksul puudusteta taotluse esitamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Amet: annab välisinvesteeringu loa; keeldub välisinvesteeringu loa andmisest või teatab taotlejale, et välisinvesteering ei ole käesoleva seaduse alusel loakohustusega. (3) Välisinvesteeringu mõju hindamiseks võib Tarbijakaitse ja Tehnilise Järelevalve Amet käesoleva paragrahvi lõikes 2 sätestatud tähtaega pikendada ühe korra kuni 90 kalendripäeva võrra. (4) Kui muu Euroopa Liidu liikmesriik või Euroopa Komisjon on teatanud oma kavatsusest esitada Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452, millega luuakse liitu tehtavate välismaiste otseinvesteeringute taustauuringute raamistik (ELT L 79I, 21.03.2019, lk 1–14), alusel märkused või arvamus, võib Tarbijakaitse ja Tehnilise Järelevalve Amet pikendada käesoleva paragrahvi lõikes 2 sätestatud tähtaega ühe korra kuni 90 kalendripäeva võrra.",
+      "estleg:summary": {
+        "@value": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet edastab taotluse ja sellele lisatud dokumendid komisjonile välisinvesteeringu loa andmise kooskõlastamiseks, määrates tähtajaks vähemalt 21 kalendripäeva. (2) 30 kalendripäeva jooksul puudusteta taotluse esitamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Amet: 1) annab välisinvesteeringu loa; 2) keeldub välisinvesteeringu loa andmisest või 3) teatab taotlejale, et välisinvesteering ei ole käesoleva seaduse alusel loakohustusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet edastab taotluse ja sellele lisatud dokumendid komisjonile välisinvesteeringu loa andmise kooskõlastamiseks, määrates tähtajaks vähemalt 21 kalendripäeva. (2) 30 kalendripäeva jooksul puudusteta taotluse esitamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Amet: 1) annab välisinvesteeringu loa; 2) keeldub välisinvesteeringu loa andmisest või 3) teatab taotlejale, et välisinvesteering ei ole käesoleva seaduse alusel loakohustusega. (3) Välisinvesteeringu mõju hindamiseks võib Tarbijakaitse ja Tehnilise Järelevalve Amet käesoleva paragrahvi lõikes 2 sätestatud tähtaega pikendada ühe korra kuni 90 kalendripäeva võrra. (4) Kui muu Euroopa Liidu liikmesriik või Euroopa Komisjon on teatanud oma kavatsusest esitada Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452, millega luuakse liitu tehtavate välismaiste otseinvesteeringute taustauuringute raamistik (ELT L 79I, 21.03.2019, lk 1–14), alusel märkused või arvamus, võib Tarbijakaitse ja Tehnilise Järelevalve Amet pikendada käesoleva paragrahvi lõikes 2 sätestatud tähtaega ühe korra kuni 90 kalendripäeva võrra.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
       },
@@ -1655,11 +1800,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) 30 kalendripäeva jooksul puudusteta taotluse esitamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Amet: annab välisinvesteeringu loa; keeldub välisinvesteeringu loa andmisest või teatab taotlejale, et välisinvesteering ei ole käesoleva seaduse alusel loakohustusega.",
+      "estleg:legalText": "(2) 30 kalendripäeva jooksul puudusteta taotluse esitamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Amet: 1) annab välisinvesteeringu loa; 2) keeldub välisinvesteeringu loa andmisest või 3) teatab taotlejale, et välisinvesteering ei ole käesoleva seaduse alusel loakohustusega.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_9"
       },
       "rdfs:label": "§ 9 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1757,13 +1907,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Välisinvesteeringu hindamine",
+      "rdfs:label": {
+        "@value": "§ 10. Välisinvesteeringu hindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Välisinvesteeringu Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale avaldatava mõju hindamisel kaaluvad Tarbijakaitse ja Tehnilise Järelevalve Amet ning komisjon eelkõige asjaolusid, mis seonduvad välisinvestoriga ning sihtettevõtja või sihtettevõtja osa majandustegevuse ja asjakohase majandusvaldkonnaga. (2) Välisinvestoriga seoses võetakse eelkõige arvesse: millistes riikides ja millistes majandusvaldkondades välisinvestor tegutseb; milline on välisinvestori",
-      "estleg:legalText": "(1) Välisinvesteeringu Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale avaldatava mõju hindamisel kaaluvad Tarbijakaitse ja Tehnilise Järelevalve Amet ning komisjon eelkõige asjaolusid, mis seonduvad välisinvestoriga ning sihtettevõtja või sihtettevõtja osa majandustegevuse ja asjakohase majandusvaldkonnaga. (2) Välisinvestoriga seoses võetakse eelkõige arvesse: millistes riikides ja millistes majandusvaldkondades välisinvestor tegutseb; milline on välisinvestori omandistruktuur, sealhulgas kas see on läbipaistev ja arusaadav; millisest allikast välisinvesteeringut rahastatakse ning kas raha päritolu on selgelt tuvastatav; kas välisinvestorit kontrollib otseselt või kaudselt kolmanda riigi valitsus, sealhulgas riigiasutus või relvajõud; kas välisinvestor või tema tegelik kasusaaja on seotud või olnud seotud Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda ohustava tegevusega; kas välisinvestor või tema tegelik kasusaaja tegeleb või on tegelenud ebaseadusliku tegevusega või on põhjendatud kahtlus, et ta hakkab sellega tegelema; kas välisinvestor või tema tegelik kasusaaja on või on olnud rahvusvahelise sanktsiooni subjekt. (3) Sihtettevõtja või sihtettevõtja osa majandustegevusega seoses võetakse eelkõige arvesse: millises majandusvaldkonnas sihtettevõtja või sihtettevõtja osa tegutseb ja tema olulisust selles valdkonnas; millises ulatuses rahastatakse sihtettevõtjat Euroopa Liidu vahenditest või muudest avalikest vahenditest; kas välisinvestor kavatseb teha muudatust sihtettevõtja või sihtettevõtja osa majandustegevuses või sihtettevõtja juhtimises; kas sihtettevõtja tegeleb teadus- ja arendustegevusega ning millised intellektuaalse omandi õigused talle kuuluvad; kas sihtettevõtja osa koosseisu kuuluvad intellektuaalse omandi õigused. (4) Sihtettevõtja või sihtettevõtja osa asjakohase majandusvaldkonnaga seoses võetakse eelkõige arvesse: milline on üldine konkurentsiolukord ja kes on sihtettevõtja konkurendid; asendustoodete või -teenuste olemasolu; milline on välisinvesteeringu mõju sihtettevõtja või sihtettevõtja osa tegevusele majandusvaldkonnas, sealhulgas tema suhetele tarnijate, varustajate ja klientidega.",
+      "estleg:summary": {
+        "@value": "(1) Välisinvesteeringu Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale avaldatava mõju hindamisel kaaluvad Tarbijakaitse ja Tehnilise Järelevalve Amet ning komisjon eelkõige asjaolusid, mis seonduvad välisinvestoriga ning sihtettevõtja või sihtettevõtja osa majandustegevuse ja asjakohase majandusvaldkonnaga. (2) Välisinvestoriga seoses võetakse eelkõige arvesse: 1) millistes riikides ja millistes majandusvaldkondades välisinvestor tegutseb; 2) milline on",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Välisinvesteeringu Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale avaldatava mõju hindamisel kaaluvad Tarbijakaitse ja Tehnilise Järelevalve Amet ning komisjon eelkõige asjaolusid, mis seonduvad välisinvestoriga ning sihtettevõtja või sihtettevõtja osa majandustegevuse ja asjakohase majandusvaldkonnaga. (2) Välisinvestoriga seoses võetakse eelkõige arvesse: 1) millistes riikides ja millistes majandusvaldkondades välisinvestor tegutseb; 2) milline on välisinvestori omandistruktuur, sealhulgas kas see on läbipaistev ja arusaadav; 3) millisest allikast välisinvesteeringut rahastatakse ning kas raha päritolu on selgelt tuvastatav; 4) kas välisinvestorit kontrollib otseselt või kaudselt kolmanda riigi valitsus, sealhulgas riigiasutus või relvajõud; 5) kas välisinvestor või tema tegelik kasusaaja on seotud või olnud seotud Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda ohustava tegevusega; 6) kas välisinvestor või tema tegelik kasusaaja tegeleb või on tegelenud ebaseadusliku tegevusega või on põhjendatud kahtlus, et ta hakkab sellega tegelema; 7) kas välisinvestor või tema tegelik kasusaaja on või on olnud rahvusvahelise sanktsiooni subjekt. (3) Sihtettevõtja või sihtettevõtja osa majandustegevusega seoses võetakse eelkõige arvesse: 1) millises majandusvaldkonnas sihtettevõtja või sihtettevõtja osa tegutseb ja tema olulisust selles valdkonnas; 2) millises ulatuses rahastatakse sihtettevõtjat Euroopa Liidu vahenditest või muudest avalikest vahenditest; 3) kas välisinvestor kavatseb teha muudatust sihtettevõtja või sihtettevõtja osa majandustegevuses või sihtettevõtja juhtimises; 4) kas sihtettevõtja tegeleb teadus- ja arendustegevusega ning millised intellektuaalse omandi õigused talle kuuluvad; 5) kas sihtettevõtja osa koosseisu kuuluvad intellektuaalse omandi õigused. (4) Sihtettevõtja või sihtettevõtja osa asjakohase majandusvaldkonnaga seoses võetakse eelkõige arvesse: 1) milline on üldine konkurentsiolukord ja kes on sihtettevõtja konkurendid; 2) asendustoodete või -teenuste olemasolu; 3) milline on välisinvesteeringu mõju sihtettevõtja või sihtettevõtja osa tegevusele majandusvaldkonnas, sealhulgas tema suhetele tarnijate, varustajate ja klientidega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
       },
@@ -1852,11 +2008,20 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Välisinvestoriga seoses võetakse eelkõige arvesse: millistes riikides ja millistes majandusvaldkondades välisinvestor tegutseb; milline on välisinvestori omandistruktuur, sealhulgas kas see on läbipaistev ja arusaadav; millisest allikast välisinvesteeringut rahastatakse ning kas raha päritolu on selgelt tuvastatav; kas välisinvestorit kontrollib otseselt või kaudselt kolmanda riigi valitsus, sealhulgas riigiasutus või relvajõud; kas välisinvestor või tema tegelik kasusaaja on seotud või olnud seotud Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda ohustava tegevusega; kas välisinvestor või tema tegelik kasusaaja tegeleb või on tegelenud ebaseadusliku tegevusega või on põhjendatud kahtlus, et ta hakkab sellega tegelema; kas välisinvestor või tema tegelik kasusaaja on või on olnud rahvusvahelise sanktsiooni subjekt.",
+      "estleg:legalText": "(2) Välisinvestoriga seoses võetakse eelkõige arvesse: 1) millistes riikides ja millistes majandusvaldkondades välisinvestor tegutseb; 2) milline on välisinvestori omandistruktuur, sealhulgas kas see on läbipaistev ja arusaadav; 3) millisest allikast välisinvesteeringut rahastatakse ning kas raha päritolu on selgelt tuvastatav; 4) kas välisinvestorit kontrollib otseselt või kaudselt kolmanda riigi valitsus, sealhulgas riigiasutus või relvajõud; 5) kas välisinvestor või tema tegelik kasusaaja on seotud või olnud seotud Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda ohustava tegevusega; 6) kas välisinvestor või tema tegelik kasusaaja tegeleb või on tegelenud ebaseadusliku tegevusega või on põhjendatud kahtlus, et ta hakkab sellega tegelema; 7) kas välisinvestor või tema tegelik kasusaaja on või on olnud rahvusvahelise sanktsiooni subjekt.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_10"
       },
       "rdfs:label": "§ 10 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -1874,11 +2039,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Sihtettevõtja või sihtettevõtja osa majandustegevusega seoses võetakse eelkõige arvesse: millises majandusvaldkonnas sihtettevõtja või sihtettevõtja osa tegutseb ja tema olulisust selles valdkonnas; millises ulatuses rahastatakse sihtettevõtjat Euroopa Liidu vahenditest või muudest avalikest vahenditest; kas välisinvestor kavatseb teha muudatust sihtettevõtja või sihtettevõtja osa majandustegevuses või sihtettevõtja juhtimises; kas sihtettevõtja tegeleb teadus- ja arendustegevusega ning millised intellektuaalse omandi õigused talle kuuluvad; kas sihtettevõtja osa koosseisu kuuluvad intellektuaalse omandi õigused.",
+      "estleg:legalText": "(3) Sihtettevõtja või sihtettevõtja osa majandustegevusega seoses võetakse eelkõige arvesse: 1) millises majandusvaldkonnas sihtettevõtja või sihtettevõtja osa tegutseb ja tema olulisust selles valdkonnas; 2) millises ulatuses rahastatakse sihtettevõtjat Euroopa Liidu vahenditest või muudest avalikest vahenditest; 3) kas välisinvestor kavatseb teha muudatust sihtettevõtja või sihtettevõtja osa majandustegevuses või sihtettevõtja juhtimises; 4) kas sihtettevõtja tegeleb teadus- ja arendustegevusega ning millised intellektuaalse omandi õigused talle kuuluvad; 5) kas sihtettevõtja osa koosseisu kuuluvad intellektuaalse omandi õigused.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_10"
       },
       "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1896,11 +2068,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Sihtettevõtja või sihtettevõtja osa asjakohase majandusvaldkonnaga seoses võetakse eelkõige arvesse: milline on üldine konkurentsiolukord ja kes on sihtettevõtja konkurendid; asendustoodete või -teenuste olemasolu; milline on välisinvesteeringu mõju sihtettevõtja või sihtettevõtja osa tegevusele majandusvaldkonnas, sealhulgas tema suhetele tarnijate, varustajate ja klientidega.",
+      "estleg:legalText": "(4) Sihtettevõtja või sihtettevõtja osa asjakohase majandusvaldkonnaga seoses võetakse eelkõige arvesse: 1) milline on üldine konkurentsiolukord ja kes on sihtettevõtja konkurendid; 2) asendustoodete või -teenuste olemasolu; 3) milline on välisinvesteeringu mõju sihtettevõtja või sihtettevõtja osa tegevusele majandusvaldkonnas, sealhulgas tema suhetele tarnijate, varustajate ja klientidega.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_10"
       },
       "rdfs:label": "§ 10 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1918,13 +2095,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Välisinvesteeringu loa andmise kooskõlastamine, loa andmine, kõrvaltingimusega loa andmine ja loa andmisest keeldumine",
+      "rdfs:label": {
+        "@value": "§ 11. Välisinvesteeringu loa andmise kooskõlastamine, loa andmine, kõrvaltingimusega loa andmine ja loa andmisest keeldumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Komisjon kooskõlastab välisinvesteeringu loa andmise ning Tarbijakaitse ja Tehnilise Järelevalve Amet annab välisinvesteeringu loa, kui välisinvesteering ei ohusta Eesti või muu Euroopa Liidu liikmesriigi julgeolekut ja avalikku korda. (2) Komisjon ei kooskõlasta välisinvesteeringu loa andmist ning Tarbijakaitse ja Tehnilise Järelevalve Amet keeldub välisinvesteeringu loa andmisest, kui välisinvesteering võib ohustada Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda.",
-      "estleg:legalText": "(1) Komisjon kooskõlastab välisinvesteeringu loa andmise ning Tarbijakaitse ja Tehnilise Järelevalve Amet annab välisinvesteeringu loa, kui välisinvesteering ei ohusta Eesti või muu Euroopa Liidu liikmesriigi julgeolekut ja avalikku korda. (2) Komisjon ei kooskõlasta välisinvesteeringu loa andmist ning Tarbijakaitse ja Tehnilise Järelevalve Amet keeldub välisinvesteeringu loa andmisest, kui välisinvesteering võib ohustada Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda. (3) Välisinvesteeringu luba võib sisaldada kõrvaltingimust, mis kohustab välisinvestorit või sihtettevõtjat võtma Eesti või muu Euroopa Liidu liikmesriigi julgeoleku või avaliku korra ohustamise vältimiseks meetmeid, sealhulgas võõrandama sihtettevõtjas teatud suurusega osalust või jätkama kehtivaid toodete tarnimise või teenuste osutamise lepinguid. (4) Kui välisinvestoriga on vaja pidada käesoleva paragrahvi lõikes 3 nimetatud meetmete üle läbirääkimisi, võib Tarbijakaitse ja Tehnilise Järelevalve Amet pikendada käesoleva seaduse § 9 lõikes 2, 3 või 4 sätestatud tähtaega kuni 60 kalendripäeva võrra. (5) Tarbijakaitse ja Tehnilise Järelevalve Amet võib keelduda välisinvesteeringu loa andmisest, kui: on põhjendatud alus kahelda esitatud andmete ja dokumentide ehtsuses või nende sisu õigsuses; taotleja ei ole esitanud käesoleva seaduse § 8 lõike 1 alusel nõutud täiendavaid andmeid, mis võivad mõjutada välisinvesteeringu loa andmist või sellest keeldumist; välisinvesteering võib mõjutada Euroopa Liidule huvi pakkuvaid projekte või programme Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 8 tähenduses. (6) Käesoleva paragrahvi lõigete 2 ja 5 kohaselt antud haldusakti aluseks olevaid põhjendusi, samuti menetluses kogutud teavet ja tõendeid ei avaldata, sealhulgas taotlejale, ulatuses, milles see võib ohustada Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avaliku korra kaitset või milles sellele kohaldub seaduses sätestatud juurdepääsupiirang.",
+      "estleg:summary": {
+        "@value": "(1) Komisjon kooskõlastab välisinvesteeringu loa andmise ning Tarbijakaitse ja Tehnilise Järelevalve Amet annab välisinvesteeringu loa, kui välisinvesteering ei ohusta Eesti või muu Euroopa Liidu liikmesriigi julgeolekut ja avalikku korda. (2) Komisjon ei kooskõlasta välisinvesteeringu loa andmist ning Tarbijakaitse ja Tehnilise Järelevalve Amet keeldub välisinvesteeringu loa andmisest, kui välisinvesteering võib ohustada Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Komisjon kooskõlastab välisinvesteeringu loa andmise ning Tarbijakaitse ja Tehnilise Järelevalve Amet annab välisinvesteeringu loa, kui välisinvesteering ei ohusta Eesti või muu Euroopa Liidu liikmesriigi julgeolekut ja avalikku korda. (2) Komisjon ei kooskõlasta välisinvesteeringu loa andmist ning Tarbijakaitse ja Tehnilise Järelevalve Amet keeldub välisinvesteeringu loa andmisest, kui välisinvesteering võib ohustada Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avalikku korda. (3) Välisinvesteeringu luba võib sisaldada kõrvaltingimust, mis kohustab välisinvestorit või sihtettevõtjat võtma Eesti või muu Euroopa Liidu liikmesriigi julgeoleku või avaliku korra ohustamise vältimiseks meetmeid, sealhulgas võõrandama sihtettevõtjas teatud suurusega osalust või jätkama kehtivaid toodete tarnimise või teenuste osutamise lepinguid. (4) Kui välisinvestoriga on vaja pidada käesoleva paragrahvi lõikes 3 nimetatud meetmete üle läbirääkimisi, võib Tarbijakaitse ja Tehnilise Järelevalve Amet pikendada käesoleva seaduse § 9 lõikes 2, 3 või 4 sätestatud tähtaega kuni 60 kalendripäeva võrra. (5) Tarbijakaitse ja Tehnilise Järelevalve Amet võib keelduda välisinvesteeringu loa andmisest, kui: 1) on põhjendatud alus kahelda esitatud andmete ja dokumentide ehtsuses või nende sisu õigsuses; 2) taotleja ei ole esitanud käesoleva seaduse § 8 lõike 1 alusel nõutud täiendavaid andmeid, mis võivad mõjutada välisinvesteeringu loa andmist või sellest keeldumist; 3) välisinvesteering võib mõjutada Euroopa Liidule huvi pakkuvaid projekte või programme Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 8 tähenduses. (6) Käesoleva paragrahvi lõigete 2 ja 5 kohaselt antud haldusakti aluseks olevaid põhjendusi, samuti menetluses kogutud teavet ja tõendeid ei avaldata, sealhulgas taotlejale, ulatuses, milles see võib ohustada Eesti või muu Euroopa Liidu liikmesriigi julgeolekut või avaliku korra kaitset või milles sellele kohaldub seaduses sätestatud juurdepääsupiirang.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
       },
@@ -2135,11 +2318,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Tarbijakaitse ja Tehnilise Järelevalve Amet võib keelduda välisinvesteeringu loa andmisest, kui: on põhjendatud alus kahelda esitatud andmete ja dokumentide ehtsuses või nende sisu õigsuses; taotleja ei ole esitanud käesoleva seaduse § 8 lõike 1 alusel nõutud täiendavaid andmeid, mis võivad mõjutada välisinvesteeringu loa andmist või sellest keeldumist; välisinvesteering võib mõjutada Euroopa Liidule huvi pakkuvaid projekte või programme Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 8 tähenduses.",
+      "estleg:legalText": "(5) Tarbijakaitse ja Tehnilise Järelevalve Amet võib keelduda välisinvesteeringu loa andmisest, kui: 1) on põhjendatud alus kahelda esitatud andmete ja dokumentide ehtsuses või nende sisu õigsuses; 2) taotleja ei ole esitanud käesoleva seaduse § 8 lõike 1 alusel nõutud täiendavaid andmeid, mis võivad mõjutada välisinvesteeringu loa andmist või sellest keeldumist; 3) välisinvesteering võib mõjutada Euroopa Liidule huvi pakkuvaid projekte või programme Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 8 tähenduses.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_11"
       },
       "rdfs:label": "§ 11 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2204,13 +2392,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Välisinvesteeringu loa kehtetuks tunnistamine ja välisinvesteeringueelse olukorra taastamine",
+      "rdfs:label": {
+        "@value": "§ 12. Välisinvesteeringu loa kehtetuks tunnistamine ja välisinvesteeringueelse olukorra taastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet võib tunnistada välisinvesteeringu loa kehtetuks, kui: välisinvestor või sihtettevõtja ei täida käesoleva seaduse § 11 lõike 3 kohaselt määratud kõrvaltingimust; välisinvestor on esitanud ebaõigeid või eksitavaid andmeid või dokumente, mis olid otsuse tegemisel määravad. (2) Välisinvesteeringu loa kehtetuks tunnistamisel on välisinvestor, sihtettevõtja ja välisinvesteeringu muu osaline kohustatud tegema viivitamata vajalikud toimingud",
-      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet võib tunnistada välisinvesteeringu loa kehtetuks, kui: välisinvestor või sihtettevõtja ei täida käesoleva seaduse § 11 lõike 3 kohaselt määratud kõrvaltingimust; välisinvestor on esitanud ebaõigeid või eksitavaid andmeid või dokumente, mis olid otsuse tegemisel määravad. (2) Välisinvesteeringu loa kehtetuks tunnistamisel on välisinvestor, sihtettevõtja ja välisinvesteeringu muu osaline kohustatud tegema viivitamata vajalikud toimingud välisinvesteeringueelse olukorra võimalikult suures ulatuses taastamiseks.",
+      "estleg:summary": {
+        "@value": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet võib tunnistada välisinvesteeringu loa kehtetuks, kui: 1) välisinvestor või sihtettevõtja ei täida käesoleva seaduse § 11 lõike 3 kohaselt määratud kõrvaltingimust; 2) välisinvestor on esitanud ebaõigeid või eksitavaid andmeid või dokumente, mis olid otsuse tegemisel määravad. (2) Välisinvesteeringu loa kehtetuks tunnistamisel on välisinvestor, sihtettevõtja ja välisinvesteeringu muu osaline kohustatud tegema viivitamata vajalikud toimingud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet võib tunnistada välisinvesteeringu loa kehtetuks, kui: 1) välisinvestor või sihtettevõtja ei täida käesoleva seaduse § 11 lõike 3 kohaselt määratud kõrvaltingimust; 2) välisinvestor on esitanud ebaõigeid või eksitavaid andmeid või dokumente, mis olid otsuse tegemisel määravad. (2) Välisinvesteeringu loa kehtetuks tunnistamisel on välisinvestor, sihtettevõtja ja välisinvesteeringu muu osaline kohustatud tegema viivitamata vajalikud toimingud välisinvesteeringueelse olukorra võimalikult suures ulatuses taastamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
       },
@@ -2272,11 +2466,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet võib tunnistada välisinvesteeringu loa kehtetuks, kui: välisinvestor või sihtettevõtja ei täida käesoleva seaduse § 11 lõike 3 kohaselt määratud kõrvaltingimust; välisinvestor on esitanud ebaõigeid või eksitavaid andmeid või dokumente, mis olid otsuse tegemisel määravad.",
+      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet võib tunnistada välisinvesteeringu loa kehtetuks, kui: 1) välisinvestor või sihtettevõtja ei täida käesoleva seaduse § 11 lõike 3 kohaselt määratud kõrvaltingimust; 2) välisinvestor on esitanud ebaõigeid või eksitavaid andmeid või dokumente, mis olid otsuse tegemisel määravad.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_12"
       },
       "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2333,12 +2531,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Andmete kandmine Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemi ning nende säilitustähtaeg",
+      "rdfs:label": {
+        "@value": "§ 13. Andmete kandmine Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemi ning nende säilitustähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Välisinvesteeringu loamenetluse andmed ja dokumendid kantakse Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemi. (2) Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemis säilitatakse välisinvesteeringu loamenetluse andmeid ja dokumente seitse aastat menetluse lõpetamisest arvates.",
+      "estleg:summary": {
+        "@value": "(1) Välisinvesteeringu loamenetluse andmed ja dokumendid kantakse Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemi. (2) Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemis säilitatakse välisinvesteeringu loamenetluse andmeid ja dokumente seitse aastat menetluse lõpetamisest arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Välisinvesteeringu loamenetluse andmed ja dokumendid kantakse Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemi. (2) Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemis säilitatakse välisinvesteeringu loamenetluse andmeid ja dokumente seitse aastat menetluse lõpetamisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_2"
@@ -2463,12 +2667,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Komisjoni koosseis ja töökord",
+      "rdfs:label": {
+        "@value": "§ 14. Komisjoni koosseis ja töökord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Välisinvesteeringukomisjon tegutseb Tarbijakaitse ja Tehnilise Järelevalve Ameti juures ning sellesse kuuluvad Kaitseministeeriumi, Majandus- ja Kommunikatsiooniministeeriumi, Rahandusministeeriumi, Siseministeeriumi, Välisministeeriumi, Kaitsepolitseiameti, Politsei- ja Piirivalveameti, Rahapesu Andmebüroo, Tarbijakaitse ja Tehnilise Järelevalve Ameti, Välisluureameti ning Riigikantselei esindajad. (2) Komisjoni töökorra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Välisinvesteeringukomisjon tegutseb Tarbijakaitse ja Tehnilise Järelevalve Ameti juures ning sellesse kuuluvad Kaitseministeeriumi, Majandus- ja Kommunikatsiooniministeeriumi, Rahandusministeeriumi, Siseministeeriumi, Välisministeeriumi, Kaitsepolitseiameti, Politsei- ja Piirivalveameti, Rahapesu Andmebüroo, Tarbijakaitse ja Tehnilise Järelevalve Ameti, Välisluureameti ning Riigikantselei esindajad. (2) Komisjoni töökorra kehtestab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Välisinvesteeringukomisjon tegutseb Tarbijakaitse ja Tehnilise Järelevalve Ameti juures ning sellesse kuuluvad Kaitseministeeriumi, Majandus- ja Kommunikatsiooniministeeriumi, Rahandusministeeriumi, Siseministeeriumi, Välisministeeriumi, Kaitsepolitseiameti, Politsei- ja Piirivalveameti, Rahapesu Andmebüroo, Tarbijakaitse ja Tehnilise Järelevalve Ameti, Välisluureameti ning Riigikantselei esindajad. (2) Komisjoni töökorra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_3"
@@ -2619,13 +2829,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Pädevus",
+      "rdfs:label": {
+        "@value": "§ 15. Pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Komisjon täidab järgmisi ülesandeid: hindab välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale ning kooskõlastab välisinvesteeringu loa andmise või jätab selle kooskõlastamata; teeb ettepaneku välisinvesteeringu loa kõrvaltingimuse kehtestamiseks ja annab kõrvaltingimuse kohta hinnangu; otsustab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 alusel märkuste esitamise ning koostab märkused.",
-      "estleg:legalText": "(1) Komisjon täidab järgmisi ülesandeid: hindab välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale ning kooskõlastab välisinvesteeringu loa andmise või jätab selle kooskõlastamata; teeb ettepaneku välisinvesteeringu loa kõrvaltingimuse kehtestamiseks ja annab kõrvaltingimuse kohta hinnangu; otsustab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 alusel märkuste esitamise ning koostab märkused. (2) Komisjonil on ülesannete täitmisel õigus: saada välisinvestorilt, muult isikult ja asutuselt ning andmekogudest teavet välisinvesteeringu usaldusväärsuse hindamiseks vajalike asjaolude kohta; teha koostööd teiste riikide pädevate asutuste, Euroopa Komisjoni ja rahvusvaheliste organisatsioonidega, seahulgas saada teiste riikide pädevatelt asutustelt, Euroopa Komisjonilt ja järelevalveasutustelt teavet. (3) Komisjoni liige esitab komisjonile välisinvesteeringu usaldusväärsuse hindamiseks vajalikus ulatuses teavet või ohuhinnangu üksnes oma pädevuse piires. Komisjoni liikmel on käesoleva seaduse alusel pandud ülesande täitmiseks õigus teha andmekogudest päringuid.",
+      "estleg:summary": {
+        "@value": "(1) Komisjon täidab järgmisi ülesandeid: 1) hindab välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale ning kooskõlastab välisinvesteeringu loa andmise või jätab selle kooskõlastamata; 2) teeb ettepaneku välisinvesteeringu loa kõrvaltingimuse kehtestamiseks ja annab kõrvaltingimuse kohta hinnangu; 3) otsustab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 alusel märkuste esitamise ning koostab märkused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Komisjon täidab järgmisi ülesandeid: 1) hindab välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale ning kooskõlastab välisinvesteeringu loa andmise või jätab selle kooskõlastamata; 2) teeb ettepaneku välisinvesteeringu loa kõrvaltingimuse kehtestamiseks ja annab kõrvaltingimuse kohta hinnangu; 3) otsustab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 alusel märkuste esitamise ning koostab märkused. (2) Komisjonil on ülesannete täitmisel õigus: 1) saada välisinvestorilt, muult isikult ja asutuselt ning andmekogudest teavet välisinvesteeringu usaldusväärsuse hindamiseks vajalike asjaolude kohta; 2) teha koostööd teiste riikide pädevate asutuste, Euroopa Komisjoni ja rahvusvaheliste organisatsioonidega, seahulgas saada teiste riikide pädevatelt asutustelt, Euroopa Komisjonilt ja järelevalveasutustelt teavet. (3) Komisjoni liige esitab komisjonile välisinvesteeringu usaldusväärsuse hindamiseks vajalikus ulatuses teavet või ohuhinnangu üksnes oma pädevuse piires. Komisjoni liikmel on käesoleva seaduse alusel pandud ülesande täitmiseks õigus teha andmekogudest päringuid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_3"
       },
@@ -2676,11 +2892,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Komisjon täidab järgmisi ülesandeid: hindab välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale ning kooskõlastab välisinvesteeringu loa andmise või jätab selle kooskõlastamata; teeb ettepaneku välisinvesteeringu loa kõrvaltingimuse kehtestamiseks ja annab kõrvaltingimuse kohta hinnangu; otsustab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 alusel märkuste esitamise ning koostab märkused.",
+      "estleg:legalText": "(1) Komisjon täidab järgmisi ülesandeid: 1) hindab välisinvesteeringu mõju Eesti või muu Euroopa Liidu liikmesriigi julgeolekule ja avalikule korrale ning kooskõlastab välisinvesteeringu loa andmise või jätab selle kooskõlastamata; 2) teeb ettepaneku välisinvesteeringu loa kõrvaltingimuse kehtestamiseks ja annab kõrvaltingimuse kohta hinnangu; 3) otsustab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 alusel märkuste esitamise ning koostab märkused.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_15"
       },
-      "rdfs:label": "§ 15 lg 1"
+      "rdfs:label": "§ 15 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     },
     {
       "@id": "estleg:VUHS_Par_15_Lg_2",
@@ -2689,11 +2910,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Komisjonil on ülesannete täitmisel õigus: saada välisinvestorilt, muult isikult ja asutuselt ning andmekogudest teavet välisinvesteeringu usaldusväärsuse hindamiseks vajalike asjaolude kohta; teha koostööd teiste riikide pädevate asutuste, Euroopa Komisjoni ja rahvusvaheliste organisatsioonidega, seahulgas saada teiste riikide pädevatelt asutustelt, Euroopa Komisjonilt ja järelevalveasutustelt teavet.",
+      "estleg:legalText": "(2) Komisjonil on ülesannete täitmisel õigus: 1) saada välisinvestorilt, muult isikult ja asutuselt ning andmekogudest teavet välisinvesteeringu usaldusväärsuse hindamiseks vajalike asjaolude kohta; 2) teha koostööd teiste riikide pädevate asutuste, Euroopa Komisjoni ja rahvusvaheliste organisatsioonidega, seahulgas saada teiste riikide pädevatelt asutustelt, Euroopa Komisjonilt ja järelevalveasutustelt teavet.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_15"
       },
       "rdfs:label": "§ 15 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2733,12 +2958,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Kontaktpunkt",
+      "rdfs:label": {
+        "@value": "§ 16. Kontaktpunkt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artiklis 11 nimetatud riigisisese kontaktpunkti ülesandeid täidab Tarbijakaitse ja Tehnilise Järelevalve Amet, kes teeb määruses nimetatud alustel ja tingimustel koostööd Euroopa Komisjoni ja muude Euroopa Liidu liikmesriikidega. (2) Tarbijakaitse ja Tehnilise Järelevalve Amet kogub Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 5 lõigetes 1 ja 2 nimetatud andmeid ning edastab need Euroopa Komisjonile.",
+      "estleg:summary": {
+        "@value": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artiklis 11 nimetatud riigisisese kontaktpunkti ülesandeid täidab Tarbijakaitse ja Tehnilise Järelevalve Amet, kes teeb määruses nimetatud alustel ja tingimustel koostööd Euroopa Komisjoni ja muude Euroopa Liidu liikmesriikidega. (2) Tarbijakaitse ja Tehnilise Järelevalve Amet kogub Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 5 lõigetes 1 ja 2 nimetatud andmeid ning edastab need Euroopa Komisjonile.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artiklis 11 nimetatud riigisisese kontaktpunkti ülesandeid täidab Tarbijakaitse ja Tehnilise Järelevalve Amet, kes teeb määruses nimetatud alustel ja tingimustel koostööd Euroopa Komisjoni ja muude Euroopa Liidu liikmesriikidega. (2) Tarbijakaitse ja Tehnilise Järelevalve Amet kogub Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 5 lõigetes 1 ja 2 nimetatud andmeid ning edastab need Euroopa Komisjonile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_4"
@@ -2862,12 +3093,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Koostöö loamenetluses",
+      "rdfs:label": {
+        "@value": "§ 17. Koostöö loamenetluses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet teatab viivitamata Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 kohaselt Euroopa Komisjonile ja muudele Euroopa Liidu liikmesriikidele kolmanda riigi füüsilise isiku või ettevõtja välisinvesteeringust, mille suhtes viiakse läbi loamenetlust, esitades määruse artikli 9 lõikes 2 nimetatud teabe. (2) Tarbijakaitse ja Tehnilise Järelevalve Amet vastab viivitamata Euroopa Komisjoni või muu Euroopa Liidu liikmesriigi lisateabe taotlusele",
+      "estleg:summary": {
+        "@value": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet teatab viivitamata Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 kohaselt Euroopa Komisjonile ja muudele Euroopa Liidu liikmesriikidele kolmanda riigi füüsilise isiku või ettevõtja välisinvesteeringust, mille suhtes viiakse läbi loamenetlust, esitades määruse artikli 9 lõikes 2 nimetatud teabe. (2) Tarbijakaitse ja Tehnilise Järelevalve Amet vastab viivitamata Euroopa Komisjoni või muu Euroopa Liidu liikmesriigi lisateabe taotlusele",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet teatab viivitamata Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 kohaselt Euroopa Komisjonile ja muudele Euroopa Liidu liikmesriikidele kolmanda riigi füüsilise isiku või ettevõtja välisinvesteeringust, mille suhtes viiakse läbi loamenetlust, esitades määruse artikli 9 lõikes 2 nimetatud teabe. (2) Tarbijakaitse ja Tehnilise Järelevalve Amet vastab viivitamata Euroopa Komisjoni või muu Euroopa Liidu liikmesriigi lisateabe taotlusele välisinvesteeringu kohta, nõudes vajaduse korral teavet välisinvestorilt, sihtettevõtjalt või välisinvesteeringu muult osaliselt. Välisinvestor, sihtettevõtja või välisinvesteeringu muu osaline on kohustatud nõutud teabe esitama viivitamata, kuid hiljemalt kümnendal kalendripäeval Tarbijakaitse ja Tehnilise Järelevalve Ameti taotluse saamisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_4"
@@ -2984,12 +3221,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Koostöö loamenetluse puudumise korral",
+      "rdfs:label": {
+        "@value": "§ 18. Koostöö loamenetluse puudumise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Kui Euroopa Komisjon või muu Euroopa Liidu liikmesriik esitab taotluse teabe saamiseks välisinvesteeringu kohta, millele ei kohaldu käesolevas seaduses sätestatud loamenetlus, küsib Tarbijakaitse ja Tehnilise Järelevalve Amet välisinvestorilt, sihtettevõtjalt või välisinvesteeringu muult osaliselt taotlusele vastamiseks vajalikku Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 9 lõikes 2 nimetatud teavet ning edastab selle viivitamata Euroopa Komisjonile ja taotluse esitanud",
+      "estleg:summary": {
+        "@value": "(1) Kui Euroopa Komisjon või muu Euroopa Liidu liikmesriik esitab taotluse teabe saamiseks välisinvesteeringu kohta, millele ei kohaldu käesolevas seaduses sätestatud loamenetlus, küsib Tarbijakaitse ja Tehnilise Järelevalve Amet välisinvestorilt, sihtettevõtjalt või välisinvesteeringu muult osaliselt taotlusele vastamiseks vajalikku Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 9 lõikes 2 nimetatud teavet ning edastab selle viivitamata Euroopa Komisjonile ja taotluse esitanud",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui Euroopa Komisjon või muu Euroopa Liidu liikmesriik esitab taotluse teabe saamiseks välisinvesteeringu kohta, millele ei kohaldu käesolevas seaduses sätestatud loamenetlus, küsib Tarbijakaitse ja Tehnilise Järelevalve Amet välisinvestorilt, sihtettevõtjalt või välisinvesteeringu muult osaliselt taotlusele vastamiseks vajalikku Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artikli 9 lõikes 2 nimetatud teavet ning edastab selle viivitamata Euroopa Komisjonile ja taotluse esitanud Euroopa Liidu liikmesriigile. (2) Välisinvestor, sihtettevõtja või välisinvesteeringu muu osaline on kohustatud nõutud teabe esitama viivitamata, kuid hiljemalt kümnendal kalendripäeval Tarbijakaitse ja Tehnilise Järelevalve Ameti taotluse saamisest arvates. (3) Põhjendatud märkused koostab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artiklis 7 sätestatud alustel ja korras komisjon.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_4"
@@ -3122,12 +3365,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Koostöö muu liikmesriigi välisinvesteeringu loamenetluses",
+      "rdfs:label": {
+        "@value": "§ 19. Koostöö muu liikmesriigi välisinvesteeringu loamenetluses",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Kui Tarbijakaitse ja Tehnilise Järelevalve Amet saab teate muus Euroopa Liidu liikmesriigis alustatud välisinvesteeringu loamenetluse kohta, edastab ta teabe viivitamata komisjonile. (2) Komisjon esitab hiljemalt kümnendal kalendripäeval teabe saamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Ametile hinnangu, kas käesoleva paragrahvi lõikes 1 nimetatud välisinvesteeringu kohta on alust esitada põhjendatud märkusi. Hinnangus märgitakse, kas Eesti julgeolekule või avalikule korrale",
+      "estleg:summary": {
+        "@value": "(1) Kui Tarbijakaitse ja Tehnilise Järelevalve Amet saab teate muus Euroopa Liidu liikmesriigis alustatud välisinvesteeringu loamenetluse kohta, edastab ta teabe viivitamata komisjonile. (2) Komisjon esitab hiljemalt kümnendal kalendripäeval teabe saamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Ametile hinnangu, kas käesoleva paragrahvi lõikes 1 nimetatud välisinvesteeringu kohta on alust esitada põhjendatud märkusi. Hinnangus märgitakse, kas Eesti julgeolekule või avalikule korrale",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui Tarbijakaitse ja Tehnilise Järelevalve Amet saab teate muus Euroopa Liidu liikmesriigis alustatud välisinvesteeringu loamenetluse kohta, edastab ta teabe viivitamata komisjonile. (2) Komisjon esitab hiljemalt kümnendal kalendripäeval teabe saamisest arvates Tarbijakaitse ja Tehnilise Järelevalve Ametile hinnangu, kas käesoleva paragrahvi lõikes 1 nimetatud välisinvesteeringu kohta on alust esitada põhjendatud märkusi. Hinnangus märgitakse, kas Eesti julgeolekule või avalikule korrale oleva ohu või selle ulatuse paremaks hindamiseks ning põhjendatud märkuste esitamiseks on vaja taotleda lisateavet välisinvesteeringu kohta. Põhjendatud märkused koostab Euroopa Parlamendi ja nõukogu määruse (EL) 2019/452 artiklis 6 sätestatud alustel ja korras komisjon.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_4"
@@ -3241,12 +3490,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Riikliku järelevalve teostaja",
+      "rdfs:label": {
+        "@value": "§ 20. Riikliku järelevalve teostaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "Tarbijakaitse ja Tehnilise Järelevalve Ameti pädevuses on riikliku järelevalve teostamine käesolevas seaduses sätestatud nõuete täitmise üle.",
+      "estleg:summary": {
+        "@value": "Tarbijakaitse ja Tehnilise Järelevalve Ameti pädevuses on riikliku järelevalve teostamine käesolevas seaduses sätestatud nõuete täitmise üle.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Ameti pädevuses on riikliku järelevalve teostamine käesolevas seaduses sätestatud nõuete täitmise üle.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_5"
@@ -3313,10 +3568,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Ameti pädevuses on riikliku järelevalve teostamine käesolevas seaduses sätestatud nõuete täitmise üle.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Ameti pädevuses on riikliku järelevalve teostamine käesolevas seaduses sätestatud nõuete täitmise üle.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_20"
       },
+      "rdfs:label": "§ 20 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -3342,12 +3599,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Riikliku järelevalve erimeede",
+      "rdfs:label": {
+        "@value": "§ 21. Riikliku järelevalve erimeede",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "Tarbijakaitse ja Tehnilise Järelevalve Amet võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. Korrakaitseseaduse §-des 49–51 sätestatud riikliku järelevalve erimeetmeid ei või kohaldada korrakaitseseaduse § 5 lõikes 2 nimetatud korrarikkumise ohu ennetamiseks.",
+      "estleg:summary": {
+        "@value": "Tarbijakaitse ja Tehnilise Järelevalve Amet võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. Korrakaitseseaduse §-des 49–51 sätestatud riikliku järelevalve erimeetmeid ei või kohaldada korrakaitseseaduse § 5 lõikes 2 nimetatud korrarikkumise ohu ennetamiseks.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Amet võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. Korrakaitseseaduse §-des 49–51 sätestatud riikliku järelevalve erimeetmeid ei või kohaldada korrakaitseseaduse § 5 lõikes 2 nimetatud korrarikkumise ohu ennetamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_5"
@@ -3454,10 +3717,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Amet võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. Korrakaitseseaduse §-des 49–51 sätestatud riikliku järelevalve erimeetmeid ei või kohaldada korrakaitseseaduse § 5 lõikes 2 nimetatud korrarikkumise ohu ennetamiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Amet võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30–32 ja 49–51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. Korrakaitseseaduse §-des 49–51 sätestatud riikliku järelevalve erimeetmeid ei või kohaldada korrakaitseseaduse § 5 lõikes 2 nimetatud korrarikkumise ohu ennetamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_21"
       },
+      "rdfs:label": "§ 21 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -3523,12 +3788,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Teabe nõudmine välisinvesteeringu loa kõrvaltingimuse täitmise kontrollimiseks",
+      "rdfs:label": {
+        "@value": "§ 22. Teabe nõudmine välisinvesteeringu loa kõrvaltingimuse täitmise kontrollimiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda välisinvesteeringu loa kõrvaltingimuse täitmise kontrollimiseks välisinvestorilt ja sihtettevõtjalt teavet ja dokumente.",
+      "estleg:summary": {
+        "@value": "Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda välisinvesteeringu loa kõrvaltingimuse täitmise kontrollimiseks välisinvestorilt ja sihtettevõtjalt teavet ja dokumente.",
+        "@language": "et"
+      },
       "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda välisinvesteeringu loa kõrvaltingimuse täitmise kontrollimiseks välisinvestorilt ja sihtettevõtjalt teavet ja dokumente.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_5"
@@ -3582,10 +3853,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda välisinvesteeringu loa kõrvaltingimuse täitmise kontrollimiseks välisinvestorilt ja sihtettevõtjalt teavet ja dokumente.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tarbijakaitse ja Tehnilise Järelevalve Ametil on õigus nõuda välisinvesteeringu loa kõrvaltingimuse täitmise kontrollimiseks välisinvestorilt ja sihtettevõtjalt teavet ja dokumente.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_22"
       },
+      "rdfs:label": "§ 22 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -3615,12 +3888,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Ettekirjutus loata välisinvesteeringu tegemise ja loa tingimuste rikkumise korral",
+      "rdfs:label": {
+        "@value": "§ 23. Ettekirjutus loata välisinvesteeringu tegemise ja loa tingimuste rikkumise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "(1) Kui loakohustusega välisinvesteering on tehtud välisinvesteeringu loata, võib Tarbijakaitse ja Tehnilise Järelevalve Amet teha välisinvestorile, sihtettevõtjale ja välisinvesteeringu muule osalisele ettekirjutuse, kohustades teda osalust või sihtettevõtja osa võõrandama, tehingut tagasi täitma või tegema muid toiminguid välisinvesteeringueelse olukorra taastamiseks. (2) Kui välisinvestor, sihtettevõtja või välisinvesteeringu muu osaline ei täida käesoleva seaduse § 11 lõike 3 kohaselt",
+      "estleg:summary": {
+        "@value": "(1) Kui loakohustusega välisinvesteering on tehtud välisinvesteeringu loata, võib Tarbijakaitse ja Tehnilise Järelevalve Amet teha välisinvestorile, sihtettevõtjale ja välisinvesteeringu muule osalisele ettekirjutuse, kohustades teda osalust või sihtettevõtja osa võõrandama, tehingut tagasi täitma või tegema muid toiminguid välisinvesteeringueelse olukorra taastamiseks. (2) Kui välisinvestor, sihtettevõtja või välisinvesteeringu muu osaline ei täida käesoleva seaduse § 11 lõike 3 kohaselt",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui loakohustusega välisinvesteering on tehtud välisinvesteeringu loata, võib Tarbijakaitse ja Tehnilise Järelevalve Amet teha välisinvestorile, sihtettevõtjale ja välisinvesteeringu muule osalisele ettekirjutuse, kohustades teda osalust või sihtettevõtja osa võõrandama, tehingut tagasi täitma või tegema muid toiminguid välisinvesteeringueelse olukorra taastamiseks. (2) Kui välisinvestor, sihtettevõtja või välisinvesteeringu muu osaline ei täida käesoleva seaduse § 11 lõike 3 kohaselt määratud kõrvaltingimust või § 12 lõikes 2 nimetatud kohustust, võib Tarbijakaitse ja Tehnilise Järelevalve Amet teha talle ettekirjutuse, kohustades teda kõrvaltingimust täitma, osalust või sihtettevõtja osa võõrandama, tehingut tagasi täitma või tegema muid toiminguid välisinvesteeringueelse olukorra taastamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_5"
@@ -3753,12 +4032,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Sunniraha ülemmäär",
+      "rdfs:label": {
+        "@value": "§ 24. Sunniraha ülemmäär",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse alusel tehtud ettekirjutuse täitmata jätmise korral võib Tarbijakaitse ja Tehnilise Järelevalve Amet rakendada sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär on 100 000 eurot.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse alusel tehtud ettekirjutuse täitmata jätmise korral võib Tarbijakaitse ja Tehnilise Järelevalve Amet rakendada sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär on 100 000 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse alusel tehtud ettekirjutuse täitmata jätmise korral võib Tarbijakaitse ja Tehnilise Järelevalve Amet rakendada sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär on 100 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_5"
@@ -3834,10 +4119,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse alusel tehtud ettekirjutuse täitmata jätmise korral võib Tarbijakaitse ja Tehnilise Järelevalve Amet rakendada sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär on 100 000 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse alusel tehtud ettekirjutuse täitmata jätmise korral võib Tarbijakaitse ja Tehnilise Järelevalve Amet rakendada sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras. Sunniraha ülemmäär on 100 000 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_24"
       },
+      "rdfs:label": "§ 24 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -3872,13 +4159,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Krediidiasutuste seaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 25.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "Krediidiasutuste seaduse § 88 lõike 5 punkti 11 täiendatakse pärast sõna „tarbijakaitseseaduses” sõnadega „ja välisinvesteeringu usaldusväärsuse hindamise seaduses”.",
-      "estleg:legalText": "Krediidiasutuste seaduse § 88 lõike 5 punkti 11 täiendatakse pärast sõna „tarbijakaitseseaduses” sõnadega „ja välisinvesteeringu usaldusväärsuse hindamise seaduses”.",
+      "estleg:summary": {
+        "@value": "§ 25.",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_6"
       },
@@ -3917,247 +4209,25 @@
       ]
     },
     {
-      "@id": "estleg:VUHS_Par_26",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
-      ],
-      "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Kriminaalmenetluse seadustiku muutmine",
-      "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
-      "estleg:partOfAct": {
-        "@id": "estleg:VUHS_Map"
-      },
-      "estleg:summary": "Kriminaalmenetluse seadustiku § 12612 lõige 3 muudetakse ja sõnastatakse järgmiselt:",
-      "estleg:legalText": "Kriminaalmenetluse seadustiku § 12612 lõige 3 muudetakse ja sõnastatakse järgmiselt:",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VUHS_6"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_VUHS_6"
-      },
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:VUHS_Par_32"
-        },
-        {
-          "@id": "estleg:VUHS_Par_32_Lg_1"
-        }
-      ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VUHS_Par_26_v110022023003"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:VUHS_Par_27",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
-      ],
-      "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Maksukorralduse seaduse muutmine",
-      "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
-      "estleg:partOfAct": {
-        "@id": "estleg:VUHS_Map"
-      },
-      "estleg:summary": "Maksukorralduse seaduse § 29 täiendatakse punktiga 64 järgmises sõnastuses: „64) Tarbijakaitse ja Tehnilise Järelevalve Ametile ja välisinvesteeringukomisjonile välisinvesteeringu usaldusväärsuse hindamise seaduses sätestatud ülesannete täitmiseks.”.",
-      "estleg:legalText": "Maksukorralduse seaduse § 29 täiendatakse punktiga 64 järgmises sõnastuses: „64) Tarbijakaitse ja Tehnilise Järelevalve Ametile ja välisinvesteeringukomisjonile välisinvesteeringu usaldusväärsuse hindamise seaduses sätestatud ülesannete täitmiseks.”.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VUHS_6"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_VUHS_6"
-      },
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        },
-        {
-          "@id": "estleg:TargetGroup_PublicBody"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:MKS_Par_29"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:VUHS_Par_32"
-        },
-        {
-          "@id": "estleg:VUHS_Par_32_Lg_1"
-        }
-      ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VUHS_Par_27_v110022023003"
-        }
-      ],
-      "estleg:mentionsInstitution": [
-        {
-          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:VUHS_Par_28",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
-      ],
-      "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Rahapesu ja terrorismi rahastamise tõkestamise seaduse muutmine",
-      "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
-      "estleg:partOfAct": {
-        "@id": "estleg:VUHS_Map"
-      },
-      "estleg:summary": "Rahapesu ja terrorismi rahastamise tõkestamise seaduses tehakse järgmised muudatused:",
-      "estleg:legalText": "Rahapesu ja terrorismi rahastamise tõkestamise seaduses tehakse järgmised muudatused:",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VUHS_6"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_VUHS_6"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EKTAKS_Par_12"
-        },
-        {
-          "@id": "estleg:EKTAKS_Par_13"
-        },
-        {
-          "@id": "estleg:HALDUS_2_Par_28"
-        },
-        {
-          "@id": "estleg:KAITSE_4_Par_40"
-        },
-        {
-          "@id": "estleg:KruTS_Par_55"
-        }
-      ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VUHS_Par_28_v110022023003"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:VUHS_Par_29",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
-      ],
-      "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Seadme ohutuse seaduse muutmine",
-      "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
-      "estleg:partOfAct": {
-        "@id": "estleg:VUHS_Map"
-      },
-      "estleg:summary": "Seadme ohutuse seaduses tehakse järgmised muudatused:",
-      "estleg:legalText": "Seadme ohutuse seaduses tehakse järgmised muudatused:",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VUHS_6"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_VUHS_6"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EKTAKS_Par_12"
-        },
-        {
-          "@id": "estleg:EKTAKS_Par_13"
-        },
-        {
-          "@id": "estleg:HALDUS_2_Par_28"
-        },
-        {
-          "@id": "estleg:KAITSE_4_Par_40"
-        },
-        {
-          "@id": "estleg:OHVRIA_Par_65"
-        }
-      ],
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VUHS_Par_29_v110022023003"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:VUHS_Par_30",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision"
-      ],
-      "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Tarbijakaitseseaduse muutmine",
-      "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
-      "estleg:partOfAct": {
-        "@id": "estleg:VUHS_Map"
-      },
-      "estleg:summary": "Tarbijakaitseseaduses tehakse järgmised muudatused:",
-      "estleg:legalText": "Tarbijakaitseseaduses tehakse järgmised muudatused:",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VUHS_6"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:Chapter_VUHS_6"
-      },
-      "estleg:targetGroup": [
-        {
-          "@id": "estleg:TargetGroup_Citizen"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:EKTAKS_Par_12"
-        },
-        {
-          "@id": "estleg:EKTAKS_Par_13"
-        },
-        {
-          "@id": "estleg:HALDUS_2_Par_28"
-        },
-        {
-          "@id": "estleg:KAITSE_4_Par_40"
-        },
-        {
-          "@id": "estleg:OHVRIA_Par_65"
-        }
-      ],
-      "estleg:assertionConfidence": {
-        "@value": "0.65",
-        "@type": "xsd:decimal"
-      },
-      "estleg:hasVersion": [
-        {
-          "@id": "estleg:VUHS_Par_30_v110022023003"
-        }
-      ]
-    },
-    {
       "@id": "estleg:VUHS_Par_31",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Turismiseaduse muutmine",
+      "rdfs:label": {
+        "@value": "§ 31. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "Turismiseaduse § 152 lõike 1 sissejuhatavas lauseosas asendatakse tekstiosa „tarbijakaitseseaduse §-s 22” tekstiosaga „seadme ohutuse seaduse §-s 12”.",
-      "estleg:legalText": "Turismiseaduse § 152 lõike 1 sissejuhatavas lauseosas asendatakse tekstiosa „tarbijakaitseseaduse §-s 22” tekstiosaga „seadme ohutuse seaduse §-s 12”.",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_6"
       },
@@ -4194,12 +4264,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 32. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Välisinvesteeringu usaldusväärsuse hindamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VUHS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse §-d 1–27, § 28 punktid 2 ja 4 ning §-d 29–31 jõustuvad 2023. aasta 1. septembril.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse §-d 1–27, § 28 punktid 2 ja 4 ning §-d 29–31 jõustuvad 2023. aasta 1. septembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse §-d 1–27, § 28 punktid 2 ja 4 ning §-d 29–31 jõustuvad 2023. aasta 1. septembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VUHS_6"
@@ -4324,10 +4400,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse §-d 1–27, § 28 punktid 2 ja 4 ning §-d 29–31 jõustuvad 2023. aasta 1. septembril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-d 1–27, § 28 punktid 2 ja 4 ning §-d 29–31 jõustuvad 2023. aasta 1. septembril.",
       "estleg:parentProvision": {
         "@id": "estleg:VUHS_Par_32"
       },
+      "rdfs:label": "§ 32 lg 1",
       "estleg:itemNumber": "2",
       "estleg:references": [
         {
@@ -4414,28 +4492,20 @@
       ]
     },
     {
-      "@id": "estleg:Citation_VUHS_P_26_1",
+      "@id": "https://www.riigiteataja.ee/en/eli/504042023002",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
+        "eli:LegalExpression"
       ],
-      "estleg:citationSource": {
-        "@id": "estleg:VUHS_Par_26"
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
       },
-      "estleg:citationDetail": "KrMS",
-      "estleg:citationText": "Kriminaalmenetluse seadustiku § 12612"
-    },
-    {
-      "@id": "estleg:Citation_VUHS_P_31_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Citation"
-      ],
-      "estleg:citationSource": {
-        "@id": "estleg:VUHS_Par_31"
+      "eli:realizes": {
+        "@id": "estleg:VUHS_Map"
       },
-      "estleg:citationDetail": "turismiseadus",
-      "estleg:citationText": "Turismiseaduse § 152 lõike 1"
+      "rdfs:label": {
+        "@value": "Foreign Investment Reliability Assessment Act",
+        "@language": "en"
+      }
     }
   ]
 }

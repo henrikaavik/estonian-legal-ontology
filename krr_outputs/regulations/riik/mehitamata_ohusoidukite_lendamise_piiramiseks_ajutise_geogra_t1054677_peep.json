@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2022-09-08",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-08-30",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -81,7 +83,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2494"
         }
-      ]
+      ],
+      "dcterms:title": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054677_Par_1",
@@ -90,13 +98,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamine ja sellest teavitamine",
+      "rdfs:label": {
+        "@value": "§ 1. Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamine ja sellest teavitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054677_Map"
       },
-      "estleg:summary": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamisel teeb lennundusseaduse § 41 lõikes 2 nimetatud asutus viivitamatult digitaalses vormis märke mehitamata õhusõiduki liikluskorraldussüsteemi, esitades ala kehtestamise põhjuse, algus- ja lõpuaja, valdaja kontaktandmed ning rõht- ja püstpiirid. Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamisel teeb lennundusseaduse § 41 lõikes 2 nimetatud asutus viivitamatult digitaalses v",
-      "estleg:legalText": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamisel teeb lennundusseaduse § 41 lõikes 2 nimetatud asutus viivitamatult digitaalses vormis märke mehitamata õhusõiduki liikluskorraldussüsteemi, esitades ala kehtestamise põhjuse, algus- ja lõpuaja, valdaja kontaktandmed ning rõht- ja püstpiirid. Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamisel teeb lennundusseaduse § 41 lõikes 2 nimetatud asutus viivitamatult digitaalses vormis märke mehitamata õhusõiduki liikluskorraldussüsteemi, esitades ala kehtestamise põhjuse, algus- ja lõpuaja, valdaja kontaktandmed ning rõht- ja püstpiirid. 2 (2) Lõikes 1 nimetatud kehtestatava ala algus- ja lõpuaeg ning rõht- ja püstpiirid määratakse ajutise geograafilise ala kehtestamise eesmärgi ulatuses ja viisil, mis piirab võimalikult vähe õhuruumi kasutamist. Lõikes 1 nimetatud kehtestatava ala algus- ja lõpuaeg ning rõht- ja püstpiirid määratakse ajutise geograafilise ala kehtestamise eesmärgi ulatuses ja viisil, mis piirab võimalikult vähe õhuruumi kasutamist. 3 (3) Lõikes 1 nimetatud asutus teavitab viivitamatult pärast mehitamata õhusõiduki liikluskorraldussüsteemis märke tegemist ala kehtestamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust. Lõikes 1 nimetatud asutus teavitab viivitamatult pärast mehitamata õhusõiduki liikluskorraldussüsteemis märke tegemist ala kehtestamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust.",
+      "estleg:summary": {
+        "@value": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamisel teeb lennundusseaduse § 41 lõikes 2 nimetatud asutus viivitamatult digitaalses vormis märke mehitamata õhusõiduki liikluskorraldussüsteemi, esitades ala kehtestamise põhjuse, algus- ja lõpuaja, valdaja kontaktandmed ning rõht- ja püstpiirid. 2 (2) Lõikes 1 nimetatud kehtestatava ala algus- ja lõpuaeg ning rõht- ja püstpiirid määratakse ajutise geograafilise ala kehtestamise eesmärgi ulatuses ja viisil,…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamisel teeb lennundusseaduse § 41 lõikes 2 nimetatud asutus viivitamatult digitaalses vormis märke mehitamata õhusõiduki liikluskorraldussüsteemi, esitades ala kehtestamise põhjuse, algus- ja lõpuaja, valdaja kontaktandmed ning rõht- ja püstpiirid. 2 (2) Lõikes 1 nimetatud kehtestatava ala algus- ja lõpuaeg ning rõht- ja püstpiirid määratakse ajutise geograafilise ala kehtestamise eesmärgi ulatuses ja viisil, mis piirab võimalikult vähe õhuruumi kasutamist. 3 (3) Lõikes 1 nimetatud asutus teavitab viivitamatult pärast mehitamata õhusõiduki liikluskorraldussüsteemis märke tegemist ala kehtestamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -118,7 +132,57 @@
         {
           "@id": "estleg:Reg_1054677_Par_1_v1054677"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054677_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054677_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054677_Par_1_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamisel teeb lennundusseaduse § 4¹ lõikes 2 nimetatud asutus viivitamatult digitaalses vormis märke mehitamata õhusõiduki liikluskorraldussüsteemi, esitades ala kehtestamise põhjuse, algus- ja lõpuaja, valdaja kontaktandmed ning rõht- ja püstpiirid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõikes 1 nimetatud kehtestatava ala algus- ja lõpuaeg ning rõht- ja püstpiirid määratakse ajutise geograafilise ala kehtestamise eesmärgi ulatuses ja viisil, mis piirab võimalikult vähe õhuruumi kasutamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lõikes 1 nimetatud asutus teavitab viivitamatult pärast mehitamata õhusõiduki liikluskorraldussüsteemis märke tegemist ala kehtestamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:Reg_1054677_Par_2",
@@ -127,13 +191,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala lõpetamine ja sellest teavitamine",
+      "rdfs:label": {
+        "@value": "§ 2. Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala lõpetamine ja sellest teavitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054677_Map"
       },
-      "estleg:summary": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtivus lõppeb selleks märgitud lõpuaja saabumisel või enne lõpuaja saabumist tehtava lõpetamise otsuse alusel. Mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtivus lõppeb selleks märgitud lõpuaja saabumisel või enne lõpuaja saabumist tehtava lõpetamise otsuse alusel. 2 (2) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutine geograafiline ala on lõp",
-      "estleg:legalText": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtivus lõppeb selleks märgitud lõpuaja saabumisel või enne lõpuaja saabumist tehtava lõpetamise otsuse alusel. Mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtivus lõppeb selleks märgitud lõpuaja saabumisel või enne lõpuaja saabumist tehtava lõpetamise otsuse alusel. 2 (2) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutine geograafiline ala on lõppenud lõpuaja saabumise tõttu, kuid ala kehtestamise põhjus või sündmuse lahendamine ei ole lõppenud ning vajadus ajutise geograafilise ala kehtestamiseks püsib, tuleb ajutine geograafiline ala kehtestada uuesti ning seda vastavalt §-s 1 sätestatud korrale. Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutine geograafiline ala on lõppenud lõpuaja saabumise tõttu, kuid ala kehtestamise põhjus või sündmuse lahendamine ei ole lõppenud ning vajadus ajutise geograafilise ala kehtestamiseks püsib, tuleb ajutine geograafiline ala kehtestada uuesti ning seda vastavalt §-s 1 sätestatud korrale. 3 (3) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtestamise põhjus või sündmuse lahendamise vajadus langeb ära enne kehtestatud ala lõpuaega, teeb § 1 lõikes 1 nimetatud asutus lõpetamise otsuse viivitamatult pärast põhjuse äralangemist või sündmuse lahendamise lõppemist. Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtestamise põhjus või sündmuse lahendamise vajadus langeb ära enne kehtestatud ala lõpuaega, teeb § 1 lõikes 1 nimetatud asutus lõpetamise otsuse viivitamatult pärast põhjuse äralangemist või sündmuse lahendamise lõppemist. 4 (4) Lõikes 3 nimetatud juhul teeb § 1 lõikes 1 nimetatud asutus viivitamatult digitaalses vormis ala lõpetamise märke mehitamata õhusõiduki liikluskorraldussüsteemi ja teavitab viivitamatult ala lõpetamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust. Lõikes 3 nimetatud juhul teeb § 1 lõikes 1 nimetatud asutus viivitamatult digitaalses vormis ala lõpetamise märke mehitamata õhusõiduki liikluskorraldussüsteemi ja teavitab viivitamatult ala lõpetamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust.",
+      "estleg:summary": {
+        "@value": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtivus lõppeb selleks märgitud lõpuaja saabumisel või enne lõpuaja saabumist tehtava lõpetamise otsuse alusel. 2 (2) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutine geograafiline ala on lõppenud lõpuaja saabumise tõttu, kuid ala kehtestamise põhjus või sündmuse lahendamine ei ole lõppenud ning vajadus ajutise geograafilise ala kehtestamiseks püsib, tuleb ajutine geograafiline ala…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtivus lõppeb selleks märgitud lõpuaja saabumisel või enne lõpuaja saabumist tehtava lõpetamise otsuse alusel. 2 (2) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutine geograafiline ala on lõppenud lõpuaja saabumise tõttu, kuid ala kehtestamise põhjus või sündmuse lahendamine ei ole lõppenud ning vajadus ajutise geograafilise ala kehtestamiseks püsib, tuleb ajutine geograafiline ala kehtestada uuesti ning seda vastavalt §-s 1 sätestatud korrale. 3 (3) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtestamise põhjus või sündmuse lahendamise vajadus langeb ära enne kehtestatud ala lõpuaega, teeb § 1 lõikes 1 nimetatud asutus lõpetamise otsuse viivitamatult pärast põhjuse äralangemist või sündmuse lahendamise lõppemist. 4 (4) Lõikes 3 nimetatud juhul teeb § 1 lõikes 1 nimetatud asutus viivitamatult digitaalses vormis ala lõpetamise märke mehitamata õhusõiduki liikluskorraldussüsteemi ja teavitab viivitamatult ala lõpetamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -147,7 +217,73 @@
         {
           "@id": "estleg:Reg_1054677_Par_2_v1054677"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054677_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054677_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054677_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054677_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtivus lõppeb selleks märgitud lõpuaja saabumisel või enne lõpuaja saabumist tehtava lõpetamise otsuse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutine geograafiline ala on lõppenud lõpuaja saabumise tõttu, kuid ala kehtestamise põhjus või sündmuse lahendamine ei ole lõppenud ning vajadus ajutise geograafilise ala kehtestamiseks püsib, tuleb ajutine geograafiline ala kehtestada uuesti ning seda vastavalt §-s 1 sätestatud korrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui mehitamata õhusõidukite lendamise piiramiseks kehtestatud ajutise geograafilise ala kehtestamise põhjus või sündmuse lahendamise vajadus langeb ära enne kehtestatud ala lõpuaega, teeb § 1 lõikes 1 nimetatud asutus lõpetamise otsuse viivitamatult pärast põhjuse äralangemist või sündmuse lahendamise lõppemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lõikes 3 nimetatud juhul teeb § 1 lõikes 1 nimetatud asutus viivitamatult digitaalses vormis ala lõpetamise märke mehitamata õhusõiduki liikluskorraldussüsteemi ja teavitab viivitamatult ala lõpetamisest aeronavigatsiooniteenuse osutajat, kes osutab aeronavigatsiooniteabe teenust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1054677_Par_3",
@@ -156,18 +292,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Rakendussäte",
+      "rdfs:label": {
+        "@value": "§ 3. Rakendussäte",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054677_Map"
       },
-      "estleg:summary": "Mehitamata õhusõiduki liikluskorraldussüsteemi valmimiseni avaldab mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamist ja lõpetamist puudutava teabe oma kodulehel aeronavigatsiooniteenuse osutaja, kes osutab aeronavigatsiooniteabe teenust.",
-      "estleg:legalText": "Mehitamata õhusõiduki liikluskorraldussüsteemi valmimiseni avaldab mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamist ja lõpetamist puudutava teabe oma kodulehel aeronavigatsiooniteenuse osutaja, kes osutab aeronavigatsiooniteabe teenust. Mehitamata õhusõiduki liikluskorraldussüsteemi valmimiseni avaldab mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamist ja lõpetamist puudutava teabe oma kodulehel aeronavigatsiooniteenuse osutaja, kes osutab aeronavigatsiooniteabe teenust.",
+      "estleg:summary": {
+        "@value": "Mehitamata õhusõiduki liikluskorraldussüsteemi valmimiseni avaldab mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamist ja lõpetamist puudutava teabe oma kodulehel aeronavigatsiooniteenuse osutaja, kes osutab aeronavigatsiooniteabe teenust.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Mehitamata õhusõiduki liikluskorraldussüsteemi valmimiseni avaldab mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamist ja lõpetamist puudutava teabe oma kodulehel aeronavigatsiooniteenuse osutaja, kes osutab aeronavigatsiooniteabe teenust.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054677_Par_3_v1054677"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054677_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mehitamata õhusõiduki liikluskorraldussüsteemi valmimiseni avaldab mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamist ja lõpetamist puudutava teabe oma kodulehel aeronavigatsiooniteenuse osutaja, kes osutab aeronavigatsiooniteabe teenust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1054677_Par_4",
@@ -176,16 +336,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Mehitamata õhusõidukite lendamise piiramiseks ajutise geograafilise ala kehtestamise, lõpetamise ning sellest teavitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054677_Map"
       },
-      "estleg:summary": "Määrus jõustub 8. septembril 2022. a.",
-      "estleg:legalText": "Määrus jõustub 8. septembril 2022. a. Määrus jõustub 8. septembril 2022. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 8. septembril 2022. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 8. septembril 2022. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054677_Par_4_v1054677"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054677_Par_4_Lg_1"
         }
       ]
     },
@@ -199,6 +370,19 @@
         "@id": "estleg:LENN_Par_4"
       },
       "estleg:citationText": "Määrus kehtestatakse lennundusseaduse § 4"
+    },
+    {
+      "@id": "estleg:Reg_1054677_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 8. septembril 2022. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054677_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     }
   ]
 }

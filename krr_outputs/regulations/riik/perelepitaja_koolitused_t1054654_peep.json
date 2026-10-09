@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Perelepitaja koolitused (määrus)",
+      "rdfs:label": {
+        "@value": "Perelepitaja koolitused (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Perelepitaja koolitused",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2022-09-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-08-25",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -75,7 +77,13 @@
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
-      ]
+      ],
+      "dcterms:title": "Perelepitaja koolitused",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054654_Par_1",
@@ -84,13 +92,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Perelepitaja koolitused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054654_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse riikliku perelepitusteenuse osutamise käigus lepitusmenetlust läbiviiva perelepitaja koolituse ja täienduskoolituse tingimused ja kord ning nõuded koolituse sisule ja mahule.",
-      "estleg:legalText": "Määrusega kehtestatakse riikliku perelepitusteenuse osutamise käigus lepitusmenetlust läbiviiva perelepitaja koolituse ja täienduskoolituse tingimused ja kord ning nõuded koolituse sisule ja mahule. Määrusega kehtestatakse riikliku perelepitusteenuse osutamise käigus lepitusmenetlust läbiviiva perelepitaja koolituse ja täienduskoolituse tingimused ja kord ning nõuded koolituse sisule ja mahule.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse riikliku perelepitusteenuse osutamise käigus lepitusmenetlust läbiviiva perelepitaja koolituse ja täienduskoolituse tingimused ja kord ning nõuded koolituse sisule ja mahule.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse riikliku perelepitusteenuse osutamise käigus lepitusmenetlust läbiviiva perelepitaja koolituse ja täienduskoolituse tingimused ja kord ning nõuded koolituse sisule ja mahule.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1053616_Par_1"
@@ -100,7 +114,25 @@
         {
           "@id": "estleg:Reg_1054654_Par_1_v1054654"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054654_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse riikliku perelepitusteenuse osutamise käigus lepitusmenetlust läbiviiva perelepitaja koolituse ja täienduskoolituse tingimused ja kord ning nõuded koolituse sisule ja mahule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1054654_Par_2",
@@ -109,13 +141,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Koolituste sisu ja maht",
+      "rdfs:label": {
+        "@value": "§ 2. Koolituste sisu ja maht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Perelepitaja koolitused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054654_Map"
       },
-      "estleg:summary": "1 (1) Perelepitaja koolitus jaguneb baaskoolituseks ja laste kaasamise koolituseks. Perelepitaja koolitus jaguneb baaskoolituseks ja laste kaasamise koolituseks. 2 (2) Baaskoolituse maht on 160 akadeemilist tundi ning see koosneb seitsmest moodulist ja eksamist. Baaskoolituse maht on 160 akadeemilist tundi ning see koosneb seitsmest moodulist ja eksamist. 3 (3) Laste kaasamise koolituse maht on 40 akadeemilist tundi ning see koosneb üheksast moodulist. Laste kaasamise koolituse maht on 40 akadee",
-      "estleg:legalText": "1 (1) Perelepitaja koolitus jaguneb baaskoolituseks ja laste kaasamise koolituseks. Perelepitaja koolitus jaguneb baaskoolituseks ja laste kaasamise koolituseks. 2 (2) Baaskoolituse maht on 160 akadeemilist tundi ning see koosneb seitsmest moodulist ja eksamist. Baaskoolituse maht on 160 akadeemilist tundi ning see koosneb seitsmest moodulist ja eksamist. 3 (3) Laste kaasamise koolituse maht on 40 akadeemilist tundi ning see koosneb üheksast moodulist. Laste kaasamise koolituse maht on 40 akadeemilist tundi ning see koosneb üheksast moodulist. 4 (4) Perelepitaja koolituse õppekava peab tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse ning toetama talle seaduses või muus õigusaktis pandud ülesannete täitmist, sealhulgas lapse õiguste ja huvide kaitsmist ning lapse ärakuulamist lepitusmenetluses. Perelepitaja koolituse õppekava peab tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse ning toetama talle seaduses või muus õigusaktis pandud ülesannete täitmist, sealhulgas lapse õiguste ja huvide kaitsmist ning lapse ärakuulamist lepitusmenetluses. 5 (5) Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 1 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks lähisuhtevägivalla ohvriga ning andma põhjaliku ülevaate lähisuhtevägivalla, sealhulgas vägivallatseja olemusest, samuti lapse huvide ja heaolu tagamisest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb kuuest moodulist. Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 1 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks lähisuhtevägivalla ohvriga ning andma põhjaliku ülevaate lähisuhtevägivalla, sealhulgas vägivallatseja olemusest, samuti lapse huvide ja heaolu tagamisest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb kuuest moodulist. 6 (6) Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 3 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks psüühilise erivajadusega inimesega ning andma ülevaate levinumatest psüühikahäiretest, sealhulgas psüühikahäire ja intellektipuudega vanema peamistest probleemidest perelepituses, samuti erinevatest tehnikatest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb viiest moodulist. Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 3 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks psüühilise erivajadusega inimesega ning andma ülevaate levinumatest psüühikahäiretest, sealhulgas psüühikahäire ja intellektipuudega vanema peamistest probleemidest perelepituses, samuti erinevatest tehnikatest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb viiest moodulist. 7 (7) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolituste õppekavad kinnitab Sotsiaalkindlustusamet. Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolituste õppekavad kinnitab Sotsiaalkindlustusamet.",
+      "estleg:summary": {
+        "@value": "1 (1) Perelepitaja koolitus jaguneb baaskoolituseks ja laste kaasamise koolituseks. 2 (2) Baaskoolituse maht on 160 akadeemilist tundi ning see koosneb seitsmest moodulist ja eksamist. 3 (3) Laste kaasamise koolituse maht on 40 akadeemilist tundi ning see koosneb üheksast moodulist. 4 (4) Perelepitaja koolituse õppekava peab tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse ning toetama talle seaduses või muus õigusaktis pandud ülesannete täitmist, sealhulgas lapse…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Perelepitaja koolitus jaguneb baaskoolituseks ja laste kaasamise koolituseks. 2 (2) Baaskoolituse maht on 160 akadeemilist tundi ning see koosneb seitsmest moodulist ja eksamist. 3 (3) Laste kaasamise koolituse maht on 40 akadeemilist tundi ning see koosneb üheksast moodulist. 4 (4) Perelepitaja koolituse õppekava peab tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse ning toetama talle seaduses või muus õigusaktis pandud ülesannete täitmist, sealhulgas lapse õiguste ja huvide kaitsmist ning lapse ärakuulamist lepitusmenetluses. 5 (5) Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 1 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks lähisuhtevägivalla ohvriga ning andma põhjaliku ülevaate lähisuhtevägivalla, sealhulgas vägivallatseja olemusest, samuti lapse huvide ja heaolu tagamisest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb kuuest moodulist. 6 (6) Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 3 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks psüühilise erivajadusega inimesega ning andma ülevaate levinumatest psüühikahäiretest, sealhulgas psüühikahäire ja intellektipuudega vanema peamistest probleemidest perelepituses, samuti erinevatest tehnikatest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb viiest moodulist. 7 (7) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolituste õppekavad kinnitab Sotsiaalkindlustusamet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -135,7 +173,123 @@
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054654_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054654_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054654_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054654_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054654_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1054654_Par_2_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1054654_Par_2_Lg_7"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Perelepitaja koolitus jaguneb baaskoolituseks ja laste kaasamise koolituseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Baaskoolituse maht on 160 akadeemilist tundi ning see koosneb seitsmest moodulist ja eksamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Laste kaasamise koolituse maht on 40 akadeemilist tundi ning see koosneb üheksast moodulist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Perelepitaja koolituse õppekava peab tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse ning toetama talle seaduses või muus õigusaktis pandud ülesannete täitmist, sealhulgas lapse õiguste ja huvide kaitsmist ning lapse ärakuulamist lepitusmenetluses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 1 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks lähisuhtevägivalla ohvriga ning andma põhjaliku ülevaate lähisuhtevägivalla, sealhulgas vägivallatseja olemusest, samuti lapse huvide ja heaolu tagamisest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb kuuest moodulist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5",
+      "estleg:itemNumber": "1"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Riikliku perelepitusteenuse seaduse § 11 lõike 1 punktis 3 nimetatud perelepituse erijuhuga töötamiseks peab täienduskoolituse õppekava tagama lepitusmenetlust läbiviivale perelepitajale vajaliku ettevalmistuse tööks psüühilise erivajadusega inimesega ning andma ülevaate levinumatest psüühikahäiretest, sealhulgas psüühikahäire ja intellektipuudega vanema peamistest probleemidest perelepituses, samuti erinevatest tehnikatest lepitusmenetluse läbiviimisel. Täienduskoolituse maht on 60 akadeemilist tundi ning see koosneb viiest moodulist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6",
+      "estleg:itemNumber": "3"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_2_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolituste õppekavad kinnitab Sotsiaalkindlustusamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 7"
     },
     {
       "@id": "estleg:Reg_1054654_Par_3",
@@ -144,13 +298,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Koolituste korraldamine",
+      "rdfs:label": {
+        "@value": "§ 3. Koolituste korraldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Perelepitaja koolitused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054654_Map"
       },
-      "estleg:summary": "1 (1) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolitusi korraldab Sotsiaalkindlustusamet, lähtudes täiskasvanute koolituse seadusest. Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolitusi korraldab Sotsiaalkindlustusamet, lähtudes täiskasvanute koolituse seadusest. 2 (2) Perelepitaja koolituse läbimise järel väljastatakse koolituse läbinule tunnistus. Täienduskoolituse läbimisel väljastatakse koolituse läbinule tõend. Perelepitaja koolituse läbimise järel väljastatakse koolituse läbinule tunnist",
-      "estleg:legalText": "1 (1) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolitusi korraldab Sotsiaalkindlustusamet, lähtudes täiskasvanute koolituse seadusest. Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolitusi korraldab Sotsiaalkindlustusamet, lähtudes täiskasvanute koolituse seadusest. 2 (2) Perelepitaja koolituse läbimise järel väljastatakse koolituse läbinule tunnistus. Täienduskoolituse läbimisel väljastatakse koolituse läbinule tõend. Perelepitaja koolituse läbimise järel väljastatakse koolituse läbinule tunnistus. Täienduskoolituse läbimisel väljastatakse koolituse läbinule tõend.",
+      "estleg:summary": {
+        "@value": "1 (1) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolitusi korraldab Sotsiaalkindlustusamet, lähtudes täiskasvanute koolituse seadusest. 2 (2) Perelepitaja koolituse läbimise järel väljastatakse koolituse läbinule tunnistus. Täienduskoolituse läbimisel väljastatakse koolituse läbinule tõend.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolitusi korraldab Sotsiaalkindlustusamet, lähtudes täiskasvanute koolituse seadusest. 2 (2) Perelepitaja koolituse läbimise järel väljastatakse koolituse läbinule tunnistus. Täienduskoolituse läbimisel väljastatakse koolituse läbinule tõend.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054654_Par_3_v1054654"
@@ -161,7 +321,41 @@
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054654_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054654_Par_3_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Paragrahvi 2 lõigetes 1, 5 ja 6 nimetatud koolitusi korraldab Sotsiaalkindlustusamet, lähtudes täiskasvanute koolituse seadusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Perelepitaja koolituse läbimise järel väljastatakse koolituse läbinule tunnistus. Täienduskoolituse läbimisel väljastatakse koolituse läbinule tõend.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:Reg_1054654_Par_4",
@@ -170,16 +364,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Perelepitaja koolitused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054654_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. septembril 2022. a.",
-      "estleg:legalText": "Määrus jõustub 1. septembril 2022. a. Määrus jõustub 1. septembril 2022. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. septembril 2022. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. septembril 2022. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054654_Par_4_v1054654"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054654_Par_4_Lg_1"
         }
       ]
     },
@@ -194,6 +399,19 @@
       },
       "estleg:citationDetail": "lg 4",
       "estleg:citationText": "Määrus kehtestatakse riikliku perelepitusteenuse seaduse § 6 lõike 4"
+    },
+    {
+      "@id": "estleg:Reg_1054654_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. septembril 2022. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054654_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord (määrus)",
+      "rdfs:label": {
+        "@value": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -32,18 +39,13 @@
       "estleg:globalId": "13328093",
       "estleg:terviktekstId": "339682",
       "estleg:entryIntoForce": {
-        "@value": "2010-01-01",
+        "@value": "2010-06-18",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2010-06-03",
         "@type": "xsd:date"
       },
-      "estleg:publicationYear": {
-        "@value": "2009",
-        "@type": "xsd:gYear"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_339682_79f2cd1827"
@@ -73,7 +75,13 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
-      ]
+      ],
+      "dcterms:title": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_339682_Par_1",
@@ -82,13 +90,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Isikukaitse",
+      "rdfs:label": {
+        "@value": "§ 1. Isikukaitse",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Isikukaitse on politsei poolt meetmete planeerimine ja rakendamine lähtuvalt ohuhinnangust eesmärgiga ennetada ja tõrjuda ohtu, mis on suunatud kaitstava isiku elu, tervise või kehalise puutumatuse vastu. Isikukaitse on politsei poolt meetmete planeerimine ja rakendamine lähtuvalt ohuhinnangust eesmärgiga ennetada ja tõrjuda ohtu, mis on suunatud kaitstava isiku elu, tervise või kehalise puutumatuse vastu. 2(2)Kaitstav isik on isik, kelle suhtes rakendatakse isikukaitset. Kaitstav isik on is",
-      "estleg:legalText": "1(1)Isikukaitse on politsei poolt meetmete planeerimine ja rakendamine lähtuvalt ohuhinnangust eesmärgiga ennetada ja tõrjuda ohtu, mis on suunatud kaitstava isiku elu, tervise või kehalise puutumatuse vastu. Isikukaitse on politsei poolt meetmete planeerimine ja rakendamine lähtuvalt ohuhinnangust eesmärgiga ennetada ja tõrjuda ohtu, mis on suunatud kaitstava isiku elu, tervise või kehalise puutumatuse vastu. 2(2)Kaitstav isik on isik, kelle suhtes rakendatakse isikukaitset. Kaitstav isik on isik, kelle suhtes rakendatakse isikukaitset.",
+      "estleg:summary": {
+        "@value": "1(1)Isikukaitse on politsei poolt meetmete planeerimine ja rakendamine lähtuvalt ohuhinnangust eesmärgiga ennetada ja tõrjuda ohtu, mis on suunatud kaitstava isiku elu, tervise või kehalise puutumatuse vastu. 2(2)Kaitstav isik on isik, kelle suhtes rakendatakse isikukaitset.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Isikukaitse on politsei poolt meetmete planeerimine ja rakendamine lähtuvalt ohuhinnangust eesmärgiga ennetada ja tõrjuda ohtu, mis on suunatud kaitstava isiku elu, tervise või kehalise puutumatuse vastu. 2(2)Kaitstav isik on isik, kelle suhtes rakendatakse isikukaitset.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -107,7 +121,41 @@
         {
           "@id": "estleg:Reg_339682_Par_1_v339682"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaitse on politsei poolt meetmete planeerimine ja rakendamine lähtuvalt ohuhinnangust eesmärgiga ennetada ja tõrjuda ohtu, mis on suunatud kaitstava isiku elu, tervise või kehalise puutumatuse vastu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitstav isik on isik, kelle suhtes rakendatakse isikukaitset.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_339682_Par_2",
@@ -116,13 +164,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Isikukaitse teostamise viisid",
+      "rdfs:label": {
+        "@value": "§ 2. Isikukaitse teostamise viisid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Isikukaitse teostamise viisid on ihukaitse, mobiilkaitse ja komplekskaitse. Isikukaitse teostamise viisid on ihukaitse, mobiilkaitse ja komplekskaitse. 2(2)Ihukaitse on kaitstava isiku vahetu kaitsmine ühe või mitme politseiametniku poolt. Ihukaitse on kaitstava isiku vahetu kaitsmine ühe või mitme politseiametniku poolt. 3(3)Mobiilkaitse on kaitstava isiku ohutuse tagamine transpordivahendiga liikudes. Mobiilkaitse on kaitstava isiku ohutuse tagamine transpordivahendiga liikudes. 4(4)Komple",
-      "estleg:legalText": "1(1)Isikukaitse teostamise viisid on ihukaitse, mobiilkaitse ja komplekskaitse. Isikukaitse teostamise viisid on ihukaitse, mobiilkaitse ja komplekskaitse. 2(2)Ihukaitse on kaitstava isiku vahetu kaitsmine ühe või mitme politseiametniku poolt. Ihukaitse on kaitstava isiku vahetu kaitsmine ühe või mitme politseiametniku poolt. 3(3)Mobiilkaitse on kaitstava isiku ohutuse tagamine transpordivahendiga liikudes. Mobiilkaitse on kaitstava isiku ohutuse tagamine transpordivahendiga liikudes. 4(4)Komplekskaitse on ihukaitse ja mobiilkaitse kombineeritud rakendamine. Komplekskaitse on ihukaitse ja mobiilkaitse kombineeritud rakendamine.",
+      "estleg:summary": {
+        "@value": "1(1)Isikukaitse teostamise viisid on ihukaitse, mobiilkaitse ja komplekskaitse. 2(2)Ihukaitse on kaitstava isiku vahetu kaitsmine ühe või mitme politseiametniku poolt. 3(3)Mobiilkaitse on kaitstava isiku ohutuse tagamine transpordivahendiga liikudes. 4(4)Komplekskaitse on ihukaitse ja mobiilkaitse kombineeritud rakendamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Isikukaitse teostamise viisid on ihukaitse, mobiilkaitse ja komplekskaitse. 2(2)Ihukaitse on kaitstava isiku vahetu kaitsmine ühe või mitme politseiametniku poolt. 3(3)Mobiilkaitse on kaitstava isiku ohutuse tagamine transpordivahendiga liikudes. 4(4)Komplekskaitse on ihukaitse ja mobiilkaitse kombineeritud rakendamine.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -136,7 +190,73 @@
         {
           "@id": "estleg:Reg_339682_Par_2_v339682"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaitse teostamise viisid on ihukaitse, mobiilkaitse ja komplekskaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ihukaitse on kaitstava isiku vahetu kaitsmine ühe või mitme politseiametniku poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Mobiilkaitse on kaitstava isiku ohutuse tagamine transpordivahendiga liikudes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Komplekskaitse on ihukaitse ja mobiilkaitse kombineeritud rakendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_339682_Par_3",
@@ -145,13 +265,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Isiku ohustatuse kategooriad",
+      "rdfs:label": {
+        "@value": "§ 3. Isiku ohustatuse kategooriad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Isiku ohustatuse kategooriad on järgmised:11)esimene kategooria – rünnaku risk ei ole tõenäoline;22)teine kategooria – rünnaku risk on tõenäoline;33)kolmas kategooria – rünnaku risk on kõrge;44)neljas kategooria – rünnak või selle risk on vahetu. Isiku ohustatuse kategooriad on järgmised: esimene kategooria – rünnaku risk ei ole tõenäoline; teine kategooria – rünnaku risk on tõenäoline; kolmas kategooria – rünnaku risk on kõrge; neljas kategooria – rünnak või selle risk on vahetu. 2(2)Isiku ",
-      "estleg:legalText": "1(1)Isiku ohustatuse kategooriad on järgmised:11)esimene kategooria – rünnaku risk ei ole tõenäoline;22)teine kategooria – rünnaku risk on tõenäoline;33)kolmas kategooria – rünnaku risk on kõrge;44)neljas kategooria – rünnak või selle risk on vahetu. Isiku ohustatuse kategooriad on järgmised: esimene kategooria – rünnaku risk ei ole tõenäoline; teine kategooria – rünnaku risk on tõenäoline; kolmas kategooria – rünnaku risk on kõrge; neljas kategooria – rünnak või selle risk on vahetu. 2(2)Isiku ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi. Isiku ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
+      "estleg:summary": {
+        "@value": "1(1)Isiku ohustatuse kategooriad on järgmised:11)esimene kategooria – rünnaku risk ei ole tõenäoline;22)teine kategooria – rünnaku risk on tõenäoline;33)kolmas kategooria – rünnaku risk on kõrge;44)neljas kategooria – rünnak või selle risk on vahetu. 2(2)Isiku ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Isiku ohustatuse kategooriad on järgmised:11)esimene kategooria – rünnaku risk ei ole tõenäoline;22)teine kategooria – rünnaku risk on tõenäoline;33)kolmas kategooria – rünnaku risk on kõrge;44)neljas kategooria – rünnak või selle risk on vahetu. 2(2)Isiku ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -174,7 +300,47 @@
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_3_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isiku ohustatuse kategooriad on järgmised: 1) esimene kategooria – rünnaku risk ei ole tõenäoline; 2) teine kategooria – rünnaku risk on tõenäoline; 3) kolmas kategooria – rünnaku risk on kõrge; 4) neljas kategooria – rünnak või selle risk on vahetu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isiku ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:Reg_339682_Par_4",
@@ -183,13 +349,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Isikukaitse korraldamine",
+      "rdfs:label": {
+        "@value": "§ 4. Isikukaitse korraldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Isikukaitse teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse kaitstava isiku ohustatuse kategooriast. Isikukaitse teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse kaitstava isiku ohustatuse kategooriast. 2(2)Kaitstaval isikul ei ole õigust isikukaitsest loobuda ega anda korraldusi selle teostamise viiside või ajalise kestuse muutmiseks. Kaitstaval isikul ei ole õigust isikukaitsest loobuda ega anda korraldusi selle teostamise viiside või ajalise kest",
-      "estleg:legalText": "1(1)Isikukaitse teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse kaitstava isiku ohustatuse kategooriast. Isikukaitse teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse kaitstava isiku ohustatuse kategooriast. 2(2)Kaitstaval isikul ei ole õigust isikukaitsest loobuda ega anda korraldusi selle teostamise viiside või ajalise kestuse muutmiseks. Kaitstaval isikul ei ole õigust isikukaitsest loobuda ega anda korraldusi selle teostamise viiside või ajalise kestuse muutmiseks.",
+      "estleg:summary": {
+        "@value": "1(1)Isikukaitse teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse kaitstava isiku ohustatuse kategooriast. 2(2)Kaitstaval isikul ei ole õigust isikukaitsest loobuda ega anda korraldusi selle teostamise viiside või ajalise kestuse muutmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Isikukaitse teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse kaitstava isiku ohustatuse kategooriast. 2(2)Kaitstaval isikul ei ole õigust isikukaitsest loobuda ega anda korraldusi selle teostamise viiside või ajalise kestuse muutmiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -203,7 +375,41 @@
         {
           "@id": "estleg:Reg_339682_Par_4_v339682"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaitse teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse kaitstava isiku ohustatuse kategooriast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitstaval isikul ei ole õigust isikukaitsest loobuda ega anda korraldusi selle teostamise viiside või ajalise kestuse muutmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_339682_Par_5",
@@ -212,18 +418,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Objektivalve",
+      "rdfs:label": {
+        "@value": "§ 5. Objektivalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "Objektivalve on erinevate meetmete planeerimine ning rakendamine lähtuvalt ohuhinnangust eesmärgiga tagada valvatava objekti ja selle juurde kuuluva territooriumi puutumatus ja vara säilimine.",
-      "estleg:legalText": "Objektivalve on erinevate meetmete planeerimine ning rakendamine lähtuvalt ohuhinnangust eesmärgiga tagada valvatava objekti ja selle juurde kuuluva territooriumi puutumatus ja vara säilimine. Objektivalve on erinevate meetmete planeerimine ning rakendamine lähtuvalt ohuhinnangust eesmärgiga tagada valvatava objekti ja selle juurde kuuluva territooriumi puutumatus ja vara säilimine.",
+      "estleg:summary": {
+        "@value": "Objektivalve on erinevate meetmete planeerimine ning rakendamine lähtuvalt ohuhinnangust eesmärgiga tagada valvatava objekti ja selle juurde kuuluva territooriumi puutumatus ja vara säilimine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Objektivalve on erinevate meetmete planeerimine ning rakendamine lähtuvalt ohuhinnangust eesmärgiga tagada valvatava objekti ja selle juurde kuuluva territooriumi puutumatus ja vara säilimine.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_339682_Par_5_v339682"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Objektivalve on erinevate meetmete planeerimine ning rakendamine lähtuvalt ohuhinnangust eesmärgiga tagada valvatava objekti ja selle juurde kuuluva territooriumi puutumatus ja vara säilimine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_339682_Par_6",
@@ -232,13 +462,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Objektivalve teostamise viisid",
+      "rdfs:label": {
+        "@value": "§ 6. Objektivalve teostamise viisid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Objektivalve teostamise viisid on mehitatud valve, tehniline valve, mobiilvalve ja kompleksvalve. Objektivalve teostamise viisid on mehitatud valve, tehniline valve, mobiilvalve ja kompleksvalve. 2(2)Mehitatud valve on objekti vahetu valvamine ühe või mitme ametniku poolt.RT I201032159133249242010-06-18+03:00 Mehitatud valve on objekti vahetu valvamine ühe või mitme ametniku poolt. 3(3)Tehniline valve on objekti valvamine elektrooniliste valveseadmete abil, mis on sidekanali kaudu ühendatud ",
-      "estleg:legalText": "1(1)Objektivalve teostamise viisid on mehitatud valve, tehniline valve, mobiilvalve ja kompleksvalve. Objektivalve teostamise viisid on mehitatud valve, tehniline valve, mobiilvalve ja kompleksvalve. 2(2)Mehitatud valve on objekti vahetu valvamine ühe või mitme ametniku poolt.RT I201032159133249242010-06-18+03:00 Mehitatud valve on objekti vahetu valvamine ühe või mitme ametniku poolt. 3(3)Tehniline valve on objekti valvamine elektrooniliste valveseadmete abil, mis on sidekanali kaudu ühendatud lokaalse ja/või tsentraalse valvekeskusega. Tehniline valve on objekti valvamine elektrooniliste valveseadmete abil, mis on sidekanali kaudu ühendatud lokaalse ja/või tsentraalse valvekeskusega. 4(4)Mobiilvalve on objekti perioodiline kontrollimine ja objektilt saabuvatele häiretele reageerimine liikuva politseipatrulli poolt. Mobiilvalve on objekti perioodiline kontrollimine ja objektilt saabuvatele häiretele reageerimine liikuva politseipatrulli poolt. 5(5)Kompleksvalve on mehitatud valve, tehnilise valve ja mobiilvalve kombineeritud rakendamine. Kompleksvalve on mehitatud valve, tehnilise valve ja mobiilvalve kombineeritud rakendamine.",
+      "estleg:summary": {
+        "@value": "1(1)Objektivalve teostamise viisid on mehitatud valve, tehniline valve, mobiilvalve ja kompleksvalve. 2(2)Mehitatud valve on objekti vahetu valvamine ühe või mitme ametniku poolt.RT I201032159133249242010-06-18+03:00 3(3)Tehniline valve on objekti valvamine elektrooniliste valveseadmete abil, mis on sidekanali kaudu ühendatud lokaalse ja/või tsentraalse valvekeskusega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Objektivalve teostamise viisid on mehitatud valve, tehniline valve, mobiilvalve ja kompleksvalve. 2(2)Mehitatud valve on objekti vahetu valvamine ühe või mitme ametniku poolt.RT I201032159133249242010-06-18+03:00 3(3)Tehniline valve on objekti valvamine elektrooniliste valveseadmete abil, mis on sidekanali kaudu ühendatud lokaalse ja/või tsentraalse valvekeskusega. 4(4)Mobiilvalve on objekti perioodiline kontrollimine ja objektilt saabuvatele häiretele reageerimine liikuva politseipatrulli poolt. 5(5)Kompleksvalve on mehitatud valve, tehnilise valve ja mobiilvalve kombineeritud rakendamine.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -252,7 +488,89 @@
         {
           "@id": "estleg:Reg_339682_Par_6_v339682"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_6_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Objektivalve teostamise viisid on mehitatud valve, tehniline valve, mobiilvalve ja kompleksvalve.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Mehitatud valve on objekti vahetu valvamine ühe või mitme ametniku poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tehniline valve on objekti valvamine elektrooniliste valveseadmete abil, mis on sidekanali kaudu ühendatud lokaalse ja/või tsentraalse valvekeskusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Mobiilvalve on objekti perioodiline kontrollimine ja objektilt saabuvatele häiretele reageerimine liikuva politseipatrulli poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_6_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kompleksvalve on mehitatud valve, tehnilise valve ja mobiilvalve kombineeritud rakendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 5"
     },
     {
       "@id": "estleg:Reg_339682_Par_7",
@@ -261,13 +579,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Objekti ohustatuse kategooriad",
+      "rdfs:label": {
+        "@value": "§ 7. Objekti ohustatuse kategooriad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Objekti ohustatuse kategooriad on järgmised:11)esimene kategooria – risk ei ole tõenäoline;22)teine kategooria – risk on tõenäoline;33)kolmas kategooria – risk on kõrge;44)neljas kategooria – risk on vahetu. Objekti ohustatuse kategooriad on järgmised: esimene kategooria – risk ei ole tõenäoline; teine kategooria – risk on tõenäoline; kolmas kategooria – risk on kõrge; neljas kategooria – risk on vahetu. 2(2)Objekti ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimi",
-      "estleg:legalText": "1(1)Objekti ohustatuse kategooriad on järgmised:11)esimene kategooria – risk ei ole tõenäoline;22)teine kategooria – risk on tõenäoline;33)kolmas kategooria – risk on kõrge;44)neljas kategooria – risk on vahetu. Objekti ohustatuse kategooriad on järgmised: esimene kategooria – risk ei ole tõenäoline; teine kategooria – risk on tõenäoline; kolmas kategooria – risk on kõrge; neljas kategooria – risk on vahetu. 2(2)Objekti ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi. Objekti ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
+      "estleg:summary": {
+        "@value": "1(1)Objekti ohustatuse kategooriad on järgmised:11)esimene kategooria – risk ei ole tõenäoline;22)teine kategooria – risk on tõenäoline;33)kolmas kategooria – risk on kõrge;44)neljas kategooria – risk on vahetu. 2(2)Objekti ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Objekti ohustatuse kategooriad on järgmised:11)esimene kategooria – risk ei ole tõenäoline;22)teine kategooria – risk on tõenäoline;33)kolmas kategooria – risk on kõrge;44)neljas kategooria – risk on vahetu. 2(2)Objekti ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -287,7 +611,47 @@
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_7_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Objekti ohustatuse kategooriad on järgmised: 1) esimene kategooria – risk ei ole tõenäoline; 2) teine kategooria – risk on tõenäoline; 3) kolmas kategooria – risk on kõrge; 4) neljas kategooria – risk on vahetu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Objekti ohustatuse kategooria määrab Politsei- ja Piirivalveamet kaasates analüüsimisse teisi asutusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:Reg_339682_Par_8",
@@ -296,13 +660,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Objektivalve korraldamine",
+      "rdfs:label": {
+        "@value": "§ 8. Objektivalve korraldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Objektivalve teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse valvatava objekti ohustatuse kategooriast. Objektivalve teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse valvatava objekti ohustatuse kategooriast. 2(2)Valvatava objekti valdajal ei ole õigust objektivalvest loobuda ega anda korraldusi selle ulatuse või viiside muutmiseks. Valvatava objekti valdajal ei ole õigust objektivalvest loobuda ega anda korraldusi selle ulatuse või viiside muutmise",
-      "estleg:legalText": "1(1)Objektivalve teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse valvatava objekti ohustatuse kategooriast. Objektivalve teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse valvatava objekti ohustatuse kategooriast. 2(2)Valvatava objekti valdajal ei ole õigust objektivalvest loobuda ega anda korraldusi selle ulatuse või viiside muutmiseks. Valvatava objekti valdajal ei ole õigust objektivalvest loobuda ega anda korraldusi selle ulatuse või viiside muutmiseks.",
+      "estleg:summary": {
+        "@value": "1(1)Objektivalve teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse valvatava objekti ohustatuse kategooriast. 2(2)Valvatava objekti valdajal ei ole õigust objektivalvest loobuda ega anda korraldusi selle ulatuse või viiside muutmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Objektivalve teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse valvatava objekti ohustatuse kategooriast. 2(2)Valvatava objekti valdajal ei ole õigust objektivalvest loobuda ega anda korraldusi selle ulatuse või viiside muutmiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -316,7 +686,41 @@
         {
           "@id": "estleg:Reg_339682_Par_8_v339682"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_8_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Objektivalve teostamise viiside ja rakendatavate meetmete planeerimisel lähtutakse valvatava objekti ohustatuse kategooriast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valvatava objekti valdajal ei ole õigust objektivalvest loobuda ega anda korraldusi selle ulatuse või viiside muutmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_339682_Par_9",
@@ -325,13 +729,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Sissepääsurežiimi tagamine",
+      "rdfs:label": {
+        "@value": "§ 9. Sissepääsurežiimi tagamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Objekti omaniku või valdaja taotlusel või objekti ohustatuse kategooriast lähtuvalt võib siseminister käskkirjaga panna Politsei- ja Piirivalveametile kohustuse tagada osaliselt või täielikult objektil kehtestatud sissepääsurežiim. Objekti omaniku või valdaja taotlusel või objekti ohustatuse kategooriast lähtuvalt võib siseminister käskkirjaga panna Politsei- ja Piirivalveametile kohustuse tagada osaliselt või täielikult objektil kehtestatud sissepääsurežiim. 2(2)Lõikes 1 sätestatud juhul pe",
-      "estleg:legalText": "1(1)Objekti omaniku või valdaja taotlusel või objekti ohustatuse kategooriast lähtuvalt võib siseminister käskkirjaga panna Politsei- ja Piirivalveametile kohustuse tagada osaliselt või täielikult objektil kehtestatud sissepääsurežiim. Objekti omaniku või valdaja taotlusel või objekti ohustatuse kategooriast lähtuvalt võib siseminister käskkirjaga panna Politsei- ja Piirivalveametile kohustuse tagada osaliselt või täielikult objektil kehtestatud sissepääsurežiim. 2(2)Lõikes 1 sätestatud juhul peab objekti valdaja korraldama külaliste administreerimise. Lõikes 1 sätestatud juhul peab objekti valdaja korraldama külaliste administreerimise.",
+      "estleg:summary": {
+        "@value": "1(1)Objekti omaniku või valdaja taotlusel või objekti ohustatuse kategooriast lähtuvalt võib siseminister käskkirjaga panna Politsei- ja Piirivalveametile kohustuse tagada osaliselt või täielikult objektil kehtestatud sissepääsurežiim. 2(2)Lõikes 1 sätestatud juhul peab objekti valdaja korraldama külaliste administreerimise.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Objekti omaniku või valdaja taotlusel või objekti ohustatuse kategooriast lähtuvalt võib siseminister käskkirjaga panna Politsei- ja Piirivalveametile kohustuse tagada osaliselt või täielikult objektil kehtestatud sissepääsurežiim. 2(2)Lõikes 1 sätestatud juhul peab objekti valdaja korraldama külaliste administreerimise.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -359,7 +769,41 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Objekti omaniku või valdaja taotlusel või objekti ohustatuse kategooriast lähtuvalt võib siseminister käskkirjaga panna Politsei- ja Piirivalveametile kohustuse tagada osaliselt või täielikult objektil kehtestatud sissepääsurežiim.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõikes 1 sätestatud juhul peab objekti valdaja korraldama külaliste administreerimise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_339682_Par_10",
@@ -368,13 +812,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Koostöö isikute kaitse ja objektide valve korraldamisel",
+      "rdfs:label": {
+        "@value": "§ 10. Koostöö isikute kaitse ja objektide valve korraldamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "1(1)Politsei- ja Piirivalveamet ning riigi- ja kohaliku omavalitsuse asutused, sh Riigikogu Kantselei, Riigikantselei, Vabariigi Presidendi Kantselei ja Riigikohus (edaspidi asutused) teevad oma pädevuse piires koostööd isikute kaitse ja objektide valve korraldamisel. Politsei- ja Piirivalveamet ning riigi- ja kohaliku omavalitsuse asutused, sh Riigikogu Kantselei, Riigikantselei, Vabariigi Presidendi Kantselei ja Riigikohus (edaspidi asutused) teevad oma pädevuse piires koostööd isikute kaitse ",
-      "estleg:legalText": "1(1)Politsei- ja Piirivalveamet ning riigi- ja kohaliku omavalitsuse asutused, sh Riigikogu Kantselei, Riigikantselei, Vabariigi Presidendi Kantselei ja Riigikohus (edaspidi asutused) teevad oma pädevuse piires koostööd isikute kaitse ja objektide valve korraldamisel. Politsei- ja Piirivalveamet ning riigi- ja kohaliku omavalitsuse asutused, sh Riigikogu Kantselei, Riigikantselei, Vabariigi Presidendi Kantselei ja Riigikohus (edaspidi asutused) teevad oma pädevuse piires koostööd isikute kaitse ja objektide valve korraldamisel. 2(2)Koostööd erinevate asutuste vahel juhib ja koordineerib Politsei- ja Piirivalveamet. Koostööd erinevate asutuste vahel juhib ja koordineerib Politsei- ja Piirivalveamet.",
+      "estleg:summary": {
+        "@value": "1(1)Politsei- ja Piirivalveamet ning riigi- ja kohaliku omavalitsuse asutused, sh Riigikogu Kantselei, Riigikantselei, Vabariigi Presidendi Kantselei ja Riigikohus (edaspidi asutused) teevad oma pädevuse piires koostööd isikute kaitse ja objektide valve korraldamisel. 2(2)Koostööd erinevate asutuste vahel juhib ja koordineerib Politsei- ja Piirivalveamet.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1(1)Politsei- ja Piirivalveamet ning riigi- ja kohaliku omavalitsuse asutused, sh Riigikogu Kantselei, Riigikantselei, Vabariigi Presidendi Kantselei ja Riigikohus (edaspidi asutused) teevad oma pädevuse piires koostööd isikute kaitse ja objektide valve korraldamisel. 2(2)Koostööd erinevate asutuste vahel juhib ja koordineerib Politsei- ja Piirivalveamet.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -408,7 +858,41 @@
         {
           "@id": "estleg:Institution_riigikohus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_339682_Par_10_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Politsei- ja Piirivalveamet ning riigi- ja kohaliku omavalitsuse asutused, sh Riigikogu Kantselei, Riigikantselei, Vabariigi Presidendi Kantselei ja Riigikohus (edaspidi asutused) teevad oma pädevuse piires koostööd isikute kaitse ja objektide valve korraldamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Koostööd erinevate asutuste vahel juhib ja koordineerib Politsei- ja Piirivalveamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:Reg_339682_Par_11",
@@ -417,13 +901,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Asutuste kohustused",
+      "rdfs:label": {
+        "@value": "§ 11. Asutuste kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "Isikukaitse ja objektivalve korraldamiseks ja tagamiseks asutus:11)teavitab Siseministeeriumit ning Politsei- ja Piirivalveametit rahvusvaheliselt kaitstava isiku riiki kutsumisest ja saabumisest;22)kooskõlastab enne rahvusvaheliselt kaitstava isiku riiki saabumist Politsei- ja Piirivalveametiga tema visiidi programmi;33)eraldab vastavalt sisustatud ja sidevahenditega varustatud tööruumid ning kannab nende kommunaal- ja sidekulud;44)kannab Vabariigi Valitsuse määratud objekti tehniliseks valveks",
-      "estleg:legalText": "Isikukaitse ja objektivalve korraldamiseks ja tagamiseks asutus:11)teavitab Siseministeeriumit ning Politsei- ja Piirivalveametit rahvusvaheliselt kaitstava isiku riiki kutsumisest ja saabumisest;22)kooskõlastab enne rahvusvaheliselt kaitstava isiku riiki saabumist Politsei- ja Piirivalveametiga tema visiidi programmi;33)eraldab vastavalt sisustatud ja sidevahenditega varustatud tööruumid ning kannab nende kommunaal- ja sidekulud;44)kannab Vabariigi Valitsuse määratud objekti tehniliseks valveks vajalike elektrooniliste valveseadmete projekteerimise, paigaldamise ja hooldamise kulud;55)kannab isikukaitse ja objektivalve tagamisega seotud võimalikud lisakulud;66)teavitab Politsei- ja Piirivalveametit kaitstava isiku või valvatava objekti suhtes kavatsetavast või toimepandud õigusrikkumisest. Isikukaitse ja objektivalve korraldamiseks ja tagamiseks asutus: teavitab Siseministeeriumit ning Politsei- ja Piirivalveametit rahvusvaheliselt kaitstava isiku riiki kutsumisest ja saabumisest; kooskõlastab enne rahvusvaheliselt kaitstava isiku riiki saabumist Politsei- ja Piirivalveametiga tema visiidi programmi; eraldab vastavalt sisustatud ja sidevahenditega varustatud tööruumid ning kannab nende kommunaal- ja sidekulud; kannab Vabariigi Valitsuse määratud objekti tehniliseks valveks vajalike elektrooniliste valveseadmete projekteerimise, paigaldamise ja hooldamise kulud; kannab isikukaitse ja objektivalve tagamisega seotud võimalikud lisakulud; teavitab Politsei- ja Piirivalveametit kaitstava isiku või valvatava objekti suhtes kavatsetavast või toimepandud õigusrikkumisest.",
+      "estleg:summary": {
+        "@value": "Isikukaitse ja objektivalve korraldamiseks ja tagamiseks asutus:11)teavitab Siseministeeriumit ning Politsei- ja Piirivalveametit rahvusvaheliselt kaitstava isiku riiki kutsumisest ja saabumisest;22)kooskõlastab enne rahvusvaheliselt kaitstava isiku riiki saabumist Politsei- ja Piirivalveametiga tema visiidi programmi;33)eraldab vastavalt sisustatud ja sidevahenditega varustatud tööruumid ning kannab nende kommunaal- ja sidekulud;44)kannab Vabariigi Valitsuse määratud objekti tehniliseks…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Isikukaitse ja objektivalve korraldamiseks ja tagamiseks asutus:11)teavitab Siseministeeriumit ning Politsei- ja Piirivalveametit rahvusvaheliselt kaitstava isiku riiki kutsumisest ja saabumisest;22)kooskõlastab enne rahvusvaheliselt kaitstava isiku riiki saabumist Politsei- ja Piirivalveametiga tema visiidi programmi;33)eraldab vastavalt sisustatud ja sidevahenditega varustatud tööruumid ning kannab nende kommunaal- ja sidekulud;44)kannab Vabariigi Valitsuse määratud objekti tehniliseks valveks vajalike elektrooniliste valveseadmete projekteerimise, paigaldamise ja hooldamise kulud;55)kannab isikukaitse ja objektivalve tagamisega seotud võimalikud lisakulud;66)teavitab Politsei- ja Piirivalveametit kaitstava isiku või valvatava objekti suhtes kavatsetavast või toimepandud õigusrikkumisest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -451,6 +941,32 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_11_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikukaitse ja objektivalve korraldamiseks ja tagamiseks asutus: 1) teavitab Siseministeeriumit ning Politsei- ja Piirivalveametit rahvusvaheliselt kaitstava isiku riiki kutsumisest ja saabumisest; 2) kooskõlastab enne rahvusvaheliselt kaitstava isiku riiki saabumist Politsei- ja Piirivalveametiga tema visiidi programmi; 3) eraldab vastavalt sisustatud ja sidevahenditega varustatud tööruumid ning kannab nende kommunaal- ja sidekulud; 4) kannab Vabariigi Valitsuse määratud objekti tehniliseks valveks vajalike elektrooniliste valveseadmete projekteerimise, paigaldamise ja hooldamise kulud; 5) kannab isikukaitse ja objektivalve tagamisega seotud võimalikud lisakulud; 6) teavitab Politsei- ja Piirivalveametit kaitstava isiku või valvatava objekti suhtes kavatsetavast või toimepandud õigusrikkumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -460,18 +976,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 12. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikute kaitse ja objektide valve korraldamise alused, teostamise viisid ning koostöö kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_339682_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2010. a.",
-      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2010. a. Määrus jõustub 1. jaanuaril 2010. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2010. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. jaanuaril 2010. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_339682_Par_12_v339682"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_339682_Par_12_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_339682_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. jaanuaril 2010. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_339682_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
     }
   ]
 }

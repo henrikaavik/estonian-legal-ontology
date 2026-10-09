@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Transpordiameti põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Transpordiameti põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Transpordiameti põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1050754",
       "estleg:preambleText": "Määrus kehtestatakse Vabariigi Valitsuse seaduse § 42 lõike 1 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2021-01-01",
+        "@value": "2023-07-08",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2023-06-22",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2020-12-09",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1050754_a396c60a35"
@@ -94,7 +96,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2494"
         }
-      ]
+      ],
+      "dcterms:title": "Transpordiameti põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1050754_Par_1",
@@ -103,13 +111,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Transpordiameti staatus",
+      "rdfs:label": {
+        "@value": "§ 1. Transpordiameti staatus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "1 (1) Transpordiamet (edaspidi amet) on Kliimaministeeriumi (edaspidi ministeerium) valitsemisala valitsusasutus. RT I 2023-07-05 7 105072023007 2023-07-08 Transpordiamet (edaspidi amet) on Kliimaministeeriumi (edaspidi ministeerium) valitsemisala valitsusasutus. 2 (2) Ülesannete täitmisel esindab amet riiki. Ülesannete täitmisel esindab amet riiki.",
-      "estleg:legalText": "1 (1) Transpordiamet (edaspidi amet) on Kliimaministeeriumi (edaspidi ministeerium) valitsemisala valitsusasutus. RT I 2023-07-05 7 105072023007 2023-07-08 Transpordiamet (edaspidi amet) on Kliimaministeeriumi (edaspidi ministeerium) valitsemisala valitsusasutus. 2 (2) Ülesannete täitmisel esindab amet riiki. Ülesannete täitmisel esindab amet riiki.",
+      "estleg:summary": {
+        "@value": "1 (1) Transpordiamet (edaspidi amet) on Kliimaministeeriumi (edaspidi ministeerium) valitsemisala valitsusasutus. RT I 2023-07-05 7 105072023007 2023-07-08 2 (2) Ülesannete täitmisel esindab amet riiki.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Transpordiamet (edaspidi amet) on Kliimaministeeriumi (edaspidi ministeerium) valitsemisala valitsusasutus. RT I 2023-07-05 7 105072023007 2023-07-08 2 (2) Ülesannete täitmisel esindab amet riiki.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -148,7 +162,41 @@
         {
           "@id": "estleg:Institution_kliimaministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Transpordiamet (edaspidi amet) on Kliimaministeeriumi (edaspidi ministeerium) valitsemisala valitsusasutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ülesannete täitmisel esindab amet riiki.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1050754_Par_2",
@@ -157,13 +205,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "Ameti asukoht on Tallinn. Ameti mujal asuvate struktuuriüksuste ja esinduste asukohad ning postiaadressid määrab ameti peadirektor. RT I 2021-06-17 1 117062021001 2021-07-01",
-      "estleg:legalText": "Ameti asukoht on Tallinn. Ameti mujal asuvate struktuuriüksuste ja esinduste asukohad ning postiaadressid määrab ameti peadirektor. RT I 2021-06-17 1 117062021001 2021-07-01 Ameti asukoht on Tallinn. Ameti mujal asuvate struktuuriüksuste ja esinduste asukohad ning postiaadressid määrab ameti peadirektor.",
+      "estleg:summary": {
+        "@value": "Ameti asukoht on Tallinn. Ameti mujal asuvate struktuuriüksuste ja esinduste asukohad ning postiaadressid määrab ameti peadirektor. RT I 2021-06-17 1 117062021001 2021-07-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti asukoht on Tallinn. Ameti mujal asuvate struktuuriüksuste ja esinduste asukohad ning postiaadressid määrab ameti peadirektor. RT I 2021-06-17 1 117062021001 2021-07-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -194,7 +248,25 @@
         {
           "@id": "estleg:Reg_1050754_Par_2_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti asukoht on Tallinn. Ameti mujal asuvate struktuuriüksuste ja esinduste asukohad ning postiaadressid määrab ameti peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1050754_Par_3",
@@ -203,13 +275,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Tegevusvaldkond",
+      "rdfs:label": {
+        "@value": "§ 3. Tegevusvaldkond",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "Ameti tegevusvaldkond on inimeste ning vee-, õhu- ja maismaasõidukite liikuvuse kavandamine ning ohutu ja keskkonda säästva taristu tagamine.",
-      "estleg:legalText": "Ameti tegevusvaldkond on inimeste ning vee-, õhu- ja maismaasõidukite liikuvuse kavandamine ning ohutu ja keskkonda säästva taristu tagamine. Ameti tegevusvaldkond on inimeste ning vee-, õhu- ja maismaasõidukite liikuvuse kavandamine ning ohutu ja keskkonda säästva taristu tagamine.",
+      "estleg:summary": {
+        "@value": "Ameti tegevusvaldkond on inimeste ning vee-, õhu- ja maismaasõidukite liikuvuse kavandamine ning ohutu ja keskkonda säästva taristu tagamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti tegevusvaldkond on inimeste ning vee-, õhu- ja maismaasõidukite liikuvuse kavandamine ning ohutu ja keskkonda säästva taristu tagamine.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -223,7 +301,25 @@
         {
           "@id": "estleg:Reg_1050754_Par_3_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti tegevusvaldkond on inimeste ning vee-, õhu- ja maismaasõidukite liikuvuse kavandamine ning ohutu ja keskkonda säästva taristu tagamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1050754_Par_4",
@@ -232,13 +328,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Ameti ülesanded",
+      "rdfs:label": {
+        "@value": "§ 4. Ameti ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "Ameti ülesanded on: 1 1) tingimuste loomine ohutuks, ligipääsetavaks ja säästlikuks liiklemiseks ning inimeste ja sõidukite liikuvuse kavandamine; RT I 2021-06-17 1 117062021001 2021-07-01 2 2) tingimuste loomine ohutu ja jätkusuutliku lennundustegevuse tagamiseks Eesti õhuruumis liiklejatele; 3 3) liikluskasvatuse korraldamine; 4 4) liikluse korraldamine; RT I 2023-07-05 7 105072023007 2023-07-08 5 5) õigusaktidest tulenevate andmekogude pidamine; 6 6) osalemine oma tegevusvaldkonnaga seotud po",
-      "estleg:legalText": "Ameti ülesanded on: 1 1) tingimuste loomine ohutuks, ligipääsetavaks ja säästlikuks liiklemiseks ning inimeste ja sõidukite liikuvuse kavandamine; RT I 2021-06-17 1 117062021001 2021-07-01 2 2) tingimuste loomine ohutu ja jätkusuutliku lennundustegevuse tagamiseks Eesti õhuruumis liiklejatele; 3 3) liikluskasvatuse korraldamine; 4 4) liikluse korraldamine; RT I 2023-07-05 7 105072023007 2023-07-08 5 5) õigusaktidest tulenevate andmekogude pidamine; 6 6) osalemine oma tegevusvaldkonnaga seotud poliitika väljatöötamisel ning rahvusvaheliste projektide ettevalmistamisel ja läbiviimisel; 7 7) riigi esindamine rahvusvahelises suhtluses ameti tegevusvaldkonna piires; 8 8) Eesti teede ajaloo, tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; 8 8¹) riikliku ja haldusjärelevalve teostamine õigusaktides sätestatud juhtudel ja korras; RT I 2023-03-21 1 121032023001 2023-05-01 8 8²) seaduses sätestatud alustel ja ulatuses riikliku sunni rakendamine ning väärtegude menetlemine; RT I 2023-03-21 1 121032023001 2023-05-01 8 8³) ameti pädevusse kuuluvate rahvusvaheliste sanktsioonide rakendamine; RT I 2023-03-21 1 121032023001 2023-05-01 9 9) muud õigusakti alusel ametile antud ülesanded. Ameti ülesanded on: tingimuste loomine ohutuks, ligipääsetavaks ja säästlikuks liiklemiseks ning inimeste ja sõidukite liikuvuse kavandamine; tingimuste loomine ohutu ja jätkusuutliku lennundustegevuse tagamiseks Eesti õhuruumis liiklejatele; liikluskasvatuse korraldamine; liikluse korraldamine; õigusaktidest tulenevate andmekogude pidamine; osalemine oma tegevusvaldkonnaga seotud poliitika väljatöötamisel ning rahvusvaheliste projektide ettevalmistamisel ja läbiviimisel; riigi esindamine rahvusvahelises suhtluses ameti tegevusvaldkonna piires; Eesti teede ajaloo, tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; riikliku ja haldusjärelevalve teostamine õigusaktides sätestatud juhtudel ja korras; seaduses sätestatud alustel ja ulatuses riikliku sunni rakendamine ning väärtegude menetlemine; ameti pädevusse kuuluvate rahvusvaheliste sanktsioonide rakendamine; muud õigusakti alusel ametile antud ülesanded.",
+      "estleg:summary": {
+        "@value": "Ameti ülesanded on: 1 1) tingimuste loomine ohutuks, ligipääsetavaks ja säästlikuks liiklemiseks ning inimeste ja sõidukite liikuvuse kavandamine; RT I 2021-06-17 1 117062021001 2021-07-01 2 2) tingimuste loomine ohutu ja jätkusuutliku lennundustegevuse tagamiseks Eesti õhuruumis liiklejatele; 3 3) liikluskasvatuse korraldamine; 4 4) liikluse korraldamine; RT I 2023-07-05 7 105072023007 2023-07-08 5 5) õigusaktidest tulenevate andmekogude pidamine; 6 6) osalemine oma tegevusvaldkonnaga seotud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti ülesanded on: 1 1) tingimuste loomine ohutuks, ligipääsetavaks ja säästlikuks liiklemiseks ning inimeste ja sõidukite liikuvuse kavandamine; RT I 2021-06-17 1 117062021001 2021-07-01 2 2) tingimuste loomine ohutu ja jätkusuutliku lennundustegevuse tagamiseks Eesti õhuruumis liiklejatele; 3 3) liikluskasvatuse korraldamine; 4 4) liikluse korraldamine; RT I 2023-07-05 7 105072023007 2023-07-08 5 5) õigusaktidest tulenevate andmekogude pidamine; 6 6) osalemine oma tegevusvaldkonnaga seotud poliitika väljatöötamisel ning rahvusvaheliste projektide ettevalmistamisel ja läbiviimisel; 7 7) riigi esindamine rahvusvahelises suhtluses ameti tegevusvaldkonna piires; 8 8) Eesti teede ajaloo, tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; 8 8<sup>1</sup>) riikliku ja haldusjärelevalve teostamine õigusaktides sätestatud juhtudel ja korras; RT I 2023-03-21 1 121032023001 2023-05-01 8 8<sup>2</sup>) seaduses sätestatud alustel ja ulatuses riikliku sunni rakendamine ning väärtegude menetlemine; RT I 2023-03-21 1 121032023001 2023-05-01 8 8<sup>3</sup>) ameti pädevusse kuuluvate rahvusvaheliste sanktsioonide rakendamine; RT I 2023-03-21 1 121032023001 2023-05-01 9 9) muud õigusakti alusel ametile antud ülesanded.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -252,6 +354,38 @@
         {
           "@id": "estleg:Reg_1050754_Par_4_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_4_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti ülesanded on: 1) tingimuste loomine ohutuks, ligipääsetavaks ja säästlikuks liiklemiseks ning inimeste ja sõidukite liikuvuse kavandamine; 2) tingimuste loomine ohutu ja jätkusuutliku lennundustegevuse tagamiseks Eesti õhuruumis liiklejatele; 3) liikluskasvatuse korraldamine; 4) liikluse korraldamine; 5) õigusaktidest tulenevate andmekogude pidamine; 6) osalemine oma tegevusvaldkonnaga seotud poliitika väljatöötamisel ning rahvusvaheliste projektide ettevalmistamisel ja läbiviimisel; 7) riigi esindamine rahvusvahelises suhtluses ameti tegevusvaldkonna piires; 8) Eesti teede ajaloo, tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; 8¹) riikliku ja haldusjärelevalve teostamine õigusaktides sätestatud juhtudel ja korras; 8²) seaduses sätestatud alustel ja ulatuses riikliku sunni rakendamine ning väärtegude menetlemine; 8³) ameti pädevusse kuuluvate rahvusvaheliste sanktsioonide rakendamine; 9) muud õigusakti alusel ametile antud ülesanded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "8¹",
+        "8²",
+        "8³",
+        "9"
       ]
     },
     {
@@ -261,13 +395,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Juhtimine",
+      "rdfs:label": {
+        "@value": "§ 5. Juhtimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "1 (1) Ametit juhib peadirektor. Ametit juhib peadirektor. 2 (2) Peadirektorile alluvad kuus direktorit, riskijuhtimise osakonna juhataja ja Eesti Maanteemuuseumi juhataja. RT I 2023-03-21 1 121032023001 2023-05-01 Peadirektorile alluvad kuus direktorit, riskijuhtimise osakonna juhataja ja Eesti Maanteemuuseumi juhataja.",
-      "estleg:legalText": "1 (1) Ametit juhib peadirektor. Ametit juhib peadirektor. 2 (2) Peadirektorile alluvad kuus direktorit, riskijuhtimise osakonna juhataja ja Eesti Maanteemuuseumi juhataja. RT I 2023-03-21 1 121032023001 2023-05-01 Peadirektorile alluvad kuus direktorit, riskijuhtimise osakonna juhataja ja Eesti Maanteemuuseumi juhataja.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametit juhib peadirektor. 2 (2) Peadirektorile alluvad kuus direktorit, riskijuhtimise osakonna juhataja ja Eesti Maanteemuuseumi juhataja. RT I 2023-03-21 1 121032023001 2023-05-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametit juhib peadirektor. 2 (2) Peadirektorile alluvad kuus direktorit, riskijuhtimise osakonna juhataja ja Eesti Maanteemuuseumi juhataja. RT I 2023-03-21 1 121032023001 2023-05-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -281,7 +421,41 @@
         {
           "@id": "estleg:Reg_1050754_Par_5_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_5_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametit juhib peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peadirektorile alluvad kuus direktorit, riskijuhtimise osakonna juhataja ja Eesti Maanteemuuseumi juhataja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
     },
     {
       "@id": "estleg:Reg_1050754_Par_6",
@@ -290,13 +464,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Peadirektori õigused ja kohustused",
+      "rdfs:label": {
+        "@value": "§ 6. Peadirektori õigused ja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "Peadirektor: 1 1) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ja korrad või volitab nende kinnitamise edasi; RT I 2022-08-06 36 106082022036 2022-09-01 2 2) kinnitab teenistuste põhimäärused; RT I 2021-06-17 1 117062021001 2021-07-01 3 3) kehtetu - RT I 2022-08-06 36 106082022036 2022-09-01 4 4) sõlmib lepinguid ning annab volitusi lepingute sõlmimiseks; 5 5) annab üld- või üksikakti alusel käskkirju ning suulisi ja kirjalikke korraldusi; 6 6) täidab muid ministri või ministeeriu",
-      "estleg:legalText": "Peadirektor: 1 1) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ja korrad või volitab nende kinnitamise edasi; RT I 2022-08-06 36 106082022036 2022-09-01 2 2) kinnitab teenistuste põhimäärused; RT I 2021-06-17 1 117062021001 2021-07-01 3 3) kehtetu - RT I 2022-08-06 36 106082022036 2022-09-01 4 4) sõlmib lepinguid ning annab volitusi lepingute sõlmimiseks; 5 5) annab üld- või üksikakti alusel käskkirju ning suulisi ja kirjalikke korraldusi; 6 6) täidab muid ministri või ministeeriumi kantsleri antud ülesandeid. Peadirektor: kinnitab ameti sisemist töökorraldust reguleerivad juhendid ja korrad või volitab nende kinnitamise edasi; kinnitab teenistuste põhimäärused; kehtetu - sõlmib lepinguid ning annab volitusi lepingute sõlmimiseks; annab üld- või üksikakti alusel käskkirju ning suulisi ja kirjalikke korraldusi; täidab muid ministri või ministeeriumi kantsleri antud ülesandeid.",
+      "estleg:summary": {
+        "@value": "Peadirektor: 1 1) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ja korrad või volitab nende kinnitamise edasi; RT I 2022-08-06 36 106082022036 2022-09-01 2 2) kinnitab teenistuste põhimäärused; RT I 2021-06-17 1 117062021001 2021-07-01 3 3) kehtetu - RT I 2022-08-06 36 106082022036 2022-09-01 4 4) sõlmib lepinguid ning annab volitusi lepingute sõlmimiseks; 5 5) annab üld- või üksikakti alusel käskkirju ning suulisi ja kirjalikke korraldusi; 6 6) täidab muid ministri või…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Peadirektor: 1 1) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ja korrad või volitab nende kinnitamise edasi; RT I 2022-08-06 36 106082022036 2022-09-01 2 2) kinnitab teenistuste põhimäärused; RT I 2021-06-17 1 117062021001 2021-07-01 3 3) kehtetu - RT I 2022-08-06 36 106082022036 2022-09-01 4 4) sõlmib lepinguid ning annab volitusi lepingute sõlmimiseks; 5 5) annab üld- või üksikakti alusel käskkirju ning suulisi ja kirjalikke korraldusi; 6 6) täidab muid ministri või ministeeriumi kantsleri antud ülesandeid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -318,6 +498,32 @@
         {
           "@id": "estleg:Reg_1050754_Par_6_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_6_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Peadirektor: 1) kinnitab ameti sisemist töökorraldust reguleerivad juhendid ja korrad või volitab nende kinnitamise edasi; 2) kinnitab teenistuste põhimäärused; 3) 4) sõlmib lepinguid ning annab volitusi lepingute sõlmimiseks; 5) annab üld- või üksikakti alusel käskkirju ning suulisi ja kirjalikke korraldusi; 6) täidab muid ministri või ministeeriumi kantsleri antud ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -327,13 +533,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Direktori põhiülesanded",
+      "rdfs:label": {
+        "@value": "§ 7. Direktori põhiülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "1 (1) Direktor: 1 1) korraldab teenistuse ülesannete täitmist; 2 2) koordineerib struktuuriüksuste koostööd teenistuses; 3 3) annab peadirektori volituse alusel personalikäskkirju; 4 4) annab oma pädevuse piires suulisi ja kirjalikke korraldusi; 5 5) esindab ametit peadirektorilt saadud volituste piires; 6 6) korraldab ameti valdusesse antud riigivara heaperemehelikku kasutamist; 7 7) täidab peadirektori antud ülesandeid ning vastutab teenistuse tegevuse tulemuste eest. Direktor: korraldab teeni",
-      "estleg:legalText": "1 (1) Direktor: 1 1) korraldab teenistuse ülesannete täitmist; 2 2) koordineerib struktuuriüksuste koostööd teenistuses; 3 3) annab peadirektori volituse alusel personalikäskkirju; 4 4) annab oma pädevuse piires suulisi ja kirjalikke korraldusi; 5 5) esindab ametit peadirektorilt saadud volituste piires; 6 6) korraldab ameti valdusesse antud riigivara heaperemehelikku kasutamist; 7 7) täidab peadirektori antud ülesandeid ning vastutab teenistuse tegevuse tulemuste eest. Direktor: korraldab teenistuse ülesannete täitmist; koordineerib struktuuriüksuste koostööd teenistuses; annab peadirektori volituse alusel personalikäskkirju; annab oma pädevuse piires suulisi ja kirjalikke korraldusi; esindab ametit peadirektorilt saadud volituste piires; korraldab ameti valdusesse antud riigivara heaperemehelikku kasutamist; täidab peadirektori antud ülesandeid ning vastutab teenistuse tegevuse tulemuste eest. 2 (2) Liiklusteenistuse direktor korraldab inimeste ja sõidukitega seotud avalike teenuste osutamist ning teenindusbüroode tööd. Liiklusteenistuse direktor korraldab inimeste ja sõidukitega seotud avalike teenuste osutamist ning teenindusbüroode tööd. 3 (3) Strateegilise planeerimise teenistuse direktor korraldab teenuste strateegilist juhtimist, transpordisüsteemi liikuvuse planeerimist ja ohutuse tagamist, ühistranspordi järelevalvet, infosüsteemide toimimist ning koordineerib liikuvust toetavate arengukavade väljatöötamist, liikluskasvatust ja ennetustegevusi ning liiklusohutuse meetmete rakendamist. RT I 2023-07-05 7 105072023007 2023-07-08 Strateegilise planeerimise teenistuse direktor korraldab teenuste strateegilist juhtimist, transpordisüsteemi liikuvuse planeerimist ja ohutuse tagamist, ühistranspordi järelevalvet, infosüsteemide toimimist ning koordineerib liikuvust toetavate arengukavade väljatöötamist, liikluskasvatust ja ennetustegevusi ning liiklusohutuse meetmete rakendamist. 4 (4) Teehoiuteenistuse direktor korraldab teehoidu ja liiklusjuhtimist riigiteedel. Teehoiuteenistuse direktor korraldab teehoidu ja liiklusjuhtimist riigiteedel. 5 (5) Merendusteenistuse direktor korraldab veeteede korrashoidu, jäämurret ja ohutut ning turvalist veeliiklust. Merendusteenistuse direktor korraldab veeteede korrashoidu, jäämurret ja ohutut ning turvalist veeliiklust. 6 (6) Lennundusteenistuse direktor korraldab lennutegevuse ohutuse tagamiseks vajalike tingimuste täitmise, vastutab sellega seotud ohutuse ja juhtimissüsteemide toimimise ning lennunduse valdkonna ohutuse ja turvalisuse tagamise eest. Lennundusteenistuse direktor korraldab lennutegevuse ohutuse tagamiseks vajalike tingimuste täitmise, vastutab sellega seotud ohutuse ja juhtimissüsteemide toimimise ning lennunduse valdkonna ohutuse ja turvalisuse tagamise eest. 7 (7) Tugiteenuste teenistuse direktor korraldab õigus- ja hankevaldkonda, dokumendihaldust, haldustegevusi, personali- ning finantsjuhtimist ning kommunikatsiooni- ja turundustegevusi. RT I 2023-03-21 1 121032023001 2023-05-01 Tugiteenuste teenistuse direktor korraldab õigus- ja hankevaldkonda, dokumendihaldust, haldustegevusi, personali- ning finantsjuhtimist ning kommunikatsiooni- ja turundustegevusi.",
+      "estleg:summary": {
+        "@value": "1 (1) Direktor: 1 1) korraldab teenistuse ülesannete täitmist; 2 2) koordineerib struktuuriüksuste koostööd teenistuses; 3 3) annab peadirektori volituse alusel personalikäskkirju; 4 4) annab oma pädevuse piires suulisi ja kirjalikke korraldusi; 5 5) esindab ametit peadirektorilt saadud volituste piires; 6 6) korraldab ameti valdusesse antud riigivara heaperemehelikku kasutamist; 7 7) täidab peadirektori antud ülesandeid ning vastutab teenistuse tegevuse tulemuste eest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Direktor: 1 1) korraldab teenistuse ülesannete täitmist; 2 2) koordineerib struktuuriüksuste koostööd teenistuses; 3 3) annab peadirektori volituse alusel personalikäskkirju; 4 4) annab oma pädevuse piires suulisi ja kirjalikke korraldusi; 5 5) esindab ametit peadirektorilt saadud volituste piires; 6 6) korraldab ameti valdusesse antud riigivara heaperemehelikku kasutamist; 7 7) täidab peadirektori antud ülesandeid ning vastutab teenistuse tegevuse tulemuste eest. 2 (2) Liiklusteenistuse direktor korraldab inimeste ja sõidukitega seotud avalike teenuste osutamist ning teenindusbüroode tööd. 3 (3) Strateegilise planeerimise teenistuse direktor korraldab teenuste strateegilist juhtimist, transpordisüsteemi liikuvuse planeerimist ja ohutuse tagamist, ühistranspordi järelevalvet, infosüsteemide toimimist ning koordineerib liikuvust toetavate arengukavade väljatöötamist, liikluskasvatust ja ennetustegevusi ning liiklusohutuse meetmete rakendamist. RT I 2023-07-05 7 105072023007 2023-07-08 4 (4) Teehoiuteenistuse direktor korraldab teehoidu ja liiklusjuhtimist riigiteedel. 5 (5) Merendusteenistuse direktor korraldab veeteede korrashoidu, jäämurret ja ohutut ning turvalist veeliiklust. 6 (6) Lennundusteenistuse direktor korraldab lennutegevuse ohutuse tagamiseks vajalike tingimuste täitmise, vastutab sellega seotud ohutuse ja juhtimissüsteemide toimimise ning lennunduse valdkonna ohutuse ja turvalisuse tagamise eest. 7 (7) Tugiteenuste teenistuse direktor korraldab õigus- ja hankevaldkonda, dokumendihaldust, haldustegevusi, personali- ning finantsjuhtimist ning kommunikatsiooni- ja turundustegevusi. RT I 2023-03-21 1 121032023001 2023-05-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -361,7 +573,130 @@
         {
           "@id": "estleg:Reg_1050754_Par_7_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_7_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_7_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_7_Lg_7"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Direktor: 1) korraldab teenistuse ülesannete täitmist; 2) koordineerib struktuuriüksuste koostööd teenistuses; 3) annab peadirektori volituse alusel personalikäskkirju; 4) annab oma pädevuse piires suulisi ja kirjalikke korraldusi; 5) esindab ametit peadirektorilt saadud volituste piires; 6) korraldab ameti valdusesse antud riigivara heaperemehelikku kasutamist; 7) täidab peadirektori antud ülesandeid ning vastutab teenistuse tegevuse tulemuste eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Liiklusteenistuse direktor korraldab inimeste ja sõidukitega seotud avalike teenuste osutamist ning teenindusbüroode tööd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Strateegilise planeerimise teenistuse direktor korraldab teenuste strateegilist juhtimist, transpordisüsteemi liikuvuse planeerimist ja ohutuse tagamist, ühistranspordi järelevalvet, infosüsteemide toimimist ning koordineerib liikuvust toetavate arengukavade väljatöötamist, liikluskasvatust ja ennetustegevusi ning liiklusohutuse meetmete rakendamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Teehoiuteenistuse direktor korraldab teehoidu ja liiklusjuhtimist riigiteedel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Merendusteenistuse direktor korraldab veeteede korrashoidu, jäämurret ja ohutut ning turvalist veeliiklust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_7_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Lennundusteenistuse direktor korraldab lennutegevuse ohutuse tagamiseks vajalike tingimuste täitmise, vastutab sellega seotud ohutuse ja juhtimissüsteemide toimimise ning lennunduse valdkonna ohutuse ja turvalisuse tagamise eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_7_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Tugiteenuste teenistuse direktor korraldab õigus- ja hankevaldkonda, dokumendihaldust, haldustegevusi, personali- ning finantsjuhtimist ning kommunikatsiooni- ja turundustegevusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 7"
     },
     {
       "@id": "estleg:Reg_1050754_Par_8",
@@ -370,13 +705,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Struktuuriüksused",
+      "rdfs:label": {
+        "@value": "§ 8. Struktuuriüksused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "1 (1) Ameti struktuuriüksused on kuus teenistust, riskijuhtimise osakond ja Eesti Maanteemuuseum. Teenistuste koosseisu võivad kuuluda osakonnad ja üksused. RT I 2023-03-21 1 121032023001 2023-05-01 Ameti struktuuriüksused on kuus teenistust, riskijuhtimise osakond ja Eesti Maanteemuuseum. Teenistuste koosseisu võivad kuuluda osakonnad ja üksused. 2 (2) Kehtetu - RT I 2021-06-17 1 117062021001 2021-07-01 Kehtetu - 3 (3) Ameti struktuuri võib kuuluda ametnik või töötaja, kes ei ole ühegi struktuu",
-      "estleg:legalText": "1 (1) Ameti struktuuriüksused on kuus teenistust, riskijuhtimise osakond ja Eesti Maanteemuuseum. Teenistuste koosseisu võivad kuuluda osakonnad ja üksused. RT I 2023-03-21 1 121032023001 2023-05-01 Ameti struktuuriüksused on kuus teenistust, riskijuhtimise osakond ja Eesti Maanteemuuseum. Teenistuste koosseisu võivad kuuluda osakonnad ja üksused. 2 (2) Kehtetu - RT I 2021-06-17 1 117062021001 2021-07-01 Kehtetu - 3 (3) Ameti struktuuri võib kuuluda ametnik või töötaja, kes ei ole ühegi struktuuriüksuse koosseisus ning kes allub vahetult peadirektorile või direktorile. Ameti struktuuri võib kuuluda ametnik või töötaja, kes ei ole ühegi struktuuriüksuse koosseisus ning kes allub vahetult peadirektorile või direktorile. 4 (4) Ameti struktuuriüksuse ning peadirektorile või direktorile otse alluvate ametnike ja töötajate ülesanded, pädevus ja juhtimiskorraldus sätestatakse peadirektori käskkirjaga. Ameti struktuuriüksuse ning peadirektorile või direktorile otse alluvate ametnike ja töötajate ülesanded, pädevus ja juhtimiskorraldus sätestatakse peadirektori käskkirjaga.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti struktuuriüksused on kuus teenistust, riskijuhtimise osakond ja Eesti Maanteemuuseum. Teenistuste koosseisu võivad kuuluda osakonnad ja üksused. RT I 2023-03-21 1 121032023001 2023-05-01 2 (2) Kehtetu - RT I 2021-06-17 1 117062021001 2021-07-01 3 (3) Ameti struktuuri võib kuuluda ametnik või töötaja, kes ei ole ühegi struktuuriüksuse koosseisus ning kes allub vahetult peadirektorile või direktorile.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti struktuuriüksused on kuus teenistust, riskijuhtimise osakond ja Eesti Maanteemuuseum. Teenistuste koosseisu võivad kuuluda osakonnad ja üksused. RT I 2023-03-21 1 121032023001 2023-05-01 2 (2) Kehtetu - RT I 2021-06-17 1 117062021001 2021-07-01 3 (3) Ameti struktuuri võib kuuluda ametnik või töötaja, kes ei ole ühegi struktuuriüksuse koosseisus ning kes allub vahetult peadirektorile või direktorile. 4 (4) Ameti struktuuriüksuse ning peadirektorile või direktorile otse alluvate ametnike ja töötajate ülesanded, pädevus ja juhtimiskorraldus sätestatakse peadirektori käskkirjaga.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -401,7 +742,57 @@
         {
           "@id": "estleg:Reg_1050754_Par_8_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_8_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti struktuuriüksused on kuus teenistust, riskijuhtimise osakond ja Eesti Maanteemuuseum. Teenistuste koosseisu võivad kuuluda osakonnad ja üksused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ameti struktuuri võib kuuluda ametnik või töötaja, kes ei ole ühegi struktuuriüksuse koosseisus ning kes allub vahetult peadirektorile või direktorile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ameti struktuuriüksuse ning peadirektorile või direktorile otse alluvate ametnike ja töötajate ülesanded, pädevus ja juhtimiskorraldus sätestatakse peadirektori käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
     },
     {
       "@id": "estleg:Reg_1050754_Par_9",
@@ -410,13 +801,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Ametnike ja töötajate õigused, kohustused ja vastutus",
+      "rdfs:label": {
+        "@value": "§ 9. Ametnike ja töötajate õigused, kohustused ja vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "Ametniku ja töötaja õigused, kohustused ja vastutus määratakse ametijuhendiga, töölepinguga ning peadirektori, direktori ja struktuuriüksuse juhataja korraldustega. RT I 2021-06-17 1 117062021001 2021-07-01",
-      "estleg:legalText": "Ametniku ja töötaja õigused, kohustused ja vastutus määratakse ametijuhendiga, töölepinguga ning peadirektori, direktori ja struktuuriüksuse juhataja korraldustega. RT I 2021-06-17 1 117062021001 2021-07-01 Ametniku ja töötaja õigused, kohustused ja vastutus määratakse ametijuhendiga, töölepinguga ning peadirektori, direktori ja struktuuriüksuse juhataja korraldustega.",
+      "estleg:summary": {
+        "@value": "Ametniku ja töötaja õigused, kohustused ja vastutus määratakse ametijuhendiga, töölepinguga ning peadirektori, direktori ja struktuuriüksuse juhataja korraldustega. RT I 2021-06-17 1 117062021001 2021-07-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ametniku ja töötaja õigused, kohustused ja vastutus määratakse ametijuhendiga, töölepinguga ning peadirektori, direktori ja struktuuriüksuse juhataja korraldustega. RT I 2021-06-17 1 117062021001 2021-07-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -438,7 +835,25 @@
         {
           "@id": "estleg:Reg_1050754_Par_9_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_9_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametniku ja töötaja õigused, kohustused ja vastutus määratakse ametijuhendiga, töölepinguga ning peadirektori, direktori ja struktuuriüksuse juhataja korraldustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
     },
     {
       "@id": "estleg:Reg_1050754_Par_10",
@@ -447,13 +862,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Ameti struktuuriüksuste põhiülesanded",
+      "rdfs:label": {
+        "@value": "§ 10. Ameti struktuuriüksuste põhiülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "1 (1) Liiklusteenistuse põhiülesanded on: 1 1) sõidukite ja sõidukijuhtide liiklusesse lubamine ning sellega seotud teenuste osutamine; 2 2) liiklusregistri pidamine; 3 3) juhtimisõiguse ja sõidukiga seotud teenuste arendamine ja rahvusvaheline koostöö; 4 4) teenindusbüroode töö korraldamine. Liiklusteenistuse põhiülesanded on: sõidukite ja sõidukijuhtide liiklusesse lubamine ning sellega seotud teenuste osutamine; liiklusregistri pidamine; juhtimisõiguse ja sõidukiga seotud teenuste arendamine ",
-      "estleg:legalText": "1 (1) Liiklusteenistuse põhiülesanded on: 1 1) sõidukite ja sõidukijuhtide liiklusesse lubamine ning sellega seotud teenuste osutamine; 2 2) liiklusregistri pidamine; 3 3) juhtimisõiguse ja sõidukiga seotud teenuste arendamine ja rahvusvaheline koostöö; 4 4) teenindusbüroode töö korraldamine. Liiklusteenistuse põhiülesanded on: sõidukite ja sõidukijuhtide liiklusesse lubamine ning sellega seotud teenuste osutamine; liiklusregistri pidamine; juhtimisõiguse ja sõidukiga seotud teenuste arendamine ja rahvusvaheline koostöö; teenindusbüroode töö korraldamine. 2 (2) Strateegilise planeerimise teenistuse põhiülesanded on: 1 1) ohutu, keskkonnahoidliku, ligipääsetava ning toimiva liikuvuse kavandamine liikumisvajaduste rahuldamiseks koostöös klientide ja huvigruppidega; 2 2) taristu investeeringute kavandamine; 3 3) osalemine transpordivaldkonnaga seotud poliitikate, strateegiate ja arengukavade väljatöötamises ning eelnõude koostamises; 4 4) riigiteedega seotud varade haldamine; 5 5) teeregistri pidamine; 6 6) liiklusohutuse meetmete rakendamise korraldamine; 7 7) ühistranspordi järelevalve; RT I 2023-07-05 7 105072023007 2023-07-08 8 8) strateegilise juhtimissüsteemi ja avalike teenuste arendamise ja haldamise korraldamine, juhtimissüsteemi korraldamine, juhtimissüsteemi siseauditite läbiviimine; 9 9) infosüsteemide haldamine ja arendamine ning süsteemihalduse korraldamine; 10 10) arendusprojektide ja uuringute koordineerimine; 11 11) teeninduskanalite ja kliendikogemuse arendamine, kliendirahulolu hindamine; 12 12) andmekvaliteedi ja avaandmete projektide juhtimine. Strateegilise planeerimise teenistuse põhiülesanded on: ohutu, keskkonnahoidliku, ligipääsetava ning toimiva liikuvuse kavandamine liikumisvajaduste rahuldamiseks koostöös klientide ja huvigruppidega; taristu investeeringute kavandamine; osalemine transpordivaldkonnaga seotud poliitikate, strateegiate ja arengukavade väljatöötamises ning eelnõude koostamises; riigiteedega seotud varade haldamine; teeregistri pidamine; liiklusohutuse meetmete rakendamise korraldamine; ühistranspordi järelevalve; strateegilise juhtimissüsteemi ja avalike teenuste arendamise ja haldamise korraldamine, juhtimissüsteemi korraldamine, juhtimissüsteemi siseauditite läbiviimine; infosüsteemide haldamine ja arendamine ning süsteemihalduse korraldamine; arendusprojektide ja uuringute koordineerimine; teeninduskanalite ja kliendikogemuse arendamine, kliendirahulolu hindamine; andmekvaliteedi ja avaandmete projektide juhtimine. 3 (3) Teehoiuteenistuse põhiülesanded on: 1 1) riigiteede projekteerimine, projekteerimistingimuste ja ehituslubade menetlemine; 2 2) riigiteede taristuga seotud kasutusõiguste andmine; 3 3) riigiteede ehitamiseks vajalike maade omandamine; 4 4) riigiteede ehitamine, omanikujärelevalve korraldamine ning korrashoiu tagamine; 5 5) riigiteedel sujuva liikluskorralduse ja liiklusvoo tagamine ning liiklusolude teabe edastamine; 6 6) riigiteedel elutähtsa teenuse toimivuse tagamine. Teehoiuteenistuse põhiülesanded on: riigiteede projekteerimine, projekteerimistingimuste ja ehituslubade menetlemine; riigiteede taristuga seotud kasutusõiguste andmine; riigiteede ehitamiseks vajalike maade omandamine; riigiteede ehitamine, omanikujärelevalve korraldamine ning korrashoiu tagamine; riigiteedel sujuva liikluskorralduse ja liiklusvoo tagamine ning liiklusolude teabe edastamine; riigiteedel elutähtsa teenuse toimivuse tagamine. 4 (4) Merendusteenistuse põhiülesanded on: 1 1) merealadel ja laevatatavatel siseveeteedel navigatsioonitingimuste informatsiooni kogumine, selle töötlemine ja levitamine; 2 2) tingimuste loomine ohutuks ja turvaliseks veeliikluseks üldkasutataval veeteel; 3 3) laevade ohutus- ja turvalisusnõuete korraldamine; 4 4) merenduspersonali väljaõppe ja kvalifikatsiooni tõendamise korraldamine; 5 5) valdkonna andmekogude pidamine; 6 6) laevaliikluse korraldamise süsteemi haldamine; 7 7) jäämurdeteenuse korraldamine; 8 8) meremajanduse konkurentsivõime arendamine. 9 9) kehtetu - RT I 2023-03-21 1 121032023001 2023-07-01 Merendusteenistuse põhiülesanded on: merealadel ja laevatatavatel siseveeteedel navigatsioonitingimuste informatsiooni kogumine, selle töötlemine ja levitamine; tingimuste loomine ohutuks ja turvaliseks veeliikluseks üldkasutataval veeteel; laevade ohutus- ja turvalisusnõuete korraldamine; merenduspersonali väljaõppe ja kvalifikatsiooni tõendamise korraldamine; valdkonna andmekogude pidamine; laevaliikluse korraldamise süsteemi haldamine; jäämurdeteenuse korraldamine; meremajanduse konkurentsivõime arendamine. kehtetu - 5 (5) Lennundusteenistuse põhiülesanded on: 1 1) lennundustegevuse ja lennundusjulgestuse valdkonnas seadmete ning füüsiliste ja juriidiliste isikutega seotud taotluste menetlemine, sh sertifitseerimine ja selle korraldamine; 2 2) lennundusalase järelevalve korraldamine ja läbi viimine; 3 3) Eesti lennuinfopiirkonna ja Eesti õhuruumi toimepõhimõtete rakendamine ning koostoime korraldamine; 4 4) koostöö ja suhtluse koordineerimine rahvusvaheliste ja Euroopa Liidu nõuete väljatöötamisel ja rakendamisel teiste riikidega, rahvusvaheliste ja Euroopa Liidu institutsioonidega; 5 5) riikliku lennundusohutusprogrammi koostamine ja täitmise järgimine; 6 6) lennundusohutuse edendamine ja ohutuse ning lennundusjulgestuse tagamise korraldamine; 7 7) lennunduse valdkonna ametisisese koostöö koordineerimine ja ametile kehtestatud nõuete rakendamine; 8 8) valdkonna andmekogude pidamine ja eestikeelse lennundusvaldkonna terminoloogia täiustamine. Lennundusteenistuse põhiülesanded on: lennundustegevuse ja lennundusjulgestuse valdkonnas seadmete ning füüsiliste ja juriidiliste isikutega seotud taotluste menetlemine, sh sertifitseerimine ja selle korraldamine; lennundusalase järelevalve korraldamine ja läbi viimine; Eesti lennuinfopiirkonna ja Eesti õhuruumi toimepõhimõtete rakendamine ning koostoime korraldamine; koostöö ja suhtluse koordineerimine rahvusvaheliste ja Euroopa Liidu nõuete väljatöötamisel ja rakendamisel teiste riikidega, rahvusvaheliste ja Euroopa Liidu institutsioonidega; riikliku lennundusohutusprogrammi koostamine ja täitmise järgimine; lennundusohutuse edendamine ja ohutuse ning lennundusjulgestuse tagamise korraldamine; lennunduse valdkonna ametisisese koostöö koordineerimine ja ametile kehtestatud nõuete rakendamine; valdkonna andmekogude pidamine ja eestikeelse lennundusvaldkonna terminoloogia täiustamine. 6 (6) Tugiteenuste teenistuse põhiülesanded on: 1 1) ameti pädevusse kuuluvate õigusalaste küsimustega tegelemine ja riigihangete korraldamine; 2 2) dokumendihalduse tagamine; 3 3) finantsjuhtimise ja raamatupidamise korraldamine; 4 4) personali planeerimine, arendamine ning töökeskkonna kujundamine; 5 5) haldustegevuse korraldamine; 6 6) kommunikatsiooni korraldamine. Tugiteenuste teenistuse põhiülesanded on: ameti pädevusse kuuluvate õigusalaste küsimustega tegelemine ja riigihangete korraldamine; dokumendihalduse tagamine; finantsjuhtimise ja raamatupidamise korraldamine; personali planeerimine, arendamine ning töökeskkonna kujundamine; haldustegevuse korraldamine; kommunikatsiooni korraldamine. 7 (7) Riskijuhtimise osakonna põhiülesanded on: 1 1) ameti riskijuhtimise poliitika väljatöötamine ja riskide hindamise protsessi koordineerimine; 2 2) sisekontrolli menetluste läbiviimine ning sisekontrollisüsteemi tugevdamiseks ettepanekute tegemine peadirektorile; 3 3) kriisireguleerimise korraldamine ning elutähtsate teenuste toimepidevuse tagamise koordineerimine ja järelevalve; 4 4) ameti üleste sise- ja välisauditite soovituse rakendamise seire; 5 5) riigisaladuse kaitse korraldamine. Riskijuhtimise osakonna põhiülesanded on: ameti riskijuhtimise poliitika väljatöötamine ja riskide hindamise protsessi koordineerimine; sisekontrolli menetluste läbiviimine ning sisekontrollisüsteemi tugevdamiseks ettepanekute tegemine peadirektorile; kriisireguleerimise korraldamine ning elutähtsate teenuste toimepidevuse tagamise koordineerimine ja järelevalve; ameti üleste sise- ja välisauditite soovituse rakendamise seire; riigisaladuse kaitse korraldamine. 8 (8) Eesti Maanteemuuseumi põhiülesanded on: 1 1) Eesti teede ajalugu, teede tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; 2 2) Eesti Maanteemuuseumi tegevusega seotud tasuliste teenuste korraldamine ja osutamine. RT I 2023-03-21 1 121032023001 2023-05-01 Eesti Maanteemuuseumi põhiülesanded on: Eesti teede ajalugu, teede tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; Eesti Maanteemuuseumi tegevusega seotud tasuliste teenuste korraldamine ja osutamine.",
+      "estleg:summary": {
+        "@value": "1 (1) Liiklusteenistuse põhiülesanded on: 1 1) sõidukite ja sõidukijuhtide liiklusesse lubamine ning sellega seotud teenuste osutamine; 2 2) liiklusregistri pidamine; 3 3) juhtimisõiguse ja sõidukiga seotud teenuste arendamine ja rahvusvaheline koostöö; 4 4) teenindusbüroode töö korraldamine. 2 (2) Strateegilise planeerimise teenistuse põhiülesanded on: 1 1) ohutu, keskkonnahoidliku, ligipääsetava ning toimiva liikuvuse kavandamine liikumisvajaduste rahuldamiseks koostöös klientide ja…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Liiklusteenistuse põhiülesanded on: 1 1) sõidukite ja sõidukijuhtide liiklusesse lubamine ning sellega seotud teenuste osutamine; 2 2) liiklusregistri pidamine; 3 3) juhtimisõiguse ja sõidukiga seotud teenuste arendamine ja rahvusvaheline koostöö; 4 4) teenindusbüroode töö korraldamine. 2 (2) Strateegilise planeerimise teenistuse põhiülesanded on: 1 1) ohutu, keskkonnahoidliku, ligipääsetava ning toimiva liikuvuse kavandamine liikumisvajaduste rahuldamiseks koostöös klientide ja huvigruppidega; 2 2) taristu investeeringute kavandamine; 3 3) osalemine transpordivaldkonnaga seotud poliitikate, strateegiate ja arengukavade väljatöötamises ning eelnõude koostamises; 4 4) riigiteedega seotud varade haldamine; 5 5) teeregistri pidamine; 6 6) liiklusohutuse meetmete rakendamise korraldamine; 7 7) ühistranspordi järelevalve; RT I 2023-07-05 7 105072023007 2023-07-08 8 8) strateegilise juhtimissüsteemi ja avalike teenuste arendamise ja haldamise korraldamine, juhtimissüsteemi korraldamine, juhtimissüsteemi siseauditite läbiviimine; 9 9) infosüsteemide haldamine ja arendamine ning süsteemihalduse korraldamine; 10 10) arendusprojektide ja uuringute koordineerimine; 11 11) teeninduskanalite ja kliendikogemuse arendamine, kliendirahulolu hindamine; 12 12) andmekvaliteedi ja avaandmete projektide juhtimine. 3 (3) Teehoiuteenistuse põhiülesanded on: 1 1) riigiteede projekteerimine, projekteerimistingimuste ja ehituslubade menetlemine; 2 2) riigiteede taristuga seotud kasutusõiguste andmine; 3 3) riigiteede ehitamiseks vajalike maade omandamine; 4 4) riigiteede ehitamine, omanikujärelevalve korraldamine ning korrashoiu tagamine; 5 5) riigiteedel sujuva liikluskorralduse ja liiklusvoo tagamine ning liiklusolude teabe edastamine; 6 6) riigiteedel elutähtsa teenuse toimivuse tagamine. 4 (4) Merendusteenistuse põhiülesanded on: 1 1) merealadel ja laevatatavatel siseveeteedel navigatsioonitingimuste informatsiooni kogumine, selle töötlemine ja levitamine; 2 2) tingimuste loomine ohutuks ja turvaliseks veeliikluseks üldkasutataval veeteel; 3 3) laevade ohutus- ja turvalisusnõuete korraldamine; 4 4) merenduspersonali väljaõppe ja kvalifikatsiooni tõendamise korraldamine; 5 5) valdkonna andmekogude pidamine; 6 6) laevaliikluse korraldamise süsteemi haldamine; 7 7) jäämurdeteenuse korraldamine; 8 8) meremajanduse konkurentsivõime arendamine. 9 9) kehtetu - RT I 2023-03-21 1 121032023001 2023-07-01 5 (5) Lennundusteenistuse põhiülesanded on: 1 1) lennundustegevuse ja lennundusjulgestuse valdkonnas seadmete ning füüsiliste ja juriidiliste isikutega seotud taotluste menetlemine, sh sertifitseerimine ja selle korraldamine; 2 2) lennundusalase järelevalve korraldamine ja läbi viimine; 3 3) Eesti lennuinfopiirkonna ja Eesti õhuruumi toimepõhimõtete rakendamine ning koostoime korraldamine; 4 4) koostöö ja suhtluse koordineerimine rahvusvaheliste ja Euroopa Liidu nõuete väljatöötamisel ja rakendamisel teiste riikidega, rahvusvaheliste ja Euroopa Liidu institutsioonidega; 5 5) riikliku lennundusohutusprogrammi koostamine ja täitmise järgimine; 6 6) lennundusohutuse edendamine ja ohutuse ning lennundusjulgestuse tagamise korraldamine; 7 7) lennunduse valdkonna ametisisese koostöö koordineerimine ja ametile kehtestatud nõuete rakendamine; 8 8) valdkonna andmekogude pidamine ja eestikeelse lennundusvaldkonna terminoloogia täiustamine. 6 (6) Tugiteenuste teenistuse põhiülesanded on: 1 1) ameti pädevusse kuuluvate õigusalaste küsimustega tegelemine ja riigihangete korraldamine; 2 2) dokumendihalduse tagamine; 3 3) finantsjuhtimise ja raamatupidamise korraldamine; 4 4) personali planeerimine, arendamine ning töökeskkonna kujundamine; 5 5) haldustegevuse korraldamine; 6 6) kommunikatsiooni korraldamine. 7 (7) Riskijuhtimise osakonna põhiülesanded on: 1 1) ameti riskijuhtimise poliitika väljatöötamine ja riskide hindamise protsessi koordineerimine; 2 2) sisekontrolli menetluste läbiviimine ning sisekontrollisüsteemi tugevdamiseks ettepanekute tegemine peadirektorile; 3 3) kriisireguleerimise korraldamine ning elutähtsate teenuste toimepidevuse tagamise koordineerimine ja järelevalve; 4 4) ameti üleste sise- ja välisauditite soovituse rakendamise seire; 5 5) riigisaladuse kaitse korraldamine. 8 (8) Eesti Maanteemuuseumi põhiülesanded on: 1 1) Eesti teede ajalugu, teede tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; 2 2) Eesti Maanteemuuseumi tegevusega seotud tasuliste teenuste korraldamine ja osutamine. RT I 2023-03-21 1 121032023001 2023-05-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -470,6 +891,204 @@
         {
           "@id": "estleg:Reg_1050754_Par_10_v1050754"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_7"
+        },
+        {
+          "@id": "estleg:Reg_1050754_Par_10_Lg_8"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Liiklusteenistuse põhiülesanded on: 1) sõidukite ja sõidukijuhtide liiklusesse lubamine ning sellega seotud teenuste osutamine; 2) liiklusregistri pidamine; 3) juhtimisõiguse ja sõidukiga seotud teenuste arendamine ja rahvusvaheline koostöö; 4) teenindusbüroode töö korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Strateegilise planeerimise teenistuse põhiülesanded on: 1) ohutu, keskkonnahoidliku, ligipääsetava ning toimiva liikuvuse kavandamine liikumisvajaduste rahuldamiseks koostöös klientide ja huvigruppidega; 2) taristu investeeringute kavandamine; 3) osalemine transpordivaldkonnaga seotud poliitikate, strateegiate ja arengukavade väljatöötamises ning eelnõude koostamises; 4) riigiteedega seotud varade haldamine; 5) teeregistri pidamine; 6) liiklusohutuse meetmete rakendamise korraldamine; 7) ühistranspordi järelevalve; 8) strateegilise juhtimissüsteemi ja avalike teenuste arendamise ja haldamise korraldamine, juhtimissüsteemi korraldamine, juhtimissüsteemi siseauditite läbiviimine; 9) infosüsteemide haldamine ja arendamine ning süsteemihalduse korraldamine; 10) arendusprojektide ja uuringute koordineerimine; 11) teeninduskanalite ja kliendikogemuse arendamine, kliendirahulolu hindamine; 12) andmekvaliteedi ja avaandmete projektide juhtimine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Teehoiuteenistuse põhiülesanded on: 1) riigiteede projekteerimine, projekteerimistingimuste ja ehituslubade menetlemine; 2) riigiteede taristuga seotud kasutusõiguste andmine; 3) riigiteede ehitamiseks vajalike maade omandamine; 4) riigiteede ehitamine, omanikujärelevalve korraldamine ning korrashoiu tagamine; 5) riigiteedel sujuva liikluskorralduse ja liiklusvoo tagamine ning liiklusolude teabe edastamine; 6) riigiteedel elutähtsa teenuse toimivuse tagamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Merendusteenistuse põhiülesanded on: 1) merealadel ja laevatatavatel siseveeteedel navigatsioonitingimuste informatsiooni kogumine, selle töötlemine ja levitamine; 2) tingimuste loomine ohutuks ja turvaliseks veeliikluseks üldkasutataval veeteel; 3) laevade ohutus- ja turvalisusnõuete korraldamine; 4) merenduspersonali väljaõppe ja kvalifikatsiooni tõendamise korraldamine; 5) valdkonna andmekogude pidamine; 6) laevaliikluse korraldamise süsteemi haldamine; 7) jäämurdeteenuse korraldamine; 8) meremajanduse konkurentsivõime arendamine. 9)",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Lennundusteenistuse põhiülesanded on: 1) lennundustegevuse ja lennundusjulgestuse valdkonnas seadmete ning füüsiliste ja juriidiliste isikutega seotud taotluste menetlemine, sh sertifitseerimine ja selle korraldamine; 2) lennundusalase järelevalve korraldamine ja läbi viimine; 3) Eesti lennuinfopiirkonna ja Eesti õhuruumi toimepõhimõtete rakendamine ning koostoime korraldamine; 4) koostöö ja suhtluse koordineerimine rahvusvaheliste ja Euroopa Liidu nõuete väljatöötamisel ja rakendamisel teiste riikidega, rahvusvaheliste ja Euroopa Liidu institutsioonidega; 5) riikliku lennundusohutusprogrammi koostamine ja täitmise järgimine; 6) lennundusohutuse edendamine ja ohutuse ning lennundusjulgestuse tagamise korraldamine; 7) lennunduse valdkonna ametisisese koostöö koordineerimine ja ametile kehtestatud nõuete rakendamine; 8) valdkonna andmekogude pidamine ja eestikeelse lennundusvaldkonna terminoloogia täiustamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Tugiteenuste teenistuse põhiülesanded on: 1) ameti pädevusse kuuluvate õigusalaste küsimustega tegelemine ja riigihangete korraldamine; 2) dokumendihalduse tagamine; 3) finantsjuhtimise ja raamatupidamise korraldamine; 4) personali planeerimine, arendamine ning töökeskkonna kujundamine; 5) haldustegevuse korraldamine; 6) kommunikatsiooni korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Riskijuhtimise osakonna põhiülesanded on: 1) ameti riskijuhtimise poliitika väljatöötamine ja riskide hindamise protsessi koordineerimine; 2) sisekontrolli menetluste läbiviimine ning sisekontrollisüsteemi tugevdamiseks ettepanekute tegemine peadirektorile; 3) kriisireguleerimise korraldamine ning elutähtsate teenuste toimepidevuse tagamise koordineerimine ja järelevalve; 4) ameti üleste sise- ja välisauditite soovituse rakendamise seire; 5) riigisaladuse kaitse korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_10_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Eesti Maanteemuuseumi põhiülesanded on: 1) Eesti teede ajalugu, teede tehnika ja tehnoloogia ning liikluse arengut kajastava materjali kogumine, uurimine, säilitamine, korrastamine ja avalikkusele tutvustamine teaduslikel, hariduslikel ja kultuurilistel eesmärkidel; 2) Eesti Maanteemuuseumi tegevusega seotud tasuliste teenuste korraldamine ja osutamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 8",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -479,12 +1098,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 11. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {
@@ -499,16 +1124,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 12. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Transpordiameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050754_Map"
       },
-      "estleg:summary": "Määrus jõustub 2021. aasta 1. jaanuaril.",
-      "estleg:legalText": "Määrus jõustub 2021. aasta 1. jaanuaril. Määrus jõustub 2021. aasta 1. jaanuaril.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 2021. aasta 1. jaanuaril.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 2021. aasta 1. jaanuaril.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1050754_Par_12_v1050754"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050754_Par_12_Lg_1"
         }
       ]
     },
@@ -523,6 +1159,19 @@
       },
       "estleg:citationDetail": "lg 1",
       "estleg:citationText": "Määrus kehtestatakse Vabariigi Valitsuse seaduse § 42 lõike 1"
+    },
+    {
+      "@id": "estleg:Reg_1050754_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 2021. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050754_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
     }
   ]
 }

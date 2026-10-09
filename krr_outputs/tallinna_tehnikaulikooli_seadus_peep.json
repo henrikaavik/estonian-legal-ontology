@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TTUKS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Tallinna Tehnikaülikooli seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Tallinna Tehnikaülikooli seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Tallinna Tehnikaülikooli seadus",
-      "dcterms:title": [
-        {
-          "@value": "Tallinna Tehnikaülikooli seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Tallinn University of Technology Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Tallinna Tehnikaülikooli seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/112072025027.xml"
+        "@id": "https://www.riigiteataja.ee/akt/112072025027"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/112072025027/xml"
+      },
+      "estleg:globalId": "112072025027",
+      "eli:id_local": "112072025027",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "1024747",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "436887332ed351726f06d8f1d8605a14b955c615078ca22caea363de419ef4d4",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2014-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-10-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-10-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/503102025003"
@@ -95,19 +107,10 @@
         {
           "@id": "estleg:Draft_HTM13_1772"
         }
-      ]
-    },
-    {
-      "@id": "estleg:TTUKS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Tallinna Tehnikaülikooli seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_TTUKS_default"
-        }
-      ]
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/503102025003"
+      }
     },
     {
       "@id": "estleg:Cluster_TTUKS_default",
@@ -116,12 +119,33 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–14 Tallinna Tehnikaülikooli seadus",
-      "skos:prefLabel": "§1–14 Tallinna Tehnikaülikooli seadus",
+      "rdfs:label": {
+        "@value": "§1–14 Tallinna Tehnikaülikooli seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–14 Tallinna Tehnikaülikooli seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TTUKS_TopicScheme"
       },
       "estleg:provisionCount": 13
+    },
+    {
+      "@id": "estleg:TTUKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Tallinna Tehnikaülikooli seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TTUKS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:TTUKS_Par_1",
@@ -130,12 +154,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab Tallinna Tehnikaülikooli õigusliku seisundi, eesmärgi ja autonoomia piirid ning juhtimise, rahastamise ja tegevuse alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab Tallinna Tehnikaülikooli õigusliku seisundi, eesmärgi ja autonoomia piirid ning juhtimise, rahastamise ja tegevuse alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus sätestab Tallinna Tehnikaülikooli õigusliku seisundi, eesmärgi ja autonoomia piirid ning juhtimise, rahastamise ja tegevuse alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -207,13 +237,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Tallinna Tehnikaülikooli õiguslik seisund, eesmärk ja ülesanded",
+      "rdfs:label": {
+        "@value": "§ 2. Tallinna Tehnikaülikooli õiguslik seisund, eesmärk ja ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Tallinna Tehnikaülikool (edaspidi ülikool) on asutatud 1918. aasta 17. septembril tehnilise kõrghariduse õppeasutusena. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on universaalne integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada",
-      "estleg:legalText": "(1) Tallinna Tehnikaülikool (edaspidi ülikool) on asutatud 1918. aasta 17. septembril tehnilise kõrghariduse õppeasutusena. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on universaalne integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada ühiskonna jätkusuutlikku arengusse ning rahva heaolu kasvu. (4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel inseneri- ja tehnikateadustes, loodusteadustes ning sotsiaalteadustes; tagab tehnikahariduse ja -teaduse ülikoolina Eesti inseneride ja tehnikateadlaste järelkasvu. (5) Ülikool teeb koostööd teiste ülikoolide ja kogu ühiskonnaga, toetades Eesti ühiskonna arengut, luues ja arendades lõimitud õppe- ja teadustegevusel põhinevaid rahvusvahelise koostöö ja elukestva õppe võimalusi ning kujundades üliõpilastest vastutustundlikke ja algatusvõimelisi kodanikke.",
+      "estleg:summary": {
+        "@value": "(1) Tallinna Tehnikaülikool (edaspidi ülikool) on asutatud 1918. aasta 17. septembril tehnilise kõrghariduse õppeasutusena. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on universaalne integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Tallinna Tehnikaülikool (edaspidi ülikool) on asutatud 1918. aasta 17. septembril tehnilise kõrghariduse õppeasutusena. (2) Ülikool on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, kõrgharidusseaduse, oma põhikirja ja muude õigusaktide alusel. (3) Ülikool on universaalne integreeritud teadus-, arendus-, õppe- ja kultuuriasutus. Ülikooli eesmärk on rahvusvahelise kõrgetasemelise teadus-, õppe- ja arendustööga ning sellele tuginevate uuenduslike teenustega panustada ühiskonna jätkusuutlikku arengusse ning rahva heaolu kasvu. (4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: 1) pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel inseneri- ja tehnikateadustes, loodusteadustes ning sotsiaalteadustes; 2) tagab tehnikahariduse ja -teaduse ülikoolina Eesti inseneride ja tehnikateadlaste järelkasvu. (5) Ülikool teeb koostööd teiste ülikoolide ja kogu ühiskonnaga, toetades Eesti ühiskonna arengut, luues ja arendades lõimitud õppe- ja teadustegevusel põhinevaid rahvusvahelise koostöö ja elukestva õppe võimalusi ning kujundades üliõpilastest vastutustundlikke ja algatusvõimelisi kodanikke.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
       },
@@ -338,11 +374,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel inseneri- ja tehnikateadustes, loodusteadustes ning sotsiaalteadustes; tagab tehnikahariduse ja -teaduse ülikoolina Eesti inseneride ja tehnikateadlaste järelkasvu.",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetatud eesmärgi saavutamiseks ülikool: 1) pakub teaduse ja tehnoloogia arengule tuginevaid kõrghariduse omandamise võimalusi kõrghariduse kõigil astmetel inseneri- ja tehnikateadustes, loodusteadustes ning sotsiaalteadustes; 2) tagab tehnikahariduse ja -teaduse ülikoolina Eesti inseneride ja tehnikateadlaste järelkasvu.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_2"
       },
       "rdfs:label": "§ 2 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:TTUKS_Par_9_Lg_3"
@@ -378,12 +418,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ülikooli juhtorganid",
+      "rdfs:label": {
+        "@value": "§ 3. Ülikooli juhtorganid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "Ülikooli juhtorganid on nõukogu, senat ja rektor.",
+      "estleg:summary": {
+        "@value": "Ülikooli juhtorganid on nõukogu, senat ja rektor.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ülikooli juhtorganid on nõukogu, senat ja rektor.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -416,10 +462,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ülikooli juhtorganid on nõukogu, senat ja rektor.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ülikooli juhtorganid on nõukogu, senat ja rektor.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:TTUKS_Par_4",
@@ -428,13 +476,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Nõukogu",
+      "rdfs:label": {
+        "@value": "§ 4. Nõukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Ülikooli nõukogu on ülikooli kõrgeim juhtorgan, kes vastutab ülikooli arengu eest ja tagab ülikooli eesmärkide saavutamise. (2) Nõukogu koosseisu kuulub üksteist liiget, kellest: viis liiget nimetab senat ülikooli põhikirjas sätestatud korras; ühe liikme nimetab Eesti Teaduste Akadeemia isikute hulgast, kes ei ole ülikooli töötajad; viis liiget nimetab haridus- ja teadusminister pärast seda, kui senat ja Eesti Teaduste Akadeemia on liikmed nimetanud, ning lähtudes sellest, et enamik",
-      "estleg:legalText": "(1) Ülikooli nõukogu on ülikooli kõrgeim juhtorgan, kes vastutab ülikooli arengu eest ja tagab ülikooli eesmärkide saavutamise. (2) Nõukogu koosseisu kuulub üksteist liiget, kellest: viis liiget nimetab senat ülikooli põhikirjas sätestatud korras; ühe liikme nimetab Eesti Teaduste Akadeemia isikute hulgast, kes ei ole ülikooli töötajad; viis liiget nimetab haridus- ja teadusminister pärast seda, kui senat ja Eesti Teaduste Akadeemia on liikmed nimetanud, ning lähtudes sellest, et enamik haridus- ja teadusministri nimetatud isikutest on ettevõtjate või tootmise kutse- ja erialaliitude esindajad ja et nõukogu koosseisust enamiku moodustavad isikud, kes ei ole ülikooli töötajad. (3) Nõukogu koosseisu kinnitab viieks aastaks Vabariigi Valitsus korraldusega haridus- ja teadusministri ettepanekul. (4) Nõukogu: võtab vastu ülikooli põhikirja; valib ülikooli rektori; võtab vastu ülikooli arengukava, eelarve ja kinnitab majandusaasta aruande; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid. (5) Nõukogu annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (6) Nõukogu koosolek on otsustusvõimeline, kui sellest võtab osa vähemalt kaks kolmandikku nõukogu liikmetest. Nõukogu määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, välja arvatud: käesoleva paragrahvi lõike 4 punktides 1 ja 2 nimetatud küsimustes, mis otsustatakse nõukogu koosseisu kahekolmandikulise häälteenamusega; juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue. (7) Nõukogu määrused ja otsused jõustuvad allakirjutamisel, kui neis enestes ei ole sätestatud hilisemat tähtaega. (8) Nõukogu pädevusse kuuluvate küsimuste ettevalmistamise korraldavad rektor ja tema nimetatud ülikooli üksused, kui nõukogu ei otsusta teisiti.",
+      "estleg:summary": {
+        "@value": "(1) Ülikooli nõukogu on ülikooli kõrgeim juhtorgan, kes vastutab ülikooli arengu eest ja tagab ülikooli eesmärkide saavutamise. (2) Nõukogu koosseisu kuulub üksteist liiget, kellest: 1) viis liiget nimetab senat ülikooli põhikirjas sätestatud korras; 2) ühe liikme nimetab Eesti Teaduste Akadeemia isikute hulgast, kes ei ole ülikooli töötajad; 3) viis liiget nimetab haridus- ja teadusminister pärast seda, kui senat ja Eesti Teaduste Akadeemia on liikmed nimetanud, ning lähtudes sellest, et",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ülikooli nõukogu on ülikooli kõrgeim juhtorgan, kes vastutab ülikooli arengu eest ja tagab ülikooli eesmärkide saavutamise. (2) Nõukogu koosseisu kuulub üksteist liiget, kellest: 1) viis liiget nimetab senat ülikooli põhikirjas sätestatud korras; 2) ühe liikme nimetab Eesti Teaduste Akadeemia isikute hulgast, kes ei ole ülikooli töötajad; 3) viis liiget nimetab haridus- ja teadusminister pärast seda, kui senat ja Eesti Teaduste Akadeemia on liikmed nimetanud, ning lähtudes sellest, et enamik haridus- ja teadusministri nimetatud isikutest on ettevõtjate või tootmise kutse- ja erialaliitude esindajad ja et nõukogu koosseisust enamiku moodustavad isikud, kes ei ole ülikooli töötajad. (3) Nõukogu koosseisu kinnitab viieks aastaks Vabariigi Valitsus korraldusega haridus- ja teadusministri ettepanekul. (4) Nõukogu: 1) võtab vastu ülikooli põhikirja; 2) valib ülikooli rektori; 3) võtab vastu ülikooli arengukava, eelarve ja kinnitab majandusaasta aruande; 4) täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid. (5) Nõukogu annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (6) Nõukogu koosolek on otsustusvõimeline, kui sellest võtab osa vähemalt kaks kolmandikku nõukogu liikmetest. Nõukogu määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, välja arvatud: 1) käesoleva paragrahvi lõike 4 punktides 1 ja 2 nimetatud küsimustes, mis otsustatakse nõukogu koosseisu kahekolmandikulise häälteenamusega; 2) juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue. (7) Nõukogu määrused ja otsused jõustuvad allakirjutamisel, kui neis enestes ei ole sätestatud hilisemat tähtaega. (8) Nõukogu pädevusse kuuluvate küsimuste ettevalmistamise korraldavad rektor ja tema nimetatud ülikooli üksused, kui nõukogu ei otsusta teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
       },
@@ -525,11 +579,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Nõukogu koosseisu kuulub üksteist liiget, kellest: viis liiget nimetab senat ülikooli põhikirjas sätestatud korras; ühe liikme nimetab Eesti Teaduste Akadeemia isikute hulgast, kes ei ole ülikooli töötajad; viis liiget nimetab haridus- ja teadusminister pärast seda, kui senat ja Eesti Teaduste Akadeemia on liikmed nimetanud, ning lähtudes sellest, et enamik haridus- ja teadusministri nimetatud isikutest on ettevõtjate või tootmise kutse- ja erialaliitude esindajad ja et nõukogu koosseisust enamiku moodustavad isikud, kes ei ole ülikooli töötajad.",
+      "estleg:legalText": "(2) Nõukogu koosseisu kuulub üksteist liiget, kellest: 1) viis liiget nimetab senat ülikooli põhikirjas sätestatud korras; 2) ühe liikme nimetab Eesti Teaduste Akadeemia isikute hulgast, kes ei ole ülikooli töötajad; 3) viis liiget nimetab haridus- ja teadusminister pärast seda, kui senat ja Eesti Teaduste Akadeemia on liikmed nimetanud, ning lähtudes sellest, et enamik haridus- ja teadusministri nimetatud isikutest on ettevõtjate või tootmise kutse- ja erialaliitude esindajad ja et nõukogu koosseisust enamiku moodustavad isikud, kes ei ole ülikooli töötajad.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -589,11 +648,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Nõukogu: võtab vastu ülikooli põhikirja; valib ülikooli rektori; võtab vastu ülikooli arengukava, eelarve ja kinnitab majandusaasta aruande; täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
+      "estleg:legalText": "(4) Nõukogu: 1) võtab vastu ülikooli põhikirja; 2) valib ülikooli rektori; 3) võtab vastu ülikooli arengukava, eelarve ja kinnitab majandusaasta aruande; 4) täidab teisi seaduse või ülikooli põhikirjaga talle pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 4"
+      "rdfs:label": "§ 4 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "@id": "estleg:TTUKS_Par_4_Lg_5",
@@ -615,11 +680,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Nõukogu koosolek on otsustusvõimeline, kui sellest võtab osa vähemalt kaks kolmandikku nõukogu liikmetest. Nõukogu määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, välja arvatud: käesoleva paragrahvi lõike 4 punktides 1 ja 2 nimetatud küsimustes, mis otsustatakse nõukogu koosseisu kahekolmandikulise häälteenamusega; juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue.",
+      "estleg:legalText": "(6) Nõukogu koosolek on otsustusvõimeline, kui sellest võtab osa vähemalt kaks kolmandikku nõukogu liikmetest. Nõukogu määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, välja arvatud: 1) käesoleva paragrahvi lõike 4 punktides 1 ja 2 nimetatud küsimustes, mis otsustatakse nõukogu koosseisu kahekolmandikulise häälteenamusega; 2) juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 6"
+      "rdfs:label": "§ 4 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:TTUKS_Par_4_Lg_7",
@@ -654,13 +723,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Senat",
+      "rdfs:label": {
+        "@value": "§ 5. Senat",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Ülikooli akadeemiline otsustuskogu on senat, kes vastutab ülikooli õppe- ning teadus- ja arendustegevuse eest ning tagab selle kõrge kvaliteedi. (2) Senati moodustamise tingimused ja korra ning tegevuse alused sätestab ülikooli põhikiri. Senati koosseisu kuuluvad: rektor, kes on senati esimees; ülikooli liikmeskonda kuuluvad isikud, kellest vähemalt ühe viiendiku moodustavad üliõpilased. (3) Senat: kehtestab õppe-, teadus- ja arendustööd ning akadeemiliste töötajate töösuhteid puudutavad",
-      "estleg:legalText": "(1) Ülikooli akadeemiline otsustuskogu on senat, kes vastutab ülikooli õppe- ning teadus- ja arendustegevuse eest ning tagab selle kõrge kvaliteedi. (2) Senati moodustamise tingimused ja korra ning tegevuse alused sätestab ülikooli põhikiri. Senati koosseisu kuuluvad: rektor, kes on senati esimees; ülikooli liikmeskonda kuuluvad isikud, kellest vähemalt ühe viiendiku moodustavad üliõpilased. (3) Senat: kehtestab õppe-, teadus- ja arendustööd ning akadeemiliste töötajate töösuhteid puudutavad üldised eeskirjad; võib panna veto nõukogu põhikirja vastuvõtmise otsusele ja rektori valimise otsusele ning täidab muid talle ülikooli põhikirjaga pandud ülesandeid. (4) Senat annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (5) Senati koosolek on otsustusvõimeline, kui sellest võtab osa üle poole senati liikmetest. Senati määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, kui põhikirjas ei ole suurema häälteenamuse nõuet, välja arvatud: käesoleva paragrahvi lõike 3 punktis 2 nimetatud vetoõiguse kasutamine, mis otsustatakse senati koosseisu kahekolmandikulise häälteenamusega; juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue. (6) Senati määrused ja otsused jõustuvad allakirjutamisel, kui neis enestes ei ole sätestatud hilisemat tähtaega.",
+      "estleg:summary": {
+        "@value": "(1) Ülikooli akadeemiline otsustuskogu on senat, kes vastutab ülikooli õppe- ning teadus- ja arendustegevuse eest ning tagab selle kõrge kvaliteedi. (2) Senati moodustamise tingimused ja korra ning tegevuse alused sätestab ülikooli põhikiri. Senati koosseisu kuuluvad: 1) rektor, kes on senati esimees; 2) ülikooli liikmeskonda kuuluvad isikud, kellest vähemalt ühe viiendiku moodustavad üliõpilased. (3) Senat: 1) kehtestab õppe-, teadus- ja arendustööd ning akadeemiliste töötajate töösuhteid",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ülikooli akadeemiline otsustuskogu on senat, kes vastutab ülikooli õppe- ning teadus- ja arendustegevuse eest ning tagab selle kõrge kvaliteedi. (2) Senati moodustamise tingimused ja korra ning tegevuse alused sätestab ülikooli põhikiri. Senati koosseisu kuuluvad: 1) rektor, kes on senati esimees; 2) ülikooli liikmeskonda kuuluvad isikud, kellest vähemalt ühe viiendiku moodustavad üliõpilased. (3) Senat: 1) kehtestab õppe-, teadus- ja arendustööd ning akadeemiliste töötajate töösuhteid puudutavad üldised eeskirjad; 2) võib panna veto nõukogu põhikirja vastuvõtmise otsusele ja rektori valimise otsusele ning 3) täidab muid talle ülikooli põhikirjaga pandud ülesandeid. (4) Senat annab oma pädevuse piires määrusi ja võtab vastu otsuseid. (5) Senati koosolek on otsustusvõimeline, kui sellest võtab osa üle poole senati liikmetest. Senati määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, kui põhikirjas ei ole suurema häälteenamuse nõuet, välja arvatud: 1) käesoleva paragrahvi lõike 3 punktis 2 nimetatud vetoõiguse kasutamine, mis otsustatakse senati koosseisu kahekolmandikulise häälteenamusega; 2) juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue. (6) Senati määrused ja otsused jõustuvad allakirjutamisel, kui neis enestes ei ole sätestatud hilisemat tähtaega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
       },
@@ -733,11 +808,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Senati moodustamise tingimused ja korra ning tegevuse alused sätestab ülikooli põhikiri. Senati koosseisu kuuluvad: rektor, kes on senati esimees; ülikooli liikmeskonda kuuluvad isikud, kellest vähemalt ühe viiendiku moodustavad üliõpilased.",
+      "estleg:legalText": "(2) Senati moodustamise tingimused ja korra ning tegevuse alused sätestab ülikooli põhikiri. Senati koosseisu kuuluvad: 1) rektor, kes on senati esimees; 2) ülikooli liikmeskonda kuuluvad isikud, kellest vähemalt ühe viiendiku moodustavad üliõpilased.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -758,11 +837,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Senat: kehtestab õppe-, teadus- ja arendustööd ning akadeemiliste töötajate töösuhteid puudutavad üldised eeskirjad; võib panna veto nõukogu põhikirja vastuvõtmise otsusele ja rektori valimise otsusele ning täidab muid talle ülikooli põhikirjaga pandud ülesandeid.",
+      "estleg:legalText": "(3) Senat: 1) kehtestab õppe-, teadus- ja arendustööd ning akadeemiliste töötajate töösuhteid puudutavad üldised eeskirjad; 2) võib panna veto nõukogu põhikirja vastuvõtmise otsusele ja rektori valimise otsusele ning 3) täidab muid talle ülikooli põhikirjaga pandud ülesandeid.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -796,12 +880,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Senati koosolek on otsustusvõimeline, kui sellest võtab osa üle poole senati liikmetest. Senati määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, kui põhikirjas ei ole suurema häälteenamuse nõuet, välja arvatud: käesoleva paragrahvi lõike 3 punktis 2 nimetatud vetoõiguse kasutamine, mis otsustatakse senati koosseisu kahekolmandikulise häälteenamusega; juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue.",
+      "estleg:legalText": "(5) Senati koosolek on otsustusvõimeline, kui sellest võtab osa üle poole senati liikmetest. Senati määrused ja otsused võetakse vastu koosseisu lihthäälteenamusega, kui põhikirjas ei ole suurema häälteenamuse nõuet, välja arvatud: 1) käesoleva paragrahvi lõike 3 punktis 2 nimetatud vetoõiguse kasutamine, mis otsustatakse senati koosseisu kahekolmandikulise häälteenamusega; 2) juhtudel, kui põhikirjas on sätestatud suurema häälteenamuse nõue.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_5"
       },
       "rdfs:label": "§ 5 lg 5",
-      "estleg:itemNumber": "2"
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:TTUKS_Par_5_Lg_6",
@@ -823,12 +910,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Rektor",
+      "rdfs:label": {
+        "@value": "§ 6. Rektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Rektor on ülikooli juht. (2) Rektori valib nõukogu kuni viieks aastaks ja maksimaalselt kaheks järjestikuseks ametiajaks ülikooli põhikirjas sätestatud korras. Rektori ametikohale võib kandideerida isik, kes on või on olnud valitud mis tahes ülikooli professori ametikohale. Nõukogu esimees sõlmib rektoriga kuni viieks aastaks lepingu, millega määratakse kindlaks rektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused.",
+      "estleg:summary": {
+        "@value": "(1) Rektor on ülikooli juht. (2) Rektori valib nõukogu kuni viieks aastaks ja maksimaalselt kaheks järjestikuseks ametiajaks ülikooli põhikirjas sätestatud korras. Rektori ametikohale võib kandideerida isik, kes on või on olnud valitud mis tahes ülikooli professori ametikohale. Nõukogu esimees sõlmib rektoriga kuni viieks aastaks lepingu, millega määratakse kindlaks rektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rektor on ülikooli juht. (2) Rektori valib nõukogu kuni viieks aastaks ja maksimaalselt kaheks järjestikuseks ametiajaks ülikooli põhikirjas sätestatud korras. Rektori ametikohale võib kandideerida isik, kes on või on olnud valitud mis tahes ülikooli professori ametikohale. Nõukogu esimees sõlmib rektoriga kuni viieks aastaks lepingu, millega määratakse kindlaks rektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kohaldatakse võlaõigusseaduses käsunduslepingu kohta sätestatut. Rektor astub ametisse nõukogu ja senati ees ametivande andmisega. (3) Rektor juhib ülikooli igapäevast tegevust, esindab ülikooli suhetes teiste isikutega, vastutab raha ja muu vara õiguspärase ja otstarbeka kasutamise eest ning täidab ülikooli põhikirja ning nõukogu ja senati õigusaktidega talle pandud muid ülesandeid. (4) Rektor annab oma pädevuse piires käskkirju ja korraldusi. (5) Kui seadusega ülikooli pädevusse antud küsimuse puhul ei ole pädevat organit määratud ning nõukogu ei otsusta seda lahendada ise või anda lahendamiseks senatile, kuulub küsimus rektori pädevusse. (6) Rektori volitused lõpevad lepingutähtaja möödumise päeval, omal soovil ametist tagasiastumise päeval või enne lepingutähtaja möödumist ametist vabastamise päeval. (7) Volituste lõppemisel on rektoril õigus siirduda tagasi ametikohale, kus ta ülikoolis töötas enne rektoriks valimist. (8) Kui rektor vabastatakse ametist enne lepingutähtaja möödumist, kui tema ametiaja lõpuks ei ole valitud uut rektorit või kui tal osutub oma ülesannete täitmine püsivalt võimatuks, kinnitab nõukogu kuni üheks aastaks või uue rektori valimiseni rektori kohusetäitja. Rektori kohusetäitjaga sõlmib lepingu nõukogu esimees.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -1043,12 +1136,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kultuuripärandi säilitamine ja avalike teenuste osutamine",
+      "rdfs:label": {
+        "@value": "§ 7. Kultuuripärandi säilitamine ja avalike teenuste osutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 2 lõigetest 3 ja 4 tulenevate ülesannete täitmiseks säilitab ja arendab ülikool kultuuripärandi hulka kuuluvat hoonestust ning akadeemilise ja ajaloolise väärtusega kogusid ja arhiive, samuti osutab ühiskonnale avalikke teenuseid raamatukogu, muuseumi, tehnoloogiakooli, sertifitseerimisasutuse ja teiste üksuste kaudu. (2) Käesoleva paragrahvi lõikes 1 nimetatud üksuste tegevust toetatakse riigieelarvest teiste vastavate asutustega samadel alustel.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 2 lõigetest 3 ja 4 tulenevate ülesannete täitmiseks säilitab ja arendab ülikool kultuuripärandi hulka kuuluvat hoonestust ning akadeemilise ja ajaloolise väärtusega kogusid ja arhiive, samuti osutab ühiskonnale avalikke teenuseid raamatukogu, muuseumi, tehnoloogiakooli, sertifitseerimisasutuse ja teiste üksuste kaudu. (2) Käesoleva paragrahvi lõikes 1 nimetatud üksuste tegevust toetatakse riigieelarvest teiste vastavate asutustega samadel alustel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 2 lõigetest 3 ja 4 tulenevate ülesannete täitmiseks säilitab ja arendab ülikool kultuuripärandi hulka kuuluvat hoonestust ning akadeemilise ja ajaloolise väärtusega kogusid ja arhiive, samuti osutab ühiskonnale avalikke teenuseid raamatukogu, muuseumi, tehnoloogiakooli, sertifitseerimisasutuse ja teiste üksuste kaudu. (2) Käesoleva paragrahvi lõikes 1 nimetatud üksuste tegevust toetatakse riigieelarvest teiste vastavate asutustega samadel alustel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -1133,13 +1232,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ülikooli vara",
+      "rdfs:label": {
+        "@value": "§ 8. Ülikooli vara",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse.",
-      "estleg:legalText": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse. (3) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: kinnisvara on õigus omandada, võõrandada või piiratud asjaõigusega koormata ülikooli nõukogu kehtestatud põhimõtetest lähtudes; ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; ülikoolil on õigus asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi, välja arvatud juhul, kui toetus antakse nõukogu kehtestatud põhimõtetest lähtudes ülikooli põhikirjaliste ülesannete täitmiseks; ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest.",
+      "estleg:summary": {
+        "@value": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Ülikool on oma vara omanik, kellel on õigus seda vallata, kasutada ja käsutada käesolevas seaduses ja ülikooli põhikirjas sätestatud korras, tagades vara eesmärgipärase, otstarbeka, säästliku ja heaperemeheliku valitsemise. (2) Ülikool omandab ja kasutab oma vara ülikooli tegevusteks ja eesmärkide saavutamiseks ning võõrandab vara, mis ei ole eeltoodu saavutamiseks vajalik, tagades tehingute kooskõla õigusaktidega, läbipaistvuse ja kontrollitavuse. (3) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: 1) kinnisvara on õigus omandada, võõrandada või piiratud asjaõigusega koormata ülikooli nõukogu kehtestatud põhimõtetest lähtudes; 2) ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; 3) ülikoolil on õigus asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; 4) ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi, välja arvatud juhul, kui toetus antakse nõukogu kehtestatud põhimõtetest lähtudes ülikooli põhikirjaliste ülesannete täitmiseks; 5) ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
       },
@@ -1240,12 +1345,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: kinnisvara on õigus omandada, võõrandada või piiratud asjaõigusega koormata ülikooli nõukogu kehtestatud põhimõtetest lähtudes; ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; ülikoolil on õigus asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi, välja arvatud juhul, kui toetus antakse nõukogu kehtestatud põhimõtetest lähtudes ülikooli põhikirjaliste ülesannete täitmiseks; ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest.",
+      "estleg:legalText": "(3) Ülikool valdab, kasutab ja käsutab oma vara, arvestades järgmisi piiranguid: 1) kinnisvara on õigus omandada, võõrandada või piiratud asjaõigusega koormata ülikooli nõukogu kehtestatud põhimõtetest lähtudes; 2) ülikoolil ei ole õigust tagada oma varaga teise isiku kohustusi ega anda laenu, välja arvatud käesoleva lõike punktis 5 nimetatud juhul; 3) ülikoolil on õigus asutada oma põhikirjaliste ülesannete täitmiseks eraõiguslikke juriidilisi isikuid, kellel ei ole õigust asutada erakooli või eraõiguslikku teadus- ja arendusasutust; 4) ülikoolil ei ole õigust anda sponsortoetusi ja teha muid rahalisi annetusi, välja arvatud juhul, kui toetus antakse nõukogu kehtestatud põhimõtetest lähtudes ülikooli põhikirjaliste ülesannete täitmiseks; 5) ülikoolil on õigus nõukogu otsusel omatulude arvelt tagada ülikooli poolt põhikirjaliste ülesannete täitmiseks asutatud juriidiliste isikute kohustusi ja anda neile laenu arvestusega, et kohustuste suurus kokku ei tohi ületada kümmet protsenti ülikooli eelarveaasta omatuludest.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_8"
       },
       "rdfs:label": "§ 8 lg 3",
-      "estleg:itemNumber": "5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1266,12 +1377,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Finantseerimine",
+      "rdfs:label": {
+        "@value": "§ 9. Finantseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Ülikooli tegevust finantseeritakse riigieelarvest samadel alustel teiste avalik-õiguslike ülikoolidega. Ülikooli tegevust finantseeritakse ka vahenditest, mis on saadud õppekulude hüvitamisest, ülikooli põhitegevusest tulenevate tasuliste teenuste osutamisest, teadus- ja arendustegevusest ning muudest allikatest. (2) Ülikooli teadus- ja arendustegevust finantseeritakse teadus- ja arendustegevuse ning innovatsiooni korralduse seadusest lähtudes.",
+      "estleg:summary": {
+        "@value": "(1) Ülikooli tegevust finantseeritakse riigieelarvest samadel alustel teiste avalik-õiguslike ülikoolidega. Ülikooli tegevust finantseeritakse ka vahenditest, mis on saadud õppekulude hüvitamisest, ülikooli põhitegevusest tulenevate tasuliste teenuste osutamisest, teadus- ja arendustegevusest ning muudest allikatest. (2) Ülikooli teadus- ja arendustegevust finantseeritakse teadus- ja arendustegevuse ning innovatsiooni korralduse seadusest lähtudes.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ülikooli tegevust finantseeritakse riigieelarvest samadel alustel teiste avalik-õiguslike ülikoolidega. Ülikooli tegevust finantseeritakse ka vahenditest, mis on saadud õppekulude hüvitamisest, ülikooli põhitegevusest tulenevate tasuliste teenuste osutamisest, teadus- ja arendustegevusest ning muudest allikatest. (2) Ülikooli teadus- ja arendustegevust finantseeritakse teadus- ja arendustegevuse ning innovatsiooni korralduse seadusest lähtudes. (3) Käesoleva seaduse § 2 lõike 4 punktis 2 nimetatud avalike ülesannete täitmiseks loob ülikool tehnikateaduste õppe-, teadus- ja arendustegevusega tegelevad professuurid, mille loetelu lepitakse kokku kõrgharidusseaduses sätestatud alustel avalik-õiguslikule ülikoolile toetuse eraldamiseks sõlmitavas halduslepingus. (4) Käesoleva paragrahvi lõikes 3 nimetatud professuuride aluseks olevates teadusvaldkondades läbib ülikool temaatilise hindamise teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse §-s 18 sätestatud korras vähemalt kord viie aasta jooksul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -1413,12 +1530,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Üleminekusätted",
+      "rdfs:label": {
+        "@value": "§ 10. Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "(1) Ülikooliseaduse alusel moodustatud nõukogu volitused lõpevad 2014. aasta 31. detsembril. (2) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu kinnitab Vabariigi Valitsus korraldusega ning nõukogu esimese koosseisu volitused algavad 2015. aasta 1. jaanuaril. Eesti Teaduste Akadeemia ja Tallinna Tehnikaülikool esitavad haridus- ja teadusministrile loodava nõukogu koosseisu nimetatavad liikmed 2014. aasta 1. oktoobriks. (3) Ülikooliseaduse alusel moodustatud nõukogu volitused",
+      "estleg:summary": {
+        "@value": "(1) Ülikooliseaduse alusel moodustatud nõukogu volitused lõpevad 2014. aasta 31. detsembril. (2) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu kinnitab Vabariigi Valitsus korraldusega ning nõukogu esimese koosseisu volitused algavad 2015. aasta 1. jaanuaril. Eesti Teaduste Akadeemia ja Tallinna Tehnikaülikool esitavad haridus- ja teadusministrile loodava nõukogu koosseisu nimetatavad liikmed 2014. aasta 1. oktoobriks. (3) Ülikooliseaduse alusel moodustatud nõukogu volitused",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Ülikooliseaduse alusel moodustatud nõukogu volitused lõpevad 2014. aasta 31. detsembril. (2) Käesoleva seaduse alusel moodustatava nõukogu esimese koosseisu kinnitab Vabariigi Valitsus korraldusega ning nõukogu esimese koosseisu volitused algavad 2015. aasta 1. jaanuaril. Eesti Teaduste Akadeemia ja Tallinna Tehnikaülikool esitavad haridus- ja teadusministrile loodava nõukogu koosseisu nimetatavad liikmed 2014. aasta 1. oktoobriks. (3) Ülikooliseaduse alusel moodustatud nõukogu volitused lõpevad 2014. aasta 31. detsembril. (4) Käesoleva seaduse alusel moodustatava nõukogu esimene koosseis valitakse hiljemalt 2014. aasta 1. detsembril ning nõukogu esimese koosseisu volitused algavad 2015. aasta 1. jaanuaril. Ülikooliseaduse alusel moodustatud nõukogu võtab 2014. aasta 1. oktoobriks vastu nõukogu esimese koosseisu valimise tingimused ja korra. (5) Käesoleva seaduse jõustumisel ametis oleva rektoriga sõlmitud tööleping ja tema volitused kehtivad töölepingus sätestatud tähtaja saabumiseni või tema enne lepingutähtaja möödumist ametist vabastamiseni ning temaga ei sõlmita käesoleva seaduse § 6 lõikes 2 sätestatud lepingut. (6) Ülikooli põhikiri ja teised õigusaktid viiakse käesoleva seadusega kooskõlla 2015. aasta 1. jaanuariks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -1611,15 +1734,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11.",
+      "rdfs:label": {
+        "@value": "§ 11.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
+      "estleg:summary": "§ 11.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
       },
-      "estleg:summary": "§ 11.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:TTUKS_Par_11_v120062014002"
@@ -1633,12 +1759,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 13. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -1659,12 +1791,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 14. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tallinna Tehnikaülikooli seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TTUKS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2014. aasta 1. septembril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2014. aasta 1. septembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2014. aasta 1. septembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TTUKS_default"
@@ -1686,9 +1824,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2014. aasta 1. septembril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2014. aasta 1. septembril.",
       "estleg:parentProvision": {
         "@id": "estleg:TTUKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/503102025003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:TTUKS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Tallinn University of Technology Act",
+        "@language": "en"
       }
     }
   ]

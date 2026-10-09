@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Eesti äridiplomaatia andmekogu põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Eesti äridiplomaatia andmekogu põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1052838",
       "estleg:preambleText": "Määrus kehtestatakse välissuhtlemisseaduse § 9 lõike 14 punkti 1 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2021-11-05",
+        "@value": "2025-10-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2025-05-19",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2021-11-02",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1052838_6644a165cb"
@@ -85,7 +87,13 @@
         {
           "@id": "http://eurovoc.europa.eu/517"
         }
-      ]
+      ],
+      "dcterms:title": "Eesti äridiplomaatia andmekogu põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1052838_Par_1",
@@ -94,13 +102,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Andmekogu",
+      "rdfs:label": {
+        "@value": "§ 1. Andmekogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu ametlik nimetus on Eesti äridiplomaatia andmekogu (edaspidi andmekogu). Andmekogu ametlik nimetus on Eesti äridiplomaatia andmekogu (edaspidi andmekogu). 2 (2) Andmekogu ingliskeelne nimetus on Estonia’s business diplomacy database. Andmekogu ingliskeelne nimetus on Estonia’s business diplomacy database. 3 (3) Andmekogu peetakse eesti ja inglise keeles. Andmekogu peetakse eesti ja inglise keeles.",
-      "estleg:legalText": "1 (1) Andmekogu ametlik nimetus on Eesti äridiplomaatia andmekogu (edaspidi andmekogu). Andmekogu ametlik nimetus on Eesti äridiplomaatia andmekogu (edaspidi andmekogu). 2 (2) Andmekogu ingliskeelne nimetus on Estonia’s business diplomacy database. Andmekogu ingliskeelne nimetus on Estonia’s business diplomacy database. 3 (3) Andmekogu peetakse eesti ja inglise keeles. Andmekogu peetakse eesti ja inglise keeles.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu ametlik nimetus on Eesti äridiplomaatia andmekogu (edaspidi andmekogu). 2 (2) Andmekogu ingliskeelne nimetus on Estonia’s business diplomacy database. 3 (3) Andmekogu peetakse eesti ja inglise keeles.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu ametlik nimetus on Eesti äridiplomaatia andmekogu (edaspidi andmekogu). 2 (2) Andmekogu ingliskeelne nimetus on Estonia’s business diplomacy database. 3 (3) Andmekogu peetakse eesti ja inglise keeles.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1037590_Par_1"
@@ -119,7 +133,57 @@
         {
           "@id": "estleg:Reg_1052838_Par_1_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_1_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu ametlik nimetus on Eesti äridiplomaatia andmekogu (edaspidi andmekogu).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu ingliskeelne nimetus on Estonia’s business diplomacy database.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu peetakse eesti ja inglise keeles.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:Reg_1052838_Par_2",
@@ -128,13 +192,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Andmekogu pidamise eesmärk",
+      "rdfs:label": {
+        "@value": "§ 2. Andmekogu pidamise eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "Andmekogu eesmärk on pidada arvestust Eesti välisesinduste tegevuste kohta Eesti ärihuvide esindamisel ja edendamisel välisturgudel ning talletada elektrooniliselt asjaomaste ettevõtete kontaktandmed ja informatsioon, et anda edasi teadmus teenistujate vahel ja teha järeldusi inimvara ja tulevaste investeeringute tõhusamaks planeerimiseks.",
-      "estleg:legalText": "Andmekogu eesmärk on pidada arvestust Eesti välisesinduste tegevuste kohta Eesti ärihuvide esindamisel ja edendamisel välisturgudel ning talletada elektrooniliselt asjaomaste ettevõtete kontaktandmed ja informatsioon, et anda edasi teadmus teenistujate vahel ja teha järeldusi inimvara ja tulevaste investeeringute tõhusamaks planeerimiseks. Andmekogu eesmärk on pidada arvestust Eesti välisesinduste tegevuste kohta Eesti ärihuvide esindamisel ja edendamisel välisturgudel ning talletada elektrooniliselt asjaomaste ettevõtete kontaktandmed ja informatsioon, et anda edasi teadmus teenistujate vahel ja teha järeldusi inimvara ja tulevaste investeeringute tõhusamaks planeerimiseks.",
+      "estleg:summary": {
+        "@value": "Andmekogu eesmärk on pidada arvestust Eesti välisesinduste tegevuste kohta Eesti ärihuvide esindamisel ja edendamisel välisturgudel ning talletada elektrooniliselt asjaomaste ettevõtete kontaktandmed ja informatsioon, et anda edasi teadmus teenistujate vahel ja teha järeldusi inimvara ja tulevaste investeeringute tõhusamaks planeerimiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu eesmärk on pidada arvestust Eesti välisesinduste tegevuste kohta Eesti ärihuvide esindamisel ja edendamisel välisturgudel ning talletada elektrooniliselt asjaomaste ettevõtete kontaktandmed ja informatsioon, et anda edasi teadmus teenistujate vahel ja teha järeldusi inimvara ja tulevaste investeeringute tõhusamaks planeerimiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -156,7 +226,25 @@
         {
           "@id": "estleg:Reg_1052838_Par_2_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu eesmärk on pidada arvestust Eesti välisesinduste tegevuste kohta Eesti ärihuvide esindamisel ja edendamisel välisturgudel ning talletada elektrooniliselt asjaomaste ettevõtete kontaktandmed ja informatsioon, et anda edasi teadmus teenistujate vahel ja teha järeldusi inimvara ja tulevaste investeeringute tõhusamaks planeerimiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1052838_Par_3",
@@ -165,13 +253,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Andmekogu vastutav töötleja",
+      "rdfs:label": {
+        "@value": "§ 3. Andmekogu vastutav töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "Andmekogu vastutav töötleja on Välisministeerium.",
-      "estleg:legalText": "Andmekogu vastutav töötleja on Välisministeerium. Andmekogu vastutav töötleja on Välisministeerium.",
+      "estleg:summary": {
+        "@value": "Andmekogu vastutav töötleja on Välisministeerium.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu vastutav töötleja on Välisministeerium.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -207,7 +301,25 @@
         {
           "@id": "estleg:Institution_valisministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu vastutav töötleja on Välisministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1052838_Par_4",
@@ -216,13 +328,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Andmekogu pidamine",
+      "rdfs:label": {
+        "@value": "§ 4. Andmekogu pidamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "Andmekogu peetakse digitaalselt infotehnoloogilise andmekoguna.",
-      "estleg:legalText": "Andmekogu peetakse digitaalselt infotehnoloogilise andmekoguna. Andmekogu peetakse digitaalselt infotehnoloogilise andmekoguna.",
+      "estleg:summary": {
+        "@value": "Andmekogu peetakse digitaalselt infotehnoloogilise andmekoguna.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu peetakse digitaalselt infotehnoloogilise andmekoguna.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1034930_Par_6"
@@ -244,7 +362,25 @@
         {
           "@id": "estleg:Reg_1052838_Par_4_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu peetakse digitaalselt infotehnoloogilise andmekoguna.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1052838_Par_5",
@@ -253,18 +389,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Andmekogu andmed",
+      "rdfs:label": {
+        "@value": "§ 5. Andmekogu andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "Andmekogusse kannete tegemise aluseks on ütluspõhised andmed, mida vajaduse korral täpsustatakse äriregistrist saadud andmetega.",
-      "estleg:legalText": "Andmekogusse kannete tegemise aluseks on ütluspõhised andmed, mida vajaduse korral täpsustatakse äriregistrist saadud andmetega. Andmekogusse kannete tegemise aluseks on ütluspõhised andmed, mida vajaduse korral täpsustatakse äriregistrist saadud andmetega.",
+      "estleg:summary": {
+        "@value": "Andmekogusse kannete tegemise aluseks on ütluspõhised andmed, mida vajaduse korral täpsustatakse äriregistrist saadud andmetega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogusse kannete tegemise aluseks on ütluspõhised andmed, mida vajaduse korral täpsustatakse äriregistrist saadud andmetega.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1052838_Par_5_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kannete tegemise aluseks on ütluspõhised andmed, mida vajaduse korral täpsustatakse äriregistrist saadud andmetega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_1052838_Par_6",
@@ -273,13 +433,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Andmekogusse kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 6. Andmekogusse kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse kantakse iga tegevuse kohta järgmised olemasolevad andmed: 1 1) koostööprojekti andmed (nimi, staatus, tüüp, sihtriigid, tegevusvaldkond, seotud organisatsioonid ja kontaktisikud, tegevused, tulemus (lepingu rahaline maht ja kestus), lõpetamise põhjus); 2 2) ettevõtte või organisatsiooni üldandmed (nimi, riik, telefoninumber, e-posti aadress); 3 3) ettevõtte või organisatsiooni kontaktisiku üldandmed (nimi, riik, telefoninumber, e-posti aadress). Andmekogusse kantakse iga tege",
-      "estleg:legalText": "1 (1) Andmekogusse kantakse iga tegevuse kohta järgmised olemasolevad andmed: 1 1) koostööprojekti andmed (nimi, staatus, tüüp, sihtriigid, tegevusvaldkond, seotud organisatsioonid ja kontaktisikud, tegevused, tulemus (lepingu rahaline maht ja kestus), lõpetamise põhjus); 2 2) ettevõtte või organisatsiooni üldandmed (nimi, riik, telefoninumber, e-posti aadress); 3 3) ettevõtte või organisatsiooni kontaktisiku üldandmed (nimi, riik, telefoninumber, e-posti aadress). Andmekogusse kantakse iga tegevuse kohta järgmised olemasolevad andmed: koostööprojekti andmed (nimi, staatus, tüüp, sihtriigid, tegevusvaldkond, seotud organisatsioonid ja kontaktisikud, tegevused, tulemus (lepingu rahaline maht ja kestus), lõpetamise põhjus); ettevõtte või organisatsiooni üldandmed (nimi, riik, telefoninumber, e-posti aadress); ettevõtte või organisatsiooni kontaktisiku üldandmed (nimi, riik, telefoninumber, e-posti aadress). 2 (2) Andmekogu kasutaja kohta hoitakse andmekogus järgmisi andmeid: 1 1) nimi; 2 2) kontaktandmed. Andmekogu kasutaja kohta hoitakse andmekogus järgmisi andmeid: nimi; kontaktandmed.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse kantakse iga tegevuse kohta järgmised olemasolevad andmed: 1 1) koostööprojekti andmed (nimi, staatus, tüüp, sihtriigid, tegevusvaldkond, seotud organisatsioonid ja kontaktisikud, tegevused, tulemus (lepingu rahaline maht ja kestus), lõpetamise põhjus); 2 2) ettevõtte või organisatsiooni üldandmed (nimi, riik, telefoninumber, e-posti aadress); 3 3) ettevõtte või organisatsiooni kontaktisiku üldandmed (nimi, riik, telefoninumber, e-posti aadress).",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse kantakse iga tegevuse kohta järgmised olemasolevad andmed: 1 1) koostööprojekti andmed (nimi, staatus, tüüp, sihtriigid, tegevusvaldkond, seotud organisatsioonid ja kontaktisikud, tegevused, tulemus (lepingu rahaline maht ja kestus), lõpetamise põhjus); 2 2) ettevõtte või organisatsiooni üldandmed (nimi, riik, telefoninumber, e-posti aadress); 3 3) ettevõtte või organisatsiooni kontaktisiku üldandmed (nimi, riik, telefoninumber, e-posti aadress). 2 (2) Andmekogu kasutaja kohta hoitakse andmekogus järgmisi andmeid: 1 1) nimi; 2 2) kontaktandmed.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -293,6 +459,49 @@
         {
           "@id": "estleg:Reg_1052838_Par_6_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_6_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantakse iga tegevuse kohta järgmised olemasolevad andmed: 1) koostööprojekti andmed (nimi, staatus, tüüp, sihtriigid, tegevusvaldkond, seotud organisatsioonid ja kontaktisikud, tegevused, tulemus (lepingu rahaline maht ja kestus), lõpetamise põhjus); 2) ettevõtte või organisatsiooni üldandmed (nimi, riik, telefoninumber, e-posti aadress); 3) ettevõtte või organisatsiooni kontaktisiku üldandmed (nimi, riik, telefoninumber, e-posti aadress).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu kasutaja kohta hoitakse andmekogus järgmisi andmeid: 1) nimi; 2) kontaktandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -302,13 +511,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Andmete andmekogusse kandmine",
+      "rdfs:label": {
+        "@value": "§ 7. Andmete andmekogusse kandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Määruse § 6 lõikes 1 nimetatud andmed kannab andmekogusse vastutav töötleja. Määruse § 6 lõikes 1 nimetatud andmed kannab andmekogusse vastutav töötleja. 2 (2) Andmekogu vastutaval töötlejal on lubatud seadusega või seaduse alusel antud õigusaktiga talle pandud ülesannete täitmiseks esitada päringuid äriregistrisse ja saada sealt andmeid. Andmekogu vastutaval töötlejal on lubatud seadusega või seaduse alusel antud õigusaktiga talle pandud ülesannete täitmiseks esitada päringuid äriregistri",
-      "estleg:legalText": "1 (1) Määruse § 6 lõikes 1 nimetatud andmed kannab andmekogusse vastutav töötleja. Määruse § 6 lõikes 1 nimetatud andmed kannab andmekogusse vastutav töötleja. 2 (2) Andmekogu vastutaval töötlejal on lubatud seadusega või seaduse alusel antud õigusaktiga talle pandud ülesannete täitmiseks esitada päringuid äriregistrisse ja saada sealt andmeid. Andmekogu vastutaval töötlejal on lubatud seadusega või seaduse alusel antud õigusaktiga talle pandud ülesannete täitmiseks esitada päringuid äriregistrisse ja saada sealt andmeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Määruse § 6 lõikes 1 nimetatud andmed kannab andmekogusse vastutav töötleja. 2 (2) Andmekogu vastutaval töötlejal on lubatud seadusega või seaduse alusel antud õigusaktiga talle pandud ülesannete täitmiseks esitada päringuid äriregistrisse ja saada sealt andmeid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määruse § 6 lõikes 1 nimetatud andmed kannab andmekogusse vastutav töötleja. 2 (2) Andmekogu vastutaval töötlejal on lubatud seadusega või seaduse alusel antud õigusaktiga talle pandud ülesannete täitmiseks esitada päringuid äriregistrisse ja saada sealt andmeid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -342,7 +557,41 @@
         {
           "@id": "estleg:Reg_1052838_Par_7_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_7_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse § 6 lõikes 1 nimetatud andmed kannab andmekogusse vastutav töötleja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu vastutaval töötlejal on lubatud seadusega või seaduse alusel antud õigusaktiga talle pandud ülesannete täitmiseks esitada päringuid äriregistrisse ja saada sealt andmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:Reg_1052838_Par_8",
@@ -351,13 +600,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Andmete õigsus",
+      "rdfs:label": {
+        "@value": "§ 8. Andmete õigsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Määruse § 6 lõikes 1 nimetatud andmete õigsuse eest vastutab vastutav töötleja oma pädevuse piires. Määruse § 6 lõikes 1 nimetatud andmete õigsuse eest vastutab vastutav töötleja oma pädevuse piires. 2 (2) Kui vastutav töötleja avastab andmekogus ebaõiged andmed või kui talle on nendest teada antud, korraldab ta andmete parandamise. Kui vastutav töötleja avastab andmekogus ebaõiged andmed või kui talle on nendest teada antud, korraldab ta andmete parandamise.",
-      "estleg:legalText": "1 (1) Määruse § 6 lõikes 1 nimetatud andmete õigsuse eest vastutab vastutav töötleja oma pädevuse piires. Määruse § 6 lõikes 1 nimetatud andmete õigsuse eest vastutab vastutav töötleja oma pädevuse piires. 2 (2) Kui vastutav töötleja avastab andmekogus ebaõiged andmed või kui talle on nendest teada antud, korraldab ta andmete parandamise. Kui vastutav töötleja avastab andmekogus ebaõiged andmed või kui talle on nendest teada antud, korraldab ta andmete parandamise.",
+      "estleg:summary": {
+        "@value": "1 (1) Määruse § 6 lõikes 1 nimetatud andmete õigsuse eest vastutab vastutav töötleja oma pädevuse piires. 2 (2) Kui vastutav töötleja avastab andmekogus ebaõiged andmed või kui talle on nendest teada antud, korraldab ta andmete parandamise.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määruse § 6 lõikes 1 nimetatud andmete õigsuse eest vastutab vastutav töötleja oma pädevuse piires. 2 (2) Kui vastutav töötleja avastab andmekogus ebaõiged andmed või kui talle on nendest teada antud, korraldab ta andmete parandamise.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -379,7 +634,41 @@
         {
           "@id": "estleg:Reg_1052838_Par_8_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_8_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse § 6 lõikes 1 nimetatud andmete õigsuse eest vastutab vastutav töötleja oma pädevuse piires.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui vastutav töötleja avastab andmekogus ebaõiged andmed või kui talle on nendest teada antud, korraldab ta andmete parandamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_1052838_Par_9",
@@ -388,13 +677,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Andmete logimine",
+      "rdfs:label": {
+        "@value": "§ 9. Andmete logimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Andmekogus logitakse andmete vaatamine, lisamine, muutmine ja kustutamine. Andmekogus logitakse andmete vaatamine, lisamine, muutmine ja kustutamine. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud logisid säilitatakse andmekogus üks aasta. Käesoleva paragrahvi lõikes 1 nimetatud logisid säilitatakse andmekogus üks aasta.",
-      "estleg:legalText": "1 (1) Andmekogus logitakse andmete vaatamine, lisamine, muutmine ja kustutamine. Andmekogus logitakse andmete vaatamine, lisamine, muutmine ja kustutamine. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud logisid säilitatakse andmekogus üks aasta. Käesoleva paragrahvi lõikes 1 nimetatud logisid säilitatakse andmekogus üks aasta.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogus logitakse andmete vaatamine, lisamine, muutmine ja kustutamine. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud logisid säilitatakse andmekogus üks aasta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogus logitakse andmete vaatamine, lisamine, muutmine ja kustutamine. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud logisid säilitatakse andmekogus üks aasta.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1029314_Par_21"
@@ -416,7 +711,41 @@
         {
           "@id": "estleg:Reg_1052838_Par_9_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogus logitakse andmete vaatamine, lisamine, muutmine ja kustutamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud logisid säilitatakse andmekogus üks aasta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_1052838_Par_10",
@@ -425,13 +754,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Juurdepääs andmekogusse kantud andmetele",
+      "rdfs:label": {
+        "@value": "§ 10. Juurdepääs andmekogusse kantud andmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Juurdepääs andmekogusse kantud andmetele on vastutava töötleja teenistujatel neile teenistuskohustuste täitmiseks määratud ulatuses. Juurdepääs andmekogusse kantud andmetele on vastutava töötleja teenistujatel neile teenistuskohustuste täitmiseks määratud ulatuses. 2 (2) Andmekogule juurdepääsu õigus on andmekogu arendaval või hooldaval isikul arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel. Andmekogule juurdepääsu õigus on andmekogu arendaval või hooldaval isikul arendus- ",
-      "estleg:legalText": "1 (1) Juurdepääs andmekogusse kantud andmetele on vastutava töötleja teenistujatel neile teenistuskohustuste täitmiseks määratud ulatuses. Juurdepääs andmekogusse kantud andmetele on vastutava töötleja teenistujatel neile teenistuskohustuste täitmiseks määratud ulatuses. 2 (2) Andmekogule juurdepääsu õigus on andmekogu arendaval või hooldaval isikul arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel. Andmekogule juurdepääsu õigus on andmekogu arendaval või hooldaval isikul arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel.",
+      "estleg:summary": {
+        "@value": "1 (1) Juurdepääs andmekogusse kantud andmetele on vastutava töötleja teenistujatel neile teenistuskohustuste täitmiseks määratud ulatuses. 2 (2) Andmekogule juurdepääsu õigus on andmekogu arendaval või hooldaval isikul arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Juurdepääs andmekogusse kantud andmetele on vastutava töötleja teenistujatel neile teenistuskohustuste täitmiseks määratud ulatuses. 2 (2) Andmekogule juurdepääsu õigus on andmekogu arendaval või hooldaval isikul arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -468,7 +803,41 @@
         {
           "@id": "estleg:Reg_1052838_Par_10_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_10_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juurdepääs andmekogusse kantud andmetele on vastutava töötleja teenistujatel neile teenistuskohustuste täitmiseks määratud ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogule juurdepääsu õigus on andmekogu arendaval või hooldaval isikul arendus- või hoolduslepingus sätestatud ulatuses ja tingimustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:Reg_1052838_Par_11",
@@ -477,13 +846,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Andmekogusse kantud andmete töötlemine",
+      "rdfs:label": {
+        "@value": "§ 11. Andmekogusse kantud andmete töötlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "Andmekogu vastutav töötleja tagab andmekogusse kantud andmete töötlemise Euroopa Parlamendi ja nõukogu määruse (EL) 2016/679, 27. aprill 2016, füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus), avaliku teabe seaduse ja isikuandmete kaitse seaduse kohaselt.",
-      "estleg:legalText": "Andmekogu vastutav töötleja tagab andmekogusse kantud andmete töötlemise Euroopa Parlamendi ja nõukogu määruse (EL) 2016/679, 27. aprill 2016, füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus), avaliku teabe seaduse ja isikuandmete kaitse seaduse kohaselt. Andmekogu vastutav töötleja tagab andmekogusse kantud andmete töötlemise Euroopa Parlamendi ja nõukogu määruse (EL) 2016/679, 27. aprill 2016, füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus), avaliku teabe seaduse ja isikuandmete kaitse seaduse kohaselt.",
+      "estleg:summary": {
+        "@value": "Andmekogu vastutav töötleja tagab andmekogusse kantud andmete töötlemise Euroopa Parlamendi ja nõukogu määruse (EL) 2016/679, 27. aprill 2016, füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus), avaliku teabe seaduse ja isikuandmete kaitse seaduse kohaselt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu vastutav töötleja tagab andmekogusse kantud andmete töötlemise Euroopa Parlamendi ja nõukogu määruse (EL) 2016/679, 27. aprill 2016, füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus), avaliku teabe seaduse ja isikuandmete kaitse seaduse kohaselt.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -517,7 +892,25 @@
         {
           "@id": "estleg:Reg_1052838_Par_11_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_11_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu vastutav töötleja tagab andmekogusse kantud andmete töötlemise Euroopa Parlamendi ja nõukogu määruse (EL) 2016/679, 27. aprill 2016, füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus), avaliku teabe seaduse ja isikuandmete kaitse seaduse kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
     },
     {
       "@id": "estleg:Reg_1052838_Par_12",
@@ -526,18 +919,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Andmekogusse kantud andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 12. Andmekogusse kantud andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Projektidega seotud kontaktisikute andmeid säilitatakse viis aastat pärast projekti lõppemist, seejärel andmed umbisikustatakse. Projektidega seotud kontaktisikute andmeid säilitatakse viis aastat pärast projekti lõppemist, seejärel andmed umbisikustatakse. 2 (2) Projektide andmeid säilitakse kümme aastat pärast projekti lõppemist, seejärel andmed hävitatakse. Projektide andmeid säilitakse kümme aastat pärast projekti lõppemist, seejärel andmed hävitatakse.",
-      "estleg:legalText": "1 (1) Projektidega seotud kontaktisikute andmeid säilitatakse viis aastat pärast projekti lõppemist, seejärel andmed umbisikustatakse. Projektidega seotud kontaktisikute andmeid säilitatakse viis aastat pärast projekti lõppemist, seejärel andmed umbisikustatakse. 2 (2) Projektide andmeid säilitakse kümme aastat pärast projekti lõppemist, seejärel andmed hävitatakse. Projektide andmeid säilitakse kümme aastat pärast projekti lõppemist, seejärel andmed hävitatakse.",
+      "estleg:summary": {
+        "@value": "1 (1) Projektidega seotud kontaktisikute andmeid säilitatakse viis aastat pärast projekti lõppemist, seejärel andmed umbisikustatakse. 2 (2) Projektide andmeid säilitakse kümme aastat pärast projekti lõppemist, seejärel andmed hävitatakse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Projektidega seotud kontaktisikute andmeid säilitatakse viis aastat pärast projekti lõppemist, seejärel andmed umbisikustatakse. 2 (2) Projektide andmeid säilitakse kümme aastat pärast projekti lõppemist, seejärel andmed hävitatakse.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1052838_Par_12_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_12_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Projektidega seotud kontaktisikute andmeid säilitatakse viis aastat pärast projekti lõppemist, seejärel andmed umbisikustatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Projektide andmeid säilitakse kümme aastat pärast projekti lõppemist, seejärel andmed hävitatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
     },
     {
       "@id": "estleg:Reg_1052838_Par_13",
@@ -546,13 +979,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Andmete turvalisus",
+      "rdfs:label": {
+        "@value": "§ 13. Andmete turvalisus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "Andmekogu turvaklass on K1T2S1 ning andmekogu turbeaste on keskmine (M).",
-      "estleg:legalText": "Andmekogu turvaklass on K1T2S1 ning andmekogu turbeaste on keskmine (M). Andmekogu turvaklass on K1T2S1 ning andmekogu turbeaste on keskmine (M).",
+      "estleg:summary": {
+        "@value": "Andmekogu turvaklass on K1T2S1 ning andmekogu turbeaste on keskmine (M).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu turvaklass on K1T2S1 ning andmekogu turbeaste on keskmine (M).",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1003072_Par_12"
@@ -574,7 +1013,25 @@
         {
           "@id": "estleg:Reg_1052838_Par_13_v1052838"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_13_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu turvaklass on K1T2S1 ning andmekogu turbeaste on keskmine (M).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:Reg_1052838_Par_14",
@@ -583,13 +1040,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Järelevalve",
+      "rdfs:label": {
+        "@value": "§ 14. Järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti äridiplomaatia andmekogu põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1052838_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu pidamise seaduslikkuse järele valvavad Riigi Infosüsteemi Amet, Andmekaitse Inspektsioon ja vastutava töötleja teenistujad oma pädevuse piires. Andmekogu pidamise seaduslikkuse järele valvavad Riigi Infosüsteemi Amet, Andmekaitse Inspektsioon ja vastutava töötleja teenistujad oma pädevuse piires. 2 (2) Andmekogu pidamise järele valvama volitatud isikul on õigus tutvuda andmekogusse kantud andmete ja nende alusdokumentidega, siseneda ruumidesse, kus andmeid töödeldakse või kus pai",
-      "estleg:legalText": "1 (1) Andmekogu pidamise seaduslikkuse järele valvavad Riigi Infosüsteemi Amet, Andmekaitse Inspektsioon ja vastutava töötleja teenistujad oma pädevuse piires. Andmekogu pidamise seaduslikkuse järele valvavad Riigi Infosüsteemi Amet, Andmekaitse Inspektsioon ja vastutava töötleja teenistujad oma pädevuse piires. 2 (2) Andmekogu pidamise järele valvama volitatud isikul on õigus tutvuda andmekogusse kantud andmete ja nende alusdokumentidega, siseneda ruumidesse, kus andmeid töödeldakse või kus paiknevad töötlemiseks kasutatavad seadmed, ning saada vastutavalt töötlejalt teavet andmete väljastamise ja kasutamise kohta. Andmekogu pidamise järele valvama volitatud isikul on õigus tutvuda andmekogusse kantud andmete ja nende alusdokumentidega, siseneda ruumidesse, kus andmeid töödeldakse või kus paiknevad töötlemiseks kasutatavad seadmed, ning saada vastutavalt töötlejalt teavet andmete väljastamise ja kasutamise kohta. 3 (3) Andmekogu pidamisel tekkinud puuduste ilmnemisel on vastutav töötleja kohustatud kõrvaldama järelevalvet teinud isikute ettekirjutustes kajastatud põhjendatud puudused. Andmekogu pidamisel tekkinud puuduste ilmnemisel on vastutav töötleja kohustatud kõrvaldama järelevalvet teinud isikute ettekirjutustes kajastatud põhjendatud puudused.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu pidamise seaduslikkuse järele valvavad Riigi Infosüsteemi Amet, Andmekaitse Inspektsioon ja vastutava töötleja teenistujad oma pädevuse piires. 2 (2) Andmekogu pidamise järele valvama volitatud isikul on õigus tutvuda andmekogusse kantud andmete ja nende alusdokumentidega, siseneda ruumidesse, kus andmeid töödeldakse või kus paiknevad töötlemiseks kasutatavad seadmed, ning saada vastutavalt töötlejalt teavet andmete väljastamise ja kasutamise kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu pidamise seaduslikkuse järele valvavad Riigi Infosüsteemi Amet, Andmekaitse Inspektsioon ja vastutava töötleja teenistujad oma pädevuse piires. 2 (2) Andmekogu pidamise järele valvama volitatud isikul on õigus tutvuda andmekogusse kantud andmete ja nende alusdokumentidega, siseneda ruumidesse, kus andmeid töödeldakse või kus paiknevad töötlemiseks kasutatavad seadmed, ning saada vastutavalt töötlejalt teavet andmete väljastamise ja kasutamise kohta. 3 (3) Andmekogu pidamisel tekkinud puuduste ilmnemisel on vastutav töötleja kohustatud kõrvaldama järelevalvet teinud isikute ettekirjutustes kajastatud põhjendatud puudused.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -631,6 +1094,17 @@
         {
           "@id": "estleg:Institution_andmekaitseinspektsioon"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1052838_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1052838_Par_14_Lg_3"
+        }
       ]
     },
     {
@@ -644,6 +1118,45 @@
       },
       "estleg:citationDetail": "lg 14 p 1",
       "estleg:citationText": "Määrus kehtestatakse välissuhtlemisseaduse § 9 lõike 14 punkti 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu pidamise seaduslikkuse järele valvavad Riigi Infosüsteemi Amet, Andmekaitse Inspektsioon ja vastutava töötleja teenistujad oma pädevuse piires.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu pidamise järele valvama volitatud isikul on õigus tutvuda andmekogusse kantud andmete ja nende alusdokumentidega, siseneda ruumidesse, kus andmeid töödeldakse või kus paiknevad töötlemiseks kasutatavad seadmed, ning saada vastutavalt töötlejalt teavet andmete väljastamise ja kasutamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1052838_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu pidamisel tekkinud puuduste ilmnemisel on vastutav töötleja kohustatud kõrvaldama järelevalvet teinud isikute ettekirjutustes kajastatud põhjendatud puudused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1052838_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
     }
   ]
 }

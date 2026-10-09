@@ -82,7 +82,10 @@ def test_generate_law_root_has_source_not_xml_sameas() -> None:
         kehtiv="2026-05-24",
     )
     act = doc["@graph"][0]
-    assert act["dcterms:source"]["@id"].endswith(".xml")
+    # #707: dcterms:source is the human RT page; the XML is its own
+    # manifestation link (estleg:sourceXml), never an owl:sameAs.
+    assert act["dcterms:source"]["@id"] == "https://www.riigiteataja.ee/akt/128012026007"
+    assert act["estleg:sourceXml"]["@id"].endswith("/akt/128012026007/xml")
     assert all(not iri.endswith(".xml") for iri in jsonld_id_values(act.get("owl:sameAs")))
 
 
@@ -138,8 +141,9 @@ def test_aos_parts_do_not_share_xml_sameas() -> None:
             for iri in jsonld_id_values(node.get("owl:sameAs")):
                 if iri.endswith(".xml"):
                     leftovers.append(f"{path.name}:{node.get('@id')}:{iri}")
-            source = jsonld_id_values(node.get("dcterms:source"))
-            assert any(item.endswith(".xml") for item in source), path.name
+            # #707: dcterms:source is the RT page, estleg:sourceXml the XML.
+            source = jsonld_id_values(node.get("estleg:sourceXml"))
+            assert any(item.endswith("/xml") for item in source), path.name
     assert leftovers == []
 
 
@@ -153,7 +157,7 @@ def test_ps_keeps_wikidata_sameas_not_rt_xml() -> None:
     sameas = jsonld_id_values(node.get("owl:sameAs"))
     assert WIKIDATA in sameas
     assert all(not iri.endswith(".xml") for iri in sameas)
-    assert any(iri.endswith(".xml") for iri in jsonld_id_values(node.get("dcterms:source")))
+    assert any(iri.endswith("/xml") for iri in jsonld_id_values(node.get("estleg:sourceXml")))
 
 
 def test_committed_domain_individuals_have_no_xml_sameas() -> None:

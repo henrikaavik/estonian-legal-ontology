@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Pukseerimise nõuded (määrus)",
+      "rdfs:label": {
+        "@value": "Pukseerimise nõuded (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Pukseerimise nõuded",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -41,18 +48,13 @@
         }
       ],
       "estleg:entryIntoForce": {
-        "@value": "2003-01-01",
+        "@value": "2022-02-06",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2022-01-27",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2002-12-13",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_155810_36fc506735"
@@ -73,7 +75,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2475"
         }
-      ]
+      ],
+      "dcterms:title": "Pukseerimise nõuded",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_155810_Annex_1",
@@ -81,7 +89,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Pukseerimise põhiarvestuse metoodika",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -90,7 +101,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -100,18 +114,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Rakendusala",
+      "rdfs:label": {
+        "@value": "§ 1. Rakendusala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pukseerimise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155810_Map"
       },
-      "estleg:summary": "Pukseerimise nõuete eesmärk on tagada ohutu pukseerimine merel ja laevatatavatel siseveekogudel (edaspidi pukseerimine).",
-      "estleg:legalText": "Pukseerimise nõuete eesmärk on tagada ohutu pukseerimine merel ja laevatatavatel siseveekogudel (edaspidi pukseerimine). Pukseerimise nõuete eesmärk on tagada ohutu pukseerimine merel ja laevatatavatel siseveekogudel (edaspidi pukseerimine).",
+      "estleg:summary": {
+        "@value": "Pukseerimise nõuete eesmärk on tagada ohutu pukseerimine merel ja laevatatavatel siseveekogudel (edaspidi pukseerimine).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Pukseerimise nõuete eesmärk on tagada ohutu pukseerimine merel ja laevatatavatel siseveekogudel (edaspidi pukseerimine).",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_155810_Par_1_v155810"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155810_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pukseerimise nõuete eesmärk on tagada ohutu pukseerimine merel ja laevatatavatel siseveekogudel (edaspidi pukseerimine).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_155810_Par_2",
@@ -120,13 +158,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Pukseerimise viisid",
+      "rdfs:label": {
+        "@value": "§ 2. Pukseerimise viisid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pukseerimise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155810_Map"
       },
-      "estleg:summary": "1 (1) Pukseerimised jaotatakse: 1 1) kavandatud pukseerimine; 2 2) laevaõnnetusega seotud pukseerimine. Pukseerimised jaotatakse: kavandatud pukseerimine; laevaõnnetusega seotud pukseerimine. 2 (2) Kavandatud pukseerimiseks loetakse laeva või muu ujuvvahendi (objekti) eelneva reisiplaaniga kavandatud pukseerimist. Kavandatud pukseerimiseks loetakse laeva või muu ujuvvahendi (objekti) eelneva reisiplaaniga kavandatud pukseerimist. 3 (3) Laevaõnnetusega seotud pukseerimiseks loetakse laevaõnnetuse",
-      "estleg:legalText": "1 (1) Pukseerimised jaotatakse: 1 1) kavandatud pukseerimine; 2 2) laevaõnnetusega seotud pukseerimine. Pukseerimised jaotatakse: kavandatud pukseerimine; laevaõnnetusega seotud pukseerimine. 2 (2) Kavandatud pukseerimiseks loetakse laeva või muu ujuvvahendi (objekti) eelneva reisiplaaniga kavandatud pukseerimist. Kavandatud pukseerimiseks loetakse laeva või muu ujuvvahendi (objekti) eelneva reisiplaaniga kavandatud pukseerimist. 3 (3) Laevaõnnetusega seotud pukseerimiseks loetakse laevaõnnetuse tagajärjel meresõiduomadusi kaotanud laeva või muu ujuvvahendi kiireloomulist pukseerimist varjusadamasse, ankrupaigale või muusse ohutusse kohta. Laevaõnnetusega seotud pukseerimiseks loetakse laevaõnnetuse tagajärjel meresõiduomadusi kaotanud laeva või muu ujuvvahendi kiireloomulist pukseerimist varjusadamasse, ankrupaigale või muusse ohutusse kohta. 4 (4) Laevaõnnetusega seotud kiireloomulisel pukseerimisel teostab pukseerimise arvestused ja koostab pukseerimise plaani pukseeriva laeva kapten võimaluse korral pukseeritava laeva kapteni osavõtul. Pukseerimise plaan ei vaja eelnevat kooskõlastamist Transpordiametiga. RT I 2022-02-03 1 103022022001 2022-02-06 Laevaõnnetusega seotud kiireloomulisel pukseerimisel teostab pukseerimise arvestused ja koostab pukseerimise plaani pukseeriva laeva kapten võimaluse korral pukseeritava laeva kapteni osavõtul. Pukseerimise plaan ei vaja eelnevat kooskõlastamist Transpordiametiga.",
+      "estleg:summary": {
+        "@value": "1 (1) Pukseerimised jaotatakse: 1 1) kavandatud pukseerimine; 2 2) laevaõnnetusega seotud pukseerimine. 2 (2) Kavandatud pukseerimiseks loetakse laeva või muu ujuvvahendi (objekti) eelneva reisiplaaniga kavandatud pukseerimist. 3 (3) Laevaõnnetusega seotud pukseerimiseks loetakse laevaõnnetuse tagajärjel meresõiduomadusi kaotanud laeva või muu ujuvvahendi kiireloomulist pukseerimist varjusadamasse, ankrupaigale või muusse ohutusse kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pukseerimised jaotatakse: 1 1) kavandatud pukseerimine; 2 2) laevaõnnetusega seotud pukseerimine. 2 (2) Kavandatud pukseerimiseks loetakse laeva või muu ujuvvahendi (objekti) eelneva reisiplaaniga kavandatud pukseerimist. 3 (3) Laevaõnnetusega seotud pukseerimiseks loetakse laevaõnnetuse tagajärjel meresõiduomadusi kaotanud laeva või muu ujuvvahendi kiireloomulist pukseerimist varjusadamasse, ankrupaigale või muusse ohutusse kohta. 4 (4) Laevaõnnetusega seotud kiireloomulisel pukseerimisel teostab pukseerimise arvestused ja koostab pukseerimise plaani pukseeriva laeva kapten võimaluse korral pukseeritava laeva kapteni osavõtul. Pukseerimise plaan ei vaja eelnevat kooskõlastamist Transpordiametiga. RT I 2022-02-03 1 103022022001 2022-02-06",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -145,7 +189,77 @@
         {
           "@id": "estleg:Institution_transpordiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155810_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155810_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155810_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155810_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pukseerimised jaotatakse: 1) kavandatud pukseerimine; 2) laevaõnnetusega seotud pukseerimine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kavandatud pukseerimiseks loetakse laeva või muu ujuvvahendi (objekti) eelneva reisiplaaniga kavandatud pukseerimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Laevaõnnetusega seotud pukseerimiseks loetakse laevaõnnetuse tagajärjel meresõiduomadusi kaotanud laeva või muu ujuvvahendi kiireloomulist pukseerimist varjusadamasse, ankrupaigale või muusse ohutusse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Laevaõnnetusega seotud kiireloomulisel pukseerimisel teostab pukseerimise arvestused ja koostab pukseerimise plaani pukseeriva laeva kapten võimaluse korral pukseeritava laeva kapteni osavõtul. Pukseerimise plaan ei vaja eelnevat kooskõlastamist Transpordiametiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_155810_Par_3",
@@ -154,13 +268,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Vedurlaeva puksiirseadme kasutamise juhend",
+      "rdfs:label": {
+        "@value": "§ 3. Vedurlaeva puksiirseadme kasutamise juhend",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pukseerimise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155810_Map"
       },
-      "estleg:summary": "Vedurlaeval, mis teostab pukseerimisi, peab olema laevaehitaja väljastatud ja Transpordiameti poolt kooskõlastatud puksiirseadme kasutamise juhend (instruktsioon). RT I 2022-02-03 1 103022022001 2022-02-06",
-      "estleg:legalText": "Vedurlaeval, mis teostab pukseerimisi, peab olema laevaehitaja väljastatud ja Transpordiameti poolt kooskõlastatud puksiirseadme kasutamise juhend (instruktsioon). RT I 2022-02-03 1 103022022001 2022-02-06 Vedurlaeval, mis teostab pukseerimisi, peab olema laevaehitaja väljastatud ja Transpordiameti poolt kooskõlastatud puksiirseadme kasutamise juhend (instruktsioon).",
+      "estleg:summary": {
+        "@value": "Vedurlaeval, mis teostab pukseerimisi, peab olema laevaehitaja väljastatud ja Transpordiameti poolt kooskõlastatud puksiirseadme kasutamise juhend (instruktsioon). RT I 2022-02-03 1 103022022001 2022-02-06",
+        "@language": "et"
+      },
+      "estleg:legalText": "Vedurlaeval, mis teostab pukseerimisi, peab olema laevaehitaja väljastatud ja Transpordiameti poolt kooskõlastatud puksiirseadme kasutamise juhend (instruktsioon). RT I 2022-02-03 1 103022022001 2022-02-06",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -182,7 +302,25 @@
         {
           "@id": "estleg:Institution_transpordiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155810_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vedurlaeval, mis teostab pukseerimisi, peab olema laevaehitaja väljastatud ja Transpordiameti poolt kooskõlastatud puksiirseadme kasutamise juhend (instruktsioon).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_155810_Par_4",
@@ -191,13 +329,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Pukseerimise plaan",
+      "rdfs:label": {
+        "@value": "§ 4. Pukseerimise plaan",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pukseerimise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155810_Map"
       },
-      "estleg:summary": "1 (1) Pukseeriva laeva omanik on kohustatud koostama pukseerimise plaani ja selle kooskõlastama Transpordiametiga järgmistel juhtudel: RT I 2022-02-03 1 103022022001 2022-02-06 1 1) pukseerimisel laevaga, mis ei ole vedurlaev; 2 2) pukseerimisel vedurlaevaga väljaspool pukseeritavale laevale või ujuvvahendile kehtestatud sõidupiirkonda; 3 3) pukseerimisel enam kui ühe vedurlaevaga. Pukseeriva laeva omanik on kohustatud koostama pukseerimise plaani ja selle kooskõlastama Transpordiametiga järgmis",
-      "estleg:legalText": "1 (1) Pukseeriva laeva omanik on kohustatud koostama pukseerimise plaani ja selle kooskõlastama Transpordiametiga järgmistel juhtudel: RT I 2022-02-03 1 103022022001 2022-02-06 1 1) pukseerimisel laevaga, mis ei ole vedurlaev; 2 2) pukseerimisel vedurlaevaga väljaspool pukseeritavale laevale või ujuvvahendile kehtestatud sõidupiirkonda; 3 3) pukseerimisel enam kui ühe vedurlaevaga. Pukseeriva laeva omanik on kohustatud koostama pukseerimise plaani ja selle kooskõlastama Transpordiametiga järgmistel juhtudel: pukseerimisel laevaga, mis ei ole vedurlaev; pukseerimisel vedurlaevaga väljaspool pukseeritavale laevale või ujuvvahendile kehtestatud sõidupiirkonda; pukseerimisel enam kui ühe vedurlaevaga. 2 (2) Pukseerimise plaani koostamisel tuleb arvestada: 1 1) rahvusvahelise eeskirja laevade kokkupõrkamise vältimise kohta merel (COLREG 1972) reegli 24 nõudeid; 2 2) laine kõrgust, tuule tugevust ja teisi hüdrometeoroloogilisi tingimusi; 3 3) pukseeritava laeva või ujuvvahendi kere tugevust, püstuvust ja ujuvust; 4 4) võimalike varjumispaikade olemasolu marsruudil; 5 5) vedurlaeva ja pukseeritava laeva varustatust navigatsiooni- ja raadioseadmetega ning päästevahenditega sõltuvalt sõidupiirkonnast; 6 6) keskkonnareostust ohustavaid tingimusi; 7 7) täiendava juhendi vajalikkust, mis arvestaks planeeritud pukseerimise eripära; 8 8) laevapereta pukseeritava laeva või ujuvvahendi veekindluse tagamist; 9 9) soovitust, et pukseeriva laeva, mis ei ole vedurlaev, veeväljasurve oleks 1,5 korda suurem pukseeritava laeva veeväljasurvest (soovitus on seotud pukseerimise efektiivsusega); 10 10) puksiirtrossi kinnitusviisi vastavust heale merepraktikale. Pukseerimise plaani koostamisel tuleb arvestada: rahvusvahelise eeskirja laevade kokkupõrkamise vältimise kohta merel (COLREG 1972) reegli 24 nõudeid; laine kõrgust, tuule tugevust ja teisi hüdrometeoroloogilisi tingimusi; pukseeritava laeva või ujuvvahendi kere tugevust, püstuvust ja ujuvust; võimalike varjumispaikade olemasolu marsruudil; vedurlaeva ja pukseeritava laeva varustatust navigatsiooni- ja raadioseadmetega ning päästevahenditega sõltuvalt sõidupiirkonnast; keskkonnareostust ohustavaid tingimusi; täiendava juhendi vajalikkust, mis arvestaks planeeritud pukseerimise eripära; laevapereta pukseeritava laeva või ujuvvahendi veekindluse tagamist; soovitust, et pukseeriva laeva, mis ei ole vedurlaev, veeväljasurve oleks 1,5 korda suurem pukseeritava laeva veeväljasurvest (soovitus on seotud pukseerimise efektiivsusega); puksiirtrossi kinnitusviisi vastavust heale merepraktikale. 3 (3) Pukseeritava laeva või ujuvvahendi tehniline seisukord peab vastama pukseerimise tingimustele ning sellel peab olema merekõlblikkuse tunnistus (või sõidukõlblikkuse tunnistus) või ühekordne Transpordiameti või volitatud klassifikatsiooniühingu poolt väljastatud pukseerimise luba. RT I 2022-02-03 1 103022022001 2022-02-06 Pukseeritava laeva või ujuvvahendi tehniline seisukord peab vastama pukseerimise tingimustele ning sellel peab olema merekõlblikkuse tunnistus (või sõidukõlblikkuse tunnistus) või ühekordne Transpordiameti või volitatud klassifikatsiooniühingu poolt väljastatud pukseerimise luba. 4 (4) Pukseeritava laeva roolileht ja sõukruvi (olemasolu korral) tuleb fikseerida. Pukseeritava laeva roolileht ja sõukruvi (olemasolu korral) tuleb fikseerida.",
+      "estleg:summary": {
+        "@value": "1 (1) Pukseeriva laeva omanik on kohustatud koostama pukseerimise plaani ja selle kooskõlastama Transpordiametiga järgmistel juhtudel: RT I 2022-02-03 1 103022022001 2022-02-06 1 1) pukseerimisel laevaga, mis ei ole vedurlaev; 2 2) pukseerimisel vedurlaevaga väljaspool pukseeritavale laevale või ujuvvahendile kehtestatud sõidupiirkonda; 3 3) pukseerimisel enam kui ühe vedurlaevaga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Pukseeriva laeva omanik on kohustatud koostama pukseerimise plaani ja selle kooskõlastama Transpordiametiga järgmistel juhtudel: RT I 2022-02-03 1 103022022001 2022-02-06 1 1) pukseerimisel laevaga, mis ei ole vedurlaev; 2 2) pukseerimisel vedurlaevaga väljaspool pukseeritavale laevale või ujuvvahendile kehtestatud sõidupiirkonda; 3 3) pukseerimisel enam kui ühe vedurlaevaga. 2 (2) Pukseerimise plaani koostamisel tuleb arvestada: 1 1) rahvusvahelise eeskirja laevade kokkupõrkamise vältimise kohta merel (COLREG 1972) reegli 24 nõudeid; 2 2) laine kõrgust, tuule tugevust ja teisi hüdrometeoroloogilisi tingimusi; 3 3) pukseeritava laeva või ujuvvahendi kere tugevust, püstuvust ja ujuvust; 4 4) võimalike varjumispaikade olemasolu marsruudil; 5 5) vedurlaeva ja pukseeritava laeva varustatust navigatsiooni- ja raadioseadmetega ning päästevahenditega sõltuvalt sõidupiirkonnast; 6 6) keskkonnareostust ohustavaid tingimusi; 7 7) täiendava juhendi vajalikkust, mis arvestaks planeeritud pukseerimise eripära; 8 8) laevapereta pukseeritava laeva või ujuvvahendi veekindluse tagamist; 9 9) soovitust, et pukseeriva laeva, mis ei ole vedurlaev, veeväljasurve oleks 1,5 korda suurem pukseeritava laeva veeväljasurvest (soovitus on seotud pukseerimise efektiivsusega); 10 10) puksiirtrossi kinnitusviisi vastavust heale merepraktikale. 3 (3) Pukseeritava laeva või ujuvvahendi tehniline seisukord peab vastama pukseerimise tingimustele ning sellel peab olema merekõlblikkuse tunnistus (või sõidukõlblikkuse tunnistus) või ühekordne Transpordiameti või volitatud klassifikatsiooniühingu poolt väljastatud pukseerimise luba. RT I 2022-02-03 1 103022022001 2022-02-06 4 (4) Pukseeritava laeva roolileht ja sõukruvi (olemasolu korral) tuleb fikseerida.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -222,7 +366,90 @@
         {
           "@id": "estleg:Institution_transpordiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155810_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155810_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155810_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155810_Par_4_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pukseeriva laeva omanik on kohustatud koostama pukseerimise plaani ja selle kooskõlastama Transpordiametiga järgmistel juhtudel: 1) pukseerimisel laevaga, mis ei ole vedurlaev; 2) pukseerimisel vedurlaevaga väljaspool pukseeritavale laevale või ujuvvahendile kehtestatud sõidupiirkonda; 3) pukseerimisel enam kui ühe vedurlaevaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Pukseerimise plaani koostamisel tuleb arvestada: 1) rahvusvahelise eeskirja laevade kokkupõrkamise vältimise kohta merel (COLREG 1972) reegli 24 nõudeid; 2) laine kõrgust, tuule tugevust ja teisi hüdrometeoroloogilisi tingimusi; 3) pukseeritava laeva või ujuvvahendi kere tugevust, püstuvust ja ujuvust; 4) võimalike varjumispaikade olemasolu marsruudil; 5) vedurlaeva ja pukseeritava laeva varustatust navigatsiooni- ja raadioseadmetega ning päästevahenditega sõltuvalt sõidupiirkonnast; 6) keskkonnareostust ohustavaid tingimusi; 7) täiendava juhendi vajalikkust, mis arvestaks planeeritud pukseerimise eripära; 8) laevapereta pukseeritava laeva või ujuvvahendi veekindluse tagamist; 9) soovitust, et pukseeriva laeva, mis ei ole vedurlaev, veeväljasurve oleks 1,5 korda suurem pukseeritava laeva veeväljasurvest (soovitus on seotud pukseerimise efektiivsusega); 10) puksiirtrossi kinnitusviisi vastavust heale merepraktikale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Pukseeritava laeva või ujuvvahendi tehniline seisukord peab vastama pukseerimise tingimustele ning sellel peab olema merekõlblikkuse tunnistus (või sõidukõlblikkuse tunnistus) või ühekordne Transpordiameti või volitatud klassifikatsiooniühingu poolt väljastatud pukseerimise luba.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Pukseeritava laeva roolileht ja sõukruvi (olemasolu korral) tuleb fikseerida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
     },
     {
       "@id": "estleg:Reg_155810_Par_5",
@@ -231,13 +458,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Pukseerimise arvestused",
+      "rdfs:label": {
+        "@value": "§ 5. Pukseerimise arvestused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pukseerimise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155810_Map"
       },
-      "estleg:summary": "Kõigi pukseerimiste korral tuleb koostada pukseerimise põhiarvestus vastavalt määruse lisale, et välja arvestada: 1 1) pukseerimise kiirus, mis vaiksel veel peab olema vähemalt 5 sõlme ning seejuures peab peamasina võimsuse varu olema vähemalt 15%; 2 2) puksiirtrossi tugevus ja pikkus, mis peavad vastama pukseerimise tingimustele. Kõigi pukseerimiste korral tuleb koostada pukseerimise põhiarvestus vastavalt määruse lisale, et välja arvestada: pukseerimise kiirus, mis vaiksel veel peab olema vähe",
-      "estleg:legalText": "Kõigi pukseerimiste korral tuleb koostada pukseerimise põhiarvestus vastavalt määruse lisale, et välja arvestada: 1 1) pukseerimise kiirus, mis vaiksel veel peab olema vähemalt 5 sõlme ning seejuures peab peamasina võimsuse varu olema vähemalt 15%; 2 2) puksiirtrossi tugevus ja pikkus, mis peavad vastama pukseerimise tingimustele. Kõigi pukseerimiste korral tuleb koostada pukseerimise põhiarvestus vastavalt määruse lisale, et välja arvestada: pukseerimise kiirus, mis vaiksel veel peab olema vähemalt 5 sõlme ning seejuures peab peamasina võimsuse varu olema vähemalt 15%; puksiirtrossi tugevus ja pikkus, mis peavad vastama pukseerimise tingimustele.",
+      "estleg:summary": {
+        "@value": "Kõigi pukseerimiste korral tuleb koostada pukseerimise põhiarvestus vastavalt määruse lisale, et välja arvestada: 1 1) pukseerimise kiirus, mis vaiksel veel peab olema vähemalt 5 sõlme ning seejuures peab peamasina võimsuse varu olema vähemalt 15%; 2 2) puksiirtrossi tugevus ja pikkus, mis peavad vastama pukseerimise tingimustele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kõigi pukseerimiste korral tuleb koostada pukseerimise põhiarvestus vastavalt määruse lisale, et välja arvestada: 1 1) pukseerimise kiirus, mis vaiksel veel peab olema vähemalt 5 sõlme ning seejuures peab peamasina võimsuse varu olema vähemalt 15%; 2 2) puksiirtrossi tugevus ja pikkus, mis peavad vastama pukseerimise tingimustele.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -249,6 +482,28 @@
         {
           "@id": "estleg:Reg_155810_Par_5_v155810"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155810_Par_5_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kõigi pukseerimiste korral tuleb koostada pukseerimise põhiarvestus vastavalt määruse lisale, et välja arvestada: 1) pukseerimise kiirus, mis vaiksel veel peab olema vähemalt 5 sõlme ning seejuures peab peamasina võimsuse varu olema vähemalt 15%; 2) puksiirtrossi tugevus ja pikkus, mis peavad vastama pukseerimise tingimustele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -258,18 +513,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 6. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Pukseerimise nõuded",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155810_Map"
       },
-      "estleg:summary": "Käesolev määrus jõustub 1. jaanuaril 2003. a.",
-      "estleg:legalText": "Käesolev määrus jõustub 1. jaanuaril 2003. a. Käesolev määrus jõustub 1. jaanuaril 2003. a.",
+      "estleg:summary": {
+        "@value": "Käesolev määrus jõustub 1. jaanuaril 2003. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolev määrus jõustub 1. jaanuaril 2003. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_155810_Par_6_v155810"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155810_Par_6_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155810_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev määrus jõustub 1. jaanuaril 2003. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155810_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
     }
   ]
 }

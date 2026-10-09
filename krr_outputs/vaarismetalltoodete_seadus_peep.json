@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:VMTS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Väärismetalltoodete seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Väärismetalltoodete seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Väärismetalltoodete seadus",
-      "dcterms:title": [
-        {
-          "@value": "Väärismetalltoodete seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Precious Metal Articles Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Väärismetalltoodete seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/130042024014.xml"
+        "@id": "https://www.riigiteataja.ee/akt/130042024014"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/130042024014/xml"
+      },
+      "estleg:globalId": "130042024014",
+      "eli:id_local": "130042024014",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "134909",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "c1cca9c60a45682243cf82c05c03f5124e487cb3c6aee07d7e7ae02b5b25420d",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2004-04-15",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-07-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -45,10 +61,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-07-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/517062025002"
@@ -160,14 +172,40 @@
         {
           "@id": "estleg:Draft_MKM23_0065"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/517062025002"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_VMTS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:VMTS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
     },
     {
       "@id": "estleg:VMTS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Väärismetalltoodete seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Väärismetalltoodete seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_VMTS_1"
@@ -187,26 +225,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_VMTS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–2 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–2 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:VMTS_TopicScheme"
-      },
-      "estleg:provisionCount": 2
-    },
-    {
       "@id": "estleg:Chapter_VMTS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
@@ -226,12 +253,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "VÄÄRISMETALLTOODETE KÄITLEMISE NÕUDED",
-      "skos:prefLabel": "VÄÄRISMETALLTOODETE KÄITLEMISE NÕUDED",
+      "rdfs:label": {
+        "@value": "VÄÄRISMETALLTOODETE KÄITLEMISE NÕUDED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "VÄÄRISMETALLTOODETE KÄITLEMISE NÕUDED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VMTS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 36
     },
     {
       "@id": "estleg:Division_VMTS_2_1",
@@ -239,7 +272,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Üldnõuded",
+      "rdfs:label": {
+        "@value": "1. jagu – Üldnõuded",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_2"
       }
@@ -250,7 +286,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Väärismetalltoote märgised",
+      "rdfs:label": {
+        "@value": "2. jagu – Väärismetalltoote märgised",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_2"
       }
@@ -261,7 +300,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Nimemärgise registreerimine",
+      "rdfs:label": {
+        "@value": "3. jagu – Nimemärgise registreerimine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_2"
       }
@@ -272,7 +314,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "4. jagu – Väärismetalltoodete sissevedu",
+      "rdfs:label": {
+        "@value": "4. jagu – Väärismetalltoodete sissevedu",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_2"
       }
@@ -283,7 +328,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "5. jagu – Väärismetalltoodete jaemüük ja hulgimüük",
+      "rdfs:label": {
+        "@value": "5. jagu – Väärismetalltoodete jaemüük ja hulgimüük",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_2"
       }
@@ -294,7 +342,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "6. jagu – Muud nõuded",
+      "rdfs:label": {
+        "@value": "6. jagu – Muud nõuded",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_2"
       }
@@ -305,7 +356,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – VÄÄRISMETALLTOODETE KÄITLEMISE NÕUDED",
+      "rdfs:label": {
+        "@value": "2. peatükk – VÄÄRISMETALLTOODETE KÄITLEMISE NÕUDED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
@@ -345,8 +399,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§39–41 VÄÄRISMETALLI PROOVI STANDARDPROOVILE VASTAVUSE TÕENDAMINE",
-      "skos:prefLabel": "§39–41 VÄÄRISMETALLI PROOVI STANDARDPROOVILE VASTAVUSE TÕENDAMINE",
+      "rdfs:label": {
+        "@value": "§39–41 VÄÄRISMETALLI PROOVI STANDARDPROOVILE VASTAVUSE TÕENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§39–41 VÄÄRISMETALLI PROOVI STANDARDPROOVILE VASTAVUSE TÕENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VMTS_TopicScheme"
       },
@@ -358,7 +418,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – VÄÄRISMETALLI PROOVI STANDARDPROOVILE VASTAVUSE TÕENDAMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – VÄÄRISMETALLI PROOVI STANDARDPROOVILE VASTAVUSE TÕENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
@@ -378,12 +441,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "RIIKLIK JÄRELEVALVE JA VASTUTUS",
-      "skos:prefLabel": "RIIKLIK JÄRELEVALVE JA VASTUTUS",
+      "rdfs:label": {
+        "@value": "RIIKLIK JÄRELEVALVE JA VASTUTUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "RIIKLIK JÄRELEVALVE JA VASTUTUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VMTS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 12
     },
     {
       "@id": "estleg:Division_VMTS_4_1",
@@ -391,7 +460,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "1. jagu – Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_4"
       }
@@ -402,7 +474,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Vastutus",
+      "rdfs:label": {
+        "@value": "2. jagu – Vastutus",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_4"
       }
@@ -413,7 +488,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – RIIKLIK JÄRELEVALVE JA VASTUTUS",
+      "rdfs:label": {
+        "@value": "4. peatükk – RIIKLIK JÄRELEVALVE JA VASTUTUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
@@ -441,8 +519,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§55–58 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§55–58 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§55–58 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§55–58 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:VMTS_TopicScheme"
       },
@@ -454,7 +538,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "5. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
@@ -474,13 +561,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus sätestab väärismetalltoodete käitlemise ning väärismetalli proovi määramise ja tõendamise nõuded, järelevalve korralduse seaduse täitmise üle ning vastutuse seaduse rikkumise eest. (2) Käesoleva seaduse sätteid ei kohaldata: tootmise, teaduse ja meditsiini vajadusteks kasutatavate väärismetallide, väärismetalli sisaldavate toodete ja väärismetalltoodete suhtes; väärismetalltoodete valmistamiseks kasutatavate materjalide suhtes; väärismetalltoodete ja väärismetalle",
-      "estleg:legalText": "(1) Käesolev seadus sätestab väärismetalltoodete käitlemise ning väärismetalli proovi määramise ja tõendamise nõuded, järelevalve korralduse seaduse täitmise üle ning vastutuse seaduse rikkumise eest. (2) Käesoleva seaduse sätteid ei kohaldata: tootmise, teaduse ja meditsiini vajadusteks kasutatavate väärismetallide, väärismetalli sisaldavate toodete ja väärismetalltoodete suhtes; väärismetalltoodete valmistamiseks kasutatavate materjalide suhtes; väärismetalltoodete ja väärismetalle sisaldavate toodete valmistamisel ja töötlemisel tekkinud väärismetalle sisaldavate jäätmete ning kasutamiskõlbmatuks muutunud väärismetalltoodete suhtes; käibemaksuseaduse tähenduses investeeringukulla suhtes; väärismetallist Eesti ja teiste riikide seaduslike maksevahendite ning antikvaarsete müntide ja medalite suhtes; väärismetallist au- ja teenetemärkide ning spordi- ja kultuuriauhindade suhtes; ajaloolise või kultuuriväärtusega väärismetalltoodete suhtes; väärismetallist muusikainstrumentide ja nende osade suhtes; väärismetalltoodete väljaveol; selliste väärismetalltoodete sisseveol, mida reisija veab sisse isiklikuks kasutamiseks või mis sisalduvad ühelt füüsiliselt isikult teisele füüsilisele isikule juhuti saadetavas postisaadetises, kui nende väärismetalltoodete laadi ja koguse põhjal on ilmne, et need on mõeldud reisija või postisaadetise saaja isiklikuks või perekondlikuks kasutamiseks. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesolevas seaduses sätestatud erisusi. (4) Väärismetalltoodete käitlemise reguleerimisel rahapesu ja terrorismi rahastamise tõkestamise seadusega kohaldatakse käesolevat seadust rahapesu ja terrorismi rahastamise tõkestamise seadusest tulenevate erisustega.",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus sätestab väärismetalltoodete käitlemise ning väärismetalli proovi määramise ja tõendamise nõuded, järelevalve korralduse seaduse täitmise üle ning vastutuse seaduse rikkumise eest. (2) Käesoleva seaduse sätteid ei kohaldata: 1) tootmise, teaduse ja meditsiini vajadusteks kasutatavate väärismetallide, väärismetalli sisaldavate toodete ja väärismetalltoodete suhtes; 2) väärismetalltoodete valmistamiseks kasutatavate materjalide suhtes; 3) väärismetalltoodete ja väärismetalle",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesolev seadus sätestab väärismetalltoodete käitlemise ning väärismetalli proovi määramise ja tõendamise nõuded, järelevalve korralduse seaduse täitmise üle ning vastutuse seaduse rikkumise eest. (2) Käesoleva seaduse sätteid ei kohaldata: 1) tootmise, teaduse ja meditsiini vajadusteks kasutatavate väärismetallide, väärismetalli sisaldavate toodete ja väärismetalltoodete suhtes; 2) väärismetalltoodete valmistamiseks kasutatavate materjalide suhtes; 3) väärismetalltoodete ja väärismetalle sisaldavate toodete valmistamisel ja töötlemisel tekkinud väärismetalle sisaldavate jäätmete ning kasutamiskõlbmatuks muutunud väärismetalltoodete suhtes; 4) käibemaksuseaduse tähenduses investeeringukulla suhtes; 5) väärismetallist Eesti ja teiste riikide seaduslike maksevahendite ning antikvaarsete müntide ja medalite suhtes; 6) väärismetallist au- ja teenetemärkide ning spordi- ja kultuuriauhindade suhtes; 6¹) ajaloolise või kultuuriväärtusega väärismetalltoodete suhtes; 7) väärismetallist muusikainstrumentide ja nende osade suhtes; 8) väärismetalltoodete väljaveol; 9) selliste väärismetalltoodete sisseveol, mida reisija veab sisse isiklikuks kasutamiseks või mis sisalduvad ühelt füüsiliselt isikult teisele füüsilisele isikule juhuti saadetavas postisaadetises, kui nende väärismetalltoodete laadi ja koguse põhjal on ilmne, et need on mõeldud reisija või postisaadetise saaja isiklikuks või perekondlikuks kasutamiseks. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesolevas seaduses sätestatud erisusi. (4) Väärismetalltoodete käitlemise reguleerimisel rahapesu ja terrorismi rahastamise tõkestamise seadusega kohaldatakse käesolevat seadust rahapesu ja terrorismi rahastamise tõkestamise seadusest tulenevate erisustega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_1"
       },
@@ -551,11 +644,23 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Käesoleva seaduse sätteid ei kohaldata: tootmise, teaduse ja meditsiini vajadusteks kasutatavate väärismetallide, väärismetalli sisaldavate toodete ja väärismetalltoodete suhtes; väärismetalltoodete valmistamiseks kasutatavate materjalide suhtes; väärismetalltoodete ja väärismetalle sisaldavate toodete valmistamisel ja töötlemisel tekkinud väärismetalle sisaldavate jäätmete ning kasutamiskõlbmatuks muutunud väärismetalltoodete suhtes; käibemaksuseaduse tähenduses investeeringukulla suhtes; väärismetallist Eesti ja teiste riikide seaduslike maksevahendite ning antikvaarsete müntide ja medalite suhtes; väärismetallist au- ja teenetemärkide ning spordi- ja kultuuriauhindade suhtes; ajaloolise või kultuuriväärtusega väärismetalltoodete suhtes; väärismetallist muusikainstrumentide ja nende osade suhtes; väärismetalltoodete väljaveol; selliste väärismetalltoodete sisseveol, mida reisija veab sisse isiklikuks kasutamiseks või mis sisalduvad ühelt füüsiliselt isikult teisele füüsilisele isikule juhuti saadetavas postisaadetises, kui nende väärismetalltoodete laadi ja koguse põhjal on ilmne, et need on mõeldud reisija või postisaadetise saaja isiklikuks või perekondlikuks kasutamiseks.",
+      "estleg:legalText": "(2) Käesoleva seaduse sätteid ei kohaldata: 1) tootmise, teaduse ja meditsiini vajadusteks kasutatavate väärismetallide, väärismetalli sisaldavate toodete ja väärismetalltoodete suhtes; 2) väärismetalltoodete valmistamiseks kasutatavate materjalide suhtes; 3) väärismetalltoodete ja väärismetalle sisaldavate toodete valmistamisel ja töötlemisel tekkinud väärismetalle sisaldavate jäätmete ning kasutamiskõlbmatuks muutunud väärismetalltoodete suhtes; 4) käibemaksuseaduse tähenduses investeeringukulla suhtes; 5) väärismetallist Eesti ja teiste riikide seaduslike maksevahendite ning antikvaarsete müntide ja medalite suhtes; 6) väärismetallist au- ja teenetemärkide ning spordi- ja kultuuriauhindade suhtes; 6¹) ajaloolise või kultuuriväärtusega väärismetalltoodete suhtes; 7) väärismetallist muusikainstrumentide ja nende osade suhtes; 8) väärismetalltoodete väljaveol; 9) selliste väärismetalltoodete sisseveol, mida reisija veab sisse isiklikuks kasutamiseks või mis sisalduvad ühelt füüsiliselt isikult teisele füüsilisele isikule juhuti saadetavas postisaadetises, kui nende väärismetalltoodete laadi ja koguse põhjal on ilmne, et need on mõeldud reisija või postisaadetise saaja isiklikuks või perekondlikuks kasutamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_1"
       },
       "rdfs:label": "§ 1 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "6¹",
+        "7",
+        "8",
+        "9"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -599,13 +704,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mõisted",
+      "rdfs:label": {
+        "@value": "§ 2. Mõisted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: väärismetall – puhas kuld, hõbe, plaatina ja pallaadium ning nende sulamid; väärismetalli proov – arv, mis näitab, mitu massiosa puhast kulda, hõbedat, plaatinat või pallaadiumi sisaldub vastava väärismetalli sulamis selle tuhande massiosa kohta; väärismetalli standardproov – käesoleva seaduse § 4 lõigetes 2 ja 21 nimetatud väärismetalli proov; väärismetalltoode – ese, mis on tervikuna või osaliselt valmistatud ühest või enamast",
-      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: väärismetall – puhas kuld, hõbe, plaatina ja pallaadium ning nende sulamid; väärismetalli proov – arv, mis näitab, mitu massiosa puhast kulda, hõbedat, plaatinat või pallaadiumi sisaldub vastava väärismetalli sulamis selle tuhande massiosa kohta; väärismetalli standardproov – käesoleva seaduse § 4 lõigetes 2 ja 21 nimetatud väärismetalli proov; väärismetalltoode – ese, mis on tervikuna või osaliselt valmistatud ühest või enamast vähemalt käesoleva seaduse § 4 lõigetes 2 ja 21 lubatud väikseima standardprooviga väärismetallist; käitlemine – väärismetalltoodete valmistamine, sissevedu, müügiks pakkumine ja tasu eest võõrandamine; valmistamine – uute väärismetalltoodete tasu eest võõrandamise eesmärgil valmistamine ning kasutatud väärismetalltoodete parandamine, ümbertegemine ja ennistamine; sissevedu – väärismetalltoodete toimetamine Eestisse eesmärgiga teha need kättesaadavaks kasutusele võtmiseks või levitamiseks; müügiks pakkumine – tegevus, mille käigus väärismetalltoodete valmistaja, sissevedaja, hulgimüüja või jaemüüja pakub väärismetalltooteid tasu eest võõrandamiseks; kehtetu - turule laskmine – tegevus, millega väärismetalltoode tehakse Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis esmakordselt kättesaadavaks kas levitamiseks või kasutusele võtmiseks.",
+      "estleg:summary": {
+        "@value": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1) väärismetall – puhas kuld, hõbe, plaatina ja pallaadium ning nende sulamid; 2) väärismetalli proov – arv, mis näitab, mitu massiosa puhast kulda, hõbedat, plaatinat või pallaadiumi sisaldub vastava väärismetalli sulamis selle tuhande massiosa kohta; 3) väärismetalli standardproov – käesoleva seaduse § 4 lõigetes 2 ja 2¹ nimetatud väärismetalli proov; 4) väärismetalltoode – ese, mis on tervikuna või osaliselt valmistatud ühest või",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1) väärismetall – puhas kuld, hõbe, plaatina ja pallaadium ning nende sulamid; 2) väärismetalli proov – arv, mis näitab, mitu massiosa puhast kulda, hõbedat, plaatinat või pallaadiumi sisaldub vastava väärismetalli sulamis selle tuhande massiosa kohta; 3) väärismetalli standardproov – käesoleva seaduse § 4 lõigetes 2 ja 2¹ nimetatud väärismetalli proov; 4) väärismetalltoode – ese, mis on tervikuna või osaliselt valmistatud ühest või enamast vähemalt käesoleva seaduse § 4 lõigetes 2 ja 2¹ lubatud väikseima standardprooviga väärismetallist; 5) käitlemine – väärismetalltoodete valmistamine, sissevedu, müügiks pakkumine ja tasu eest võõrandamine; 6) valmistamine – uute väärismetalltoodete tasu eest võõrandamise eesmärgil valmistamine ning kasutatud väärismetalltoodete parandamine, ümbertegemine ja ennistamine; 7) sissevedu – väärismetalltoodete toimetamine Eestisse eesmärgiga teha need kättesaadavaks kasutusele võtmiseks või levitamiseks; 8) müügiks pakkumine – tegevus, mille käigus väärismetalltoodete valmistaja, sissevedaja, hulgimüüja või jaemüüja pakub väärismetalltooteid tasu eest võõrandamiseks; 9) 10) turule laskmine – tegevus, millega väärismetalltoode tehakse Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis esmakordselt kättesaadavaks kas levitamiseks või kasutusele võtmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_1"
       },
@@ -649,10 +760,24 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: väärismetall – puhas kuld, hõbe, plaatina ja pallaadium ning nende sulamid; väärismetalli proov – arv, mis näitab, mitu massiosa puhast kulda, hõbedat, plaatinat või pallaadiumi sisaldub vastava väärismetalli sulamis selle tuhande massiosa kohta; väärismetalli standardproov – käesoleva seaduse § 4 lõigetes 2 ja 21 nimetatud väärismetalli proov; väärismetalltoode – ese, mis on tervikuna või osaliselt valmistatud ühest või enamast vähemalt käesoleva seaduse § 4 lõigetes 2 ja 21 lubatud väikseima standardprooviga väärismetallist; käitlemine – väärismetalltoodete valmistamine, sissevedu, müügiks pakkumine ja tasu eest võõrandamine; valmistamine – uute väärismetalltoodete tasu eest võõrandamise eesmärgil valmistamine ning kasutatud väärismetalltoodete parandamine, ümbertegemine ja ennistamine; sissevedu – väärismetalltoodete toimetamine Eestisse eesmärgiga teha need kättesaadavaks kasutusele võtmiseks või levitamiseks; müügiks pakkumine – tegevus, mille käigus väärismetalltoodete valmistaja, sissevedaja, hulgimüüja või jaemüüja pakub väärismetalltooteid tasu eest võõrandamiseks; kehtetu - turule laskmine – tegevus, millega väärismetalltoode tehakse Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis esmakordselt kättesaadavaks kas levitamiseks või kasutusele võtmiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1) väärismetall – puhas kuld, hõbe, plaatina ja pallaadium ning nende sulamid; 2) väärismetalli proov – arv, mis näitab, mitu massiosa puhast kulda, hõbedat, plaatinat või pallaadiumi sisaldub vastava väärismetalli sulamis selle tuhande massiosa kohta; 3) väärismetalli standardproov – käesoleva seaduse § 4 lõigetes 2 ja 2¹ nimetatud väärismetalli proov; 4) väärismetalltoode – ese, mis on tervikuna või osaliselt valmistatud ühest või enamast vähemalt käesoleva seaduse § 4 lõigetes 2 ja 2¹ lubatud väikseima standardprooviga väärismetallist; 5) käitlemine – väärismetalltoodete valmistamine, sissevedu, müügiks pakkumine ja tasu eest võõrandamine; 6) valmistamine – uute väärismetalltoodete tasu eest võõrandamise eesmärgil valmistamine ning kasutatud väärismetalltoodete parandamine, ümbertegemine ja ennistamine; 7) sissevedu – väärismetalltoodete toimetamine Eestisse eesmärgiga teha need kättesaadavaks kasutusele võtmiseks või levitamiseks; 8) müügiks pakkumine – tegevus, mille käigus väärismetalltoodete valmistaja, sissevedaja, hulgimüüja või jaemüüja pakub väärismetalltooteid tasu eest võõrandamiseks; 9) 10) turule laskmine – tegevus, millega väärismetalltoode tehakse Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis esmakordselt kättesaadavaks kas levitamiseks või kasutusele võtmiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VMTS_Par_4"
@@ -666,13 +791,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Teatamiskohustus",
+      "rdfs:label": {
+        "@value": "§ 3. Teatamiskohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 3. Teatamiskohustus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_1"
       },
@@ -698,13 +831,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Nõuded väärismetalltootele",
+      "rdfs:label": {
+        "@value": "§ 4. Nõuded väärismetalltootele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Toodet võib väärismetalltootena müügiks pakkuda või tasu eest võõrandada, kui see vastab käesoleva seaduse nõuetele ja on märgistatud käesolevas seaduses ettenähtud kohustuslike märgistega. (2) Väärismetalli standardproovid on: kuldtootel 375, 500, 585, 750, 916 või 999; hõbetootel 800, 830, 925 või 999; plaatinatootel 850, 950 või 999; pallaadiumtootel 500, 950 või 999. (2¹) Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis valmistatud tooted loetakse standardproovile vastavast",
-      "estleg:legalText": "(1) Toodet võib väärismetalltootena müügiks pakkuda või tasu eest võõrandada, kui see vastab käesoleva seaduse nõuetele ja on märgistatud käesolevas seaduses ettenähtud kohustuslike märgistega. (2) Väärismetalli standardproovid on: kuldtootel 375, 500, 585, 750, 916 või 999; hõbetootel 800, 830, 925 või 999; plaatinatootel 850, 950 või 999; pallaadiumtootel 500, 950 või 999. (2¹) Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis valmistatud tooted loetakse standardproovile vastavast väärismetallist valmistatuks, kui nendes toodetes on kasutatud riigis, kus tooted on valmistatud või turule lastud, õigusaktiga kehtestatud või käesoleva paragrahvi lõikes 2 nimetatud standardprooviga väärismetalli. (3) Väärismetalltoote valmistamiseks kasutatud väärismetall on standardproovile vastav, kui selle puhta kulla, hõbeda, plaatina või pallaadiumi sisaldus on standardprooviga võrdne või sellest suurem. (4) Müügiks pakutava või tasu eest võõrandatava väärismetalltoote mitteväärismetallist osad, välja arvatud vedrud, tihvtid ja teised konstruktsiooniks hädavajalikud detailid, peavad olema märgistatud märgisega «MET» või muu mitteväärismetalli tähistava märgisega. (5) Kehtetu - (6) Väärismetalltoodet ei ole lubatud müügiks pakkuda ega tasu eest võõrandada, kui: väärismetalltootele on püsivalt liidetud sellist metalli, mida värvuse tõttu võib pidada samaks väärismetalliks, millest väärismetalltoode on valmistatud; kuld-, plaatina- või pallaadiumtoote valmistamisel on kasutatud joodist, mille proov on väiksem kui vastava väärismetalltoote valmistamiseks kasutatud väärismetalli proov. (7) Väärismetalltootena ei ole lubatud märgistada, müügiks pakkuda ega tasu eest võõrandada: toodet, mille valmistamiseks kasutatud metalli massist moodustab väärismetallist valmistatud osa vähem kui 50 protsenti, välja arvatud lauahõbe, kellad ja teised korpustooted; väärismetalliga kaetud muust metallist toodet.",
+      "estleg:summary": {
+        "@value": "(1) Toodet võib väärismetalltootena müügiks pakkuda või tasu eest võõrandada, kui see vastab käesoleva seaduse nõuetele ja on märgistatud käesolevas seaduses ettenähtud kohustuslike märgistega. (2) Väärismetalli standardproovid on: 1) kuldtootel 375, 500, 585, 750, 916 või 999; 2) hõbetootel 800, 830, 925 või 999; 3) plaatinatootel 850, 950 või 999; 4) pallaadiumtootel 500, 950 või 999. (2¹) Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis valmistatud tooted loetakse standardproovile",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Toodet võib väärismetalltootena müügiks pakkuda või tasu eest võõrandada, kui see vastab käesoleva seaduse nõuetele ja on märgistatud käesolevas seaduses ettenähtud kohustuslike märgistega. (2) Väärismetalli standardproovid on: 1) kuldtootel 375, 500, 585, 750, 916 või 999; 2) hõbetootel 800, 830, 925 või 999; 3) plaatinatootel 850, 950 või 999; 4) pallaadiumtootel 500, 950 või 999. (2¹) Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis valmistatud tooted loetakse standardproovile vastavast väärismetallist valmistatuks, kui nendes toodetes on kasutatud riigis, kus tooted on valmistatud või turule lastud, õigusaktiga kehtestatud või käesoleva paragrahvi lõikes 2 nimetatud standardprooviga väärismetalli. (3) Väärismetalltoote valmistamiseks kasutatud väärismetall on standardproovile vastav, kui selle puhta kulla, hõbeda, plaatina või pallaadiumi sisaldus on standardprooviga võrdne või sellest suurem. (4) Müügiks pakutava või tasu eest võõrandatava väärismetalltoote mitteväärismetallist osad, välja arvatud vedrud, tihvtid ja teised konstruktsiooniks hädavajalikud detailid, peavad olema märgistatud märgisega «MET» või muu mitteväärismetalli tähistava märgisega. (6) Väärismetalltoodet ei ole lubatud müügiks pakkuda ega tasu eest võõrandada, kui: 1) väärismetalltootele on püsivalt liidetud sellist metalli, mida värvuse tõttu võib pidada samaks väärismetalliks, millest väärismetalltoode on valmistatud; 2) kuld-, plaatina- või pallaadiumtoote valmistamisel on kasutatud joodist, mille proov on väiksem kui vastava väärismetalltoote valmistamiseks kasutatud väärismetalli proov. (7) Väärismetalltootena ei ole lubatud märgistada, müügiks pakkuda ega tasu eest võõrandada: 1) toodet, mille valmistamiseks kasutatud metalli massist moodustab väärismetallist valmistatud osa vähem kui 50 protsenti, välja arvatud lauahõbe, kellad ja teised korpustooted; 2) väärismetalliga kaetud muust metallist toodet.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_1"
       },
@@ -723,9 +865,6 @@
         },
         {
           "@id": "estleg:VMTS_Par_4_Lg_4"
-        },
-        {
-          "@id": "estleg:VMTS_Par_4_Lg_5"
         },
         {
           "@id": "estleg:VMTS_Par_4_Lg_6"
@@ -794,11 +933,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Väärismetalli standardproovid on: kuldtootel 375, 500, 585, 750, 916 või 999; hõbetootel 800, 830, 925 või 999; plaatinatootel 850, 950 või 999; pallaadiumtootel 500, 950 või 999.",
+      "estleg:legalText": "(2) Väärismetalli standardproovid on: 1) kuldtootel 375, 500, 585, 750, 916 või 999; 2) hõbetootel 800, 830, 925 või 999; 3) plaatinatootel 850, 950 või 999; 4) pallaadiumtootel 500, 950 või 999.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_4"
       },
-      "rdfs:label": "§ 4 lg 2"
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
     },
     {
       "@id": "estleg:VMTS_Par_4_Lg_2_1",
@@ -847,30 +992,21 @@
       }
     },
     {
-      "@id": "estleg:VMTS_Par_4_Lg_5",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VMTS_Par_4"
-      },
-      "rdfs:label": "§ 4 lg 5"
-    },
-    {
       "@id": "estleg:VMTS_Par_4_Lg_6",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "6",
-      "estleg:legalText": "(6) Väärismetalltoodet ei ole lubatud müügiks pakkuda ega tasu eest võõrandada, kui: väärismetalltootele on püsivalt liidetud sellist metalli, mida värvuse tõttu võib pidada samaks väärismetalliks, millest väärismetalltoode on valmistatud; kuld-, plaatina- või pallaadiumtoote valmistamisel on kasutatud joodist, mille proov on väiksem kui vastava väärismetalltoote valmistamiseks kasutatud väärismetalli proov.",
+      "estleg:legalText": "(6) Väärismetalltoodet ei ole lubatud müügiks pakkuda ega tasu eest võõrandada, kui: 1) väärismetalltootele on püsivalt liidetud sellist metalli, mida värvuse tõttu võib pidada samaks väärismetalliks, millest väärismetalltoode on valmistatud; 2) kuld-, plaatina- või pallaadiumtoote valmistamisel on kasutatud joodist, mille proov on väiksem kui vastava väärismetalltoote valmistamiseks kasutatud väärismetalli proov.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_4"
       },
       "rdfs:label": "§ 4 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -886,11 +1022,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "7",
-      "estleg:legalText": "(7) Väärismetalltootena ei ole lubatud märgistada, müügiks pakkuda ega tasu eest võõrandada: toodet, mille valmistamiseks kasutatud metalli massist moodustab väärismetallist valmistatud osa vähem kui 50 protsenti, välja arvatud lauahõbe, kellad ja teised korpustooted; väärismetalliga kaetud muust metallist toodet.",
+      "estleg:legalText": "(7) Väärismetalltootena ei ole lubatud märgistada, müügiks pakkuda ega tasu eest võõrandada: 1) toodet, mille valmistamiseks kasutatud metalli massist moodustab väärismetallist valmistatud osa vähem kui 50 protsenti, välja arvatud lauahõbe, kellad ja teised korpustooted; 2) väärismetalliga kaetud muust metallist toodet.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_4"
       },
       "rdfs:label": "§ 4 lg 7",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -906,13 +1046,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Käitlemiseks mittelubatud toode",
+      "rdfs:label": {
+        "@value": "§ 5. Käitlemiseks mittelubatud toode",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 5. Käitlemiseks mittelubatud toode",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_1"
       },
@@ -938,13 +1086,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Väärismetalltootel kasutatavad märgised",
+      "rdfs:label": {
+        "@value": "§ 6. Väärismetalltootel kasutatavad märgised",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalltootel kasutatav märgis on: kohustuslik märgis, milleta ei või väärismetalltoodet müügiks pakkuda ega tasu eest võõrandada; mittekohustuslik märgis, mida võib käesolevas seaduses sätestatud juhul ning korras väärismetalltootele kanda; käesoleva seadusega reguleerimata märgis (edaspidi muu märgistus). (2) Kohustuslikud märgised on Eestis väärismetalltooteid valmistava ettevõtja (edaspidi valmistaja) või Eestisse väärismetalltooteid sissevedava ettevõtja (edaspidi sissevedaja)",
-      "estleg:legalText": "(1) Väärismetalltootel kasutatav märgis on: kohustuslik märgis, milleta ei või väärismetalltoodet müügiks pakkuda ega tasu eest võõrandada; mittekohustuslik märgis, mida võib käesolevas seaduses sätestatud juhul ning korras väärismetalltootele kanda; käesoleva seadusega reguleerimata märgis (edaspidi muu märgistus). (2) Kohustuslikud märgised on Eestis väärismetalltooteid valmistava ettevõtja (edaspidi valmistaja) või Eestisse väärismetalltooteid sissevedava ettevõtja (edaspidi sissevedaja) nimemärgis ja proovimärgis. (3) Mittekohustuslik märgis on kontrollmärgis. (4) Väärismetalltoodet, mis on Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis õigusaktide kohaselt märgistatud nimemärgise ja proovimärgisega identset tähendust omavate märgistega, ei pea märgistama käesolevas seaduses ettenähtud kohustuslike märgistega. (5) Väärismetalltootel on lubatud muu märgistus, kui see ei halvenda oma kuju ega paiknemise poolest käesoleva paragrahvi lõigetes 2–4 nimetatud märgiste nähtavust, loetavust ega tähenduse mõistmist. (6) Väärismetalltootele kantud kohustuslikud ja mittekohustuslikud märgised peavad olema selgelt loetavad ja vastama oma kuju poolest käesoleva seaduse ning selle alusel kehtestatud õigusaktide nõuetele ning kuju ja kandmisviisi poolest käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud nimemärgisele. Kui väärismetalltoode ei ole märgistatud käesolevas seaduses ettenähtud kohustuslike märgistega, peavad käesoleva paragrahvi lõikes 4 nimetatud märgised olema selgelt loetavad.",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalltootel kasutatav märgis on: 1) kohustuslik märgis, milleta ei või väärismetalltoodet müügiks pakkuda ega tasu eest võõrandada; 2) mittekohustuslik märgis, mida võib käesolevas seaduses sätestatud juhul ning korras väärismetalltootele kanda; 3) käesoleva seadusega reguleerimata märgis (edaspidi muu märgistus). (2) Kohustuslikud märgised on Eestis väärismetalltooteid valmistava ettevõtja (edaspidi valmistaja) või Eestisse väärismetalltooteid sissevedava ettevõtja (edaspidi",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Väärismetalltootel kasutatav märgis on: 1) kohustuslik märgis, milleta ei või väärismetalltoodet müügiks pakkuda ega tasu eest võõrandada; 2) mittekohustuslik märgis, mida võib käesolevas seaduses sätestatud juhul ning korras väärismetalltootele kanda; 3) käesoleva seadusega reguleerimata märgis (edaspidi muu märgistus). (2) Kohustuslikud märgised on Eestis väärismetalltooteid valmistava ettevõtja (edaspidi valmistaja) või Eestisse väärismetalltooteid sissevedava ettevõtja (edaspidi sissevedaja) nimemärgis ja proovimärgis. (3) Mittekohustuslik märgis on kontrollmärgis. (4) Väärismetalltoodet, mis on Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis õigusaktide kohaselt märgistatud nimemärgise ja proovimärgisega identset tähendust omavate märgistega, ei pea märgistama käesolevas seaduses ettenähtud kohustuslike märgistega. (5) Väärismetalltootel on lubatud muu märgistus, kui see ei halvenda oma kuju ega paiknemise poolest käesoleva paragrahvi lõigetes 2–4 nimetatud märgiste nähtavust, loetavust ega tähenduse mõistmist. (6) Väärismetalltootele kantud kohustuslikud ja mittekohustuslikud märgised peavad olema selgelt loetavad ja vastama oma kuju poolest käesoleva seaduse ning selle alusel kehtestatud õigusaktide nõuetele ning kuju ja kandmisviisi poolest käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud nimemärgisele. Kui väärismetalltoode ei ole märgistatud käesolevas seaduses ettenähtud kohustuslike märgistega, peavad käesoleva paragrahvi lõikes 4 nimetatud märgised olema selgelt loetavad.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_2"
       },
@@ -1008,11 +1165,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Väärismetalltootel kasutatav märgis on: kohustuslik märgis, milleta ei või väärismetalltoodet müügiks pakkuda ega tasu eest võõrandada; mittekohustuslik märgis, mida võib käesolevas seaduses sätestatud juhul ning korras väärismetalltootele kanda; käesoleva seadusega reguleerimata märgis (edaspidi muu märgistus).",
+      "estleg:legalText": "(1) Väärismetalltootel kasutatav märgis on: 1) kohustuslik märgis, milleta ei või väärismetalltoodet müügiks pakkuda ega tasu eest võõrandada; 2) mittekohustuslik märgis, mida võib käesolevas seaduses sätestatud juhul ning korras väärismetalltootele kanda; 3) käesoleva seadusega reguleerimata märgis (edaspidi muu märgistus).",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_6"
       },
       "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1131,22 +1293,28 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kohustuslike märgistega märgistamine",
+      "rdfs:label": {
+        "@value": "§ 7. Kohustuslike märgistega märgistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalltoote märgistamise kohustuslike märgistega peab tagama väärismetalltoote valmistaja või sissevedaja. (2) Kehtetu - (3) Väärismetalltoode on märgistatud kohustuslike märgistega, kui sellele on kantud: valmistaja või sissevedaja nimemärgis ja proovimärgis või valmistaja või sissevedaja nimemärgis ühendatuna proovimärgisega (edaspidi ühitatud nime- ja proovimärgis). (4) Väärismetalltoode, millele selle väikeste mõõtmete tõttu ei ole võimalik kanda nii nime- kui proovimärgist või",
-      "estleg:legalText": "(1) Väärismetalltoote märgistamise kohustuslike märgistega peab tagama väärismetalltoote valmistaja või sissevedaja. (2) Kehtetu - (3) Väärismetalltoode on märgistatud kohustuslike märgistega, kui sellele on kantud: valmistaja või sissevedaja nimemärgis ja proovimärgis või valmistaja või sissevedaja nimemärgis ühendatuna proovimärgisega (edaspidi ühitatud nime- ja proovimärgis). (4) Väärismetalltoode, millele selle väikeste mõõtmete tõttu ei ole võimalik kanda nii nime- kui proovimärgist või ühitatud nime- ja proovimärgist, võib olla märgistatud ainult proovimärgisega. (5) Nende väärismetalltoodete loetelu, mida võib müügiks pakkuda või tasu eest võõrandada ilma kohustusliku märgistuseta seetõttu, et on olemas varasem märgistus või et tehnilistel, esteetilistel või muudel põhjustel ei ole märgistamine lubatud või otstarbekas, ning loetelusse kuuluvate toodete valmistamiseks kasutatud väärismetalli proovi tõendamise nõuded kehtestab Vabariigi Valitsus või tema volitusel määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalltoote märgistamise kohustuslike märgistega peab tagama väärismetalltoote valmistaja või sissevedaja. (3) Väärismetalltoode on märgistatud kohustuslike märgistega, kui sellele on kantud: 1) valmistaja või sissevedaja nimemärgis ja proovimärgis või 2) valmistaja või sissevedaja nimemärgis ühendatuna proovimärgisega (edaspidi ühitatud nime- ja proovimärgis). (4) Väärismetalltoode, millele selle väikeste mõõtmete tõttu ei ole võimalik kanda nii nime- kui proovimärgist või ühitatud",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Väärismetalltoote märgistamise kohustuslike märgistega peab tagama väärismetalltoote valmistaja või sissevedaja. (3) Väärismetalltoode on märgistatud kohustuslike märgistega, kui sellele on kantud: 1) valmistaja või sissevedaja nimemärgis ja proovimärgis või 2) valmistaja või sissevedaja nimemärgis ühendatuna proovimärgisega (edaspidi ühitatud nime- ja proovimärgis). (4) Väärismetalltoode, millele selle väikeste mõõtmete tõttu ei ole võimalik kanda nii nime- kui proovimärgist või ühitatud nime- ja proovimärgist, võib olla märgistatud ainult proovimärgisega. (5) Nende väärismetalltoodete loetelu, mida võib müügiks pakkuda või tasu eest võõrandada ilma kohustusliku märgistuseta seetõttu, et on olemas varasem märgistus või et tehnilistel, esteetilistel või muudel põhjustel ei ole märgistamine lubatud või otstarbekas, ning loetelusse kuuluvate toodete valmistamiseks kasutatud väärismetalli proovi tõendamise nõuded kehtestab Vabariigi Valitsus või tema volitusel määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_2"
       },
       "estleg:hasSubsection": [
         {
           "@id": "estleg:VMTS_Par_7_Lg_1"
-        },
-        {
-          "@id": "estleg:VMTS_Par_7_Lg_2"
         },
         {
           "@id": "estleg:VMTS_Par_7_Lg_3"
@@ -1215,30 +1383,21 @@
       }
     },
     {
-      "@id": "estleg:VMTS_Par_7_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:VMTS_Par_7"
-      },
-      "rdfs:label": "§ 7 lg 2"
-    },
-    {
       "@id": "estleg:VMTS_Par_7_Lg_3",
       "@type": [
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Väärismetalltoode on märgistatud kohustuslike märgistega, kui sellele on kantud: valmistaja või sissevedaja nimemärgis ja proovimärgis või valmistaja või sissevedaja nimemärgis ühendatuna proovimärgisega (edaspidi ühitatud nime- ja proovimärgis).",
+      "estleg:legalText": "(3) Väärismetalltoode on märgistatud kohustuslike märgistega, kui sellele on kantud: 1) valmistaja või sissevedaja nimemärgis ja proovimärgis või 2) valmistaja või sissevedaja nimemärgis ühendatuna proovimärgisega (edaspidi ühitatud nime- ja proovimärgis).",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_7"
       },
-      "rdfs:label": "§ 7 lg 3"
+      "rdfs:label": "§ 7 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:VMTS_Par_7_Lg_4",
@@ -1298,13 +1457,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Nimemärgis",
+      "rdfs:label": {
+        "@value": "§ 8. Nimemärgis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Nimemärgis on väärismetalltootele kantav alaline märk, mis näitab, milline valmistaja või sissevedaja on vastutav väärismetalltoote nõuetele vastavuse eest. (2) Nimemärgiseks võib olla täht, täheühend või märk, mis on selgesti eristatav teise valmistaja või sissevedaja nimemärgistest ning mis on registreeritud käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis. (3) Valmistaja või sissevedaja võib nimemärgisena kasutada oma registreeritud kaubamärki, kui see märk vastab käesoleva",
+      "estleg:summary": {
+        "@value": "(1) Nimemärgis on väärismetalltootele kantav alaline märk, mis näitab, milline valmistaja või sissevedaja on vastutav väärismetalltoote nõuetele vastavuse eest. (2) Nimemärgiseks võib olla täht, täheühend või märk, mis on selgesti eristatav teise valmistaja või sissevedaja nimemärgistest ning mis on registreeritud käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis. (3) Valmistaja või sissevedaja võib nimemärgisena kasutada oma registreeritud kaubamärki, kui see märk vastab käesoleva",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nimemärgis on väärismetalltootele kantav alaline märk, mis näitab, milline valmistaja või sissevedaja on vastutav väärismetalltoote nõuetele vastavuse eest. (2) Nimemärgiseks võib olla täht, täheühend või märk, mis on selgesti eristatav teise valmistaja või sissevedaja nimemärgistest ning mis on registreeritud käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis. (3) Valmistaja või sissevedaja võib nimemärgisena kasutada oma registreeritud kaubamärki, kui see märk vastab käesoleva paragrahvi lõikes 2 nimetatud nõuetele ja on registreeritud käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis. (4) Sissevedaja võib taotleda sisseveetava väärismetalltoote valmistanud ettevõtja nimemärgise (edaspidi sissevedaja nimemärgis) registreerimist, kui väärismetalltoote valmistanud ettevõtja on andnud kirjaliku nõusoleku oma nimemärgis sel viisil registreerida.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_2"
       },
@@ -1452,13 +1620,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Proovimärgis",
+      "rdfs:label": {
+        "@value": "§ 9. Proovimärgis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Proovimärgis on väärismetalltootele kantav alaline märk, mis näitab väärismetalltoote valmistamiseks kasutatud väärismetalli ja selle standardproovi. (2) Proovimärgise kuju on erinevate väärismetallide puhul erinev. Proovimärgise ja ühitatud nime- ja proovimärgise kuju ning väärismetalltoote nimemärgise ja proovimärgisega või ühitatud nime- ja proovimärgisega märgistamise korra kehtestab Vabariigi Valitsus või tema volitusel määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Proovimärgis on väärismetalltootele kantav alaline märk, mis näitab väärismetalltoote valmistamiseks kasutatud väärismetalli ja selle standardproovi. (2) Proovimärgise kuju on erinevate väärismetallide puhul erinev. Proovimärgise ja ühitatud nime- ja proovimärgise kuju ning väärismetalltoote nimemärgise ja proovimärgisega või ühitatud nime- ja proovimärgisega märgistamise korra kehtestab Vabariigi Valitsus või tema volitusel määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Proovimärgis on väärismetalltootele kantav alaline märk, mis näitab väärismetalltoote valmistamiseks kasutatud väärismetalli ja selle standardproovi. (2) Proovimärgise kuju on erinevate väärismetallide puhul erinev. Proovimärgise ja ühitatud nime- ja proovimärgise kuju ning väärismetalltoote nimemärgise ja proovimärgisega või ühitatud nime- ja proovimärgisega märgistamise korra kehtestab Vabariigi Valitsus või tema volitusel määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_2"
       },
@@ -1545,13 +1722,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Kontrollmärgis",
+      "rdfs:label": {
+        "@value": "§ 10. Kontrollmärgis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Kontrollmärgis on väärismetalltootele kantav alaline märk, millega väärismetalli proovi standardproovile vastavuse tõendamise valdkonnas tegutsev äriühing (edaspidi väärismetalli proovi tõendaja) tõendab, et väärismetalltoote valmistamiseks kasutatud väärismetalli proov vastab standardproovile. (2) Kontrollmärgis on Eesti proovijärelevalve märk. Kontrollmärgiseks on märgis, millel on sammuva otsavaatava lõvi kujutis ovaalses süvendis.",
-      "estleg:legalText": "(1) Kontrollmärgis on väärismetalltootele kantav alaline märk, millega väärismetalli proovi standardproovile vastavuse tõendamise valdkonnas tegutsev äriühing (edaspidi väärismetalli proovi tõendaja) tõendab, et väärismetalltoote valmistamiseks kasutatud väärismetalli proov vastab standardproovile. (2) Kontrollmärgis on Eesti proovijärelevalve märk. Kontrollmärgiseks on märgis, millel on sammuva otsavaatava lõvi kujutis ovaalses süvendis. (3) Väärismetalltoode on kontrollmärgistatud, kui sellele on kantud: kontrollmärgis või kontrollmärgis ühendatuna proovimärgisega (edaspidi ühitatud proovi- ja kontrollmärgis). (3¹) Väärismetalltoode loetakse kontrollmärgistatuks, kui Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis on vastavate volitustega sõltumatu isik kandnud sellele asjaomase riigi kontrollmärgise ning selles riigis ei ole lubatud standardproovi negatiivne hälve. (4) Väärismetalltoote analüüsimise ja kontrollmärgisega märgistamise korra kehtestab Vabariigi Valitsus või tema volitusel määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Kontrollmärgis on väärismetalltootele kantav alaline märk, millega väärismetalli proovi standardproovile vastavuse tõendamise valdkonnas tegutsev äriühing (edaspidi väärismetalli proovi tõendaja) tõendab, et väärismetalltoote valmistamiseks kasutatud väärismetalli proov vastab standardproovile. (2) Kontrollmärgis on Eesti proovijärelevalve märk. Kontrollmärgiseks on märgis, millel on sammuva otsavaatava lõvi kujutis ovaalses süvendis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Kontrollmärgis on väärismetalltootele kantav alaline märk, millega väärismetalli proovi standardproovile vastavuse tõendamise valdkonnas tegutsev äriühing (edaspidi väärismetalli proovi tõendaja) tõendab, et väärismetalltoote valmistamiseks kasutatud väärismetalli proov vastab standardproovile. (2) Kontrollmärgis on Eesti proovijärelevalve märk. Kontrollmärgiseks on märgis, millel on sammuva otsavaatava lõvi kujutis ovaalses süvendis. (3) Väärismetalltoode on kontrollmärgistatud, kui sellele on kantud: 1) kontrollmärgis või 2) kontrollmärgis ühendatuna proovimärgisega (edaspidi ühitatud proovi- ja kontrollmärgis). (3¹) Väärismetalltoode loetakse kontrollmärgistatuks, kui Euroopa Majanduspiirkonna lepingu osalisriigis või Türgis on vastavate volitustega sõltumatu isik kandnud sellele asjaomase riigi kontrollmärgise ning selles riigis ei ole lubatud standardproovi negatiivne hälve. (4) Väärismetalltoote analüüsimise ja kontrollmärgisega märgistamise korra kehtestab Vabariigi Valitsus või tema volitusel määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_2"
       },
@@ -1650,11 +1836,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Väärismetalltoode on kontrollmärgistatud, kui sellele on kantud: kontrollmärgis või kontrollmärgis ühendatuna proovimärgisega (edaspidi ühitatud proovi- ja kontrollmärgis).",
+      "estleg:legalText": "(3) Väärismetalltoode on kontrollmärgistatud, kui sellele on kantud: 1) kontrollmärgis või 2) kontrollmärgis ühendatuna proovimärgisega (edaspidi ühitatud proovi- ja kontrollmärgis).",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_10"
       },
-      "rdfs:label": "§ 10 lg 3"
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:VMTS_Par_10_Lg_3_1",
@@ -1722,13 +1912,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Aastamärgis",
+      "rdfs:label": {
+        "@value": "§ 11. Aastamärgis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 11. Aastamärgis",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_2"
       },
@@ -1760,13 +1958,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Registreerimise üldised alused",
+      "rdfs:label": {
+        "@value": "§ 12. Registreerimise üldised alused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Nimemärgis registreeritakse valmistaja või sissevedaja taotluse alusel seadme ohutuse seaduse §-s 12 nimetatud Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemis. (2) Nimemärgise registreerimise, registreeringu kehtivusaja pikendamise ja muutmise taotluse läbivaatamise eest tasutakse riigilõivu riigilõivuseaduses sätestatud määras. (3) Nimemärgisele esitatavad täpsustatud nõuded ning registreerimise taotlemise, registreerimise, registreeringu kehtivusaja pikendamise,",
+      "estleg:summary": {
+        "@value": "(1) Nimemärgis registreeritakse valmistaja või sissevedaja taotluse alusel seadme ohutuse seaduse §-s 12 nimetatud Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemis. (2) Nimemärgise registreerimise, registreeringu kehtivusaja pikendamise ja muutmise taotluse läbivaatamise eest tasutakse riigilõivu riigilõivuseaduses sätestatud määras. (3) Nimemärgisele esitatavad täpsustatud nõuded ning registreerimise taotlemise, registreerimise, registreeringu kehtivusaja pikendamise,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Nimemärgis registreeritakse valmistaja või sissevedaja taotluse alusel seadme ohutuse seaduse §-s 12 nimetatud Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemis. (2) Nimemärgise registreerimise, registreeringu kehtivusaja pikendamise ja muutmise taotluse läbivaatamise eest tasutakse riigilõivu riigilõivuseaduses sätestatud määras. (3) Nimemärgisele esitatavad täpsustatud nõuded ning registreerimise taotlemise, registreerimise, registreeringu kehtivusaja pikendamise, registreeringu muutmise ja kehtetuks tunnistamise ning registreerimisest keeldumise korra kehtestab määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -1951,13 +2158,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Registreerimise taotlemine",
+      "rdfs:label": {
+        "@value": "§ 13. Registreerimise taotlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Valmistaja või sissevedaja esitab Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse ettevõtte üldandmetega ja nimemärgise digitaalse kujutise käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi kaudu. Lisaks esitab sissevedaja sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena.",
+      "estleg:summary": {
+        "@value": "Valmistaja või sissevedaja esitab Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse ettevõtte üldandmetega ja nimemärgise digitaalse kujutise käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi kaudu. Lisaks esitab sissevedaja sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena.",
+        "@language": "et"
+      },
       "estleg:legalText": "Valmistaja või sissevedaja esitab Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse ettevõtte üldandmetega ja nimemärgise digitaalse kujutise käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi kaudu. Lisaks esitab sissevedaja sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2006,10 +2222,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Valmistaja või sissevedaja esitab Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse ettevõtte üldandmetega ja nimemärgise digitaalse kujutise käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi kaudu. Lisaks esitab sissevedaja sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valmistaja või sissevedaja esitab Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt taotluse ettevõtte üldandmetega ja nimemärgise digitaalse kujutise käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi kaudu. Lisaks esitab sissevedaja sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2040,13 +2258,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Nimemärgise registreerimise avaldus",
+      "rdfs:label": {
+        "@value": "§ 14. Nimemärgise registreerimise avaldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 14. Nimemärgise registreerimise avaldus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2066,13 +2292,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Registreerimine",
+      "rdfs:label": {
+        "@value": "§ 15. Registreerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Nimemärgis registreeritakse, kui on täidetud kõik järgmised tingimused: nimemärgise registreerimise taotlus on nõuetekohane; registreerimistaotluse esitanud ettevõtja nimemärgise kujutis on selgesti eristatav käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud teiste ettevõtjate nimemärgistest; tasutud on riigilõiv; sissevedaja on nimemärgise registreerimisel esitanud sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida",
-      "estleg:legalText": "(1) Nimemärgis registreeritakse, kui on täidetud kõik järgmised tingimused: nimemärgise registreerimise taotlus on nõuetekohane; registreerimistaotluse esitanud ettevõtja nimemärgise kujutis on selgesti eristatav käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud teiste ettevõtjate nimemärgistest; tasutud on riigilõiv; sissevedaja on nimemärgise registreerimisel esitanud sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena. (2) Kehtetuks tunnistatud sissevedaja nimemärgise registreerimisel ei kohaldata käesoleva paragrahvi lõike 1 punktis 2 nimetatud tingimust.",
+      "estleg:summary": {
+        "@value": "(1) Nimemärgis registreeritakse, kui on täidetud kõik järgmised tingimused: 1) nimemärgise registreerimise taotlus on nõuetekohane; 2) registreerimistaotluse esitanud ettevõtja nimemärgise kujutis on selgesti eristatav käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud teiste ettevõtjate nimemärgistest; 3) tasutud on riigilõiv; 4) sissevedaja on nimemärgise registreerimisel esitanud sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Nimemärgis registreeritakse, kui on täidetud kõik järgmised tingimused: 1) nimemärgise registreerimise taotlus on nõuetekohane; 2) registreerimistaotluse esitanud ettevõtja nimemärgise kujutis on selgesti eristatav käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud teiste ettevõtjate nimemärgistest; 3) tasutud on riigilõiv; 4) sissevedaja on nimemärgise registreerimisel esitanud sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena. (2) Kehtetuks tunnistatud sissevedaja nimemärgise registreerimisel ei kohaldata käesoleva paragrahvi lõike 1 punktis 2 nimetatud tingimust.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2131,11 +2366,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Nimemärgis registreeritakse, kui on täidetud kõik järgmised tingimused: nimemärgise registreerimise taotlus on nõuetekohane; registreerimistaotluse esitanud ettevõtja nimemärgise kujutis on selgesti eristatav käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud teiste ettevõtjate nimemärgistest; tasutud on riigilõiv; sissevedaja on nimemärgise registreerimisel esitanud sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena.",
+      "estleg:legalText": "(1) Nimemärgis registreeritakse, kui on täidetud kõik järgmised tingimused: 1) nimemärgise registreerimise taotlus on nõuetekohane; 2) registreerimistaotluse esitanud ettevõtja nimemärgise kujutis on selgesti eristatav käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemis registreeritud teiste ettevõtjate nimemärgistest; 3) tasutud on riigilõiv; 4) sissevedaja on nimemärgise registreerimisel esitanud sisseveetava väärismetalltoote valmistaja kirjaliku nõusoleku, et ta lubab oma nimemärgise registreerida sissevedaja nimemärgisena.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_15"
       },
       "rdfs:label": "§ 15 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2172,13 +2413,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Registreerimisest keeldumine",
+      "rdfs:label": {
+        "@value": "§ 16. Registreerimisest keeldumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Nimemärgise registreerimisest keeldutakse, kui ei ole täidetud käesoleva seaduse §-s 15 sätestatud tingimused.",
+      "estleg:summary": {
+        "@value": "Nimemärgise registreerimisest keeldutakse, kui ei ole täidetud käesoleva seaduse §-s 15 sätestatud tingimused.",
+        "@language": "et"
+      },
       "estleg:legalText": "Nimemärgise registreerimisest keeldutakse, kui ei ole täidetud käesoleva seaduse §-s 15 sätestatud tingimused.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2210,10 +2460,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Nimemärgise registreerimisest keeldutakse, kui ei ole täidetud käesoleva seaduse §-s 15 sätestatud tingimused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nimemärgise registreerimisest keeldutakse, kui ei ole täidetud käesoleva seaduse §-s 15 sätestatud tingimused.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_16"
       },
+      "rdfs:label": "§ 16 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:VMTS_Par_15"
@@ -2227,13 +2479,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Sissevedaja nimemärgise registreerimistaotlus",
+      "rdfs:label": {
+        "@value": "§ 17. Sissevedaja nimemärgise registreerimistaotlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 17. Sissevedaja nimemärgise registreerimistaotlus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2267,13 +2527,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Sissevedaja nimemärgise registrikanne",
+      "rdfs:label": {
+        "@value": "§ 18. Sissevedaja nimemärgise registrikanne",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 18. Sissevedaja nimemärgise registrikanne",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2299,13 +2567,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Registreeringu muutmine, kehtetuks tunnistamine ja kustutamine",
+      "rdfs:label": {
+        "@value": "§ 19. Registreeringu muutmine, kehtetuks tunnistamine ja kustutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Nimemärgise registreering tunnistatakse kehtetuks: registreeringut taotlenud ettevõtja taotluse alusel; registreeringut taotlenud ettevõtja tegevuse lõppemisel. (2) Nimemärgise registreering kustutatakse, kui ilmneb, et ettevõtja, kelle nimemärgis on registreeritud, on registreerimistaotluses esitanud andmeid, mis ei vasta tegelikkusele ja millel on registreeringu tegemisel oluline tähtsus. Nimemärgise registreeringu kustutamisel edastatakse ettevõtjale, kelle nimemärgis oli registreeritud,",
-      "estleg:legalText": "(1) Nimemärgise registreering tunnistatakse kehtetuks: registreeringut taotlenud ettevõtja taotluse alusel; registreeringut taotlenud ettevõtja tegevuse lõppemisel. (2) Nimemärgise registreering kustutatakse, kui ilmneb, et ettevõtja, kelle nimemärgis on registreeritud, on registreerimistaotluses esitanud andmeid, mis ei vasta tegelikkusele ja millel on registreeringu tegemisel oluline tähtsus. Nimemärgise registreeringu kustutamisel edastatakse ettevõtjale, kelle nimemärgis oli registreeritud, motiveeritud teade registreeringu kustutamise kohta hiljemalt registreeringu kustutamise päevale järgneval tööpäeval. (3) Valmistaja või sissevedaja esitab taotluse nimemärgise registreeringu muutmiseks või kehtetuks tunnistamiseks Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi kaudu. (4) Nimemärgise registreeringu kehtetuks tunnistamisel ja registreeringu kehtivusaja lõppemisel tehakse käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi sellekohane kanne.",
+      "estleg:summary": {
+        "@value": "(1) Nimemärgise registreering tunnistatakse kehtetuks: 1) registreeringut taotlenud ettevõtja taotluse alusel; 2) registreeringut taotlenud ettevõtja tegevuse lõppemisel. (2) Nimemärgise registreering kustutatakse, kui ilmneb, et ettevõtja, kelle nimemärgis on registreeritud, on registreerimistaotluses esitanud andmeid, mis ei vasta tegelikkusele ja millel on registreeringu tegemisel oluline tähtsus. Nimemärgise registreeringu kustutamisel edastatakse ettevõtjale, kelle nimemärgis oli",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Nimemärgise registreering tunnistatakse kehtetuks: 1) registreeringut taotlenud ettevõtja taotluse alusel; 2) registreeringut taotlenud ettevõtja tegevuse lõppemisel. (2) Nimemärgise registreering kustutatakse, kui ilmneb, et ettevõtja, kelle nimemärgis on registreeritud, on registreerimistaotluses esitanud andmeid, mis ei vasta tegelikkusele ja millel on registreeringu tegemisel oluline tähtsus. Nimemärgise registreeringu kustutamisel edastatakse ettevõtjale, kelle nimemärgis oli registreeritud, motiveeritud teade registreeringu kustutamise kohta hiljemalt registreeringu kustutamise päevale järgneval tööpäeval. (3) Valmistaja või sissevedaja esitab taotluse nimemärgise registreeringu muutmiseks või kehtetuks tunnistamiseks Tarbijakaitse ja Tehnilise Järelevalve Ametile elektrooniliselt käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi kaudu. (4) Nimemärgise registreeringu kehtetuks tunnistamisel ja registreeringu kehtivusaja lõppemisel tehakse käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi sellekohane kanne.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2371,11 +2648,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Nimemärgise registreering tunnistatakse kehtetuks: registreeringut taotlenud ettevõtja taotluse alusel; registreeringut taotlenud ettevõtja tegevuse lõppemisel.",
+      "estleg:legalText": "(1) Nimemärgise registreering tunnistatakse kehtetuks: 1) registreeringut taotlenud ettevõtja taotluse alusel; 2) registreeringut taotlenud ettevõtja tegevuse lõppemisel.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_19"
       },
       "rdfs:label": "§ 19 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2468,13 +2749,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Registreeringu kehtivuse kinnitamise kohustus",
+      "rdfs:label": {
+        "@value": "§ 20. Registreeringu kehtivuse kinnitamise kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 20. Registreeringu kehtivuse kinnitamise kohustus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2497,13 +2786,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20¹.",
-      "rdfs:label": "§ 20¹. Registreeringu kehtivusaeg",
+      "rdfs:label": {
+        "@value": "§ 20¹. Registreeringu kehtivusaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Nimemärgise registreering kehtib kuni kümme aastat registreerimise kuupäevast arvates. (2) Registreeringu kehtivusaega võib pikendada kuni kümne aasta kaupa, kui: valmistaja või sissevedaja on tasunud riigilõivu; sissevedajal on kehtiv sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek või ta on esitanud kehtiva nõusoleku. (3) Kui sissevedaja nimemärgise registreerimisel või kehtivusaja pikendamisel esitatud sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik",
-      "estleg:legalText": "(1) Nimemärgise registreering kehtib kuni kümme aastat registreerimise kuupäevast arvates. (2) Registreeringu kehtivusaega võib pikendada kuni kümne aasta kaupa, kui: valmistaja või sissevedaja on tasunud riigilõivu; sissevedajal on kehtiv sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek või ta on esitanud kehtiva nõusoleku. (3) Kui sissevedaja nimemärgise registreerimisel või kehtivusaja pikendamisel esitatud sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek on määratud lühemaks ajavahemikuks kui kümme aastat, siis määratakse registreeringu kehtivuseks valmistaja kirjalikus nõusolekus esitatud ajavahemik. (4) Tarbijakaitse ja Tehnilise Järelevalve Amet teavitab ettevõtjat nimemärgise registreeringu kehtivusaja lõppemisest vähemalt kaks kuud enne kehtivusaja lõppemist. (5) Nimemärgise registreeringu kehtivusaja pikendamisel tehakse käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi sellekohane kanne.",
+      "estleg:summary": {
+        "@value": "(1) Nimemärgise registreering kehtib kuni kümme aastat registreerimise kuupäevast arvates. (2) Registreeringu kehtivusaega võib pikendada kuni kümne aasta kaupa, kui: 1) valmistaja või sissevedaja on tasunud riigilõivu; 2) sissevedajal on kehtiv sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek või ta on esitanud kehtiva nõusoleku. (3) Kui sissevedaja nimemärgise registreerimisel või kehtivusaja pikendamisel esitatud sisseveetava väärismetalltoote valmistanud ettevõtja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Nimemärgise registreering kehtib kuni kümme aastat registreerimise kuupäevast arvates. (2) Registreeringu kehtivusaega võib pikendada kuni kümne aasta kaupa, kui: 1) valmistaja või sissevedaja on tasunud riigilõivu; 2) sissevedajal on kehtiv sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek või ta on esitanud kehtiva nõusoleku. (3) Kui sissevedaja nimemärgise registreerimisel või kehtivusaja pikendamisel esitatud sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek on määratud lühemaks ajavahemikuks kui kümme aastat, siis määratakse registreeringu kehtivuseks valmistaja kirjalikus nõusolekus esitatud ajavahemik. (4) Tarbijakaitse ja Tehnilise Järelevalve Amet teavitab ettevõtjat nimemärgise registreeringu kehtivusaja lõppemisest vähemalt kaks kuud enne kehtivusaja lõppemist. (5) Nimemärgise registreeringu kehtivusaja pikendamisel tehakse käesoleva seaduse § 12 lõikes 1 nimetatud infosüsteemi sellekohane kanne.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_3"
       },
@@ -2570,11 +2868,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Registreeringu kehtivusaega võib pikendada kuni kümne aasta kaupa, kui: valmistaja või sissevedaja on tasunud riigilõivu; sissevedajal on kehtiv sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek või ta on esitanud kehtiva nõusoleku.",
+      "estleg:legalText": "(2) Registreeringu kehtivusaega võib pikendada kuni kümne aasta kaupa, kui: 1) valmistaja või sissevedaja on tasunud riigilõivu; 2) sissevedajal on kehtiv sisseveetava väärismetalltoote valmistanud ettevõtja kirjalik nõusolek või ta on esitanud kehtiva nõusoleku.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_20_1"
       },
       "rdfs:label": "§ 20¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2665,13 +2967,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Väärismetalltoodete valmistamise ja sisseveo õigus",
+      "rdfs:label": {
+        "@value": "§ 21. Väärismetalltoodete valmistamise ja sisseveo õigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 21. Väärismetalltoodete valmistamise ja sisseveo õigus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_4"
       },
@@ -2697,13 +3007,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Registreerimistaotlus",
+      "rdfs:label": {
+        "@value": "§ 22. Registreerimistaotlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 22. Registreerimistaotlus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_4"
       },
@@ -2729,13 +3047,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Registreerimismenetlus ja registriandmed",
+      "rdfs:label": {
+        "@value": "§ 23. Registreerimismenetlus ja registriandmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 23. Registreerimismenetlus ja registriandmed",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_4"
       },
@@ -2769,13 +3095,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23¹.",
-      "rdfs:label": "§ 23¹. Teabe säilitamise kohustus",
+      "rdfs:label": {
+        "@value": "§ 23¹. Teabe säilitamise kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Väärismetalltoodete sissevedajal peab olema teave selle kohta, kes on tema sisseveetud väärismetalltootele kantud nimemärgise omanik ja millises riigis on nimemärgis registreeritud, ning ta peab riikliku järelevalve teostaja nõudmisel selle teabe esitama.",
+      "estleg:summary": {
+        "@value": "Väärismetalltoodete sissevedajal peab olema teave selle kohta, kes on tema sisseveetud väärismetalltootele kantud nimemärgise omanik ja millises riigis on nimemärgis registreeritud, ning ta peab riikliku järelevalve teostaja nõudmisel selle teabe esitama.",
+        "@language": "et"
+      },
       "estleg:legalText": "Väärismetalltoodete sissevedajal peab olema teave selle kohta, kes on tema sisseveetud väärismetalltootele kantud nimemärgise omanik ja millises riigis on nimemärgis registreeritud, ning ta peab riikliku järelevalve teostaja nõudmisel selle teabe esitama.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_4"
       },
@@ -2808,10 +3143,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Väärismetalltoodete sissevedajal peab olema teave selle kohta, kes on tema sisseveetud väärismetalltootele kantud nimemärgise omanik ja millises riigis on nimemärgis registreeritud, ning ta peab riikliku järelevalve teostaja nõudmisel selle teabe esitama.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väärismetalltoodete sissevedajal peab olema teave selle kohta, kes on tema sisseveetud väärismetalltootele kantud nimemärgise omanik ja millises riigis on nimemärgis registreeritud, ning ta peab riikliku järelevalve teostaja nõudmisel selle teabe esitama.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_23_1"
       },
+      "rdfs:label": "§ 23¹ lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -2832,15 +3169,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24.",
+      "rdfs:label": {
+        "@value": "§ 24.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
+      "estleg:summary": "1 (1) Riiklikusse erinõuetega tegevusaladel tegutsevate ettevõtjate registrisse kantud registreeringuandmed kustutatakse: 1 1) registris registreeritud ettevõtja taotluse alusel; 2 2) käesoleva seaduse § 45 lõikes 3 sätestatud riiklikku järelevalvet teostava asutuse peadirektori või tema poolt volitatud ametniku otsuse alusel; 3 3) kui registris registreeritud ettevõtjat on karistatud käesoleva seaduse § 23 lõike 1 punktis 2 nimetatud kuriteo eest; 4 4) kui registris registreeritud juriidiline i",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_4"
       },
-      "estleg:summary": "1 (1) Riiklikusse erinõuetega tegevusaladel tegutsevate ettevõtjate registrisse kantud registreeringuandmed kustutatakse: 1 1) registris registreeritud ettevõtja taotluse alusel; 2 2) käesoleva seaduse § 45 lõikes 3 sätestatud riiklikku järelevalvet teostava asutuse peadirektori või tema poolt volitatud ametniku otsuse alusel; 3 3) kui registris registreeritud ettevõtjat on karistatud käesoleva seaduse § 23 lõike 1 punktis 2 nimetatud kuriteo eest; 4 4) kui registris registreeritud juriidiline i",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2882,13 +3225,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 25.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 25.",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_4"
       },
@@ -2908,13 +3259,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Väärismetalltoodete jaemüügi ja hulgimüügi õigus",
+      "rdfs:label": {
+        "@value": "§ 26. Väärismetalltoodete jaemüügi ja hulgimüügi õigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 26. Väärismetalltoodete jaemüügi ja hulgimüügi õigus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_5"
       },
@@ -2937,13 +3296,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Väärismetalltoodete jaemüügi ja hulgimüügi õiguse saamiseks esitatav taotlus",
+      "rdfs:label": {
+        "@value": "§ 27. Väärismetalltoodete jaemüügi ja hulgimüügi õiguse saamiseks esitatav taotlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 27. Väärismetalltoodete jaemüügi ja hulgimüügi õiguse saamiseks esitatav taotlus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_5"
       },
@@ -2966,13 +3333,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Registreerimismenetlus",
+      "rdfs:label": {
+        "@value": "§ 28. Registreerimismenetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 28. Registreerimismenetlus",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_5"
       },
@@ -2998,15 +3373,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29.",
+      "rdfs:label": {
+        "@value": "§ 29.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
+      "estleg:summary": "1 (1) Väärismetalltoodete jaemüügi õiguse andmisest keeldutakse, kui: 1 1) väärismetalltoodete jaemüügi õigust taotlev ettevõtja ei esita nõuetekohaseid dokumente ja selle puuduse kõrvaldamiseks määratud tähtaeg on möödunud; 2 2) väärismetalltoodete jaemüügi õigust taotlev ettevõtja esitab andmeid, mis ei vasta tegelikkusele; 3 3) väärismetalltoodete jaemüügi õigust taotlev ettevõtja soovib teostada väärismetalltoodete jaemüüki kohas, kus see käesoleva seaduse § 33 kohaselt ei ole lubatud; 4 4) ",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_5"
       },
-      "estleg:summary": "1 (1) Väärismetalltoodete jaemüügi õiguse andmisest keeldutakse, kui: 1 1) väärismetalltoodete jaemüügi õigust taotlev ettevõtja ei esita nõuetekohaseid dokumente ja selle puuduse kõrvaldamiseks määratud tähtaeg on möödunud; 2 2) väärismetalltoodete jaemüügi õigust taotlev ettevõtja esitab andmeid, mis ei vasta tegelikkusele; 3 3) väärismetalltoodete jaemüügi õigust taotlev ettevõtja soovib teostada väärismetalltoodete jaemüüki kohas, kus see käesoleva seaduse § 33 kohaselt ei ole lubatud; 4 4) ",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -3037,13 +3418,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 32.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 32.",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_5"
       },
@@ -3063,13 +3452,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Piirangud väärismetalltoodete jaemüügil",
+      "rdfs:label": {
+        "@value": "§ 33. Piirangud väärismetalltoodete jaemüügil",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 33. Piirangud väärismetalltoodete jaemüügil",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_5"
       },
@@ -3103,13 +3500,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Nõuded dokumentidele ja teabe andmisele väärismetalltoodete jaemüügil ja hulgimüügil",
+      "rdfs:label": {
+        "@value": "§ 34. Nõuded dokumentidele ja teabe andmisele väärismetalltoodete jaemüügil ja hulgimüügil",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalltoodete jaemüügil peab müüja andma ostjale väärismetalltoote eest maksmist tõendava dokumendi ja hulgimüügil saatedokumendi, mis võimaldab toodet tuvastada ja mis sisaldab vähemalt järgmist teavet väärismetalltoote kohta: väärismetalltoote nimetus; väärismetalltoote valmistamiseks kasutatud väärismetalli nimetus ja proov. kehtetu - (2) Valdkonna eest vastutav minister võib kehtestada täpsustatud nõuded väärismetalltoote müügil väärismetalltoote kohta esitatavale teabele.",
-      "estleg:legalText": "(1) Väärismetalltoodete jaemüügil peab müüja andma ostjale väärismetalltoote eest maksmist tõendava dokumendi ja hulgimüügil saatedokumendi, mis võimaldab toodet tuvastada ja mis sisaldab vähemalt järgmist teavet väärismetalltoote kohta: väärismetalltoote nimetus; väärismetalltoote valmistamiseks kasutatud väärismetalli nimetus ja proov. kehtetu - (2) Valdkonna eest vastutav minister võib kehtestada täpsustatud nõuded väärismetalltoote müügil väärismetalltoote kohta esitatavale teabele. (3) Käesoleva paragrahvi lõike 2 alusel kehtestatud nõuded võivad sisaldada nõudeid ka väärismetalltootele lisatud kristallilise või orgaanilise aine kohta esitatavale teabele.",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalltoodete jaemüügil peab müüja andma ostjale väärismetalltoote eest maksmist tõendava dokumendi ja hulgimüügil saatedokumendi, mis võimaldab toodet tuvastada ja mis sisaldab vähemalt järgmist teavet väärismetalltoote kohta: 1) väärismetalltoote nimetus; 2) väärismetalltoote valmistamiseks kasutatud väärismetalli nimetus ja proov. 3) (2) Valdkonna eest vastutav minister võib kehtestada täpsustatud nõuded väärismetalltoote müügil väärismetalltoote kohta esitatavale teabele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Väärismetalltoodete jaemüügil peab müüja andma ostjale väärismetalltoote eest maksmist tõendava dokumendi ja hulgimüügil saatedokumendi, mis võimaldab toodet tuvastada ja mis sisaldab vähemalt järgmist teavet väärismetalltoote kohta: 1) väärismetalltoote nimetus; 2) väärismetalltoote valmistamiseks kasutatud väärismetalli nimetus ja proov. 3) (2) Valdkonna eest vastutav minister võib kehtestada täpsustatud nõuded väärismetalltoote müügil väärismetalltoote kohta esitatavale teabele. (3) Käesoleva paragrahvi lõike 2 alusel kehtestatud nõuded võivad sisaldada nõudeid ka väärismetalltootele lisatud kristallilise või orgaanilise aine kohta esitatavale teabele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_5"
       },
@@ -3158,11 +3564,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Väärismetalltoodete jaemüügil peab müüja andma ostjale väärismetalltoote eest maksmist tõendava dokumendi ja hulgimüügil saatedokumendi, mis võimaldab toodet tuvastada ja mis sisaldab vähemalt järgmist teavet väärismetalltoote kohta: väärismetalltoote nimetus; väärismetalltoote valmistamiseks kasutatud väärismetalli nimetus ja proov. kehtetu -",
+      "estleg:legalText": "(1) Väärismetalltoodete jaemüügil peab müüja andma ostjale väärismetalltoote eest maksmist tõendava dokumendi ja hulgimüügil saatedokumendi, mis võimaldab toodet tuvastada ja mis sisaldab vähemalt järgmist teavet väärismetalltoote kohta: 1) väärismetalltoote nimetus; 2) väärismetalltoote valmistamiseks kasutatud väärismetalli nimetus ja proov. 3)",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_34"
       },
       "rdfs:label": "§ 34 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -3216,13 +3627,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. [Kehtetu -]",
+      "rdfs:label": {
+        "@value": "§ 35.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 35.",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_6"
       },
@@ -3251,13 +3670,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Arveldamine väärismetalltoodete sisseveo ja hulgimüügi korral",
+      "rdfs:label": {
+        "@value": "§ 36. Arveldamine väärismetalltoodete sisseveo ja hulgimüügi korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 36. Arveldamine väärismetalltoodete sisseveo ja hulgimüügi korral",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_6"
       },
@@ -3286,13 +3713,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Nõuded väärismetalltoote massi esitamisele",
+      "rdfs:label": {
+        "@value": "§ 37. Nõuded väärismetalltoote massi esitamisele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 37. Nõuded väärismetalltoote massi esitamisele",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_6"
       },
@@ -3315,13 +3750,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Väärismetalltoodete ekspert",
+      "rdfs:label": {
+        "@value": "§ 38. Väärismetalltoodete ekspert",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalltoote sihipärasel kasutamisel ilmnenud defektide olemasolu ja põhjuste või väärismetalltoote ja selle osade ning märgistuse vastavuse ja autentsuse väljaselgitamiseks võib korraldada ekspertiisi, mille teostab väärismetalltoodete ekspert. (2) Väärismetalltoodete ekspert peab olema erapooletu, võrdse kohtlemise printsiipe järgiv ning sõltumatu tema hinnatava väärismetalltoote valmistajast, sissevedajast, müüjast ja tarbijast.",
-      "estleg:legalText": "(1) Väärismetalltoote sihipärasel kasutamisel ilmnenud defektide olemasolu ja põhjuste või väärismetalltoote ja selle osade ning märgistuse vastavuse ja autentsuse väljaselgitamiseks võib korraldada ekspertiisi, mille teostab väärismetalltoodete ekspert. (2) Väärismetalltoodete ekspert peab olema erapooletu, võrdse kohtlemise printsiipe järgiv ning sõltumatu tema hinnatava väärismetalltoote valmistajast, sissevedajast, müüjast ja tarbijast. (3) Väärismetalltoodete ekspert peab olema kompetentne ning tundma väärismetalltoodete valmistamise põhimõtteid. Väärismetalltoodete eksperdi kompetentsus loetakse tõendatuks, kui: eksperdi on väärismetalltoodete uuringuteks akrediteerinud käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutus; eksperdiks oleva füüsilise isiku on personali sertifitseerimiseks akrediteeritud ettevõte uuringuteks sertifitseerinud või eksperdiks olev füüsiline isik on töötanud vähemalt 10 aastat juveliirina või väärismetalltoodete tootmistehnoloogia või uuringutega otseselt seotud tegevusalal.",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalltoote sihipärasel kasutamisel ilmnenud defektide olemasolu ja põhjuste või väärismetalltoote ja selle osade ning märgistuse vastavuse ja autentsuse väljaselgitamiseks võib korraldada ekspertiisi, mille teostab väärismetalltoodete ekspert. (2) Väärismetalltoodete ekspert peab olema erapooletu, võrdse kohtlemise printsiipe järgiv ning sõltumatu tema hinnatava väärismetalltoote valmistajast, sissevedajast, müüjast ja tarbijast.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Väärismetalltoote sihipärasel kasutamisel ilmnenud defektide olemasolu ja põhjuste või väärismetalltoote ja selle osade ning märgistuse vastavuse ja autentsuse väljaselgitamiseks võib korraldada ekspertiisi, mille teostab väärismetalltoodete ekspert. (2) Väärismetalltoodete ekspert peab olema erapooletu, võrdse kohtlemise printsiipe järgiv ning sõltumatu tema hinnatava väärismetalltoote valmistajast, sissevedajast, müüjast ja tarbijast. (3) Väärismetalltoodete ekspert peab olema kompetentne ning tundma väärismetalltoodete valmistamise põhimõtteid. Väärismetalltoodete eksperdi kompetentsus loetakse tõendatuks, kui: 1) eksperdi on väärismetalltoodete uuringuteks akrediteerinud käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutus; 2) eksperdiks oleva füüsilise isiku on personali sertifitseerimiseks akrediteeritud ettevõte uuringuteks sertifitseerinud või 3) eksperdiks olev füüsiline isik on töötanud vähemalt 10 aastat juveliirina või väärismetalltoodete tootmistehnoloogia või uuringutega otseselt seotud tegevusalal.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_2"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_2_6"
       },
@@ -3415,12 +3859,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Väärismetalltoodete ekspert peab olema kompetentne ning tundma väärismetalltoodete valmistamise põhimõtteid. Väärismetalltoodete eksperdi kompetentsus loetakse tõendatuks, kui: eksperdi on väärismetalltoodete uuringuteks akrediteerinud käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutus; eksperdiks oleva füüsilise isiku on personali sertifitseerimiseks akrediteeritud ettevõte uuringuteks sertifitseerinud või eksperdiks olev füüsiline isik on töötanud vähemalt 10 aastat juveliirina või väärismetalltoodete tootmistehnoloogia või uuringutega otseselt seotud tegevusalal.",
+      "estleg:legalText": "(3) Väärismetalltoodete ekspert peab olema kompetentne ning tundma väärismetalltoodete valmistamise põhimõtteid. Väärismetalltoodete eksperdi kompetentsus loetakse tõendatuks, kui: 1) eksperdi on väärismetalltoodete uuringuteks akrediteerinud käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutus; 2) eksperdiks oleva füüsilise isiku on personali sertifitseerimiseks akrediteeritud ettevõte uuringuteks sertifitseerinud või 3) eksperdiks olev füüsiline isik on töötanud vähemalt 10 aastat juveliirina või väärismetalltoodete tootmistehnoloogia või uuringutega otseselt seotud tegevusalal.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_38"
       },
       "rdfs:label": "§ 38 lg 3",
-      "estleg:itemNumber": "8",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -3449,12 +3897,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39. Väärismetalli proovi standardproovile vastavuse tõendamine",
+      "rdfs:label": {
+        "@value": "§ 39. Väärismetalli proovi standardproovile vastavuse tõendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalli proovi standardproovile vastavuse tõendamine on menetlus, mille käigus väärismetalli proovi tõendaja analüüsib väärismetalltoote valmistamiseks kasutatud sulami väärismetalli sisaldust ja tõendab tootele kantava kontrollmärgisega selle vastavust standardproovile. (2) Väärismetalli proovi standardproovile vastavuse tõendamise teenuste hindade kujundamise alused peavad olema objektiivsed, läbipaistvad ja mittediskrimineerivad ning hinnad kujundatud selliselt, et need kataksid",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalli proovi standardproovile vastavuse tõendamine on menetlus, mille käigus väärismetalli proovi tõendaja analüüsib väärismetalltoote valmistamiseks kasutatud sulami väärismetalli sisaldust ja tõendab tootele kantava kontrollmärgisega selle vastavust standardproovile. (2) Väärismetalli proovi standardproovile vastavuse tõendamise teenuste hindade kujundamise alused peavad olema objektiivsed, läbipaistvad ja mittediskrimineerivad ning hinnad kujundatud selliselt, et need kataksid",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Väärismetalli proovi standardproovile vastavuse tõendamine on menetlus, mille käigus väärismetalli proovi tõendaja analüüsib väärismetalltoote valmistamiseks kasutatud sulami väärismetalli sisaldust ja tõendab tootele kantava kontrollmärgisega selle vastavust standardproovile. (2) Väärismetalli proovi standardproovile vastavuse tõendamise teenuste hindade kujundamise alused peavad olema objektiivsed, läbipaistvad ja mittediskrimineerivad ning hinnad kujundatud selliselt, et need kataksid väärismetalli proovi standardproovile vastavuse tõendamisega seotud põhjendatud kulutused ja tagaksid väärismetalli proovi tõendajale mõistliku kasumi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_3"
@@ -3528,13 +3982,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40. Väärismetalli proovi tõendaja",
+      "rdfs:label": {
+        "@value": "§ 40. Väärismetalli proovi tõendaja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalli proovi tõendaja on väärismetalli proovi standardproovile vastavuse tõendamise toiminguid teostav äriühing. Nimetatud äriühing on ainuõigust omav ettevõtja konkurentsiseaduse tähenduses. (2) Väärismetalli proovi tõendaja peab vastama järgmistele nõuetele: äriühing, selle juhatuse ja nõukogu liige ning väärismetalli proovi standardproovile vastavuse tõendamise eest vastutav töötaja ei tohi tegeleda käesoleva seaduse kohaldamisalasse kuuluva väärismetalltoodete valmistamise,",
-      "estleg:legalText": "(1) Väärismetalli proovi tõendaja on väärismetalli proovi standardproovile vastavuse tõendamise toiminguid teostav äriühing. Nimetatud äriühing on ainuõigust omav ettevõtja konkurentsiseaduse tähenduses. (2) Väärismetalli proovi tõendaja peab vastama järgmistele nõuetele: äriühing, selle juhatuse ja nõukogu liige ning väärismetalli proovi standardproovile vastavuse tõendamise eest vastutav töötaja ei tohi tegeleda käesoleva seaduse kohaldamisalasse kuuluva väärismetalltoodete valmistamise, sisseveo, hulgi- või jaemüügi korras müügiks pakkumise või tasu eest võõrandamisega; äriühingu töötajad peavad olema tööks vajaliku ettevalmistuse, hariduse ja kogemustega; äriühing peab valdama vahendeid, mis võimaldavad nõuetekohaselt teostada väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid; äriühing peab kujundama väärismetalli proovi standardproovile vastavuse tõendamise teenuste hinnad vastavalt käesoleva seaduse § 39 lõikele 2; äriühing ja selle töötajad peavad teostama väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid asjatundlikult, erapooletult ja mittediskrimineerivalt ning olema sõltumatud mõjutamisest, millest võib oleneda nende otsus; äriühingu töötajate tasustamine ei tohi sõltuda kontrollmärgistatud väärismetalltoodete arvust; äriühing peab tagama, et tema töötajad hoiaksid ametiülesannete täitmisel teatavaks saanud teabe konfidentsiaalsena, kui seadus ei näe ette selle avalikustamist; äriühingu katselabori peab väärismetalli analüüside teostamiseks olema akrediteerinud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 765/2008, millega sätestatakse akrediteerimise ja turujärelevalve nõuded seoses toodete turustamisega ja tunnistatakse kehtetuks määrus (EMÜ) nr 339/93 (ELT L 218, 13.8.2008, lk 30–47), nõuetele vastav akrediteerimisasutus.",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalli proovi tõendaja on väärismetalli proovi standardproovile vastavuse tõendamise toiminguid teostav äriühing. Nimetatud äriühing on ainuõigust omav ettevõtja konkurentsiseaduse tähenduses. (2) Väärismetalli proovi tõendaja peab vastama järgmistele nõuetele: 1) äriühing, selle juhatuse ja nõukogu liige ning väärismetalli proovi standardproovile vastavuse tõendamise eest vastutav töötaja ei tohi tegeleda käesoleva seaduse kohaldamisalasse kuuluva väärismetalltoodete valmistamise,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Väärismetalli proovi tõendaja on väärismetalli proovi standardproovile vastavuse tõendamise toiminguid teostav äriühing. Nimetatud äriühing on ainuõigust omav ettevõtja konkurentsiseaduse tähenduses. (2) Väärismetalli proovi tõendaja peab vastama järgmistele nõuetele: 1) äriühing, selle juhatuse ja nõukogu liige ning väärismetalli proovi standardproovile vastavuse tõendamise eest vastutav töötaja ei tohi tegeleda käesoleva seaduse kohaldamisalasse kuuluva väärismetalltoodete valmistamise, sisseveo, hulgi- või jaemüügi korras müügiks pakkumise või tasu eest võõrandamisega; 2) äriühingu töötajad peavad olema tööks vajaliku ettevalmistuse, hariduse ja kogemustega; 3) äriühing peab valdama vahendeid, mis võimaldavad nõuetekohaselt teostada väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid; 4) äriühing peab kujundama väärismetalli proovi standardproovile vastavuse tõendamise teenuste hinnad vastavalt käesoleva seaduse § 39 lõikele 2; 5) äriühing ja selle töötajad peavad teostama väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid asjatundlikult, erapooletult ja mittediskrimineerivalt ning olema sõltumatud mõjutamisest, millest võib oleneda nende otsus; 6) äriühingu töötajate tasustamine ei tohi sõltuda kontrollmärgistatud väärismetalltoodete arvust; 7) äriühing peab tagama, et tema töötajad hoiaksid ametiülesannete täitmisel teatavaks saanud teabe konfidentsiaalsena, kui seadus ei näe ette selle avalikustamist; 8) äriühingu katselabori peab väärismetalli analüüside teostamiseks olema akrediteerinud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 765/2008, millega sätestatakse akrediteerimise ja turujärelevalve nõuded seoses toodete turustamisega ja tunnistatakse kehtetuks määrus (EMÜ) nr 339/93 (ELT L 218, 13.8.2008, lk 30–47), nõuetele vastav akrediteerimisasutus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_3"
       },
@@ -3613,11 +4073,21 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Väärismetalli proovi tõendaja peab vastama järgmistele nõuetele: äriühing, selle juhatuse ja nõukogu liige ning väärismetalli proovi standardproovile vastavuse tõendamise eest vastutav töötaja ei tohi tegeleda käesoleva seaduse kohaldamisalasse kuuluva väärismetalltoodete valmistamise, sisseveo, hulgi- või jaemüügi korras müügiks pakkumise või tasu eest võõrandamisega; äriühingu töötajad peavad olema tööks vajaliku ettevalmistuse, hariduse ja kogemustega; äriühing peab valdama vahendeid, mis võimaldavad nõuetekohaselt teostada väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid; äriühing peab kujundama väärismetalli proovi standardproovile vastavuse tõendamise teenuste hinnad vastavalt käesoleva seaduse § 39 lõikele 2; äriühing ja selle töötajad peavad teostama väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid asjatundlikult, erapooletult ja mittediskrimineerivalt ning olema sõltumatud mõjutamisest, millest võib oleneda nende otsus; äriühingu töötajate tasustamine ei tohi sõltuda kontrollmärgistatud väärismetalltoodete arvust; äriühing peab tagama, et tema töötajad hoiaksid ametiülesannete täitmisel teatavaks saanud teabe konfidentsiaalsena, kui seadus ei näe ette selle avalikustamist; äriühingu katselabori peab väärismetalli analüüside teostamiseks olema akrediteerinud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 765/2008, millega sätestatakse akrediteerimise ja turujärelevalve nõuded seoses toodete turustamisega ja tunnistatakse kehtetuks määrus (EMÜ) nr 339/93 (ELT L 218, 13.8.2008, lk 30–47), nõuetele vastav akrediteerimisasutus.",
+      "estleg:legalText": "(2) Väärismetalli proovi tõendaja peab vastama järgmistele nõuetele: 1) äriühing, selle juhatuse ja nõukogu liige ning väärismetalli proovi standardproovile vastavuse tõendamise eest vastutav töötaja ei tohi tegeleda käesoleva seaduse kohaldamisalasse kuuluva väärismetalltoodete valmistamise, sisseveo, hulgi- või jaemüügi korras müügiks pakkumise või tasu eest võõrandamisega; 2) äriühingu töötajad peavad olema tööks vajaliku ettevalmistuse, hariduse ja kogemustega; 3) äriühing peab valdama vahendeid, mis võimaldavad nõuetekohaselt teostada väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid; 4) äriühing peab kujundama väärismetalli proovi standardproovile vastavuse tõendamise teenuste hinnad vastavalt käesoleva seaduse § 39 lõikele 2; 5) äriühing ja selle töötajad peavad teostama väärismetalli proovi standardproovile vastavuse tõendamisega seotud toiminguid asjatundlikult, erapooletult ja mittediskrimineerivalt ning olema sõltumatud mõjutamisest, millest võib oleneda nende otsus; 6) äriühingu töötajate tasustamine ei tohi sõltuda kontrollmärgistatud väärismetalltoodete arvust; 7) äriühing peab tagama, et tema töötajad hoiaksid ametiülesannete täitmisel teatavaks saanud teabe konfidentsiaalsena, kui seadus ei näe ette selle avalikustamist; 8) äriühingu katselabori peab väärismetalli analüüside teostamiseks olema akrediteerinud Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 765/2008, millega sätestatakse akrediteerimise ja turujärelevalve nõuded seoses toodete turustamisega ja tunnistatakse kehtetuks määrus (EMÜ) nr 339/93 (ELT L 218, 13.8.2008, lk 30–47), nõuetele vastav akrediteerimisasutus.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_40"
       },
       "rdfs:label": "§ 40 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -3654,13 +4124,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41. Väärismetalli proovi tõendaja vastutuskindlustus",
+      "rdfs:label": {
+        "@value": "§ 41. Väärismetalli proovi tõendaja vastutuskindlustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Väärismetalli proovi tõendaja tekitatud kahju hüvitamise tagamiseks peab väärismetalli proovi tõendaja sõlmima vastutuskindlustuslepingu järgmiste tingimuste kohaselt: kindlustusandja on äriühing, kellel on Eestis kindlustamise luba; leping hõlmab väärismetalli proovi tõendaja poolt tõendamismenetluse käigus tekitatud kahju ja selle isiku tekitatud kahju, kelle tegevuse eest väärismetalli proovi tõendaja seaduse järgi vastutab; kindlustussumma alampiir ühe kindlustusjuhtumi kohta on vähemalt",
-      "estleg:legalText": "Väärismetalli proovi tõendaja tekitatud kahju hüvitamise tagamiseks peab väärismetalli proovi tõendaja sõlmima vastutuskindlustuslepingu järgmiste tingimuste kohaselt: kindlustusandja on äriühing, kellel on Eestis kindlustamise luba; leping hõlmab väärismetalli proovi tõendaja poolt tõendamismenetluse käigus tekitatud kahju ja selle isiku tekitatud kahju, kelle tegevuse eest väärismetalli proovi tõendaja seaduse järgi vastutab; kindlustussumma alampiir ühe kindlustusjuhtumi kohta on vähemalt 6390 eurot. Kutsekohustuste tahtlikust rikkumisest tekkivat vastutust kindlustama ei pea; kui kindlustusleping on sõlmitud omavastutusega, hüvitab kindlustusandja tekitatud kahju kogu ulatuses ja nõuab omavastutuse summa tagasi kindlustusvõtjalt.",
+      "estleg:summary": {
+        "@value": "Väärismetalli proovi tõendaja tekitatud kahju hüvitamise tagamiseks peab väärismetalli proovi tõendaja sõlmima vastutuskindlustuslepingu järgmiste tingimuste kohaselt: 1) kindlustusandja on äriühing, kellel on Eestis kindlustamise luba; 2) leping hõlmab väärismetalli proovi tõendaja poolt tõendamismenetluse käigus tekitatud kahju ja selle isiku tekitatud kahju, kelle tegevuse eest väärismetalli proovi tõendaja seaduse järgi vastutab; 3) kindlustussumma alampiir ühe kindlustusjuhtumi kohta on",
+        "@language": "et"
+      },
+      "estleg:legalText": "Väärismetalli proovi tõendaja tekitatud kahju hüvitamise tagamiseks peab väärismetalli proovi tõendaja sõlmima vastutuskindlustuslepingu järgmiste tingimuste kohaselt: 1) kindlustusandja on äriühing, kellel on Eestis kindlustamise luba; 2) leping hõlmab väärismetalli proovi tõendaja poolt tõendamismenetluse käigus tekitatud kahju ja selle isiku tekitatud kahju, kelle tegevuse eest väärismetalli proovi tõendaja seaduse järgi vastutab; 3) kindlustussumma alampiir ühe kindlustusjuhtumi kohta on vähemalt 6390 eurot. Kutsekohustuste tahtlikust rikkumisest tekkivat vastutust kindlustama ei pea; 4) kui kindlustusleping on sõlmitud omavastutusega, hüvitab kindlustusandja tekitatud kahju kogu ulatuses ja nõuab omavastutuse summa tagasi kindlustusvõtjalt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_3"
       },
@@ -3702,10 +4178,18 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Väärismetalli proovi tõendaja tekitatud kahju hüvitamise tagamiseks peab väärismetalli proovi tõendaja sõlmima vastutuskindlustuslepingu järgmiste tingimuste kohaselt: kindlustusandja on äriühing, kellel on Eestis kindlustamise luba; leping hõlmab väärismetalli proovi tõendaja poolt tõendamismenetluse käigus tekitatud kahju ja selle isiku tekitatud kahju, kelle tegevuse eest väärismetalli proovi tõendaja seaduse järgi vastutab; kindlustussumma alampiir ühe kindlustusjuhtumi kohta on vähemalt 6390 eurot. Kutsekohustuste tahtlikust rikkumisest tekkivat vastutust kindlustama ei pea; kui kindlustusleping on sõlmitud omavastutusega, hüvitab kindlustusandja tekitatud kahju kogu ulatuses ja nõuab omavastutuse summa tagasi kindlustusvõtjalt.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väärismetalli proovi tõendaja tekitatud kahju hüvitamise tagamiseks peab väärismetalli proovi tõendaja sõlmima vastutuskindlustuslepingu järgmiste tingimuste kohaselt: 1) kindlustusandja on äriühing, kellel on Eestis kindlustamise luba; 2) leping hõlmab väärismetalli proovi tõendaja poolt tõendamismenetluse käigus tekitatud kahju ja selle isiku tekitatud kahju, kelle tegevuse eest väärismetalli proovi tõendaja seaduse järgi vastutab; 3) kindlustussumma alampiir ühe kindlustusjuhtumi kohta on vähemalt 6390 eurot. Kutsekohustuste tahtlikust rikkumisest tekkivat vastutust kindlustama ei pea; 4) kui kindlustusleping on sõlmitud omavastutusega, hüvitab kindlustusandja tekitatud kahju kogu ulatuses ja nõuab omavastutuse summa tagasi kindlustusvõtjalt.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_41"
       },
+      "rdfs:label": "§ 41 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -3726,13 +4210,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
-      "rdfs:label": "§ 42. Riiklik järelevalve",
+      "rdfs:label": {
+        "@value": "§ 42. Riiklik järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Käesolevas seaduses sätestatud nõuete, välja arvatud väärismetalltoodete sisseveoga seonduvad nõuded, järgimise üle teostab järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet. (2) Lisaks käesoleva paragrahvi lõikes 1 sätestatule teostavad järelevalvet järgmised korrakaitseorganid vastavalt oma pädevusele: Maksu- ja Tolliamet väärismetalltoodete sisseveoga seonduvate nõuete täitmise üle; valla- ja linnavalitsus oma haldusterritooriumil teeninduse tegevusalal tegutsemise korral",
-      "estleg:legalText": "(1) Käesolevas seaduses sätestatud nõuete, välja arvatud väärismetalltoodete sisseveoga seonduvad nõuded, järgimise üle teostab järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet. (2) Lisaks käesoleva paragrahvi lõikes 1 sätestatule teostavad järelevalvet järgmised korrakaitseorganid vastavalt oma pädevusele: Maksu- ja Tolliamet väärismetalltoodete sisseveoga seonduvate nõuete täitmise üle; valla- ja linnavalitsus oma haldusterritooriumil teeninduse tegevusalal tegutsemise korral väärismetalltoodete valmistamise ja väärismetalltoodete jaemüügiga seonduvate nõuete järgimise üle.",
+      "estleg:summary": {
+        "@value": "(1) Käesolevas seaduses sätestatud nõuete, välja arvatud väärismetalltoodete sisseveoga seonduvad nõuded, järgimise üle teostab järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet. (2) Lisaks käesoleva paragrahvi lõikes 1 sätestatule teostavad järelevalvet järgmised korrakaitseorganid vastavalt oma pädevusele: 1) Maksu- ja Tolliamet väärismetalltoodete sisseveoga seonduvate nõuete täitmise üle; 2) valla- ja linnavalitsus oma haldusterritooriumil teeninduse tegevusalal tegutsemise korral",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud nõuete, välja arvatud väärismetalltoodete sisseveoga seonduvad nõuded, järgimise üle teostab järelevalvet Tarbijakaitse ja Tehnilise Järelevalve Amet. (2) Lisaks käesoleva paragrahvi lõikes 1 sätestatule teostavad järelevalvet järgmised korrakaitseorganid vastavalt oma pädevusele: 1) Maksu- ja Tolliamet väärismetalltoodete sisseveoga seonduvate nõuete täitmise üle; 2) valla- ja linnavalitsus oma haldusterritooriumil teeninduse tegevusalal tegutsemise korral väärismetalltoodete valmistamise ja väärismetalltoodete jaemüügiga seonduvate nõuete järgimise üle.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_1"
       },
@@ -3846,11 +4339,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Lisaks käesoleva paragrahvi lõikes 1 sätestatule teostavad järelevalvet järgmised korrakaitseorganid vastavalt oma pädevusele: Maksu- ja Tolliamet väärismetalltoodete sisseveoga seonduvate nõuete täitmise üle; valla- ja linnavalitsus oma haldusterritooriumil teeninduse tegevusalal tegutsemise korral väärismetalltoodete valmistamise ja väärismetalltoodete jaemüügiga seonduvate nõuete järgimise üle.",
+      "estleg:legalText": "(2) Lisaks käesoleva paragrahvi lõikes 1 sätestatule teostavad järelevalvet järgmised korrakaitseorganid vastavalt oma pädevusele: 1) Maksu- ja Tolliamet väärismetalltoodete sisseveoga seonduvate nõuete täitmise üle; 2) valla- ja linnavalitsus oma haldusterritooriumil teeninduse tegevusalal tegutsemise korral väärismetalltoodete valmistamise ja väärismetalltoodete jaemüügiga seonduvate nõuete järgimise üle.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_42"
       },
       "rdfs:label": "§ 42 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -3873,13 +4370,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
-      "rdfs:label": "§ 43. Riikliku järelevalve erimeetmed",
+      "rdfs:label": {
+        "@value": "§ 43. Riikliku järelevalve erimeetmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:summary": {
+        "@value": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_1"
       },
@@ -3938,10 +4444,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 31, 32, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_43"
       },
+      "rdfs:label": "§ 43 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -3962,13 +4470,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43¹.",
-      "rdfs:label": "§ 43¹. Riikliku järelevalve erisused",
+      "rdfs:label": {
+        "@value": "§ 43¹. Riikliku järelevalve erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda: väärismetalltoodete käitleja või tema esindaja juuresolekul hoonesse ja ruumi, kus väärismetalltooteid ladustatakse, pakutakse müügiks või võõrandatakse tasu eest; väärismetalli proovi tõendaja esindaja juuresolekul hoonesse ja ruumi, kus toimub väärismetalltoodete proovi tõendamine. (2) Korrakaitseorgan võib: keelata käesoleva seaduse nõuetele mittevastavate väärismetalltoodete müügiks pakkumise ja tasu eest",
-      "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda: väärismetalltoodete käitleja või tema esindaja juuresolekul hoonesse ja ruumi, kus väärismetalltooteid ladustatakse, pakutakse müügiks või võõrandatakse tasu eest; väärismetalli proovi tõendaja esindaja juuresolekul hoonesse ja ruumi, kus toimub väärismetalltoodete proovi tõendamine. (2) Korrakaitseorgan võib: keelata käesoleva seaduse nõuetele mittevastavate väärismetalltoodete müügiks pakkumise ja tasu eest võõrandamise ning väärismetalltootena märgistamise; nõuda väärismetalltoodete müügikõlbmatuks muutmist või Eestist väljavedamist; kehtetu - keelata nõuetekohaselt märgistamata väärismetalltoodete müügiks pakkumine ja tasu eest võõrandamine; võtta kontrollimiseks tasuta väärismetalltoodete näidiseid ja tellida nende nõuetele vastavuse hindamiseks analüüse isikult, kelle katselabor on käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutuse poolt väärismetalli analüüside teostamiseks akrediteeritud, ning ekspertiise väärismetalltoodete eksperdilt. (3) Käesoleva paragrahvi lõike 2 punkti 4 kohaselt võetud väärismetalltoote näidise nõuetele vastavuse hindamiseks tellitud analüüsi- ja ekspertiisiteenuste kulud tasub korrakaitseorgan ning hüvitab väärismetalltoote maksumuse või tagastab väärismetalltoote muutumatul kujul, kui analüüsi tulemuste või eksperdiarvamuse kohaselt oli näidiseks võetud väärismetalltoode nõuetekohane. Kui analüüsi tulemuste või eksperdiarvamuse kohaselt toode ei olnud nõuetekohane, tagastab korrakaitseorgan väärismetalltoote, mis ei osutunud nõuetele vastavaks, müügikõlbmatuks muudetud kujul ja korrakaitseorgani dokumentaalselt tõendatud kulud peab hüvitama väärismetalltoote nõuetele vastavuse eest vastutav ettevõtja.",
+      "estleg:summary": {
+        "@value": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda: 1) väärismetalltoodete käitleja või tema esindaja juuresolekul hoonesse ja ruumi, kus väärismetalltooteid ladustatakse, pakutakse müügiks või võõrandatakse tasu eest; 2) väärismetalli proovi tõendaja esindaja juuresolekul hoonesse ja ruumi, kus toimub väärismetalltoodete proovi tõendamine. (2) Korrakaitseorgan võib: 1) keelata käesoleva seaduse nõuetele mittevastavate väärismetalltoodete müügiks pakkumise ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda: 1) väärismetalltoodete käitleja või tema esindaja juuresolekul hoonesse ja ruumi, kus väärismetalltooteid ladustatakse, pakutakse müügiks või võõrandatakse tasu eest; 2) väärismetalli proovi tõendaja esindaja juuresolekul hoonesse ja ruumi, kus toimub väärismetalltoodete proovi tõendamine. (2) Korrakaitseorgan võib: 1) keelata käesoleva seaduse nõuetele mittevastavate väärismetalltoodete müügiks pakkumise ja tasu eest võõrandamise ning väärismetalltootena märgistamise; 2) nõuda väärismetalltoodete müügikõlbmatuks muutmist või Eestist väljavedamist; 3) 3¹) keelata nõuetekohaselt märgistamata väärismetalltoodete müügiks pakkumine ja tasu eest võõrandamine; 4) võtta kontrollimiseks tasuta väärismetalltoodete näidiseid ja tellida nende nõuetele vastavuse hindamiseks analüüse isikult, kelle katselabor on käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutuse poolt väärismetalli analüüside teostamiseks akrediteeritud, ning ekspertiise väärismetalltoodete eksperdilt. (3) Käesoleva paragrahvi lõike 2 punkti 4 kohaselt võetud väärismetalltoote näidise nõuetele vastavuse hindamiseks tellitud analüüsi- ja ekspertiisiteenuste kulud tasub korrakaitseorgan ning hüvitab väärismetalltoote maksumuse või tagastab väärismetalltoote muutumatul kujul, kui analüüsi tulemuste või eksperdiarvamuse kohaselt oli näidiseks võetud väärismetalltoode nõuetekohane. Kui analüüsi tulemuste või eksperdiarvamuse kohaselt toode ei olnud nõuetekohane, tagastab korrakaitseorgan väärismetalltoote, mis ei osutunud nõuetele vastavaks, müügikõlbmatuks muudetud kujul ja korrakaitseorgani dokumentaalselt tõendatud kulud peab hüvitama väärismetalltoote nõuetele vastavuse eest vastutav ettevõtja.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_1"
       },
@@ -4016,11 +4533,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda: väärismetalltoodete käitleja või tema esindaja juuresolekul hoonesse ja ruumi, kus väärismetalltooteid ladustatakse, pakutakse müügiks või võõrandatakse tasu eest; väärismetalli proovi tõendaja esindaja juuresolekul hoonesse ja ruumi, kus toimub väärismetalltoodete proovi tõendamine.",
+      "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda: 1) väärismetalltoodete käitleja või tema esindaja juuresolekul hoonesse ja ruumi, kus väärismetalltooteid ladustatakse, pakutakse müügiks või võõrandatakse tasu eest; 2) väärismetalli proovi tõendaja esindaja juuresolekul hoonesse ja ruumi, kus toimub väärismetalltoodete proovi tõendamine.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_43_1"
       },
       "rdfs:label": "§ 43¹ lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -4046,12 +4567,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Korrakaitseorgan võib: keelata käesoleva seaduse nõuetele mittevastavate väärismetalltoodete müügiks pakkumise ja tasu eest võõrandamise ning väärismetalltootena märgistamise; nõuda väärismetalltoodete müügikõlbmatuks muutmist või Eestist väljavedamist; kehtetu - keelata nõuetekohaselt märgistamata väärismetalltoodete müügiks pakkumine ja tasu eest võõrandamine; võtta kontrollimiseks tasuta väärismetalltoodete näidiseid ja tellida nende nõuetele vastavuse hindamiseks analüüse isikult, kelle katselabor on käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutuse poolt väärismetalli analüüside teostamiseks akrediteeritud, ning ekspertiise väärismetalltoodete eksperdilt.",
+      "estleg:legalText": "(2) Korrakaitseorgan võib: 1) keelata käesoleva seaduse nõuetele mittevastavate väärismetalltoodete müügiks pakkumise ja tasu eest võõrandamise ning väärismetalltootena märgistamise; 2) nõuda väärismetalltoodete müügikõlbmatuks muutmist või Eestist väljavedamist; 3) 3¹) keelata nõuetekohaselt märgistamata väärismetalltoodete müügiks pakkumine ja tasu eest võõrandamine; 4) võtta kontrollimiseks tasuta väärismetalltoodete näidiseid ja tellida nende nõuetele vastavuse hindamiseks analüüse isikult, kelle katselabor on käesoleva seaduse § 40 lõike 2 punktis 8 nimetatud akrediteerimisasutuse poolt väärismetalli analüüside teostamiseks akrediteeritud, ning ekspertiise väärismetalltoodete eksperdilt.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_43_1"
       },
       "rdfs:label": "§ 43¹ lg 2",
-      "estleg:itemNumber": "8",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "3¹",
+        "4"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -4098,13 +4625,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
-      "rdfs:label": "§ 44. Järelevalve teostaja kohustused",
+      "rdfs:label": {
+        "@value": "§ 44. Järelevalve teostaja kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 44. Järelevalve teostaja kohustused",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_1"
       },
@@ -4127,13 +4662,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45. Sunniraha määr",
+      "rdfs:label": {
+        "@value": "§ 45. Sunniraha määr",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 9600 eurot.",
+      "estleg:summary": {
+        "@value": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 9600 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 9600 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_1"
       },
@@ -4206,10 +4750,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 9600 eurot.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 9600 eurot.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_45"
       },
+      "rdfs:label": "§ 45 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -4233,13 +4779,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
-      "rdfs:label": "§ 46. Ettekirjutuse või toimingu vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 46. Ettekirjutuse või toimingu vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 46. Ettekirjutuse või toimingu vaidlustamine",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_1"
       },
@@ -4262,13 +4816,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
-      "rdfs:label": "§ 47. Väärismetalltoodete müügiks pakkumise ja tasu eest võõrandamise nõuete rikkumine",
+      "rdfs:label": {
+        "@value": "§ 47. Väärismetalltoodete müügiks pakkumise ja tasu eest võõrandamise nõuete rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 47. Väärismetalltoodete müügiks pakkumise ja tasu eest võõrandamise nõuete rikkumine",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_2"
       },
@@ -4291,13 +4853,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 48.",
-      "rdfs:label": "§ 48. Nimemärgise võltsimine ja võltsituna kasutamine",
+      "rdfs:label": {
+        "@value": "§ 48. Nimemärgise võltsimine ja võltsituna kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalltoodete valmistaja või sissevedaja nimemärgise võltsimise ja kasutamise eest märgisele mittevastaval materjalil toodete tasu eest võõrandamise eesmärgil –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalltoodete valmistaja või sissevedaja nimemärgise võltsimise ja kasutamise eest märgisele mittevastaval materjalil toodete tasu eest võõrandamise eesmärgil –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Väärismetalltoodete valmistaja või sissevedaja nimemärgise võltsimise ja kasutamise eest märgisele mittevastaval materjalil toodete tasu eest võõrandamise eesmärgil –karistatakse rahatrahviga kuni 300 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_2"
       },
@@ -4428,13 +4999,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 49.",
-      "rdfs:label": "§ 49. Väärismetalltoote märgistamisnõuete rikkumine",
+      "rdfs:label": {
+        "@value": "§ 49. Väärismetalltoote märgistamisnõuete rikkumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 49. Väärismetalltoote märgistamisnõuete rikkumine",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_2"
       },
@@ -4466,15 +5045,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 50.",
-      "rdfs:label": "§ 50.",
+      "rdfs:label": {
+        "@value": "§ 50.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
+      "estleg:summary": "1 (1) Riiklikusse erinõuetega tegevusaladel tegutsevate ettevõtjate registrisse kandmata tegevuskohas väärismetalltoodete käitlemise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Riiklikusse erinõuetega tegevusaladel tegutsevate ettevõtjate registrisse kandmata tegevuskohas väärismetalltoodete käitlemise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 15 000 krooni. Sama teo eest, ",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_2"
       },
-      "estleg:summary": "1 (1) Riiklikusse erinõuetega tegevusaladel tegutsevate ettevõtjate registrisse kandmata tegevuskohas väärismetalltoodete käitlemise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Riiklikusse erinõuetega tegevusaladel tegutsevate ettevõtjate registrisse kandmata tegevuskohas väärismetalltoodete käitlemise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 15 000 krooni. Sama teo eest, ",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -4523,13 +5108,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 53.",
-      "rdfs:label": "§ 53. [Kehtetud -]",
+      "rdfs:label": {
+        "@value": "§ 53.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Kehtetud -",
-      "estleg:legalText": "Kehtetud -",
+      "estleg:summary": {
+        "@value": "§ 53.",
+        "@language": "et"
+      },
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_2"
       },
@@ -4549,13 +5142,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 54.",
-      "rdfs:label": "§ 54. Menetlus",
+      "rdfs:label": {
+        "@value": "§ 54. Menetlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse §-s 48 sätestatud väärteo kohtuväline menetleja on vastavalt oma pädevusele: Tarbijakaitse ja Tehnilise Järelevalve Amet. kehtetu - kehtetu -",
-      "estleg:legalText": "Käesoleva seaduse §-s 48 sätestatud väärteo kohtuväline menetleja on vastavalt oma pädevusele: Tarbijakaitse ja Tehnilise Järelevalve Amet. kehtetu - kehtetu -",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse §-s 48 sätestatud väärteo kohtuväline menetleja on vastavalt oma pädevusele: 1) Tarbijakaitse ja Tehnilise Järelevalve Amet. 2) 3)",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesoleva seaduse §-s 48 sätestatud väärteo kohtuväline menetleja on vastavalt oma pädevusele: 1) Tarbijakaitse ja Tehnilise Järelevalve Amet. 2) 3)",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VMTS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_VMTS_4_2"
       },
@@ -4636,10 +5238,17 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse §-s 48 sätestatud väärteo kohtuväline menetleja on vastavalt oma pädevusele: Tarbijakaitse ja Tehnilise Järelevalve Amet. kehtetu - kehtetu -",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 48 sätestatud väärteo kohtuväline menetleja on vastavalt oma pädevusele: 1) Tarbijakaitse ja Tehnilise Järelevalve Amet. 2) 3)",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_54"
       },
+      "rdfs:label": "§ 54 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4670,12 +5279,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 55.",
-      "rdfs:label": "§ 55. Üleminekusätted",
+      "rdfs:label": {
+        "@value": "§ 55. Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "(1) Väärismetalltoodete proovi seaduse § 5 lõigete 1–5 alusel väljaantud tegevusluba ja sama paragrahvi lõigete 8 ja 9 alusel väljaantud Eesti Proovikoja registreerimistunnistus kehtivad, kuni nende omaja on kantud majandustegevuse registrisse, kuid mitte kauem kui tegevusloale ja registreerimistunnistusele märgitud tähtpäevani. (2) Valmistaja nimemärgis, mis oli väärismetalltoodete proovi seaduse § 8 lõike 1 kohaselt registreeritud Eesti Proovikojas, kantakse nimemärgiste riiklikusse",
+      "estleg:summary": {
+        "@value": "(1) Väärismetalltoodete proovi seaduse § 5 lõigete 1–5 alusel väljaantud tegevusluba ja sama paragrahvi lõigete 8 ja 9 alusel väljaantud Eesti Proovikoja registreerimistunnistus kehtivad, kuni nende omaja on kantud majandustegevuse registrisse, kuid mitte kauem kui tegevusloale ja registreerimistunnistusele märgitud tähtpäevani. (2) Valmistaja nimemärgis, mis oli väärismetalltoodete proovi seaduse § 8 lõike 1 kohaselt registreeritud Eesti Proovikojas, kantakse nimemärgiste riiklikusse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Väärismetalltoodete proovi seaduse § 5 lõigete 1–5 alusel väljaantud tegevusluba ja sama paragrahvi lõigete 8 ja 9 alusel väljaantud Eesti Proovikoja registreerimistunnistus kehtivad, kuni nende omaja on kantud majandustegevuse registrisse, kuid mitte kauem kui tegevusloale ja registreerimistunnistusele märgitud tähtpäevani. (2) Valmistaja nimemärgis, mis oli väärismetalltoodete proovi seaduse § 8 lõike 1 kohaselt registreeritud Eesti Proovikojas, kantakse nimemärgiste riiklikusse registrisse ainult vastava valmistaja poolt esitatud registreerimistaotluse alusel. Eesti Proovikojas registreeritud nimemärgise kandmine nimemärgiste riiklikusse registrisse on riigilõivuvaba. (3) Väärismetalltoodete proovi seaduse §-s 9 sätestatu kohaselt enne käesoleva seaduse jõustumist kontrollmärgisega märgistatud väärismetalltooteid võib müügiks pakkuda ja tasu eest võõrandada sissevedaja nimemärgisega märgistamata. (4) Käesoleva seaduse § 40 lõikes 1 nimetatud ainuõiguse andmiseks korraldatakse aasta jooksul pärast käesoleva seaduse jõustumist avalik konkurss konkurentsiseaduses sätestatud korras. Kuni ainuõiguse andmiseni avaliku konkursi tulemuse alusel annab väärismetalli proovi tõendajana tegutsemiseks ainuõiguse valdkonna eest vastutava ministri ettepanekul Vabariigi Valitsus. (5) Käesoleva seaduse § 12 lõike 2 alusel asutatud nimemärgiste riikliku registri tegevus lõpetatakse 2025. aasta 1. juulil ning andmed, esemekogu ja arhiiv antakse üle Tarbijakaitse ja Tehnilise Järelevalve Ametile. (6) Nimemärgiste riiklikku registrisse kantud nimemärgiseid käsitatakse 2025. aasta 1. juulist arvates seadme ohutuse seaduse § 12 lõike 2 alusel asutatud Tarbijakaitse ja Tehnilise Järelevalve Ameti järelevalve infosüsteemis registreeritud nimemärgistena.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_5"
@@ -4904,18 +5519,21 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 56.",
-      "rdfs:label": "§ 56.",
+      "rdfs:label": {
+        "@value": "§ 56.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
+      "estleg:summary": "Riigilõivuseaduses (RT I 1997, 80, 1344; 2001, 55, 331; 53, 310; 56, 332; 64, 367; 65, 377; 85, 512; 88, 531; 91, 543; 93, 565; 2002, 1, 1; 18, 97; 23, 131; 24, 135; 27, 151 ja 153; 30, 178; 35, 214; 44, 281; 47, 297; 51, 316; 57, 358; 58, 361; 61, 375; 62, 377; 90, 519; 102, 599; 105, 610; 2003, 4, 20) tehakse järgmised muudatused: 1 1) seaduse 7. peatükki täiendatakse 1 6 . jaoga järgmises sõnastuses: «1 6 . jagu Nimemärgiste riikliku registri toimingud",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_5"
       },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_VMTS_5"
       },
-      "estleg:summary": "Riigilõivuseaduses (RT I 1997, 80, 1344; 2001, 55, 331; 53, 310; 56, 332; 64, 367; 65, 377; 85, 512; 88, 531; 91, 543; 93, 565; 2002, 1, 1; 18, 97; 23, 131; 24, 135; 27, 151 ja 153; 30, 178; 35, 214; 44, 281; 47, 297; 51, 316; 57, 358; 58, 361; 61, 375; 62, 377; 90, 519; 102, 599; 105, 610; 2003, 4, 20) tehakse järgmised muudatused: 1 1) seaduse 7. peatükki täiendatakse 1 6 . jaoga järgmises sõnastuses: «1 6 . jagu Nimemärgiste riikliku registri toimingud",
       "estleg:hasVersion": [
         {
           "@id": "estleg:VMTS_Par_56_v12853872"
@@ -4929,12 +5547,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 57.",
-      "rdfs:label": "§ 57. [[Käesolevast tekstist välja jäetud.]]",
+      "rdfs:label": {
+        "@value": "§ 57. [[Käesolevast tekstist välja jäetud.]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_5"
@@ -4958,12 +5582,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 58.",
-      "rdfs:label": "§ 58. Seaduse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 58. Seaduse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Väärismetalltoodete seadus",
       "estleg:partOfAct": {
         "@id": "estleg:VMTS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2004. aasta 15. aprillil.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2004. aasta 15. aprillil.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2004. aasta 15. aprillil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VMTS_5"
@@ -4991,9 +5621,27 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2004. aasta 15. aprillil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2004. aasta 15. aprillil.",
       "estleg:parentProvision": {
         "@id": "estleg:VMTS_Par_58"
+      },
+      "rdfs:label": "§ 58 lg 1"
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/517062025002",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:VMTS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Precious Metal Articles Act",
+        "@language": "en"
       }
     }
   ]

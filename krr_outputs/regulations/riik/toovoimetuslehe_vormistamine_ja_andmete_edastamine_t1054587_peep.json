@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Töövõimetuslehe vormistamine ja andmete edastamine (määrus)",
+      "rdfs:label": {
+        "@value": "Töövõimetuslehe vormistamine ja andmete edastamine (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1054587",
       "estleg:preambleText": "Määrus kehtestatakse ravikindlustuse seaduse § 52 lõike 4 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2022-08-07",
+        "@value": "2025-12-23",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2025-12-11",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-08-04",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1054587_19153daf95"
@@ -105,7 +107,13 @@
         {
           "@id": "http://eurovoc.europa.eu/3151"
         }
-      ]
+      ],
+      "dcterms:title": "Töövõimetuslehe vormistamine ja andmete edastamine",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054587_Par_1",
@@ -114,13 +122,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse töövõimetuslehe andmekoosseis ning töövõimetuslehe registreerimise, avamise, lõpetamise, kehtetuks tunnistamise ja Tervisekassale edastamise tingimused ning kord. RT I 2023-05-23 1 123052023001 2023-05-26",
-      "estleg:legalText": "Määrusega kehtestatakse töövõimetuslehe andmekoosseis ning töövõimetuslehe registreerimise, avamise, lõpetamise, kehtetuks tunnistamise ja Tervisekassale edastamise tingimused ning kord. RT I 2023-05-23 1 123052023001 2023-05-26 Määrusega kehtestatakse töövõimetuslehe andmekoosseis ning töövõimetuslehe registreerimise, avamise, lõpetamise, kehtetuks tunnistamise ja Tervisekassale edastamise tingimused ning kord.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse töövõimetuslehe andmekoosseis ning töövõimetuslehe registreerimise, avamise, lõpetamise, kehtetuks tunnistamise ja Tervisekassale edastamise tingimused ning kord. RT I 2023-05-23 1 123052023001 2023-05-26",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse töövõimetuslehe andmekoosseis ning töövõimetuslehe registreerimise, avamise, lõpetamise, kehtetuks tunnistamise ja Tervisekassale edastamise tingimused ning kord. RT I 2023-05-23 1 123052023001 2023-05-26",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1053819_Par_1"
@@ -133,7 +147,25 @@
         {
           "@id": "estleg:Reg_1054587_Par_1_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse töövõimetuslehe andmekoosseis ning töövõimetuslehe registreerimise, avamise, lõpetamise, kehtetuks tunnistamise ja Tervisekassale edastamise tingimused ning kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1054587_Par_2",
@@ -142,13 +174,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Töövõimetuslehe andmekoosseis",
+      "rdfs:label": {
+        "@value": "§ 2. Töövõimetuslehe andmekoosseis",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Töövõimetuslehe andmekoosseis on: 1 1) dokumendi number (omistab Tervisekassa); 2 2) liik (haigusleht või hooldusleht); 3 3) järgneva töövõimetuslehe korral esmase töövõimetuslehe number (esmasel töövõimetuslehel jääb nimetatud andmeväli tühjaks); 4 4) kindlustatud isiku isikukood, eesnimi ja perekonnanimi; 5 5) hooldatava isikukood, eesnimi ja perekonnanimi (hoolduslehe korral); välismaalasest hooldatava korral, kui hooldataval puudub Eesti isikukood, sisestada isikukoodi kohale hooldatav",
-      "estleg:legalText": "1 (1) Töövõimetuslehe andmekoosseis on: 1 1) dokumendi number (omistab Tervisekassa); 2 2) liik (haigusleht või hooldusleht); 3 3) järgneva töövõimetuslehe korral esmase töövõimetuslehe number (esmasel töövõimetuslehel jääb nimetatud andmeväli tühjaks); 4 4) kindlustatud isiku isikukood, eesnimi ja perekonnanimi; 5 5) hooldatava isikukood, eesnimi ja perekonnanimi (hoolduslehe korral); välismaalasest hooldatava korral, kui hooldataval puudub Eesti isikukood, sisestada isikukoodi kohale hooldatava sünniaeg kujul aaaa-kk-pp; 6 6) diagnoosikood rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 7 7) tööst vabastamise põhjus numbri ja sõnadega (1. haigestumine ja olmevigastus; 2. kutsehaigus; 4. liiklusvigastus; 5. tööõnnetus; 6. tööõnnetus liikluses; 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine; 8. vigastus riigi või ühiskonna huvide kaitsmisel ja kuriteo tõkestamisel; 10. karantiin; 12. haige perekonnaliikme põetamine kodus; 13. alla 3-aastase lapse või alla 16-aastase puudega lapse hooldamine, kui last hooldav isik on haige või talle osutatakse sünnitusabi; 14. alla 12-aastase haige lapse või alla 19-aastase puudega isiku põetamine; 17. rasedale terviseseisundile vastava töö andmine; 18. liiklusvigastuse tagajärjel tekkinud tüsistus/haigestumine; 19. haigestumine või vigastus raseduse ajal; 20. elundi või vereloome tüvirakkude annetus; 21. töötingimuste ajutine kergendamine); RT I 2024-05-07 3 107052024003 2024-05-15 8 8) töövabastuse alguse ja lõpu kuupäev (pp.kk.aaaa); 8 8¹) info tööandjale töötingimuste terviseseisundile vastavaks kohandamiseks; RT I 2024-05-07 3 107052024003 2024-05-15 9 9) hüvitamise piirangud (joove; ravi eiramine, hüvitamise piirangu kuupäev (pp.kk.aaaa); 10 10) töövõimetuslehe lõpetamise kuupäev; 11 11) töövõimetuslehe avanud või lõpetanud tervishoiutöötaja eriala kood, registreerimiskood, ees- ja perekonnanimi; 12 12) tervishoiuteenuse osutaja nimi ja äriregistri kood. Töövõimetuslehe andmekoosseis on: dokumendi number (omistab Tervisekassa); liik (haigusleht või hooldusleht); järgneva töövõimetuslehe korral esmase töövõimetuslehe number (esmasel töövõimetuslehel jääb nimetatud andmeväli tühjaks); kindlustatud isiku isikukood, eesnimi ja perekonnanimi; hooldatava isikukood, eesnimi ja perekonnanimi (hoolduslehe korral); välismaalasest hooldatava korral, kui hooldataval puudub Eesti isikukood, sisestada isikukoodi kohale hooldatava sünniaeg kujul aaaa-kk-pp; diagnoosikood rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; tööst vabastamise põhjus numbri ja sõnadega (1. haigestumine ja olmevigastus; 2. kutsehaigus; 4. liiklusvigastus; 5. tööõnnetus; 6. tööõnnetus liikluses; 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine; 8. vigastus riigi või ühiskonna huvide kaitsmisel ja kuriteo tõkestamisel; 10. karantiin; 12. haige perekonnaliikme põetamine kodus; 13. alla 3-aastase lapse või alla 16-aastase puudega lapse hooldamine, kui last hooldav isik on haige või talle osutatakse sünnitusabi; 14. alla 12-aastase haige lapse või alla 19-aastase puudega isiku põetamine; 17. rasedale terviseseisundile vastava töö andmine; 18. liiklusvigastuse tagajärjel tekkinud tüsistus/haigestumine; 19. haigestumine või vigastus raseduse ajal; 20. elundi või vereloome tüvirakkude annetus; 21. töötingimuste ajutine kergendamine); töövabastuse alguse ja lõpu kuupäev (pp.kk.aaaa); info tööandjale töötingimuste terviseseisundile vastavaks kohandamiseks; hüvitamise piirangud (joove; ravi eiramine, hüvitamise piirangu kuupäev (pp.kk.aaaa); töövõimetuslehe lõpetamise kuupäev; töövõimetuslehe avanud või lõpetanud tervishoiutöötaja eriala kood, registreerimiskood, ees- ja perekonnanimi; tervishoiuteenuse osutaja nimi ja äriregistri kood. 2 (2) Töövõimetuslehe võib väljastada paberil ravikindlustuse seaduse § 52 lõikes 11 sätestatud juhul. Paberil väljastatud töövõimetuslehel peab kajastuma lõike 1 andmekoosseis. Töövõimetuslehe võib väljastada paberil ravikindlustuse seaduse § 52 lõikes 11 sätestatud juhul. Paberil väljastatud töövõimetuslehel peab kajastuma lõike 1 andmekoosseis.",
+      "estleg:summary": {
+        "@value": "1 (1) Töövõimetuslehe andmekoosseis on: 1 1) dokumendi number (omistab Tervisekassa); 2 2) liik (haigusleht või hooldusleht); 3 3) järgneva töövõimetuslehe korral esmase töövõimetuslehe number (esmasel töövõimetuslehel jääb nimetatud andmeväli tühjaks); 4 4) kindlustatud isiku isikukood, eesnimi ja perekonnanimi; 5 5) hooldatava isikukood, eesnimi ja perekonnanimi (hoolduslehe korral); välismaalasest hooldatava korral, kui hooldataval puudub Eesti isikukood, sisestada isikukoodi kohale…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töövõimetuslehe andmekoosseis on: 1 1) dokumendi number (omistab Tervisekassa); 2 2) liik (haigusleht või hooldusleht); 3 3) järgneva töövõimetuslehe korral esmase töövõimetuslehe number (esmasel töövõimetuslehel jääb nimetatud andmeväli tühjaks); 4 4) kindlustatud isiku isikukood, eesnimi ja perekonnanimi; 5 5) hooldatava isikukood, eesnimi ja perekonnanimi (hoolduslehe korral); välismaalasest hooldatava korral, kui hooldataval puudub Eesti isikukood, sisestada isikukoodi kohale hooldatava sünniaeg kujul aaaa-kk-pp; 6 6) diagnoosikood rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 7 7) tööst vabastamise põhjus numbri ja sõnadega (1. haigestumine ja olmevigastus; 2. kutsehaigus; 4. liiklusvigastus; 5. tööõnnetus; 6. tööõnnetus liikluses; 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine; 8. vigastus riigi või ühiskonna huvide kaitsmisel ja kuriteo tõkestamisel; 10. karantiin; 12. haige perekonnaliikme põetamine kodus; 13. alla 3-aastase lapse või alla 16-aastase puudega lapse hooldamine, kui last hooldav isik on haige või talle osutatakse sünnitusabi; 14. alla 12-aastase haige lapse või alla 19-aastase puudega isiku põetamine; 17. rasedale terviseseisundile vastava töö andmine; 18. liiklusvigastuse tagajärjel tekkinud tüsistus/haigestumine; 19. haigestumine või vigastus raseduse ajal; 20. elundi või vereloome tüvirakkude annetus; 21. töötingimuste ajutine kergendamine); RT I 2024-05-07 3 107052024003 2024-05-15 8 8) töövabastuse alguse ja lõpu kuupäev (pp.kk.aaaa); 8 8<sup>1</sup>) info tööandjale töötingimuste terviseseisundile vastavaks kohandamiseks; RT I 2024-05-07 3 107052024003 2024-05-15 9 9) hüvitamise piirangud (joove; ravi eiramine, hüvitamise piirangu kuupäev (pp.kk.aaaa); 10 10) töövõimetuslehe lõpetamise kuupäev; 11 11) töövõimetuslehe avanud või lõpetanud tervishoiutöötaja eriala kood, registreerimiskood, ees- ja perekonnanimi; 12 12) tervishoiuteenuse osutaja nimi ja äriregistri kood. 2 (2) Töövõimetuslehe võib väljastada paberil ravikindlustuse seaduse § 52 lõikes 11 sätestatud juhul. Paberil väljastatud töövõimetuslehel peab kajastuma lõike 1 andmekoosseis.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -165,7 +203,56 @@
         {
           "@id": "estleg:Reg_1054587_Par_2_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töövõimetuslehe andmekoosseis on: 1) dokumendi number (omistab Tervisekassa); 2) liik (haigusleht või hooldusleht); 3) järgneva töövõimetuslehe korral esmase töövõimetuslehe number (esmasel töövõimetuslehel jääb nimetatud andmeväli tühjaks); 4) kindlustatud isiku isikukood, eesnimi ja perekonnanimi; 5) hooldatava isikukood, eesnimi ja perekonnanimi (hoolduslehe korral); välismaalasest hooldatava korral, kui hooldataval puudub Eesti isikukood, sisestada isikukoodi kohale hooldatava sünniaeg kujul aaaa-kk-pp; 6) diagnoosikood rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 7) tööst vabastamise põhjus numbri ja sõnadega (1. haigestumine ja olmevigastus; 2. kutsehaigus; 4. liiklusvigastus; 5. tööõnnetus; 6. tööõnnetus liikluses; 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine; 8. vigastus riigi või ühiskonna huvide kaitsmisel ja kuriteo tõkestamisel; 10. karantiin; 12. haige perekonnaliikme põetamine kodus; 13. alla 3-aastase lapse või alla 16-aastase puudega lapse hooldamine, kui last hooldav isik on haige või talle osutatakse sünnitusabi; 14. alla 12-aastase haige lapse või alla 19-aastase puudega isiku põetamine; 17. rasedale terviseseisundile vastava töö andmine; 18. liiklusvigastuse tagajärjel tekkinud tüsistus/haigestumine; 19. haigestumine või vigastus raseduse ajal; 20. elundi või vereloome tüvirakkude annetus; 21. töötingimuste ajutine kergendamine); 8) töövabastuse alguse ja lõpu kuupäev (pp.kk.aaaa); 8¹) info tööandjale töötingimuste terviseseisundile vastavaks kohandamiseks; 9) hüvitamise piirangud (joove; ravi eiramine, hüvitamise piirangu kuupäev (pp.kk.aaaa); 10) töövõimetuslehe lõpetamise kuupäev; 11) töövõimetuslehe avanud või lõpetanud tervishoiutöötaja eriala kood, registreerimiskood, ees- ja perekonnanimi; 12) tervishoiuteenuse osutaja nimi ja äriregistri kood.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "8¹",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Töövõimetuslehe võib väljastada paberil ravikindlustuse seaduse § 52 lõikes 1¹ sätestatud juhul. Paberil väljastatud töövõimetuslehel peab kajastuma lõike 1 andmekoosseis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1054587_Par_3",
@@ -174,18 +261,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Töövõimetuslehe liigid",
+      "rdfs:label": {
+        "@value": "§ 3. Töövõimetuslehe liigid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "Töövõimetuslehe liigid on haigusleht ja hooldusleht.",
-      "estleg:legalText": "Töövõimetuslehe liigid on haigusleht ja hooldusleht. Töövõimetuslehe liigid on haigusleht ja hooldusleht.",
+      "estleg:summary": {
+        "@value": "Töövõimetuslehe liigid on haigusleht ja hooldusleht.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Töövõimetuslehe liigid on haigusleht ja hooldusleht.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054587_Par_3_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töövõimetuslehe liigid on haigusleht ja hooldusleht.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1054587_Par_4",
@@ -194,13 +305,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Töövõimetuslehe väljastamise õigus",
+      "rdfs:label": {
+        "@value": "§ 4. Töövõimetuslehe väljastamise õigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Töövõimetuslehe väljastamise õigus on ravikindlustuse seaduse § 52 lõikes 2 nimetatud tervishoiutöötajal (edaspidi tervishoiutöötaja), kes teeb kindlaks kindlustatud isiku ajutise töövõimetuse ja osutab talle tervishoiuteenust. Töövõimetuslehe väljastamise õigus on ravikindlustuse seaduse § 52 lõikes 2 nimetatud tervishoiutöötajal (edaspidi tervishoiutöötaja), kes teeb kindlaks kindlustatud isiku ajutise töövõimetuse ja osutab talle tervishoiuteenust. 2 (2) Õel on töövõimetuslehe avamise, ",
-      "estleg:legalText": "1 (1) Töövõimetuslehe väljastamise õigus on ravikindlustuse seaduse § 52 lõikes 2 nimetatud tervishoiutöötajal (edaspidi tervishoiutöötaja), kes teeb kindlaks kindlustatud isiku ajutise töövõimetuse ja osutab talle tervishoiuteenust. Töövõimetuslehe väljastamise õigus on ravikindlustuse seaduse § 52 lõikes 2 nimetatud tervishoiutöötajal (edaspidi tervishoiutöötaja), kes teeb kindlaks kindlustatud isiku ajutise töövõimetuse ja osutab talle tervishoiuteenust. 2 (2) Õel on töövõimetuslehe avamise, muutmise, lõpetamise ja kehtetuks tunnistamise õigus haiguse, vigastuse, karantiini või kindlustatud isiku põetamise korral. RT I 2024-05-07 3 107052024003 2024-05-15 Õel on töövõimetuslehe avamise, muutmise, lõpetamise ja kehtetuks tunnistamise õigus haiguse, vigastuse, karantiini või kindlustatud isiku põetamise korral.",
+      "estleg:summary": {
+        "@value": "1 (1) Töövõimetuslehe väljastamise õigus on ravikindlustuse seaduse § 52 lõikes 2 nimetatud tervishoiutöötajal (edaspidi tervishoiutöötaja), kes teeb kindlaks kindlustatud isiku ajutise töövõimetuse ja osutab talle tervishoiuteenust. 2 (2) Õel on töövõimetuslehe avamise, muutmise, lõpetamise ja kehtetuks tunnistamise õigus haiguse, vigastuse, karantiini või kindlustatud isiku põetamise korral. RT I 2024-05-07 3 107052024003 2024-05-15",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töövõimetuslehe väljastamise õigus on ravikindlustuse seaduse § 52 lõikes 2 nimetatud tervishoiutöötajal (edaspidi tervishoiutöötaja), kes teeb kindlaks kindlustatud isiku ajutise töövõimetuse ja osutab talle tervishoiuteenust. 2 (2) Õel on töövõimetuslehe avamise, muutmise, lõpetamise ja kehtetuks tunnistamise õigus haiguse, vigastuse, karantiini või kindlustatud isiku põetamise korral. RT I 2024-05-07 3 107052024003 2024-05-15",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -222,7 +339,41 @@
         {
           "@id": "estleg:Reg_1054587_Par_4_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töövõimetuslehe väljastamise õigus on ravikindlustuse seaduse § 52 lõikes 2 nimetatud tervishoiutöötajal (edaspidi tervishoiutöötaja), kes teeb kindlaks kindlustatud isiku ajutise töövõimetuse ja osutab talle tervishoiuteenust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õel on töövõimetuslehe avamise, muutmise, lõpetamise ja kehtetuks tunnistamise õigus haiguse, vigastuse, karantiini või kindlustatud isiku põetamise korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_1054587_Par_5",
@@ -231,13 +382,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Töövõimetuslehe avamine",
+      "rdfs:label": {
+        "@value": "§ 5. Töövõimetuslehe avamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Töövõimetusleht avatakse pärast kindlustatu, hooldatava või põetatava läbivaatust või neile teenuse osutamist sidevahendi teel. RT I 2024-05-07 3 107052024003 2024-05-15 Töövõimetusleht avatakse pärast kindlustatu, hooldatava või põetatava läbivaatust või neile teenuse osutamist sidevahendi teel. 2 (2) Töövõimetuslehe avamisel peab tervishoiutöötaja tervishoiuteenuse osutamise dokumenteerima vastavalt tervishoiuteenuste korraldamise seaduse § 42 lõike 3 alusel valdkonna eest vastutava mini",
-      "estleg:legalText": "1 (1) Töövõimetusleht avatakse pärast kindlustatu, hooldatava või põetatava läbivaatust või neile teenuse osutamist sidevahendi teel. RT I 2024-05-07 3 107052024003 2024-05-15 Töövõimetusleht avatakse pärast kindlustatu, hooldatava või põetatava läbivaatust või neile teenuse osutamist sidevahendi teel. 2 (2) Töövõimetuslehe avamisel peab tervishoiutöötaja tervishoiuteenuse osutamise dokumenteerima vastavalt tervishoiuteenuste korraldamise seaduse § 42 lõike 3 alusel valdkonna eest vastutava ministri määrusega kehtestatud korrale. Töövõimetuslehe avamisel peab tervishoiutöötaja tervishoiuteenuse osutamise dokumenteerima vastavalt tervishoiuteenuste korraldamise seaduse § 42 lõike 3 alusel valdkonna eest vastutava ministri määrusega kehtestatud korrale. 3 (3) Avamisel märgitakse töövõimetuslehele töövabastuse prognoositav lõppemise kuupäev või tulevase vastuvõtu kuupäev. Avamisel märgitakse töövõimetuslehele töövabastuse prognoositav lõppemise kuupäev või tulevase vastuvõtu kuupäev. 4 (4) Tervishoiutöötaja avab ja lõpetab töövõimetuslehe kindlustatud isikule tervishoiuteenuse osutamise päeval ning edastab andmed samal päeval elektroonselt Tervisekassa andmekogusse. Tervishoiutöötaja avab ja lõpetab töövõimetuslehe kindlustatud isikule tervishoiuteenuse osutamise päeval ning edastab andmed samal päeval elektroonselt Tervisekassa andmekogusse. 5 (5) Tagasiulatuvalt võib töövõimetuslehe avada, kui kindlustatud isik haigestub või hoolduse või põetuse vajadus tekib nädalavahetusel, rahvuspühal või riigipühal ja isik teavitab sellest tervishoiutöötajat sidevahendite teel või vastuvõtule tulles vahetult järgneval tööpäeval. RT I 2024-05-07 3 107052024003 2024-05-15 Tagasiulatuvalt võib töövõimetuslehe avada, kui kindlustatud isik haigestub või hoolduse või põetuse vajadus tekib nädalavahetusel, rahvuspühal või riigipühal ja isik teavitab sellest tervishoiutöötajat sidevahendite teel või vastuvõtule tulles vahetult järgneval tööpäeval.",
+      "estleg:summary": {
+        "@value": "1 (1) Töövõimetusleht avatakse pärast kindlustatu, hooldatava või põetatava läbivaatust või neile teenuse osutamist sidevahendi teel. RT I 2024-05-07 3 107052024003 2024-05-15 2 (2) Töövõimetuslehe avamisel peab tervishoiutöötaja tervishoiuteenuse osutamise dokumenteerima vastavalt tervishoiuteenuste korraldamise seaduse § 42 lõike 3 alusel valdkonna eest vastutava ministri määrusega kehtestatud korrale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töövõimetusleht avatakse pärast kindlustatu, hooldatava või põetatava läbivaatust või neile teenuse osutamist sidevahendi teel. RT I 2024-05-07 3 107052024003 2024-05-15 2 (2) Töövõimetuslehe avamisel peab tervishoiutöötaja tervishoiuteenuse osutamise dokumenteerima vastavalt tervishoiuteenuste korraldamise seaduse § 42 lõike 3 alusel valdkonna eest vastutava ministri määrusega kehtestatud korrale. 3 (3) Avamisel märgitakse töövõimetuslehele töövabastuse prognoositav lõppemise kuupäev või tulevase vastuvõtu kuupäev. 4 (4) Tervishoiutöötaja avab ja lõpetab töövõimetuslehe kindlustatud isikule tervishoiuteenuse osutamise päeval ning edastab andmed samal päeval elektroonselt Tervisekassa andmekogusse. 5 (5) Tagasiulatuvalt võib töövõimetuslehe avada, kui kindlustatud isik haigestub või hoolduse või põetuse vajadus tekib nädalavahetusel, rahvuspühal või riigipühal ja isik teavitab sellest tervishoiutöötajat sidevahendite teel või vastuvõtule tulles vahetult järgneval tööpäeval. RT I 2024-05-07 3 107052024003 2024-05-15",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -259,7 +416,89 @@
         {
           "@id": "estleg:Reg_1054587_Par_5_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_5_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töövõimetusleht avatakse pärast kindlustatu, hooldatava või põetatava läbivaatust või neile teenuse osutamist sidevahendi teel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Töövõimetuslehe avamisel peab tervishoiutöötaja tervishoiuteenuse osutamise dokumenteerima vastavalt tervishoiuteenuste korraldamise seaduse § 4² lõike 3 alusel valdkonna eest vastutava ministri määrusega kehtestatud korrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Avamisel märgitakse töövõimetuslehele töövabastuse prognoositav lõppemise kuupäev või tulevase vastuvõtu kuupäev.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tervishoiutöötaja avab ja lõpetab töövõimetuslehe kindlustatud isikule tervishoiuteenuse osutamise päeval ning edastab andmed samal päeval elektroonselt Tervisekassa andmekogusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Tagasiulatuvalt võib töövõimetuslehe avada, kui kindlustatud isik haigestub või hoolduse või põetuse vajadus tekib nädalavahetusel, rahvuspühal või riigipühal ja isik teavitab sellest tervishoiutöötajat sidevahendite teel või vastuvõtule tulles vahetult järgneval tööpäeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
     },
     {
       "@id": "estleg:Reg_1054587_Par_6",
@@ -268,13 +507,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Järgneva töövõimetuslehe väljastamine",
+      "rdfs:label": {
+        "@value": "§ 6. Järgneva töövõimetuslehe väljastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Töövõimetusleht väljastatakse eelmisele töövõimetuslehele järgnevana vähemalt iga 30 kalendripäeva järel. Töövõimetusleht väljastatakse eelmisele töövõimetuslehele järgnevana vähemalt iga 30 kalendripäeva järel. 2 (2) Töövõimetusleht avatakse järgnevana, kui ravikindlustuse seaduse § 51 lõike 1 punktis 1 nimetatud kindlustusjuhtum leiab aset välisriigis viibimise ajal ja isik pöördub Eestis tervishoiutöötaja poole hiljemalt viie kalendripäeva jooksul välisriigi arsti tõendil märgitud viima",
-      "estleg:legalText": "1 (1) Töövõimetusleht väljastatakse eelmisele töövõimetuslehele järgnevana vähemalt iga 30 kalendripäeva järel. Töövõimetusleht väljastatakse eelmisele töövõimetuslehele järgnevana vähemalt iga 30 kalendripäeva järel. 2 (2) Töövõimetusleht avatakse järgnevana, kui ravikindlustuse seaduse § 51 lõike 1 punktis 1 nimetatud kindlustusjuhtum leiab aset välisriigis viibimise ajal ja isik pöördub Eestis tervishoiutöötaja poole hiljemalt viie kalendripäeva jooksul välisriigi arsti tõendil märgitud viimast tervishoiuteenuse osutamise kuupäeva või ravi lõppemise eeldatavat kuupäeva. Järgnev haigusleht avatakse välisriigi arsti tõendil märgitud viimasele tervishoiuteenuse osutamise kuupäevale või ravi lõppemise eeldatavale kuupäevale järgnevast kuupäevast. Töövõimetusleht avatakse järgnevana, kui ravikindlustuse seaduse § 51 lõike 1 punktis 1 nimetatud kindlustusjuhtum leiab aset välisriigis viibimise ajal ja isik pöördub Eestis tervishoiutöötaja poole hiljemalt viie kalendripäeva jooksul välisriigi arsti tõendil märgitud viimast tervishoiuteenuse osutamise kuupäeva või ravi lõppemise eeldatavat kuupäeva. Järgnev haigusleht avatakse välisriigi arsti tõendil märgitud viimasele tervishoiuteenuse osutamise kuupäevale või ravi lõppemise eeldatavale kuupäevale järgnevast kuupäevast.",
+      "estleg:summary": {
+        "@value": "1 (1) Töövõimetusleht väljastatakse eelmisele töövõimetuslehele järgnevana vähemalt iga 30 kalendripäeva järel. 2 (2) Töövõimetusleht avatakse järgnevana, kui ravikindlustuse seaduse § 51 lõike 1 punktis 1 nimetatud kindlustusjuhtum leiab aset välisriigis viibimise ajal ja isik pöördub Eestis tervishoiutöötaja poole hiljemalt viie kalendripäeva jooksul välisriigi arsti tõendil märgitud viimast tervishoiuteenuse osutamise kuupäeva või ravi lõppemise eeldatavat kuupäeva.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töövõimetusleht väljastatakse eelmisele töövõimetuslehele järgnevana vähemalt iga 30 kalendripäeva järel. 2 (2) Töövõimetusleht avatakse järgnevana, kui ravikindlustuse seaduse § 51 lõike 1 punktis 1 nimetatud kindlustusjuhtum leiab aset välisriigis viibimise ajal ja isik pöördub Eestis tervishoiutöötaja poole hiljemalt viie kalendripäeva jooksul välisriigi arsti tõendil märgitud viimast tervishoiuteenuse osutamise kuupäeva või ravi lõppemise eeldatavat kuupäeva. Järgnev haigusleht avatakse välisriigi arsti tõendil märgitud viimasele tervishoiuteenuse osutamise kuupäevale või ravi lõppemise eeldatavale kuupäevale järgnevast kuupäevast.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -293,7 +538,42 @@
         {
           "@id": "estleg:Reg_1054587_Par_6_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_6_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töövõimetusleht väljastatakse eelmisele töövõimetuslehele järgnevana vähemalt iga 30 kalendripäeva järel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Töövõimetusleht avatakse järgnevana, kui ravikindlustuse seaduse § 51 lõike 1 punktis 1 nimetatud kindlustusjuhtum leiab aset välisriigis viibimise ajal ja isik pöördub Eestis tervishoiutöötaja poole hiljemalt viie kalendripäeva jooksul välisriigi arsti tõendil märgitud viimast tervishoiuteenuse osutamise kuupäeva või ravi lõppemise eeldatavat kuupäeva. Järgnev haigusleht avatakse välisriigi arsti tõendil märgitud viimasele tervishoiuteenuse osutamise kuupäevale või ravi lõppemise eeldatavale kuupäevale järgnevast kuupäevast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": "1"
     },
     {
       "@id": "estleg:Reg_1054587_Par_7",
@@ -302,13 +582,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Töövõimetuslehe avamise erijuhud",
+      "rdfs:label": {
+        "@value": "§ 7. Töövõimetuslehe avamise erijuhud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Raseduse tõttu terviseseisundile vastava töö andmisel või teenistuja ajutiselt teisele ametikohale viimisel või teenistustingimuste ajutisel kergendamisel väljastatakse haigusleht 30 päeva kaupa paranemiseni või emapuhkuse või vanemapuhkuse määramiseni. Raseduse tõttu terviseseisundile vastava töö andmisel või teenistuja ajutiselt teisele ametikohale viimisel või teenistustingimuste ajutisel kergendamisel väljastatakse haigusleht 30 päeva kaupa paranemiseni või emapuhkuse või vanemapuhkuse",
-      "estleg:legalText": "1 (1) Raseduse tõttu terviseseisundile vastava töö andmisel või teenistuja ajutiselt teisele ametikohale viimisel või teenistustingimuste ajutisel kergendamisel väljastatakse haigusleht 30 päeva kaupa paranemiseni või emapuhkuse või vanemapuhkuse määramiseni. Raseduse tõttu terviseseisundile vastava töö andmisel või teenistuja ajutiselt teisele ametikohale viimisel või teenistustingimuste ajutisel kergendamisel väljastatakse haigusleht 30 päeva kaupa paranemiseni või emapuhkuse või vanemapuhkuse määramiseni. 2 (2) Raseduse katkestamisel meditsiinilistel näidustustel või raseduse iseeneslikul katkemisel enne raseduse 22. nädalat kirjutatakse töövõimetuse ajaks välja haigusleht. Enne raseduse 22. nädalat toimunud sünnituse korral kirjutatakse elusalt sündinud lapse korral välja haigusleht, mis lõpetatakse 22. nädalal sünnituslehe väljakirjutamise päevale eelneval päeval. Raseduse katkestamisel meditsiinilistel näidustustel või raseduse iseeneslikul katkemisel enne raseduse 22. nädalat kirjutatakse töövõimetuse ajaks välja haigusleht. Enne raseduse 22. nädalat toimunud sünnituse korral kirjutatakse elusalt sündinud lapse korral välja haigusleht, mis lõpetatakse 22. nädalal sünnituslehe väljakirjutamise päevale eelneval päeval. 3 (3) Mitme isiku samaaegseks hooldamiseks või põetamiseks avatakse üks hooldusleht. Samas hooldusjuhtumis põetajate vahetumisel avatakse uus hooldusleht eelmisele järgnevana. Mitme isiku samaaegseks hooldamiseks või põetamiseks avatakse üks hooldusleht. Samas hooldusjuhtumis põetajate vahetumisel avatakse uus hooldusleht eelmisele järgnevana. 4 (4) Mitme isiku järjestikuseks hooldamiseks või põetamiseks avatakse uus esmane hooldusleht vastavalt haigestumise järjekorrale. Mitme isiku järjestikuseks hooldamiseks või põetamiseks avatakse uus esmane hooldusleht vastavalt haigestumise järjekorrale.",
+      "estleg:summary": {
+        "@value": "1 (1) Raseduse tõttu terviseseisundile vastava töö andmisel või teenistuja ajutiselt teisele ametikohale viimisel või teenistustingimuste ajutisel kergendamisel väljastatakse haigusleht 30 päeva kaupa paranemiseni või emapuhkuse või vanemapuhkuse määramiseni. 2 (2) Raseduse katkestamisel meditsiinilistel näidustustel või raseduse iseeneslikul katkemisel enne raseduse 22. nädalat kirjutatakse töövõimetuse ajaks välja haigusleht. Enne raseduse 22.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Raseduse tõttu terviseseisundile vastava töö andmisel või teenistuja ajutiselt teisele ametikohale viimisel või teenistustingimuste ajutisel kergendamisel väljastatakse haigusleht 30 päeva kaupa paranemiseni või emapuhkuse või vanemapuhkuse määramiseni. 2 (2) Raseduse katkestamisel meditsiinilistel näidustustel või raseduse iseeneslikul katkemisel enne raseduse 22. nädalat kirjutatakse töövõimetuse ajaks välja haigusleht. Enne raseduse 22. nädalat toimunud sünnituse korral kirjutatakse elusalt sündinud lapse korral välja haigusleht, mis lõpetatakse 22. nädalal sünnituslehe väljakirjutamise päevale eelneval päeval. 3 (3) Mitme isiku samaaegseks hooldamiseks või põetamiseks avatakse üks hooldusleht. Samas hooldusjuhtumis põetajate vahetumisel avatakse uus hooldusleht eelmisele järgnevana. 4 (4) Mitme isiku järjestikuseks hooldamiseks või põetamiseks avatakse uus esmane hooldusleht vastavalt haigestumise järjekorrale.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -325,7 +611,73 @@
         {
           "@id": "estleg:Reg_1054587_Par_7_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_7_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raseduse tõttu terviseseisundile vastava töö andmisel või teenistuja ajutiselt teisele ametikohale viimisel või teenistustingimuste ajutisel kergendamisel väljastatakse haigusleht 30 päeva kaupa paranemiseni või emapuhkuse või vanemapuhkuse määramiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Raseduse katkestamisel meditsiinilistel näidustustel või raseduse iseeneslikul katkemisel enne raseduse 22. nädalat kirjutatakse töövõimetuse ajaks välja haigusleht. Enne raseduse 22. nädalat toimunud sünnituse korral kirjutatakse elusalt sündinud lapse korral välja haigusleht, mis lõpetatakse 22. nädalal sünnituslehe väljakirjutamise päevale eelneval päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Mitme isiku samaaegseks hooldamiseks või põetamiseks avatakse üks hooldusleht. Samas hooldusjuhtumis põetajate vahetumisel avatakse uus hooldusleht eelmisele järgnevana.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Mitme isiku järjestikuseks hooldamiseks või põetamiseks avatakse uus esmane hooldusleht vastavalt haigestumise järjekorrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
     },
     {
       "@id": "estleg:Reg_1054587_Par_8",
@@ -334,13 +686,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Töövõimetuslehe lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 8. Töövõimetuslehe lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Töövõimetusleht lõpetatakse pärast tervishoiutöötajaga konsulteerimist töövõime taastumise päeval või hooldus- või põetusvajaduse lõppemise päeval (kaasa arvatud) või kui isik sureb, välja arvatud lõikes 4 sätestatud juhul. Töövõimetusleht lõpetatakse pärast tervishoiutöötajaga konsulteerimist töövõime taastumise päeval või hooldus- või põetusvajaduse lõppemise päeval (kaasa arvatud) või kui isik sureb, välja arvatud lõikes 4 sätestatud juhul. 2 (2) Kui kindlustatud isik ei ilmu kokku lepi",
-      "estleg:legalText": "1 (1) Töövõimetusleht lõpetatakse pärast tervishoiutöötajaga konsulteerimist töövõime taastumise päeval või hooldus- või põetusvajaduse lõppemise päeval (kaasa arvatud) või kui isik sureb, välja arvatud lõikes 4 sätestatud juhul. Töövõimetusleht lõpetatakse pärast tervishoiutöötajaga konsulteerimist töövõime taastumise päeval või hooldus- või põetusvajaduse lõppemise päeval (kaasa arvatud) või kui isik sureb, välja arvatud lõikes 4 sätestatud juhul. 2 (2) Kui kindlustatud isik ei ilmu kokku lepitud ajal vastuvõtule või ei kontakteeru tervishoiutöötajaga kokku lepitud ajal ilma mõjuva põhjuseta, lõpetab tervishoiutöötaja töövõimetuslehe kolme tööpäeva jooksul kokkuleppe rikkumise kuupäevaga. Kui kindlustatud isik ei ilmu kokku lepitud ajal vastuvõtule või ei kontakteeru tervishoiutöötajaga kokku lepitud ajal ilma mõjuva põhjuseta, lõpetab tervishoiutöötaja töövõimetuslehe kolme tööpäeva jooksul kokkuleppe rikkumise kuupäevaga. 3 (3) Tervishoiutöötajal on õigus muuta, lõpetada ja kehtetuks tunnistada teise tervishoiutöötaja poolt välja kirjutatud töövõimetuslehte. Toimingu õigsuse eest vastutab toimingu tegija. RT I 2024-05-07 3 107052024003 2024-05-15 Tervishoiutöötajal on õigus muuta, lõpetada ja kehtetuks tunnistada teise tervishoiutöötaja poolt välja kirjutatud töövõimetuslehte. Toimingu õigsuse eest vastutab toimingu tegija. 4 (4) Tervishoiutöötaja võib töövõimetuslehe lõpetada etteulatuvalt kuni kaheksa kalendripäeva kindlustatut, hooldatavat või põetatavat korduvalt läbi vaatamata. Tervishoiutöötaja võib töövõimetuslehe lõpetada etteulatuvalt kuni kaheksa kalendripäeva kindlustatut, hooldatavat või põetatavat korduvalt läbi vaatamata.",
+      "estleg:summary": {
+        "@value": "1 (1) Töövõimetusleht lõpetatakse pärast tervishoiutöötajaga konsulteerimist töövõime taastumise päeval või hooldus- või põetusvajaduse lõppemise päeval (kaasa arvatud) või kui isik sureb, välja arvatud lõikes 4 sätestatud juhul. 2 (2) Kui kindlustatud isik ei ilmu kokku lepitud ajal vastuvõtule või ei kontakteeru tervishoiutöötajaga kokku lepitud ajal ilma mõjuva põhjuseta, lõpetab tervishoiutöötaja töövõimetuslehe kolme tööpäeva jooksul kokkuleppe rikkumise kuupäevaga.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töövõimetusleht lõpetatakse pärast tervishoiutöötajaga konsulteerimist töövõime taastumise päeval või hooldus- või põetusvajaduse lõppemise päeval (kaasa arvatud) või kui isik sureb, välja arvatud lõikes 4 sätestatud juhul. 2 (2) Kui kindlustatud isik ei ilmu kokku lepitud ajal vastuvõtule või ei kontakteeru tervishoiutöötajaga kokku lepitud ajal ilma mõjuva põhjuseta, lõpetab tervishoiutöötaja töövõimetuslehe kolme tööpäeva jooksul kokkuleppe rikkumise kuupäevaga. 3 (3) Tervishoiutöötajal on õigus muuta, lõpetada ja kehtetuks tunnistada teise tervishoiutöötaja poolt välja kirjutatud töövõimetuslehte. Toimingu õigsuse eest vastutab toimingu tegija. RT I 2024-05-07 3 107052024003 2024-05-15 4 (4) Tervishoiutöötaja võib töövõimetuslehe lõpetada etteulatuvalt kuni kaheksa kalendripäeva kindlustatut, hooldatavat või põetatavat korduvalt läbi vaatamata.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -354,7 +712,73 @@
         {
           "@id": "estleg:Reg_1054587_Par_8_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_8_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töövõimetusleht lõpetatakse pärast tervishoiutöötajaga konsulteerimist töövõime taastumise päeval või hooldus- või põetusvajaduse lõppemise päeval (kaasa arvatud) või kui isik sureb, välja arvatud lõikes 4 sätestatud juhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui kindlustatud isik ei ilmu kokku lepitud ajal vastuvõtule või ei kontakteeru tervishoiutöötajaga kokku lepitud ajal ilma mõjuva põhjuseta, lõpetab tervishoiutöötaja töövõimetuslehe kolme tööpäeva jooksul kokkuleppe rikkumise kuupäevaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tervishoiutöötajal on õigus muuta, lõpetada ja kehtetuks tunnistada teise tervishoiutöötaja poolt välja kirjutatud töövõimetuslehte. Toimingu õigsuse eest vastutab toimingu tegija.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tervishoiutöötaja võib töövõimetuslehe lõpetada etteulatuvalt kuni kaheksa kalendripäeva kindlustatut, hooldatavat või põetatavat korduvalt läbi vaatamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
     },
     {
       "@id": "estleg:Reg_1054587_Par_9",
@@ -363,13 +787,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Ajutise töövõimetuse hüvitise saamise piirangu kanne töövõimetuslehel",
+      "rdfs:label": {
+        "@value": "§ 9. Ajutise töövõimetuse hüvitise saamise piirangu kanne töövõimetuslehel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Kui kindlustatud isik põhjustas liiklusõnnetuse ja joove on tuvastatud liiklusseaduse alusel kehtestatud korras ekspertiisiga, teeb arst töövõimetuslehele sellekohase kande. Kui kindlustatud isik põhjustas liiklusõnnetuse ja joove on tuvastatud liiklusseaduse alusel kehtestatud korras ekspertiisiga, teeb arst töövõimetuslehele sellekohase kande. 2 (2) Kui kindlustatud isik või põetatav isik eirab tervishoiutöötaja määratud meditsiiniliselt põhjendatud ravi, mille tõttu on tervenemine takis",
-      "estleg:legalText": "1 (1) Kui kindlustatud isik põhjustas liiklusõnnetuse ja joove on tuvastatud liiklusseaduse alusel kehtestatud korras ekspertiisiga, teeb arst töövõimetuslehele sellekohase kande. Kui kindlustatud isik põhjustas liiklusõnnetuse ja joove on tuvastatud liiklusseaduse alusel kehtestatud korras ekspertiisiga, teeb arst töövõimetuslehele sellekohase kande. 2 (2) Kui kindlustatud isik või põetatav isik eirab tervishoiutöötaja määratud meditsiiniliselt põhjendatud ravi, mille tõttu on tervenemine takistatud, teeb töövõimetuslehe lõpetaja töövõimetuslehele sellekohase kande. Kui kindlustatud isik või põetatav isik eirab tervishoiutöötaja määratud meditsiiniliselt põhjendatud ravi, mille tõttu on tervenemine takistatud, teeb töövõimetuslehe lõpetaja töövõimetuslehele sellekohase kande.",
+      "estleg:summary": {
+        "@value": "1 (1) Kui kindlustatud isik põhjustas liiklusõnnetuse ja joove on tuvastatud liiklusseaduse alusel kehtestatud korras ekspertiisiga, teeb arst töövõimetuslehele sellekohase kande. 2 (2) Kui kindlustatud isik või põetatav isik eirab tervishoiutöötaja määratud meditsiiniliselt põhjendatud ravi, mille tõttu on tervenemine takistatud, teeb töövõimetuslehe lõpetaja töövõimetuslehele sellekohase kande.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kui kindlustatud isik põhjustas liiklusõnnetuse ja joove on tuvastatud liiklusseaduse alusel kehtestatud korras ekspertiisiga, teeb arst töövõimetuslehele sellekohase kande. 2 (2) Kui kindlustatud isik või põetatav isik eirab tervishoiutöötaja määratud meditsiiniliselt põhjendatud ravi, mille tõttu on tervenemine takistatud, teeb töövõimetuslehe lõpetaja töövõimetuslehele sellekohase kande.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -383,7 +813,41 @@
         {
           "@id": "estleg:Reg_1054587_Par_9_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui kindlustatud isik põhjustas liiklusõnnetuse ja joove on tuvastatud liiklusseaduse alusel kehtestatud korras ekspertiisiga, teeb arst töövõimetuslehele sellekohase kande.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui kindlustatud isik või põetatav isik eirab tervishoiutöötaja määratud meditsiiniliselt põhjendatud ravi, mille tõttu on tervenemine takistatud, teeb töövõimetuslehe lõpetaja töövõimetuslehele sellekohase kande.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_1054587_Par_10",
@@ -392,13 +856,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Tööandja tegevused töövõimetuslehega",
+      "rdfs:label": {
+        "@value": "§ 10. Tööandja tegevused töövõimetuslehega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Tööandja kinnitab tervishoiutöötaja lõpetatud töövõimetuslehe. Tööandja kinnitab tervishoiutöötaja lõpetatud töövõimetuslehe. 2 (2) Tööandja ei näe töövõimetuslehele kantud andmetest järgmiseid: 1 1) diagnoosikoodi rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 2 2) töövõimetuslehe avanud tervishoiutöötaja ees- ja perekonnanime. Tööandja ei näe töövõimetuslehele kantud andmetest järgmiseid: diagnoosikoodi rahvusvahelise haiguste ja tervisega s",
-      "estleg:legalText": "1 (1) Tööandja kinnitab tervishoiutöötaja lõpetatud töövõimetuslehe. Tööandja kinnitab tervishoiutöötaja lõpetatud töövõimetuslehe. 2 (2) Tööandja ei näe töövõimetuslehele kantud andmetest järgmiseid: 1 1) diagnoosikoodi rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 2 2) töövõimetuslehe avanud tervishoiutöötaja ees- ja perekonnanime. Tööandja ei näe töövõimetuslehele kantud andmetest järgmiseid: diagnoosikoodi rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; töövõimetuslehe avanud tervishoiutöötaja ees- ja perekonnanime. 3 (3) Tööandja edastab Tervisekassale elektroonselt järgmised andmed: 1 1) äriregistri kood või füüsilisest isikust tööandja isikukood; 2 2) keskmise või kalendrikuu kokkulepitud töötasu suurus eurodes esmasele töövõimetuslehele märgitud töövabastuse alguspäevale eelnenud päeval; RT I 2025-12-20 2 120122025002 2025-12-23 3 3) tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodi alguse ja lõpu kuupäev; 4 4) tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodil tööandja poolt makstav töötasu eurodes; 5 5) periood, millal kindlustatud isikul puudub õigus saada hüvitist ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2 tulenevalt, alguse ja lõpu kuupäevad; 6 6) põhjus, miks kindlustatud isikul puudub õigus saada hüvitist tulenevalt ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2; 7 7) andmete esitamise eest vastutava isiku kontaktandmed. RT I 2024-05-07 3 107052024003 2024-05-15 Tööandja edastab Tervisekassale elektroonselt järgmised andmed: äriregistri kood või füüsilisest isikust tööandja isikukood; keskmise või kalendrikuu kokkulepitud töötasu suurus eurodes esmasele töövõimetuslehele märgitud töövabastuse alguspäevale eelnenud päeval; tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodi alguse ja lõpu kuupäev; tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodil tööandja poolt makstav töötasu eurodes; periood, millal kindlustatud isikul puudub õigus saada hüvitist ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2 tulenevalt, alguse ja lõpu kuupäevad; põhjus, miks kindlustatud isikul puudub õigus saada hüvitist tulenevalt ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2; andmete esitamise eest vastutava isiku kontaktandmed.",
+      "estleg:summary": {
+        "@value": "1 (1) Tööandja kinnitab tervishoiutöötaja lõpetatud töövõimetuslehe. 2 (2) Tööandja ei näe töövõimetuslehele kantud andmetest järgmiseid: 1 1) diagnoosikoodi rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 2 2) töövõimetuslehe avanud tervishoiutöötaja ees- ja perekonnanime. 3 (3) Tööandja edastab Tervisekassale elektroonselt järgmised andmed: 1 1) äriregistri kood või füüsilisest isikust tööandja isikukood; 2 2) keskmise või kalendrikuu kokkulepitud…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tööandja kinnitab tervishoiutöötaja lõpetatud töövõimetuslehe. 2 (2) Tööandja ei näe töövõimetuslehele kantud andmetest järgmiseid: 1 1) diagnoosikoodi rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 2 2) töövõimetuslehe avanud tervishoiutöötaja ees- ja perekonnanime. 3 (3) Tööandja edastab Tervisekassale elektroonselt järgmised andmed: 1 1) äriregistri kood või füüsilisest isikust tööandja isikukood; 2 2) keskmise või kalendrikuu kokkulepitud töötasu suurus eurodes esmasele töövõimetuslehele märgitud töövabastuse alguspäevale eelnenud päeval; RT I 2025-12-20 2 120122025002 2025-12-23 3 3) tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodi alguse ja lõpu kuupäev; 4 4) tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodil tööandja poolt makstav töötasu eurodes; 5 5) periood, millal kindlustatud isikul puudub õigus saada hüvitist ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2 tulenevalt, alguse ja lõpu kuupäevad; 6 6) põhjus, miks kindlustatud isikul puudub õigus saada hüvitist tulenevalt ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2; 7 7) andmete esitamise eest vastutava isiku kontaktandmed. RT I 2024-05-07 3 107052024003 2024-05-15",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -415,6 +885,69 @@
         {
           "@id": "estleg:Reg_1054587_Par_10_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_10_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tööandja kinnitab tervishoiutöötaja lõpetatud töövõimetuslehe.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tööandja ei näe töövõimetuslehele kantud andmetest järgmiseid: 1) diagnoosikoodi rahvusvahelise haiguste ja tervisega seotud probleemide statistilise klassifikatsiooni järgi; 2) töövõimetuslehe avanud tervishoiutöötaja ees- ja perekonnanime.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tööandja edastab Tervisekassale elektroonselt järgmised andmed: 1) äriregistri kood või füüsilisest isikust tööandja isikukood; 2) keskmise või kalendrikuu kokkulepitud töötasu suurus eurodes esmasele töövõimetuslehele märgitud töövabastuse alguspäevale eelnenud päeval; 3) tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodi alguse ja lõpu kuupäev; 4) tervishoiutöötaja otsuse alusel terviseseisundile vastava töö või kergemale ametikohale üleviimise perioodil tööandja poolt makstav töötasu eurodes; 5) periood, millal kindlustatud isikul puudub õigus saada hüvitist ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2 tulenevalt, alguse ja lõpu kuupäevad; 6) põhjus, miks kindlustatud isikul puudub õigus saada hüvitist tulenevalt ravikindlustuse seaduse § 60 lõigetest 2 või 4 või § 61 lõikest 2; 7) andmete esitamise eest vastutava isiku kontaktandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -424,13 +957,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Tööinspektsiooni poolt edastatavad andmed",
+      "rdfs:label": {
+        "@value": "§ 11. Tööinspektsiooni poolt edastatavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Kui töövabastuse põhjusteks on 2. kutsehaigus, 5. tööõnnetus, 6. tööõnnetus liikluses, 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine, siis kontrollib Tervisekassa enne ajutise töövõimetuse hüvitise väljamaksmist töökeskkonna andmekogust X-tee kaudu tööõnnetuse või kutsehaigestumise raporti olemasolu. Kui töövabastuse põhjusteks on 2. kutsehaigus, 5. tööõnnetus, 6. tööõnnetus liikluses, 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine, siis kontrollib Tervisekassa enne aj",
-      "estleg:legalText": "1 (1) Kui töövabastuse põhjusteks on 2. kutsehaigus, 5. tööõnnetus, 6. tööõnnetus liikluses, 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine, siis kontrollib Tervisekassa enne ajutise töövõimetuse hüvitise väljamaksmist töökeskkonna andmekogust X-tee kaudu tööõnnetuse või kutsehaigestumise raporti olemasolu. Kui töövabastuse põhjusteks on 2. kutsehaigus, 5. tööõnnetus, 6. tööõnnetus liikluses, 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine, siis kontrollib Tervisekassa enne ajutise töövõimetuse hüvitise väljamaksmist töökeskkonna andmekogust X-tee kaudu tööõnnetuse või kutsehaigestumise raporti olemasolu. 2 (2) Tööinspektsioon edastab tööõnnetuse toimumise või kutsehaigestumise kuupäeva ja raporti numbri. Tööinspektsioon edastab tööõnnetuse toimumise või kutsehaigestumise kuupäeva ja raporti numbri.",
+      "estleg:summary": {
+        "@value": "1 (1) Kui töövabastuse põhjusteks on 2. kutsehaigus, 5. tööõnnetus, 6. tööõnnetus liikluses, 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine, siis kontrollib Tervisekassa enne ajutise töövõimetuse hüvitise väljamaksmist töökeskkonna andmekogust X-tee kaudu tööõnnetuse või kutsehaigestumise raporti olemasolu. 2 (2) Tööinspektsioon edastab tööõnnetuse toimumise või kutsehaigestumise kuupäeva ja raporti numbri.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kui töövabastuse põhjusteks on 2. kutsehaigus, 5. tööõnnetus, 6. tööõnnetus liikluses, 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine, siis kontrollib Tervisekassa enne ajutise töövõimetuse hüvitise väljamaksmist töökeskkonna andmekogust X-tee kaudu tööõnnetuse või kutsehaigestumise raporti olemasolu. 2 (2) Tööinspektsioon edastab tööõnnetuse toimumise või kutsehaigestumise kuupäeva ja raporti numbri.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054587_Par_11_v1054587"
@@ -440,7 +979,41 @@
         {
           "@id": "estleg:Institution_tooinspektsioon"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_11_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui töövabastuse põhjusteks on 2. kutsehaigus, 5. tööõnnetus, 6. tööõnnetus liikluses, 7. tööõnnetuse tagajärjel tekkinud tüsistus/haigestumine, siis kontrollib Tervisekassa enne ajutise töövõimetuse hüvitise väljamaksmist töökeskkonna andmekogust X-tee kaudu tööõnnetuse või kutsehaigestumise raporti olemasolu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tööinspektsioon edastab tööõnnetuse toimumise või kutsehaigestumise kuupäeva ja raporti numbri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
     },
     {
       "@id": "estleg:Reg_1054587_Par_12",
@@ -449,13 +1022,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Töövõimetuslehe andmete muutmine",
+      "rdfs:label": {
+        "@value": "§ 12. Töövõimetuslehe andmete muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "1 (1) Töövõimetuslehe andmete muutmise taotlused esitatakse Tervisekassale elektrooniliselt. Töövõimetuslehe andmete muutmise taotlused esitatakse Tervisekassale elektrooniliselt. 2 (2) Tervisekassa teavitab tööandjat parandustest, mis mõjutavad tööandja poolset hüvitise maksmist. Tervisekassa teavitab tööandjat parandustest, mis mõjutavad tööandja poolset hüvitise maksmist. 3 (3) Kui kindlustatud isik loobub tervishoiutöötaja avatud töövõimetuslehest, võib tervishoiutöötaja töövõimetuslehe keht",
-      "estleg:legalText": "1 (1) Töövõimetuslehe andmete muutmise taotlused esitatakse Tervisekassale elektrooniliselt. Töövõimetuslehe andmete muutmise taotlused esitatakse Tervisekassale elektrooniliselt. 2 (2) Tervisekassa teavitab tööandjat parandustest, mis mõjutavad tööandja poolset hüvitise maksmist. Tervisekassa teavitab tööandjat parandustest, mis mõjutavad tööandja poolset hüvitise maksmist. 3 (3) Kui kindlustatud isik loobub tervishoiutöötaja avatud töövõimetuslehest, võib tervishoiutöötaja töövõimetuslehe kehtetuks tunnistada. Kui lõpetatud staatuses töövõimetusleht on jõudnud tööandjani, siis märgib tööandja töövõimetuslehele andmed kindlustatud isiku töötamise kohta töövõimetuslehe perioodil. RT I 2024-05-07 3 107052024003 2024-05-15 Kui kindlustatud isik loobub tervishoiutöötaja avatud töövõimetuslehest, võib tervishoiutöötaja töövõimetuslehe kehtetuks tunnistada. Kui lõpetatud staatuses töövõimetusleht on jõudnud tööandjani, siis märgib tööandja töövõimetuslehele andmed kindlustatud isiku töötamise kohta töövõimetuslehe perioodil. 4 (4) Pärast töövõimetuslehe lõpetamise andmete edastamist Tervisekassale saab tervishoiutöötaja taotleda töövõimetuslehe kehtetuks tunnistamist õiendi alusel. Pärast töövõimetuslehe lõpetamise andmete edastamist Tervisekassale saab tervishoiutöötaja taotleda töövõimetuslehe kehtetuks tunnistamist õiendi alusel.",
+      "estleg:summary": {
+        "@value": "1 (1) Töövõimetuslehe andmete muutmise taotlused esitatakse Tervisekassale elektrooniliselt. 2 (2) Tervisekassa teavitab tööandjat parandustest, mis mõjutavad tööandja poolset hüvitise maksmist. 3 (3) Kui kindlustatud isik loobub tervishoiutöötaja avatud töövõimetuslehest, võib tervishoiutöötaja töövõimetuslehe kehtetuks tunnistada. Kui lõpetatud staatuses töövõimetusleht on jõudnud tööandjani, siis märgib tööandja töövõimetuslehele andmed kindlustatud isiku töötamise kohta töövõimetuslehe…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Töövõimetuslehe andmete muutmise taotlused esitatakse Tervisekassale elektrooniliselt. 2 (2) Tervisekassa teavitab tööandjat parandustest, mis mõjutavad tööandja poolset hüvitise maksmist. 3 (3) Kui kindlustatud isik loobub tervishoiutöötaja avatud töövõimetuslehest, võib tervishoiutöötaja töövõimetuslehe kehtetuks tunnistada. Kui lõpetatud staatuses töövõimetusleht on jõudnud tööandjani, siis märgib tööandja töövõimetuslehele andmed kindlustatud isiku töötamise kohta töövõimetuslehe perioodil. RT I 2024-05-07 3 107052024003 2024-05-15 4 (4) Pärast töövõimetuslehe lõpetamise andmete edastamist Tervisekassale saab tervishoiutöötaja taotleda töövõimetuslehe kehtetuks tunnistamist õiendi alusel.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -475,7 +1054,73 @@
         {
           "@id": "estleg:Reg_1054587_Par_12_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1054587_Par_12_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Töövõimetuslehe andmete muutmise taotlused esitatakse Tervisekassale elektrooniliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tervisekassa teavitab tööandjat parandustest, mis mõjutavad tööandja poolset hüvitise maksmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui kindlustatud isik loobub tervishoiutöötaja avatud töövõimetuslehest, võib tervishoiutöötaja töövõimetuslehe kehtetuks tunnistada. Kui lõpetatud staatuses töövõimetusleht on jõudnud tööandjani, siis märgib tööandja töövõimetuslehele andmed kindlustatud isiku töötamise kohta töövõimetuslehe perioodil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Pärast töövõimetuslehe lõpetamise andmete edastamist Tervisekassale saab tervishoiutöötaja taotleda töövõimetuslehe kehtetuks tunnistamist õiendi alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
     },
     {
       "@id": "estleg:Reg_1054587_Par_13",
@@ -484,18 +1129,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 13. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
-      "estleg:legalText": "[Käesolevast tekstist välja jäetud.] [Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1054587_Par_13_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_13_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) [Käesolevast tekstist välja jäetud.]",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:Reg_1054587_Par_14",
@@ -504,13 +1173,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Määruse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 14. Määruse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Töövõimetuslehe vormistamine ja andmete edastamine",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054587_Map"
       },
-      "estleg:summary": "Määrust rakendatakse tagasiulatuvalt 30. juunist 2022. a.",
-      "estleg:legalText": "Määrust rakendatakse tagasiulatuvalt 30. juunist 2022. a. Määrust rakendatakse tagasiulatuvalt 30. juunist 2022. a.",
+      "estleg:summary": {
+        "@value": "Määrust rakendatakse tagasiulatuvalt 30. juunist 2022. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust rakendatakse tagasiulatuvalt 30. juunist 2022. a.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1024244_Par_4"
@@ -532,6 +1207,11 @@
         {
           "@id": "estleg:Reg_1054587_Par_14_v1054587"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054587_Par_14_Lg_1"
+        }
       ]
     },
     {
@@ -545,6 +1225,19 @@
       },
       "estleg:citationDetail": "lg 4",
       "estleg:citationText": "Määrus kehtestatakse ravikindlustuse seaduse § 52 lõike 4"
+    },
+    {
+      "@id": "estleg:Reg_1054587_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust rakendatakse tagasiulatuvalt 30. juunist 2022. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054587_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
     }
   ]
 }

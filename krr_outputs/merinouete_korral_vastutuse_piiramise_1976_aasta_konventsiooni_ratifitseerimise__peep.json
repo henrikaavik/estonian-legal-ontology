@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:MKVPKR1976_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13265855.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13265855"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13265855/xml"
+      },
+      "estleg:globalId": "13265855",
+      "eli:id_local": "13265855",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "340643",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "43aeae36eb99aad40ba8530dd2b40935029884d371c48f74ec62b6fa1175ef2d",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-10-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -59,30 +80,39 @@
       ]
     },
     {
-      "@id": "estleg:MKVPKR1976_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_MKVPKR1976_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_MKVPKR1976_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Lepingu sätted",
-      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:MKVPKR1976_TopicScheme"
       },
       "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:MKVPKR1976_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_MKVPKR1976_default"
+        }
+      ]
     },
     {
       "@id": "estleg:MKVPKR1976_Par_1",
@@ -91,12 +121,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud merinõuete korral vastutuse piiramise 1976. aasta k...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurdelisatud , mis on koostatud 1976. aasta 19. novembril London...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MKVPKR1976_Map"
       },
-      "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 1976. aasta 19. novembril Londonis.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurdelisatud , mis on koostatud 1976. aasta 19. novembril Londonis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1976. aasta 19. novembril Londonis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MKVPKR1976_default"
@@ -135,10 +171,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1976. aasta 19. novembril Londonis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida juurdelisatud , mis on koostatud 1976. aasta 19. novembril Londonis.",
       "estleg:parentProvision": {
         "@id": "estleg:MKVPKR1976_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:MKVPKR1976_Par_2",
@@ -147,15 +185,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
+      "rdfs:label": {
+        "@value": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MKVPKR1976_Map"
       },
+      "estleg:summary": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MKVPKR1976_default"
       },
-      "estleg:summary": "§ 2. Ratifitseerimisel teha järgmised deklaratsioonid ja reservatsioonid:",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KRKEKR_Par_2"
@@ -181,12 +222,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Käesolev seadus jõustub 2002. aasta 1. oktoobril.<table border=\"0\" width=\"90%\">...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Käesolev seadus jõustub 2002. aasta 1. oktoobril.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:MKVPKR1976_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. oktoobril.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub 2002. aasta 1. oktoobril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. oktoobril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MKVPKR1976_default"
@@ -208,10 +255,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. oktoobril.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2002. aasta 1. oktoobril.",
       "estleg:parentProvision": {
         "@id": "estleg:MKVPKR1976_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     }
   ]
 }

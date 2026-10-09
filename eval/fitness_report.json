@@ -4,7 +4,7 @@
   "population": {
     "indexed_laws": 1122,
     "law_files_loaded": 1157,
-    "provisions": 39545
+    "provisions": 39851
   },
   "vertical_coverage_laws": {
     "sanctions": {
@@ -12,12 +12,12 @@
       "pct": 21.3
     },
     "competentAuthority": {
-      "laws_with": 560,
-      "pct": 49.9
+      "laws_with": 429,
+      "pct": 38.2
     },
     "interpretedBy": {
-      "laws_with": 84,
-      "pct": 7.5
+      "laws_with": 196,
+      "pct": 17.5
     },
     "euDirective": {
       "laws_with": 99,
@@ -30,16 +30,16 @@
   },
   "provision_coverage": {
     "estleg:targetGroup": {
-      "count": 26759,
-      "pct": 67.7
+      "count": 26715,
+      "pct": 67.0
     },
     "estleg:normativeType": {
-      "count": 16558,
-      "pct": 41.9
+      "count": 16531,
+      "pct": 41.5
     },
     "estleg:competentAuthority": {
-      "count": 8585,
-      "pct": 21.7
+      "count": 4037,
+      "pct": 10.1
     }
   },
   "point_in_time": {
@@ -51,26 +51,26 @@
   },
   "crossref_edge_resolution": {
     "note": "Of citation EDGES that exist, the fraction resolving to a node defined in the indexed corpus (validates the #561/#630 closure work). This measures reference integrity, not semantic precision or extraction recall — citations present in text that never became an edge are not counted here.",
-    "edges": 35671,
-    "resolved_in_corpus": 35671,
-    "pct": 100.0
+    "edges": 40561,
+    "resolved_in_corpus": 40408,
+    "pct": 99.6
   },
   "inline_sanctions": {
     "sanction_node_definitions_in_peeps": 0,
-    "hasSanction_edges": 7145,
+    "hasSanction_edges": 6967,
     "inline": false
   },
   "vertical_cooccurrence": {
     "note": "'verticals present' counts an edge being present (referenced), not the answer being inline-retrievable — see retrievability_gap.",
     "histogram": {
-      "0": 378,
-      "1": 183,
-      "2": 278,
-      "3": 181,
-      "4": 73,
-      "5": 29
+      "0": 382,
+      "1": 278,
+      "2": 143,
+      "3": 183,
+      "4": 93,
+      "5": 43
     },
-    "laws_with_all_verticals_referenced": 29,
+    "laws_with_all_verticals_referenced": 43,
     "most_complete_laws": [
       {
         "law": "ariseadustik",
@@ -84,7 +84,29 @@
         "score": 5
       },
       {
+        "law": "asjaoigusseaduse_rakendamise_seadus",
+        "verticals": [
+          "competentAuthority",
+          "euDirective",
+          "interpretedBy",
+          "pointInTime",
+          "sanctions"
+        ],
+        "score": 5
+      },
+      {
         "law": "avaliku_teabe_seadus",
+        "verticals": [
+          "competentAuthority",
+          "euDirective",
+          "interpretedBy",
+          "pointInTime",
+          "sanctions"
+        ],
+        "score": 5
+      },
+      {
+        "law": "eesti_vaartpaberite_keskregistri_seadus",
         "verticals": [
           "competentAuthority",
           "euDirective",
@@ -139,40 +161,18 @@
         "score": 5
       },
       {
+        "law": "halduskohtumenetluse_seadustik",
+        "verticals": [
+          "competentAuthority",
+          "euDirective",
+          "interpretedBy",
+          "pointInTime",
+          "sanctions"
+        ],
+        "score": 5
+      },
+      {
         "law": "isikuandmete_kaitse_seadus",
-        "verticals": [
-          "competentAuthority",
-          "euDirective",
-          "interpretedBy",
-          "pointInTime",
-          "sanctions"
-        ],
-        "score": 5
-      },
-      {
-        "law": "jaatmeseadus",
-        "verticals": [
-          "competentAuthority",
-          "euDirective",
-          "interpretedBy",
-          "pointInTime",
-          "sanctions"
-        ],
-        "score": 5
-      },
-      {
-        "law": "karistusseadustik",
-        "verticals": [
-          "competentAuthority",
-          "euDirective",
-          "interpretedBy",
-          "pointInTime",
-          "sanctions"
-        ],
-        "score": 5
-      },
-      {
-        "law": "kaugkutteseadus",
         "verticals": [
           "competentAuthority",
           "euDirective",
@@ -186,8 +186,608 @@
   },
   "retrievability_gap": {
     "note": "The #617 finding, refined. The verticals are present as EDGES on many laws, and on the full load surface (combined + sidecars) most resolve: sanctions are merged into combined as overlay nodes (#561) and act-level temporalStatus is now derived where version data exists (#617). The residual gap is per-PEEP self-containment — a single *_peep.json file still does not carry its sanction definitions inline (they live in the sanctions/ sidecar). The consumable answer surface is combined, not the individual peep.",
-    "laws_all_verticals_referenced": 29,
+    "laws_all_verticals_referenced": 43,
     "sanction_definitions_inline_in_peeps": 0,
     "act_temporalStatus_known_pct": 65.6
+  },
+  "corpus_fingerprint": "c6f822c32590",
+  "accuracy": {
+    "gold_dir": "eval/gold_sets",
+    "corpus_commits": [
+      "3e4d75f34051a514c95d762354aaf4574c1a7bd7"
+    ],
+    "layers": {
+      "altLabelFolds": {
+        "items": 50,
+        "adjudicated": 28,
+        "pending": 22,
+        "negatives": 12,
+        "adjudicated_by": {
+          "mechanical": 28
+        },
+        "verdicts": {
+          "correct": 28,
+          "incorrect": 0,
+          "partial": 0,
+          "pending": 22
+        },
+        "true_positives": 28,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 0,
+        "precision": 1.0,
+        "precision_lower95": 0.8794,
+        "recall": 1.0,
+        "f1": 1.0,
+        "item_accuracy": 1.0,
+        "by_value": {
+          "case_only": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 28,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          }
+        },
+        "property": "skos:altLabel",
+        "title": "Orthographic altLabel folds (#699)",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      },
+      "competence": {
+        "items": 300,
+        "adjudicated": 85,
+        "pending": 215,
+        "negatives": 60,
+        "adjudicated_by": {
+          "mechanical": 85
+        },
+        "verdicts": {
+          "correct": 85,
+          "incorrect": 0,
+          "partial": 0,
+          "pending": 215
+        },
+        "true_positives": 81,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 4,
+        "precision": 1.0,
+        "precision_lower95": 0.9547,
+        "recall": 1.0,
+        "f1": 1.0,
+        "item_accuracy": 1.0,
+        "by_value": {
+          "institution": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 64,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "issuer": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 17,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "none": {
+            "precision": null,
+            "recall": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 4
+          }
+        },
+        "property": "estleg:competentAuthority",
+        "title": "Competent authority",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      },
+      "courtLinks": {
+        "items": 300,
+        "adjudicated": 142,
+        "pending": 158,
+        "negatives": 60,
+        "adjudicated_by": {
+          "mechanical": 142
+        },
+        "verdicts": {
+          "correct": 142,
+          "incorrect": 0,
+          "partial": 0,
+          "pending": 158
+        },
+        "true_positives": 114,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 28,
+        "precision": 1.0,
+        "precision_lower95": 0.9674,
+        "recall": 1.0,
+        "f1": 1.0,
+        "item_accuracy": 1.0,
+        "by_value": {
+          "estleg:CaseType_Administrative": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 24,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "estleg:CaseType_Civil": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 41,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "estleg:CaseType_ConstitutionalReview": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 9,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "estleg:CaseType_Criminal": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 31,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "estleg:CaseType_Misdemeanor": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 9,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "uncited_section": {
+            "precision": null,
+            "recall": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 28
+          }
+        },
+        "property": "estleg:interpretedBy",
+        "title": "Court links (Riigikohus -> provision)",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      },
+      "crossReferences": {
+        "items": 300,
+        "adjudicated": 200,
+        "pending": 100,
+        "negatives": 60,
+        "adjudicated_by": {
+          "mechanical": 200
+        },
+        "verdicts": {
+          "correct": 200,
+          "incorrect": 0,
+          "partial": 0,
+          "pending": 100
+        },
+        "true_positives": 169,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 31,
+        "precision": 1.0,
+        "precision_lower95": 0.9778,
+        "recall": 1.0,
+        "f1": 1.0,
+        "item_accuracy": 1.0,
+        "by_value": {
+          "no_marker": {
+            "precision": null,
+            "recall": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 31
+          },
+          "other_act": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 65,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "same_act": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 104,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          }
+        },
+        "property": "estleg:references",
+        "title": "Cross-references",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      },
+      "deontic": {
+        "items": 300,
+        "adjudicated": 145,
+        "pending": 155,
+        "negatives": 60,
+        "adjudicated_by": {
+          "mechanical": 145
+        },
+        "verdicts": {
+          "correct": 144,
+          "incorrect": 1,
+          "partial": 0,
+          "pending": 155
+        },
+        "true_positives": 140,
+        "false_positives": 1,
+        "false_negatives": 0,
+        "true_negatives": 4,
+        "precision": 0.9929,
+        "precision_lower95": 0.9609,
+        "recall": 1.0,
+        "f1": 0.9964,
+        "item_accuracy": 0.9931,
+        "by_value": {
+          "estleg:NormType_Obligation": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 45,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "estleg:NormType_Permission": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 53,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "estleg:NormType_Prohibition": {
+            "precision": 0.9333,
+            "recall": 1.0,
+            "tp": 14,
+            "fp": 1,
+            "fn": 0,
+            "tn": 0
+          },
+          "estleg:NormType_Right": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 28,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "none": {
+            "precision": null,
+            "recall": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 4
+          }
+        },
+        "property": "estleg:normativeType",
+        "title": "Deontic modality (normative type)",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      },
+      "eurovoc": {
+        "items": 300,
+        "adjudicated": 7,
+        "pending": 293,
+        "negatives": 60,
+        "adjudicated_by": {
+          "mechanical": 7
+        },
+        "verdicts": {
+          "correct": 7,
+          "incorrect": 0,
+          "partial": 0,
+          "pending": 293
+        },
+        "true_positives": 7,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 0,
+        "precision": 1.0,
+        "precision_lower95": 0.6457,
+        "recall": 1.0,
+        "f1": 1.0,
+        "item_accuracy": 1.0,
+        "by_value": {
+          "2862": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "317": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "502": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "5050": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 2,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "573": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "68": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 1,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          }
+        },
+        "property": "dcterms:subject",
+        "title": "EuroVoc subjects (Estonian acts)",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      },
+      "sanctions": {
+        "items": 300,
+        "adjudicated": 273,
+        "pending": 27,
+        "negatives": 60,
+        "adjudicated_by": {
+          "mechanical": 273
+        },
+        "verdicts": {
+          "correct": 273,
+          "incorrect": 0,
+          "partial": 0,
+          "pending": 27
+        },
+        "true_positives": 237,
+        "false_positives": 0,
+        "false_negatives": 0,
+        "true_negatives": 36,
+        "precision": 1.0,
+        "precision_lower95": 0.984,
+        "recall": 1.0,
+        "f1": 1.0,
+        "item_accuracy": 1.0,
+        "by_value": {
+          "arrest": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 17,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "coercive_payment": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 43,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "compulsory_dissolution": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 9,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "confiscation": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 11,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "fine": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 110,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "imprisonment": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 21,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "no_penal_marker": {
+            "precision": null,
+            "recall": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 36
+          },
+          "pecuniary_punishment": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "tp": 26,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          }
+        },
+        "property": "estleg:hasSanction",
+        "title": "Sanctions",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      },
+      "targetGroup": {
+        "items": 300,
+        "adjudicated": 4,
+        "pending": 296,
+        "negatives": 60,
+        "adjudicated_by": {
+          "mechanical": 4
+        },
+        "verdicts": {
+          "correct": 3,
+          "incorrect": 1,
+          "partial": 0,
+          "pending": 296
+        },
+        "true_positives": 0,
+        "false_positives": 1,
+        "false_negatives": 0,
+        "true_negatives": 3,
+        "precision": 0.0,
+        "precision_lower95": 0.0,
+        "recall": null,
+        "f1": null,
+        "item_accuracy": 0.75,
+        "by_value": {
+          "estleg:TargetGroup_PublicBody": {
+            "precision": 0.0,
+            "recall": null,
+            "tp": 0,
+            "fp": 1,
+            "fn": 0,
+            "tn": 0
+          },
+          "none": {
+            "precision": null,
+            "recall": null,
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 3
+          }
+        },
+        "property": "estleg:targetGroup",
+        "title": "Target group",
+        "corpus_commit": "3e4d75f34051a514c95d762354aaf4574c1a7bd7",
+        "seed": 698
+      }
+    },
+    "errors": []
+  },
+  "accuracy_gate": {
+    "altLabelFolds": {
+      "status": "pass",
+      "reasons": [],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 25
+      }
+    },
+    "competence": {
+      "status": "pass",
+      "reasons": [],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 30
+      }
+    },
+    "courtLinks": {
+      "status": "pass",
+      "reasons": [],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 30
+      }
+    },
+    "crossReferences": {
+      "status": "pass",
+      "reasons": [],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 30
+      }
+    },
+    "deontic": {
+      "status": "pass",
+      "reasons": [],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 30
+      }
+    },
+    "eurovoc": {
+      "status": "insufficient",
+      "reasons": [
+        "not enough adjudicated items (7 < 30)"
+      ],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 30
+      }
+    },
+    "sanctions": {
+      "status": "pass",
+      "reasons": [],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 30
+      }
+    },
+    "targetGroup": {
+      "status": "insufficient",
+      "reasons": [
+        "not enough adjudicated items (4 < 30)"
+      ],
+      "floor": {
+        "precision": 0.6,
+        "recall": null,
+        "min_adjudicated": 30
+      }
+    }
   }
 }

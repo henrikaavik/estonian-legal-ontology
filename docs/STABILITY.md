@@ -41,6 +41,17 @@ across untagged `main` clones — pin `owl:versionIRI` first.
 The project has released v1.0.0. Shortening amendment-family IDs
 (`Amendment_<ABBREV>_…`) is therefore also a MAJOR change.
 
+Riigikohus decision IRIs are frozen as `estleg:RK_<sanitize(caseNumber)>`
+(#697), the form 11,983 of 12,104 committed decisions carry. The other 121
+are second documents of a `caseNumber` whose short IRI another document
+already holds. They keep `estleg:RK_<sanitize(caseNumber)>_<sanitize(rikObjectId)>`,
+listed per document in `data/rk_iri_collisions.json`. The generator consults
+that allowlist, so regeneration reproduces every committed court IRI. A new
+collision gets the long form and is appended with a logged warning. Changing
+the formula, re-minting a listed IRI or removing an entry is MAJOR.
+`tests/test_ingest_regeneration_697.py` checks every committed decision
+against the formula (`pytest -m corpus`).
+
 Regulation provision IRIs (`estleg:Reg_<tid>_Par_*`) move from the positional
 legacy suffix to the law-pipeline suffix (`_paragraph_id_suffix` +
 `_dedupe_paragraph_suffix`) in a MAJOR release: 2,549 of 168,420 IRIs change

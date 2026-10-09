@@ -156,7 +156,8 @@ def test_tt_present_in_celex_maps() -> None:
 
 def test_tt_decision_to_node_emits_general_court_order() -> None:
     """End-to-end node for a ``TT`` work points at the General Court order
-    individuals (#383)."""
+    individuals (#383). CELLAR's malformed ``62016TT0624`` is corrected to
+    ``62016TO0624`` in the raw layer (#588/#697); the @id keeps the source CELEX."""
     item = {
         "celex": "62016TT0624",
         "title": "Kohtuasi T-624/16",
@@ -168,9 +169,11 @@ def test_tt_decision_to_node_emits_general_court_order() -> None:
     assert node["estleg:euCourt"] == {"@id": "estleg:EUCourt_GeneralCourt"}
     assert node["estleg:euCourtDecisionType"] == {"@id": "estleg:EUDecType_Order"}
     assert "estleg:curiaLink" not in node
-    assert node["estleg:eurLexLink"]["@value"].endswith("CELEX:62016TT0624")
+    assert node["@id"] == "estleg:EUCJ_62016TT0624"
+    assert node["estleg:celexNumber"] == "62016TO0624"
+    assert node["estleg:eurLexLink"]["@value"].endswith("CELEX:62016TO0624")
     same_as = {item["@id"] for item in node["owl:sameAs"]}
-    assert mod.cellar_celex_iri("62016TT0624") in same_as
+    assert mod.cellar_celex_iri("62016TO0624") in same_as
     assert mod.cellar_ecli_iri("ECLI:EU:T:2019:47") in same_as
 
 
@@ -214,8 +217,8 @@ def test_decision_node_label_has_no_nbsp() -> None:
         "authors": [],
     }
     node = mod.decision_to_node(item)
-    assert NBSP not in node["rdfs:label"]["@value"]
-    assert NBSP not in node["dcterms:title"]["@value"]
+    assert NBSP not in node["rdfs:label"]
+    assert NBSP not in node["dcterms:title"]
 
 
 # ---------------------------------------------------------------------------

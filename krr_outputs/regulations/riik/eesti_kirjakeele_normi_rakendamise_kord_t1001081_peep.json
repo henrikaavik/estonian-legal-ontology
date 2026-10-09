@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Eesti kirjakeele normi rakendamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Eesti kirjakeele normi rakendamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Eesti kirjakeele normi rakendamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2011-07-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2011-06-14",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:issuedUnder": [
         {
           "@id": "estleg:Keeleseadus_Map"
@@ -60,7 +62,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
+      ],
+      "dcterms:title": "Eesti kirjakeele normi rakendamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1001081_Par_1",
@@ -69,13 +77,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Eesti kirjakeele norm",
+      "rdfs:label": {
+        "@value": "§ 1. Eesti kirjakeele norm",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti kirjakeele normi rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1001081_Map"
       },
-      "estleg:summary": "Eesti kirjakeele normi (edaspidi kirjakeele norm) all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele norm peab tagama ametliku keelekasutuse ühtluse ja selguse ning soodustama keelekasutuse hea tava rakendamist.",
-      "estleg:legalText": "Eesti kirjakeele normi (edaspidi kirjakeele norm) all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele norm peab tagama ametliku keelekasutuse ühtluse ja selguse ning soodustama keelekasutuse hea tava rakendamist. Eesti kirjakeele normi (edaspidi kirjakeele norm) all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele norm peab tagama ametliku keelekasutuse ühtluse ja selguse ning soodustama keelekasutuse hea tava rakendamist.",
+      "estleg:summary": {
+        "@value": "Eesti kirjakeele normi (edaspidi kirjakeele norm) all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele norm peab tagama ametliku keelekasutuse ühtluse ja selguse ning soodustama keelekasutuse hea tava rakendamist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Eesti kirjakeele normi (edaspidi kirjakeele norm) all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele norm peab tagama ametliku keelekasutuse ühtluse ja selguse ning soodustama keelekasutuse hea tava rakendamist.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -87,7 +101,25 @@
         {
           "@id": "estleg:Reg_1001081_Par_1_v1001081"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1001081_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1001081_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti kirjakeele normi (edaspidi kirjakeele norm) all mõistetakse õigekirjutuslike, grammatiliste ja sõnavaraliste normingute ja soovituste süsteemi. Kirjakeele norm peab tagama ametliku keelekasutuse ühtluse ja selguse ning soodustama keelekasutuse hea tava rakendamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1001081_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1001081_Par_2",
@@ -96,13 +128,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kirjakeele normi rakendamine",
+      "rdfs:label": {
+        "@value": "§ 2. Kirjakeele normi rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti kirjakeele normi rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1001081_Map"
       },
-      "estleg:summary": "1 (1) Kirjakeele norm on määratud Eesti Keele Instituudi uusima õigekeelsussõnaraamatuga, Emakeele Seltsi keeletoimkonna otsustega ning keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatikaga. Kirjakeele norm on määratud Eesti Keele Instituudi uusima õigekeelsussõnaraamatuga, Emakeele Seltsi keeletoimkonna otsustega ning keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatikaga. 2 (2) Lõikes 1 nimetatud kirjakeele normi ",
-      "estleg:legalText": "1 (1) Kirjakeele norm on määratud Eesti Keele Instituudi uusima õigekeelsussõnaraamatuga, Emakeele Seltsi keeletoimkonna otsustega ning keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatikaga. Kirjakeele norm on määratud Eesti Keele Instituudi uusima õigekeelsussõnaraamatuga, Emakeele Seltsi keeletoimkonna otsustega ning keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatikaga. 2 (2) Lõikes 1 nimetatud kirjakeele normi allikad tähistatakse järgmiselt: 1 1) õigekeelsussõnaraamatu tiitellehe pöördele märgitakse tekst „Kirjakeele normi alus alates ...../kuupäev/” ja õigekeelsussõnaraamatu võrguversioonile lisatakse märge „Vastab väljaandele ...../uusima õigekeelsussõnaraamatu pealkiri ja ilmumisandmed/. Kirjakeele normi alus alates ...../kuupäev/”; 2 2) Emakeele Seltsi keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatika tiitellehe pöördele märgitakse tekst „Heaks kiitnud Emakeele Seltsi keeletoimkond”. Lõikes 1 nimetatud kirjakeele normi allikad tähistatakse järgmiselt: õigekeelsussõnaraamatu tiitellehe pöördele märgitakse tekst „Kirjakeele normi alus alates ...../kuupäev/” ja õigekeelsussõnaraamatu võrguversioonile lisatakse märge „Vastab väljaandele ...../uusima õigekeelsussõnaraamatu pealkiri ja ilmumisandmed/. Kirjakeele normi alus alates ...../kuupäev/”; Emakeele Seltsi keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatika tiitellehe pöördele märgitakse tekst „Heaks kiitnud Emakeele Seltsi keeletoimkond”. 3 (3) Oskussõnavara osas täiendavad ja täpsustavad kirjakeele normi oskussõnastikud, mille on heaks kiitnud Eesti Terminoloogia Ühing koostöös asjaomaste ministeeriumidega ja asutustega, mille põhikirjas on ette nähtud eesti keele uurimine ja korraldamine. Oskussõnavara osas täiendavad ja täpsustavad kirjakeele normi oskussõnastikud, mille on heaks kiitnud Eesti Terminoloogia Ühing koostöös asjaomaste ministeeriumidega ja asutustega, mille põhikirjas on ette nähtud eesti keele uurimine ja korraldamine. 4 (4) Nimede osas täiendavad ja täpsustavad kirjakeele normi „Nimeseadus”, „Kohanimeseadus” ja muud asjaomased õigusaktid. Nimede osas täiendavad ja täpsustavad kirjakeele normi „Nimeseadus”, „Kohanimeseadus” ja muud asjaomased õigusaktid.",
+      "estleg:summary": {
+        "@value": "1 (1) Kirjakeele norm on määratud Eesti Keele Instituudi uusima õigekeelsussõnaraamatuga, Emakeele Seltsi keeletoimkonna otsustega ning keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatikaga. 2 (2) Lõikes 1 nimetatud kirjakeele normi allikad tähistatakse järgmiselt: 1 1) õigekeelsussõnaraamatu tiitellehe pöördele märgitakse tekst „Kirjakeele normi alus alates ...../kuupäev/” ja õigekeelsussõnaraamatu võrguversioonile lisatakse märge „Vastab väljaandele…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kirjakeele norm on määratud Eesti Keele Instituudi uusima õigekeelsussõnaraamatuga, Emakeele Seltsi keeletoimkonna otsustega ning keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatikaga. 2 (2) Lõikes 1 nimetatud kirjakeele normi allikad tähistatakse järgmiselt: 1 1) õigekeelsussõnaraamatu tiitellehe pöördele märgitakse tekst „Kirjakeele normi alus alates ...../kuupäev/” ja õigekeelsussõnaraamatu võrguversioonile lisatakse märge „Vastab väljaandele ...../uusima õigekeelsussõnaraamatu pealkiri ja ilmumisandmed/. Kirjakeele normi alus alates ...../kuupäev/”; 2 2) Emakeele Seltsi keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatika tiitellehe pöördele märgitakse tekst „Heaks kiitnud Emakeele Seltsi keeletoimkond”. 3 (3) Oskussõnavara osas täiendavad ja täpsustavad kirjakeele normi oskussõnastikud, mille on heaks kiitnud Eesti Terminoloogia Ühing koostöös asjaomaste ministeeriumidega ja asutustega, mille põhikirjas on ette nähtud eesti keele uurimine ja korraldamine. 4 (4) Nimede osas täiendavad ja täpsustavad kirjakeele normi „Nimeseadus”, „Kohanimeseadus” ja muud asjaomased õigusaktid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -119,7 +157,77 @@
         {
           "@id": "estleg:Reg_1001081_Par_2_v1001081"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1001081_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1001081_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1001081_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1001081_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1001081_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kirjakeele norm on määratud Eesti Keele Instituudi uusima õigekeelsussõnaraamatuga, Emakeele Seltsi keeletoimkonna otsustega ning keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatikaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1001081_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1001081_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõikes 1 nimetatud kirjakeele normi allikad tähistatakse järgmiselt: 1) õigekeelsussõnaraamatu tiitellehe pöördele märgitakse tekst „Kirjakeele normi alus alates ...../kuupäev/” ja õigekeelsussõnaraamatu võrguversioonile lisatakse märge „Vastab väljaandele ...../uusima õigekeelsussõnaraamatu pealkiri ja ilmumisandmed/. Kirjakeele normi alus alates ...../kuupäev/”; 2) Emakeele Seltsi keeletoimkonnas heaks kiidetud ortograafiareeglistiku, normatiivse käsiraamatu ja grammatika tiitellehe pöördele märgitakse tekst „Heaks kiitnud Emakeele Seltsi keeletoimkond”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1001081_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1001081_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Oskussõnavara osas täiendavad ja täpsustavad kirjakeele normi oskussõnastikud, mille on heaks kiitnud Eesti Terminoloogia Ühing koostöös asjaomaste ministeeriumidega ja asutustega, mille põhikirjas on ette nähtud eesti keele uurimine ja korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1001081_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1001081_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nimede osas täiendavad ja täpsustavad kirjakeele normi „Nimeseadus”, „Kohanimeseadus” ja muud asjaomased õigusaktid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1001081_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1001081_Par_3",
@@ -128,18 +236,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kirjakeele normi alane nõustamine",
+      "rdfs:label": {
+        "@value": "§ 3. Kirjakeele normi alane nõustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti kirjakeele normi rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1001081_Map"
       },
-      "estleg:summary": "Kirjakeele normi alal annab nõu Eesti Keele Instituut.",
-      "estleg:legalText": "Kirjakeele normi alal annab nõu Eesti Keele Instituut. Kirjakeele normi alal annab nõu Eesti Keele Instituut.",
+      "estleg:summary": {
+        "@value": "Kirjakeele normi alal annab nõu Eesti Keele Instituut.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kirjakeele normi alal annab nõu Eesti Keele Instituut.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1001081_Par_3_v1001081"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1001081_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1001081_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kirjakeele normi alal annab nõu Eesti Keele Instituut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1001081_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_1001081_Par_4",
@@ -148,16 +280,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 4. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Eesti kirjakeele normi rakendamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1001081_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. juulil 2011. a.",
-      "estleg:legalText": "Määrus jõustub 1. juulil 2011. a. Määrus jõustub 1. juulil 2011. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. juulil 2011. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. juulil 2011. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1001081_Par_4_v1001081"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1001081_Par_4_Lg_1"
         }
       ]
     },
@@ -172,6 +315,19 @@
       },
       "estleg:citationDetail": "lg 2",
       "estleg:citationText": "Määrus kehtestatakse „ Keeleseaduse ” § 4 lõike 2"
+    },
+    {
+      "@id": "estleg:Reg_1001081_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. juulil 2011. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1001081_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     }
   ]
 }

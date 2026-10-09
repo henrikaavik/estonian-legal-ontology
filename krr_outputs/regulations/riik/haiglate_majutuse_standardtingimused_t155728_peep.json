@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Haiglate majutuse standardtingimused (määrus)",
+      "rdfs:label": {
+        "@value": "Haiglate majutuse standardtingimused (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Haiglate majutuse standardtingimused",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "155728",
       "estleg:preambleText": "Määrus kehtestatakse « Ravikindlustuse seaduse » § 68 lõike 2 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2003-01-01",
+        "@value": "2011-01-23",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2011-01-10",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2011-01-20",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_155728_68329559b1"
@@ -79,7 +81,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2825"
         }
-      ]
+      ],
+      "dcterms:title": "Haiglate majutuse standardtingimused",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_155728_Par_1",
@@ -88,13 +96,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Haiglate majutuse standardtingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155728_Map"
       },
-      "estleg:summary": "1 (1) Määrus kehtestab haiglatele statsionaarse tervishoiuteenuse osutamiseks majutuse standardtingimused. Määrus kehtestab haiglatele statsionaarse tervishoiuteenuse osutamiseks majutuse standardtingimused. 2 (2) Patsientide majutusruumideks on haigla palatiosakondades palatid, puhke- ja toitlustusruumid ning tualettruumid. Patsientide majutusruumideks on haigla palatiosakondades palatid, puhke- ja toitlustusruumid ning tualettruumid.",
-      "estleg:legalText": "1 (1) Määrus kehtestab haiglatele statsionaarse tervishoiuteenuse osutamiseks majutuse standardtingimused. Määrus kehtestab haiglatele statsionaarse tervishoiuteenuse osutamiseks majutuse standardtingimused. 2 (2) Patsientide majutusruumideks on haigla palatiosakondades palatid, puhke- ja toitlustusruumid ning tualettruumid. Patsientide majutusruumideks on haigla palatiosakondades palatid, puhke- ja toitlustusruumid ning tualettruumid.",
+      "estleg:summary": {
+        "@value": "1 (1) Määrus kehtestab haiglatele statsionaarse tervishoiuteenuse osutamiseks majutuse standardtingimused. 2 (2) Patsientide majutusruumideks on haigla palatiosakondades palatid, puhke- ja toitlustusruumid ning tualettruumid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määrus kehtestab haiglatele statsionaarse tervishoiuteenuse osutamiseks majutuse standardtingimused. 2 (2) Patsientide majutusruumideks on haigla palatiosakondades palatid, puhke- ja toitlustusruumid ning tualettruumid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -108,7 +122,41 @@
         {
           "@id": "estleg:Reg_155728_Par_1_v155728"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155728_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus kehtestab haiglatele statsionaarse tervishoiuteenuse osutamiseks majutuse standardtingimused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Patsientide majutusruumideks on haigla palatiosakondades palatid, puhke- ja toitlustusruumid ning tualettruumid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_155728_Par_2",
@@ -117,13 +165,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Üldnõuded",
+      "rdfs:label": {
+        "@value": "§ 2. Üldnõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Haiglate majutuse standardtingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155728_Map"
       },
-      "estleg:summary": "1 (1) Patsientide majutusruumide peavad vastama käesolevas määruses ja sotsiaalministri 17. jaanuari 2002. a määruses nr 18 «Haigla liikide nõuded» kehtestatud nõuetele. Patsientide majutusruumide peavad vastama käesolevas määruses ja sotsiaalministri 17. jaanuari 2002. a määruses nr 18 «Haigla liikide nõuded» kehtestatud nõuetele. 2 (2) Kõik patsientide ja külastajate käsutuses olevad ruumid ja hooned peavad olema tähistatud vastava ruumi või hoone nimetusega või üldtuntud tähisega. Kõik patsie",
-      "estleg:legalText": "1 (1) Patsientide majutusruumide peavad vastama käesolevas määruses ja sotsiaalministri 17. jaanuari 2002. a määruses nr 18 «Haigla liikide nõuded» kehtestatud nõuetele. Patsientide majutusruumide peavad vastama käesolevas määruses ja sotsiaalministri 17. jaanuari 2002. a määruses nr 18 «Haigla liikide nõuded» kehtestatud nõuetele. 2 (2) Kõik patsientide ja külastajate käsutuses olevad ruumid ja hooned peavad olema tähistatud vastava ruumi või hoone nimetusega või üldtuntud tähisega. Kõik patsientide ja külastajate käsutuses olevad ruumid ja hooned peavad olema tähistatud vastava ruumi või hoone nimetusega või üldtuntud tähisega. 3 (3) Majutusruumid liikumis-, nägemis- ja kuulmispuudega patsientidele peavad vastama nimetatud puudest tingitud erivajadustele. Majutusruumid liikumis-, nägemis- ja kuulmispuudega patsientidele peavad vastama nimetatud puudest tingitud erivajadustele. 4 (4) Patsientidel peab olema üldtelefoni ja lihtkirja postkasti kasutamise võimalus. Patsientidel peab olema üldtelefoni ja lihtkirja postkasti kasutamise võimalus. 5 (5) Majutusruumid ja nende sisustus peavad olema tehniliselt ja hügieeniliselt korras. Majutusruumid ja nende sisustus peavad olema tehniliselt ja hügieeniliselt korras. 6 (6) Patsientide toitlustamine peab toimuma vastavalt haiglasiseselt kinnitatud korrale ja menüüle, mis arvestab patsientide tervise seisundit, vanust, riskirühmade iseärasusi ning arsti määratud dieettoitlustamise nõudeid. Patsientide toitlustamine peab toimuma vastavalt haiglasiseselt kinnitatud korrale ja menüüle, mis arvestab patsientide tervise seisundit, vanust, riskirühmade iseärasusi ning arsti määratud dieettoitlustamise nõudeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Patsientide majutusruumide peavad vastama käesolevas määruses ja sotsiaalministri 17. jaanuari 2002. a määruses nr 18 «Haigla liikide nõuded» kehtestatud nõuetele. 2 (2) Kõik patsientide ja külastajate käsutuses olevad ruumid ja hooned peavad olema tähistatud vastava ruumi või hoone nimetusega või üldtuntud tähisega. 3 (3) Majutusruumid liikumis-, nägemis- ja kuulmispuudega patsientidele peavad vastama nimetatud puudest tingitud erivajadustele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Patsientide majutusruumide peavad vastama käesolevas määruses ja sotsiaalministri 17. jaanuari 2002. a määruses nr 18 «Haigla liikide nõuded» kehtestatud nõuetele. 2 (2) Kõik patsientide ja külastajate käsutuses olevad ruumid ja hooned peavad olema tähistatud vastava ruumi või hoone nimetusega või üldtuntud tähisega. 3 (3) Majutusruumid liikumis-, nägemis- ja kuulmispuudega patsientidele peavad vastama nimetatud puudest tingitud erivajadustele. 4 (4) Patsientidel peab olema üldtelefoni ja lihtkirja postkasti kasutamise võimalus. 5 (5) Majutusruumid ja nende sisustus peavad olema tehniliselt ja hügieeniliselt korras. 6 (6) Patsientide toitlustamine peab toimuma vastavalt haiglasiseselt kinnitatud korrale ja menüüle, mis arvestab patsientide tervise seisundit, vanust, riskirühmade iseärasusi ning arsti määratud dieettoitlustamise nõudeid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -145,7 +199,105 @@
         {
           "@id": "estleg:Institution_sotsiaalminister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155728_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_2_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Patsientide majutusruumide peavad vastama käesolevas määruses ja sotsiaalministri 17. jaanuari 2002. a määruses nr 18 «Haigla liikide nõuded» kehtestatud nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kõik patsientide ja külastajate käsutuses olevad ruumid ja hooned peavad olema tähistatud vastava ruumi või hoone nimetusega või üldtuntud tähisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Majutusruumid liikumis-, nägemis- ja kuulmispuudega patsientidele peavad vastama nimetatud puudest tingitud erivajadustele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Patsientidel peab olema üldtelefoni ja lihtkirja postkasti kasutamise võimalus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Majutusruumid ja nende sisustus peavad olema tehniliselt ja hügieeniliselt korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Patsientide toitlustamine peab toimuma vastavalt haiglasiseselt kinnitatud korrale ja menüüle, mis arvestab patsientide tervise seisundit, vanust, riskirühmade iseärasusi ning arsti määratud dieettoitlustamise nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6"
     },
     {
       "@id": "estleg:Reg_155728_Par_3",
@@ -154,13 +306,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Palatid",
+      "rdfs:label": {
+        "@value": "§ 3. Palatid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Haiglate majutuse standardtingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155728_Map"
       },
-      "estleg:summary": "1 (1) Patsiendid paigutatakse ühe- kuni kuuekohalistesse palatitesse vastavalt meditsiinilistest näidustustest tulenevatele vajadustele. Patsiendid paigutatakse ühe- kuni kuuekohalistesse palatitesse vastavalt meditsiinilistest näidustustest tulenevatele vajadustele. 2 (2) Palatite mõõtmed, sisustuse valik ja selle paigutus peab võimaldama igale voodile juurdepääsu voodi otsast ja külgedelt. Palatite mõõtmed, sisustuse valik ja selle paigutus peab võimaldama igale voodile juurdepääsu voodi otsas",
-      "estleg:legalText": "1 (1) Patsiendid paigutatakse ühe- kuni kuuekohalistesse palatitesse vastavalt meditsiinilistest näidustustest tulenevatele vajadustele. Patsiendid paigutatakse ühe- kuni kuuekohalistesse palatitesse vastavalt meditsiinilistest näidustustest tulenevatele vajadustele. 2 (2) Palatite mõõtmed, sisustuse valik ja selle paigutus peab võimaldama igale voodile juurdepääsu voodi otsast ja külgedelt. Palatite mõõtmed, sisustuse valik ja selle paigutus peab võimaldama igale voodile juurdepääsu voodi otsast ja külgedelt. 3 (3) Iga voodit peab olema võimalik vastavalt vajadusele teistest eraldada liigendava vaheseina, kardina või sirmiga. Iga voodit peab olema võimalik vastavalt vajadusele teistest eraldada liigendava vaheseina, kardina või sirmiga. 4 (4) Igas palatis ja tualettruumis, välja arvatud psühhiaatria osakonnas, peab olema õe väljakutse süsteem. Igas palatis ja tualettruumis, välja arvatud psühhiaatria osakonnas, peab olema õe väljakutse süsteem. 5 (5) Igas palatis peab olema: 1 1) lisaks üldvalgustusele öövalgustus ja iga voodi juures kohtvalgustus, 2 2) patsientide kasutuses vähemalt üks 220 V pistikupesa, 3 3) igal haigel oma või ühislaud söömiseks, 4 4) eraldi koht või lukustatav riidekapp rõivaste riputamiseks täispikkuses, kui patsientide riiete hoidmine ei ole haiglas korraldatud teisiti. Igas palatis peab olema: lisaks üldvalgustusele öövalgustus ja iga voodi juures kohtvalgustus, patsientide kasutuses vähemalt üks 220 V pistikupesa, igal haigel oma või ühislaud söömiseks, eraldi koht või lukustatav riidekapp rõivaste riputamiseks täispikkuses, kui patsientide riiete hoidmine ei ole haiglas korraldatud teisiti. 6 (6) Igal patsiendil peab palatis olema: 1 1) voodi või vajadusel funktsionaalne voodi, 2 2) padi, 3 3) tekk, 4 4) vajadusel lisapadi ja -tekk, 5 5) voodilinast, tekilinast või -kotist ja padjapüürist koosnev voodipesukomplekt, 6 6) käterätik, 7 7) vannilina, 8 8) kapp isiklike asjade hoidmiseks, 9 9) tool, 10 10) joogiklaas. Igal patsiendil peab palatis olema: voodi või vajadusel funktsionaalne voodi, padi, tekk, vajadusel lisapadi ja -tekk, voodilinast, tekilinast või -kotist ja padjapüürist koosnev voodipesukomplekt, käterätik, vannilina, kapp isiklike asjade hoidmiseks, tool, joogiklaas.",
+      "estleg:summary": {
+        "@value": "1 (1) Patsiendid paigutatakse ühe- kuni kuuekohalistesse palatitesse vastavalt meditsiinilistest näidustustest tulenevatele vajadustele. 2 (2) Palatite mõõtmed, sisustuse valik ja selle paigutus peab võimaldama igale voodile juurdepääsu voodi otsast ja külgedelt. 3 (3) Iga voodit peab olema võimalik vastavalt vajadusele teistest eraldada liigendava vaheseina, kardina või sirmiga. 4 (4) Igas palatis ja tualettruumis, välja arvatud psühhiaatria osakonnas, peab olema õe väljakutse süsteem.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Patsiendid paigutatakse ühe- kuni kuuekohalistesse palatitesse vastavalt meditsiinilistest näidustustest tulenevatele vajadustele. 2 (2) Palatite mõõtmed, sisustuse valik ja selle paigutus peab võimaldama igale voodile juurdepääsu voodi otsast ja külgedelt. 3 (3) Iga voodit peab olema võimalik vastavalt vajadusele teistest eraldada liigendava vaheseina, kardina või sirmiga. 4 (4) Igas palatis ja tualettruumis, välja arvatud psühhiaatria osakonnas, peab olema õe väljakutse süsteem. 5 (5) Igas palatis peab olema: 1 1) lisaks üldvalgustusele öövalgustus ja iga voodi juures kohtvalgustus, 2 2) patsientide kasutuses vähemalt üks 220 V pistikupesa, 3 3) igal haigel oma või ühislaud söömiseks, 4 4) eraldi koht või lukustatav riidekapp rõivaste riputamiseks täispikkuses, kui patsientide riiete hoidmine ei ole haiglas korraldatud teisiti. 6 (6) Igal patsiendil peab palatis olema: 1 1) voodi või vajadusel funktsionaalne voodi, 2 2) padi, 3 3) tekk, 4 4) vajadusel lisapadi ja -tekk, 5 5) voodilinast, tekilinast või -kotist ja padjapüürist koosnev voodipesukomplekt, 6 6) käterätik, 7 7) vannilina, 8 8) kapp isiklike asjade hoidmiseks, 9 9) tool, 10 10) joogiklaas.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -177,6 +335,122 @@
         {
           "@id": "estleg:Reg_155728_Par_3_v155728"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155728_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_3_Lg_6"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Patsiendid paigutatakse ühe- kuni kuuekohalistesse palatitesse vastavalt meditsiinilistest näidustustest tulenevatele vajadustele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Palatite mõõtmed, sisustuse valik ja selle paigutus peab võimaldama igale voodile juurdepääsu voodi otsast ja külgedelt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Iga voodit peab olema võimalik vastavalt vajadusele teistest eraldada liigendava vaheseina, kardina või sirmiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Igas palatis ja tualettruumis, välja arvatud psühhiaatria osakonnas, peab olema õe väljakutse süsteem.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Igas palatis peab olema: 1) lisaks üldvalgustusele öövalgustus ja iga voodi juures kohtvalgustus, 2) patsientide kasutuses vähemalt üks 220 V pistikupesa, 3) igal haigel oma või ühislaud söömiseks, 4) eraldi koht või lukustatav riidekapp rõivaste riputamiseks täispikkuses, kui patsientide riiete hoidmine ei ole haiglas korraldatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Igal patsiendil peab palatis olema: 1) voodi või vajadusel funktsionaalne voodi, 2) padi, 3) tekk, 4) vajadusel lisapadi ja -tekk, 5) voodilinast, tekilinast või -kotist ja padjapüürist koosnev voodipesukomplekt, 6) käterätik, 7) vannilina, 8) kapp isiklike asjade hoidmiseks, 9) tool, 10) joogiklaas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
       ]
     },
     {
@@ -186,13 +460,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Toitlustus- ja puhkeruumid",
+      "rdfs:label": {
+        "@value": "§ 4. Toitlustus- ja puhkeruumid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Haiglate majutuse standardtingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155728_Map"
       },
-      "estleg:summary": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 Kehtetu - 1 (1¹) Haiglas toidu käitlemisel peab olema tagatud selle käitlemine vastavalt „Toiduseadusele” ja selle seaduse alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 Haiglas toidu käitlemisel peab olema tagatud selle käitlemine vastavalt „Toiduseadusele” ja selle seaduse alusel kehtestatud õigusaktidele. 2 (2) Patsiente toitlustatakse söögitoas või palatites. Patsiente toitlustatakse söögitoas",
-      "estleg:legalText": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 Kehtetu - 1 (1¹) Haiglas toidu käitlemisel peab olema tagatud selle käitlemine vastavalt „Toiduseadusele” ja selle seaduse alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 Haiglas toidu käitlemisel peab olema tagatud selle käitlemine vastavalt „Toiduseadusele” ja selle seaduse alusel kehtestatud õigusaktidele. 2 (2) Patsiente toitlustatakse söögitoas või palatites. Patsiente toitlustatakse söögitoas või palatites. 3 (3) Söögitoas või selle vahetus läheduses peab olema käte pesemise võimalus. Söögitoas või selle vahetus läheduses peab olema käte pesemise võimalus. 4 (4) Haiglas peavad olema patsientide puhkeruumid, kus on televiisor ja istekohad. Haiglas peavad olema patsientide puhkeruumid, kus on televiisor ja istekohad. 5 (5) Patsientide kasutuses peavad olema üldkasutatavad külmkapid. Patsientide kasutuses peavad olema üldkasutatavad külmkapid.",
+      "estleg:summary": {
+        "@value": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 1 (1<sup>1</sup>) Haiglas toidu käitlemisel peab olema tagatud selle käitlemine vastavalt „Toiduseadusele” ja selle seaduse alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 2 (2) Patsiente toitlustatakse söögitoas või palatites. 3 (3) Söögitoas või selle vahetus läheduses peab olema käte pesemise võimalus. 4 (4) Haiglas peavad olema patsientide puhkeruumid, kus on televiisor ja istekohad.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 1 (1<sup>1</sup>) Haiglas toidu käitlemisel peab olema tagatud selle käitlemine vastavalt „Toiduseadusele” ja selle seaduse alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 2 (2) Patsiente toitlustatakse söögitoas või palatites. 3 (3) Söögitoas või selle vahetus läheduses peab olema käte pesemise võimalus. 4 (4) Haiglas peavad olema patsientide puhkeruumid, kus on televiisor ja istekohad. 5 (5) Patsientide kasutuses peavad olema üldkasutatavad külmkapid.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -209,7 +489,89 @@
         {
           "@id": "estleg:Reg_155728_Par_4_v155728"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155728_Par_4_Lg_1_1"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_4_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_4_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1¹",
+      "estleg:legalText": "(1¹) Haiglas toidu käitlemisel peab olema tagatud selle käitlemine vastavalt „Toiduseadusele” ja selle seaduse alusel kehtestatud õigusaktidele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1¹"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Patsiente toitlustatakse söögitoas või palatites.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Söögitoas või selle vahetus läheduses peab olema käte pesemise võimalus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Haiglas peavad olema patsientide puhkeruumid, kus on televiisor ja istekohad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Patsientide kasutuses peavad olema üldkasutatavad külmkapid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5"
     },
     {
       "@id": "estleg:Reg_155728_Par_5",
@@ -218,13 +580,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Tualettruumid",
+      "rdfs:label": {
+        "@value": "§ 5. Tualettruumid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Haiglate majutuse standardtingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155728_Map"
       },
-      "estleg:summary": "1 (1) WC-poti, duši, valamu ja pesemisraamiga tualettruume peab olema arvestusega üks WC-pott 2–8 voodikoha kohta ning üks dušikoht 2–12 voodikoha kohta, välja arvatud meditsiinilisest näidustusest tuleneva erinõudega ühekohaliste palatite juures paiknevad tualettruumid. WC-poti, duši, valamu ja pesemisraamiga tualettruume peab olema arvestusega üks WC-pott 2–8 voodikoha kohta ning üks dušikoht 2–12 voodikoha kohta, välja arvatud meditsiinilisest näidustusest tuleneva erinõudega ühekohaliste pal",
-      "estleg:legalText": "1 (1) WC-poti, duši, valamu ja pesemisraamiga tualettruume peab olema arvestusega üks WC-pott 2–8 voodikoha kohta ning üks dušikoht 2–12 voodikoha kohta, välja arvatud meditsiinilisest näidustusest tuleneva erinõudega ühekohaliste palatite juures paiknevad tualettruumid. WC-poti, duši, valamu ja pesemisraamiga tualettruume peab olema arvestusega üks WC-pott 2–8 voodikoha kohta ning üks dušikoht 2–12 voodikoha kohta, välja arvatud meditsiinilisest näidustusest tuleneva erinõudega ühekohaliste palatite juures paiknevad tualettruumid. 2 (2) Tualettruumist, välja arvatud sünnitusabi palat, võib valamu ära jätta, kui see kuulub ühe- või kahekohalise palati juurde. Tualettruumist, välja arvatud sünnitusabi palat, võib valamu ära jätta, kui see kuulub ühe- või kahekohalise palati juurde. 3 (3) Mitmekohalise tualettruumi puhul peab iga WC-pott, dušš või vann asuma eraldi kabiinis. Mitmekohalise tualettruumi puhul peab iga WC-pott, dušš või vann asuma eraldi kabiinis. 4 (4) Tualettruumis peab olema väljapoole avanev või lükanduks. Tualettruumis peab olema väljapoole avanev või lükanduks. 5 (5) Tualettruumis peab olema: 1 1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 2 2) peegel, välja arvatud ruumides, mida kasutavad peamiselt isikud, kellele osutatakse haiglas psühhiaatrilise abi tervishoiuteenuseid, RT I 2011-01-20 15 120012011015 2011-01-23 3 3) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 4 4) dosaatoriga seep või ühekordsed seebid, 5 5) tualettpaber, 6 6) kaanega ja vahetatava kilekotiga prügikast, 7 7) võimalus käte kuivatamiseks. RT I 2011-01-20 15 120012011015 2011-01-23 Tualettruumis peab olema: Kehtetu - peegel, välja arvatud ruumides, mida kasutavad peamiselt isikud, kellele osutatakse haiglas psühhiaatrilise abi tervishoiuteenuseid, Kehtetu - dosaatoriga seep või ühekordsed seebid, tualettpaber, kaanega ja vahetatava kilekotiga prügikast, võimalus käte kuivatamiseks. 6 (6) Tualettruumi seinad ja põrandad peavad olema kaetud niiskuskindla, kergesti puhastatava ja desinfitseeritava materjaliga. Tualettruumi seinad ja põrandad peavad olema kaetud niiskuskindla, kergesti puhastatava ja desinfitseeritava materjaliga.",
+      "estleg:summary": {
+        "@value": "1 (1) WC-poti, duši, valamu ja pesemisraamiga tualettruume peab olema arvestusega üks WC-pott 2–8 voodikoha kohta ning üks dušikoht 2–12 voodikoha kohta, välja arvatud meditsiinilisest näidustusest tuleneva erinõudega ühekohaliste palatite juures paiknevad tualettruumid. 2 (2) Tualettruumist, välja arvatud sünnitusabi palat, võib valamu ära jätta, kui see kuulub ühe- või kahekohalise palati juurde. 3 (3) Mitmekohalise tualettruumi puhul peab iga WC-pott, dušš või vann asuma eraldi kabiinis.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) WC-poti, duši, valamu ja pesemisraamiga tualettruume peab olema arvestusega üks WC-pott 2–8 voodikoha kohta ning üks dušikoht 2–12 voodikoha kohta, välja arvatud meditsiinilisest näidustusest tuleneva erinõudega ühekohaliste palatite juures paiknevad tualettruumid. 2 (2) Tualettruumist, välja arvatud sünnitusabi palat, võib valamu ära jätta, kui see kuulub ühe- või kahekohalise palati juurde. 3 (3) Mitmekohalise tualettruumi puhul peab iga WC-pott, dušš või vann asuma eraldi kabiinis. 4 (4) Tualettruumis peab olema väljapoole avanev või lükanduks. 5 (5) Tualettruumis peab olema: 1 1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 2 2) peegel, välja arvatud ruumides, mida kasutavad peamiselt isikud, kellele osutatakse haiglas psühhiaatrilise abi tervishoiuteenuseid, RT I 2011-01-20 15 120012011015 2011-01-23 3 3) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 4 4) dosaatoriga seep või ühekordsed seebid, 5 5) tualettpaber, 6 6) kaanega ja vahetatava kilekotiga prügikast, 7 7) võimalus käte kuivatamiseks. RT I 2011-01-20 15 120012011015 2011-01-23 6 (6) Tualettruumi seinad ja põrandad peavad olema kaetud niiskuskindla, kergesti puhastatava ja desinfitseeritava materjaliga.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -241,7 +609,114 @@
         {
           "@id": "estleg:Reg_155728_Par_5_v155728"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155728_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_5_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) WC-poti, duši, valamu ja pesemisraamiga tualettruume peab olema arvestusega üks WC-pott 2–8 voodikoha kohta ning üks dušikoht 2–12 voodikoha kohta, välja arvatud meditsiinilisest näidustusest tuleneva erinõudega ühekohaliste palatite juures paiknevad tualettruumid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tualettruumist, välja arvatud sünnitusabi palat, võib valamu ära jätta, kui see kuulub ühe- või kahekohalise palati juurde.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Mitmekohalise tualettruumi puhul peab iga WC-pott, dušš või vann asuma eraldi kabiinis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tualettruumis peab olema väljapoole avanev või lükanduks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Tualettruumis peab olema: 1) 2) peegel, välja arvatud ruumides, mida kasutavad peamiselt isikud, kellele osutatakse haiglas psühhiaatrilise abi tervishoiuteenuseid, 3) 4) dosaatoriga seep või ühekordsed seebid, 5) tualettpaber, 6) kaanega ja vahetatava kilekotiga prügikast, 7) võimalus käte kuivatamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Tualettruumi seinad ja põrandad peavad olema kaetud niiskuskindla, kergesti puhastatava ja desinfitseeritava materjaliga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6"
     },
     {
       "@id": "estleg:Reg_155728_Par_6",
@@ -250,13 +725,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Tehnokommunikatsioonid ja sisekliima",
+      "rdfs:label": {
+        "@value": "§ 6. Tehnokommunikatsioonid ja sisekliima",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Haiglate majutuse standardtingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155728_Map"
       },
-      "estleg:summary": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 Kehtetu - 1 (1¹) Haiglas kasutatava vee kvaliteet peab vastama „Toiduseadusele” ja „Veeseadusele” ning nende seaduste alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 Haiglas kasutatava vee kvaliteet peab vastama „Toiduseadusele” ja „Veeseadusele” ning nende seaduste alusel kehtestatud õigusaktidele. 2 (2) Haigla soojaveevarustuses peab ööpäevaringselt olema vähemalt +45 °C vesi. Haigla soojaveevaru",
-      "estleg:legalText": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 Kehtetu - 1 (1¹) Haiglas kasutatava vee kvaliteet peab vastama „Toiduseadusele” ja „Veeseadusele” ning nende seaduste alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 Haiglas kasutatava vee kvaliteet peab vastama „Toiduseadusele” ja „Veeseadusele” ning nende seaduste alusel kehtestatud õigusaktidele. 2 (2) Haigla soojaveevarustuses peab ööpäevaringselt olema vähemalt +45 °C vesi. Haigla soojaveevarustuses peab ööpäevaringselt olema vähemalt +45 °C vesi. 3 (3) Haigla palatites, üldkasutatavates ja tualettruumides peab olema loomulik ventilatsioon või sundventilatsioon. Haigla palatites, üldkasutatavates ja tualettruumides peab olema loomulik ventilatsioon või sundventilatsioon. 4 (4) Haigla üldvalgustus peab tagama palatites, üldkasutatavates ja tualettruumides normidele vastava ühtlase hajutatud valgustatuse. Haigla üldvalgustus peab tagama palatites, üldkasutatavates ja tualettruumides normidele vastava ühtlase hajutatud valgustatuse. 5 (5) Majutusruumide koristamine ja pesu vahetamine peab toimuma vastavalt haigla hügieenieeskirjale. Majutusruumide koristamine ja pesu vahetamine peab toimuma vastavalt haigla hügieenieeskirjale.",
+      "estleg:summary": {
+        "@value": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 1 (1<sup>1</sup>) Haiglas kasutatava vee kvaliteet peab vastama „Toiduseadusele” ja „Veeseadusele” ning nende seaduste alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 2 (2) Haigla soojaveevarustuses peab ööpäevaringselt olema vähemalt +45 °C vesi. 3 (3) Haigla palatites, üldkasutatavates ja tualettruumides peab olema loomulik ventilatsioon või sundventilatsioon.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kehtetu - RT I 2011-01-20 15 120012011015 2011-01-23 1 (1<sup>1</sup>) Haiglas kasutatava vee kvaliteet peab vastama „Toiduseadusele” ja „Veeseadusele” ning nende seaduste alusel kehtestatud õigusaktidele. RT I 2011-01-20 15 120012011015 2011-01-23 2 (2) Haigla soojaveevarustuses peab ööpäevaringselt olema vähemalt +45 °C vesi. 3 (3) Haigla palatites, üldkasutatavates ja tualettruumides peab olema loomulik ventilatsioon või sundventilatsioon. 4 (4) Haigla üldvalgustus peab tagama palatites, üldkasutatavates ja tualettruumides normidele vastava ühtlase hajutatud valgustatuse. 5 (5) Majutusruumide koristamine ja pesu vahetamine peab toimuma vastavalt haigla hügieenieeskirjale.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -268,7 +749,89 @@
         {
           "@id": "estleg:Reg_155728_Par_6_v155728"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155728_Par_6_Lg_1_1"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_155728_Par_6_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_6_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1¹",
+      "estleg:legalText": "(1¹) Haiglas kasutatava vee kvaliteet peab vastama „Toiduseadusele” ja „Veeseadusele” ning nende seaduste alusel kehtestatud õigusaktidele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1¹"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Haigla soojaveevarustuses peab ööpäevaringselt olema vähemalt +45 °C vesi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Haigla palatites, üldkasutatavates ja tualettruumides peab olema loomulik ventilatsioon või sundventilatsioon.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Haigla üldvalgustus peab tagama palatites, üldkasutatavates ja tualettruumides normidele vastava ühtlase hajutatud valgustatuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_155728_Par_6_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Majutusruumide koristamine ja pesu vahetamine peab toimuma vastavalt haigla hügieenieeskirjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155728_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 5"
     },
     {
       "@id": "estleg:Reg_155728_Par_7",
@@ -277,12 +840,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. [Määrus jõustub 1. jaanuaril 2003. a.]",
+      "rdfs:label": {
+        "@value": "§ 7. [Määrus jõustub 1. jaanuaril 2003. a.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Haiglate majutuse standardtingimused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155728_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. jaanuaril 2003. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. jaanuaril 2003. a.",
+        "@language": "et"
+      },
       "estleg:legalText": "Määrus jõustub 1. jaanuaril 2003. a.",
       "estleg:hasVersion": [
         {

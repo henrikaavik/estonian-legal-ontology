@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Isiku salajasele koostööle kaasamise dokumenteerimise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Isiku salajasele koostööle kaasamise dokumenteerimise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Isiku salajasele koostööle kaasamise dokumenteerimise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2013-01-21",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2013-01-18",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -64,7 +66,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2162"
         }
-      ]
+      ],
+      "dcterms:title": "Isiku salajasele koostööle kaasamise dokumenteerimise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1009757_Par_1",
@@ -73,13 +81,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Loa andmine isiku salajasele koostööle kaasamiseks",
+      "rdfs:label": {
+        "@value": "§ 1. Loa andmine isiku salajasele koostööle kaasamiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku salajasele koostööle kaasamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009757_Map"
       },
-      "estleg:summary": "1 (1) Loa isiku kaasamiseks salajasele koostööle jälitustoimingu tegemise tagamiseks või teabe kogumiseks (edaspidi salajane koostöö) annab Politsei- ja Piirivalveameti peadirektor või tema volitatud ametnik. Loa isiku kaasamiseks salajasele koostööle jälitustoimingu tegemise tagamiseks või teabe kogumiseks (edaspidi salajane koostöö) annab Politsei- ja Piirivalveameti peadirektor või tema volitatud ametnik. 2 (2) Luba salajasele koostööle kaasamiseks vormistatakse kirjalikult. Luba salajasele k",
-      "estleg:legalText": "1 (1) Loa isiku kaasamiseks salajasele koostööle jälitustoimingu tegemise tagamiseks või teabe kogumiseks (edaspidi salajane koostöö) annab Politsei- ja Piirivalveameti peadirektor või tema volitatud ametnik. Loa isiku kaasamiseks salajasele koostööle jälitustoimingu tegemise tagamiseks või teabe kogumiseks (edaspidi salajane koostöö) annab Politsei- ja Piirivalveameti peadirektor või tema volitatud ametnik. 2 (2) Luba salajasele koostööle kaasamiseks vormistatakse kirjalikult. Luba salajasele koostööle kaasamiseks vormistatakse kirjalikult.",
+      "estleg:summary": {
+        "@value": "1 (1) Loa isiku kaasamiseks salajasele koostööle jälitustoimingu tegemise tagamiseks või teabe kogumiseks (edaspidi salajane koostöö) annab Politsei- ja Piirivalveameti peadirektor või tema volitatud ametnik. 2 (2) Luba salajasele koostööle kaasamiseks vormistatakse kirjalikult.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Loa isiku kaasamiseks salajasele koostööle jälitustoimingu tegemise tagamiseks või teabe kogumiseks (edaspidi salajane koostöö) annab Politsei- ja Piirivalveameti peadirektor või tema volitatud ametnik. 2 (2) Luba salajasele koostööle kaasamiseks vormistatakse kirjalikult.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -106,7 +120,41 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009757_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009757_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Loa isiku kaasamiseks salajasele koostööle jälitustoimingu tegemise tagamiseks või teabe kogumiseks (edaspidi salajane koostöö) annab Politsei- ja Piirivalveameti peadirektor või tema volitatud ametnik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Luba salajasele koostööle kaasamiseks vormistatakse kirjalikult.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1009757_Par_2",
@@ -115,13 +163,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Isiku nõusolek salajasele koostööle kaasamiseks",
+      "rdfs:label": {
+        "@value": "§ 2. Isiku nõusolek salajasele koostööle kaasamiseks",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku salajasele koostööle kaasamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009757_Map"
       },
-      "estleg:summary": "1 (1) Isik peab salajasele koostööle kaasamiseks andma nõusoleku. Isik peab salajasele koostööle kaasamiseks andma nõusoleku. 2 (2) Isik annab nõusoleku salajasele koostööle kaasamiseks kirjalikult. Isik annab nõusoleku salajasele koostööle kaasamiseks kirjalikult. 3 (3) Juhul kui isik keeldub nõusolekut salajasele koostööle kaasamiseks kirjalikult kinnitamast, võib ta nõusolekut avaldada suuliselt ja selle kohta tehakse märge salajasele koostööle kaasamiseks vormistatud muude dokumentide juures",
-      "estleg:legalText": "1 (1) Isik peab salajasele koostööle kaasamiseks andma nõusoleku. Isik peab salajasele koostööle kaasamiseks andma nõusoleku. 2 (2) Isik annab nõusoleku salajasele koostööle kaasamiseks kirjalikult. Isik annab nõusoleku salajasele koostööle kaasamiseks kirjalikult. 3 (3) Juhul kui isik keeldub nõusolekut salajasele koostööle kaasamiseks kirjalikult kinnitamast, võib ta nõusolekut avaldada suuliselt ja selle kohta tehakse märge salajasele koostööle kaasamiseks vormistatud muude dokumentide juures. Juhul kui isik keeldub nõusolekut salajasele koostööle kaasamiseks kirjalikult kinnitamast, võib ta nõusolekut avaldada suuliselt ja selle kohta tehakse märge salajasele koostööle kaasamiseks vormistatud muude dokumentide juures.",
+      "estleg:summary": {
+        "@value": "1 (1) Isik peab salajasele koostööle kaasamiseks andma nõusoleku. 2 (2) Isik annab nõusoleku salajasele koostööle kaasamiseks kirjalikult. 3 (3) Juhul kui isik keeldub nõusolekut salajasele koostööle kaasamiseks kirjalikult kinnitamast, võib ta nõusolekut avaldada suuliselt ja selle kohta tehakse märge salajasele koostööle kaasamiseks vormistatud muude dokumentide juures.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isik peab salajasele koostööle kaasamiseks andma nõusoleku. 2 (2) Isik annab nõusoleku salajasele koostööle kaasamiseks kirjalikult. 3 (3) Juhul kui isik keeldub nõusolekut salajasele koostööle kaasamiseks kirjalikult kinnitamast, võib ta nõusolekut avaldada suuliselt ja selle kohta tehakse märge salajasele koostööle kaasamiseks vormistatud muude dokumentide juures.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -143,7 +197,57 @@
         {
           "@id": "estleg:Reg_1009757_Par_2_v1009757"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009757_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009757_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1009757_Par_2_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isik peab salajasele koostööle kaasamiseks andma nõusoleku.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isik annab nõusoleku salajasele koostööle kaasamiseks kirjalikult.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Juhul kui isik keeldub nõusolekut salajasele koostööle kaasamiseks kirjalikult kinnitamast, võib ta nõusolekut avaldada suuliselt ja selle kohta tehakse märge salajasele koostööle kaasamiseks vormistatud muude dokumentide juures.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:Reg_1009757_Par_3",
@@ -152,13 +256,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Isiku salajasele koostööle kaasamise vormistamine",
+      "rdfs:label": {
+        "@value": "§ 3. Isiku salajasele koostööle kaasamise vormistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku salajasele koostööle kaasamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009757_Map"
       },
-      "estleg:summary": "1 (1) Isiku salajasele koostööle kaasamine ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamine vormistatakse kirjalikult. Isiku salajasele koostööle kaasamine ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamine vormistatakse kirjalikult. 2 (2) Isiku salajasele koostööle kaasamise ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamise täpsema korra kehtestab Politsei- ja Piirivalveameti pea",
-      "estleg:legalText": "1 (1) Isiku salajasele koostööle kaasamine ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamine vormistatakse kirjalikult. Isiku salajasele koostööle kaasamine ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamine vormistatakse kirjalikult. 2 (2) Isiku salajasele koostööle kaasamise ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamise täpsema korra kehtestab Politsei- ja Piirivalveameti peadirektor. Isiku salajasele koostööle kaasamise ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamise täpsema korra kehtestab Politsei- ja Piirivalveameti peadirektor.",
+      "estleg:summary": {
+        "@value": "1 (1) Isiku salajasele koostööle kaasamine ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamine vormistatakse kirjalikult. 2 (2) Isiku salajasele koostööle kaasamise ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamise täpsema korra kehtestab Politsei- ja Piirivalveameti peadirektor.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Isiku salajasele koostööle kaasamine ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamine vormistatakse kirjalikult. 2 (2) Isiku salajasele koostööle kaasamise ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamise täpsema korra kehtestab Politsei- ja Piirivalveameti peadirektor.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -180,7 +290,41 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009757_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009757_Par_3_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isiku salajasele koostööle kaasamine ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamine vormistatakse kirjalikult.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isiku salajasele koostööle kaasamise ning talle salajasele koostööle kaasamisega tekkivate õiguste ja kohustuste tutvustamise täpsema korra kehtestab Politsei- ja Piirivalveameti peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:Reg_1009757_Par_4",
@@ -189,13 +333,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Dokumentide ja andmete säilitamine",
+      "rdfs:label": {
+        "@value": "§ 4. Dokumentide ja andmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku salajasele koostööle kaasamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009757_Map"
       },
-      "estleg:summary": "Salajasele koostööle kaasamiseks vormistatud dokumente ning sellega seoses kogutud andmeid säilitatakse Politsei- ja Piirivalveameti peadirektori kehtestatud korras.",
-      "estleg:legalText": "Salajasele koostööle kaasamiseks vormistatud dokumente ning sellega seoses kogutud andmeid säilitatakse Politsei- ja Piirivalveameti peadirektori kehtestatud korras. Salajasele koostööle kaasamiseks vormistatud dokumente ning sellega seoses kogutud andmeid säilitatakse Politsei- ja Piirivalveameti peadirektori kehtestatud korras.",
+      "estleg:summary": {
+        "@value": "Salajasele koostööle kaasamiseks vormistatud dokumente ning sellega seoses kogutud andmeid säilitatakse Politsei- ja Piirivalveameti peadirektori kehtestatud korras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Salajasele koostööle kaasamiseks vormistatud dokumente ning sellega seoses kogutud andmeid säilitatakse Politsei- ja Piirivalveameti peadirektori kehtestatud korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -214,7 +364,25 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009757_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Salajasele koostööle kaasamiseks vormistatud dokumente ning sellega seoses kogutud andmeid säilitatakse Politsei- ja Piirivalveameti peadirektori kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1009757_Par_5",
@@ -223,13 +391,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Määruse rakendamine",
+      "rdfs:label": {
+        "@value": "§ 5. Määruse rakendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isiku salajasele koostööle kaasamise dokumenteerimise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009757_Map"
       },
-      "estleg:summary": "Määrust rakendatakse 2013. aasta 1. jaanuarist.",
-      "estleg:legalText": "Määrust rakendatakse 2013. aasta 1. jaanuarist. Määrust rakendatakse 2013. aasta 1. jaanuarist.",
+      "estleg:summary": {
+        "@value": "Määrust rakendatakse 2013. aasta 1. jaanuarist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust rakendatakse 2013. aasta 1. jaanuarist.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1011219_Par_6"
@@ -251,6 +425,11 @@
         {
           "@id": "estleg:Reg_1009757_Par_5_v1009757"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009757_Par_5_Lg_1"
+        }
       ]
     },
     {
@@ -263,6 +442,19 @@
         "@id": "estleg:POLITS_Par_7"
       },
       "estleg:citationText": "Määrus kehtestatakse politsei ja piirivalve seaduse § 7"
+    },
+    {
+      "@id": "estleg:Reg_1009757_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust rakendatakse 2013. aasta 1. jaanuarist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009757_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     }
   ]
 }

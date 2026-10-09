@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Riikliku vereteenistuse infosüsteemi põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Riikliku vereteenistuse infosüsteemi põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -44,11 +51,6 @@
         "@value": "2026-04-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2026-03-20",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -89,7 +91,13 @@
         {
           "@id": "estleg:Institution_sotsiaalministeerium"
         }
-      ]
+      ],
+      "dcterms:title": "Riikliku vereteenistuse infosüsteemi põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1063117_Annex_1",
@@ -97,7 +105,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Riikliku vereteenistuse infosüsteemi andmekoosseis",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -106,7 +117,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -116,18 +130,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Infosüsteemi pidamise eesmärk ja nimetus",
+      "rdfs:label": {
+        "@value": "§ 1. Infosüsteemi pidamise eesmärk ja nimetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Riikliku vereteenistuse infosüsteemi (edaspidi infosüsteem) pidamise eesmärk on tagada vere kvaliteetne käitlemine ja ravi kvaliteet. Riikliku vereteenistuse infosüsteemi (edaspidi infosüsteem) pidamise eesmärk on tagada vere kvaliteetne käitlemine ja ravi kvaliteet. 2 (2) Infosüsteemi ingliskeelne nimetus on National Blood Service Information System. Infosüsteemi ingliskeelne nimetus on National Blood Service Information System.",
-      "estleg:legalText": "1 (1) Riikliku vereteenistuse infosüsteemi (edaspidi infosüsteem) pidamise eesmärk on tagada vere kvaliteetne käitlemine ja ravi kvaliteet. Riikliku vereteenistuse infosüsteemi (edaspidi infosüsteem) pidamise eesmärk on tagada vere kvaliteetne käitlemine ja ravi kvaliteet. 2 (2) Infosüsteemi ingliskeelne nimetus on National Blood Service Information System. Infosüsteemi ingliskeelne nimetus on National Blood Service Information System.",
+      "estleg:summary": {
+        "@value": "1 (1) Riikliku vereteenistuse infosüsteemi (edaspidi infosüsteem) pidamise eesmärk on tagada vere kvaliteetne käitlemine ja ravi kvaliteet. 2 (2) Infosüsteemi ingliskeelne nimetus on National Blood Service Information System.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Riikliku vereteenistuse infosüsteemi (edaspidi infosüsteem) pidamise eesmärk on tagada vere kvaliteetne käitlemine ja ravi kvaliteet. 2 (2) Infosüsteemi ingliskeelne nimetus on National Blood Service Information System.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1063117_Par_1_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riikliku vereteenistuse infosüsteemi (edaspidi infosüsteem) pidamise eesmärk on tagada vere kvaliteetne käitlemine ja ravi kvaliteet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi ingliskeelne nimetus on National Blood Service Information System.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1063117_Par_2",
@@ -136,13 +190,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Infosüsteemi kaasvastutavate töötlejate ülesanded",
+      "rdfs:label": {
+        "@value": "§ 2. Infosüsteemi kaasvastutavate töötlejate ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Sotsiaalministeerium ja Tervisekassa kaasvastutavate töötlejatena korraldavad koostöös volitatud töötlejaga e-teenuste loomist, arenduste väljatöötamist ja infosüsteemi elektroonilist andmevahetust teiste andmekogudega ning täidavad muid vastutavale töötlejale antud ülesandeid. Kaasvastutavad töötlejad võivad anda täpsemaid juhiseid ja korraldusi volitatud töötlejale. Sotsiaalministeerium ja Tervisekassa kaasvastutavate töötlejatena korraldavad koostöös volitatud töötlejaga e-teenuste loom",
-      "estleg:legalText": "1 (1) Sotsiaalministeerium ja Tervisekassa kaasvastutavate töötlejatena korraldavad koostöös volitatud töötlejaga e-teenuste loomist, arenduste väljatöötamist ja infosüsteemi elektroonilist andmevahetust teiste andmekogudega ning täidavad muid vastutavale töötlejale antud ülesandeid. Kaasvastutavad töötlejad võivad anda täpsemaid juhiseid ja korraldusi volitatud töötlejale. Sotsiaalministeerium ja Tervisekassa kaasvastutavate töötlejatena korraldavad koostöös volitatud töötlejaga e-teenuste loomist, arenduste väljatöötamist ja infosüsteemi elektroonilist andmevahetust teiste andmekogudega ning täidavad muid vastutavale töötlejale antud ülesandeid. Kaasvastutavad töötlejad võivad anda täpsemaid juhiseid ja korraldusi volitatud töötlejale. 2 (2) Sotsiaalministeerium vastutava töötlejana: 1 1) otsustab infosüsteemi volitatud töötleja; 2 2) määrab ja korraldab infosüsteemi juurdepääse ning andmete edastamist ja väljastamist; 3 3) tagab andmesubjekti isikuandmetega seotud rikkumisest teavitamise. Sotsiaalministeerium vastutava töötlejana: otsustab infosüsteemi volitatud töötleja; määrab ja korraldab infosüsteemi juurdepääse ning andmete edastamist ja väljastamist; tagab andmesubjekti isikuandmetega seotud rikkumisest teavitamise. 3 (3) Andmesubjekti jaoks on kaasvastutavate töötlejate kontaktpunktiks Sotsiaalministeerium, kes tagab ja korraldab vastuste andmise ja suhtluse andmekaitset puudutavates küsimustes. Andmesubjekti jaoks on kaasvastutavate töötlejate kontaktpunktiks Sotsiaalministeerium, kes tagab ja korraldab vastuste andmise ja suhtluse andmekaitset puudutavates küsimustes. 4 (4) Tervisekassa teeb igakülgset koostööd andmesubjekti pöördumiste lahendamisel ja tagab infosüsteemi jätkusuutlikkuse. Tervisekassa teeb igakülgset koostööd andmesubjekti pöördumiste lahendamisel ja tagab infosüsteemi jätkusuutlikkuse.",
+      "estleg:summary": {
+        "@value": "1 (1) Sotsiaalministeerium ja Tervisekassa kaasvastutavate töötlejatena korraldavad koostöös volitatud töötlejaga e-teenuste loomist, arenduste väljatöötamist ja infosüsteemi elektroonilist andmevahetust teiste andmekogudega ning täidavad muid vastutavale töötlejale antud ülesandeid. Kaasvastutavad töötlejad võivad anda täpsemaid juhiseid ja korraldusi volitatud töötlejale.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sotsiaalministeerium ja Tervisekassa kaasvastutavate töötlejatena korraldavad koostöös volitatud töötlejaga e-teenuste loomist, arenduste väljatöötamist ja infosüsteemi elektroonilist andmevahetust teiste andmekogudega ning täidavad muid vastutavale töötlejale antud ülesandeid. Kaasvastutavad töötlejad võivad anda täpsemaid juhiseid ja korraldusi volitatud töötlejale. 2 (2) Sotsiaalministeerium vastutava töötlejana: 1 1) otsustab infosüsteemi volitatud töötleja; 2 2) määrab ja korraldab infosüsteemi juurdepääse ning andmete edastamist ja väljastamist; 3 3) tagab andmesubjekti isikuandmetega seotud rikkumisest teavitamise. 3 (3) Andmesubjekti jaoks on kaasvastutavate töötlejate kontaktpunktiks Sotsiaalministeerium, kes tagab ja korraldab vastuste andmise ja suhtluse andmekaitset puudutavates küsimustes. 4 (4) Tervisekassa teeb igakülgset koostööd andmesubjekti pöördumiste lahendamisel ja tagab infosüsteemi jätkusuutlikkuse.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -170,7 +230,78 @@
           "@id": "estleg:Institution_sotsiaalministeerium"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_2_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sotsiaalministeerium ja Tervisekassa kaasvastutavate töötlejatena korraldavad koostöös volitatud töötlejaga e-teenuste loomist, arenduste väljatöötamist ja infosüsteemi elektroonilist andmevahetust teiste andmekogudega ning täidavad muid vastutavale töötlejale antud ülesandeid. Kaasvastutavad töötlejad võivad anda täpsemaid juhiseid ja korraldusi volitatud töötlejale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sotsiaalministeerium vastutava töötlejana: 1) otsustab infosüsteemi volitatud töötleja; 2) määrab ja korraldab infosüsteemi juurdepääse ning andmete edastamist ja väljastamist; 3) tagab andmesubjekti isikuandmetega seotud rikkumisest teavitamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmesubjekti jaoks on kaasvastutavate töötlejate kontaktpunktiks Sotsiaalministeerium, kes tagab ja korraldab vastuste andmise ja suhtluse andmekaitset puudutavates küsimustes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tervisekassa teeb igakülgset koostööd andmesubjekti pöördumiste lahendamisel ja tagab infosüsteemi jätkusuutlikkuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_1063117_Par_3",
@@ -179,13 +310,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Infosüsteemi volitatud töötleja ja tema ülesanded",
+      "rdfs:label": {
+        "@value": "§ 3. Infosüsteemi volitatud töötleja ja tema ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemi volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus, kes peab, haldab ja arendab infosüsteemi, töötleb andmeid ning täidab muid vastutavale töötlejale pandud kohustusi õigusaktide ja nende alusel sätestatud nõuete kohaselt. Infosüsteemi volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus, kes peab, haldab ja arendab infosüsteemi, töötleb andmeid ning täidab muid vastutavale töötlejale pandud kohustusi õigusaktide ja nende alusel sätestatud nõuete kohaselt. ",
-      "estleg:legalText": "1 (1) Infosüsteemi volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus, kes peab, haldab ja arendab infosüsteemi, töötleb andmeid ning täidab muid vastutavale töötlejale pandud kohustusi õigusaktide ja nende alusel sätestatud nõuete kohaselt. Infosüsteemi volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus, kes peab, haldab ja arendab infosüsteemi, töötleb andmeid ning täidab muid vastutavale töötlejale pandud kohustusi õigusaktide ja nende alusel sätestatud nõuete kohaselt. 2 (2) Volitatud töötleja tagab andmekogu pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt, sealhulgas: 1 1) tagab tekkivate dokumentide ja andmete kogumise, haldamise ja säilitamise, sealhulgas andmete kustutamise ja hävitamise ning arhiveeritavate andmete üleandmise; 2 2) vastutab andmetöötlustoimingute õiguspärasuse eest, sealhulgas turbealase info pideva analüüsimise ja turvariskide väljaselgitamise eest; 3 3) vastutab isikuandmete töötlemise nõuete täitmise eest ning menetleb isikute avaldusi infosüsteemist andmete ühekordseks väljastamiseks; 4 4) tagab andmete kasutamise, andmelao ja sellega seotud tegevused; 5 5) sõlmib andmevahetuse kokkulepped õigusaktides sätestatud ulatuses; 6 6) peab arvestust kogutud ja väljastatud andmete ja infosüsteemi vahendusel osutatud teenuste üle ning koostab selle arvestuse juhtimiseks ülevaatlikke analüüse; 7 7) tagab teenuse intsidentide käsitlemise ja kasutajatoe; 8 8) tagab infosüsteemi haldamise ja rakendustarkvara toimimise; 9 9) tagab tehnilise halduse, sealhulgas klassifikaatorite, loendite ja standardite pidamise ning standardite ja klassifikatsioonide publitseerimise; 10 10) teavitab infosüsteemi andmete töötlemisel avastatud rikkumistest kohe vastutavat töötlejat ning võtab viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; 11 11) tagab andmete ja infosüsteemi säilimise vastavalt kehtestatud nõuetele; 12 12) teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks; 13 13) kaasab vajaduse korral arendus- ja hooldustööde tegemisse teise volitatud töötleja ja sõlmib temaga lepingu, olles hinnanud isikuandmete töötlemise eesmärke, vajadust ja riske, ning teavitab sellest mõistliku aja jooksul enne andmetöötlemise võimaldamist vastutavat töötlejat. Volitatud töötleja tagab andmekogu pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt, sealhulgas: tagab tekkivate dokumentide ja andmete kogumise, haldamise ja säilitamise, sealhulgas andmete kustutamise ja hävitamise ning arhiveeritavate andmete üleandmise; vastutab andmetöötlustoimingute õiguspärasuse eest, sealhulgas turbealase info pideva analüüsimise ja turvariskide väljaselgitamise eest; vastutab isikuandmete töötlemise nõuete täitmise eest ning menetleb isikute avaldusi infosüsteemist andmete ühekordseks väljastamiseks; tagab andmete kasutamise, andmelao ja sellega seotud tegevused; sõlmib andmevahetuse kokkulepped õigusaktides sätestatud ulatuses; peab arvestust kogutud ja väljastatud andmete ja infosüsteemi vahendusel osutatud teenuste üle ning koostab selle arvestuse juhtimiseks ülevaatlikke analüüse; tagab teenuse intsidentide käsitlemise ja kasutajatoe; tagab infosüsteemi haldamise ja rakendustarkvara toimimise; tagab tehnilise halduse, sealhulgas klassifikaatorite, loendite ja standardite pidamise ning standardite ja klassifikatsioonide publitseerimise; teavitab infosüsteemi andmete töötlemisel avastatud rikkumistest kohe vastutavat töötlejat ning võtab viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; tagab andmete ja infosüsteemi säilimise vastavalt kehtestatud nõuetele; teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks; kaasab vajaduse korral arendus- ja hooldustööde tegemisse teise volitatud töötleja ja sõlmib temaga lepingu, olles hinnanud isikuandmete töötlemise eesmärke, vajadust ja riske, ning teavitab sellest mõistliku aja jooksul enne andmetöötlemise võimaldamist vastutavat töötlejat. 3 (3) Volitatud töötleja määrab infosüsteemiga liitumise eelduseks olevad tehnilised tingimused ja avaldab need oma veebilehel. Volitatud töötleja määrab infosüsteemiga liitumise eelduseks olevad tehnilised tingimused ja avaldab need oma veebilehel. 4 (4) Kaasvastutavate töötlejate ja volitatud töötleja täpsemad ülesanded ja vastutus määratakse kindlaks pooltevahelises koostöökokkuleppes, lähtudes seaduses ja käesolevas määruses sätestatud tingimustest. Kaasvastutavate töötlejate ja volitatud töötleja täpsemad ülesanded ja vastutus määratakse kindlaks pooltevahelises koostöökokkuleppes, lähtudes seaduses ja käesolevas määruses sätestatud tingimustest.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemi volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus, kes peab, haldab ja arendab infosüsteemi, töötleb andmeid ning täidab muid vastutavale töötlejale pandud kohustusi õigusaktide ja nende alusel sätestatud nõuete kohaselt. 2 (2) Volitatud töötleja tagab andmekogu pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt, sealhulgas: 1 1) tagab tekkivate dokumentide ja andmete kogumise, haldamise ja säilitamise, sealhulgas andmete kustutamise ja hävitamise ning…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemi volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus, kes peab, haldab ja arendab infosüsteemi, töötleb andmeid ning täidab muid vastutavale töötlejale pandud kohustusi õigusaktide ja nende alusel sätestatud nõuete kohaselt. 2 (2) Volitatud töötleja tagab andmekogu pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt, sealhulgas: 1 1) tagab tekkivate dokumentide ja andmete kogumise, haldamise ja säilitamise, sealhulgas andmete kustutamise ja hävitamise ning arhiveeritavate andmete üleandmise; 2 2) vastutab andmetöötlustoimingute õiguspärasuse eest, sealhulgas turbealase info pideva analüüsimise ja turvariskide väljaselgitamise eest; 3 3) vastutab isikuandmete töötlemise nõuete täitmise eest ning menetleb isikute avaldusi infosüsteemist andmete ühekordseks väljastamiseks; 4 4) tagab andmete kasutamise, andmelao ja sellega seotud tegevused; 5 5) sõlmib andmevahetuse kokkulepped õigusaktides sätestatud ulatuses; 6 6) peab arvestust kogutud ja väljastatud andmete ja infosüsteemi vahendusel osutatud teenuste üle ning koostab selle arvestuse juhtimiseks ülevaatlikke analüüse; 7 7) tagab teenuse intsidentide käsitlemise ja kasutajatoe; 8 8) tagab infosüsteemi haldamise ja rakendustarkvara toimimise; 9 9) tagab tehnilise halduse, sealhulgas klassifikaatorite, loendite ja standardite pidamise ning standardite ja klassifikatsioonide publitseerimise; 10 10) teavitab infosüsteemi andmete töötlemisel avastatud rikkumistest kohe vastutavat töötlejat ning võtab viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; 11 11) tagab andmete ja infosüsteemi säilimise vastavalt kehtestatud nõuetele; 12 12) teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks; 13 13) kaasab vajaduse korral arendus- ja hooldustööde tegemisse teise volitatud töötleja ja sõlmib temaga lepingu, olles hinnanud isikuandmete töötlemise eesmärke, vajadust ja riske, ning teavitab sellest mõistliku aja jooksul enne andmetöötlemise võimaldamist vastutavat töötlejat. 3 (3) Volitatud töötleja määrab infosüsteemiga liitumise eelduseks olevad tehnilised tingimused ja avaldab need oma veebilehel. 4 (4) Kaasvastutavate töötlejate ja volitatud töötleja täpsemad ülesanded ja vastutus määratakse kindlaks pooltevahelises koostöökokkuleppes, lähtudes seaduses ja käesolevas määruses sätestatud tingimustest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -216,7 +353,88 @@
         {
           "@id": "estleg:Reg_1063117_Par_3_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_3_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi volitatud töötleja on Tervise ja Heaolu Infosüsteemide Keskus, kes peab, haldab ja arendab infosüsteemi, töötleb andmeid ning täidab muid vastutavale töötlejale pandud kohustusi õigusaktide ja nende alusel sätestatud nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Volitatud töötleja tagab andmekogu pidamise ja haldamise õigusaktides sätestatud nõuete kohaselt, sealhulgas: 1) tagab tekkivate dokumentide ja andmete kogumise, haldamise ja säilitamise, sealhulgas andmete kustutamise ja hävitamise ning arhiveeritavate andmete üleandmise; 2) vastutab andmetöötlustoimingute õiguspärasuse eest, sealhulgas turbealase info pideva analüüsimise ja turvariskide väljaselgitamise eest; 3) vastutab isikuandmete töötlemise nõuete täitmise eest ning menetleb isikute avaldusi infosüsteemist andmete ühekordseks väljastamiseks; 4) tagab andmete kasutamise, andmelao ja sellega seotud tegevused; 5) sõlmib andmevahetuse kokkulepped õigusaktides sätestatud ulatuses; 6) peab arvestust kogutud ja väljastatud andmete ja infosüsteemi vahendusel osutatud teenuste üle ning koostab selle arvestuse juhtimiseks ülevaatlikke analüüse; 7) tagab teenuse intsidentide käsitlemise ja kasutajatoe; 8) tagab infosüsteemi haldamise ja rakendustarkvara toimimise; 9) tagab tehnilise halduse, sealhulgas klassifikaatorite, loendite ja standardite pidamise ning standardite ja klassifikatsioonide publitseerimise; 10) teavitab infosüsteemi andmete töötlemisel avastatud rikkumistest kohe vastutavat töötlejat ning võtab viivitamata tarvitusele kõik vajalikud abinõud rikkumise lõpetamiseks; 11) tagab andmete ja infosüsteemi säilimise vastavalt kehtestatud nõuetele; 12) teeb andmekogu vastutavale töötlejale ettepanekuid andmekogu arendamiseks; 13) kaasab vajaduse korral arendus- ja hooldustööde tegemisse teise volitatud töötleja ja sõlmib temaga lepingu, olles hinnanud isikuandmete töötlemise eesmärke, vajadust ja riske, ning teavitab sellest mõistliku aja jooksul enne andmetöötlemise võimaldamist vastutavat töötlejat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Volitatud töötleja määrab infosüsteemiga liitumise eelduseks olevad tehnilised tingimused ja avaldab need oma veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaasvastutavate töötlejate ja volitatud töötleja täpsemad ülesanded ja vastutus määratakse kindlaks pooltevahelises koostöökokkuleppes, lähtudes seaduses ja käesolevas määruses sätestatud tingimustest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
     },
     {
       "@id": "estleg:Reg_1063117_Par_4",
@@ -225,13 +443,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Infosüsteemi ülesehitus",
+      "rdfs:label": {
+        "@value": "§ 4. Infosüsteemi ülesehitus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteem koosneb keskandmekogust ja andmelaost. Infosüsteem koosneb keskandmekogust ja andmelaost. 2 (2) Keskandmekogu koosseisus on järgmised andmestikud: 1 1) doonorluse andmestik – doonoriportaali andmestik, doonorite registri andmestik ja vereloovutuste andmestik; 2 2) verekomponentide andmestik; 3 3) retsipientide ja vereülekannete andmestik; 4 4) referentlabori andmestik. Keskandmekogu koosseisus on järgmised andmestikud: doonorluse andmestik – doonoriportaali andmestik, doonorite",
-      "estleg:legalText": "1 (1) Infosüsteem koosneb keskandmekogust ja andmelaost. Infosüsteem koosneb keskandmekogust ja andmelaost. 2 (2) Keskandmekogu koosseisus on järgmised andmestikud: 1 1) doonorluse andmestik – doonoriportaali andmestik, doonorite registri andmestik ja vereloovutuste andmestik; 2 2) verekomponentide andmestik; 3 3) retsipientide ja vereülekannete andmestik; 4 4) referentlabori andmestik. Keskandmekogu koosseisus on järgmised andmestikud: doonorluse andmestik – doonoriportaali andmestik, doonorite registri andmestik ja vereloovutuste andmestik; verekomponentide andmestik; retsipientide ja vereülekannete andmestik; referentlabori andmestik. 3 (3) Andmeladu koosneb keskandmekogu ja andmeandjate edastatavatest pseudonüümitud andmetest, mis ei võimalda isikut otseselt tuvastada. Andmeladu koosneb keskandmekogu ja andmeandjate edastatavatest pseudonüümitud andmetest, mis ei võimalda isikut otseselt tuvastada. 4 (4) Täiendavaid rakendusi, mis on infosüsteemi osa, käsitatakse meditsiiniseadmena, juhul kui sellekohane kohustus tuleb õigusaktist. Täiendavaid rakendusi, mis on infosüsteemi osa, käsitatakse meditsiiniseadmena, juhul kui sellekohane kohustus tuleb õigusaktist.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteem koosneb keskandmekogust ja andmelaost. 2 (2) Keskandmekogu koosseisus on järgmised andmestikud: 1 1) doonorluse andmestik – doonoriportaali andmestik, doonorite registri andmestik ja vereloovutuste andmestik; 2 2) verekomponentide andmestik; 3 3) retsipientide ja vereülekannete andmestik; 4 4) referentlabori andmestik. 3 (3) Andmeladu koosneb keskandmekogu ja andmeandjate edastatavatest pseudonüümitud andmetest, mis ei võimalda isikut otseselt tuvastada.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteem koosneb keskandmekogust ja andmelaost. 2 (2) Keskandmekogu koosseisus on järgmised andmestikud: 1 1) doonorluse andmestik – doonoriportaali andmestik, doonorite registri andmestik ja vereloovutuste andmestik; 2 2) verekomponentide andmestik; 3 3) retsipientide ja vereülekannete andmestik; 4 4) referentlabori andmestik. 3 (3) Andmeladu koosneb keskandmekogu ja andmeandjate edastatavatest pseudonüümitud andmetest, mis ei võimalda isikut otseselt tuvastada. 4 (4) Täiendavaid rakendusi, mis on infosüsteemi osa, käsitatakse meditsiiniseadmena, juhul kui sellekohane kohustus tuleb õigusaktist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -248,7 +472,79 @@
         {
           "@id": "estleg:Reg_1063117_Par_4_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_4_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteem koosneb keskandmekogust ja andmelaost.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Keskandmekogu koosseisus on järgmised andmestikud: 1) doonorluse andmestik – doonoriportaali andmestik, doonorite registri andmestik ja vereloovutuste andmestik; 2) verekomponentide andmestik; 3) retsipientide ja vereülekannete andmestik; 4) referentlabori andmestik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmeladu koosneb keskandmekogu ja andmeandjate edastatavatest pseudonüümitud andmetest, mis ei võimalda isikut otseselt tuvastada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Täiendavaid rakendusi, mis on infosüsteemi osa, käsitatakse meditsiiniseadmena, juhul kui sellekohane kohustus tuleb õigusaktist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
     },
     {
       "@id": "estleg:Reg_1063117_Par_5",
@@ -257,18 +553,144 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Infosüsteemis töödeldavad andmed",
+      "rdfs:label": {
+        "@value": "§ 5. Infosüsteemis töödeldavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Doonoriportaalis töödeldakse doonori kohta järgmisi andmeid: 1 1) üldandmed; 2 2) terviseandmed; 3 3) terviseküsimustiku andmed; 4 4) broneerimisega seotud andmed. Doonoriportaalis töödeldakse doonori kohta järgmisi andmeid: üldandmed; terviseandmed; terviseküsimustiku andmed; broneerimisega seotud andmed. 2 (2) Doonorite registri andmestiku hulka kuuluvad veregrupp ja vereloovutuse lubatavus. Doonorite registri andmestiku hulka kuuluvad veregrupp ja vereloovutuse lubatavus. 3 (3) Vereloov",
-      "estleg:legalText": "1 (1) Doonoriportaalis töödeldakse doonori kohta järgmisi andmeid: 1 1) üldandmed; 2 2) terviseandmed; 3 3) terviseküsimustiku andmed; 4 4) broneerimisega seotud andmed. Doonoriportaalis töödeldakse doonori kohta järgmisi andmeid: üldandmed; terviseandmed; terviseküsimustiku andmed; broneerimisega seotud andmed. 2 (2) Doonorite registri andmestiku hulka kuuluvad veregrupp ja vereloovutuse lubatavus. Doonorite registri andmestiku hulka kuuluvad veregrupp ja vereloovutuse lubatavus. 3 (3) Vereloovutuste andmestiku hulka kuuluvad ka meditsiinilise läbivaatuse andmed ja verevõtuandmed. Vereloovutuste andmestiku hulka kuuluvad ka meditsiinilise läbivaatuse andmed ja verevõtuandmed. 4 (4) Verekomponentide andmestikku kuulub ka koondatud teave verekomponentide varude kohta. Verekomponentide andmestikku kuulub ka koondatud teave verekomponentide varude kohta. 5 (5) Retsipientide ja vereülekannete andmestik koosneb retsipiendi üld- ja terviseandmetest ning teenuseosutaja andmetest. Retsipientide ja vereülekannete andmestik koosneb retsipiendi üld- ja terviseandmetest ning teenuseosutaja andmetest. 6 (6) Referentlabori andmestik koosneb retsipiendi üld- ja terviseandmetest ning tellija andmetest. Referentlabori andmestik koosneb retsipiendi üld- ja terviseandmetest ning tellija andmetest. 7 (7) Infosüsteemi täpsem andmekoosseis on esitatud määruse lisas. Infosüsteemi täpsem andmekoosseis on esitatud määruse lisas.",
+      "estleg:summary": {
+        "@value": "1 (1) Doonoriportaalis töödeldakse doonori kohta järgmisi andmeid: 1 1) üldandmed; 2 2) terviseandmed; 3 3) terviseküsimustiku andmed; 4 4) broneerimisega seotud andmed. 2 (2) Doonorite registri andmestiku hulka kuuluvad veregrupp ja vereloovutuse lubatavus. 3 (3) Vereloovutuste andmestiku hulka kuuluvad ka meditsiinilise läbivaatuse andmed ja verevõtuandmed. 4 (4) Verekomponentide andmestikku kuulub ka koondatud teave verekomponentide varude kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Doonoriportaalis töödeldakse doonori kohta järgmisi andmeid: 1 1) üldandmed; 2 2) terviseandmed; 3 3) terviseküsimustiku andmed; 4 4) broneerimisega seotud andmed. 2 (2) Doonorite registri andmestiku hulka kuuluvad veregrupp ja vereloovutuse lubatavus. 3 (3) Vereloovutuste andmestiku hulka kuuluvad ka meditsiinilise läbivaatuse andmed ja verevõtuandmed. 4 (4) Verekomponentide andmestikku kuulub ka koondatud teave verekomponentide varude kohta. 5 (5) Retsipientide ja vereülekannete andmestik koosneb retsipiendi üld- ja terviseandmetest ning teenuseosutaja andmetest. 6 (6) Referentlabori andmestik koosneb retsipiendi üld- ja terviseandmetest ning tellija andmetest. 7 (7) Infosüsteemi täpsem andmekoosseis on esitatud määruse lisas.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1063117_Par_5_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_5_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_5_Lg_7"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Doonoriportaalis töödeldakse doonori kohta järgmisi andmeid: 1) üldandmed; 2) terviseandmed; 3) terviseküsimustiku andmed; 4) broneerimisega seotud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Doonorite registri andmestiku hulka kuuluvad veregrupp ja vereloovutuse lubatavus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vereloovutuste andmestiku hulka kuuluvad ka meditsiinilise läbivaatuse andmed ja verevõtuandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Verekomponentide andmestikku kuulub ka koondatud teave verekomponentide varude kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Retsipientide ja vereülekannete andmestik koosneb retsipiendi üld- ja terviseandmetest ning teenuseosutaja andmetest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Referentlabori andmestik koosneb retsipiendi üld- ja terviseandmetest ning tellija andmetest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_5_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Infosüsteemi täpsem andmekoosseis on esitatud määruse lisas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 7"
     },
     {
       "@id": "estleg:Reg_1063117_Par_6",
@@ -277,13 +699,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Infosüsteemi turvameetmed, turbeaste ja liidestuvate süsteemide kohustused",
+      "rdfs:label": {
+        "@value": "§ 6. Infosüsteemi turvameetmed, turbeaste ja liidestuvate süsteemide kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1 1) konfidentsiaalsus – S2; 2 2) terviklus – T3; 3 3) käideldavus – K2. Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: konfidentsiaalsus – S2; terviklus – T3; käideldavus – K2. 2 (2) Infosüsteemi turbeaste on kõrge (H). Infosüsteemi turbeaste on kõrge (H). 3 (3) Infosüsteemi kasutaja, kes liitub infosüsteemiga oma infosüsteemi kaudu, peab tegema oma infosüsteemi infoturbealaste riskide seire ja analüüsi. Info",
-      "estleg:legalText": "1 (1) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1 1) konfidentsiaalsus – S2; 2 2) terviklus – T3; 3 3) käideldavus – K2. Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: konfidentsiaalsus – S2; terviklus – T3; käideldavus – K2. 2 (2) Infosüsteemi turbeaste on kõrge (H). Infosüsteemi turbeaste on kõrge (H). 3 (3) Infosüsteemi kasutaja, kes liitub infosüsteemiga oma infosüsteemi kaudu, peab tegema oma infosüsteemi infoturbealaste riskide seire ja analüüsi. Infosüsteemi kasutaja, kes liitub infosüsteemiga oma infosüsteemi kaudu, peab tegema oma infosüsteemi infoturbealaste riskide seire ja analüüsi. 4 (4) Infosüsteemiga liidestunud verekeskus, verekabinet ja referentlabor teavitab viivitamata volitatud töötlejat kõikidest asjaoludest, mis võivad ohtu seada infosüsteemi turvalisuse. Infosüsteemiga liidestunud verekeskus, verekabinet ja referentlabor teavitab viivitamata volitatud töötlejat kõikidest asjaoludest, mis võivad ohtu seada infosüsteemi turvalisuse.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1 1) konfidentsiaalsus – S2; 2 2) terviklus – T3; 3 3) käideldavus – K2. 2 (2) Infosüsteemi turbeaste on kõrge (H). 3 (3) Infosüsteemi kasutaja, kes liitub infosüsteemiga oma infosüsteemi kaudu, peab tegema oma infosüsteemi infoturbealaste riskide seire ja analüüsi. 4 (4) Infosüsteemiga liidestunud verekeskus, verekabinet ja referentlabor teavitab viivitamata volitatud töötlejat kõikidest asjaoludest, mis võivad ohtu seada…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1 1) konfidentsiaalsus – S2; 2 2) terviklus – T3; 3 3) käideldavus – K2. 2 (2) Infosüsteemi turbeaste on kõrge (H). 3 (3) Infosüsteemi kasutaja, kes liitub infosüsteemiga oma infosüsteemi kaudu, peab tegema oma infosüsteemi infoturbealaste riskide seire ja analüüsi. 4 (4) Infosüsteemiga liidestunud verekeskus, verekabinet ja referentlabor teavitab viivitamata volitatud töötlejat kõikidest asjaoludest, mis võivad ohtu seada infosüsteemi turvalisuse.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -320,7 +748,78 @@
         {
           "@id": "estleg:Reg_1063117_Par_6_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_6_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi turvameetmed peavad tagama järgmised turvaklassid: 1) konfidentsiaalsus – S2; 2) terviklus – T3; 3) käideldavus – K2.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi turbeaste on kõrge (H).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Infosüsteemi kasutaja, kes liitub infosüsteemiga oma infosüsteemi kaudu, peab tegema oma infosüsteemi infoturbealaste riskide seire ja analüüsi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Infosüsteemiga liidestunud verekeskus, verekabinet ja referentlabor teavitab viivitamata volitatud töötlejat kõikidest asjaoludest, mis võivad ohtu seada infosüsteemi turvalisuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
     },
     {
       "@id": "estleg:Reg_1063117_Par_7",
@@ -329,13 +828,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Põhilised andmeandjad ja andmete esitamine infosüsteemi",
+      "rdfs:label": {
+        "@value": "§ 7. Põhilised andmeandjad ja andmete esitamine infosüsteemi",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Doonor esitab infosüsteemi § 5 lõikes 1 nimetatud andmed. Doonor esitab infosüsteemi § 5 lõikes 1 nimetatud andmed. 2 (2) Verekeskus esitab infosüsteemi § 5 lõigetes 1–4 nimetatud andmed. Verekeskus esitab infosüsteemi § 5 lõigetes 1–4 nimetatud andmed. 3 (3) Verekabinet esitab infosüsteemi § 5 lõikes 5 nimetatud andmed. Verekabinet esitab infosüsteemi § 5 lõikes 5 nimetatud andmed. 4 (4) Referentlabori teenust osutav verekeskus esitab infosüsteemi § 5 lõikes 6 nimetatud andmed. Referentla",
-      "estleg:legalText": "1 (1) Doonor esitab infosüsteemi § 5 lõikes 1 nimetatud andmed. Doonor esitab infosüsteemi § 5 lõikes 1 nimetatud andmed. 2 (2) Verekeskus esitab infosüsteemi § 5 lõigetes 1–4 nimetatud andmed. Verekeskus esitab infosüsteemi § 5 lõigetes 1–4 nimetatud andmed. 3 (3) Verekabinet esitab infosüsteemi § 5 lõikes 5 nimetatud andmed. Verekabinet esitab infosüsteemi § 5 lõikes 5 nimetatud andmed. 4 (4) Referentlabori teenust osutav verekeskus esitab infosüsteemi § 5 lõikes 6 nimetatud andmed. Referentlabori teenust osutav verekeskus esitab infosüsteemi § 5 lõikes 6 nimetatud andmed. 5 (5) Andmete õigsuse eest vastutab andmeandja. Andmete õigsuse eest vastutab andmeandja.",
+      "estleg:summary": {
+        "@value": "1 (1) Doonor esitab infosüsteemi § 5 lõikes 1 nimetatud andmed. 2 (2) Verekeskus esitab infosüsteemi § 5 lõigetes 1–4 nimetatud andmed. 3 (3) Verekabinet esitab infosüsteemi § 5 lõikes 5 nimetatud andmed. 4 (4) Referentlabori teenust osutav verekeskus esitab infosüsteemi § 5 lõikes 6 nimetatud andmed. 5 (5) Andmete õigsuse eest vastutab andmeandja.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Doonor esitab infosüsteemi § 5 lõikes 1 nimetatud andmed. 2 (2) Verekeskus esitab infosüsteemi § 5 lõigetes 1–4 nimetatud andmed. 3 (3) Verekabinet esitab infosüsteemi § 5 lõikes 5 nimetatud andmed. 4 (4) Referentlabori teenust osutav verekeskus esitab infosüsteemi § 5 lõikes 6 nimetatud andmed. 5 (5) Andmete õigsuse eest vastutab andmeandja.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -349,7 +854,89 @@
         {
           "@id": "estleg:Reg_1063117_Par_7_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_7_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Doonor esitab infosüsteemi § 5 lõikes 1 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Verekeskus esitab infosüsteemi § 5 lõigetes 1–4 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Verekabinet esitab infosüsteemi § 5 lõikes 5 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Referentlabori teenust osutav verekeskus esitab infosüsteemi § 5 lõikes 6 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmete õigsuse eest vastutab andmeandja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
     },
     {
       "@id": "estleg:Reg_1063117_Par_8",
@@ -358,13 +945,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Teised andmeandjad ja andmevahetus andmekogudega",
+      "rdfs:label": {
+        "@value": "§ 8. Teised andmeandjad ja andmevahetus andmekogudega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Rahvastikuregister edastab infosüsteemi: 1 1) doonori ja retsipiendi isikut identifitseerivad andmed; 2 2) doonori isiku esindusõiguse ja teovõime andmed; 3 3) doonori surma registreerimise kande numbri. Rahvastikuregister edastab infosüsteemi: doonori ja retsipiendi isikut identifitseerivad andmed; doonori isiku esindusõiguse ja teovõime andmed; doonori surma registreerimise kande numbri. 2 (2) Retseptikeskus edastab infosüsteemi: 1 1) doonorile apteegist väljastatud ravimi ja selle välja",
-      "estleg:legalText": "1 (1) Rahvastikuregister edastab infosüsteemi: 1 1) doonori ja retsipiendi isikut identifitseerivad andmed; 2 2) doonori isiku esindusõiguse ja teovõime andmed; 3 3) doonori surma registreerimise kande numbri. Rahvastikuregister edastab infosüsteemi: doonori ja retsipiendi isikut identifitseerivad andmed; doonori isiku esindusõiguse ja teovõime andmed; doonori surma registreerimise kande numbri. 2 (2) Retseptikeskus edastab infosüsteemi: 1 1) doonorile apteegist väljastatud ravimi ja selle väljastamise aluseks oleva retsepti andmed; 2 2) doonorile apteegist väljastatud või meditsiiniseadme väljastanud muu isiku väljastatud meditsiiniseadme ja selle väljastamise aluseks oleva meditsiiniseadme kaardi andmed. Retseptikeskus edastab infosüsteemi: doonorile apteegist väljastatud ravimi ja selle väljastamise aluseks oleva retsepti andmed; doonorile apteegist väljastatud või meditsiiniseadme väljastanud muu isiku väljastatud meditsiiniseadme ja selle väljastamise aluseks oleva meditsiiniseadme kaardi andmed. 3 (3) Andmevahetus andmeandjatega toimub riigi infosüsteemide andmevahetuskihi kaudu. Andmevahetus andmeandjatega toimub riigi infosüsteemide andmevahetuskihi kaudu.",
+      "estleg:summary": {
+        "@value": "1 (1) Rahvastikuregister edastab infosüsteemi: 1 1) doonori ja retsipiendi isikut identifitseerivad andmed; 2 2) doonori isiku esindusõiguse ja teovõime andmed; 3 3) doonori surma registreerimise kande numbri. 2 (2) Retseptikeskus edastab infosüsteemi: 1 1) doonorile apteegist väljastatud ravimi ja selle väljastamise aluseks oleva retsepti andmed; 2 2) doonorile apteegist väljastatud või meditsiiniseadme väljastanud muu isiku väljastatud meditsiiniseadme ja selle väljastamise aluseks oleva…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Rahvastikuregister edastab infosüsteemi: 1 1) doonori ja retsipiendi isikut identifitseerivad andmed; 2 2) doonori isiku esindusõiguse ja teovõime andmed; 3 3) doonori surma registreerimise kande numbri. 2 (2) Retseptikeskus edastab infosüsteemi: 1 1) doonorile apteegist väljastatud ravimi ja selle väljastamise aluseks oleva retsepti andmed; 2 2) doonorile apteegist väljastatud või meditsiiniseadme väljastanud muu isiku väljastatud meditsiiniseadme ja selle väljastamise aluseks oleva meditsiiniseadme kaardi andmed. 3 (3) Andmevahetus andmeandjatega toimub riigi infosüsteemide andmevahetuskihi kaudu.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -386,7 +979,66 @@
         {
           "@id": "estleg:Reg_1063117_Par_8_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_8_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvastikuregister edastab infosüsteemi: 1) doonori ja retsipiendi isikut identifitseerivad andmed; 2) doonori isiku esindusõiguse ja teovõime andmed; 3) doonori surma registreerimise kande numbri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Retseptikeskus edastab infosüsteemi: 1) doonorile apteegist väljastatud ravimi ja selle väljastamise aluseks oleva retsepti andmed; 2) doonorile apteegist väljastatud või meditsiiniseadme väljastanud muu isiku väljastatud meditsiiniseadme ja selle väljastamise aluseks oleva meditsiiniseadme kaardi andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmevahetus andmeandjatega toimub riigi infosüsteemide andmevahetuskihi kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
     },
     {
       "@id": "estleg:Reg_1063117_Par_9",
@@ -395,13 +1047,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Andmete muutmine",
+      "rdfs:label": {
+        "@value": "§ 9. Andmete muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemi edastatud andmete muutmiseks esitab andmeandja andmekogusse viivitamata uued andmed või teavitab volitatud töötlejat vajadusest esitatud andmeid muuta viivitamata peale vea ilmnemist. Infosüsteemi edastatud andmete muutmiseks esitab andmeandja andmekogusse viivitamata uued andmed või teavitab volitatud töötlejat vajadusest esitatud andmeid muuta viivitamata peale vea ilmnemist. 2 (2) Infosüsteemi volitatud töötlejal on andmekvaliteedi tagamiseks õigus kontrollida infosüsteemi ",
-      "estleg:legalText": "1 (1) Infosüsteemi edastatud andmete muutmiseks esitab andmeandja andmekogusse viivitamata uued andmed või teavitab volitatud töötlejat vajadusest esitatud andmeid muuta viivitamata peale vea ilmnemist. Infosüsteemi edastatud andmete muutmiseks esitab andmeandja andmekogusse viivitamata uued andmed või teavitab volitatud töötlejat vajadusest esitatud andmeid muuta viivitamata peale vea ilmnemist. 2 (2) Infosüsteemi volitatud töötlejal on andmekvaliteedi tagamiseks õigus kontrollida infosüsteemi edastatud dokumendi vastavust standardile. Vastutav töötleja ja volitatud töötleja ei hinda osutatud teenuse kohta esitatud andmeid ega andmeandja esitatud andmeid sisuliselt. Infosüsteemi volitatud töötlejal on andmekvaliteedi tagamiseks õigus kontrollida infosüsteemi edastatud dokumendi vastavust standardile. Vastutav töötleja ja volitatud töötleja ei hinda osutatud teenuse kohta esitatud andmeid ega andmeandja esitatud andmeid sisuliselt. 3 (3) Kui infosüsteemi volitatud töötleja avastab infosüsteemis ebakorrektsed andmed või teda teavitatakse andmete ebaõigsusest või ebakorrektsusest, peab ta andmete õigsust kontrollima ning ebaõiged või ebakorrektsed andmed parandama. Kui infosüsteemi volitatud töötleja avastab infosüsteemis ebakorrektsed andmed või teda teavitatakse andmete ebaõigsusest või ebakorrektsusest, peab ta andmete õigsust kontrollima ning ebaõiged või ebakorrektsed andmed parandama. 4 (4) Infosüsteemi volitatud töötlejal on õigus teha andmeandjale järelepärimine, kui on tekkinud kahtlus andmete tõepärasuses. Infosüsteemi volitatud töötlejal on õigus teha andmeandjale järelepärimine, kui on tekkinud kahtlus andmete tõepärasuses. 5 (5) Käesoleva määruse tähenduses loetakse ebakorrektseteks andmeteks need infosüsteemi edastatud andmed, mis ei vasta nõutud standardile ning sellest tulenevalt ei ole võimalik edastatud andmeid infosüsteemi teenustes kasutada või need takistavad teenuste tööd. Käesoleva määruse tähenduses loetakse ebakorrektseteks andmeteks need infosüsteemi edastatud andmed, mis ei vasta nõutud standardile ning sellest tulenevalt ei ole võimalik edastatud andmeid infosüsteemi teenustes kasutada või need takistavad teenuste tööd.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemi edastatud andmete muutmiseks esitab andmeandja andmekogusse viivitamata uued andmed või teavitab volitatud töötlejat vajadusest esitatud andmeid muuta viivitamata peale vea ilmnemist. 2 (2) Infosüsteemi volitatud töötlejal on andmekvaliteedi tagamiseks õigus kontrollida infosüsteemi edastatud dokumendi vastavust standardile. Vastutav töötleja ja volitatud töötleja ei hinda osutatud teenuse kohta esitatud andmeid ega andmeandja esitatud andmeid sisuliselt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemi edastatud andmete muutmiseks esitab andmeandja andmekogusse viivitamata uued andmed või teavitab volitatud töötlejat vajadusest esitatud andmeid muuta viivitamata peale vea ilmnemist. 2 (2) Infosüsteemi volitatud töötlejal on andmekvaliteedi tagamiseks õigus kontrollida infosüsteemi edastatud dokumendi vastavust standardile. Vastutav töötleja ja volitatud töötleja ei hinda osutatud teenuse kohta esitatud andmeid ega andmeandja esitatud andmeid sisuliselt. 3 (3) Kui infosüsteemi volitatud töötleja avastab infosüsteemis ebakorrektsed andmed või teda teavitatakse andmete ebaõigsusest või ebakorrektsusest, peab ta andmete õigsust kontrollima ning ebaõiged või ebakorrektsed andmed parandama. 4 (4) Infosüsteemi volitatud töötlejal on õigus teha andmeandjale järelepärimine, kui on tekkinud kahtlus andmete tõepärasuses. 5 (5) Käesoleva määruse tähenduses loetakse ebakorrektseteks andmeteks need infosüsteemi edastatud andmed, mis ei vasta nõutud standardile ning sellest tulenevalt ei ole võimalik edastatud andmeid infosüsteemi teenustes kasutada või need takistavad teenuste tööd.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -420,7 +1078,89 @@
         {
           "@id": "estleg:Reg_1063117_Par_9_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_9_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi edastatud andmete muutmiseks esitab andmeandja andmekogusse viivitamata uued andmed või teavitab volitatud töötlejat vajadusest esitatud andmeid muuta viivitamata peale vea ilmnemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi volitatud töötlejal on andmekvaliteedi tagamiseks õigus kontrollida infosüsteemi edastatud dokumendi vastavust standardile. Vastutav töötleja ja volitatud töötleja ei hinda osutatud teenuse kohta esitatud andmeid ega andmeandja esitatud andmeid sisuliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui infosüsteemi volitatud töötleja avastab infosüsteemis ebakorrektsed andmed või teda teavitatakse andmete ebaõigsusest või ebakorrektsusest, peab ta andmete õigsust kontrollima ning ebaõiged või ebakorrektsed andmed parandama.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Infosüsteemi volitatud töötlejal on õigus teha andmeandjale järelepärimine, kui on tekkinud kahtlus andmete tõepärasuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva määruse tähenduses loetakse ebakorrektseteks andmeteks need infosüsteemi edastatud andmed, mis ei vasta nõutud standardile ning sellest tulenevalt ei ole võimalik edastatud andmeid infosüsteemi teenustes kasutada või need takistavad teenuste tööd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
     },
     {
       "@id": "estleg:Reg_1063117_Par_10",
@@ -429,13 +1169,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Andmete säilitamine infosüsteemis ja logid",
+      "rdfs:label": {
+        "@value": "§ 10. Andmete säilitamine infosüsteemis ja logid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Infosüsteemi esitatud andmeid säilitatakse vastavalt vereseaduse §-s 151 sätestatule. Infosüsteemi esitatud andmeid säilitatakse vastavalt vereseaduse §-s 151 sätestatule. 2 (2) Infosüsteemi töötlemistoimingute logiandmeid, sealhulgas andmete väljastamise, vaatamise, muutmise, lisamise ja kustutamise aja, andmete koosseisu, andmesaajate ja väljastamise viisi kohta, säilitatakse 30 aastat. Infosüsteemi töötlemistoimingute logiandmeid, sealhulgas andmete väljastamise, vaatamise, muutmise, li",
-      "estleg:legalText": "1 (1) Infosüsteemi esitatud andmeid säilitatakse vastavalt vereseaduse §-s 151 sätestatule. Infosüsteemi esitatud andmeid säilitatakse vastavalt vereseaduse §-s 151 sätestatule. 2 (2) Infosüsteemi töötlemistoimingute logiandmeid, sealhulgas andmete väljastamise, vaatamise, muutmise, lisamise ja kustutamise aja, andmete koosseisu, andmesaajate ja väljastamise viisi kohta, säilitatakse 30 aastat. Infosüsteemi töötlemistoimingute logiandmeid, sealhulgas andmete väljastamise, vaatamise, muutmise, lisamise ja kustutamise aja, andmete koosseisu, andmesaajate ja väljastamise viisi kohta, säilitatakse 30 aastat.",
+      "estleg:summary": {
+        "@value": "1 (1) Infosüsteemi esitatud andmeid säilitatakse vastavalt vereseaduse §-s 151 sätestatule. 2 (2) Infosüsteemi töötlemistoimingute logiandmeid, sealhulgas andmete väljastamise, vaatamise, muutmise, lisamise ja kustutamise aja, andmete koosseisu, andmesaajate ja väljastamise viisi kohta, säilitatakse 30 aastat.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Infosüsteemi esitatud andmeid säilitatakse vastavalt vereseaduse §-s 151 sätestatule. 2 (2) Infosüsteemi töötlemistoimingute logiandmeid, sealhulgas andmete väljastamise, vaatamise, muutmise, lisamise ja kustutamise aja, andmete koosseisu, andmesaajate ja väljastamise viisi kohta, säilitatakse 30 aastat.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1036829_Par_8"
@@ -448,7 +1194,41 @@
         {
           "@id": "estleg:Reg_1063117_Par_10_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_10_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi esitatud andmeid säilitatakse vastavalt vereseaduse §-s 15¹ sätestatule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi töötlemistoimingute logiandmeid, sealhulgas andmete väljastamise, vaatamise, muutmise, lisamise ja kustutamise aja, andmete koosseisu, andmesaajate ja väljastamise viisi kohta, säilitatakse 30 aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:Reg_1063117_Par_11",
@@ -457,13 +1237,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Juurdepääs andmetele ja andmete väljastamine",
+      "rdfs:label": {
+        "@value": "§ 11. Juurdepääs andmetele ja andmete väljastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Doonoril on otsene juurdepääs doonoriportaali andmestikule. Doonoril on otsene juurdepääs doonoriportaali andmestikule. 2 (2) Verekeskuses töötavale spetsialistile tagatakse juurdepääs kõikidele doonori ja vereloovutuse andmetele ning enda sisestatud verekomponentide andmetele. Verekeskuses töötavale spetsialistile tagatakse juurdepääs kõikidele doonori ja vereloovutuse andmetele ning enda sisestatud verekomponentide andmetele. 3 (3) Verekabineti ja referentlabori spetsialistile tagatakse ",
-      "estleg:legalText": "1 (1) Doonoril on otsene juurdepääs doonoriportaali andmestikule. Doonoril on otsene juurdepääs doonoriportaali andmestikule. 2 (2) Verekeskuses töötavale spetsialistile tagatakse juurdepääs kõikidele doonori ja vereloovutuse andmetele ning enda sisestatud verekomponentide andmetele. Verekeskuses töötavale spetsialistile tagatakse juurdepääs kõikidele doonori ja vereloovutuse andmetele ning enda sisestatud verekomponentide andmetele. 3 (3) Verekabineti ja referentlabori spetsialistile tagatakse juurdepääs kõikidele varasematele retsipiendi vereanalüüside ja vereülekannete andmetele. Verekabineti ja referentlabori spetsialistile tagatakse juurdepääs kõikidele varasematele retsipiendi vereanalüüside ja vereülekannete andmetele. 4 (4) Juurdepääsu otstarbekuse ja sihipärase kasutuse eest vastutavad verekeskus, verekabinet ja referentlabor. Juurdepääsu otstarbekuse ja sihipärase kasutuse eest vastutavad verekeskus, verekabinet ja referentlabor. 5 (5) Infosüsteemi andmetele tagatakse otsejuurdepääs: 1 1) infosüsteemide andmevahetuskihi kaudu; 2 2) volitatud töötleja määratud kasutajaõiguste alusel ja viisil; 3 3) verekeskusele, verekabinetile, referentlaborile, Ravimiametile ja Tervisekassale seadusest tulenevate õiguste, kohustuste ja ülesannete täitmiseks. Infosüsteemi andmetele tagatakse otsejuurdepääs: infosüsteemide andmevahetuskihi kaudu; volitatud töötleja määratud kasutajaõiguste alusel ja viisil; verekeskusele, verekabinetile, referentlaborile, Ravimiametile ja Tervisekassale seadusest tulenevate õiguste, kohustuste ja ülesannete täitmiseks. 6 (6) Andmete väljastamine infosüsteemist tagatakse: 1 1) ühekordse andmepäringuna taotluse alusel; 2 2) poolte vahel sõlmitud lepingu alusel. Andmete väljastamine infosüsteemist tagatakse: ühekordse andmepäringuna taotluse alusel; poolte vahel sõlmitud lepingu alusel. 7 (7) Infosüsteemist andmete väljastamise aja ja viisi ning väljastatud andmete saajate ja koosseisu üle peab arvestust infosüsteemi volitatud töötleja. Infosüsteemist andmete väljastamise aja ja viisi ning väljastatud andmete saajate ja koosseisu üle peab arvestust infosüsteemi volitatud töötleja.",
+      "estleg:summary": {
+        "@value": "1 (1) Doonoril on otsene juurdepääs doonoriportaali andmestikule. 2 (2) Verekeskuses töötavale spetsialistile tagatakse juurdepääs kõikidele doonori ja vereloovutuse andmetele ning enda sisestatud verekomponentide andmetele. 3 (3) Verekabineti ja referentlabori spetsialistile tagatakse juurdepääs kõikidele varasematele retsipiendi vereanalüüside ja vereülekannete andmetele. 4 (4) Juurdepääsu otstarbekuse ja sihipärase kasutuse eest vastutavad verekeskus, verekabinet ja referentlabor.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Doonoril on otsene juurdepääs doonoriportaali andmestikule. 2 (2) Verekeskuses töötavale spetsialistile tagatakse juurdepääs kõikidele doonori ja vereloovutuse andmetele ning enda sisestatud verekomponentide andmetele. 3 (3) Verekabineti ja referentlabori spetsialistile tagatakse juurdepääs kõikidele varasematele retsipiendi vereanalüüside ja vereülekannete andmetele. 4 (4) Juurdepääsu otstarbekuse ja sihipärase kasutuse eest vastutavad verekeskus, verekabinet ja referentlabor. 5 (5) Infosüsteemi andmetele tagatakse otsejuurdepääs: 1 1) infosüsteemide andmevahetuskihi kaudu; 2 2) volitatud töötleja määratud kasutajaõiguste alusel ja viisil; 3 3) verekeskusele, verekabinetile, referentlaborile, Ravimiametile ja Tervisekassale seadusest tulenevate õiguste, kohustuste ja ülesannete täitmiseks. 6 (6) Andmete väljastamine infosüsteemist tagatakse: 1 1) ühekordse andmepäringuna taotluse alusel; 2 2) poolte vahel sõlmitud lepingu alusel. 7 (7) Infosüsteemist andmete väljastamise aja ja viisi ning väljastatud andmete saajate ja koosseisu üle peab arvestust infosüsteemi volitatud töötleja.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -485,7 +1271,130 @@
         {
           "@id": "estleg:Institution_ravimiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_11_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_11_Lg_6"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_11_Lg_7"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Doonoril on otsene juurdepääs doonoriportaali andmestikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Verekeskuses töötavale spetsialistile tagatakse juurdepääs kõikidele doonori ja vereloovutuse andmetele ning enda sisestatud verekomponentide andmetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Verekabineti ja referentlabori spetsialistile tagatakse juurdepääs kõikidele varasematele retsipiendi vereanalüüside ja vereülekannete andmetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Juurdepääsu otstarbekuse ja sihipärase kasutuse eest vastutavad verekeskus, verekabinet ja referentlabor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Infosüsteemi andmetele tagatakse otsejuurdepääs: 1) infosüsteemide andmevahetuskihi kaudu; 2) volitatud töötleja määratud kasutajaõiguste alusel ja viisil; 3) verekeskusele, verekabinetile, referentlaborile, Ravimiametile ja Tervisekassale seadusest tulenevate õiguste, kohustuste ja ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_11_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Andmete väljastamine infosüsteemist tagatakse: 1) ühekordse andmepäringuna taotluse alusel; 2) poolte vahel sõlmitud lepingu alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 6",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_11_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Infosüsteemist andmete väljastamise aja ja viisi ning väljastatud andmete saajate ja koosseisu üle peab arvestust infosüsteemi volitatud töötleja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 7"
     },
     {
       "@id": "estleg:Reg_1063117_Par_12",
@@ -494,13 +1403,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Doonori isikusamasuse tuvastamine",
+      "rdfs:label": {
+        "@value": "§ 12. Doonori isikusamasuse tuvastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "Doonori isikusamasus loetakse tuvastatuks, kui: 1 1) doonori isikusamasuse on tuvastanud selleks pädev isik õigusaktis sätestatud korras; 2 2) doonor on ennast autentinud autentimisvahendi, isikut tõendava dokumendi või muu samaväärse vahendi abil. Doonori isikusamasus loetakse tuvastatuks, kui: doonori isikusamasuse on tuvastanud selleks pädev isik õigusaktis sätestatud korras; doonor on ennast autentinud autentimisvahendi, isikut tõendava dokumendi või muu samaväärse vahendi abil.",
-      "estleg:legalText": "Doonori isikusamasus loetakse tuvastatuks, kui: 1 1) doonori isikusamasuse on tuvastanud selleks pädev isik õigusaktis sätestatud korras; 2 2) doonor on ennast autentinud autentimisvahendi, isikut tõendava dokumendi või muu samaväärse vahendi abil. Doonori isikusamasus loetakse tuvastatuks, kui: doonori isikusamasuse on tuvastanud selleks pädev isik õigusaktis sätestatud korras; doonor on ennast autentinud autentimisvahendi, isikut tõendava dokumendi või muu samaväärse vahendi abil.",
+      "estleg:summary": {
+        "@value": "Doonori isikusamasus loetakse tuvastatuks, kui: 1 1) doonori isikusamasuse on tuvastanud selleks pädev isik õigusaktis sätestatud korras; 2 2) doonor on ennast autentinud autentimisvahendi, isikut tõendava dokumendi või muu samaväärse vahendi abil.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Doonori isikusamasus loetakse tuvastatuks, kui: 1 1) doonori isikusamasuse on tuvastanud selleks pädev isik õigusaktis sätestatud korras; 2 2) doonor on ennast autentinud autentimisvahendi, isikut tõendava dokumendi või muu samaväärse vahendi abil.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -519,6 +1434,28 @@
         {
           "@id": "estleg:Reg_1063117_Par_12_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_12_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Doonori isikusamasus loetakse tuvastatuks, kui: 1) doonori isikusamasuse on tuvastanud selleks pädev isik õigusaktis sätestatud korras; 2) doonor on ennast autentinud autentimisvahendi, isikut tõendava dokumendi või muu samaväärse vahendi abil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -528,13 +1465,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Doonori õigus nõuda ebaõigete isikuandmete parandamist",
+      "rdfs:label": {
+        "@value": "§ 13. Doonori õigus nõuda ebaõigete isikuandmete parandamist",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Doonoril on õigus muuta infosüsteemis ainult neid andmeid, mille ta on ise infosüsteemi esitanud. Doonoril on õigus muuta infosüsteemis ainult neid andmeid, mille ta on ise infosüsteemi esitanud. 2 (2) Doonoril on õigus nõuda infosüsteemi ebaõigeid isikuandmeid edastanud isikult õigete isikuandmete edastamist. Kui doonor teavitab infosüsteemi vastutavat või volitatud töötlejat nimetatud nõude esitamisest, algatab infosüsteemi volitatud töötleja menetluse andmete parandamiseks. Doonoril on ",
-      "estleg:legalText": "1 (1) Doonoril on õigus muuta infosüsteemis ainult neid andmeid, mille ta on ise infosüsteemi esitanud. Doonoril on õigus muuta infosüsteemis ainult neid andmeid, mille ta on ise infosüsteemi esitanud. 2 (2) Doonoril on õigus nõuda infosüsteemi ebaõigeid isikuandmeid edastanud isikult õigete isikuandmete edastamist. Kui doonor teavitab infosüsteemi vastutavat või volitatud töötlejat nimetatud nõude esitamisest, algatab infosüsteemi volitatud töötleja menetluse andmete parandamiseks. Doonoril on õigus nõuda infosüsteemi ebaõigeid isikuandmeid edastanud isikult õigete isikuandmete edastamist. Kui doonor teavitab infosüsteemi vastutavat või volitatud töötlejat nimetatud nõude esitamisest, algatab infosüsteemi volitatud töötleja menetluse andmete parandamiseks. 3 (3) Kui ebaõiged isikuandmed esitanud doonor teavitab andmeandjat isikuandmete ebaõigsusest, edastab andmeandja viivitamata parandatud isikuandmed infosüsteemi. Kui ebaõiged isikuandmed esitanud doonor teavitab andmeandjat isikuandmete ebaõigsusest, edastab andmeandja viivitamata parandatud isikuandmed infosüsteemi. 4 (4) Isikuandmetega, mille ebaõigsus on tuvastatud, võivad tutvuda doonor ja ebaõigete isikuandmete esitaja. Isikuandmetega, mille ebaõigsus on tuvastatud, võivad tutvuda doonor ja ebaõigete isikuandmete esitaja.",
+      "estleg:summary": {
+        "@value": "1 (1) Doonoril on õigus muuta infosüsteemis ainult neid andmeid, mille ta on ise infosüsteemi esitanud. 2 (2) Doonoril on õigus nõuda infosüsteemi ebaõigeid isikuandmeid edastanud isikult õigete isikuandmete edastamist. Kui doonor teavitab infosüsteemi vastutavat või volitatud töötlejat nimetatud nõude esitamisest, algatab infosüsteemi volitatud töötleja menetluse andmete parandamiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Doonoril on õigus muuta infosüsteemis ainult neid andmeid, mille ta on ise infosüsteemi esitanud. 2 (2) Doonoril on õigus nõuda infosüsteemi ebaõigeid isikuandmeid edastanud isikult õigete isikuandmete edastamist. Kui doonor teavitab infosüsteemi vastutavat või volitatud töötlejat nimetatud nõude esitamisest, algatab infosüsteemi volitatud töötleja menetluse andmete parandamiseks. 3 (3) Kui ebaõiged isikuandmed esitanud doonor teavitab andmeandjat isikuandmete ebaõigsusest, edastab andmeandja viivitamata parandatud isikuandmed infosüsteemi. 4 (4) Isikuandmetega, mille ebaõigsus on tuvastatud, võivad tutvuda doonor ja ebaõigete isikuandmete esitaja.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -556,7 +1499,73 @@
         {
           "@id": "estleg:Reg_1063117_Par_13_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_13_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Doonoril on õigus muuta infosüsteemis ainult neid andmeid, mille ta on ise infosüsteemi esitanud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Doonoril on õigus nõuda infosüsteemi ebaõigeid isikuandmeid edastanud isikult õigete isikuandmete edastamist. Kui doonor teavitab infosüsteemi vastutavat või volitatud töötlejat nimetatud nõude esitamisest, algatab infosüsteemi volitatud töötleja menetluse andmete parandamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui ebaõiged isikuandmed esitanud doonor teavitab andmeandjat isikuandmete ebaõigsusest, edastab andmeandja viivitamata parandatud isikuandmed infosüsteemi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Isikuandmetega, mille ebaõigsus on tuvastatud, võivad tutvuda doonor ja ebaõigete isikuandmete esitaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
     },
     {
       "@id": "estleg:Reg_1063117_Par_14",
@@ -565,13 +1574,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Infosüsteemi tarkvaralahenduse kasutamine",
+      "rdfs:label": {
+        "@value": "§ 14. Infosüsteemi tarkvaralahenduse kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Doonori seisundi hindamise ja tervisesoovituste kasutamiseks võib infosüsteemi andmekoosseisu ulatuses ning lähtuvalt seaduses sätestatud eesmärkidest kasutada tarkvaralahendust. Doonori seisundi hindamise ja tervisesoovituste kasutamiseks võib infosüsteemi andmekoosseisu ulatuses ning lähtuvalt seaduses sätestatud eesmärkidest kasutada tarkvaralahendust. 2 (2) Juhul kui lõikes 1 nimetatud infosüsteemis kasutatavat tarkvaralahendust käsitatakse meditsiiniseadmena, peab see olema registreer",
-      "estleg:legalText": "1 (1) Doonori seisundi hindamise ja tervisesoovituste kasutamiseks võib infosüsteemi andmekoosseisu ulatuses ning lähtuvalt seaduses sätestatud eesmärkidest kasutada tarkvaralahendust. Doonori seisundi hindamise ja tervisesoovituste kasutamiseks võib infosüsteemi andmekoosseisu ulatuses ning lähtuvalt seaduses sätestatud eesmärkidest kasutada tarkvaralahendust. 2 (2) Juhul kui lõikes 1 nimetatud infosüsteemis kasutatavat tarkvaralahendust käsitatakse meditsiiniseadmena, peab see olema registreeritud meditsiiniseadmete ja abivahendite andmekogus, kui sellekohane kohustus tuleneb õigusaktist. Juhul kui lõikes 1 nimetatud infosüsteemis kasutatavat tarkvaralahendust käsitatakse meditsiiniseadmena, peab see olema registreeritud meditsiiniseadmete ja abivahendite andmekogus, kui sellekohane kohustus tuleneb õigusaktist.",
+      "estleg:summary": {
+        "@value": "1 (1) Doonori seisundi hindamise ja tervisesoovituste kasutamiseks võib infosüsteemi andmekoosseisu ulatuses ning lähtuvalt seaduses sätestatud eesmärkidest kasutada tarkvaralahendust. 2 (2) Juhul kui lõikes 1 nimetatud infosüsteemis kasutatavat tarkvaralahendust käsitatakse meditsiiniseadmena, peab see olema registreeritud meditsiiniseadmete ja abivahendite andmekogus, kui sellekohane kohustus tuleneb õigusaktist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Doonori seisundi hindamise ja tervisesoovituste kasutamiseks võib infosüsteemi andmekoosseisu ulatuses ning lähtuvalt seaduses sätestatud eesmärkidest kasutada tarkvaralahendust. 2 (2) Juhul kui lõikes 1 nimetatud infosüsteemis kasutatavat tarkvaralahendust käsitatakse meditsiiniseadmena, peab see olema registreeritud meditsiiniseadmete ja abivahendite andmekogus, kui sellekohane kohustus tuleneb õigusaktist.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -583,7 +1598,41 @@
         {
           "@id": "estleg:Reg_1063117_Par_14_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_14_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Doonori seisundi hindamise ja tervisesoovituste kasutamiseks võib infosüsteemi andmekoosseisu ulatuses ning lähtuvalt seaduses sätestatud eesmärkidest kasutada tarkvaralahendust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juhul kui lõikes 1 nimetatud infosüsteemis kasutatavat tarkvaralahendust käsitatakse meditsiiniseadmena, peab see olema registreeritud meditsiiniseadmete ja abivahendite andmekogus, kui sellekohane kohustus tuleneb õigusaktist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
     },
     {
       "@id": "estleg:Reg_1063117_Par_15",
@@ -592,13 +1641,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Andmelao kasutamine",
+      "rdfs:label": {
+        "@value": "§ 15. Andmelao kasutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Andmelaos töödeldakse pseudonüümitud isikuandmeid äriprotsesside toetamiseks, poliitika kujundamiseks, mõjude hindamiseks, teabenõuetele vastamiseks ja statistika tegemiseks. Andmelaos töödeldakse pseudonüümitud isikuandmeid äriprotsesside toetamiseks, poliitika kujundamiseks, mõjude hindamiseks, teabenõuetele vastamiseks ja statistika tegemiseks. 2 (2) Andmelaos tagatakse juurdepääs: 1 1) andmeandjale tema enda edastatud andmetele; 2 2) vastutavale ja volitatud töötlejale, haldusorganile ",
-      "estleg:legalText": "1 (1) Andmelaos töödeldakse pseudonüümitud isikuandmeid äriprotsesside toetamiseks, poliitika kujundamiseks, mõjude hindamiseks, teabenõuetele vastamiseks ja statistika tegemiseks. Andmelaos töödeldakse pseudonüümitud isikuandmeid äriprotsesside toetamiseks, poliitika kujundamiseks, mõjude hindamiseks, teabenõuetele vastamiseks ja statistika tegemiseks. 2 (2) Andmelaos tagatakse juurdepääs: 1 1) andmeandjale tema enda edastatud andmetele; 2 2) vastutavale ja volitatud töötlejale, haldusorganile nendele andmetele, mis on vajalikud tema seadusest või selle alusel antud õigusaktist tulenevate ülesannete täitmiseks. Andmelaos tagatakse juurdepääs: andmeandjale tema enda edastatud andmetele; vastutavale ja volitatud töötlejale, haldusorganile nendele andmetele, mis on vajalikud tema seadusest või selle alusel antud õigusaktist tulenevate ülesannete täitmiseks. 3 (3) Andmelao avaandmed avalikustatakse volitatud töötleja veebilehel masinloetaval kujul. Andmelao avaandmed avalikustatakse volitatud töötleja veebilehel masinloetaval kujul.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmelaos töödeldakse pseudonüümitud isikuandmeid äriprotsesside toetamiseks, poliitika kujundamiseks, mõjude hindamiseks, teabenõuetele vastamiseks ja statistika tegemiseks. 2 (2) Andmelaos tagatakse juurdepääs: 1 1) andmeandjale tema enda edastatud andmetele; 2 2) vastutavale ja volitatud töötlejale, haldusorganile nendele andmetele, mis on vajalikud tema seadusest või selle alusel antud õigusaktist tulenevate ülesannete täitmiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmelaos töödeldakse pseudonüümitud isikuandmeid äriprotsesside toetamiseks, poliitika kujundamiseks, mõjude hindamiseks, teabenõuetele vastamiseks ja statistika tegemiseks. 2 (2) Andmelaos tagatakse juurdepääs: 1 1) andmeandjale tema enda edastatud andmetele; 2 2) vastutavale ja volitatud töötlejale, haldusorganile nendele andmetele, mis on vajalikud tema seadusest või selle alusel antud õigusaktist tulenevate ülesannete täitmiseks. 3 (3) Andmelao avaandmed avalikustatakse volitatud töötleja veebilehel masinloetaval kujul.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -617,7 +1672,61 @@
         {
           "@id": "estleg:Reg_1063117_Par_15_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_15_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmelaos töödeldakse pseudonüümitud isikuandmeid äriprotsesside toetamiseks, poliitika kujundamiseks, mõjude hindamiseks, teabenõuetele vastamiseks ja statistika tegemiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmelaos tagatakse juurdepääs: 1) andmeandjale tema enda edastatud andmetele; 2) vastutavale ja volitatud töötlejale, haldusorganile nendele andmetele, mis on vajalikud tema seadusest või selle alusel antud õigusaktist tulenevate ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmelao avaandmed avalikustatakse volitatud töötleja veebilehel masinloetaval kujul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
     },
     {
       "@id": "estleg:Reg_1063117_Par_16",
@@ -626,13 +1735,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Järelevalve",
+      "rdfs:label": {
+        "@value": "§ 16. Järelevalve",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Järelevalvet infosüsteemi pidamise üle teevad kaasvastutavad töötlejad ja Andmekaitse Inspektsioon vastavalt õigusaktides sätestatud pädevusele. Järelevalvet infosüsteemi pidamise üle teevad kaasvastutavad töötlejad ja Andmekaitse Inspektsioon vastavalt õigusaktides sätestatud pädevusele. 2 (2) Infosüsteemi kaasvastutaval ja volitatud töötlejal on õigus kontrollida põhimääruses kehtestatud tingimuste täitmist ja nõuete järgimist. Infosüsteemi kaasvastutaval ja volitatud töötlejal on õigus ",
-      "estleg:legalText": "1 (1) Järelevalvet infosüsteemi pidamise üle teevad kaasvastutavad töötlejad ja Andmekaitse Inspektsioon vastavalt õigusaktides sätestatud pädevusele. Järelevalvet infosüsteemi pidamise üle teevad kaasvastutavad töötlejad ja Andmekaitse Inspektsioon vastavalt õigusaktides sätestatud pädevusele. 2 (2) Infosüsteemi kaasvastutaval ja volitatud töötlejal on õigus kontrollida põhimääruses kehtestatud tingimuste täitmist ja nõuete järgimist. Infosüsteemi kaasvastutaval ja volitatud töötlejal on õigus kontrollida põhimääruses kehtestatud tingimuste täitmist ja nõuete järgimist.",
+      "estleg:summary": {
+        "@value": "1 (1) Järelevalvet infosüsteemi pidamise üle teevad kaasvastutavad töötlejad ja Andmekaitse Inspektsioon vastavalt õigusaktides sätestatud pädevusele. 2 (2) Infosüsteemi kaasvastutaval ja volitatud töötlejal on õigus kontrollida põhimääruses kehtestatud tingimuste täitmist ja nõuete järgimist.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Järelevalvet infosüsteemi pidamise üle teevad kaasvastutavad töötlejad ja Andmekaitse Inspektsioon vastavalt õigusaktides sätestatud pädevusele. 2 (2) Infosüsteemi kaasvastutaval ja volitatud töötlejal on õigus kontrollida põhimääruses kehtestatud tingimuste täitmist ja nõuete järgimist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -662,7 +1777,41 @@
         {
           "@id": "estleg:Institution_andmekaitseinspektsioon"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_16_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Järelevalvet infosüsteemi pidamise üle teevad kaasvastutavad töötlejad ja Andmekaitse Inspektsioon vastavalt õigusaktides sätestatud pädevusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Infosüsteemi kaasvastutaval ja volitatud töötlejal on õigus kontrollida põhimääruses kehtestatud tingimuste täitmist ja nõuete järgimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
     },
     {
       "@id": "estleg:Reg_1063117_Par_17",
@@ -671,13 +1820,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Rahastamine",
+      "rdfs:label": {
+        "@value": "§ 17. Rahastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "Infosüsteemi rahastatakse riigieelarvest Sotsiaalministeeriumi ja Tervisekassa eelarve kaudu.",
-      "estleg:legalText": "Infosüsteemi rahastatakse riigieelarvest Sotsiaalministeeriumi ja Tervisekassa eelarve kaudu. Infosüsteemi rahastatakse riigieelarvest Sotsiaalministeeriumi ja Tervisekassa eelarve kaudu.",
+      "estleg:summary": {
+        "@value": "Infosüsteemi rahastatakse riigieelarvest Sotsiaalministeeriumi ja Tervisekassa eelarve kaudu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Infosüsteemi rahastatakse riigieelarvest Sotsiaalministeeriumi ja Tervisekassa eelarve kaudu.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1019126_Par_6"
@@ -704,7 +1859,25 @@
         {
           "@id": "estleg:Institution_sotsiaalministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_17_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi rahastatakse riigieelarvest Sotsiaalministeeriumi ja Tervisekassa eelarve kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
     },
     {
       "@id": "estleg:Reg_1063117_Par_18",
@@ -713,13 +1886,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Infosüsteemi lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 18. Infosüsteemi lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "Infosüsteemi lõpetamine otsustatakse valdkonna eest vastutava ministri määrusega vastavalt avaliku teabe seaduses sätestatule.",
-      "estleg:legalText": "Infosüsteemi lõpetamine otsustatakse valdkonna eest vastutava ministri määrusega vastavalt avaliku teabe seaduses sätestatule. Infosüsteemi lõpetamine otsustatakse valdkonna eest vastutava ministri määrusega vastavalt avaliku teabe seaduses sätestatule.",
+      "estleg:summary": {
+        "@value": "Infosüsteemi lõpetamine otsustatakse valdkonna eest vastutava ministri määrusega vastavalt avaliku teabe seaduses sätestatule.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Infosüsteemi lõpetamine otsustatakse valdkonna eest vastutava ministri määrusega vastavalt avaliku teabe seaduses sätestatule.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:MAAPAR_Par_39"
@@ -732,7 +1911,25 @@
         {
           "@id": "estleg:Reg_1063117_Par_18_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_18_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Infosüsteemi lõpetamine otsustatakse valdkonna eest vastutava ministri määrusega vastavalt avaliku teabe seaduses sätestatule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
     },
     {
       "@id": "estleg:Reg_1063117_Par_19",
@@ -741,13 +1938,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Üleminekusätted",
+      "rdfs:label": {
+        "@value": "§ 19. Üleminekusätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "1 (1) Verekeskus, verekabinet ja referentlabor on kohustatud infosüsteemi andmeid esitama hiljemalt 1. juulist 2027. a. Verekeskus, verekabinet ja referentlabor on kohustatud infosüsteemi andmeid esitama hiljemalt 1. juulist 2027. a. 2 (2) Paragrahvi 11 lõike 5 punktis 3 ja § 15 lõikes 2 nimetatud juurdepääsu rakendatakse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. Paragrahvi 11 lõike 5 punktis 3 ja § 15 lõikes 2 nimetatud juurdepääsu rakendatakse tehnilise lahenduse valmi",
-      "estleg:legalText": "1 (1) Verekeskus, verekabinet ja referentlabor on kohustatud infosüsteemi andmeid esitama hiljemalt 1. juulist 2027. a. Verekeskus, verekabinet ja referentlabor on kohustatud infosüsteemi andmeid esitama hiljemalt 1. juulist 2027. a. 2 (2) Paragrahvi 11 lõike 5 punktis 3 ja § 15 lõikes 2 nimetatud juurdepääsu rakendatakse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. Paragrahvi 11 lõike 5 punktis 3 ja § 15 lõikes 2 nimetatud juurdepääsu rakendatakse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. 3 (3) Paragrahvi 8 lõigetes 1 ja 2 sätestatut rakendatakse andmevahetuse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. Paragrahvi 8 lõigetes 1 ja 2 sätestatut rakendatakse andmevahetuse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. 4 (4) Paragrahvi 3 lõike 2 punktis 9 sätestatud klassifikaatorite, loendite ja standardite pidamine ning standardite ja klassifikatsioonide publitseerimine tagatakse hiljemalt 1. juuliks 2027. a. Paragrahvi 3 lõike 2 punktis 9 sätestatud klassifikaatorite, loendite ja standardite pidamine ning standardite ja klassifikatsioonide publitseerimine tagatakse hiljemalt 1. juuliks 2027. a.",
+      "estleg:summary": {
+        "@value": "1 (1) Verekeskus, verekabinet ja referentlabor on kohustatud infosüsteemi andmeid esitama hiljemalt 1. juulist 2027. a. 2 (2) Paragrahvi 11 lõike 5 punktis 3 ja § 15 lõikes 2 nimetatud juurdepääsu rakendatakse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. 3 (3) Paragrahvi 8 lõigetes 1 ja 2 sätestatut rakendatakse andmevahetuse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Verekeskus, verekabinet ja referentlabor on kohustatud infosüsteemi andmeid esitama hiljemalt 1. juulist 2027. a. 2 (2) Paragrahvi 11 lõike 5 punktis 3 ja § 15 lõikes 2 nimetatud juurdepääsu rakendatakse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. 3 (3) Paragrahvi 8 lõigetes 1 ja 2 sätestatut rakendatakse andmevahetuse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a. 4 (4) Paragrahvi 3 lõike 2 punktis 9 sätestatud klassifikaatorite, loendite ja standardite pidamine ning standardite ja klassifikatsioonide publitseerimine tagatakse hiljemalt 1. juuliks 2027. a.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -764,7 +1967,75 @@
         {
           "@id": "estleg:Reg_1063117_Par_19_v1063117"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_19_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1063117_Par_19_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Verekeskus, verekabinet ja referentlabor on kohustatud infosüsteemi andmeid esitama hiljemalt 1. juulist 2027. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Paragrahvi 11 lõike 5 punktis 3 ja § 15 lõikes 2 nimetatud juurdepääsu rakendatakse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2",
+      "estleg:itemNumber": "3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_19_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Paragrahvi 8 lõigetes 1 ja 2 sätestatut rakendatakse andmevahetuse tehnilise lahenduse valmimisel, kuid hiljemalt 1. juulist 2027. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_19_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Paragrahvi 3 lõike 2 punktis 9 sätestatud klassifikaatorite, loendite ja standardite pidamine ning standardite ja klassifikatsioonide publitseerimine tagatakse hiljemalt 1. juuliks 2027. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 4",
+      "estleg:itemNumber": "9"
     },
     {
       "@id": "estleg:Reg_1063117_Par_20",
@@ -773,16 +2044,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Jõustumine",
+      "rdfs:label": {
+        "@value": "§ 20. Jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Riikliku vereteenistuse infosüsteemi põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1063117_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. aprillil 2026. a.",
-      "estleg:legalText": "Määrus jõustub 1. aprillil 2026. a. Määrus jõustub 1. aprillil 2026. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. aprillil 2026. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. aprillil 2026. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1063117_Par_20_v1063117"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1063117_Par_20_Lg_1"
         }
       ]
     },
@@ -821,6 +2103,19 @@
       },
       "estleg:citationDetail": "lg 1",
       "estleg:citationText": "Määrus kehtestatakse vereseaduse § 15 lõike 1"
+    },
+    {
+      "@id": "estleg:Reg_1063117_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. aprillil 2026. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1063117_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
     }
   ]
 }

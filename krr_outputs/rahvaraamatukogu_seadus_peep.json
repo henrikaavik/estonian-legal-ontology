@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RaRS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Rahvaraamatukogu seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Rahvaraamatukogu seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Rahvaraamatukogu seadus",
-      "dcterms:title": [
-        {
-          "@value": "Rahvaraamatukogu seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Public Libraries Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Rahvaraamatukogu seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/113032019127.xml"
+        "@id": "https://www.riigiteataja.ee/akt/113032019127"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/113032019127/xml"
+      },
+      "estleg:globalId": "113032019127",
+      "eli:id_local": "113032019127",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159376",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "24bc660c937be49009ac47ee4daa620f016e0af59c81e65848548ee27c06e304",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1998-12-10",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2019-03-15",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -51,10 +67,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2019-03-15",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/504042019006"
@@ -904,14 +916,40 @@
         {
           "@id": "estleg:Draft_KUM11_0940"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/504042019006"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_RaRS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–3 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–3 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:RaRS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
     },
     {
       "@id": "estleg:RaRS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Rahvaraamatukogu seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Rahvaraamatukogu seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_RaRS_1"
@@ -928,26 +966,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_RaRS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–3 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–3 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:RaRS_TopicScheme"
-      },
-      "estleg:provisionCount": 3
-    },
-    {
       "@id": "estleg:Chapter_RaRS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
@@ -967,8 +994,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§4–12 RAHVARAAMATUKOGU TEGEVUSE KORRALDUS",
-      "skos:prefLabel": "§4–12 RAHVARAAMATUKOGU TEGEVUSE KORRALDUS",
+      "rdfs:label": {
+        "@value": "§4–12 RAHVARAAMATUKOGU TEGEVUSE KORRALDUS",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§4–12 RAHVARAAMATUKOGU TEGEVUSE KORRALDUS",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RaRS_TopicScheme"
       },
@@ -980,7 +1013,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – RAHVARAAMATUKOGU TEGEVUSE KORRALDUS",
+      "rdfs:label": {
+        "@value": "2. peatükk – RAHVARAAMATUKOGU TEGEVUSE KORRALDUS",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
@@ -1000,12 +1036,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§13–17 KOGUD, TEENINDUS JA LUGEJA",
-      "skos:prefLabel": "§13–17 KOGUD, TEENINDUS JA LUGEJA",
+      "rdfs:label": {
+        "@value": "§13–17 KOGUD, TEENINDUS JA LUGEJA",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§13–17 KOGUD, TEENINDUS JA LUGEJA",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RaRS_TopicScheme"
       },
-      "estleg:provisionCount": 5
+      "estleg:provisionCount": 6
     },
     {
       "@id": "estleg:Chapter_RaRS_3",
@@ -1013,7 +1055,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – KOGUD, TEENINDUS JA LUGEJA",
+      "rdfs:label": {
+        "@value": "3. peatükk – KOGUD, TEENINDUS JA LUGEJA",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
@@ -1033,12 +1078,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§18–21 SEADUSE RAKENDAMINE",
-      "skos:prefLabel": "§18–21 SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "§18–21 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§18–21 SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RaRS_TopicScheme"
       },
-      "estleg:provisionCount": 4
+      "estleg:provisionCount": 5
     },
     {
       "@id": "estleg:Chapter_RaRS_4",
@@ -1046,7 +1097,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – SEADUSE RAKENDAMINE",
+      "rdfs:label": {
+        "@value": "4. peatükk – SEADUSE RAKENDAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
@@ -1066,12 +1120,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "Käesolev seadus sätestab rahvaraamatukogude tegevuse, kogude, teeninduse, juhtimise ja finantseerimise korralduse alused.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus sätestab rahvaraamatukogude tegevuse, kogude, teeninduse, juhtimise ja finantseerimise korralduse alused.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus sätestab rahvaraamatukogude tegevuse, kogude, teeninduse, juhtimise ja finantseerimise korralduse alused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_1"
@@ -1096,10 +1156,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus sätestab rahvaraamatukogude tegevuse, kogude, teeninduse, juhtimise ja finantseerimise korralduse alused.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab rahvaraamatukogude tegevuse, kogude, teeninduse, juhtimise ja finantseerimise korralduse alused.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RaRS_Par_2",
@@ -1108,12 +1170,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Rahvaraamatukogu",
+      "rdfs:label": {
+        "@value": "§ 2. Rahvaraamatukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu eesmärk on tagada elanikele vaba ja piiramatu juurdepääs informatsioonile, teadmistele, inimmõtte saavutustele ning kultuurile, toetada elukestvat õppimist ja enesetäiendamist. (2) Rahvaraamatukogu käesoleva seaduse tähenduses on munitsipaalraamatukogu, kes kogub, säilitab ja teeb lugejale kättesaadavaks temale vajalikud trükised, auvised ja teised teavikud (edaspidi teavikud) ning avalikud andmebaasid.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu eesmärk on tagada elanikele vaba ja piiramatu juurdepääs informatsioonile, teadmistele, inimmõtte saavutustele ning kultuurile, toetada elukestvat õppimist ja enesetäiendamist. (2) Rahvaraamatukogu käesoleva seaduse tähenduses on munitsipaalraamatukogu, kes kogub, säilitab ja teeb lugejale kättesaadavaks temale vajalikud trükised, auvised ja teised teavikud (edaspidi teavikud) ning avalikud andmebaasid.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvaraamatukogu eesmärk on tagada elanikele vaba ja piiramatu juurdepääs informatsioonile, teadmistele, inimmõtte saavutustele ning kultuurile, toetada elukestvat õppimist ja enesetäiendamist. (2) Rahvaraamatukogu käesoleva seaduse tähenduses on munitsipaalraamatukogu, kes kogub, säilitab ja teeb lugejale kättesaadavaks temale vajalikud trükised, auvised ja teised teavikud (edaspidi teavikud) ning avalikud andmebaasid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_1"
@@ -1195,12 +1263,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Rahvaraamatukogu õiguslik seisund",
+      "rdfs:label": {
+        "@value": "§ 3. Rahvaraamatukogu õiguslik seisund",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu on kohaliku omavalitsuse asutus. (2) Rahvaraamatukogu juhindub oma tegevuses käesolevast seadusest, teistest õigusaktidest, UNESCO rahvaraamatukogude manifestist ja oma põhimäärusest.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu on kohaliku omavalitsuse asutus. (2) Rahvaraamatukogu juhindub oma tegevuses käesolevast seadusest, teistest õigusaktidest, UNESCO rahvaraamatukogude manifestist ja oma põhimäärusest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvaraamatukogu on kohaliku omavalitsuse asutus. (2) Rahvaraamatukogu juhindub oma tegevuses käesolevast seadusest, teistest õigusaktidest, UNESCO rahvaraamatukogude manifestist ja oma põhimäärusest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_1"
@@ -1309,13 +1383,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Rahvaraamatukogu asutamine",
+      "rdfs:label": {
+        "@value": "§ 4. Rahvaraamatukogu asutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu asutamise otsustab kohaliku omavalitsuse volikogu. (2) Rahvaraamatukogude võrgu loomisel tuleb lähtuda järgmistest põhimõtetest: igas kuni 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu; üle 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu keskmiselt iga 15 000 elaniku kohta; mujal vähemalt üks rahvaraamatukogu keskmiselt kuni 500 elanikuga teeninduspiirkonna kohta. (3) Rahvaraamatukogu asutamisest teatab valla- või linnavalitsus kirjalikult",
-      "estleg:legalText": "(1) Rahvaraamatukogu asutamise otsustab kohaliku omavalitsuse volikogu. (2) Rahvaraamatukogude võrgu loomisel tuleb lähtuda järgmistest põhimõtetest: igas kuni 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu; üle 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu keskmiselt iga 15 000 elaniku kohta; mujal vähemalt üks rahvaraamatukogu keskmiselt kuni 500 elanikuga teeninduspiirkonna kohta. (3) Rahvaraamatukogu asutamisest teatab valla- või linnavalitsus kirjalikult Kultuuriministeeriumile. Teates näidatakse ära rahvaraamatukogu nimetus, asukoht, sidevahendite numbrid.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu asutamise otsustab kohaliku omavalitsuse volikogu. (2) Rahvaraamatukogude võrgu loomisel tuleb lähtuda järgmistest põhimõtetest: 1) igas kuni 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu; 2) üle 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu keskmiselt iga 15 000 elaniku kohta; 3) mujal vähemalt üks rahvaraamatukogu keskmiselt kuni 500 elanikuga teeninduspiirkonna kohta. (3) Rahvaraamatukogu asutamisest teatab valla- või linnavalitsus kirjalikult",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rahvaraamatukogu asutamise otsustab kohaliku omavalitsuse volikogu. (2) Rahvaraamatukogude võrgu loomisel tuleb lähtuda järgmistest põhimõtetest: 1) igas kuni 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu; 2) üle 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu keskmiselt iga 15 000 elaniku kohta; 3) mujal vähemalt üks rahvaraamatukogu keskmiselt kuni 500 elanikuga teeninduspiirkonna kohta. (3) Rahvaraamatukogu asutamisest teatab valla- või linnavalitsus kirjalikult Kultuuriministeeriumile. Teates näidatakse ära rahvaraamatukogu nimetus, asukoht, sidevahendite numbrid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
       },
@@ -1400,11 +1480,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Rahvaraamatukogude võrgu loomisel tuleb lähtuda järgmistest põhimõtetest: igas kuni 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu; üle 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu keskmiselt iga 15 000 elaniku kohta; mujal vähemalt üks rahvaraamatukogu keskmiselt kuni 500 elanikuga teeninduspiirkonna kohta.",
+      "estleg:legalText": "(2) Rahvaraamatukogude võrgu loomisel tuleb lähtuda järgmistest põhimõtetest: 1) igas kuni 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu; 2) üle 10 000 elanikuga linnas vähemalt üks rahvaraamatukogu keskmiselt iga 15 000 elaniku kohta; 3) mujal vähemalt üks rahvaraamatukogu keskmiselt kuni 500 elanikuga teeninduspiirkonna kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_4"
       },
       "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1457,13 +1542,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Maakonnaraamatukogu ja linna või valla keskraamatukogu",
+      "rdfs:label": {
+        "@value": "§ 5. Maakonnaraamatukogu ja linna või valla keskraamatukogu",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Igas maakonnas peab olema maakonnaraamatukogu. Maakonnaraamatukogu on rahvaraamatukogu, kes täidab täiendavalt raamatukoguteeninduse maakondliku koordineerimise ülesandeid. (2) Valdkonna eest vastutav minister nimetab maakonnaraamatukogu kõigi maakonna kohaliku omavalitsuse üksuste ühisel ettepanekul. Ettepaneku tegemisel maakonnaraamatukogu nimetamiseks lähtuvad kohaliku omavalitsuse üksused käesoleva paragrahvi lõikes 5 loetletud ülesannete täitmiseks vajalike tingimuste olemasolust ja",
-      "estleg:legalText": "(1) Igas maakonnas peab olema maakonnaraamatukogu. Maakonnaraamatukogu on rahvaraamatukogu, kes täidab täiendavalt raamatukoguteeninduse maakondliku koordineerimise ülesandeid. (2) Valdkonna eest vastutav minister nimetab maakonnaraamatukogu kõigi maakonna kohaliku omavalitsuse üksuste ühisel ettepanekul. Ettepaneku tegemisel maakonnaraamatukogu nimetamiseks lähtuvad kohaliku omavalitsuse üksused käesoleva paragrahvi lõikes 5 loetletud ülesannete täitmiseks vajalike tingimuste olemasolust ja asjaomase valla- või linnavolikogu nõusolekust. (2¹) Kui maakonna kohaliku omavalitsuse üksused ei saavuta maakonnaraamatukogu nimetamise ettepaneku tegemiseks vajalikku üksmeelt, nimetab valdkonna eest vastutav minister maakonnaraamatukogu kohaliku omavalitsuse üksuste ettepanekuta, kuulates ära maakonna kohaliku omavalitsuse üksuste arvamused ning lähtudes käesoleva paragrahvi lõikes 5 loetletud ülesannete täitmiseks vajalike tingimuste olemasolust ja asjaomase valla- või linnavolikogu nõusolekust. (3) Linnas või vallas, kus on mitu rahvaraamatukogu, võib linna- või vallavolikogu raamatukoguteeninduse koordineerimiseks nimetada ühe rahvaraamatukogudest linna või valla keskraamatukoguks. (4) Maakonnaraamatukogu ja keskraamatukogu ülesandeid võib täita sama raamatukogu. (5) Maakonnaraamatukogu ja keskraamatukogu ülesanded raamatukoguteeninduse koordineerimisel on: kogude komplekteerimine ja töötlemine; rahvaraamatukogude tegevuseks vajalike bibliograafia-, täistekst- ja muude andmebaaside loomine ja pidamine; rahvaraamatukogude statistilise aruandluse korraldamine ja tegevuse analüüsimine; erialane nõustamine ja raamatukogutöötajate täienduskoolituse korraldamine; teatmebibliograafilise töö korraldamine.",
+      "estleg:summary": {
+        "@value": "(1) Igas maakonnas peab olema maakonnaraamatukogu. Maakonnaraamatukogu on rahvaraamatukogu, kes täidab täiendavalt raamatukoguteeninduse maakondliku koordineerimise ülesandeid. (2) Valdkonna eest vastutav minister nimetab maakonnaraamatukogu kõigi maakonna kohaliku omavalitsuse üksuste ühisel ettepanekul. Ettepaneku tegemisel maakonnaraamatukogu nimetamiseks lähtuvad kohaliku omavalitsuse üksused käesoleva paragrahvi lõikes 5 loetletud ülesannete täitmiseks vajalike tingimuste olemasolust ja",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Igas maakonnas peab olema maakonnaraamatukogu. Maakonnaraamatukogu on rahvaraamatukogu, kes täidab täiendavalt raamatukoguteeninduse maakondliku koordineerimise ülesandeid. (2) Valdkonna eest vastutav minister nimetab maakonnaraamatukogu kõigi maakonna kohaliku omavalitsuse üksuste ühisel ettepanekul. Ettepaneku tegemisel maakonnaraamatukogu nimetamiseks lähtuvad kohaliku omavalitsuse üksused käesoleva paragrahvi lõikes 5 loetletud ülesannete täitmiseks vajalike tingimuste olemasolust ja asjaomase valla- või linnavolikogu nõusolekust. (2¹) Kui maakonna kohaliku omavalitsuse üksused ei saavuta maakonnaraamatukogu nimetamise ettepaneku tegemiseks vajalikku üksmeelt, nimetab valdkonna eest vastutav minister maakonnaraamatukogu kohaliku omavalitsuse üksuste ettepanekuta, kuulates ära maakonna kohaliku omavalitsuse üksuste arvamused ning lähtudes käesoleva paragrahvi lõikes 5 loetletud ülesannete täitmiseks vajalike tingimuste olemasolust ja asjaomase valla- või linnavolikogu nõusolekust. (3) Linnas või vallas, kus on mitu rahvaraamatukogu, võib linna- või vallavolikogu raamatukoguteeninduse koordineerimiseks nimetada ühe rahvaraamatukogudest linna või valla keskraamatukoguks. (4) Maakonnaraamatukogu ja keskraamatukogu ülesandeid võib täita sama raamatukogu. (5) Maakonnaraamatukogu ja keskraamatukogu ülesanded raamatukoguteeninduse koordineerimisel on: 1) kogude komplekteerimine ja töötlemine; 2) rahvaraamatukogude tegevuseks vajalike bibliograafia-, täistekst- ja muude andmebaaside loomine ja pidamine; 3) rahvaraamatukogude statistilise aruandluse korraldamine ja tegevuse analüüsimine; 4) erialane nõustamine ja raamatukogutöötajate täienduskoolituse korraldamine; 5) teatmebibliograafilise töö korraldamine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
       },
@@ -1652,11 +1743,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Maakonnaraamatukogu ja keskraamatukogu ülesanded raamatukoguteeninduse koordineerimisel on: kogude komplekteerimine ja töötlemine; rahvaraamatukogude tegevuseks vajalike bibliograafia-, täistekst- ja muude andmebaaside loomine ja pidamine; rahvaraamatukogude statistilise aruandluse korraldamine ja tegevuse analüüsimine; erialane nõustamine ja raamatukogutöötajate täienduskoolituse korraldamine; teatmebibliograafilise töö korraldamine.",
+      "estleg:legalText": "(5) Maakonnaraamatukogu ja keskraamatukogu ülesanded raamatukoguteeninduse koordineerimisel on: 1) kogude komplekteerimine ja töötlemine; 2) rahvaraamatukogude tegevuseks vajalike bibliograafia-, täistekst- ja muude andmebaaside loomine ja pidamine; 3) rahvaraamatukogude statistilise aruandluse korraldamine ja tegevuse analüüsimine; 4) erialane nõustamine ja raamatukogutöötajate täienduskoolituse korraldamine; 5) teatmebibliograafilise töö korraldamine.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_5"
       },
       "rdfs:label": "§ 5 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:Reg_1056093_Par_4"
@@ -1670,12 +1768,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Rahvaraamatukogu põhimäärus ja töökorraldus",
+      "rdfs:label": {
+        "@value": "§ 6. Rahvaraamatukogu põhimäärus ja töökorraldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu ülesanded, juhtimise korraldus, juhi õigused ja kohustused, raamatukogu struktuur ning muud tegevuse korraldamise olulised küsimused sätestatakse põhimääruses, mille kinnitab kohaliku omavalitsuse volikogu. (2) Rahvaraamatukogu töökorralduse juhendi kinnitab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu ülesanded, juhtimise korraldus, juhi õigused ja kohustused, raamatukogu struktuur ning muud tegevuse korraldamise olulised küsimused sätestatakse põhimääruses, mille kinnitab kohaliku omavalitsuse volikogu. (2) Rahvaraamatukogu töökorralduse juhendi kinnitab määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvaraamatukogu ülesanded, juhtimise korraldus, juhi õigused ja kohustused, raamatukogu struktuur ning muud tegevuse korraldamise olulised küsimused sätestatakse põhimääruses, mille kinnitab kohaliku omavalitsuse volikogu. (2) Rahvaraamatukogu töökorralduse juhendi kinnitab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
@@ -2089,12 +2193,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Rahvaraamatukogu direktor",
+      "rdfs:label": {
+        "@value": "§ 7. Rahvaraamatukogu direktor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu tööd juhib direktor. (2) Direktori vaba ametikoha täitmiseks korraldatakse avalik konkurss. Konkursi kuulutab välja ja konkursi korra kehtestab valla- või linnavalitsus. (3) Direktoriga sõlmib töölepingu vallavanem või linnapea. Direktoriga sõlmitakse tähtajaline või tähtajatu tööleping. (4) Direktoril peab olema kõrgharidus, välja arvatud käesoleva paragrahvi lõikes 6 nimetatud juhul. (5) Kui direktoril ei ole raamatukogunduse või infoteaduste kõrgharidust, peab tal olema",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu tööd juhib direktor. (2) Direktori vaba ametikoha täitmiseks korraldatakse avalik konkurss. Konkursi kuulutab välja ja konkursi korra kehtestab valla- või linnavalitsus. (3) Direktoriga sõlmib töölepingu vallavanem või linnapea. Direktoriga sõlmitakse tähtajaline või tähtajatu tööleping. (4) Direktoril peab olema kõrgharidus, välja arvatud käesoleva paragrahvi lõikes 6 nimetatud juhul. (5) Kui direktoril ei ole raamatukogunduse või infoteaduste kõrgharidust, peab tal olema",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvaraamatukogu tööd juhib direktor. (2) Direktori vaba ametikoha täitmiseks korraldatakse avalik konkurss. Konkursi kuulutab välja ja konkursi korra kehtestab valla- või linnavalitsus. (3) Direktoriga sõlmib töölepingu vallavanem või linnapea. Direktoriga sõlmitakse tähtajaline või tähtajatu tööleping. (4) Direktoril peab olema kõrgharidus, välja arvatud käesoleva paragrahvi lõikes 6 nimetatud juhul. (5) Kui direktoril ei ole raamatukogunduse või infoteaduste kõrgharidust, peab tal olema raamatukoguhoidja kutsekvalifikatsiooni neljas aste. (6) Kui rahvaraamatukogu teeninduspiirkonnas on kuni 500 elanikku, peab direktoril olema raamatukoguhoidja kutsekvalifikatsiooni kolmas aste, kui tal puudub käesoleva paragrahvi lõikes 4 või 5 nimetatud kvalifikatsioon.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
@@ -2383,12 +2493,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Rahvaraamatukogu nõukogud",
+      "rdfs:label": {
+        "@value": "§ 8. Rahvaraamatukogu nõukogud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Kohalikule omavalitsusele raamatukoguteeninduse korraldamise kohta ettepanekute tegemiseks moodustatakse rahvaraamatukogu töö hindamiseks ja muude rahvaraamatukogu tegevust puudutavate oluliste küsimuste läbiarutamiseks vähemalt kolmeliikmeline rahvaraamatukogu nõukogu. Rahvaraamatukogu nõukogu moodustamise kord, pädevus ja töökord sätestatakse rahvaraamatukogu põhimääruses. (2) Rahvaraamatukogude arengusuundade ja sihtprogrammide läbiarutamiseks ning koostöö korraldamiseks moodustab",
+      "estleg:summary": {
+        "@value": "(1) Kohalikule omavalitsusele raamatukoguteeninduse korraldamise kohta ettepanekute tegemiseks moodustatakse rahvaraamatukogu töö hindamiseks ja muude rahvaraamatukogu tegevust puudutavate oluliste küsimuste läbiarutamiseks vähemalt kolmeliikmeline rahvaraamatukogu nõukogu. Rahvaraamatukogu nõukogu moodustamise kord, pädevus ja töökord sätestatakse rahvaraamatukogu põhimääruses. (2) Rahvaraamatukogude arengusuundade ja sihtprogrammide läbiarutamiseks ning koostöö korraldamiseks moodustab",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kohalikule omavalitsusele raamatukoguteeninduse korraldamise kohta ettepanekute tegemiseks moodustatakse rahvaraamatukogu töö hindamiseks ja muude rahvaraamatukogu tegevust puudutavate oluliste küsimuste läbiarutamiseks vähemalt kolmeliikmeline rahvaraamatukogu nõukogu. Rahvaraamatukogu nõukogu moodustamise kord, pädevus ja töökord sätestatakse rahvaraamatukogu põhimääruses. (2) Rahvaraamatukogude arengusuundade ja sihtprogrammide läbiarutamiseks ning koostöö korraldamiseks moodustab valdkonna eest vastutav minister nõuandva koguna Rahvaraamatukogude Nõukogu ja",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
@@ -2485,12 +2601,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Rahvaraamatukogu vara",
+      "rdfs:label": {
+        "@value": "§ 9. Rahvaraamatukogu vara",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "Rahvaraamatukogu valduses oleva vara valdamine, kasutamine ja käsutamine toimub vastavalt kohaliku omavalitsuse volikogu kehtestatud korrale.",
+      "estleg:summary": {
+        "@value": "Rahvaraamatukogu valduses oleva vara valdamine, kasutamine ja käsutamine toimub vastavalt kohaliku omavalitsuse volikogu kehtestatud korrale.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvaraamatukogu valduses oleva vara valdamine, kasutamine ja käsutamine toimub vastavalt kohaliku omavalitsuse volikogu kehtestatud korrale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
@@ -2540,10 +2662,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvaraamatukogu valduses oleva vara valdamine, kasutamine ja käsutamine toimub vastavalt kohaliku omavalitsuse volikogu kehtestatud korrale.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvaraamatukogu valduses oleva vara valdamine, kasutamine ja käsutamine toimub vastavalt kohaliku omavalitsuse volikogu kehtestatud korrale.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2566,13 +2690,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Rahvaraamatukogu finantseerimine",
+      "rdfs:label": {
+        "@value": "§ 10. Rahvaraamatukogu finantseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu finantseeritakse: kohaliku omavalitsuse eelarvest; riigieelarvest; annetustest; tema põhitegevusega seotud tasulistest teenustest; laekumistest sihtasutustelt ja sihtkapitalidelt. (2) Kohalik omavalitsus tagab: töötajate töötasud, välja arvatud käesoleva paragrahvi lõike 3 punktis 3 nimetatud töötajate puhul; kogude regulaarse varustatuse teavikutega, lähtuvalt rahvaraamatukogu teeninduspiirkonna elanike arvust; rahvaraamatukogu eripärale vastavad ruumid, sisustuse ja",
-      "estleg:legalText": "(1) Rahvaraamatukogu finantseeritakse: kohaliku omavalitsuse eelarvest; riigieelarvest; annetustest; tema põhitegevusega seotud tasulistest teenustest; laekumistest sihtasutustelt ja sihtkapitalidelt. (2) Kohalik omavalitsus tagab: töötajate töötasud, välja arvatud käesoleva paragrahvi lõike 3 punktis 3 nimetatud töötajate puhul; kogude regulaarse varustatuse teavikutega, lähtuvalt rahvaraamatukogu teeninduspiirkonna elanike arvust; rahvaraamatukogu eripärale vastavad ruumid, sisustuse ja majandamiskulud. (3) Toetusena riigieelarvest finantseeritakse Kultuuriministeeriumi ettepanekul kulud: teavikute soetamiseks; riiklike programmide realiseerimiseks; maakonnaraamatukoguks oleva rahvaraamatukogu nelja töötaja töötasudeks ja ülalpidamiseks; üldkasutatava andmesidevõrguga ühenduse loomiseks ja asjakohaste tehniliste vahendite soetamiseks. (4) Käesoleva paragrahvi lõikes 3 nimetatud kulude jaotamise korra kehtestab määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu finantseeritakse: 1) kohaliku omavalitsuse eelarvest; 2) riigieelarvest; 3) annetustest; 4) tema põhitegevusega seotud tasulistest teenustest; 5) laekumistest sihtasutustelt ja sihtkapitalidelt. (2) Kohalik omavalitsus tagab: 1) töötajate töötasud, välja arvatud käesoleva paragrahvi lõike 3 punktis 3 nimetatud töötajate puhul; 2) kogude regulaarse varustatuse teavikutega, lähtuvalt rahvaraamatukogu teeninduspiirkonna elanike arvust; 3) rahvaraamatukogu eripärale vastavad",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rahvaraamatukogu finantseeritakse: 1) kohaliku omavalitsuse eelarvest; 2) riigieelarvest; 3) annetustest; 4) tema põhitegevusega seotud tasulistest teenustest; 5) laekumistest sihtasutustelt ja sihtkapitalidelt. (2) Kohalik omavalitsus tagab: 1) töötajate töötasud, välja arvatud käesoleva paragrahvi lõike 3 punktis 3 nimetatud töötajate puhul; 2) kogude regulaarse varustatuse teavikutega, lähtuvalt rahvaraamatukogu teeninduspiirkonna elanike arvust; 3) rahvaraamatukogu eripärale vastavad ruumid, sisustuse ja majandamiskulud. (3) Toetusena riigieelarvest finantseeritakse Kultuuriministeeriumi ettepanekul kulud: 1) teavikute soetamiseks; 2) riiklike programmide realiseerimiseks; 3) maakonnaraamatukoguks oleva rahvaraamatukogu nelja töötaja töötasudeks ja ülalpidamiseks; 4) üldkasutatava andmesidevõrguga ühenduse loomiseks ja asjakohaste tehniliste vahendite soetamiseks. (4) Käesoleva paragrahvi lõikes 3 nimetatud kulude jaotamise korra kehtestab määrusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
       },
@@ -2634,11 +2764,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Rahvaraamatukogu finantseeritakse: kohaliku omavalitsuse eelarvest; riigieelarvest; annetustest; tema põhitegevusega seotud tasulistest teenustest; laekumistest sihtasutustelt ja sihtkapitalidelt.",
+      "estleg:legalText": "(1) Rahvaraamatukogu finantseeritakse: 1) kohaliku omavalitsuse eelarvest; 2) riigieelarvest; 3) annetustest; 4) tema põhitegevusega seotud tasulistest teenustest; 5) laekumistest sihtasutustelt ja sihtkapitalidelt.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_10"
       },
       "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -2664,12 +2801,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kohalik omavalitsus tagab: töötajate töötasud, välja arvatud käesoleva paragrahvi lõike 3 punktis 3 nimetatud töötajate puhul; kogude regulaarse varustatuse teavikutega, lähtuvalt rahvaraamatukogu teeninduspiirkonna elanike arvust; rahvaraamatukogu eripärale vastavad ruumid, sisustuse ja majandamiskulud.",
+      "estleg:legalText": "(2) Kohalik omavalitsus tagab: 1) töötajate töötasud, välja arvatud käesoleva paragrahvi lõike 3 punktis 3 nimetatud töötajate puhul; 2) kogude regulaarse varustatuse teavikutega, lähtuvalt rahvaraamatukogu teeninduspiirkonna elanike arvust; 3) rahvaraamatukogu eripärale vastavad ruumid, sisustuse ja majandamiskulud.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_10"
       },
       "rdfs:label": "§ 10 lg 2",
-      "estleg:itemNumber": "3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2701,11 +2842,17 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Toetusena riigieelarvest finantseeritakse Kultuuriministeeriumi ettepanekul kulud: teavikute soetamiseks; riiklike programmide realiseerimiseks; maakonnaraamatukoguks oleva rahvaraamatukogu nelja töötaja töötasudeks ja ülalpidamiseks; üldkasutatava andmesidevõrguga ühenduse loomiseks ja asjakohaste tehniliste vahendite soetamiseks.",
+      "estleg:legalText": "(3) Toetusena riigieelarvest finantseeritakse Kultuuriministeeriumi ettepanekul kulud: 1) teavikute soetamiseks; 2) riiklike programmide realiseerimiseks; 3) maakonnaraamatukoguks oleva rahvaraamatukogu nelja töötaja töötasudeks ja ülalpidamiseks; 4) üldkasutatava andmesidevõrguga ühenduse loomiseks ja asjakohaste tehniliste vahendite soetamiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_10"
       },
       "rdfs:label": "§ 10 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -2747,13 +2894,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Teenistuslik ja haldusjärelevalve ning aruandlus",
+      "rdfs:label": {
+        "@value": "§ 11. Teenistuslik ja haldusjärelevalve ning aruandlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Teenistuslikku järelevalvet rahvaraamatukogu tegevuse üle teostab kohalik omavalitsus. (2) Haldusjärelevalvet rahvaraamatukogude võrgu ja maakonnaraamatukogu ülesannete täitmise üle teostab Kultuuriministeerium. (3) Kehtetu - (4) Rahvaraamatukogu esitab oma tegevuse kohta õigusaktides ettenähtud aruanded. Valla- või linnavalitsus esitab Kultuuriministeeriumile aruande rahvaraamatukogule riigieelarvest eraldatud summade kasutamise kohta hiljemalt iga aasta 20. jaanuariks.",
-      "estleg:legalText": "(1) Teenistuslikku järelevalvet rahvaraamatukogu tegevuse üle teostab kohalik omavalitsus. (2) Haldusjärelevalvet rahvaraamatukogude võrgu ja maakonnaraamatukogu ülesannete täitmise üle teostab Kultuuriministeerium. (3) Kehtetu - (4) Rahvaraamatukogu esitab oma tegevuse kohta õigusaktides ettenähtud aruanded. Valla- või linnavalitsus esitab Kultuuriministeeriumile aruande rahvaraamatukogule riigieelarvest eraldatud summade kasutamise kohta hiljemalt iga aasta 20. jaanuariks. (5) Kõik maakonnas asuvad rahvaraamatukogud esitavad maakonnaraamatukogule rahvaraamatukogu statistilise ja sisulise töö aruande. Maakonnaraamatukogu esitab Kultuuriministeeriumile maakonna rahvaraamatukogude statistilise ja sisulise töö koondaruanded hiljemalt iga aasta 1. märtsiks.",
+      "estleg:summary": {
+        "@value": "(1) Teenistuslikku järelevalvet rahvaraamatukogu tegevuse üle teostab kohalik omavalitsus. (2) Haldusjärelevalvet rahvaraamatukogude võrgu ja maakonnaraamatukogu ülesannete täitmise üle teostab Kultuuriministeerium. (4) Rahvaraamatukogu esitab oma tegevuse kohta õigusaktides ettenähtud aruanded. Valla- või linnavalitsus esitab Kultuuriministeeriumile aruande rahvaraamatukogule riigieelarvest eraldatud summade kasutamise kohta hiljemalt iga aasta 20. jaanuariks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Teenistuslikku järelevalvet rahvaraamatukogu tegevuse üle teostab kohalik omavalitsus. (2) Haldusjärelevalvet rahvaraamatukogude võrgu ja maakonnaraamatukogu ülesannete täitmise üle teostab Kultuuriministeerium. (4) Rahvaraamatukogu esitab oma tegevuse kohta õigusaktides ettenähtud aruanded. Valla- või linnavalitsus esitab Kultuuriministeeriumile aruande rahvaraamatukogule riigieelarvest eraldatud summade kasutamise kohta hiljemalt iga aasta 20. jaanuariks. (5) Kõik maakonnas asuvad rahvaraamatukogud esitavad maakonnaraamatukogule rahvaraamatukogu statistilise ja sisulise töö aruande. Maakonnaraamatukogu esitab Kultuuriministeeriumile maakonna rahvaraamatukogude statistilise ja sisulise töö koondaruanded hiljemalt iga aasta 1. märtsiks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
       },
@@ -2766,9 +2919,6 @@
         },
         {
           "@id": "estleg:RaRS_Par_11_Lg_2"
-        },
-        {
-          "@id": "estleg:RaRS_Par_11_Lg_3"
         },
         {
           "@id": "estleg:RaRS_Par_11_Lg_4"
@@ -2858,19 +3008,6 @@
       "estleg:competenceType": "enforcement"
     },
     {
-      "@id": "estleg:RaRS_Par_11_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:RaRS_Par_11"
-      },
-      "rdfs:label": "§ 11 lg 3"
-    },
-    {
       "@id": "estleg:RaRS_Par_11_Lg_4",
       "@type": [
         "estleg:Subsection",
@@ -2922,12 +3059,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Rahvaraamatukogu ümberkorraldamine ja tegevuse lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 12. Rahvaraamatukogu ümberkorraldamine ja tegevuse lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu ümberkorraldamine või tegevuse lõpetamine toimub kohaliku omavalitsuse volikogu otsusel. (2) Rahvaraamatukogu ümberkorraldamisest või tegevuse lõpetamisest teatab valla- või linnavalitsus Kultuuriministeeriumile vähemalt üks kuu enne kavandatavat tähtaega.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu ümberkorraldamine või tegevuse lõpetamine toimub kohaliku omavalitsuse volikogu otsusel. (2) Rahvaraamatukogu ümberkorraldamisest või tegevuse lõpetamisest teatab valla- või linnavalitsus Kultuuriministeeriumile vähemalt üks kuu enne kavandatavat tähtaega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvaraamatukogu ümberkorraldamine või tegevuse lõpetamine toimub kohaliku omavalitsuse volikogu otsusel. (2) Rahvaraamatukogu ümberkorraldamisest või tegevuse lõpetamisest teatab valla- või linnavalitsus Kultuuriministeeriumile vähemalt üks kuu enne kavandatavat tähtaega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_2"
@@ -3027,12 +3170,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Kogud",
+      "rdfs:label": {
+        "@value": "§ 13. Kogud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu kogud on koostiselt universaalsed, sisaldades teeninduspiirkonna elanike põhivajadustele vastavaid erinevates keeltes, eri tüüpi ja laadi teavikuid. (2) Rahvaraamatukogu võib temale mittevajalikke teavikuid tasuta võõrandada või müüa valla- või linnavolikogu kehtestatud korras. (3) Rahvaraamatukogus asuvate ajaloolise ja suure kultuuriväärtusega teavikute arvestus ja säilitamine toimub õigusaktides kultuurimälestiste kohta kehtestatud tingimustel ja korras.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu kogud on koostiselt universaalsed, sisaldades teeninduspiirkonna elanike põhivajadustele vastavaid erinevates keeltes, eri tüüpi ja laadi teavikuid. (2) Rahvaraamatukogu võib temale mittevajalikke teavikuid tasuta võõrandada või müüa valla- või linnavolikogu kehtestatud korras. (3) Rahvaraamatukogus asuvate ajaloolise ja suure kultuuriväärtusega teavikute arvestus ja säilitamine toimub õigusaktides kultuurimälestiste kohta kehtestatud tingimustel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rahvaraamatukogu kogud on koostiselt universaalsed, sisaldades teeninduspiirkonna elanike põhivajadustele vastavaid erinevates keeltes, eri tüüpi ja laadi teavikuid. (2) Rahvaraamatukogu võib temale mittevajalikke teavikuid tasuta võõrandada või müüa valla- või linnavolikogu kehtestatud korras. (3) Rahvaraamatukogus asuvate ajaloolise ja suure kultuuriväärtusega teavikute arvestus ja säilitamine toimub õigusaktides kultuurimälestiste kohta kehtestatud tingimustel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_3"
@@ -3196,13 +3345,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Raamatukoguteeninduse korraldus omavalitsuse territooriumil",
+      "rdfs:label": {
+        "@value": "§ 14. Raamatukoguteeninduse korraldus omavalitsuse territooriumil",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu teeninduspiirkonna määrab kohalik omavalitsus arvestusega, et ükski paikkond ei jääks raamatukogu teenindusest välja. (2) Kehtetu - (3) Rahvaraamatukogu koordineerib raamatukoguteenindust oma teeninduspiirkonnas asuvate teiste raamatukogudega.",
-      "estleg:legalText": "(1) Rahvaraamatukogu teeninduspiirkonna määrab kohalik omavalitsus arvestusega, et ükski paikkond ei jääks raamatukogu teenindusest välja. (2) Kehtetu - (3) Rahvaraamatukogu koordineerib raamatukoguteenindust oma teeninduspiirkonnas asuvate teiste raamatukogudega.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu teeninduspiirkonna määrab kohalik omavalitsus arvestusega, et ükski paikkond ei jääks raamatukogu teenindusest välja. (3) Rahvaraamatukogu koordineerib raamatukoguteenindust oma teeninduspiirkonnas asuvate teiste raamatukogudega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rahvaraamatukogu teeninduspiirkonna määrab kohalik omavalitsus arvestusega, et ükski paikkond ei jääks raamatukogu teenindusest välja. (3) Rahvaraamatukogu koordineerib raamatukoguteenindust oma teeninduspiirkonnas asuvate teiste raamatukogudega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_3"
       },
@@ -3212,9 +3367,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:RaRS_Par_14_Lg_1"
-        },
-        {
-          "@id": "estleg:RaRS_Par_14_Lg_2"
         },
         {
           "@id": "estleg:RaRS_Par_14_Lg_3"
@@ -3285,25 +3437,6 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:RaRS_Par_14_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:RaRS_Par_14"
-      },
-      "rdfs:label": "§ 14 lg 2",
-      "estleg:implementedBy": [
-        {
-          "@id": "estleg:Reg_1014728_Map"
-        }
-      ],
-      "estleg:implementedByCount": 1
-    },
-    {
       "@id": "estleg:RaRS_Par_14_Lg_3",
       "@type": [
         "estleg:Subsection",
@@ -3323,13 +3456,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Lugeja ja teenused",
+      "rdfs:label": {
+        "@value": "§ 15. Lugeja ja teenused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu teenuseid võib kasutada igaüks, välja arvatud käesoleva seaduse paragrahv 17 lõikes 3 nimetatud juhul. (2) Rahvaraamatukogu põhiteenused on teavikute kohapeal kasutamine ja kojulaenutus ning avalikule teabele üldkasutatava andmesidevõrgu kaudu juurdepääsu võimaldamine. Rahvaraamatukogu põhiteenused on tasuta. (2¹) Avaliku teabe seaduse alusel üldkasutatava andmesidevõrgu kaudu avalikustatud teabega tutvumiseks võimaldatakse teabe taotlejal kasutada arvutit.",
-      "estleg:legalText": "(1) Rahvaraamatukogu teenuseid võib kasutada igaüks, välja arvatud käesoleva seaduse paragrahv 17 lõikes 3 nimetatud juhul. (2) Rahvaraamatukogu põhiteenused on teavikute kohapeal kasutamine ja kojulaenutus ning avalikule teabele üldkasutatava andmesidevõrgu kaudu juurdepääsu võimaldamine. Rahvaraamatukogu põhiteenused on tasuta. (2¹) Avaliku teabe seaduse alusel üldkasutatava andmesidevõrgu kaudu avalikustatud teabega tutvumiseks võimaldatakse teabe taotlejal kasutada arvutit. Kui üldkasutatava andmesidevõrgu kaudu avalikustatud teabele soovib juurdepääsu rohkem isikuid, kui raamatukogu jõuab teenindada, on raamatukogu kohustatud korraldama soovijate eelregistreerimise. Raamatukogu töötaja on kohustatud isikuid abistama riigi- ja kohaliku omavalitsuse asutuste veebilehtedele juurdepääsu saamiseks. (2²) Digitaalne teavik, teaviku digitaalne kujutis ning digitaalset teavikut, teaviku digitaalset kujutist ja teavikut kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel rahvaraamatukogule, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi. (3) Eriteenused (kopeerimine, andmebaaside kasutamine, tõlked ja muu) võivad olla tasulised. Eriteenuste eest võetava tasu suuruse kinnitab valla- või linnavalitsus. (4) Rahvaraamatukogu kogudes puuduvad teavikud tellitakse lugeja soovil ja kulul teistest raamatukogudest. (5) Lugejalt võib nõuda teaviku kojulaenutamisel tagatist, kui: lugeja rahvastikuregistrisse kantud elukohaks ei ole rahvaraamatukogu asukohajärgne vald või linn; see on vajalik teaviku väärtuse tõttu. (5¹) Käesoleva paragrahvi lõikes 5 nimetatud tagatise võtmise ja tagastamise korra kehtestab valla- või linnavalitsus. (6) Elanikele, kes tervisliku seisundi tõttu ei ole võimelised raamatukogu külastama, korraldab rahvaraamatukogu nende soovil tasuta koduteeninduse.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu teenuseid võib kasutada igaüks, välja arvatud käesoleva seaduse paragrahv 17 lõikes 3 nimetatud juhul. (2) Rahvaraamatukogu põhiteenused on teavikute kohapeal kasutamine ja kojulaenutus ning avalikule teabele üldkasutatava andmesidevõrgu kaudu juurdepääsu võimaldamine. Rahvaraamatukogu põhiteenused on tasuta. (2¹) Avaliku teabe seaduse alusel üldkasutatava andmesidevõrgu kaudu avalikustatud teabega tutvumiseks võimaldatakse teabe taotlejal kasutada arvutit.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rahvaraamatukogu teenuseid võib kasutada igaüks, välja arvatud käesoleva seaduse paragrahv 17 lõikes 3 nimetatud juhul. (2) Rahvaraamatukogu põhiteenused on teavikute kohapeal kasutamine ja kojulaenutus ning avalikule teabele üldkasutatava andmesidevõrgu kaudu juurdepääsu võimaldamine. Rahvaraamatukogu põhiteenused on tasuta. (2¹) Avaliku teabe seaduse alusel üldkasutatava andmesidevõrgu kaudu avalikustatud teabega tutvumiseks võimaldatakse teabe taotlejal kasutada arvutit. Kui üldkasutatava andmesidevõrgu kaudu avalikustatud teabele soovib juurdepääsu rohkem isikuid, kui raamatukogu jõuab teenindada, on raamatukogu kohustatud korraldama soovijate eelregistreerimise. Raamatukogu töötaja on kohustatud isikuid abistama riigi- ja kohaliku omavalitsuse asutuste veebilehtedele juurdepääsu saamiseks. (2²) Digitaalne teavik, teaviku digitaalne kujutis ning digitaalset teavikut, teaviku digitaalset kujutist ja teavikut kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel rahvaraamatukogule, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi. (3) Eriteenused (kopeerimine, andmebaaside kasutamine, tõlked ja muu) võivad olla tasulised. Eriteenuste eest võetava tasu suuruse kinnitab valla- või linnavalitsus. (4) Rahvaraamatukogu kogudes puuduvad teavikud tellitakse lugeja soovil ja kulul teistest raamatukogudest. (5) Lugejalt võib nõuda teaviku kojulaenutamisel tagatist, kui: 1) lugeja rahvastikuregistrisse kantud elukohaks ei ole rahvaraamatukogu asukohajärgne vald või linn; 2) see on vajalik teaviku väärtuse tõttu. (5¹) Käesoleva paragrahvi lõikes 5 nimetatud tagatise võtmise ja tagastamise korra kehtestab valla- või linnavalitsus. (6) Elanikele, kes tervisliku seisundi tõttu ei ole võimelised raamatukogu külastama, korraldab rahvaraamatukogu nende soovil tasuta koduteeninduse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_3"
       },
@@ -3553,11 +3692,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "5",
-      "estleg:legalText": "(5) Lugejalt võib nõuda teaviku kojulaenutamisel tagatist, kui: lugeja rahvastikuregistrisse kantud elukohaks ei ole rahvaraamatukogu asukohajärgne vald või linn; see on vajalik teaviku väärtuse tõttu.",
+      "estleg:legalText": "(5) Lugejalt võib nõuda teaviku kojulaenutamisel tagatist, kui: 1) lugeja rahvastikuregistrisse kantud elukohaks ei ole rahvaraamatukogu asukohajärgne vald või linn; 2) see on vajalik teaviku väärtuse tõttu.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_15"
       },
       "rdfs:label": "§ 15 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -3656,13 +3799,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15¹.",
-      "rdfs:label": "§ 15¹. Rahvaraamatukogu lugejaks registreerimine ja isikuandmete töötlemine",
+      "rdfs:label": {
+        "@value": "§ 15¹. Rahvaraamatukogu lugejaks registreerimine ja isikuandmete töötlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Rahvaraamatukogu lugeja on raamatukogu registreeritud kasutaja. Rahvaraamatukogu töötleb isikuandmeid lugejatele raamatukogu teenuste osutamiseks, laenutuste üle arvestuse pidamiseks, statistiliseks aruandluseks ja teenuste analüüsiks ning käesoleva seaduse § 17 lõigetes 1 ja 2 nimetatud tasude nõudmiseks. (2) Rahvaraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Rahvaraamatukogul on õigus kuni 18-aastase isiku puhul küsida teaviku kojulaenutamiseks",
-      "estleg:legalText": "(1) Rahvaraamatukogu lugeja on raamatukogu registreeritud kasutaja. Rahvaraamatukogu töötleb isikuandmeid lugejatele raamatukogu teenuste osutamiseks, laenutuste üle arvestuse pidamiseks, statistiliseks aruandluseks ja teenuste analüüsiks ning käesoleva seaduse § 17 lõigetes 1 ja 2 nimetatud tasude nõudmiseks. (2) Rahvaraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Rahvaraamatukogul on õigus kuni 18-aastase isiku puhul küsida teaviku kojulaenutamiseks lapsevanema või seadusliku esindaja andmeid ja kirjalikku nõusolekut. Lugejate andmebaasi kantakse järgmised lugeja isikuandmed ja rahvaraamatukogu nõudel kuni 18-aastase isiku puhul ka lapsevanema või seadusliku esindaja isikuandmed: ees- ja perekonnanimi; isikukood või isikukoodi puudumisel sünniaeg; elukoht (postiaadress); telefoninumber; elektronposti aadress, kui see on olemas. (3) Puudega isikule avalike teenuste osutamiseks võib rahvaraamatukogu töödelda andmeid isiku puude liigi ja kestuse kohta, mis on tõendatud puudega isiku kaardi, pensionitunnistuse, Sotsiaalkindlustusameti tõendi, puude liiki ja kestust määrava arstitõendi või muu tõendi kohaselt, mis on määratletud muu seaduse, rahvusvahelise lepingu või Euroopa Liidu õigusaktiga. (4) Rahvaraamatukogu lugejaks registreeritakse isik, kes nõustub täitma raamatukogu kasutamise eeskirja tingimusi. (5) Lugejate andmete õigsust kontrollitakse kord aastas lugeja raamatukogu külastusel. (6) Rahvaraamatukogu lugejate andmebaasist kustutatakse lugeja ja kuni 18-aastase isiku puhul lapsevanema või seadusliku esindaja andmed, välja arvatud statistikaga seotud isikustamata andmed, kui lugeja pole raamatukogu külastanud kolm aastat. Kui lugejal on rahvaraamatukogu ees täitmata kohustusi, ei kustutata lugeja või tema seadusliku esindaja andmeid lugejate andmebaasist. Nimetatud juhul säilitatakse andmeid kuni kohustuste täitmiseni.",
+      "estleg:summary": {
+        "@value": "(1) Rahvaraamatukogu lugeja on raamatukogu registreeritud kasutaja. Rahvaraamatukogu töötleb isikuandmeid lugejatele raamatukogu teenuste osutamiseks, laenutuste üle arvestuse pidamiseks, statistiliseks aruandluseks ja teenuste analüüsiks ning käesoleva seaduse § 17 lõigetes 1 ja 2 nimetatud tasude nõudmiseks. (2) Rahvaraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Rahvaraamatukogul on õigus kuni 18-aastase isiku puhul küsida teaviku kojulaenutamiseks",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rahvaraamatukogu lugeja on raamatukogu registreeritud kasutaja. Rahvaraamatukogu töötleb isikuandmeid lugejatele raamatukogu teenuste osutamiseks, laenutuste üle arvestuse pidamiseks, statistiliseks aruandluseks ja teenuste analüüsiks ning käesoleva seaduse § 17 lõigetes 1 ja 2 nimetatud tasude nõudmiseks. (2) Rahvaraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Rahvaraamatukogul on õigus kuni 18-aastase isiku puhul küsida teaviku kojulaenutamiseks lapsevanema või seadusliku esindaja andmeid ja kirjalikku nõusolekut. Lugejate andmebaasi kantakse järgmised lugeja isikuandmed ja rahvaraamatukogu nõudel kuni 18-aastase isiku puhul ka lapsevanema või seadusliku esindaja isikuandmed: 1) ees- ja perekonnanimi; 2) isikukood või isikukoodi puudumisel sünniaeg; 3) elukoht (postiaadress); 4) telefoninumber; 5) elektronposti aadress, kui see on olemas. (3) Puudega isikule avalike teenuste osutamiseks võib rahvaraamatukogu töödelda andmeid isiku puude liigi ja kestuse kohta, mis on tõendatud puudega isiku kaardi, pensionitunnistuse, Sotsiaalkindlustusameti tõendi, puude liiki ja kestust määrava arstitõendi või muu tõendi kohaselt, mis on määratletud muu seaduse, rahvusvahelise lepingu või Euroopa Liidu õigusaktiga. (4) Rahvaraamatukogu lugejaks registreeritakse isik, kes nõustub täitma raamatukogu kasutamise eeskirja tingimusi. (5) Lugejate andmete õigsust kontrollitakse kord aastas lugeja raamatukogu külastusel. (6) Rahvaraamatukogu lugejate andmebaasist kustutatakse lugeja ja kuni 18-aastase isiku puhul lapsevanema või seadusliku esindaja andmed, välja arvatud statistikaga seotud isikustamata andmed, kui lugeja pole raamatukogu külastanud kolm aastat. Kui lugejal on rahvaraamatukogu ees täitmata kohustusi, ei kustutata lugeja või tema seadusliku esindaja andmeid lugejate andmebaasist. Nimetatud juhul säilitatakse andmeid kuni kohustuste täitmiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_3"
       },
@@ -3751,11 +3900,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Rahvaraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Rahvaraamatukogul on õigus kuni 18-aastase isiku puhul küsida teaviku kojulaenutamiseks lapsevanema või seadusliku esindaja andmeid ja kirjalikku nõusolekut. Lugejate andmebaasi kantakse järgmised lugeja isikuandmed ja rahvaraamatukogu nõudel kuni 18-aastase isiku puhul ka lapsevanema või seadusliku esindaja isikuandmed: ees- ja perekonnanimi; isikukood või isikukoodi puudumisel sünniaeg; elukoht (postiaadress); telefoninumber; elektronposti aadress, kui see on olemas.",
+      "estleg:legalText": "(2) Rahvaraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Rahvaraamatukogul on õigus kuni 18-aastase isiku puhul küsida teaviku kojulaenutamiseks lapsevanema või seadusliku esindaja andmeid ja kirjalikku nõusolekut. Lugejate andmebaasi kantakse järgmised lugeja isikuandmed ja rahvaraamatukogu nõudel kuni 18-aastase isiku puhul ka lapsevanema või seadusliku esindaja isikuandmed: 1) ees- ja perekonnanimi; 2) isikukood või isikukoodi puudumisel sünniaeg; 3) elukoht (postiaadress); 4) telefoninumber; 5) elektronposti aadress, kui see on olemas.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_15_1"
       },
       "rdfs:label": "§ 15¹ lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
@@ -3872,12 +4028,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Rahvaraamatukogu kasutamise eeskiri",
+      "rdfs:label": {
+        "@value": "§ 16. Rahvaraamatukogu kasutamise eeskiri",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "Rahvaraamatukogu teeninduse korraldus, lugejate õigused ja kohustused kehtestatakse kohaliku omavalitsuse volikogu kinnitatud raamatukogu kasutamise eeskirjas, mis tehakse teatavaks igale lugejale.",
+      "estleg:summary": {
+        "@value": "Rahvaraamatukogu teeninduse korraldus, lugejate õigused ja kohustused kehtestatakse kohaliku omavalitsuse volikogu kinnitatud raamatukogu kasutamise eeskirjas, mis tehakse teatavaks igale lugejale.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvaraamatukogu teeninduse korraldus, lugejate õigused ja kohustused kehtestatakse kohaliku omavalitsuse volikogu kinnitatud raamatukogu kasutamise eeskirjas, mis tehakse teatavaks igale lugejale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_3"
@@ -4227,10 +4389,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvaraamatukogu teeninduse korraldus, lugejate õigused ja kohustused kehtestatakse kohaliku omavalitsuse volikogu kinnitatud raamatukogu kasutamise eeskirjas, mis tehakse teatavaks igale lugejale.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvaraamatukogu teeninduse korraldus, lugejate õigused ja kohustused kehtestatakse kohaliku omavalitsuse volikogu kinnitatud raamatukogu kasutamise eeskirjas, mis tehakse teatavaks igale lugejale.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_16"
       },
+      "rdfs:label": "§ 16 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -4262,12 +4426,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Lugeja vastutus",
+      "rdfs:label": {
+        "@value": "§ 17. Lugeja vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Lugeja on kohustatud laenutatud teaviku tagastama laenutustähtaja jooksul. Kui lugeja ei tagasta laenatud teavikut tähtpäevaks, võib rahvaraamatukogu nõuda viivitatud aja eest tasu, kuid mitte rohkem kui 0,06 eurot iga viivitatud päeva eest ühe teaviku kohta. (2) Teaviku rikkumise või tagastamata jätmise korral on lugeja kohustatud selle asendama või tasuma selle hinna kuni kümnekordses suuruses. (3) Lugejalt, kes ei ole käesoleva paragrahvi lõikes 2 nimetatud kohustust rahvaraamatukogu",
+      "estleg:summary": {
+        "@value": "(1) Lugeja on kohustatud laenutatud teaviku tagastama laenutustähtaja jooksul. Kui lugeja ei tagasta laenatud teavikut tähtpäevaks, võib rahvaraamatukogu nõuda viivitatud aja eest tasu, kuid mitte rohkem kui 0,06 eurot iga viivitatud päeva eest ühe teaviku kohta. (2) Teaviku rikkumise või tagastamata jätmise korral on lugeja kohustatud selle asendama või tasuma selle hinna kuni kümnekordses suuruses. (3) Lugejalt, kes ei ole käesoleva paragrahvi lõikes 2 nimetatud kohustust rahvaraamatukogu",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Lugeja on kohustatud laenutatud teaviku tagastama laenutustähtaja jooksul. Kui lugeja ei tagasta laenatud teavikut tähtpäevaks, võib rahvaraamatukogu nõuda viivitatud aja eest tasu, kuid mitte rohkem kui 0,06 eurot iga viivitatud päeva eest ühe teaviku kohta. (2) Teaviku rikkumise või tagastamata jätmise korral on lugeja kohustatud selle asendama või tasuma selle hinna kuni kümnekordses suuruses. (3) Lugejalt, kes ei ole käesoleva paragrahvi lõikes 2 nimetatud kohustust rahvaraamatukogu antud tähtajaks täitnud, võetakse teavikute kojulaenutamise õigus ära kuni üheks aastaks. (4) Rahvaraamatukogu annab lugejale tähtaja käesoleva paragrahvi lõigetes 1 ja 2 nimetatud summade tasumiseks. Tähtpäevaks maksmata summa tasumiseks teeb valla- või linnavalitsus lugejale ettekirjutuse koos sundtäitmise algatamise hoiatusega ettekirjutuse täitmata jätmise korral. Ettekirjutuses märgitakse selle vaidlustamise võimalus, tähtaeg ja kord. (5) Käesoleva paragrahvi lõikes 4 nimetatud hoiatuses märgitud tähtaja jooksul ettekirjutuse täitmata jätmise korral on valla- või linnavalitsusel õigus anda ettekirjutus sundtäitmiseks täitemenetluse seadustikus sätestatud korras. (6) Valla- või linnavalitsus võib käesoleva paragrahvi lõigetes 4 ja 5 nimetatud pädevuse anda valla- või linna ametiasutusele või ametiasutuse hallatavale asutusele. (7) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud summad laekuvad kohaliku omavalitsuse eelarvesse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_3"
@@ -4570,12 +4740,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Põhimäärused",
+      "rdfs:label": {
+        "@value": "§ 18. Põhimäärused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "Rahvaraamatukogude põhimäärused kinnitatakse vastavalt käesoleva seaduse sätetele kolme kuu jooksul seaduse jõustumisest arvates.",
+      "estleg:summary": {
+        "@value": "Rahvaraamatukogude põhimäärused kinnitatakse vastavalt käesoleva seaduse sätetele kolme kuu jooksul seaduse jõustumisest arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvaraamatukogude põhimäärused kinnitatakse vastavalt käesoleva seaduse sätetele kolme kuu jooksul seaduse jõustumisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_4"
@@ -4605,10 +4781,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvaraamatukogude põhimäärused kinnitatakse vastavalt käesoleva seaduse sätetele kolme kuu jooksul seaduse jõustumisest arvates.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvaraamatukogude põhimäärused kinnitatakse vastavalt käesoleva seaduse sätetele kolme kuu jooksul seaduse jõustumisest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_18"
-      }
+      },
+      "rdfs:label": "§ 18 lg 1"
     },
     {
       "@id": "estleg:RaRS_Par_19",
@@ -4617,12 +4795,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Maakonnaraamatukogud",
+      "rdfs:label": {
+        "@value": "§ 19. Maakonnaraamatukogud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "Käesoleva seaduse jõustumisel võib lugeda maakonnaraamatukogudeks rahvaraamatukogud, mis on maakonnaraamatukogudeks nimetatud enne käesoleva seaduse jõustumist.",
+      "estleg:summary": {
+        "@value": "Käesoleva seaduse jõustumisel võib lugeda maakonnaraamatukogudeks rahvaraamatukogud, mis on maakonnaraamatukogudeks nimetatud enne käesoleva seaduse jõustumist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesoleva seaduse jõustumisel võib lugeda maakonnaraamatukogudeks rahvaraamatukogud, mis on maakonnaraamatukogudeks nimetatud enne käesoleva seaduse jõustumist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_4"
@@ -4654,10 +4838,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesoleva seaduse jõustumisel võib lugeda maakonnaraamatukogudeks rahvaraamatukogud, mis on maakonnaraamatukogudeks nimetatud enne käesoleva seaduse jõustumist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse jõustumisel võib lugeda maakonnaraamatukogudeks rahvaraamatukogud, mis on maakonnaraamatukogudeks nimetatud enne käesoleva seaduse jõustumist.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_19"
       },
+      "rdfs:label": "§ 19 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -4673,12 +4859,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Kultuuriministri määrused",
+      "rdfs:label": {
+        "@value": "§ 20. Kultuuriministri määrused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "Rahvaraamatukogu seaduse (RT 1992, 17, 250; RT I 1996, 49, 953) rakendamiseks antud kultuuriministri määrused tuleb viia vastavusse käesoleva seadusega kolme kuu jooksul seaduse jõustumisest arvates.",
+      "estleg:summary": {
+        "@value": "Rahvaraamatukogu seaduse (RT 1992, 17, 250; RT I 1996, 49, 953) rakendamiseks antud kultuuriministri määrused tuleb viia vastavusse käesoleva seadusega kolme kuu jooksul seaduse jõustumisest arvates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rahvaraamatukogu seaduse (RT 1992, 17, 250; RT I 1996, 49, 953) rakendamiseks antud kultuuriministri määrused tuleb viia vastavusse käesoleva seadusega kolme kuu jooksul seaduse jõustumisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_4"
@@ -4716,10 +4908,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rahvaraamatukogu seaduse (RT 1992, 17, 250; RT I 1996, 49, 953) rakendamiseks antud kultuuriministri määrused tuleb viia vastavusse käesoleva seadusega kolme kuu jooksul seaduse jõustumisest arvates.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvaraamatukogu seaduse (RT 1992, 17, 250; RT I 1996, 49, 953) rakendamiseks antud kultuuriministri määrused tuleb viia vastavusse käesoleva seadusega kolme kuu jooksul seaduse jõustumisest arvates.",
       "estleg:parentProvision": {
         "@id": "estleg:RaRS_Par_20"
       },
+      "rdfs:label": "§ 20 lg 1",
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kultuuriminister"
@@ -4733,12 +4927,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20¹.",
-      "rdfs:label": "§ 20¹. Töölepingud ning haridus- ja kutsenõuded",
+      "rdfs:label": {
+        "@value": "§ 20¹. Töölepingud ning haridus- ja kutsenõuded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "(1) Enne 2007. aasta 1. maid direktoritega sõlmitud töölepingud jäävad kehtima ja neid saab lõpetada üksnes Eesti Vabariigi töölepingu seaduses sätestatud tingimustel ja korras. (2) Enne 2007. aasta 1. maid ametis olevatele direktoritele kohalduvad enne 2007. aasta 1. maid kehtinud haridus- ja kutsenõuded.",
+      "estleg:summary": {
+        "@value": "(1) Enne 2007. aasta 1. maid direktoritega sõlmitud töölepingud jäävad kehtima ja neid saab lõpetada üksnes Eesti Vabariigi töölepingu seaduses sätestatud tingimustel ja korras. (2) Enne 2007. aasta 1. maid ametis olevatele direktoritele kohalduvad enne 2007. aasta 1. maid kehtinud haridus- ja kutsenõuded.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Enne 2007. aasta 1. maid direktoritega sõlmitud töölepingud jäävad kehtima ja neid saab lõpetada üksnes Eesti Vabariigi töölepingu seaduses sätestatud tingimustel ja korras. (2) Enne 2007. aasta 1. maid ametis olevatele direktoritele kohalduvad enne 2007. aasta 1. maid kehtinud haridus- ja kutsenõuded.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_4"
@@ -4820,12 +5020,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Seaduse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 21. Seaduse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Rahvaraamatukogu seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RaRS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RaRS_4"
@@ -4841,6 +5047,22 @@
           "@id": "estleg:RaRS_Par_21_v13315366"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/504042019006",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:RaRS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Public Libraries Act",
+        "@language": "en"
+      }
     }
   ]
 }

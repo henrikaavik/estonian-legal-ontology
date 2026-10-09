@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Ravimiameti tasulised teenused (määrus)",
+      "rdfs:label": {
+        "@value": "Ravimiameti tasulised teenused (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Ravimiameti tasulised teenused",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2023-04-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2023-03-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -81,7 +83,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
+      ],
+      "dcterms:title": "Ravimiameti tasulised teenused",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1056413_Par_1",
@@ -90,13 +98,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimiameti tasulised teenused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056413_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse Ravimiameti tasuliste teenuste loetelu ja tasumäärad meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmise tagamisega seotud ülesannete täitmisel.",
-      "estleg:legalText": "Määrusega kehtestatakse Ravimiameti tasuliste teenuste loetelu ja tasumäärad meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmise tagamisega seotud ülesannete täitmisel. Määrusega kehtestatakse Ravimiameti tasuliste teenuste loetelu ja tasumäärad meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmise tagamisega seotud ülesannete täitmisel.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse Ravimiameti tasuliste teenuste loetelu ja tasumäärad meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmise tagamisega seotud ülesannete täitmisel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse Ravimiameti tasuliste teenuste loetelu ja tasumäärad meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmise tagamisega seotud ülesannete täitmisel.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1056413_Par_1_v1056413"
@@ -106,7 +120,25 @@
         {
           "@id": "estleg:Institution_ravimiamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1056413_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1056413_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse Ravimiameti tasuliste teenuste loetelu ja tasumäärad meditsiiniseadme kvaliteedi- ja ohutusnõuete täitmise tagamisega seotud ülesannete täitmisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056413_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1056413_Par_2",
@@ -115,13 +147,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ravimiameti tasulised teenused ja nende tasumäärad",
+      "rdfs:label": {
+        "@value": "§ 2. Ravimiameti tasulised teenused ja nende tasumäärad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ravimiameti tasulised teenused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056413_Map"
       },
-      "estleg:summary": "1 (1) Meditsiiniseadme lahutamatuks osaks oleva ravimi ja inimese kehas imenduvatest või lokaalselt hajuvatest ainetest või ainete segudest koosnevate seadmete hindamise tasu suurus on 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. Meditsiiniseadme lahutamatuks osaks oleva ravimi ja inimese kehas imenduvatest või lokaalselt hajuvatest ainetest või ainete segudest koosnevate seadmete hindamise tasu suurus on 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätes",
-      "estleg:legalText": "1 (1) Meditsiiniseadme lahutamatuks osaks oleva ravimi ja inimese kehas imenduvatest või lokaalselt hajuvatest ainetest või ainete segudest koosnevate seadmete hindamise tasu suurus on 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. Meditsiiniseadme lahutamatuks osaks oleva ravimi ja inimese kehas imenduvatest või lokaalselt hajuvatest ainetest või ainete segudest koosnevate seadmete hindamise tasu suurus on 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. 2 (2) Sobivusdiagnostikaseadme konkreetse ravimiga sobivuse kohta arvamuse andmisel on tasu suurus 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. Sobivusdiagnostikaseadme konkreetse ravimiga sobivuse kohta arvamuse andmisel on tasu suurus 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. 3 (3) Meditsiiniseadme lahutamatuks osaks oleva ravimi muudatuse korral, mis on analoogia põhjal klassifitseeritud samaväärseks II tüübi, IB tüübi või IA tüübi muudatusega vastavalt komisjoni määrusele (EÜ) nr 1234/2008, mis käsitleb inimtervishoius ja veterinaarias kasutatavate ravimite müügilubade tingimuste muudatuste läbivaatamist (ELT L 334, 12.12.2008, lk 7–24), on arvamuse andmise tasu suurus vastavalt tervise- ja tööministri 5. juuli 2022. a määruse nr 55 „Ravimi müügiloa muutmise ning erialase hindamise tingimused ja tasu suurus” § 7 lõikes 1, 3 või 4 sätestatud tasu suurus. Meditsiiniseadme lahutamatuks osaks oleva ravimi muudatuse korral, mis on analoogia põhjal klassifitseeritud samaväärseks II tüübi, IB tüübi või IA tüübi muudatusega vastavalt komisjoni määrusele (EÜ) nr 1234/2008, mis käsitleb inimtervishoius ja veterinaarias kasutatavate ravimite müügilubade tingimuste muudatuste läbivaatamist (ELT L 334, 12.12.2008, lk 7–24), on arvamuse andmise tasu suurus vastavalt tervise- ja tööministri 5. juuli 2022. a määruse nr 55 „Ravimi müügiloa muutmise ning erialase hindamise tingimused ja tasu suurus” § 7 lõikes 1, 3 või 4 sätestatud tasu suurus. 4 (4) Euroopa Liidu tehnilise dokumentatsiooni hindamise sertifikaadi või Euroopa Liidu tüübihindamissertifikaadi lisa väljastamist eeldava sobivusdiagnostikaseadme muudatuse korral on konkreetse ravimiga sobivuse kohta arvamuse andmise tasu suurus 1800 eurot. Euroopa Liidu tehnilise dokumentatsiooni hindamise sertifikaadi või Euroopa Liidu tüübihindamissertifikaadi lisa väljastamist eeldava sobivusdiagnostikaseadme muudatuse korral on konkreetse ravimiga sobivuse kohta arvamuse andmise tasu suurus 1800 eurot. 5 (5) Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme kohta teadusliku arvamuse andmisel on tasu suurus 1700 eurot. Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme kohta teadusliku arvamuse andmisel on tasu suurus 1700 eurot. 6 (6) Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme muudatuse korral on arvamuse andmise tasu suurus 640 eurot. Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme muudatuse korral on arvamuse andmise tasu suurus 640 eurot.",
+      "estleg:summary": {
+        "@value": "1 (1) Meditsiiniseadme lahutamatuks osaks oleva ravimi ja inimese kehas imenduvatest või lokaalselt hajuvatest ainetest või ainete segudest koosnevate seadmete hindamise tasu suurus on 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. 2 (2) Sobivusdiagnostikaseadme konkreetse ravimiga sobivuse kohta arvamuse andmisel on tasu suurus 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Meditsiiniseadme lahutamatuks osaks oleva ravimi ja inimese kehas imenduvatest või lokaalselt hajuvatest ainetest või ainete segudest koosnevate seadmete hindamise tasu suurus on 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. 2 (2) Sobivusdiagnostikaseadme konkreetse ravimiga sobivuse kohta arvamuse andmisel on tasu suurus 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu. 3 (3) Meditsiiniseadme lahutamatuks osaks oleva ravimi muudatuse korral, mis on analoogia põhjal klassifitseeritud samaväärseks II tüübi, IB tüübi või IA tüübi muudatusega vastavalt komisjoni määrusele (EÜ) nr 1234/2008, mis käsitleb inimtervishoius ja veterinaarias kasutatavate ravimite müügilubade tingimuste muudatuste läbivaatamist (ELT L 334, 12.12.2008, lk 7–24), on arvamuse andmise tasu suurus vastavalt tervise- ja tööministri 5. juuli 2022. a määruse nr 55 „Ravimi müügiloa muutmise ning erialase hindamise tingimused ja tasu suurus” § 7 lõikes 1, 3 või 4 sätestatud tasu suurus. 4 (4) Euroopa Liidu tehnilise dokumentatsiooni hindamise sertifikaadi või Euroopa Liidu tüübihindamissertifikaadi lisa väljastamist eeldava sobivusdiagnostikaseadme muudatuse korral on konkreetse ravimiga sobivuse kohta arvamuse andmise tasu suurus 1800 eurot. 5 (5) Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme kohta teadusliku arvamuse andmisel on tasu suurus 1700 eurot. 6 (6) Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme muudatuse korral on arvamuse andmise tasu suurus 640 eurot.",
       "estleg:references": [
         {
           "@id": "estleg:RavS_Par_67_Lg_2"
@@ -136,6 +174,26 @@
         {
           "@id": "estleg:Institution_toominister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1056413_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1056413_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1056413_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1056413_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1056413_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1056413_Par_2_Lg_6"
+        }
       ]
     },
     {
@@ -148,6 +206,84 @@
         "@id": "estleg:MEDITS_Par_15"
       },
       "estleg:citationText": "Määrus kehtestatakse meditsiiniseadme seaduse § 15"
+    },
+    {
+      "@id": "estleg:Reg_1056413_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Meditsiiniseadme lahutamatuks osaks oleva ravimi ja inimese kehas imenduvatest või lokaalselt hajuvatest ainetest või ainete segudest koosnevate seadmete hindamise tasu suurus on 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056413_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1056413_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sobivusdiagnostikaseadme konkreetse ravimiga sobivuse kohta arvamuse andmisel on tasu suurus 6000 eurot, millele lisandub ravimiseaduse § 67 lõikes 2 sätestatud tasu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056413_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1056413_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Meditsiiniseadme lahutamatuks osaks oleva ravimi muudatuse korral, mis on analoogia põhjal klassifitseeritud samaväärseks II tüübi, IB tüübi või IA tüübi muudatusega vastavalt komisjoni määrusele (EÜ) nr 1234/2008, mis käsitleb inimtervishoius ja veterinaarias kasutatavate ravimite müügilubade tingimuste muudatuste läbivaatamist (ELT L 334, 12.12.2008, lk 7–24), on arvamuse andmise tasu suurus vastavalt tervise- ja tööministri 5. juuli 2022. a määruse nr 55 „Ravimi müügiloa muutmise ning erialase hindamise tingimused ja tasu suurus” § 7 lõikes 1, 3 või 4 sätestatud tasu suurus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056413_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1056413_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Euroopa Liidu tehnilise dokumentatsiooni hindamise sertifikaadi või Euroopa Liidu tüübihindamissertifikaadi lisa väljastamist eeldava sobivusdiagnostikaseadme muudatuse korral on konkreetse ravimiga sobivuse kohta arvamuse andmise tasu suurus 1800 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056413_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1056413_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme kohta teadusliku arvamuse andmisel on tasu suurus 1700 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056413_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1056413_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Inimpäritolu kudesid, rakke või nende preparaate sisaldava meditsiiniseadme muudatuse korral on arvamuse andmise tasu suurus 640 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056413_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6"
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Leidissoo looduskaitseala kaitse-eeskiri (määrus)",
+      "rdfs:label": {
+        "@value": "Leidissoo looduskaitseala kaitse-eeskiri (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -41,18 +48,13 @@
         }
       ],
       "estleg:entryIntoForce": {
-        "@value": "2005-12-16",
+        "@value": "2023-07-08",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2023-06-22",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2023-07-05",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_159120_eebe50c791"
@@ -99,7 +101,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2475"
         }
-      ]
+      ],
+      "dcterms:title": "Leidissoo looduskaitseala kaitse-eeskiri",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_159120_Annex_1",
@@ -107,7 +115,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Leidissoo looduskaitseala",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -116,7 +127,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -126,13 +140,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Leidissoo looduskaitseala kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 1. Leidissoo looduskaitseala kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Leidissoo looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) Lääne-Eestile tüüpilise, inimtegevusest oluliselt mõjutamata Sendri ja Leidissoo raba ning väljakujunenud või kujundatavate looduslike ja poollooduslike, haruldaste ja kaitset väärivate koosluste kaitse; 2 2) EÜ nõukogu direktiivi 79/409/EMÜ loodusliku linnustiku kaitse kohta I lisa liikide ja I lisas nimetamata liikide, mis on ühtlasi III kaitsekategooria liigid, – soo-loorkulli (Circus pygargus), sookure (Grus grus),",
-      "estleg:legalText": "1 (1) Leidissoo looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) Lääne-Eestile tüüpilise, inimtegevusest oluliselt mõjutamata Sendri ja Leidissoo raba ning väljakujunenud või kujundatavate looduslike ja poollooduslike, haruldaste ja kaitset väärivate koosluste kaitse; 2 2) EÜ nõukogu direktiivi 79/409/EMÜ loodusliku linnustiku kaitse kohta I lisa liikide ja I lisas nimetamata liikide, mis on ühtlasi III kaitsekategooria liigid, – soo-loorkulli (Circus pygargus), sookure (Grus grus), karvasjalg-viu e taliviu (Buteo lagopus), punaselg-õgija (Lanius collurio), väikekoovitaja (Numenius phaeopus), tedre (Tetrao tetrix) ning I ja II kategooria kaitsealuste liikide kaitse; 3 3) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – metsastunud luidete (2180)3, luidetevaheliste niiskete nõgude (2190), liiva-alade vähetoiteliste järvede (3110), looduslikult rohketoiteliste järvede (3150), looduslikult huumustoiteliste järvede ja järvikute (3160), kuivade nõmmede (4030), sinihelmikakoosluste (6410), looduslikus seisundis rabade (7110*), rikutud, kuid taastumisvõimeliste rabade (7120), siirde- ja õõtsiksoode (7140), lubjarikaste lääne-mõõkrohuga madalsoode (7210), liigirikaste madalsoode (7230), vanade loodusmetsade (9010*), soostuvate ja soo-lehtmetsade (9080), siirdesoo- ja rabametsade (91D0*) kaitse; 4 4) EÜ nõukogu direktiivi 92/43/EMÜ II lisas nimetatud liikide, sealhulgas saarma (Lutra lutra), kes on ühtlasi III kaitsekategooria kaitsealune liik, ja II kaitsekategooria liigi elupaikade kaitse. Leidissoo looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: Lääne-Eestile tüüpilise, inimtegevusest oluliselt mõjutamata Sendri ja Leidissoo raba ning väljakujunenud või kujundatavate looduslike ja poollooduslike, haruldaste ja kaitset väärivate koosluste kaitse; EÜ nõukogu direktiivi 79/409/EMÜ loodusliku linnustiku kaitse kohta I lisa liikide ja I lisas nimetamata liikide, mis on ühtlasi III kaitsekategooria liigid, – soo-loorkulli (Circus pygargus), sookure (Grus grus), karvasjalg-viu e taliviu (Buteo lagopus), punaselg-õgija (Lanius collurio), väikekoovitaja (Numenius phaeopus), tedre (Tetrao tetrix) ning I ja II kategooria kaitsealuste liikide kaitse; EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – metsastunud luidete (2180)3, luidetevaheliste niiskete nõgude (2190), liiva-alade vähetoiteliste järvede (3110), looduslikult rohketoiteliste järvede (3150), looduslikult huumustoiteliste järvede ja järvikute (3160), kuivade nõmmede (4030), sinihelmikakoosluste (6410), looduslikus seisundis rabade (7110*), rikutud, kuid taastumisvõimeliste rabade (7120), siirde- ja õõtsiksoode (7140), lubjarikaste lääne-mõõkrohuga madalsoode (7210), liigirikaste madalsoode (7230), vanade loodusmetsade (9010*), soostuvate ja soo-lehtmetsade (9080), siirdesoo- ja rabametsade (91D0*) kaitse; EÜ nõukogu direktiivi 92/43/EMÜ II lisas nimetatud liikide, sealhulgas saarma (Lutra lutra), kes on ühtlasi III kaitsekategooria kaitsealune liik, ja II kaitsekategooria liigi elupaikade kaitse. 2 (2) «Rahvusvahelise tähtsusega märgalade, eriti veelindude elupaikade konventsiooni» artikli 2 lõike 1 kohaselt on kaitseala rahvusvahelise tähtsusega märgala (Ramsari ala). «Rahvusvahelise tähtsusega märgalade, eriti veelindude elupaikade konventsiooni» artikli 2 lõike 1 kohaselt on kaitseala rahvusvahelise tähtsusega märgala (Ramsari ala). 3 (3) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele neljaks sihtkaitsevööndiks ja neljaks piiranguvööndiks. Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele neljaks sihtkaitsevööndiks ja neljaks piiranguvööndiks. 4 (4) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega. Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
+      "estleg:summary": {
+        "@value": "1 (1) Leidissoo looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) Lääne-Eestile tüüpilise, inimtegevusest oluliselt mõjutamata Sendri ja Leidissoo raba ning väljakujunenud või kujundatavate looduslike ja poollooduslike, haruldaste ja kaitset väärivate koosluste kaitse; 2 2) EÜ nõukogu direktiivi 79/409/EMÜ loodusliku linnustiku kaitse kohta I lisa liikide ja I lisas nimetamata liikide, mis on ühtlasi III kaitsekategooria liigid, – soo-loorkulli (Circus pygargus), sookure (Grus…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Leidissoo looduskaitseala2 (edaspidi kaitseala) kaitse-eesmärk on: 1 1) Lääne-Eestile tüüpilise, inimtegevusest oluliselt mõjutamata Sendri ja Leidissoo raba ning väljakujunenud või kujundatavate looduslike ja poollooduslike, haruldaste ja kaitset väärivate koosluste kaitse; 2 2) EÜ nõukogu direktiivi 79/409/EMÜ loodusliku linnustiku kaitse kohta I lisa liikide ja I lisas nimetamata liikide, mis on ühtlasi III kaitsekategooria liigid, – soo-loorkulli (Circus pygargus), sookure (Grus grus), karvasjalg-viu e taliviu (Buteo lagopus), punaselg-õgija (Lanius collurio), väikekoovitaja (Numenius phaeopus), tedre (Tetrao tetrix) ning I ja II kategooria kaitsealuste liikide kaitse; 3 3) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – metsastunud luidete (2180)3, luidetevaheliste niiskete nõgude (2190), liiva-alade vähetoiteliste järvede (3110), looduslikult rohketoiteliste järvede (3150), looduslikult huumustoiteliste järvede ja järvikute (3160), kuivade nõmmede (4030), sinihelmikakoosluste (6410), looduslikus seisundis rabade (7110*), rikutud, kuid taastumisvõimeliste rabade (7120), siirde- ja õõtsiksoode (7140), lubjarikaste lääne-mõõkrohuga madalsoode (7210), liigirikaste madalsoode (7230), vanade loodusmetsade (9010*), soostuvate ja soo-lehtmetsade (9080), siirdesoo- ja rabametsade (91D0*) kaitse; 4 4) EÜ nõukogu direktiivi 92/43/EMÜ II lisas nimetatud liikide, sealhulgas saarma (Lutra lutra), kes on ühtlasi III kaitsekategooria kaitsealune liik, ja II kaitsekategooria liigi elupaikade kaitse. 2 (2) «Rahvusvahelise tähtsusega märgalade, eriti veelindude elupaikade konventsiooni» artikli 2 lõike 1 kohaselt on kaitseala rahvusvahelise tähtsusega märgala (Ramsari ala). 3 (3) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele neljaks sihtkaitsevööndiks ja neljaks piiranguvööndiks. 4 (4) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_159142_Par_1"
@@ -145,7 +165,79 @@
         {
           "@id": "estleg:Reg_159120_Par_1_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_1_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Leidissoo looduskaitseala² (edaspidi kaitseala) kaitse-eesmärk on: 1) Lääne-Eestile tüüpilise, inimtegevusest oluliselt mõjutamata Sendri ja Leidissoo raba ning väljakujunenud või kujundatavate looduslike ja poollooduslike, haruldaste ja kaitset väärivate koosluste kaitse; 2) EÜ nõukogu direktiivi 79/409/EMÜ loodusliku linnustiku kaitse kohta I lisa liikide ja I lisas nimetamata liikide, mis on ühtlasi III kaitsekategooria liigid, – soo-loorkulli (Circus pygargus), sookure (Grus grus), karvasjalg-viu e taliviu (Buteo lagopus), punaselg-õgija (Lanius collurio), väikekoovitaja (Numenius phaeopus), tedre (Tetrao tetrix) ning I ja II kategooria kaitsealuste liikide kaitse; 3) EÜ nõukogu direktiivi 92/43/EMÜ looduslike elupaikade ning loodusliku loomastiku ja taimestiku kaitse kohta I lisas nimetatud elupaigatüüpide – metsastunud luidete (2180)³, luidetevaheliste niiskete nõgude (2190), liiva-alade vähetoiteliste järvede (3110), looduslikult rohketoiteliste järvede (3150), looduslikult huumustoiteliste järvede ja järvikute (3160), kuivade nõmmede (4030), sinihelmikakoosluste (6410), looduslikus seisundis rabade (7110*), rikutud, kuid taastumisvõimeliste rabade (7120), siirde- ja õõtsiksoode (7140), lubjarikaste lääne-mõõkrohuga madalsoode (7210), liigirikaste madalsoode (7230), vanade loodusmetsade (9010*), soostuvate ja soo-lehtmetsade (9080), siirdesoo- ja rabametsade (91D0*) kaitse; 4) EÜ nõukogu direktiivi 92/43/EMÜ II lisas nimetatud liikide, sealhulgas saarma (Lutra lutra), kes on ühtlasi III kaitsekategooria kaitsealune liik, ja II kaitsekategooria liigi elupaikade kaitse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) «Rahvusvahelise tähtsusega märgalade, eriti veelindude elupaikade konventsiooni» artikli 2 lõike 1 kohaselt on kaitseala rahvusvahelise tähtsusega märgala (Ramsari ala).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitseala maa- ja veeala jaguneb vastavalt kaitsekorra eripärale ja majandustegevuse piiramise astmele neljaks sihtkaitsevööndiks ja neljaks piiranguvööndiks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitsealal tuleb arvestada «Looduskaitseseaduses» sätestatud piiranguid käesolevas määruses sätestatud erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
     },
     {
       "@id": "estleg:Reg_159120_Par_2",
@@ -154,13 +246,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kaitseala asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Kaitseala asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala asub Lääne maakonnas Noarootsi vallas Höbringi/Höbring ja Vanaküla/Gambyn külas, Nõva vallas Variku külas ning Oru vallas Keedika, Jalukse ja Soolu külas. Kaitseala asub Lääne maakonnas Noarootsi vallas Höbringi/Höbring ja Vanaküla/Gambyn külas, Nõva vallas Variku külas ning Oru vallas Keedika, Jalukse ja Soolu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
-      "estleg:legalText": "1 (1) Kaitseala asub Lääne maakonnas Noarootsi vallas Höbringi/Höbring ja Vanaküla/Gambyn külas, Nõva vallas Variku külas ning Oru vallas Keedika, Jalukse ja Soolu külas. Kaitseala asub Lääne maakonnas Noarootsi vallas Höbringi/Höbring ja Vanaküla/Gambyn külas, Nõva vallas Variku külas ning Oru vallas Keedika, Jalukse ja Soolu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4. Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala asub Lääne maakonnas Noarootsi vallas Höbringi/Höbring ja Vanaküla/Gambyn külas, Nõva vallas Variku külas ning Oru vallas Keedika, Jalukse ja Soolu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala asub Lääne maakonnas Noarootsi vallas Höbringi/Höbring ja Vanaküla/Gambyn külas, Nõva vallas Variku külas ning Oru vallas Keedika, Jalukse ja Soolu külas. 2 (2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas4.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1026762_Par_2"
@@ -182,7 +280,41 @@
         {
           "@id": "estleg:Reg_159120_Par_2_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala asub Lääne maakonnas Noarootsi vallas Höbringi/Höbring ja Vanaküla/Gambyn külas, Nõva vallas Variku külas ning Oru vallas Keedika, Jalukse ja Soolu külas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala välispiir ja vööndite piirid on esitatud kaardil määruse lisas⁴.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_159120_Par_3",
@@ -191,13 +323,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kaitseala valitseja",
+      "rdfs:label": {
+        "@value": "§ 3. Kaitseala valitseja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00",
-      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00 Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja on Keskkonnaamet. RT I 2009 7 48 13125268 2009-02-01+02:00",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -216,7 +354,25 @@
         {
           "@id": "estleg:Institution_keskkonnaamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_3_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja on Keskkonnaamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:Reg_159120_Par_4",
@@ -225,13 +381,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 4. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Kaitsealal on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala, välja arvatud käesoleva määruse § 8 punktis 4 sätestatud juhul sihtkaitsevööndis. Kaitsealal on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala, välja arvatud käesoleva määruse § 8 punktis 4 sätestatud juhul sihtkaitsevööndis. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses»",
-      "estleg:legalText": "1 (1) Kaitsealal on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala, välja arvatud käesoleva määruse § 8 punktis 4 sätestatud juhul sihtkaitsevööndis. Kaitsealal on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala, välja arvatud käesoleva määruse § 8 punktis 4 sätestatud juhul sihtkaitsevööndis. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. 3 (3) Telkimine ja lõkke tegemine kaitsealal on lubatud ainult kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades. Telkimine ja lõkke tegemine õuemaal on lubatud omaniku loal. Telkimine ja lõkke tegemine kaitsealal on lubatud ainult kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades. Telkimine ja lõkke tegemine õuemaal on lubatud omaniku loal. 4 (4) Rohkem kui 50 osalejaga rahvaürituse korraldamine on lubatud kaitseala valitseja nõusolekul üksnes selleks ettevalmistatud ja kaitseala valitseja poolt tähistatud kohas. Rahvaürituse korraldamine selleks ettevalmistamata kohas on lubatud üksnes kaitseala valitseja nõusolekul. Õuemaal on rahvaürituse korraldamine lubatud. Rohkem kui 50 osalejaga rahvaürituse korraldamine on lubatud kaitseala valitseja nõusolekul üksnes selleks ettevalmistatud ja kaitseala valitseja poolt tähistatud kohas. Rahvaürituse korraldamine selleks ettevalmistamata kohas on lubatud üksnes kaitseala valitseja nõusolekul. Õuemaal on rahvaürituse korraldamine lubatud. 5 (5) Kaitseala teedel on lubatud sõidukiga sõitmine. Maastikusõidukiga sõitmine väljaspool teid on lubatud kaitseala valitseja nõusolekul. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine kaitseala valitseja nõusolekuta on lubatud järelevalve- ja päästetöödel, käesoleva kaitse-eeskirjaga lubatud töödel ning valitsemisega seotud töödel. Kaitseala teedel on lubatud sõidukiga sõitmine. Maastikusõidukiga sõitmine väljaspool teid on lubatud kaitseala valitseja nõusolekul. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine kaitseala valitseja nõusolekuta on lubatud järelevalve- ja päästetöödel, käesoleva kaitse-eeskirjaga lubatud töödel ning valitsemisega seotud töödel. 6 (6) Kaitsealal on lubatud jahipidamine 1. septembrist 31. jaanuarini, välja arvatud linnujaht. Kaitsealal on lubatud jahipidamine 1. septembrist 31. jaanuarini, välja arvatud linnujaht.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitsealal on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala, välja arvatud käesoleva määruse § 8 punktis 4 sätestatud juhul sihtkaitsevööndis. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitsealal on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala, välja arvatud käesoleva määruse § 8 punktis 4 sätestatud juhul sihtkaitsevööndis. 2 (2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut. 3 (3) Telkimine ja lõkke tegemine kaitsealal on lubatud ainult kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades. Telkimine ja lõkke tegemine õuemaal on lubatud omaniku loal. 4 (4) Rohkem kui 50 osalejaga rahvaürituse korraldamine on lubatud kaitseala valitseja nõusolekul üksnes selleks ettevalmistatud ja kaitseala valitseja poolt tähistatud kohas. Rahvaürituse korraldamine selleks ettevalmistamata kohas on lubatud üksnes kaitseala valitseja nõusolekul. Õuemaal on rahvaürituse korraldamine lubatud. 5 (5) Kaitseala teedel on lubatud sõidukiga sõitmine. Maastikusõidukiga sõitmine väljaspool teid on lubatud kaitseala valitseja nõusolekul. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine kaitseala valitseja nõusolekuta on lubatud järelevalve- ja päästetöödel, käesoleva kaitse-eeskirjaga lubatud töödel ning valitsemisega seotud töödel. 6 (6) Kaitsealal on lubatud jahipidamine 1. septembrist 31. jaanuarini, välja arvatud linnujaht.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -268,7 +430,106 @@
         {
           "@id": "estleg:Reg_159120_Par_4_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_4_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_4_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitsealal on lubatud viibida, korjata marju, seeni ja muid metsa kõrvalsaadusi ning püüda kala, välja arvatud käesoleva määruse § 8 punktis 4 sätestatud juhul sihtkaitsevööndis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": "4"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Füüsilise isiku või eraõigusliku juriidilise isiku omandis oleval kinnisasjal viibimine on lubatud, arvestades «Asjaõigusseaduses» ja «Looduskaitseseaduses» sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Telkimine ja lõkke tegemine kaitsealal on lubatud ainult kaitseala valitseja nõusolekul selleks ettevalmistatud ja tähistatud kohtades. Telkimine ja lõkke tegemine õuemaal on lubatud omaniku loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rohkem kui 50 osalejaga rahvaürituse korraldamine on lubatud kaitseala valitseja nõusolekul üksnes selleks ettevalmistatud ja kaitseala valitseja poolt tähistatud kohas. Rahvaürituse korraldamine selleks ettevalmistamata kohas on lubatud üksnes kaitseala valitseja nõusolekul. Õuemaal on rahvaürituse korraldamine lubatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kaitseala teedel on lubatud sõidukiga sõitmine. Maastikusõidukiga sõitmine väljaspool teid on lubatud kaitseala valitseja nõusolekul. Sõidukiga sõitmine väljaspool teid ja maastikusõidukiga sõitmine kaitseala valitseja nõusolekuta on lubatud järelevalve- ja päästetöödel, käesoleva kaitse-eeskirjaga lubatud töödel ning valitsemisega seotud töödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_4_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kaitsealal on lubatud jahipidamine 1. septembrist 31. jaanuarini, välja arvatud linnujaht.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 6"
     },
     {
       "@id": "estleg:Reg_159120_Par_5",
@@ -277,13 +538,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 5. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Kaitsealal on keelatud: 1 1) linnujaht; 2 2) puhtpuistute kujundamine ja energiapuistute rajamine. Kaitsealal on keelatud: linnujaht; puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3 3) väljastada metsamajandamiskava; 4 4) kinnitada metsateatist; 5 5) kehtestada detailplaneeringut ja üldplaneering",
-      "estleg:legalText": "1 (1) Kaitsealal on keelatud: 1 1) linnujaht; 2 2) puhtpuistute kujundamine ja energiapuistute rajamine. Kaitsealal on keelatud: linnujaht; puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3 3) väljastada metsamajandamiskava; 4 4) kinnitada metsateatist; 5 5) kehtestada detailplaneeringut ja üldplaneeringut; 6 6) anda nõusolekut väikeehitise, sealhulgas lautri või paadisilla ehitamiseks; 7 7) anda projekteerimistingimusi; 8 8) anda ehitusluba. Kaitseala valitseja nõusolekuta on kaitsealal keelatud: muuta katastriüksuse kõlvikute piire ja sihtotstarvet; koostada maakorralduskava ja teostada maakorraldustoiminguid; väljastada metsamajandamiskava; kinnitada metsateatist; kehtestada detailplaneeringut ja üldplaneeringut; anda nõusolekut väikeehitise, sealhulgas lautri või paadisilla ehitamiseks; anda projekteerimistingimusi; anda ehitusluba.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitsealal on keelatud: 1 1) linnujaht; 2 2) puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3 3) väljastada metsamajandamiskava; 4 4) kinnitada metsateatist; 5 5) kehtestada detailplaneeringut ja üldplaneeringut; 6 6) anda nõusolekut väikeehitise, sealhulgas lautri või paadisilla ehitamiseks; 7…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitsealal on keelatud: 1 1) linnujaht; 2 2) puhtpuistute kujundamine ja energiapuistute rajamine. 2 (2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3 3) väljastada metsamajandamiskava; 4 4) kinnitada metsateatist; 5 5) kehtestada detailplaneeringut ja üldplaneeringut; 6 6) anda nõusolekut väikeehitise, sealhulgas lautri või paadisilla ehitamiseks; 7 7) anda projekteerimistingimusi; 8 8) anda ehitusluba.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158774_Par_5"
@@ -312,6 +579,54 @@
         {
           "@id": "estleg:Reg_159120_Par_5_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_5_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitsealal on keelatud: 1) linnujaht; 2) puhtpuistute kujundamine ja energiapuistute rajamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseala valitseja nõusolekuta on kaitsealal keelatud: 1) muuta katastriüksuse kõlvikute piire ja sihtotstarvet; 2) koostada maakorralduskava ja teostada maakorraldustoiminguid; 3) väljastada metsamajandamiskava; 4) kinnitada metsateatist; 5) kehtestada detailplaneeringut ja üldplaneeringut; 6) anda nõusolekut väikeehitise, sealhulgas lautri või paadisilla ehitamiseks; 7) anda projekteerimistingimusi; 8) anda ehitusluba.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8"
       ]
     },
     {
@@ -321,13 +636,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Tegevuse kooskõlastamine",
+      "rdfs:label": {
+        "@value": "§ 6. Tegevuse kooskõlastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja k",
-      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. 3 (3) Kehtetu - RT I 2023-07-05 1 105072023001 2023-07-08 Kehtetu -",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit. 2 (2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas. 3 (3) Kehtetu - RT I 2023-07-05 1 105072023001 2023-07-08",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -361,7 +682,41 @@
         {
           "@id": "estleg:Reg_159120_Par_6_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_6_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja ei kooskõlasta tegevust, mis vajab kaitse-eeskirja kohaselt kaitseala valitseja nõusolekut, kui see võib kahjustada kaitseala kaitse-eesmärgi saavutamist või seisundit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui tegevust ei ole kaitseala valitsejaga kooskõlastatud või tegevuses ei ole arvestatud kaitseala valitseja kirjalikult seatud tingimusi, mille täitmisel tegevus ei kahjusta kaitseala kaitse-eesmärgi saavutamist või seisundit, ei teki isikul, kelle huvides nimetatud tegevus on, vastavalt «Haldusmenetluse seadusele» õiguspärast ootust sellise tegevuse õiguspärasuse osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:Reg_159120_Par_7",
@@ -370,13 +725,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Sihtkaitsevööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 7. Sihtkaitsevööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on neli sihtkaitsevööndit: 1 1) Tammetõru sihtkaitsevöönd; 2 2) Suurraba sihtkaitsevöönd; 3 3) Tillutare sihtkaitsevöönd; 4 4) Luusna sihtkaitsevöönd. Kaitsealal on neli sihtkaitsevööndit: Tammetõru sihtkait",
-      "estleg:legalText": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on neli sihtkaitsevööndit: 1 1) Tammetõru sihtkaitsevöönd; 2 2) Suurraba sihtkaitsevöönd; 3 3) Tillutare sihtkaitsevöönd; 4 4) Luusna sihtkaitsevöönd. Kaitsealal on neli sihtkaitsevööndit: Tammetõru sihtkaitsevöönd; Suurraba sihtkaitsevöönd; Tillutare sihtkaitsevöönd; Luusna sihtkaitsevöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on neli sihtkaitsevööndit: 1 1) Tammetõru sihtkaitsevöönd; 2 2) Suurraba sihtkaitsevöönd; 3 3) Tillutare sihtkaitsevöönd; 4 4) Luusna sihtkaitsevöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks. 2 (2) Kaitsealal on neli sihtkaitsevööndit: 1 1) Tammetõru sihtkaitsevöönd; 2 2) Suurraba sihtkaitsevöönd; 3 3) Tillutare sihtkaitsevöönd; 4 4) Luusna sihtkaitsevöönd.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1018083_Par_8"
@@ -398,6 +759,46 @@
         {
           "@id": "estleg:Reg_159120_Par_7_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_7_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala sihtkaitsevöönd on kaitseala osa seal väljakujunenud või kujundatavate looduslike ja poollooduslike koosluste säilitamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on neli sihtkaitsevööndit: 1) Tammetõru sihtkaitsevöönd; 2) Suurraba sihtkaitsevöönd; 3) Tillutare sihtkaitsevöönd; 4) Luusna sihtkaitsevöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -407,13 +808,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 8. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine; 4 4) inimeste viibimine 1. veebruarist 15. juulini, välja arvatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadusalastel välitöödel. Sihtkaitsevööndis on keelatud: majandustegevus; loodusvarade kasutamine; uute ehitiste püstitamine; inimeste viibimine 1. veebruarist 15. juulini, välja arvatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul te",
-      "estleg:legalText": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine; 4 4) inimeste viibimine 1. veebruarist 15. juulini, välja arvatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadusalastel välitöödel. Sihtkaitsevööndis on keelatud: majandustegevus; loodusvarade kasutamine; uute ehitiste püstitamine; inimeste viibimine 1. veebruarist 15. juulini, välja arvatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadusalastel välitöödel.",
+      "estleg:summary": {
+        "@value": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine; 4 4) inimeste viibimine 1. veebruarist 15. juulini, välja arvatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadusalastel välitöödel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Sihtkaitsevööndis on keelatud: 1 1) majandustegevus; 2 2) loodusvarade kasutamine; 3 3) uute ehitiste püstitamine; 4 4) inimeste viibimine 1. veebruarist 15. juulini, välja arvatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadusalastel välitöödel.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1015353_Par_11"
@@ -442,6 +849,30 @@
         {
           "@id": "estleg:Reg_159120_Par_8_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_8_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkaitsevööndis on keelatud: 1) majandustegevus; 2) loodusvarade kasutamine; 3) uute ehitiste püstitamine; 4) inimeste viibimine 1. veebruarist 15. juulini, välja arvatud järelevalve- ja päästetöödel ning kaitseala valitseja nõusolekul teadusalastel välitöödel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -451,13 +882,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 9. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) Tammetõru ja Suurraba sihtkaitsevööndis hooldustööd kaitsealuste liikide elupaikade säilitamiseks; 2 2) Tammetõru sihtkaitsevööndis madalsoo- ja madalsooharviku koosluste niitmine ja puu- ning põõsarinde harvendamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3 3) Tammetõru sihtkaitsevööndis uu",
-      "estleg:legalText": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) Tammetõru ja Suurraba sihtkaitsevööndis hooldustööd kaitsealuste liikide elupaikade säilitamiseks; 2 2) Tammetõru sihtkaitsevööndis madalsoo- ja madalsooharviku koosluste niitmine ja puu- ning põõsarinde harvendamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3 3) Tammetõru sihtkaitsevööndis uue tee ehitamine, olemasolevate teede hooldustööd ja olemasolevate maaparandussüsteemide hoiutööd ning veerežiimi taastamine; 4 4) Tammetõru sihtkaitsevööndis õppe- ja loodusraja rajamine ning selle hooldustööd; 5 5) Luusna sihtkaitsevööndis puisniidu niitmine ning puu- ja põõsarinde harvendamine ulatuses, mis tagab poolloodusliku koosluse ilme ja liigikoosseisu säilimise; 6 6) Luusna sihtkaitsevööndis metsakoosluste kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas. Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: Tammetõru ja Suurraba sihtkaitsevööndis hooldustööd kaitsealuste liikide elupaikade säilitamiseks; Tammetõru sihtkaitsevööndis madalsoo- ja madalsooharviku koosluste niitmine ja puu- ning põõsarinde harvendamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; Tammetõru sihtkaitsevööndis uue tee ehitamine, olemasolevate teede hooldustööd ja olemasolevate maaparandussüsteemide hoiutööd ning veerežiimi taastamine; Tammetõru sihtkaitsevööndis õppe- ja loodusraja rajamine ning selle hooldustööd; Luusna sihtkaitsevööndis puisniidu niitmine ning puu- ja põõsarinde harvendamine ulatuses, mis tagab poolloodusliku koosluse ilme ja liigikoosseisu säilimise; Luusna sihtkaitsevööndis metsakoosluste kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas.",
+      "estleg:summary": {
+        "@value": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) Tammetõru ja Suurraba sihtkaitsevööndis hooldustööd kaitsealuste liikide elupaikade säilitamiseks; 2 2) Tammetõru sihtkaitsevööndis madalsoo- ja madalsooharviku koosluste niitmine ja puu- ning põõsarinde harvendamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3 3) Tammetõru sihtkaitsevööndis…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1 1) Tammetõru ja Suurraba sihtkaitsevööndis hooldustööd kaitsealuste liikide elupaikade säilitamiseks; 2 2) Tammetõru sihtkaitsevööndis madalsoo- ja madalsooharviku koosluste niitmine ja puu- ning põõsarinde harvendamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3 3) Tammetõru sihtkaitsevööndis uue tee ehitamine, olemasolevate teede hooldustööd ja olemasolevate maaparandussüsteemide hoiutööd ning veerežiimi taastamine; 4 4) Tammetõru sihtkaitsevööndis õppe- ja loodusraja rajamine ning selle hooldustööd; 5 5) Luusna sihtkaitsevööndis puisniidu niitmine ning puu- ja põõsarinde harvendamine ulatuses, mis tagab poolloodusliku koosluse ilme ja liigikoosseisu säilimise; 6 6) Luusna sihtkaitsevööndis metsakoosluste kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158716_Par_10"
@@ -486,6 +923,32 @@
         {
           "@id": "estleg:Reg_159120_Par_9_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_9_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala valitseja nõusolekul on sihtkaitsevööndis lubatud: 1) Tammetõru ja Suurraba sihtkaitsevööndis hooldustööd kaitsealuste liikide elupaikade säilitamiseks; 2) Tammetõru sihtkaitsevööndis madalsoo- ja madalsooharviku koosluste niitmine ja puu- ning põõsarinde harvendamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas; 3) Tammetõru sihtkaitsevööndis uue tee ehitamine, olemasolevate teede hooldustööd ja olemasolevate maaparandussüsteemide hoiutööd ning veerežiimi taastamine; 4) Tammetõru sihtkaitsevööndis õppe- ja loodusraja rajamine ning selle hooldustööd; 5) Luusna sihtkaitsevööndis puisniidu niitmine ning puu- ja põõsarinde harvendamine ulatuses, mis tagab poolloodusliku koosluse ilme ja liigikoosseisu säilimise; 6) Luusna sihtkaitsevööndis metsakoosluste kujundamine vastavalt kaitse-eesmärgile, kusjuures kaitseala valitsejal on õigus esitada nõudeid raieaja ja -tehnoloogia, metsamaterjali kokku- ja väljaveo ning puistu koosseisu ja täiuse osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -495,13 +958,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 10. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "Luusna sihtkaitsevööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik loomade karjatamine, niitmine ning puu- ja põõsarinde harvendamine.",
-      "estleg:legalText": "Luusna sihtkaitsevööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik loomade karjatamine, niitmine ning puu- ja põõsarinde harvendamine. Luusna sihtkaitsevööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik loomade karjatamine, niitmine ning puu- ja põõsarinde harvendamine.",
+      "estleg:summary": {
+        "@value": "Luusna sihtkaitsevööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik loomade karjatamine, niitmine ning puu- ja põõsarinde harvendamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Luusna sihtkaitsevööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik loomade karjatamine, niitmine ning puu- ja põõsarinde harvendamine.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1033074_Par_16"
@@ -523,7 +992,25 @@
         {
           "@id": "estleg:Reg_159120_Par_10_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_10_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Luusna sihtkaitsevööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik loomade karjatamine, niitmine ning puu- ja põõsarinde harvendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:Reg_159120_Par_11",
@@ -532,13 +1019,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Sihtkaitsevööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 11. Sihtkaitsevööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Luusna sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse, kaitsealuse liigi ja maastikuilme säilitamine. Luusna sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse, kaitsealuse liigi ja maastikuilme säilitamine. 2 (2) Tammetõru, Suurraba ja Tillutare sihtkaitsevööndi kaitse-eesmärk on metsaökosüsteemi loodusliku arengu tagamine, kaitsealuse liigi elupaiga, elustiku mitmekesisuse ja maastikuilme säilitamine. Tammetõru, Suurraba ja Tillutare sihtkaitsevööndi kaitse-eesmärk on m",
-      "estleg:legalText": "1 (1) Luusna sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse, kaitsealuse liigi ja maastikuilme säilitamine. Luusna sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse, kaitsealuse liigi ja maastikuilme säilitamine. 2 (2) Tammetõru, Suurraba ja Tillutare sihtkaitsevööndi kaitse-eesmärk on metsaökosüsteemi loodusliku arengu tagamine, kaitsealuse liigi elupaiga, elustiku mitmekesisuse ja maastikuilme säilitamine. Tammetõru, Suurraba ja Tillutare sihtkaitsevööndi kaitse-eesmärk on metsaökosüsteemi loodusliku arengu tagamine, kaitsealuse liigi elupaiga, elustiku mitmekesisuse ja maastikuilme säilitamine. 3 (3) Metsakoosluste kaitse-eesmärk on kasvukohatüübile iseloomuliku liikide koosseisu säilitamine. Metsakoosluste kaitse-eesmärk on kasvukohatüübile iseloomuliku liikide koosseisu säilitamine.",
+      "estleg:summary": {
+        "@value": "1 (1) Luusna sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse, kaitsealuse liigi ja maastikuilme säilitamine. 2 (2) Tammetõru, Suurraba ja Tillutare sihtkaitsevööndi kaitse-eesmärk on metsaökosüsteemi loodusliku arengu tagamine, kaitsealuse liigi elupaiga, elustiku mitmekesisuse ja maastikuilme säilitamine. 3 (3) Metsakoosluste kaitse-eesmärk on kasvukohatüübile iseloomuliku liikide koosseisu säilitamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Luusna sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse, kaitsealuse liigi ja maastikuilme säilitamine. 2 (2) Tammetõru, Suurraba ja Tillutare sihtkaitsevööndi kaitse-eesmärk on metsaökosüsteemi loodusliku arengu tagamine, kaitsealuse liigi elupaiga, elustiku mitmekesisuse ja maastikuilme säilitamine. 3 (3) Metsakoosluste kaitse-eesmärk on kasvukohatüübile iseloomuliku liikide koosseisu säilitamine.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158623_Par_10"
@@ -560,7 +1053,57 @@
         {
           "@id": "estleg:Reg_159120_Par_11_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_11_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Luusna sihtkaitsevööndi kaitse-eesmärk on elustiku mitmekesisuse, kaitsealuse liigi ja maastikuilme säilitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tammetõru, Suurraba ja Tillutare sihtkaitsevööndi kaitse-eesmärk on metsaökosüsteemi loodusliku arengu tagamine, kaitsealuse liigi elupaiga, elustiku mitmekesisuse ja maastikuilme säilitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Metsakoosluste kaitse-eesmärk on kasvukohatüübile iseloomuliku liikide koosseisu säilitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
     },
     {
       "@id": "estleg:Reg_159120_Par_12",
@@ -569,13 +1112,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Piiranguvööndi määratlus",
+      "rdfs:label": {
+        "@value": "§ 12. Piiranguvööndi määratlus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Kaitseala piiranguvöönd on kaitseala majandatav osa, mis ei kuulu sihtkaitsevööndisse. Kaitseala piiranguvöönd on kaitseala majandatav osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on neli piiranguvööndit: 1 1) Sendri piiranguvöönd; 2 2) Vallipää piiranguvöönd; 3 3) Kürema piiranguvöönd; 4 4) Änniste piiranguvöönd. Kaitsealal on neli piiranguvööndit: Sendri piiranguvöönd; Vallipää piiranguvöönd; Kürema piiranguvöönd; Änniste piiranguvöönd.",
-      "estleg:legalText": "1 (1) Kaitseala piiranguvöönd on kaitseala majandatav osa, mis ei kuulu sihtkaitsevööndisse. Kaitseala piiranguvöönd on kaitseala majandatav osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on neli piiranguvööndit: 1 1) Sendri piiranguvöönd; 2 2) Vallipää piiranguvöönd; 3 3) Kürema piiranguvöönd; 4 4) Änniste piiranguvöönd. Kaitsealal on neli piiranguvööndit: Sendri piiranguvöönd; Vallipää piiranguvöönd; Kürema piiranguvöönd; Änniste piiranguvöönd.",
+      "estleg:summary": {
+        "@value": "1 (1) Kaitseala piiranguvöönd on kaitseala majandatav osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on neli piiranguvööndit: 1 1) Sendri piiranguvöönd; 2 2) Vallipää piiranguvöönd; 3 3) Kürema piiranguvöönd; 4 4) Änniste piiranguvöönd.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kaitseala piiranguvöönd on kaitseala majandatav osa, mis ei kuulu sihtkaitsevööndisse. 2 (2) Kaitsealal on neli piiranguvööndit: 1 1) Sendri piiranguvöönd; 2 2) Vallipää piiranguvöönd; 3 3) Kürema piiranguvöönd; 4 4) Änniste piiranguvöönd.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158626_Par_11"
@@ -597,6 +1146,46 @@
         {
           "@id": "estleg:Reg_159120_Par_12_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_12_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseala piiranguvöönd on kaitseala majandatav osa, mis ei kuulu sihtkaitsevööndisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsealal on neli piiranguvööndit: 1) Sendri piiranguvöönd; 2) Vallipää piiranguvöönd; 3) Kürema piiranguvöönd; 4) Änniste piiranguvöönd.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
       ]
     },
     {
@@ -606,13 +1195,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Lubatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 13. Lubatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "1 (1) Piiranguvööndis on lubatud majandustegevus. Piiranguvööndis on lubatud majandustegevus. 2 (2) Piiranguvööndis on lubatud uute ehitiste, kaasa arvatud ajutiste ehitiste püstitamine, arvestades käesoleva määruse § 5 lõike 2 punktides 5–8 sätestatut. Piiranguvööndis on lubatud uute ehitiste, kaasa arvatud ajutiste ehitiste püstitamine, arvestades käesoleva määruse § 5 lõike 2 punktides 5–8 sätestatut. 3 (3) Piiranguvööndis on lubatud biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud l",
-      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud majandustegevus. Piiranguvööndis on lubatud majandustegevus. 2 (2) Piiranguvööndis on lubatud uute ehitiste, kaasa arvatud ajutiste ehitiste püstitamine, arvestades käesoleva määruse § 5 lõike 2 punktides 5–8 sätestatut. Piiranguvööndis on lubatud uute ehitiste, kaasa arvatud ajutiste ehitiste püstitamine, arvestades käesoleva määruse § 5 lõike 2 punktides 5–8 sätestatut. 3 (3) Piiranguvööndis on lubatud biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud looduslikul rohumaal ja metsamaal. Piiranguvööndis on lubatud biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud looduslikul rohumaal ja metsamaal.",
+      "estleg:summary": {
+        "@value": "1 (1) Piiranguvööndis on lubatud majandustegevus. 2 (2) Piiranguvööndis on lubatud uute ehitiste, kaasa arvatud ajutiste ehitiste püstitamine, arvestades käesoleva määruse § 5 lõike 2 punktides 5–8 sätestatut. 3 (3) Piiranguvööndis on lubatud biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud looduslikul rohumaal ja metsamaal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Piiranguvööndis on lubatud majandustegevus. 2 (2) Piiranguvööndis on lubatud uute ehitiste, kaasa arvatud ajutiste ehitiste püstitamine, arvestades käesoleva määruse § 5 lõike 2 punktides 5–8 sätestatut. 3 (3) Piiranguvööndis on lubatud biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud looduslikul rohumaal ja metsamaal.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158757_Par_12"
@@ -641,7 +1236,57 @@
         {
           "@id": "estleg:Reg_159120_Par_13_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_159120_Par_13_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on lubatud majandustegevus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Piiranguvööndis on lubatud uute ehitiste, kaasa arvatud ajutiste ehitiste püstitamine, arvestades käesoleva määruse § 5 lõike 2 punktides 5–8 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Piiranguvööndis on lubatud biotsiidi ja taimekaitsevahendi kasutamine, välja arvatud looduslikul rohumaal ja metsamaal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
     },
     {
       "@id": "estleg:Reg_159120_Par_14",
@@ -650,13 +1295,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Keelatud tegevus",
+      "rdfs:label": {
+        "@value": "§ 14. Keelatud tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "Piiranguvööndis on keelatud: 1 1) uuendusraie, välja arvatud turberaie, kusjuures tuleb säilitada koosluse liikide ja vanuse mitmekesisus; 2 2) puidu kokku- ja väljavedu külmumata pinnasel; 3 3) veekogude veetaseme ja kaldajoone muutmine ning uute veekogude rajamine; 4 4) maavara kaevandamine, välja arvatud «Maapõueseaduse» § 59 lõikes 2 sätestatud juhul kaitseala valitsejaga kooskõlastatud kohtades; 5 5) biotsiidi ja taimekaitsevahendi kasutamine looduslikul rohumaal ja metsamaal; 6 6) uue maap",
-      "estleg:legalText": "Piiranguvööndis on keelatud: 1 1) uuendusraie, välja arvatud turberaie, kusjuures tuleb säilitada koosluse liikide ja vanuse mitmekesisus; 2 2) puidu kokku- ja väljavedu külmumata pinnasel; 3 3) veekogude veetaseme ja kaldajoone muutmine ning uute veekogude rajamine; 4 4) maavara kaevandamine, välja arvatud «Maapõueseaduse» § 59 lõikes 2 sätestatud juhul kaitseala valitsejaga kooskõlastatud kohtades; 5 5) biotsiidi ja taimekaitsevahendi kasutamine looduslikul rohumaal ja metsamaal; 6 6) uue maaparandussüsteemi rajamine. Piiranguvööndis on keelatud: uuendusraie, välja arvatud turberaie, kusjuures tuleb säilitada koosluse liikide ja vanuse mitmekesisus; puidu kokku- ja väljavedu külmumata pinnasel; veekogude veetaseme ja kaldajoone muutmine ning uute veekogude rajamine; maavara kaevandamine, välja arvatud «Maapõueseaduse» § 59 lõikes 2 sätestatud juhul kaitseala valitsejaga kooskõlastatud kohtades; biotsiidi ja taimekaitsevahendi kasutamine looduslikul rohumaal ja metsamaal; uue maaparandussüsteemi rajamine.",
+      "estleg:summary": {
+        "@value": "Piiranguvööndis on keelatud: 1 1) uuendusraie, välja arvatud turberaie, kusjuures tuleb säilitada koosluse liikide ja vanuse mitmekesisus; 2 2) puidu kokku- ja väljavedu külmumata pinnasel; 3 3) veekogude veetaseme ja kaldajoone muutmine ning uute veekogude rajamine; 4 4) maavara kaevandamine, välja arvatud «Maapõueseaduse» § 59 lõikes 2 sätestatud juhul kaitseala valitsejaga kooskõlastatud kohtades; 5 5) biotsiidi ja taimekaitsevahendi kasutamine looduslikul rohumaal ja metsamaal; 6 6) uue…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndis on keelatud: 1 1) uuendusraie, välja arvatud turberaie, kusjuures tuleb säilitada koosluse liikide ja vanuse mitmekesisus; 2 2) puidu kokku- ja väljavedu külmumata pinnasel; 3 3) veekogude veetaseme ja kaldajoone muutmine ning uute veekogude rajamine; 4 4) maavara kaevandamine, välja arvatud «Maapõueseaduse» § 59 lõikes 2 sätestatud juhul kaitseala valitsejaga kooskõlastatud kohtades; 5 5) biotsiidi ja taimekaitsevahendi kasutamine looduslikul rohumaal ja metsamaal; 6 6) uue maaparandussüsteemi rajamine.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158643_Par_13"
@@ -685,6 +1336,32 @@
         {
           "@id": "estleg:Reg_159120_Par_14_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_14_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on keelatud: 1) uuendusraie, välja arvatud turberaie, kusjuures tuleb säilitada koosluse liikide ja vanuse mitmekesisus; 2) puidu kokku- ja väljavedu külmumata pinnasel; 3) veekogude veetaseme ja kaldajoone muutmine ning uute veekogude rajamine; 4) maavara kaevandamine, välja arvatud «Maapõueseaduse» § 59 lõikes 2 sätestatud juhul kaitseala valitsejaga kooskõlastatud kohtades; 5) biotsiidi ja taimekaitsevahendi kasutamine looduslikul rohumaal ja metsamaal; 6) uue maaparandussüsteemi rajamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -694,13 +1371,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Vajalik tegevus",
+      "rdfs:label": {
+        "@value": "§ 15. Vajalik tegevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik niitmine, karjatamine ning puu- ja põõsarinde harvendamine.",
-      "estleg:legalText": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik niitmine, karjatamine ning puu- ja põõsarinde harvendamine. Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik niitmine, karjatamine ning puu- ja põõsarinde harvendamine.",
+      "estleg:summary": {
+        "@value": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik niitmine, karjatamine ning puu- ja põõsarinde harvendamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik niitmine, karjatamine ning puu- ja põõsarinde harvendamine.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1022022_Par_20"
@@ -722,7 +1405,25 @@
         {
           "@id": "estleg:Reg_159120_Par_15_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_15_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndis on poollooduslike koosluste esinemisaladel nende ilme ja liigikoosseisu tagamiseks vajalik niitmine, karjatamine ning puu- ja põõsarinde harvendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
     },
     {
       "@id": "estleg:Reg_159120_Par_16",
@@ -731,13 +1432,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Piiranguvööndi kaitse-eesmärk",
+      "rdfs:label": {
+        "@value": "§ 16. Piiranguvööndi kaitse-eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "Piiranguvööndi kaitse-eesmärk on sealse elustiku mitmekesisuse ja maa kasutamisel kujunenud traditsioonilise pärandkultuurmaastiku ilme säilitamine.",
-      "estleg:legalText": "Piiranguvööndi kaitse-eesmärk on sealse elustiku mitmekesisuse ja maa kasutamisel kujunenud traditsioonilise pärandkultuurmaastiku ilme säilitamine. Piiranguvööndi kaitse-eesmärk on sealse elustiku mitmekesisuse ja maa kasutamisel kujunenud traditsioonilise pärandkultuurmaastiku ilme säilitamine.",
+      "estleg:summary": {
+        "@value": "Piiranguvööndi kaitse-eesmärk on sealse elustiku mitmekesisuse ja maa kasutamisel kujunenud traditsioonilise pärandkultuurmaastiku ilme säilitamine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Piiranguvööndi kaitse-eesmärk on sealse elustiku mitmekesisuse ja maa kasutamisel kujunenud traditsioonilise pärandkultuurmaastiku ilme säilitamine.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_158717_Par_15"
@@ -759,7 +1466,25 @@
         {
           "@id": "estleg:Reg_159120_Par_16_v159120"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_159120_Par_16_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_159120_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiranguvööndi kaitse-eesmärk on sealse elustiku mitmekesisuse ja maa kasutamisel kujunenud traditsioonilise pärandkultuurmaastiku ilme säilitamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_159120_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:Reg_159120_Par_17",
@@ -768,12 +1493,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. [[Käesolevast tekstist välja jäetud]]",
+      "rdfs:label": {
+        "@value": "§ 17. [[Käesolevast tekstist välja jäetud]]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Leidissoo looduskaitseala kaitse-eeskiri",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_159120_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud]",
       "estleg:hasVersion": [
         {

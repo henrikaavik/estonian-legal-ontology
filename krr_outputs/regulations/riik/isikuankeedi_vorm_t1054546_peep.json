@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Isikuankeedi vorm (määrus)",
+      "rdfs:label": {
+        "@value": "Isikuankeedi vorm (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Isikuankeedi vorm",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -44,11 +51,6 @@
         "@value": "2022-07-15",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2022-07-12",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -72,7 +74,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2162"
         }
-      ]
+      ],
+      "dcterms:title": "Isikuankeedi vorm",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1054546_Annex_1",
@@ -80,7 +88,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 1",
+      "rdfs:label": {
+        "@value": "Lisa 1 – Isikuankeedi vorm",
+        "@language": "et"
+      },
       "estleg:annexNumber": "1"
     },
     {
@@ -89,7 +100,10 @@
         "owl:NamedIndividual",
         "estleg:Annex"
       ],
-      "rdfs:label": "Lisa 2",
+      "rdfs:label": {
+        "@value": "Lisa 2",
+        "@language": "et"
+      },
       "estleg:annexNumber": "2"
     },
     {
@@ -99,13 +113,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikuankeedi vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054546_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse Politsei- ja Piirivalveametisse või Siseministeeriumisse või tema hallatavasse riigiasutusse või valitsusasutusse praktikale või Siseministeeriumisse või tema hallatavasse riigiasutusse teenistusse või tööle kandideerija isikuankeedi vorm (lisa).",
-      "estleg:legalText": "Määrusega kehtestatakse Politsei- ja Piirivalveametisse või Siseministeeriumisse või tema hallatavasse riigiasutusse või valitsusasutusse praktikale või Siseministeeriumisse või tema hallatavasse riigiasutusse teenistusse või tööle kandideerija isikuankeedi vorm (lisa). Määrusega kehtestatakse Politsei- ja Piirivalveametisse või Siseministeeriumisse või tema hallatavasse riigiasutusse või valitsusasutusse praktikale või Siseministeeriumisse või tema hallatavasse riigiasutusse teenistusse või tööle kandideerija isikuankeedi vorm (lisa).",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse Politsei- ja Piirivalveametisse või Siseministeeriumisse või tema hallatavasse riigiasutusse või valitsusasutusse praktikale või Siseministeeriumisse või tema hallatavasse riigiasutusse teenistusse või tööle kandideerija isikuankeedi vorm (lisa).",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse Politsei- ja Piirivalveametisse või Siseministeeriumisse või tema hallatavasse riigiasutusse või valitsusasutusse praktikale või Siseministeeriumisse või tema hallatavasse riigiasutusse teenistusse või tööle kandideerija isikuankeedi vorm (lisa).",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -127,7 +147,25 @@
         {
           "@id": "estleg:Institution_siseministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054546_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1054546_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse Politsei- ja Piirivalveametisse või Siseministeeriumisse või tema hallatavasse riigiasutusse või valitsusasutusse praktikale või Siseministeeriumisse või tema hallatavasse riigiasutusse teenistusse või tööle kandideerija isikuankeedi vorm (lisa).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054546_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1054546_Par_2",
@@ -136,13 +174,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 2. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Isikuankeedi vorm",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1054546_Map"
       },
-      "estleg:summary": "Määrust rakendatakse tagasiulatuvalt alates 1. juulist 2022. aastal.",
-      "estleg:legalText": "Määrust rakendatakse tagasiulatuvalt alates 1. juulist 2022. aastal. Määrust rakendatakse tagasiulatuvalt alates 1. juulist 2022. aastal.",
+      "estleg:summary": {
+        "@value": "Määrust rakendatakse tagasiulatuvalt alates 1. juulist 2022. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust rakendatakse tagasiulatuvalt alates 1. juulist 2022. aastal.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1031488_Par_35"
@@ -164,6 +208,11 @@
         {
           "@id": "estleg:Reg_1054546_Par_2_v1054546"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1054546_Par_2_Lg_1"
+        }
       ]
     },
     {
@@ -176,6 +225,19 @@
         "@id": "estleg:POLITS_Par_7"
       },
       "estleg:citationText": "Määrus kehtestatakse politsei ja piirivalve seaduse § 7"
+    },
+    {
+      "@id": "estleg:Reg_1054546_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust rakendatakse tagasiulatuvalt alates 1. juulist 2022. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1054546_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     }
   ]
 }

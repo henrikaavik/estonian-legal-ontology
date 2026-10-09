@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:PEVAKVKTEKSP_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
       "dcterms:title": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/25174.xml"
+        "@id": "https://www.riigiteataja.ee/akt/25174"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/25174/xml"
+      },
+      "estleg:globalId": "25174",
+      "eli:id_local": "25174",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "151887",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "f986bac876217a328fbcab4e495b277ff4e3e56bb38841659e66b281849a58c3",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -48,30 +69,39 @@
       ]
     },
     {
-      "@id": "estleg:PEVAKVKTEKSP_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_PEVAKVKTEKSP_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_PEVAKVKTEKSP_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–4 Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
-      "skos:prefLabel": "§1–4 Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
+      "rdfs:label": {
+        "@value": "§1–4 Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:PEVAKVKTEKSP_TopicScheme"
       },
       "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:PEVAKVKTEKSP_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PEVAKVKTEKSP_default"
+        }
+      ]
     },
     {
       "@id": "estleg:PEVAKVKTEKSP_Par_1",
@@ -80,12 +110,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida piinamise ja ebainimliku või alandava kohtlemise või karistamise...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida , mis on koostatud 1987. aasta 26. novembril Strasbourg'is ja Ees...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PEVAKVKTEKSP_Map"
       },
-      "estleg:summary": "Ratifitseerida , mis on koostatud 1987. aasta 26. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida , mis on koostatud 1987. aasta 26. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida , mis on koostatud 1987. aasta 26. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PEVAKVKTEKSP_default"
@@ -124,10 +160,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida , mis on koostatud 1987. aasta 26. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida , mis on koostatud 1987. aasta 26. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
       "estleg:parentProvision": {
         "@id": "estleg:PEVAKVKTEKSP_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:PEVAKVKTEKSP_Par_2",
@@ -136,12 +174,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Ratifitseerida piinamise ja ebainimliku või alandava kohtlemise või karistamise...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eest...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PEVAKVKTEKSP_Map"
       },
-      "estleg:summary": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PEVAKVKTEKSP_default"
@@ -180,10 +224,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
       "estleg:parentProvision": {
         "@id": "estleg:PEVAKVKTEKSP_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:PEVAKVKTEKSP_Par_3",
@@ -192,12 +238,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [Ratifitseerida piinamise ja ebainimliku või alandava kohtlemise või karistamise...]",
+      "rdfs:label": {
+        "@value": "§ 3. [Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eest...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PEVAKVKTEKSP_Map"
       },
-      "estleg:summary": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PEVAKVKTEKSP_default"
@@ -236,10 +288,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ratifitseerida , mis on koostatud 1993. aasta 4. novembril Strasbourg'is ja Eesti Vabariigi poolt alla kirjutatud 1996. aasta 28. juunil.",
       "estleg:parentProvision": {
         "@id": "estleg:PEVAKVKTEKSP_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:PEVAKVKTEKSP_Par_4",
@@ -248,12 +302,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [Vabariigi Valitsusel määrata ametivõim, kes on pädev vastu võtma Eesti Vabariigi...]",
+      "rdfs:label": {
+        "@value": "§ 4. [Vabariigi Valitsusel määrata ametivõim, kes on pädev vastu võtma Eesti Vabariigi...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Piinamise ja ebainimliku või alandava kohtlemise või karistamise tõkestamise Euroopa konventsiooni ja selle protokollide nr 1 ja 2 ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:PEVAKVKTEKSP_Map"
       },
-      "estleg:summary": "Vabariigi Valitsusel määrata ametivõim, kes on pädev vastu võtma Eesti Vabariigi valitsusele saadetavaid teateid.",
+      "estleg:summary": {
+        "@value": "Vabariigi Valitsusel määrata ametivõim, kes on pädev vastu võtma Eesti Vabariigi valitsusele saadetavaid teateid.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vabariigi Valitsusel määrata ametivõim, kes on pädev vastu võtma Eesti Vabariigi valitsusele saadetavaid teateid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_PEVAKVKTEKSP_default"
@@ -306,10 +366,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vabariigi Valitsusel määrata ametivõim, kes on pädev vastu võtma Eesti Vabariigi valitsusele saadetavaid teateid.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsusel määrata ametivõim, kes on pädev vastu võtma Eesti Vabariigi valitsusele saadetavaid teateid.",
       "estleg:parentProvision": {
         "@id": "estleg:PEVAKVKTEKSP_Par_4"
       },
+      "rdfs:label": "§ 4 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"

@@ -5,25 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:UROKKU_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus",
       "dcterms:title": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/13275260.xml"
+        "@id": "https://www.riigiteataja.ee/akt/13275260"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/13275260/xml"
+      },
+      "estleg:globalId": "13275260",
+      "eli:id_local": "13275260",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "341221",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "9164f07b98cc1bfc77d5d17ae67b0d2337e6ab1345d6e13ea972c76847f11c57",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2010-02-26",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -38,30 +60,39 @@
       "estleg:contentStatusReason": "Ratification/accession act only — the treaty body (välisleping) is not ingested (#528)."
     },
     {
-      "@id": "estleg:UROKKU_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_UROKKU_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_UROKKU_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Lepingu sätted",
-      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "rdfs:label": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Lepingu sätted",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:UROKKU_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:UROKKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_UROKKU_default"
+        }
+      ]
     },
     {
       "@id": "estleg:UROKKU_Par_1",
@@ -70,12 +101,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ühineda juurdelisatud Ühinenud Rahvaste Organisatsiooni korruptsioonivastase kon...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ühineda juurdelisatud , mis on vastu võetud ÜRO peaassambleel 2003. aasta 31. ok...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UROKKU_Map"
       },
-      "estleg:summary": "Ühineda juurdelisatud , mis on vastu võetud ÜRO peaassambleel 2003. aasta 31. oktoobril New Yorgis.",
+      "estleg:summary": {
+        "@value": "Ühineda juurdelisatud , mis on vastu võetud ÜRO peaassambleel 2003. aasta 31. oktoobril New Yorgis.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud ÜRO peaassambleel 2003. aasta 31. oktoobril New Yorgis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UROKKU_default"
@@ -114,10 +151,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud ÜRO peaassambleel 2003. aasta 31. oktoobril New Yorgis.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühineda juurdelisatud , mis on vastu võetud ÜRO peaassambleel 2003. aasta 31. oktoobril New Yorgis.",
       "estleg:parentProvision": {
         "@id": "estleg:UROKKU_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:UROKKU_Par_2",
@@ -126,15 +165,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ühinemisel teatada:",
+      "rdfs:label": {
+        "@value": "§ 2. Ühinemisel teatada:",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Ühinenud Rahvaste Organisatsiooni korruptsioonivastase konventsiooniga ühinemise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:UROKKU_Map"
       },
+      "estleg:summary": "§ 2. Ühinemisel teatada:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_UROKKU_default"
-      },
-      "estleg:summary": "§ 2. Ühinemisel teatada:"
+      }
     }
   ]
 }

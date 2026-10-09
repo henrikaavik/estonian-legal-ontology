@@ -5,34 +5,55 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:TsUS_Osa2",
       "@type": [
-        "estleg:Part"
+        "estleg:Part",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Tsiviilseadustiku üldosa seadus Osa 2 (ISIKUD) §7–47 kaardistus",
+      "estleg:isPartOf": {
+        "@id": "estleg:TsUS_Map"
+      },
+      "estleg:partOfAct": {
+        "@id": "estleg:TsUS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Tsiviilseadustiku üldosa seadus Osa 2 (ISIKUD) §7–47 kaardistus",
+        "@language": "et"
+      },
       "dc:source": "Tsiviilseadustiku üldosa seadus",
-      "dcterms:title": [
-        {
-          "@value": "Tsiviilseadustiku üldosa seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "An Act on the General Part of the Civil Code",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Tsiviilseadustiku üldosa seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/131122024048.xml"
+        "@id": "https://www.riigiteataja.ee/akt/131122024048"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/131122024048/xml"
+      },
+      "estleg:globalId": "131122024048",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "155036",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "b8da42e31ac19f3ff81ae65e59f330cc9d41c3eb9e0fa25038b7fdae5cfe16a1",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2002-07-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2025-01-01",
         "@type": "xsd:date"
       },
       "estleg:harmonisedWith": [
@@ -48,15 +69,8 @@
         "@value": "0.55",
         "@type": "xsd:decimal"
       },
-      "estleg:lastAmendmentDate": {
-        "@value": "2025-01-01",
-        "@type": "xsd:date"
-      },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/523012025003"
-      },
-      "estleg:isPartOf": {
-        "@id": "estleg:TsUS_Map"
       },
       "estleg:transposesDirective": [
         {
@@ -68,11 +82,37 @@
       ]
     },
     {
+      "@id": "estleg:Cluster_TsUS_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "FÜÜSILISED ISIKUD",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "FÜÜSILISED ISIKUD",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:TsUS_Osa2_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_TsUS_2_Part"
+      },
+      "estleg:provisionCount": 17
+    },
+    {
       "@id": "estleg:TsUS_Osa2_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Tsiviilseadustiku üldosa seadus Osa 2 (ISIKUD) teemaskeem",
+      "rdfs:label": {
+        "@value": "Tsiviilseadustiku üldosa seadus Osa 2 (ISIKUD) teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_TsUS_2_Part"
@@ -85,8 +125,14 @@
         "owl:NamedIndividual",
         "skos:Concept"
       ],
-      "rdfs:label": "Osa 2 (ISIKUD)",
-      "skos:prefLabel": "Osa 2 (ISIKUD)",
+      "rdfs:label": {
+        "@value": "Osa 2 (ISIKUD)",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Osa 2 (ISIKUD)",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TsUS_Osa2_TopicScheme"
       },
@@ -100,29 +146,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_TsUS_2_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "FÜÜSILISED ISIKUD",
-      "skos:prefLabel": "FÜÜSILISED ISIKUD",
-      "skos:inScheme": {
-        "@id": "estleg:TsUS_Osa2_TopicScheme"
-      },
-      "skos:broader": {
-        "@id": "estleg:Cluster_TsUS_2_Part"
-      },
-      "estleg:provisionCount": 0
-    },
-    {
       "@id": "estleg:Division_TsUS_2_1_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Õigus- ja teovõime",
+      "rdfs:label": {
+        "@value": "1. jagu – Õigus- ja teovõime",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TsUS_2_1"
       }
@@ -133,7 +165,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Elukoht ja tegevuskoht",
+      "rdfs:label": {
+        "@value": "2. jagu – Elukoht ja tegevuskoht",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TsUS_2_1"
       }
@@ -144,7 +179,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Isiku teadmata kadumine ja isiku surnuks tunnistamine",
+      "rdfs:label": {
+        "@value": "3. jagu – Isiku teadmata kadumine ja isiku surnuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_TsUS_2_1"
       }
@@ -155,7 +193,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – FÜÜSILISED ISIKUD",
+      "rdfs:label": {
+        "@value": "1. peatükk – FÜÜSILISED ISIKUD",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
@@ -186,15 +227,21 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§24–47 JURIIDILISED ISIKUD",
-      "skos:prefLabel": "§24–47 JURIIDILISED ISIKUD",
+      "rdfs:label": {
+        "@value": "§24–47 JURIIDILISED ISIKUD",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§24–47 JURIIDILISED ISIKUD",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:TsUS_Osa2_TopicScheme"
       },
       "skos:broader": {
         "@id": "estleg:Cluster_TsUS_2_Part"
       },
-      "estleg:provisionCount": 24
+      "estleg:provisionCount": 25
     },
     {
       "@id": "estleg:Chapter_TsUS_2_2",
@@ -202,7 +249,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – JURIIDILISED ISIKUD",
+      "rdfs:label": {
+        "@value": "2. peatükk – JURIIDILISED ISIKUD",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
@@ -222,13 +272,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Füüsilise isiku õigusvõime",
+      "rdfs:label": {
+        "@value": "§ 7. Füüsilise isiku õigusvõime",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Füüsilise isiku (inimese) õigusvõime on võime omada tsiviilõigusi ja kanda tsiviilkohustusi. Igal füüsilisel isikul on ühetaoline ja piiramatu õigusvõime. (2) Õigusvõime algab inimese elusalt sündimisega ja lõpeb surmaga. (3) Seaduses sätestatud juhtudel on inimloode õigusvõimeline alates eostamisest, kui laps sünnib elusana.",
+      "estleg:summary": {
+        "@value": "(1) Füüsilise isiku (inimese) õigusvõime on võime omada tsiviilõigusi ja kanda tsiviilkohustusi. Igal füüsilisel isikul on ühetaoline ja piiramatu õigusvõime. (2) Õigusvõime algab inimese elusalt sündimisega ja lõpeb surmaga. (3) Seaduses sätestatud juhtudel on inimloode õigusvõimeline alates eostamisest, kui laps sünnib elusana.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Füüsilise isiku (inimese) õigusvõime on võime omada tsiviilõigusi ja kanda tsiviilkohustusi. Igal füüsilisel isikul on ühetaoline ja piiramatu õigusvõime. (2) Õigusvõime algab inimese elusalt sündimisega ja lõpeb surmaga. (3) Seaduses sätestatud juhtudel on inimloode õigusvõimeline alates eostamisest, kui laps sünnib elusana.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_1"
       },
@@ -340,13 +399,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Füüsilise isiku teovõime",
+      "rdfs:label": {
+        "@value": "§ 8. Füüsilise isiku teovõime",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Füüsilise isiku teovõime on võime iseseisvalt teha kehtivaid tehinguid. (2) Täielik teovõime on 18-aastaseks saanud isikul (täisealisel). Alla 18-aastasel isikul (alaealisel) ja isikul, kes vaimuhaiguse, nõrgamõistuslikkuse või muu psüühikahäire tõttu kestvalt ei suuda oma tegudest aru saada või neid juhtida, on piiratud teovõime. Täisealise isiku piiratud teovõime mõjutab isiku tehingute kehtivust üksnes ulatuses, milles ta ei suuda oma tegudest aru saada või neid juhtida.",
+      "estleg:summary": {
+        "@value": "(1) Füüsilise isiku teovõime on võime iseseisvalt teha kehtivaid tehinguid. (2) Täielik teovõime on 18-aastaseks saanud isikul (täisealisel). Alla 18-aastasel isikul (alaealisel) ja isikul, kes vaimuhaiguse, nõrgamõistuslikkuse või muu psüühikahäire tõttu kestvalt ei suuda oma tegudest aru saada või neid juhtida, on piiratud teovõime. Täisealise isiku piiratud teovõime mõjutab isiku tehingute kehtivust üksnes ulatuses, milles ta ei suuda oma tegudest aru saada või neid juhtida.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Füüsilise isiku teovõime on võime iseseisvalt teha kehtivaid tehinguid. (2) Täielik teovõime on 18-aastaseks saanud isikul (täisealisel). Alla 18-aastasel isikul (alaealisel) ja isikul, kes vaimuhaiguse, nõrgamõistuslikkuse või muu psüühikahäire tõttu kestvalt ei suuda oma tegudest aru saada või neid juhtida, on piiratud teovõime. Täisealise isiku piiratud teovõime mõjutab isiku tehingute kehtivust üksnes ulatuses, milles ta ei suuda oma tegudest aru saada või neid juhtida. (3) Kui isikule, kes vaimuhaiguse, nõrgamõistuslikkuse või muu psüühikahäire tõttu ei suuda kestvalt oma tegudest aru saada või neid juhtida, on määratud kohtu poolt eestkostja, siis eeldatakse, et isik on piiratud teovõimega ulatuses, milles talle eestkostja on määratud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_1"
       },
@@ -586,13 +654,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Vähemalt 15-aastase alaealise piiratud teovõime laiendamine",
+      "rdfs:label": {
+        "@value": "§ 9. Vähemalt 15-aastase alaealise piiratud teovõime laiendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Kohus võib vähemalt 15-aastase alaealise piiratud teovõimet laiendada, kui see on alaealise huvides ja alaealise arengutase seda võimaldab. Sel juhul otsustab kohus, milliseid tehinguid võib alaealine teha iseseisvalt. (2) Alaealise piiratud teovõimet võib laiendada tema seadusliku esindaja nõusolekul. Kui nõusoleku andmisest keeldumine on ilmselt vastuolus alaealise huvidega, võib kohus alaealise teovõimet laiendada seadusliku esindaja nõusolekuta.",
+      "estleg:summary": {
+        "@value": "(1) Kohus võib vähemalt 15-aastase alaealise piiratud teovõimet laiendada, kui see on alaealise huvides ja alaealise arengutase seda võimaldab. Sel juhul otsustab kohus, milliseid tehinguid võib alaealine teha iseseisvalt. (2) Alaealise piiratud teovõimet võib laiendada tema seadusliku esindaja nõusolekul. Kui nõusoleku andmisest keeldumine on ilmselt vastuolus alaealise huvidega, võib kohus alaealise teovõimet laiendada seadusliku esindaja nõusolekuta.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kohus võib vähemalt 15-aastase alaealise piiratud teovõimet laiendada, kui see on alaealise huvides ja alaealise arengutase seda võimaldab. Sel juhul otsustab kohus, milliseid tehinguid võib alaealine teha iseseisvalt. (2) Alaealise piiratud teovõimet võib laiendada tema seadusliku esindaja nõusolekul. Kui nõusoleku andmisest keeldumine on ilmselt vastuolus alaealise huvidega, võib kohus alaealise teovõimet laiendada seadusliku esindaja nõusolekuta. (3) Mõjuval põhjusel võib kohus alaealise piiratud teovõime laiendamise täielikult või osaliselt tühistada.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_1"
       },
@@ -745,13 +822,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Piiratud teovõimega isiku ühepoolne tehing",
+      "rdfs:label": {
+        "@value": "§ 10. Piiratud teovõimega isiku ühepoolne tehing",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud ühepoolne tehing on tühine.",
+      "estleg:summary": {
+        "@value": "Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud ühepoolne tehing on tühine.",
+        "@language": "et"
+      },
       "estleg:legalText": "Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud ühepoolne tehing on tühine.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_1"
       },
@@ -803,10 +889,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud ühepoolne tehing on tühine.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud ühepoolne tehing on tühine.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_10"
       },
+      "rdfs:label": "§ 10 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -829,13 +917,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Piiratud teovõimega isiku mitmepoolne tehing",
+      "rdfs:label": {
+        "@value": "§ 11. Piiratud teovõimega isiku mitmepoolne tehing",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud mitmepoolne tehing on tühine, välja arvatud, kui seaduslik esindaja tehingu hiljem heaks kiidab. Kui isik on muutunud pärast tehingu tegemist teovõimeliseks, võib ta tehingu ise heaks kiita. (2) Kui seaduslik esindaja on andnud tehingu tegemiseks nõusoleku või tehingu heaks kiitnud, siis eeldatakse, et nõusolek või heakskiit kehtib ka kõigi tehingu ja selle täitmisega seotud toimingute ja tahteavalduste suhtes.",
-      "estleg:legalText": "(1) Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud mitmepoolne tehing on tühine, välja arvatud, kui seaduslik esindaja tehingu hiljem heaks kiidab. Kui isik on muutunud pärast tehingu tegemist teovõimeliseks, võib ta tehingu ise heaks kiita. (2) Kui seaduslik esindaja on andnud tehingu tegemiseks nõusoleku või tehingu heaks kiitnud, siis eeldatakse, et nõusolek või heakskiit kehtib ka kõigi tehingu ja selle täitmisega seotud toimingute ja tahteavalduste suhtes. (3) Piiratud teovõimega isiku tehtud tehing, mille see isik on teinud seadusliku esindaja eelneva nõusolekuta või hilisema heakskiiduta, kehtib, kui: tehingust ei teki isikule otseseid tsiviilkohustusi; isik täitis tehingu vahenditega, mille andis talle selleks otstarbeks või vabaks kasutamiseks tema seaduslik esindaja või viimase nõusolekul kolmas isik. (4) Kui piiratud teovõimega isik on teinud tehingu seadusliku esindaja eelneva nõusolekuta, võib tehingu teine pool teha seaduslikule esindajale ettepaneku tehing heaks kiita. Heakskiit on kehtiv, kui see on avaldatud ettepaneku tegijale. (5) Kui seaduslik esindaja ei avalda heakskiitu kahe nädala jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud ettepaneku saamisest, siis loetakse, et ta ei ole tehingut heaks kiitnud. (6) Tehingu teine pool võib oma tehingu tegemisele suunatud tahteavalduse tagasi võtta, kui piiratud teovõimega isikul ei olnud tehingu tegemiseks seadusliku esindaja eelnevat nõusolekut ja tehingu teine pool ei teadnud ega pidanudki teadma, et isik on piiratud teovõimega. Sel juhul loetakse, et tahteavaldust ei ole tehtud. Pärast seda, kui seaduslik esindaja on tehingu heaks kiitnud, ei saa tehingu teine pool oma tahteavaldust tagasi võtta.",
+      "estleg:summary": {
+        "@value": "(1) Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud mitmepoolne tehing on tühine, välja arvatud, kui seaduslik esindaja tehingu hiljem heaks kiidab. Kui isik on muutunud pärast tehingu tegemist teovõimeliseks, võib ta tehingu ise heaks kiita. (2) Kui seaduslik esindaja on andnud tehingu tegemiseks nõusoleku või tehingu heaks kiitnud, siis eeldatakse, et nõusolek või heakskiit kehtib ka kõigi tehingu ja selle täitmisega seotud toimingute ja tahteavalduste suhtes.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Piiratud teovõimega isiku poolt seadusliku esindaja eelneva nõusolekuta tehtud mitmepoolne tehing on tühine, välja arvatud, kui seaduslik esindaja tehingu hiljem heaks kiidab. Kui isik on muutunud pärast tehingu tegemist teovõimeliseks, võib ta tehingu ise heaks kiita. (2) Kui seaduslik esindaja on andnud tehingu tegemiseks nõusoleku või tehingu heaks kiitnud, siis eeldatakse, et nõusolek või heakskiit kehtib ka kõigi tehingu ja selle täitmisega seotud toimingute ja tahteavalduste suhtes. (3) Piiratud teovõimega isiku tehtud tehing, mille see isik on teinud seadusliku esindaja eelneva nõusolekuta või hilisema heakskiiduta, kehtib, kui: 1) tehingust ei teki isikule otseseid tsiviilkohustusi; 2) isik täitis tehingu vahenditega, mille andis talle selleks otstarbeks või vabaks kasutamiseks tema seaduslik esindaja või viimase nõusolekul kolmas isik. (4) Kui piiratud teovõimega isik on teinud tehingu seadusliku esindaja eelneva nõusolekuta, võib tehingu teine pool teha seaduslikule esindajale ettepaneku tehing heaks kiita. Heakskiit on kehtiv, kui see on avaldatud ettepaneku tegijale. (5) Kui seaduslik esindaja ei avalda heakskiitu kahe nädala jooksul, arvates käesoleva paragrahvi lõikes 4 nimetatud ettepaneku saamisest, siis loetakse, et ta ei ole tehingut heaks kiitnud. (6) Tehingu teine pool võib oma tehingu tegemisele suunatud tahteavalduse tagasi võtta, kui piiratud teovõimega isikul ei olnud tehingu tegemiseks seadusliku esindaja eelnevat nõusolekut ja tehingu teine pool ei teadnud ega pidanudki teadma, et isik on piiratud teovõimega. Sel juhul loetakse, et tahteavaldust ei ole tehtud. Pärast seda, kui seaduslik esindaja on tehingu heaks kiitnud, ei saa tehingu teine pool oma tahteavaldust tagasi võtta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_1"
       },
@@ -955,11 +1052,15 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Piiratud teovõimega isiku tehtud tehing, mille see isik on teinud seadusliku esindaja eelneva nõusolekuta või hilisema heakskiiduta, kehtib, kui: tehingust ei teki isikule otseseid tsiviilkohustusi; isik täitis tehingu vahenditega, mille andis talle selleks otstarbeks või vabaks kasutamiseks tema seaduslik esindaja või viimase nõusolekul kolmas isik.",
+      "estleg:legalText": "(3) Piiratud teovõimega isiku tehtud tehing, mille see isik on teinud seadusliku esindaja eelneva nõusolekuta või hilisema heakskiiduta, kehtib, kui: 1) tehingust ei teki isikule otseseid tsiviilkohustusi; 2) isik täitis tehingu vahenditega, mille andis talle selleks otstarbeks või vabaks kasutamiseks tema seaduslik esindaja või viimase nõusolekul kolmas isik.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_11"
       },
       "rdfs:label": "§ 11 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1040,13 +1141,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Alla 7-aastase alaealise tehing",
+      "rdfs:label": {
+        "@value": "§ 12. Alla 7-aastase alaealise tehing",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Alla 7-aastase alaealise tehtud ühepoolne tehing on tühine. (2) Alla 7-aastase alaealise tehtud mitmepoolne tehing on tühine, välja arvatud juhul, kui alaealine täitis tehingu vahenditega, mille andis talle selleks otstarbeks või vabaks kasutamiseks tema seaduslik esindaja või viimase nõusolekul kolmas isik.",
+      "estleg:summary": {
+        "@value": "(1) Alla 7-aastase alaealise tehtud ühepoolne tehing on tühine. (2) Alla 7-aastase alaealise tehtud mitmepoolne tehing on tühine, välja arvatud juhul, kui alaealine täitis tehingu vahenditega, mille andis talle selleks otstarbeks või vabaks kasutamiseks tema seaduslik esindaja või viimase nõusolekul kolmas isik.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Alla 7-aastase alaealise tehtud ühepoolne tehing on tühine. (2) Alla 7-aastase alaealise tehtud mitmepoolne tehing on tühine, välja arvatud juhul, kui alaealine täitis tehingu vahenditega, mille andis talle selleks otstarbeks või vabaks kasutamiseks tema seaduslik esindaja või viimase nõusolekul kolmas isik.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_1"
       },
@@ -1123,13 +1233,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Otsusevõimetu isiku tehing",
+      "rdfs:label": {
+        "@value": "§ 13. Otsusevõimetu isiku tehing",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Tehing, mille isik tegi vaimutegevuse ajutise häire või muu asjaolu tõttu seisundis, mis välistas tema võime õigesti hinnata seda, kuidas tehing mõjutab tema huve (otsusevõimetus), on tühine, välja arvatud, kui isik kiidab tehingu pärast vaimutegevuse ajutise häire või muu asjaolu lõppemist heaks. (2) Tehingu teine pool võib teha ettepaneku, et otsusevõimetuna tehingu teinud isik kiidaks tehingu heaks. Kui isik ei keeldu heakskiidu andmisest kahe nädala jooksul, arvates ettepaneku",
+      "estleg:summary": {
+        "@value": "(1) Tehing, mille isik tegi vaimutegevuse ajutise häire või muu asjaolu tõttu seisundis, mis välistas tema võime õigesti hinnata seda, kuidas tehing mõjutab tema huve (otsusevõimetus), on tühine, välja arvatud, kui isik kiidab tehingu pärast vaimutegevuse ajutise häire või muu asjaolu lõppemist heaks. (2) Tehingu teine pool võib teha ettepaneku, et otsusevõimetuna tehingu teinud isik kiidaks tehingu heaks. Kui isik ei keeldu heakskiidu andmisest kahe nädala jooksul, arvates ettepaneku",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tehing, mille isik tegi vaimutegevuse ajutise häire või muu asjaolu tõttu seisundis, mis välistas tema võime õigesti hinnata seda, kuidas tehing mõjutab tema huve (otsusevõimetus), on tühine, välja arvatud, kui isik kiidab tehingu pärast vaimutegevuse ajutise häire või muu asjaolu lõppemist heaks. (2) Tehingu teine pool võib teha ettepaneku, et otsusevõimetuna tehingu teinud isik kiidaks tehingu heaks. Kui isik ei keeldu heakskiidu andmisest kahe nädala jooksul, arvates ettepaneku saamisest, siis loetakse, et ta on tehingu heaks kiitnud. (3) Kui isik tegi käesoleva paragrahvi lõikes 1 nimetatud asjaolu mõju all olles endale ilmselt kahjuliku tehingu, siis eeldatakse, et ta tegi tehingu otsusevõimetuna.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_1"
       },
@@ -1293,13 +1412,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Elukoht ja selle muutmine",
+      "rdfs:label": {
+        "@value": "§ 14. Elukoht ja selle muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Isiku elukoht on koht, kus isik alaliselt või peamiselt elab. (2) Elukoht võib üheaegselt olla mitmes kohas. (3) Elukoht loetakse muutunuks, kui isik asub mujale elama viisil, millest võib järeldada isiku tahet oma elukohta muuta. (4) Kui isiku elukohta ei saa kindlaks määrata, loetakse tema elukohaks tema igakordne viibimiskoht.",
+      "estleg:summary": {
+        "@value": "(1) Isiku elukoht on koht, kus isik alaliselt või peamiselt elab. (2) Elukoht võib üheaegselt olla mitmes kohas. (3) Elukoht loetakse muutunuks, kui isik asub mujale elama viisil, millest võib järeldada isiku tahet oma elukohta muuta. (4) Kui isiku elukohta ei saa kindlaks määrata, loetakse tema elukohaks tema igakordne viibimiskoht.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isiku elukoht on koht, kus isik alaliselt või peamiselt elab. (2) Elukoht võib üheaegselt olla mitmes kohas. (3) Elukoht loetakse muutunuks, kui isik asub mujale elama viisil, millest võib järeldada isiku tahet oma elukohta muuta. (4) Kui isiku elukohta ei saa kindlaks määrata, loetakse tema elukohaks tema igakordne viibimiskoht.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_2"
       },
@@ -1492,13 +1620,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Alaealise ja eestkoste all oleva isiku elukoht",
+      "rdfs:label": {
+        "@value": "§ 15. Alaealise ja eestkoste all oleva isiku elukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Piiratud teovõimega alaealise elukohaks loetakse tema vanemate või eestkostja elukoht. Kui vanemad elavad lahus, on alaealise elukohaks selle vanema elukoht, kelle juures ta elab. (2) Kui piiratud teovõimega alaealine elab vanematest või eestkostjast eraldi, võib tema elukohaks vanema või eestkostja nõusolekul lugeda ka koha, kus alaealine alaliselt või peamiselt elab. (3) Eestkoste all oleva piiratud teovõimega täisealise isiku elukohaks loetakse eestkostja elukoht.",
+      "estleg:summary": {
+        "@value": "(1) Piiratud teovõimega alaealise elukohaks loetakse tema vanemate või eestkostja elukoht. Kui vanemad elavad lahus, on alaealise elukohaks selle vanema elukoht, kelle juures ta elab. (2) Kui piiratud teovõimega alaealine elab vanematest või eestkostjast eraldi, võib tema elukohaks vanema või eestkostja nõusolekul lugeda ka koha, kus alaealine alaliselt või peamiselt elab. (3) Eestkoste all oleva piiratud teovõimega täisealise isiku elukohaks loetakse eestkostja elukoht.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Piiratud teovõimega alaealise elukohaks loetakse tema vanemate või eestkostja elukoht. Kui vanemad elavad lahus, on alaealise elukohaks selle vanema elukoht, kelle juures ta elab. (2) Kui piiratud teovõimega alaealine elab vanematest või eestkostjast eraldi, võib tema elukohaks vanema või eestkostja nõusolekul lugeda ka koha, kus alaealine alaliselt või peamiselt elab. (3) Eestkoste all oleva piiratud teovõimega täisealise isiku elukohaks loetakse eestkostja elukoht. Eestkostja nõusolekul võib selle isiku elukohaks olla koht, kus isik alaliselt või peamiselt elab.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_2"
       },
@@ -1635,13 +1772,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Tegevuskoht",
+      "rdfs:label": {
+        "@value": "§ 16. Tegevuskoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Isiku tegevuskoht on tema püsiva ja kestva majandus- või kutsetegevuse koht.",
+      "estleg:summary": {
+        "@value": "Isiku tegevuskoht on tema püsiva ja kestva majandus- või kutsetegevuse koht.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isiku tegevuskoht on tema püsiva ja kestva majandus- või kutsetegevuse koht.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_2"
       },
@@ -1687,10 +1833,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isiku tegevuskoht on tema püsiva ja kestva majandus- või kutsetegevuse koht.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isiku tegevuskoht on tema püsiva ja kestva majandus- või kutsetegevuse koht.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_16"
       },
+      "rdfs:label": "§ 16 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1708,13 +1856,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Teadmata kadunud isik",
+      "rdfs:label": {
+        "@value": "§ 17. Teadmata kadunud isik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Teadmata kadunuks loetakse isik, kelle viibimiskoha, elusoleku või surma kohta puuduvad andmed niivõrd pika aja jooksul, et vastavalt asjaoludele on tõsiseid kahtlusi tema elusoleku suhtes.",
+      "estleg:summary": {
+        "@value": "Teadmata kadunuks loetakse isik, kelle viibimiskoha, elusoleku või surma kohta puuduvad andmed niivõrd pika aja jooksul, et vastavalt asjaoludele on tõsiseid kahtlusi tema elusoleku suhtes.",
+        "@language": "et"
+      },
       "estleg:legalText": "Teadmata kadunuks loetakse isik, kelle viibimiskoha, elusoleku või surma kohta puuduvad andmed niivõrd pika aja jooksul, et vastavalt asjaoludele on tõsiseid kahtlusi tema elusoleku suhtes.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_3"
       },
@@ -1764,10 +1921,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Teadmata kadunuks loetakse isik, kelle viibimiskoha, elusoleku või surma kohta puuduvad andmed niivõrd pika aja jooksul, et vastavalt asjaoludele on tõsiseid kahtlusi tema elusoleku suhtes.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teadmata kadunuks loetakse isik, kelle viibimiskoha, elusoleku või surma kohta puuduvad andmed niivõrd pika aja jooksul, et vastavalt asjaoludele on tõsiseid kahtlusi tema elusoleku suhtes.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_17"
       },
+      "rdfs:label": "§ 17 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -1785,13 +1944,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Isiku vara hooldus",
+      "rdfs:label": {
+        "@value": "§ 18. Isiku vara hooldus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Teadmata kadunud isiku varale võib kohus seada huvitatud isiku taotlusel hoolduse, kui see on teadmata kadunud isiku või tema ülalpeetava huvides. Hoolduse võib seada ka varale, mis kuulub isikule, kes asjaolude tõttu ei saa oma vara eest hoolitseda või seda käsutada. (2) Hooldaja peab tegutsema, lähtudes teadmata kadunud isiku huvidest, valitsema tema vara heaperemehelikult ja tagama selle säilimise. Hooldaja annab varast ülalpidamist isikule, keda teadmata kadunud isik on seaduse kohaselt",
+      "estleg:summary": {
+        "@value": "(1) Teadmata kadunud isiku varale võib kohus seada huvitatud isiku taotlusel hoolduse, kui see on teadmata kadunud isiku või tema ülalpeetava huvides. Hoolduse võib seada ka varale, mis kuulub isikule, kes asjaolude tõttu ei saa oma vara eest hoolitseda või seda käsutada. (2) Hooldaja peab tegutsema, lähtudes teadmata kadunud isiku huvidest, valitsema tema vara heaperemehelikult ja tagama selle säilimise. Hooldaja annab varast ülalpidamist isikule, keda teadmata kadunud isik on seaduse kohaselt",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Teadmata kadunud isiku varale võib kohus seada huvitatud isiku taotlusel hoolduse, kui see on teadmata kadunud isiku või tema ülalpeetava huvides. Hoolduse võib seada ka varale, mis kuulub isikule, kes asjaolude tõttu ei saa oma vara eest hoolitseda või seda käsutada. (2) Hooldaja peab tegutsema, lähtudes teadmata kadunud isiku huvidest, valitsema tema vara heaperemehelikult ja tagama selle säilimise. Hooldaja annab varast ülalpidamist isikule, keda teadmata kadunud isik on seaduse kohaselt kohustatud ülal pidama, ning maksab teadmata kadunud isiku võlad. (3) Teadmata kadunud isiku vara hooldaja võib teadmata kadunud isiku vara vallata, kasutada ja käsutada kohtu määratud tingimustel. Teadmata kadunud isiku kinnisasjaõigust võib hooldaja käsutada ainult kohtu loal. (4) Teadmata kadunud isiku vara hooldaja käsutusõigus ei piira ega välista teadmata kadunud isiku enda käsutusõigust. (5) Teadmata kadunud isiku taasilmumisel või tema viibimiskoha kindlakstegemisel lõpetab kohus tema varale seatud hoolduse. (6) Hoolduse lõppemisel on vara hooldaja kohustatud isikule, kelle vara ta valitses, vara valitsemisest aru andma.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_3"
       },
@@ -2032,13 +2200,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Isiku surnuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 19. Isiku surnuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Kohus võib teadmata kadunud isiku huvitatud isiku taotlusel surnuks tunnistada, kui viie aasta jooksul ei ole andmeid, et ta on elus. (2) Kui ei ole võimalik kindlaks määrata teadmata kadunud isiku elusoleku kohta viimaste andmete saamise päeva, arvutatakse käesoleva paragrahvi lõikes 1 nimetatud tähtaega viimaste andmete saamise kuule järgneva kuu esimesest päevast, kui aga seda kuud ei ole võimalik kindlaks määrata, siis järgmise aasta esimesest päevast.",
+      "estleg:summary": {
+        "@value": "(1) Kohus võib teadmata kadunud isiku huvitatud isiku taotlusel surnuks tunnistada, kui viie aasta jooksul ei ole andmeid, et ta on elus. (2) Kui ei ole võimalik kindlaks määrata teadmata kadunud isiku elusoleku kohta viimaste andmete saamise päeva, arvutatakse käesoleva paragrahvi lõikes 1 nimetatud tähtaega viimaste andmete saamise kuule järgneva kuu esimesest päevast, kui aga seda kuud ei ole võimalik kindlaks määrata, siis järgmise aasta esimesest päevast.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kohus võib teadmata kadunud isiku huvitatud isiku taotlusel surnuks tunnistada, kui viie aasta jooksul ei ole andmeid, et ta on elus. (2) Kui ei ole võimalik kindlaks määrata teadmata kadunud isiku elusoleku kohta viimaste andmete saamise päeva, arvutatakse käesoleva paragrahvi lõikes 1 nimetatud tähtaega viimaste andmete saamise kuule järgneva kuu esimesest päevast, kui aga seda kuud ei ole võimalik kindlaks määrata, siis järgmise aasta esimesest päevast. (3) Kui isik jäi teadmata kadunuks olukorras, mis oli ohtlik elule või annab muul põhjusel alust eeldada tema hukkumist õnnetusjuhtumi tagajärjel, võib isiku surnuks tunnistada kuue kuu möödumisel teadmata kadunuks jäämisest. (4) Seoses sõjategevuse või loodusõnnetusega teadmata kadunuks jäänud isiku võib käesoleva paragrahvi lõikes 3 nimetatud asjaolu puudumisel surnuks tunnistada, kui tema elusoleku kohta ei ole andmeid kahe aasta jooksul, arvates sõjategevuse või loodusõnnetuse lõppemisest. (5) Kui isik on surnuks tunnistatud, siis eeldatakse, et ta on surnud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_3"
       },
@@ -2264,13 +2441,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Surnuks tunnistatud isiku surmaaeg",
+      "rdfs:label": {
+        "@value": "§ 20. Surnuks tunnistatud isiku surmaaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Surnuks tunnistatud isiku surmaajaks loetakse tema eeldatav surmaaeg. (2) Kui isiku eeldatavat surmaaega ei ole võimalik kindlaks määrata, loetakse tema surmaajaks esimese aasta lõpp pärast aastat, mil tema elusoleku kohta saadi viimased andmed. (3) Kui isik tunnistatakse surnuks käesoleva seaduse § 19 lõike 4 alusel, loetakse tema surmaajaks sõjategevuse või loodusõnnetuse lõppemise aeg. (4) Kui käesoleva seaduse § 19 lõikes 3 nimetatud asjaoludel jäi kadunuks mitu isikut ja nende",
+      "estleg:summary": {
+        "@value": "(1) Surnuks tunnistatud isiku surmaajaks loetakse tema eeldatav surmaaeg. (2) Kui isiku eeldatavat surmaaega ei ole võimalik kindlaks määrata, loetakse tema surmaajaks esimese aasta lõpp pärast aastat, mil tema elusoleku kohta saadi viimased andmed. (3) Kui isik tunnistatakse surnuks käesoleva seaduse § 19 lõike 4 alusel, loetakse tema surmaajaks sõjategevuse või loodusõnnetuse lõppemise aeg. (4) Kui käesoleva seaduse § 19 lõikes 3 nimetatud asjaoludel jäi kadunuks mitu isikut ja nende",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Surnuks tunnistatud isiku surmaajaks loetakse tema eeldatav surmaaeg. (2) Kui isiku eeldatavat surmaaega ei ole võimalik kindlaks määrata, loetakse tema surmaajaks esimese aasta lõpp pärast aastat, mil tema elusoleku kohta saadi viimased andmed. (3) Kui isik tunnistatakse surnuks käesoleva seaduse § 19 lõike 4 alusel, loetakse tema surmaajaks sõjategevuse või loodusõnnetuse lõppemise aeg. (4) Kui käesoleva seaduse § 19 lõikes 3 nimetatud asjaoludel jäi kadunuks mitu isikut ja nende tegelikku surmaaega ei ole võimalik kindlaks määrata, loetakse, et nad on surnud ühel ajal.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_3"
       },
@@ -2442,13 +2628,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Surnuks tunnistatud isiku elusolek",
+      "rdfs:label": {
+        "@value": "§ 21. Surnuks tunnistatud isiku elusolek",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Kui surnuks tunnistatud isik on tegelikult elus, ei tulene temale surnuks tunnistamisest õiguslikke tagajärgi, kui seadusest ei tulene teisiti. (2) Surnuks tunnistatud isiku taasilmumisel või tema elusoleku kindlakstegemisel tühistab kohus tema surnuks tunnistamise.",
+      "estleg:summary": {
+        "@value": "(1) Kui surnuks tunnistatud isik on tegelikult elus, ei tulene temale surnuks tunnistamisest õiguslikke tagajärgi, kui seadusest ei tulene teisiti. (2) Surnuks tunnistatud isiku taasilmumisel või tema elusoleku kindlakstegemisel tühistab kohus tema surnuks tunnistamise.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui surnuks tunnistatud isik on tegelikult elus, ei tulene temale surnuks tunnistamisest õiguslikke tagajärgi, kui seadusest ei tulene teisiti. (2) Surnuks tunnistatud isiku taasilmumisel või tema elusoleku kindlakstegemisel tühistab kohus tema surnuks tunnistamise.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_3"
       },
@@ -2566,13 +2761,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Surma tuvastamine",
+      "rdfs:label": {
+        "@value": "§ 22. Surma tuvastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Kui surmaakti ei ole koostatud või surm ei ole rahvastikuregistris registreeritud, kuid asjaolude kohaselt ei ole isiku surm kahtluse all, võib kohus tuvastada isiku surma ja surmaaja. Sel juhul eeldatakse, et isik on surnud kohtumääruses märgitud ajal.",
+      "estleg:summary": {
+        "@value": "Kui surmaakti ei ole koostatud või surm ei ole rahvastikuregistris registreeritud, kuid asjaolude kohaselt ei ole isiku surm kahtluse all, võib kohus tuvastada isiku surma ja surmaaja. Sel juhul eeldatakse, et isik on surnud kohtumääruses märgitud ajal.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui surmaakti ei ole koostatud või surm ei ole rahvastikuregistris registreeritud, kuid asjaolude kohaselt ei ole isiku surm kahtluse all, võib kohus tuvastada isiku surma ja surmaaja. Sel juhul eeldatakse, et isik on surnud kohtumääruses märgitud ajal.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_3"
       },
@@ -2627,10 +2831,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui surmaakti ei ole koostatud või surm ei ole rahvastikuregistris registreeritud, kuid asjaolude kohaselt ei ole isiku surm kahtluse all, võib kohus tuvastada isiku surma ja surmaaja. Sel juhul eeldatakse, et isik on surnud kohtumääruses märgitud ajal.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui surmaakti ei ole koostatud või surm ei ole rahvastikuregistris registreeritud, kuid asjaolude kohaselt ei ole isiku surm kahtluse all, võib kohus tuvastada isiku surma ja surmaaja. Sel juhul eeldatakse, et isik on surnud kohtumääruses märgitud ajal.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_22"
       },
+      "rdfs:label": "§ 22 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2656,13 +2862,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Surmaaja muutmine",
+      "rdfs:label": {
+        "@value": "§ 23. Surmaaja muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Kui pärast isiku surnuks tunnistamist on teatavaks saanud isiku tegelik surmaaeg, võib kohus surnuks tunnistatud isiku surmaaega muuta.",
+      "estleg:summary": {
+        "@value": "Kui pärast isiku surnuks tunnistamist on teatavaks saanud isiku tegelik surmaaeg, võib kohus surnuks tunnistatud isiku surmaaega muuta.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui pärast isiku surnuks tunnistamist on teatavaks saanud isiku tegelik surmaaeg, võib kohus surnuks tunnistatud isiku surmaaega muuta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TsUS_2_1"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_TsUS_2_1_3"
       },
@@ -2750,10 +2965,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui pärast isiku surnuks tunnistamist on teatavaks saanud isiku tegelik surmaaeg, võib kohus surnuks tunnistatud isiku surmaaega muuta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui pärast isiku surnuks tunnistamist on teatavaks saanud isiku tegelik surmaaeg, võib kohus surnuks tunnistatud isiku surmaaega muuta.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_23"
       },
+      "rdfs:label": "§ 23 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2802,12 +3019,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Juriidilise isiku mõiste",
+      "rdfs:label": {
+        "@value": "§ 24. Juriidilise isiku mõiste",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Juriidiline isik on seaduse alusel loodud õigussubjekt. Juriidiline isik on kas eraõiguslik või avalik-õiguslik.",
+      "estleg:summary": {
+        "@value": "Juriidiline isik on seaduse alusel loodud õigussubjekt. Juriidiline isik on kas eraõiguslik või avalik-õiguslik.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juriidiline isik on seaduse alusel loodud õigussubjekt. Juriidiline isik on kas eraõiguslik või avalik-õiguslik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -2887,10 +3110,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juriidiline isik on seaduse alusel loodud õigussubjekt. Juriidiline isik on kas eraõiguslik või avalik-õiguslik.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juriidiline isik on seaduse alusel loodud õigussubjekt. Juriidiline isik on kas eraõiguslik või avalik-õiguslik.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_24"
       },
+      "rdfs:label": "§ 24 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -2931,12 +3156,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Eraõiguslik ja avalik-õiguslik juriidiline isik",
+      "rdfs:label": {
+        "@value": "§ 25. Eraõiguslik ja avalik-õiguslik juriidiline isik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Eraõiguslik juriidiline isik on erahuvides ja selle juriidilise isiku liigi kohta käiva seaduse alusel loodud juriidiline isik. (2) Avalik-õiguslik juriidiline isik on riik, kohaliku omavalitsuse üksus ja muu juriidiline isik, mis on loodud avalikes huvides ja selle juriidilise isiku kohta käiva seaduse alusel. (3) Riigi ja kohaliku omavalitsuse üksuse suhtes kohaldatakse juriidilise isiku kohta sätestatut niivõrd, kuivõrd seadusest ei tulene teisiti.",
+      "estleg:summary": {
+        "@value": "(1) Eraõiguslik juriidiline isik on erahuvides ja selle juriidilise isiku liigi kohta käiva seaduse alusel loodud juriidiline isik. (2) Avalik-õiguslik juriidiline isik on riik, kohaliku omavalitsuse üksus ja muu juriidiline isik, mis on loodud avalikes huvides ja selle juriidilise isiku kohta käiva seaduse alusel. (3) Riigi ja kohaliku omavalitsuse üksuse suhtes kohaldatakse juriidilise isiku kohta sätestatut niivõrd, kuivõrd seadusest ei tulene teisiti.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eraõiguslik juriidiline isik on erahuvides ja selle juriidilise isiku liigi kohta käiva seaduse alusel loodud juriidiline isik. (2) Avalik-õiguslik juriidiline isik on riik, kohaliku omavalitsuse üksus ja muu juriidiline isik, mis on loodud avalikes huvides ja selle juriidilise isiku kohta käiva seaduse alusel. (3) Riigi ja kohaliku omavalitsuse üksuse suhtes kohaldatakse juriidilise isiku kohta sätestatut niivõrd, kuivõrd seadusest ei tulene teisiti. (4) Avalik-õiguslik juriidiline isik ei või omada tsiviilõigusi ja kohustusi, mis on vastuolus tema eesmärgiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -3174,12 +3405,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Juriidilise isiku õigusvõime",
+      "rdfs:label": {
+        "@value": "§ 26. Juriidilise isiku õigusvõime",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Juriidilise isiku õigusvõime on võime omada tsiviilõigusi ja kanda tsiviilkohustusi. Juriidiline isik võib omada kõiki tsiviilõigusi ja -kohustusi, välja arvatud neid, mis on omased üksnes inimesele. (2) Eraõigusliku juriidilise isiku õigusvõime tekib seadusega ettenähtud registrisse kandmisest. (3) Avalik-õigusliku juriidilise isiku õigusvõime tekib seaduses sätestatud ajast.",
+      "estleg:summary": {
+        "@value": "(1) Juriidilise isiku õigusvõime on võime omada tsiviilõigusi ja kanda tsiviilkohustusi. Juriidiline isik võib omada kõiki tsiviilõigusi ja -kohustusi, välja arvatud neid, mis on omased üksnes inimesele. (2) Eraõigusliku juriidilise isiku õigusvõime tekib seadusega ettenähtud registrisse kandmisest. (3) Avalik-õigusliku juriidilise isiku õigusvõime tekib seaduses sätestatud ajast.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Juriidilise isiku õigusvõime on võime omada tsiviilõigusi ja kanda tsiviilkohustusi. Juriidiline isik võib omada kõiki tsiviilõigusi ja -kohustusi, välja arvatud neid, mis on omased üksnes inimesele. (2) Eraõigusliku juriidilise isiku õigusvõime tekib seadusega ettenähtud registrisse kandmisest. (3) Avalik-õigusliku juriidilise isiku õigusvõime tekib seaduses sätestatud ajast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -3381,12 +3618,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Juriidilise isiku kestus ja asutamise vaidlustamine",
+      "rdfs:label": {
+        "@value": "§ 27. Juriidilise isiku kestus ja asutamise vaidlustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Juriidiline isik asutatakse määramata ajaks, kui seaduses ei ole sätestatud teisiti. (2) Eraõigusliku juriidilise isiku asutamisleping või asutamisotsus loetakse pärast juriidilise isiku registrisse kandmist kehtivaks ka juhul, kui lepingu sõlmimisel või otsuse tegemisel esinesid lepingu või otsuse tühisust kaasatoovad asjaolud. Eraõigusliku juriidilise isiku asutamislepingut või asutamisotsust ei saa pärast juriidilise isiku registrisse kandmist tühistada.",
+      "estleg:summary": {
+        "@value": "(1) Juriidiline isik asutatakse määramata ajaks, kui seaduses ei ole sätestatud teisiti. (2) Eraõigusliku juriidilise isiku asutamisleping või asutamisotsus loetakse pärast juriidilise isiku registrisse kandmist kehtivaks ka juhul, kui lepingu sõlmimisel või otsuse tegemisel esinesid lepingu või otsuse tühisust kaasatoovad asjaolud. Eraõigusliku juriidilise isiku asutamislepingut või asutamisotsust ei saa pärast juriidilise isiku registrisse kandmist tühistada.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Juriidiline isik asutatakse määramata ajaks, kui seaduses ei ole sätestatud teisiti. (2) Eraõigusliku juriidilise isiku asutamisleping või asutamisotsus loetakse pärast juriidilise isiku registrisse kandmist kehtivaks ka juhul, kui lepingu sõlmimisel või otsuse tegemisel esinesid lepingu või otsuse tühisust kaasatoovad asjaolud. Eraõigusliku juriidilise isiku asutamislepingut või asutamisotsust ei saa pärast juriidilise isiku registrisse kandmist tühistada.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -3490,12 +3733,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Juriidilise isiku põhikiri",
+      "rdfs:label": {
+        "@value": "§ 28. Juriidilise isiku põhikiri",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Eraõiguslikul juriidilisel isikul on põhikiri või seaduses sätestatud juhtudel ühinguleping. (2) Avalik-õiguslikul juriidilisel isikul on põhikiri, kui see on ette nähtud selle juriidilise isiku kohta käiva seadusega.",
+      "estleg:summary": {
+        "@value": "(1) Eraõiguslikul juriidilisel isikul on põhikiri või seaduses sätestatud juhtudel ühinguleping. (2) Avalik-õiguslikul juriidilisel isikul on põhikiri, kui see on ette nähtud selle juriidilise isiku kohta käiva seadusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eraõiguslikul juriidilisel isikul on põhikiri või seaduses sätestatud juhtudel ühinguleping. (2) Avalik-õiguslikul juriidilisel isikul on põhikiri, kui see on ette nähtud selle juriidilise isiku kohta käiva seadusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -3599,12 +3848,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Juriidilise isiku asukoht ja tegevuskoht",
+      "rdfs:label": {
+        "@value": "§ 29. Juriidilise isiku asukoht ja tegevuskoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Avalik-õigusliku juriidilise isiku asukoht on tema juhatuse või juhatust asendava organi asukoht, kui seaduses ei ole sätestatud teisiti. (1¹) Eraõigusliku juriidilise isiku asukoht on ühingulepinguga või põhikirjaga määratud koht Eestis, kui seaduses ei ole sätestatud teisiti. (2) Juriidilise isiku tegevuskoht on tema püsiva ja kestva majandustegevuse või muu põhikirjalise tegevuse koht.",
+      "estleg:summary": {
+        "@value": "(1) Avalik-õigusliku juriidilise isiku asukoht on tema juhatuse või juhatust asendava organi asukoht, kui seaduses ei ole sätestatud teisiti. (1¹) Eraõigusliku juriidilise isiku asukoht on ühingulepinguga või põhikirjaga määratud koht Eestis, kui seaduses ei ole sätestatud teisiti. (2) Juriidilise isiku tegevuskoht on tema püsiva ja kestva majandustegevuse või muu põhikirjalise tegevuse koht.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Avalik-õigusliku juriidilise isiku asukoht on tema juhatuse või juhatust asendava organi asukoht, kui seaduses ei ole sätestatud teisiti. (1¹) Eraõigusliku juriidilise isiku asukoht on ühingulepinguga või põhikirjaga määratud koht Eestis, kui seaduses ei ole sätestatud teisiti. (2) Juriidilise isiku tegevuskoht on tema püsiva ja kestva majandustegevuse või muu põhikirjalise tegevuse koht.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -3739,12 +3994,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Juriidilise isiku nimi",
+      "rdfs:label": {
+        "@value": "§ 30. Juriidilise isiku nimi",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Juriidilisel isikul on nimi, mis peab teda eristama teistest isikutest.",
+      "estleg:summary": {
+        "@value": "Juriidilisel isikul on nimi, mis peab teda eristama teistest isikutest.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juriidilisel isikul on nimi, mis peab teda eristama teistest isikutest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -3787,10 +4048,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juriidilisel isikul on nimi, mis peab teda eristama teistest isikutest.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juriidilisel isikul on nimi, mis peab teda eristama teistest isikutest.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_30"
       },
+      "rdfs:label": "§ 30 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -3811,12 +4074,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Juriidilise isiku organid",
+      "rdfs:label": {
+        "@value": "§ 31. Juriidilise isiku organid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Eraõigusliku juriidilise isiku organid on üldkoosolek ja juhatus, kui seaduses ei ole sätestatud teisiti. (2) Eraõigusliku juriidilise isiku juhtorgan on juhatus. Kui seaduses on sätestatud nõukogu olemasolu, on juhtorganiks ka nõukogu. (3) Eraõigusliku juriidilise isiku organi pädevus nähakse ette seaduse ja põhikirja või ühingulepinguga. Juriidilise isiku organi pädevust ei või üle anda muule organile või isikule. (4) Avalik-õigusliku juriidilise isiku organid ja nende pädevus nähakse",
+      "estleg:summary": {
+        "@value": "(1) Eraõigusliku juriidilise isiku organid on üldkoosolek ja juhatus, kui seaduses ei ole sätestatud teisiti. (2) Eraõigusliku juriidilise isiku juhtorgan on juhatus. Kui seaduses on sätestatud nõukogu olemasolu, on juhtorganiks ka nõukogu. (3) Eraõigusliku juriidilise isiku organi pädevus nähakse ette seaduse ja põhikirja või ühingulepinguga. Juriidilise isiku organi pädevust ei või üle anda muule organile või isikule. (4) Avalik-õigusliku juriidilise isiku organid ja nende pädevus nähakse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Eraõigusliku juriidilise isiku organid on üldkoosolek ja juhatus, kui seaduses ei ole sätestatud teisiti. (2) Eraõigusliku juriidilise isiku juhtorgan on juhatus. Kui seaduses on sätestatud nõukogu olemasolu, on juhtorganiks ka nõukogu. (3) Eraõigusliku juriidilise isiku organi pädevus nähakse ette seaduse ja põhikirja või ühingulepinguga. Juriidilise isiku organi pädevust ei või üle anda muule organile või isikule. (4) Avalik-õigusliku juriidilise isiku organid ja nende pädevus nähakse ette seadusega. (5) Juriidilise isiku organi tegevus loetakse juriidilise isiku tegevuseks. (6) Juriidilise isiku organi liige ei või oma seadusest tulenevaid organi liikme õigusi üle anda, kui seadusest ei tulene teisiti. (7) Juriidilise isiku juhatuse või seda asendava organi liikmeks võib olla üksnes teovõimeline füüsiline isik, kui seaduses ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -4178,12 +4447,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Hea usu põhimõte omavahelistes suhetes",
+      "rdfs:label": {
+        "@value": "§ 32. Hea usu põhimõte omavahelistes suhetes",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Juriidilise isiku osanikud, aktsionärid või liikmed, samuti juriidilise isiku juhtorganite liikmed peavad omavahelistes suhetes järgima hea usu põhimõtet ja arvestama üksteise õigustatud huve.",
+      "estleg:summary": {
+        "@value": "Juriidilise isiku osanikud, aktsionärid või liikmed, samuti juriidilise isiku juhtorganite liikmed peavad omavahelistes suhetes järgima hea usu põhimõtet ja arvestama üksteise õigustatud huve.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juriidilise isiku osanikud, aktsionärid või liikmed, samuti juriidilise isiku juhtorganite liikmed peavad omavahelistes suhetes järgima hea usu põhimõtet ja arvestama üksteise õigustatud huve.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -4338,10 +4613,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juriidilise isiku osanikud, aktsionärid või liikmed, samuti juriidilise isiku juhtorganite liikmed peavad omavahelistes suhetes järgima hea usu põhimõtet ja arvestama üksteise õigustatud huve.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juriidilise isiku osanikud, aktsionärid või liikmed, samuti juriidilise isiku juhtorganite liikmed peavad omavahelistes suhetes järgima hea usu põhimõtet ja arvestama üksteise õigustatud huve.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_32"
       },
+      "rdfs:label": "§ 32 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -4362,12 +4639,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Hääle andmine",
+      "rdfs:label": {
+        "@value": "§ 33. Hääle andmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Hääle andmine juriidilise isiku organi otsuse tegemisel on tahteavaldus. Hääle andmisele kohaldatakse seaduses tehingu kohta sätestatut. (2) Kui hääle andmine on tühine või kui antud hääl on tühistatud, siis loetakse, et otsuse tegemisel ei ole häält antud. (3) Hääle andmise tühisuse või antud hääle tühistamise korral saab juriidilise isiku organi otsuse kehtetuks tunnistamist vastavalt käesoleva seaduse §-le 38 nõuda üksnes juhul, kui tühised või tühistatud hääled mõjutasid otsuse tegemise",
+      "estleg:summary": {
+        "@value": "(1) Hääle andmine juriidilise isiku organi otsuse tegemisel on tahteavaldus. Hääle andmisele kohaldatakse seaduses tehingu kohta sätestatut. (2) Kui hääle andmine on tühine või kui antud hääl on tühistatud, siis loetakse, et otsuse tegemisel ei ole häält antud. (3) Hääle andmise tühisuse või antud hääle tühistamise korral saab juriidilise isiku organi otsuse kehtetuks tunnistamist vastavalt käesoleva seaduse §-le 38 nõuda üksnes juhul, kui tühised või tühistatud hääled mõjutasid otsuse tegemise",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Hääle andmine juriidilise isiku organi otsuse tegemisel on tahteavaldus. Hääle andmisele kohaldatakse seaduses tehingu kohta sätestatut. (2) Kui hääle andmine on tühine või kui antud hääl on tühistatud, siis loetakse, et otsuse tegemisel ei ole häält antud. (3) Hääle andmise tühisuse või antud hääle tühistamise korral saab juriidilise isiku organi otsuse kehtetuks tunnistamist vastavalt käesoleva seaduse §-le 38 nõuda üksnes juhul, kui tühised või tühistatud hääled mõjutasid otsuse tegemise võimalikkust või otsuse sisu. (4) Kokkuleppe sõlmimine hääle andmise kohta on lubatud, kui seadusest ei tulene teisiti. Kokkuleppe rikkumine ei mõjuta antud hääle kehtivust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -4578,12 +4861,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 33¹.",
-      "rdfs:label": "§ 33¹. Elektrooniliste vahendite abil organi koosolekul osalemine",
+      "rdfs:label": {
+        "@value": "§ 33¹. Elektrooniliste vahendite abil organi koosolekul osalemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Juriidilise isiku organi liige võib organi koosolekul osaleda ja teostada oma õigusi elektrooniliste vahendite abil ilma koosolekul füüsiliselt kohal olemata, reaalajas toimuva kahesuunalise side abil või muul sellesarnasel elektroonilisel viisil, mis võimaldab organi liikmel eemal viibides koosolekut jälgida ja sõna võtta ning otsuste vastuvõtmisel hääletada, kui seaduse või juriidilise isiku põhikirjaga ei ole ette nähtud teisiti. (2) Elektrooniliste vahendite abil peetavale koosolekule",
+      "estleg:summary": {
+        "@value": "(1) Juriidilise isiku organi liige võib organi koosolekul osaleda ja teostada oma õigusi elektrooniliste vahendite abil ilma koosolekul füüsiliselt kohal olemata, reaalajas toimuva kahesuunalise side abil või muul sellesarnasel elektroonilisel viisil, mis võimaldab organi liikmel eemal viibides koosolekut jälgida ja sõna võtta ning otsuste vastuvõtmisel hääletada, kui seaduse või juriidilise isiku põhikirjaga ei ole ette nähtud teisiti. (2) Elektrooniliste vahendite abil peetavale koosolekule",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Juriidilise isiku organi liige võib organi koosolekul osaleda ja teostada oma õigusi elektrooniliste vahendite abil ilma koosolekul füüsiliselt kohal olemata, reaalajas toimuva kahesuunalise side abil või muul sellesarnasel elektroonilisel viisil, mis võimaldab organi liikmel eemal viibides koosolekut jälgida ja sõna võtta ning otsuste vastuvõtmisel hääletada, kui seaduse või juriidilise isiku põhikirjaga ei ole ette nähtud teisiti. (2) Elektrooniliste vahendite abil peetavale koosolekule kohaldatakse vastava organi koosoleku otsuse tegemise kohta sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -4667,12 +4956,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Juriidilise isiku esindamine",
+      "rdfs:label": {
+        "@value": "§ 34. Juriidilise isiku esindamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Juriidilise isiku juhatus või seda asendav organ loetakse suhetes teiste isikutega juriidilise isiku seaduslikuks esindajaks. (2) Juriidilist isikut saab tehingu tegemisel esindada iga juhatuse või seda asendava organi liige, kui seaduse või põhikirjaga ei ole ette nähtud, et juhatuse või seda asendava organi liikmed või mõned neist saavad esindada juriidilist isikut üksnes ühiselt (ühine esindamine). Ühise esindamise korral võivad juhatuse või seda asendava organi liikmed volitada üht või",
+      "estleg:summary": {
+        "@value": "(1) Juriidilise isiku juhatus või seda asendav organ loetakse suhetes teiste isikutega juriidilise isiku seaduslikuks esindajaks. (2) Juriidilist isikut saab tehingu tegemisel esindada iga juhatuse või seda asendava organi liige, kui seaduse või põhikirjaga ei ole ette nähtud, et juhatuse või seda asendava organi liikmed või mõned neist saavad esindada juriidilist isikut üksnes ühiselt (ühine esindamine). Ühise esindamise korral võivad juhatuse või seda asendava organi liikmed volitada üht või",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Juriidilise isiku juhatus või seda asendav organ loetakse suhetes teiste isikutega juriidilise isiku seaduslikuks esindajaks. (2) Juriidilist isikut saab tehingu tegemisel esindada iga juhatuse või seda asendava organi liige, kui seaduse või põhikirjaga ei ole ette nähtud, et juhatuse või seda asendava organi liikmed või mõned neist saavad esindada juriidilist isikut üksnes ühiselt (ühine esindamine). Ühise esindamise korral võivad juhatuse või seda asendava organi liikmed volitada üht või mitut enda hulgast teatud tehingute või teatud liiki tehingute tegemiseks. (3) Eraõigusliku juriidilise isiku puhul kehtib ühine esindamine kolmandate isikute suhtes üksnes juhul, kui selle kohta on tehtud kanne vastavasse registrisse. (4) Käesolevas paragrahvis nimetamata esindusõiguse piirangud ei kehti kolmandate isikute suhtes, kui seaduses ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -4919,12 +5214,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35. Juriidilise isiku juhtorgani liikme üldised kohustused",
+      "rdfs:label": {
+        "@value": "§ 35. Juriidilise isiku juhtorgani liikme üldised kohustused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Juriidilise isiku juhtorgani liikmed peavad oma seadusest või põhikirjast tulenevaid kohustusi täitma juhtorgani liikmelt tavaliselt oodatava hoolega ja olema juriidilisele isikule lojaalsed.",
+      "estleg:summary": {
+        "@value": "Juriidilise isiku juhtorgani liikmed peavad oma seadusest või põhikirjast tulenevaid kohustusi täitma juhtorgani liikmelt tavaliselt oodatava hoolega ja olema juriidilisele isikule lojaalsed.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juriidilise isiku juhtorgani liikmed peavad oma seadusest või põhikirjast tulenevaid kohustusi täitma juhtorgani liikmelt tavaliselt oodatava hoolega ja olema juriidilisele isikule lojaalsed.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -5086,10 +5387,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juriidilise isiku juhtorgani liikmed peavad oma seadusest või põhikirjast tulenevaid kohustusi täitma juhtorgani liikmelt tavaliselt oodatava hoolega ja olema juriidilisele isikule lojaalsed.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juriidilise isiku juhtorgani liikmed peavad oma seadusest või põhikirjast tulenevaid kohustusi täitma juhtorgani liikmelt tavaliselt oodatava hoolega ja olema juriidilisele isikule lojaalsed.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_35"
       },
+      "rdfs:label": "§ 35 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -5110,12 +5413,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Pankrotiavalduse esitamise kohustus",
+      "rdfs:label": {
+        "@value": "§ 36. Pankrotiavalduse esitamise kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Kui on ilmne, et juriidiline isik on püsivalt maksejõuetu, peavad juhatuse või seda asendava organi liikmed esitama pankrotiavalduse.",
+      "estleg:summary": {
+        "@value": "Kui on ilmne, et juriidiline isik on püsivalt maksejõuetu, peavad juhatuse või seda asendava organi liikmed esitama pankrotiavalduse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui on ilmne, et juriidiline isik on püsivalt maksejõuetu, peavad juhatuse või seda asendava organi liikmed esitama pankrotiavalduse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -5175,10 +5484,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui on ilmne, et juriidiline isik on püsivalt maksejõuetu, peavad juhatuse või seda asendava organi liikmed esitama pankrotiavalduse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui on ilmne, et juriidiline isik on püsivalt maksejõuetu, peavad juhatuse või seda asendava organi liikmed esitama pankrotiavalduse.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_36"
       },
+      "rdfs:label": "§ 36 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -5199,12 +5510,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37. Juriidilise isiku juhtorgani liikme vastutus",
+      "rdfs:label": {
+        "@value": "§ 37. Juriidilise isiku juhtorgani liikme vastutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Juriidilise isiku juhtorgani liikmed, kes on oma kohustuse rikkumisega tekitanud kahju juriidilisele isikule, vastutavad juriidilise isiku ees solidaarselt. Juhtorgani liige ei vastuta, kui ta tegutses vastavalt juriidilise isiku üldkoosoleku või muu pädeva organi õiguspärasele otsusele. (2) Käesoleva paragrahvi lõikes 1 nimetatud kahju hüvitamist juriidilisele isikule võib nõuda ka juriidilise isiku võlausaldaja, kui ta ei saa oma nõudeid rahuldada juriidilise isiku vara arvel.",
+      "estleg:summary": {
+        "@value": "(1) Juriidilise isiku juhtorgani liikmed, kes on oma kohustuse rikkumisega tekitanud kahju juriidilisele isikule, vastutavad juriidilise isiku ees solidaarselt. Juhtorgani liige ei vastuta, kui ta tegutses vastavalt juriidilise isiku üldkoosoleku või muu pädeva organi õiguspärasele otsusele. (2) Käesoleva paragrahvi lõikes 1 nimetatud kahju hüvitamist juriidilisele isikule võib nõuda ka juriidilise isiku võlausaldaja, kui ta ei saa oma nõudeid rahuldada juriidilise isiku vara arvel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Juriidilise isiku juhtorgani liikmed, kes on oma kohustuse rikkumisega tekitanud kahju juriidilisele isikule, vastutavad juriidilise isiku ees solidaarselt. Juhtorgani liige ei vastuta, kui ta tegutses vastavalt juriidilise isiku üldkoosoleku või muu pädeva organi õiguspärasele otsusele. (2) Käesoleva paragrahvi lõikes 1 nimetatud kahju hüvitamist juriidilisele isikule võib nõuda ka juriidilise isiku võlausaldaja, kui ta ei saa oma nõudeid rahuldada juriidilise isiku vara arvel. Juriidilise isiku pankroti väljakuulutamise korral võib nõude juriidilise isiku nimel esitada üksnes pankrotihaldur. (3) Võlausaldajal on õigus käesoleva paragrahvi lõikes 2 nimetatud nõue esitada ka juhul, kui juriidiline isik on nõudest juhtorgani liikme vastu loobunud või sõlminud temaga kompromissilepingu. Võlausaldajal on õigus nõue esitada ka juhul, kui juhtorgani liikme vastutust on seaduses sätestatuga võrreldes piiratud. (4) Juriidilise isiku juhtorgani liikme vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -5456,13 +5773,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38. Juriidilise isiku organi otsuse kehtetus",
+      "rdfs:label": {
+        "@value": "§ 38. Juriidilise isiku organi otsuse kehtetus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Huvitatud isik võib nõuda kohtus juriidilise isiku organi seaduse või põhikirjaga vastuolus oleva otsuse kehtetuks tunnistamist. Juriidilise isiku organi otsuse kehtetuks tunnistamist võib nõuda ka juhul, kui juriidilise isiku osanik, aktsionär või liige kasutas otsuse tegemisel hääleõigust selleks, et omandada enda või kolmanda isiku kasuks eeliseid juriidilise isiku või teiste osanike, aktsionäride või liikmete kahjuks, ja otsus võimaldab seda eesmärki saavutada.",
-      "estleg:legalText": "(1) Huvitatud isik võib nõuda kohtus juriidilise isiku organi seaduse või põhikirjaga vastuolus oleva otsuse kehtetuks tunnistamist. Juriidilise isiku organi otsuse kehtetuks tunnistamist võib nõuda ka juhul, kui juriidilise isiku osanik, aktsionär või liige kasutas otsuse tegemisel hääleõigust selleks, et omandada enda või kolmanda isiku kasuks eeliseid juriidilise isiku või teiste osanike, aktsionäride või liikmete kahjuks, ja otsus võimaldab seda eesmärki saavutada. (2) Juriidilise isiku organi otsus on tühine, kui see on tagajärjena seaduses otse sätestatud või kui otsus on vastuolus heade kommetega või kui see rikub juriidilise isiku võlausaldajate kaitseks või muu avaliku huvi tõttu kehtestatud seaduse sätet või kui selle vastuvõtmisel rikuti oluliselt selleks ettenähtud korda. Huvitatud isik saab otsuse tühisusele tugineda, kui kohus on otsuse tühisuse tuvastanud. (3) Kehtetu - (4) Juriidilise isiku organi otsuse kehtetuks tunnistamise hagi esitatakse juriidilise isiku vastu. Organi liige, kes otsuse tegemisel osales, võib otsuse kehtetuks tunnistamist nõuda üksnes juhul, kui ta on lasknud protokollida oma vastuväite otsusele. (5) Organi otsuse kehtetuks tunnistamise nõude aegumistähtaeg on kolm kuud alates otsuse vastuvõtmisest. Otsuse kehtetuks tunnistamist ei saa nõuda, kui organ on selle uue otsusega kinnitanud ja uue otsuse suhtes ei ole eelmises lauses nimetatud tähtaja jooksul esitatud käesoleva paragrahvi lõikes 1 nimetatud hagi. (6) Kohus ei aruta organi otsuse kehtetuks tunnistamise hagi esitamisel asja enne, kui on möödunud käesoleva paragrahvi lõikes 5 nimetatud tähtaeg. Erinevad hagid sama otsuse kehtetuks tunnistamiseks liidetakse ühte menetlusse. (7) Juriidilise isiku organi otsuse tühisusele võib kohtumenetluses tugineda nii hagi kui ka vastuväite esitamisega. Otsuse tühisusele ei saa tugineda, kui otsuse alusel on tehtud kanne avalikku registrisse ja kande tegemisest on möödunud kaks aastat. (8) Organi otsuse kehtetuks tunnistamise või tühisuse tuvastamise kohtuotsus kehtib kõigi juriidilise isiku ja tema organi liikmete suhtes, sõltumata nende osalemisest kohtumenetluses. Kui kehtetuks tunnistatud otsuse või otsuse alusel, mille tühisuse kohus tuvastas, oli tehtud kanne avalikku registrisse, saadab kohus otsuse ärakirja registripidajale kande muutmiseks.",
+      "estleg:summary": {
+        "@value": "(1) Huvitatud isik võib nõuda kohtus juriidilise isiku organi seaduse või põhikirjaga vastuolus oleva otsuse kehtetuks tunnistamist. Juriidilise isiku organi otsuse kehtetuks tunnistamist võib nõuda ka juhul, kui juriidilise isiku osanik, aktsionär või liige kasutas otsuse tegemisel hääleõigust selleks, et omandada enda või kolmanda isiku kasuks eeliseid juriidilise isiku või teiste osanike, aktsionäride või liikmete kahjuks, ja otsus võimaldab seda eesmärki saavutada.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Huvitatud isik võib nõuda kohtus juriidilise isiku organi seaduse või põhikirjaga vastuolus oleva otsuse kehtetuks tunnistamist. Juriidilise isiku organi otsuse kehtetuks tunnistamist võib nõuda ka juhul, kui juriidilise isiku osanik, aktsionär või liige kasutas otsuse tegemisel hääleõigust selleks, et omandada enda või kolmanda isiku kasuks eeliseid juriidilise isiku või teiste osanike, aktsionäride või liikmete kahjuks, ja otsus võimaldab seda eesmärki saavutada. (2) Juriidilise isiku organi otsus on tühine, kui see on tagajärjena seaduses otse sätestatud või kui otsus on vastuolus heade kommetega või kui see rikub juriidilise isiku võlausaldajate kaitseks või muu avaliku huvi tõttu kehtestatud seaduse sätet või kui selle vastuvõtmisel rikuti oluliselt selleks ettenähtud korda. Huvitatud isik saab otsuse tühisusele tugineda, kui kohus on otsuse tühisuse tuvastanud. (4) Juriidilise isiku organi otsuse kehtetuks tunnistamise hagi esitatakse juriidilise isiku vastu. Organi liige, kes otsuse tegemisel osales, võib otsuse kehtetuks tunnistamist nõuda üksnes juhul, kui ta on lasknud protokollida oma vastuväite otsusele. (5) Organi otsuse kehtetuks tunnistamise nõude aegumistähtaeg on kolm kuud alates otsuse vastuvõtmisest. Otsuse kehtetuks tunnistamist ei saa nõuda, kui organ on selle uue otsusega kinnitanud ja uue otsuse suhtes ei ole eelmises lauses nimetatud tähtaja jooksul esitatud käesoleva paragrahvi lõikes 1 nimetatud hagi. (6) Kohus ei aruta organi otsuse kehtetuks tunnistamise hagi esitamisel asja enne, kui on möödunud käesoleva paragrahvi lõikes 5 nimetatud tähtaeg. Erinevad hagid sama otsuse kehtetuks tunnistamiseks liidetakse ühte menetlusse. (7) Juriidilise isiku organi otsuse tühisusele võib kohtumenetluses tugineda nii hagi kui ka vastuväite esitamisega. Otsuse tühisusele ei saa tugineda, kui otsuse alusel on tehtud kanne avalikku registrisse ja kande tegemisest on möödunud kaks aastat. (8) Organi otsuse kehtetuks tunnistamise või tühisuse tuvastamise kohtuotsus kehtib kõigi juriidilise isiku ja tema organi liikmete suhtes, sõltumata nende osalemisest kohtumenetluses. Kui kehtetuks tunnistatud otsuse või otsuse alusel, mille tühisuse kohus tuvastas, oli tehtud kanne avalikku registrisse, saadab kohus otsuse ärakirja registripidajale kande muutmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
       },
@@ -5475,9 +5798,6 @@
         },
         {
           "@id": "estleg:TsUS_Osa2_Par_38_Lg_2"
-        },
-        {
-          "@id": "estleg:TsUS_Osa2_Par_38_Lg_3"
         },
         {
           "@id": "estleg:TsUS_Osa2_Par_38_Lg_4"
@@ -5864,24 +6184,6 @@
       ]
     },
     {
-      "@id": "estleg:TsUS_Osa2_Par_38_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:TsUS_Osa2_Par_38"
-      },
-      "rdfs:label": "§ 38 lg 3",
-      "estleg:interpretedBy": [
-        {
-          "@id": "estleg:RK_3_2_1_22_08"
-        }
-      ]
-    },
-    {
       "@id": "estleg:TsUS_Osa2_Par_38_Lg_4",
       "@type": [
         "estleg:Subsection",
@@ -6072,13 +6374,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39. Juriidilise isiku lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 39. Juriidilise isiku lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Juriidiline isik lõpetatakse: üldkoosoleku või muu pädeva organi otsusega; isiku, organi või asutuse otsusega, kellele seadusega on antud õigus lõpetada avalik-õiguslik juriidiline isik; seaduses, põhikirjas või ühingulepingus seatud eesmärgi saavutamisel; tähtaja möödumisel, kui juriidiline isik on asutatud tähtajaliselt; kehtetu - kehtetu - kehtetu - kohtumäärusega sundlõpetamise kohta; muul seaduse, põhikirja või ühingulepinguga ettenähtud alusel.",
-      "estleg:legalText": "Juriidiline isik lõpetatakse: üldkoosoleku või muu pädeva organi otsusega; isiku, organi või asutuse otsusega, kellele seadusega on antud õigus lõpetada avalik-õiguslik juriidiline isik; seaduses, põhikirjas või ühingulepingus seatud eesmärgi saavutamisel; tähtaja möödumisel, kui juriidiline isik on asutatud tähtajaliselt; kehtetu - kehtetu - kehtetu - kohtumäärusega sundlõpetamise kohta; muul seaduse, põhikirja või ühingulepinguga ettenähtud alusel.",
+      "estleg:summary": {
+        "@value": "Juriidiline isik lõpetatakse: 1) üldkoosoleku või muu pädeva organi otsusega; 2) isiku, organi või asutuse otsusega, kellele seadusega on antud õigus lõpetada avalik-õiguslik juriidiline isik; 3) seaduses, põhikirjas või ühingulepingus seatud eesmärgi saavutamisel; 4) tähtaja möödumisel, kui juriidiline isik on asutatud tähtajaliselt; 4¹) 5) 6) 7) kohtumäärusega sundlõpetamise kohta; 8) muul seaduse, põhikirja või ühingulepinguga ettenähtud alusel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Juriidiline isik lõpetatakse: 1) üldkoosoleku või muu pädeva organi otsusega; 2) isiku, organi või asutuse otsusega, kellele seadusega on antud õigus lõpetada avalik-õiguslik juriidiline isik; 3) seaduses, põhikirjas või ühingulepingus seatud eesmärgi saavutamisel; 4) tähtaja möödumisel, kui juriidiline isik on asutatud tähtajaliselt; 4¹) 5) 6) 7) kohtumäärusega sundlõpetamise kohta; 8) muul seaduse, põhikirja või ühingulepinguga ettenähtud alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
       },
@@ -6172,10 +6480,23 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juriidiline isik lõpetatakse: üldkoosoleku või muu pädeva organi otsusega; isiku, organi või asutuse otsusega, kellele seadusega on antud õigus lõpetada avalik-õiguslik juriidiline isik; seaduses, põhikirjas või ühingulepingus seatud eesmärgi saavutamisel; tähtaja möödumisel, kui juriidiline isik on asutatud tähtajaliselt; kehtetu - kehtetu - kehtetu - kohtumäärusega sundlõpetamise kohta; muul seaduse, põhikirja või ühingulepinguga ettenähtud alusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juriidiline isik lõpetatakse: 1) üldkoosoleku või muu pädeva organi otsusega; 2) isiku, organi või asutuse otsusega, kellele seadusega on antud õigus lõpetada avalik-õiguslik juriidiline isik; 3) seaduses, põhikirjas või ühingulepingus seatud eesmärgi saavutamisel; 4) tähtaja möödumisel, kui juriidiline isik on asutatud tähtajaliselt; 4¹) 5) 6) 7) kohtumäärusega sundlõpetamise kohta; 8) muul seaduse, põhikirja või ühingulepinguga ettenähtud alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_39"
       },
+      "rdfs:label": "§ 39 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "4¹",
+        "5",
+        "6",
+        "7",
+        "8"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -6201,13 +6522,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40. Juriidilise isiku sundlõpetamine",
+      "rdfs:label": {
+        "@value": "§ 40. Juriidilise isiku sundlõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Juriidiline isik lõpetatakse kohtumäärusega valdkonna eest vastutava ministri või muu selleks seadusega õigustatud isiku või asutuse nõudel (sundlõpetamine), kui: juriidilise isiku eesmärk või tegevus on vastuolus seaduse, avaliku korra või heade kommetega; juriidilise isiku asutamisel on oluliselt rikutud seadust või asutamislepingu sõlmimisel või asutamisotsuse tegemisel esines asjaolu, mis toob kaasa lepingu või otsuse kehtetuse, ja rikkumist ei saa hiljem kõrvaldada; juriidilise isiku",
-      "estleg:legalText": "(1) Juriidiline isik lõpetatakse kohtumäärusega valdkonna eest vastutava ministri või muu selleks seadusega õigustatud isiku või asutuse nõudel (sundlõpetamine), kui: juriidilise isiku eesmärk või tegevus on vastuolus seaduse, avaliku korra või heade kommetega; juriidilise isiku asutamisel on oluliselt rikutud seadust või asutamislepingu sõlmimisel või asutamisotsuse tegemisel esines asjaolu, mis toob kaasa lepingu või otsuse kehtetuse, ja rikkumist ei saa hiljem kõrvaldada; juriidilise isiku põhikiri on olulisel määral vastuolus seadusega; juriidiline isik ei vasta talle seadusega kehtestatud nõuetele; juriidilise isiku juhatuse või seda asendava organi koosseis ei vasta seaduse nõuetele, eelkõige juhul, kui juhatuse või seda asendava organi ametiaeg on lõppenud rohkem kui kaks aastat tagasi ja uut juhatust või seda asendavat organit ei ole valitud; esineb muu seaduses sätestatud alus. (2) Kui sundlõpetamise aluseks oleva puuduse või muu asjaolu saab ilmselt kõrvaldada, määrab kohus juriidilisele isikule eelnevalt tähtaja puuduse või asjaolu kõrvaldamiseks. (3) Kohus võib sundlõpetamise otsustada ka omal algatusel, kui seadusest ei tulene teisiti.",
+      "estleg:summary": {
+        "@value": "(1) Juriidiline isik lõpetatakse kohtumäärusega valdkonna eest vastutava ministri või muu selleks seadusega õigustatud isiku või asutuse nõudel (sundlõpetamine), kui: 1) juriidilise isiku eesmärk või tegevus on vastuolus seaduse, avaliku korra või heade kommetega; 2) juriidilise isiku asutamisel on oluliselt rikutud seadust või asutamislepingu sõlmimisel või asutamisotsuse tegemisel esines asjaolu, mis toob kaasa lepingu või otsuse kehtetuse, ja rikkumist ei saa hiljem kõrvaldada; 3)",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Juriidiline isik lõpetatakse kohtumäärusega valdkonna eest vastutava ministri või muu selleks seadusega õigustatud isiku või asutuse nõudel (sundlõpetamine), kui: 1) juriidilise isiku eesmärk või tegevus on vastuolus seaduse, avaliku korra või heade kommetega; 2) juriidilise isiku asutamisel on oluliselt rikutud seadust või asutamislepingu sõlmimisel või asutamisotsuse tegemisel esines asjaolu, mis toob kaasa lepingu või otsuse kehtetuse, ja rikkumist ei saa hiljem kõrvaldada; 3) juriidilise isiku põhikiri on olulisel määral vastuolus seadusega; 4) juriidiline isik ei vasta talle seadusega kehtestatud nõuetele; 5) juriidilise isiku juhatuse või seda asendava organi koosseis ei vasta seaduse nõuetele, eelkõige juhul, kui juhatuse või seda asendava organi ametiaeg on lõppenud rohkem kui kaks aastat tagasi ja uut juhatust või seda asendavat organit ei ole valitud; 6) esineb muu seaduses sätestatud alus. (2) Kui sundlõpetamise aluseks oleva puuduse või muu asjaolu saab ilmselt kõrvaldada, määrab kohus juriidilisele isikule eelnevalt tähtaja puuduse või asjaolu kõrvaldamiseks. (3) Kohus võib sundlõpetamise otsustada ka omal algatusel, kui seadusest ei tulene teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
       },
@@ -6293,11 +6620,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Juriidiline isik lõpetatakse kohtumäärusega valdkonna eest vastutava ministri või muu selleks seadusega õigustatud isiku või asutuse nõudel (sundlõpetamine), kui: juriidilise isiku eesmärk või tegevus on vastuolus seaduse, avaliku korra või heade kommetega; juriidilise isiku asutamisel on oluliselt rikutud seadust või asutamislepingu sõlmimisel või asutamisotsuse tegemisel esines asjaolu, mis toob kaasa lepingu või otsuse kehtetuse, ja rikkumist ei saa hiljem kõrvaldada; juriidilise isiku põhikiri on olulisel määral vastuolus seadusega; juriidiline isik ei vasta talle seadusega kehtestatud nõuetele; juriidilise isiku juhatuse või seda asendava organi koosseis ei vasta seaduse nõuetele, eelkõige juhul, kui juhatuse või seda asendava organi ametiaeg on lõppenud rohkem kui kaks aastat tagasi ja uut juhatust või seda asendavat organit ei ole valitud; esineb muu seaduses sätestatud alus.",
+      "estleg:legalText": "(1) Juriidiline isik lõpetatakse kohtumäärusega valdkonna eest vastutava ministri või muu selleks seadusega õigustatud isiku või asutuse nõudel (sundlõpetamine), kui: 1) juriidilise isiku eesmärk või tegevus on vastuolus seaduse, avaliku korra või heade kommetega; 2) juriidilise isiku asutamisel on oluliselt rikutud seadust või asutamislepingu sõlmimisel või asutamisotsuse tegemisel esines asjaolu, mis toob kaasa lepingu või otsuse kehtetuse, ja rikkumist ei saa hiljem kõrvaldada; 3) juriidilise isiku põhikiri on olulisel määral vastuolus seadusega; 4) juriidiline isik ei vasta talle seadusega kehtestatud nõuetele; 5) juriidilise isiku juhatuse või seda asendava organi koosseis ei vasta seaduse nõuetele, eelkõige juhul, kui juhatuse või seda asendava organi ametiaeg on lõppenud rohkem kui kaks aastat tagasi ja uut juhatust või seda asendavat organit ei ole valitud; 6) esineb muu seaduses sätestatud alus.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_40"
       },
       "rdfs:label": "§ 40 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -6398,12 +6733,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41. Likvideerimine",
+      "rdfs:label": {
+        "@value": "§ 41. Likvideerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Juriidilise isiku lõpetamisel toimub selle likvideerimine, kui seaduses ei ole sätestatud teisiti. Pankrotimenetluses toimub juriidilise isiku likvideerimine pankrotimenetlusele sätestatud korras. (2) Likvideerimise korraldavad likvideerijad, kelleks on juriidilise isiku juhatuse või seda asendava organi liikmed, kui seaduse, põhikirja või ühingulepinguga ei ole ette nähtud teisiti. Sundlõpetamise korral määrab likvideerijad kohus. Likvideerimise alustamisega lõpevad juhatuse või seda",
+      "estleg:summary": {
+        "@value": "(1) Juriidilise isiku lõpetamisel toimub selle likvideerimine, kui seaduses ei ole sätestatud teisiti. Pankrotimenetluses toimub juriidilise isiku likvideerimine pankrotimenetlusele sätestatud korras. (2) Likvideerimise korraldavad likvideerijad, kelleks on juriidilise isiku juhatuse või seda asendava organi liikmed, kui seaduse, põhikirja või ühingulepinguga ei ole ette nähtud teisiti. Sundlõpetamise korral määrab likvideerijad kohus. Likvideerimise alustamisega lõpevad juhatuse või seda",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Juriidilise isiku lõpetamisel toimub selle likvideerimine, kui seaduses ei ole sätestatud teisiti. Pankrotimenetluses toimub juriidilise isiku likvideerimine pankrotimenetlusele sätestatud korras. (2) Likvideerimise korraldavad likvideerijad, kelleks on juriidilise isiku juhatuse või seda asendava organi liikmed, kui seaduse, põhikirja või ühingulepinguga ei ole ette nähtud teisiti. Sundlõpetamise korral määrab likvideerijad kohus. Likvideerimise alustamisega lõpevad juhatuse või seda asendava organi volitused. (3) Likvideerijatel on juhatuse või seda asendava organi õigused ja kohustused, mis ei ole vastuolus likvideerimise eesmärgiga. Likvideerijad vastutavad oma kohustuste rikkumise eest nagu juhatuse liikmed. (4) Likvideerijad lõpetavad juriidilise isiku tegevuse, nõuavad sisse võlad, müüvad vara, rahuldavad võlausaldajate nõuded ja jagavad allesjäänud vara selleks õigustatud isikute vahel. Likvideerijad võivad teha ainult neid toiminguid, mis on vajalikud juriidilise isiku likvideerimiseks. (5) Likvideerimise ajal esindavad juriidilist isikut likvideerijad, kes võivad juriidilist isikut esindada kõigi tehingute tegemisel. Kui juriidilisel isikul on mitu likvideerijat, võivad nad esindada juriidilist isikut üksnes ühiselt. Likvideerijad võivad volitada ühte või mitut endi hulgast teatud tehingute või teatud liiki tehingute tegemiseks. (6) Kui likvideerijaid ei ole määratud kohtu poolt, võib neid tagasi kutsuda nagu juhatuse liikmeid. (7) Huvitatud isiku nõudmisel võib kohus likvideerija mõjuval põhjusel tagasi kutsuda, sõltumata juriidilise isiku lõpetamise alusest. Sel juhul määrab kohus uue likvideerija. (8) Likvideerimise ajal tuleb juriidilise isiku nimele lisada märkus «likvideerimisel».",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -6715,12 +7056,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 42.",
-      "rdfs:label": "§ 42. Likvideerimisteade ja nõuete esitamine",
+      "rdfs:label": {
+        "@value": "§ 42. Likvideerimisteade ja nõuete esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Likvideerijad avaldavad viivitamata teate juriidilise isiku likvideerimise kohta ametlikus väljaandes Ametlikud Teadaanded. (2) Likvideerimisteates tuleb märkida, et võlausaldajad esitaksid oma nõuded juriidilise isiku vastu nelja kuu jooksul teate avaldamisest arvates. Kui juriidilise isiku nime on muudetud teate avaldamisele eelneva kahe aasta jooksul, tuleb likvideerimisteates märkida ka juriidilise isiku varasemad nimed. (3) Teadaolevatele võlausaldajatele peavad likvideerijad saatma",
+      "estleg:summary": {
+        "@value": "(1) Likvideerijad avaldavad viivitamata teate juriidilise isiku likvideerimise kohta ametlikus väljaandes Ametlikud Teadaanded. (2) Likvideerimisteates tuleb märkida, et võlausaldajad esitaksid oma nõuded juriidilise isiku vastu nelja kuu jooksul teate avaldamisest arvates. Kui juriidilise isiku nime on muudetud teate avaldamisele eelneva kahe aasta jooksul, tuleb likvideerimisteates märkida ka juriidilise isiku varasemad nimed. (3) Teadaolevatele võlausaldajatele peavad likvideerijad saatma",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Likvideerijad avaldavad viivitamata teate juriidilise isiku likvideerimise kohta ametlikus väljaandes Ametlikud Teadaanded. (2) Likvideerimisteates tuleb märkida, et võlausaldajad esitaksid oma nõuded juriidilise isiku vastu nelja kuu jooksul teate avaldamisest arvates. Kui juriidilise isiku nime on muudetud teate avaldamisele eelneva kahe aasta jooksul, tuleb likvideerimisteates märkida ka juriidilise isiku varasemad nimed. (3) Teadaolevatele võlausaldajatele peavad likvideerijad saatma likvideerimisteate.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -6881,12 +7228,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 43.",
-      "rdfs:label": "§ 43. Nõuete rahuldamine ja vara jagamine",
+      "rdfs:label": {
+        "@value": "§ 43. Nõuete rahuldamine ja vara jagamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Pärast võlausaldajate nõuete rahuldamist võib allesjäänud vara jagada välja isikutele, kes seaduse, põhikirja või ühingulepingu kohaselt on selleks õigustatud, kui seaduses ei ole sätestatud teisiti. Vara ei või välja jagada enne kuue kuu möödumist likvideerimisteate avaldamisest. (2) Kui teadaolev võlausaldaja ei ole nõuet esitanud, hoiustatakse talle kuuluv raha. (3) Kui kohustust ei ole likvideerimise ajal võimalik täita või kui nõude osas toimub kohtumenetlus, võib allesjäänud vara",
+      "estleg:summary": {
+        "@value": "(1) Pärast võlausaldajate nõuete rahuldamist võib allesjäänud vara jagada välja isikutele, kes seaduse, põhikirja või ühingulepingu kohaselt on selleks õigustatud, kui seaduses ei ole sätestatud teisiti. Vara ei või välja jagada enne kuue kuu möödumist likvideerimisteate avaldamisest. (2) Kui teadaolev võlausaldaja ei ole nõuet esitanud, hoiustatakse talle kuuluv raha. (3) Kui kohustust ei ole likvideerimise ajal võimalik täita või kui nõude osas toimub kohtumenetlus, võib allesjäänud vara",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Pärast võlausaldajate nõuete rahuldamist võib allesjäänud vara jagada välja isikutele, kes seaduse, põhikirja või ühingulepingu kohaselt on selleks õigustatud, kui seaduses ei ole sätestatud teisiti. Vara ei või välja jagada enne kuue kuu möödumist likvideerimisteate avaldamisest. (2) Kui teadaolev võlausaldaja ei ole nõuet esitanud, hoiustatakse talle kuuluv raha. (3) Kui kohustust ei ole likvideerimise ajal võimalik täita või kui nõude osas toimub kohtumenetlus, võib allesjäänud vara jagada õigustatud isikutele välja üksnes juhul, kui võlausaldajale on antud piisav tagatis. (4) Kui juriidiline isik sundlõpetatakse seetõttu, et juriidilise isiku eesmärk või tegevus on keelatud karistusõiguslike sätetega või on vastuolus avaliku korra või heade kommetega, jääb pärast võlausaldajate nõuete rahuldamist allesjäänud vara riigile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -7092,12 +7445,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 44.",
-      "rdfs:label": "§ 44. Pankrotiavalduse esitamine",
+      "rdfs:label": {
+        "@value": "§ 44. Pankrotiavalduse esitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Kui likvideeritava juriidilise isiku varast ei jätku võlausaldajate kõigi nõuete rahuldamiseks, peavad likvideerijad viivitamata esitama pankrotiavalduse.",
+      "estleg:summary": {
+        "@value": "Kui likvideeritava juriidilise isiku varast ei jätku võlausaldajate kõigi nõuete rahuldamiseks, peavad likvideerijad viivitamata esitama pankrotiavalduse.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui likvideeritava juriidilise isiku varast ei jätku võlausaldajate kõigi nõuete rahuldamiseks, peavad likvideerijad viivitamata esitama pankrotiavalduse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -7189,10 +7548,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui likvideeritava juriidilise isiku varast ei jätku võlausaldajate kõigi nõuete rahuldamiseks, peavad likvideerijad viivitamata esitama pankrotiavalduse.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui likvideeritava juriidilise isiku varast ei jätku võlausaldajate kõigi nõuete rahuldamiseks, peavad likvideerijad viivitamata esitama pankrotiavalduse.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_44"
       },
+      "rdfs:label": "§ 44 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -7216,12 +7577,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45. Juriidilise isiku lõppemine",
+      "rdfs:label": {
+        "@value": "§ 45. Juriidilise isiku lõppemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Pärast võlausaldajate nõuete rahuldamist, raha hoiustamist, tagatise andmist ja allesjäänud vara õigustatud isikutele väljajagamist esitavad likvideerijad avalduse eraõigusliku juriidilise isiku registrist kustutamiseks. (1¹) Eraõiguslikku juriidilist isikut ei kustutata registrist, kui see osaleb menetlusosalisena mõnes käimasolevas kohtumenetluses, kriminaalmenetluses kahtlustatavana, süüdistatavana, kolmanda isikuna või tsiviilkostjana, samuti väärteomenetluses menetlusaluse isikuna või",
+      "estleg:summary": {
+        "@value": "(1) Pärast võlausaldajate nõuete rahuldamist, raha hoiustamist, tagatise andmist ja allesjäänud vara õigustatud isikutele väljajagamist esitavad likvideerijad avalduse eraõigusliku juriidilise isiku registrist kustutamiseks. (1¹) Eraõiguslikku juriidilist isikut ei kustutata registrist, kui see osaleb menetlusosalisena mõnes käimasolevas kohtumenetluses, kriminaalmenetluses kahtlustatavana, süüdistatavana, kolmanda isikuna või tsiviilkostjana, samuti väärteomenetluses menetlusaluse isikuna või",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Pärast võlausaldajate nõuete rahuldamist, raha hoiustamist, tagatise andmist ja allesjäänud vara õigustatud isikutele väljajagamist esitavad likvideerijad avalduse eraõigusliku juriidilise isiku registrist kustutamiseks. (1¹) Eraõiguslikku juriidilist isikut ei kustutata registrist, kui see osaleb menetlusosalisena mõnes käimasolevas kohtumenetluses, kriminaalmenetluses kahtlustatavana, süüdistatavana, kolmanda isikuna või tsiviilkostjana, samuti väärteomenetluses menetlusaluse isikuna või täitemenetluses või vahekohtumenetluses ja registrist kustutamine takistaks seda menetlust. Kui juriidiline isik on loetud lõpetatuks pankrotiavalduse menetluse või pankrotimenetluse raugemise tõttu, ei kustutata teda registrist ainult juhul, kui ta on menetlusosaline käimasolevas kriminaalmenetluses, välja arvatud menetleja loal. Likvideerijad peavad isiku registrist kustutamise avalduses kinnitama, et takistusi registrist kustutamiseks ei ole. (2) Eraõigusliku juriidilise isiku registrist kustutamisega varatu juriidiline isik lõpeb. (3) Avalik-õiguslik juriidiline isik lõpeb seadusega ettenähtud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -7440,12 +7807,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 46.",
-      "rdfs:label": "§ 46. Dokumentide säilitamine",
+      "rdfs:label": {
+        "@value": "§ 46. Dokumentide säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "(1) Lõppenud juriidilise isiku dokumendid antakse hoiule likvideerijale või kolmandale isikule. Dokumente säilitatakse kümme aastat, kui seaduses ei ole sätestatud teisiti. (2) Kui juriidiline isik oli kantud registrisse, kantakse registrisse dokumentide hoidja nimi ja elukoht või asukoht ning elektronposti aadress.",
+      "estleg:summary": {
+        "@value": "(1) Lõppenud juriidilise isiku dokumendid antakse hoiule likvideerijale või kolmandale isikule. Dokumente säilitatakse kümme aastat, kui seaduses ei ole sätestatud teisiti. (2) Kui juriidiline isik oli kantud registrisse, kantakse registrisse dokumentide hoidja nimi ja elukoht või asukoht ning elektronposti aadress.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Lõppenud juriidilise isiku dokumendid antakse hoiule likvideerijale või kolmandale isikule. Dokumente säilitatakse kümme aastat, kui seaduses ei ole sätestatud teisiti. (2) Kui juriidiline isik oli kantud registrisse, kantakse registrisse dokumentide hoidja nimi ja elukoht või asukoht ning elektronposti aadress.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -7614,12 +7987,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 47.",
-      "rdfs:label": "§ 47. Ühinemine, jagunemine ja ümberkujundamine",
+      "rdfs:label": {
+        "@value": "§ 47. Ühinemine, jagunemine ja ümberkujundamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
       "estleg:partOfAct": {
         "@id": "estleg:TsUS_Map"
       },
-      "estleg:summary": "Juriidilise isiku ühinemine, jagunemine ja ümberkujundamine on lubatud üksnes seaduses sätestatud juhtudel ja korras.",
+      "estleg:summary": {
+        "@value": "Juriidilise isiku ühinemine, jagunemine ja ümberkujundamine on lubatud üksnes seaduses sätestatud juhtudel ja korras.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juriidilise isiku ühinemine, jagunemine ja ümberkujundamine on lubatud üksnes seaduses sätestatud juhtudel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TsUS_2_2"
@@ -7693,10 +8072,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juriidilise isiku ühinemine, jagunemine ja ümberkujundamine on lubatud üksnes seaduses sätestatud juhtudel ja korras.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juriidilise isiku ühinemine, jagunemine ja ümberkujundamine on lubatud üksnes seaduses sätestatud juhtudel ja korras.",
       "estleg:parentProvision": {
         "@id": "estleg:TsUS_Osa2_Par_47"
       },
+      "rdfs:label": "§ 47 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },

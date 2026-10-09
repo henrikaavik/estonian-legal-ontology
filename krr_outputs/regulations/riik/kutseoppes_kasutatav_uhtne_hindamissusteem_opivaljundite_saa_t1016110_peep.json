@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused (määrus)",
+      "rdfs:label": {
+        "@value": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2013-09-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2013-08-29",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:issuedUnder": [
         {
           "@id": "estleg:KUTSEO_Map"
@@ -60,7 +62,13 @@
         {
           "@id": "http://eurovoc.europa.eu/668"
         }
-      ]
+      ],
+      "dcterms:title": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1016110_Par_1",
@@ -69,18 +77,42 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1016110_Map"
       },
-      "estleg:summary": "Käesolevas määruses kehtestatakse kutseõppe tasemeõppes kasutatav ühtne hindamissüsteem, sealhulgas õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused.",
-      "estleg:legalText": "Käesolevas määruses kehtestatakse kutseõppe tasemeõppes kasutatav ühtne hindamissüsteem, sealhulgas õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused. Käesolevas määruses kehtestatakse kutseõppe tasemeõppes kasutatav ühtne hindamissüsteem, sealhulgas õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused.",
+      "estleg:summary": {
+        "@value": "Käesolevas määruses kehtestatakse kutseõppe tasemeõppes kasutatav ühtne hindamissüsteem, sealhulgas õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Käesolevas määruses kehtestatakse kutseõppe tasemeõppes kasutatav ühtne hindamissüsteem, sealhulgas õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1016110_Par_1_v1016110"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1016110_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas määruses kehtestatakse kutseõppe tasemeõppes kasutatav ühtne hindamissüsteem, sealhulgas õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1016110_Par_2",
@@ -89,13 +121,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Õpiväljundite saavutatuse hindamise alused",
+      "rdfs:label": {
+        "@value": "§ 2. Õpiväljundite saavutatuse hindamise alused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1016110_Map"
       },
-      "estleg:summary": "1 (1) Hindamine, sealhulgas õpilase enesehindamine, on õppeprotsessi osa, mille käigus antakse kindlate hindamiskriteeriumide alusel õiglane ja erapooletu hinnang õpilase kompetentside taseme kohta vastavalt õpiväljunditele. Õpiväljundid on kirjeldatud õppekava ja mooduli läbimiseks vajaliku miinimumi tasemel (edaspidi lävendi tase). Hindamine, sealhulgas õpilase enesehindamine, on õppeprotsessi osa, mille käigus antakse kindlate hindamiskriteeriumide alusel õiglane ja erapooletu hinnang õpilase",
-      "estleg:legalText": "1 (1) Hindamine, sealhulgas õpilase enesehindamine, on õppeprotsessi osa, mille käigus antakse kindlate hindamiskriteeriumide alusel õiglane ja erapooletu hinnang õpilase kompetentside taseme kohta vastavalt õpiväljunditele. Õpiväljundid on kirjeldatud õppekava ja mooduli läbimiseks vajaliku miinimumi tasemel (edaspidi lävendi tase). Hindamine, sealhulgas õpilase enesehindamine, on õppeprotsessi osa, mille käigus antakse kindlate hindamiskriteeriumide alusel õiglane ja erapooletu hinnang õpilase kompetentside taseme kohta vastavalt õpiväljunditele. Õpiväljundid on kirjeldatud õppekava ja mooduli läbimiseks vajaliku miinimumi tasemel (edaspidi lävendi tase). 2 (2) Hindamise eesmärk on õpilase arengu toetamine tagasiside abil ning usaldusväärse teabe andmine õpingute läbimise tulemuslikkuse kohta. Hindamise eesmärk on õpilase arengu toetamine tagasiside abil ning usaldusväärse teabe andmine õpingute läbimise tulemuslikkuse kohta. 3 (3) Hindamisel eristatakse kahte peamist funktsiooni – kujundavat ja kokkuvõtvat. Hindamisel eristatakse kahte peamist funktsiooni – kujundavat ja kokkuvõtvat. 4 (4) Kujundava hindamise käigus antakse õpilasele tagasisidet, mis toetab õpilase õpiväljundite saavutamist õppeprotsessi jooksul. Kujundavat hindamist väljendatakse üldjuhul sõnaliselt ja selle eesmärk on korrigeerida õppeprotsessi enne kokkuvõtvat hindamist. Kujundava hindamise käigus antakse õpilasele tagasisidet, mis toetab õpilase õpiväljundite saavutamist õppeprotsessi jooksul. Kujundavat hindamist väljendatakse üldjuhul sõnaliselt ja selle eesmärk on korrigeerida õppeprotsessi enne kokkuvõtvat hindamist. 5 (5) Kokkuvõtva hindamisega mõõdetakse õppekavas või moodulis kirjeldatud õpiväljundite saavutatust. Kokkuvõtva hindamisega mõõdetakse õppekavas või moodulis kirjeldatud õpiväljundite saavutatust. 6 (6) Hindamine võib olla eristav või mitteeristav. Eristava hindamise puhul diferentseeritakse õpiväljundite saavutatust lävendit ületaval tasemel. Mitteeristava hindamise puhul mõõdetakse õpiväljundite saavutatust ainult lävendi tasemel. Hindamine võib olla eristav või mitteeristav. Eristava hindamise puhul diferentseeritakse õpiväljundite saavutatust lävendit ületaval tasemel. Mitteeristava hindamise puhul mõõdetakse õpiväljundite saavutatust ainult lävendi tasemel.",
+      "estleg:summary": {
+        "@value": "1 (1) Hindamine, sealhulgas õpilase enesehindamine, on õppeprotsessi osa, mille käigus antakse kindlate hindamiskriteeriumide alusel õiglane ja erapooletu hinnang õpilase kompetentside taseme kohta vastavalt õpiväljunditele. Õpiväljundid on kirjeldatud õppekava ja mooduli läbimiseks vajaliku miinimumi tasemel (edaspidi lävendi tase). 2 (2) Hindamise eesmärk on õpilase arengu toetamine tagasiside abil ning usaldusväärse teabe andmine õpingute läbimise tulemuslikkuse kohta.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Hindamine, sealhulgas õpilase enesehindamine, on õppeprotsessi osa, mille käigus antakse kindlate hindamiskriteeriumide alusel õiglane ja erapooletu hinnang õpilase kompetentside taseme kohta vastavalt õpiväljunditele. Õpiväljundid on kirjeldatud õppekava ja mooduli läbimiseks vajaliku miinimumi tasemel (edaspidi lävendi tase). 2 (2) Hindamise eesmärk on õpilase arengu toetamine tagasiside abil ning usaldusväärse teabe andmine õpingute läbimise tulemuslikkuse kohta. 3 (3) Hindamisel eristatakse kahte peamist funktsiooni – kujundavat ja kokkuvõtvat. 4 (4) Kujundava hindamise käigus antakse õpilasele tagasisidet, mis toetab õpilase õpiväljundite saavutamist õppeprotsessi jooksul. Kujundavat hindamist väljendatakse üldjuhul sõnaliselt ja selle eesmärk on korrigeerida õppeprotsessi enne kokkuvõtvat hindamist. 5 (5) Kokkuvõtva hindamisega mõõdetakse õppekavas või moodulis kirjeldatud õpiväljundite saavutatust. 6 (6) Hindamine võib olla eristav või mitteeristav. Eristava hindamise puhul diferentseeritakse õpiväljundite saavutatust lävendit ületaval tasemel. Mitteeristava hindamise puhul mõõdetakse õpiväljundite saavutatust ainult lävendi tasemel.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KUTSEO_Par_31"
@@ -105,7 +143,105 @@
         {
           "@id": "estleg:Reg_1016110_Par_2_v1016110"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1016110_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_2_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hindamine, sealhulgas õpilase enesehindamine, on õppeprotsessi osa, mille käigus antakse kindlate hindamiskriteeriumide alusel õiglane ja erapooletu hinnang õpilase kompetentside taseme kohta vastavalt õpiväljunditele. Õpiväljundid on kirjeldatud õppekava ja mooduli läbimiseks vajaliku miinimumi tasemel (edaspidi lävendi tase).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Hindamise eesmärk on õpilase arengu toetamine tagasiside abil ning usaldusväärse teabe andmine õpingute läbimise tulemuslikkuse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Hindamisel eristatakse kahte peamist funktsiooni – kujundavat ja kokkuvõtvat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kujundava hindamise käigus antakse õpilasele tagasisidet, mis toetab õpilase õpiväljundite saavutamist õppeprotsessi jooksul. Kujundavat hindamist väljendatakse üldjuhul sõnaliselt ja selle eesmärk on korrigeerida õppeprotsessi enne kokkuvõtvat hindamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kokkuvõtva hindamisega mõõdetakse õppekavas või moodulis kirjeldatud õpiväljundite saavutatust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Hindamine võib olla eristav või mitteeristav. Eristava hindamise puhul diferentseeritakse õpiväljundite saavutatust lävendit ületaval tasemel. Mitteeristava hindamise puhul mõõdetakse õpiväljundite saavutatust ainult lävendi tasemel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6"
     },
     {
       "@id": "estleg:Reg_1016110_Par_3",
@@ -114,13 +250,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Hindamismeetodid ja -kriteeriumid",
+      "rdfs:label": {
+        "@value": "§ 3. Hindamismeetodid ja -kriteeriumid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1016110_Map"
       },
-      "estleg:summary": "1 (1) Õpiväljundite saavutatuse hindamisel kasutatakse sobivaid ja usaldusväärseid hindamismeetodeid ja -kriteeriume, millest on õpilast eelnevalt teavitatud. Õpiväljundite saavutatuse hindamisel kasutatakse sobivaid ja usaldusväärseid hindamismeetodeid ja -kriteeriume, millest on õpilast eelnevalt teavitatud. 2 (2) Hindamismeetod on teadmiste, oskuste ja hoiakute omandatuse tõendamise viis, näiteks oskuste demonstratsioon, õpimapp, projekt, esitlus, simulatsioon, praktiline töö, essee, test, rü",
-      "estleg:legalText": "1 (1) Õpiväljundite saavutatuse hindamisel kasutatakse sobivaid ja usaldusväärseid hindamismeetodeid ja -kriteeriume, millest on õpilast eelnevalt teavitatud. Õpiväljundite saavutatuse hindamisel kasutatakse sobivaid ja usaldusväärseid hindamismeetodeid ja -kriteeriume, millest on õpilast eelnevalt teavitatud. 2 (2) Hindamismeetod on teadmiste, oskuste ja hoiakute omandatuse tõendamise viis, näiteks oskuste demonstratsioon, õpimapp, projekt, esitlus, simulatsioon, praktiline töö, essee, test, rühmatöö, diskussioon, aruanne jms. Hindamismeetod on teadmiste, oskuste ja hoiakute omandatuse tõendamise viis, näiteks oskuste demonstratsioon, õpimapp, projekt, esitlus, simulatsioon, praktiline töö, essee, test, rühmatöö, diskussioon, aruanne jms. 3 (3) Hindamiskriteerium kirjeldab hindamismeetodiga tõendatavate teadmiste, oskuste ja hoiakute oodatavat taset ning ulatust. Hindamiskriteerium sõnastatakse õpiväljundite alusel, kuid oluliselt suurema detailsusega. Hindamiskriteerium kirjeldab hindamismeetodiga tõendatavate teadmiste, oskuste ja hoiakute oodatavat taset ning ulatust. Hindamiskriteerium sõnastatakse õpiväljundite alusel, kuid oluliselt suurema detailsusega. 4 (4) Hindamiskriteeriumid sõnastatakse vastavalt hindamisskaalale. Hindamiskriteeriumid sõnastatakse vastavalt hindamisskaalale.",
+      "estleg:summary": {
+        "@value": "1 (1) Õpiväljundite saavutatuse hindamisel kasutatakse sobivaid ja usaldusväärseid hindamismeetodeid ja -kriteeriume, millest on õpilast eelnevalt teavitatud. 2 (2) Hindamismeetod on teadmiste, oskuste ja hoiakute omandatuse tõendamise viis, näiteks oskuste demonstratsioon, õpimapp, projekt, esitlus, simulatsioon, praktiline töö, essee, test, rühmatöö, diskussioon, aruanne jms.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Õpiväljundite saavutatuse hindamisel kasutatakse sobivaid ja usaldusväärseid hindamismeetodeid ja -kriteeriume, millest on õpilast eelnevalt teavitatud. 2 (2) Hindamismeetod on teadmiste, oskuste ja hoiakute omandatuse tõendamise viis, näiteks oskuste demonstratsioon, õpimapp, projekt, esitlus, simulatsioon, praktiline töö, essee, test, rühmatöö, diskussioon, aruanne jms. 3 (3) Hindamiskriteerium kirjeldab hindamismeetodiga tõendatavate teadmiste, oskuste ja hoiakute oodatavat taset ning ulatust. Hindamiskriteerium sõnastatakse õpiväljundite alusel, kuid oluliselt suurema detailsusega. 4 (4) Hindamiskriteeriumid sõnastatakse vastavalt hindamisskaalale.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1047539_Par_4"
@@ -130,7 +272,73 @@
         {
           "@id": "estleg:Reg_1016110_Par_3_v1016110"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1016110_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_3_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Õpiväljundite saavutatuse hindamisel kasutatakse sobivaid ja usaldusväärseid hindamismeetodeid ja -kriteeriume, millest on õpilast eelnevalt teavitatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Hindamismeetod on teadmiste, oskuste ja hoiakute omandatuse tõendamise viis, näiteks oskuste demonstratsioon, õpimapp, projekt, esitlus, simulatsioon, praktiline töö, essee, test, rühmatöö, diskussioon, aruanne jms.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Hindamiskriteerium kirjeldab hindamismeetodiga tõendatavate teadmiste, oskuste ja hoiakute oodatavat taset ning ulatust. Hindamiskriteerium sõnastatakse õpiväljundite alusel, kuid oluliselt suurema detailsusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Hindamiskriteeriumid sõnastatakse vastavalt hindamisskaalale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
     },
     {
       "@id": "estleg:Reg_1016110_Par_4",
@@ -139,13 +347,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Eristava ja mitteeristava hindamise skaalad ja hinnete kirjeldused",
+      "rdfs:label": {
+        "@value": "§ 4. Eristava ja mitteeristava hindamise skaalad ja hinnete kirjeldused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1016110_Map"
       },
-      "estleg:summary": "1 (1) Eristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse hinnetega „3”, „4” või „5” ning ebapiisavaks tulemuseks õpiväljundite saavutamine lävendi tasemest madalamal tasemel ja seda väljendatakse hindega „2”. Numbrilise hindega väljendatakse õpiväljundite saavutatuse taset järgmiselt: 1 1) hinne „5” – „väga hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljun",
-      "estleg:legalText": "1 (1) Eristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse hinnetega „3”, „4” või „5” ning ebapiisavaks tulemuseks õpiväljundite saavutamine lävendi tasemest madalamal tasemel ja seda väljendatakse hindega „2”. Numbrilise hindega väljendatakse õpiväljundite saavutatuse taset järgmiselt: 1 1) hinne „5” – „väga hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite iseseisev, eesmärgipärane ja loov kasutamine; 2 2) hinne „4” – „hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite eesmärgipärane kasutamine; 3 3) hinne „3” – „rahuldav” – õpilane on saavutanud kõik õpiväljundid lävendi tasemel; 4 4) hinne „2” – „puudulik” – õpilane ei ole saavutanud kõiki õpiväljundeid lävendi tasemel. Eristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse hinnetega „3”, „4” või „5” ning ebapiisavaks tulemuseks õpiväljundite saavutamine lävendi tasemest madalamal tasemel ja seda väljendatakse hindega „2”. Numbrilise hindega väljendatakse õpiväljundite saavutatuse taset järgmiselt: hinne „5” – „väga hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite iseseisev, eesmärgipärane ja loov kasutamine; hinne „4” – „hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite eesmärgipärane kasutamine; hinne „3” – „rahuldav” – õpilane on saavutanud kõik õpiväljundid lävendi tasemel; hinne „2” – „puudulik” – õpilane ei ole saavutanud kõiki õpiväljundeid lävendi tasemel. 2 (2) Mitteeristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse sõnaga „arvestatud”. Ebapiisavaks tulemuseks on õpiväljundite saavutamine lävendi tasemest madalamal tasemel ning seda väljendatakse sõnaga „mittearvestatud”. Mitteeristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse sõnaga „arvestatud”. Ebapiisavaks tulemuseks on õpiväljundite saavutamine lävendi tasemest madalamal tasemel ning seda väljendatakse sõnaga „mittearvestatud”.",
+      "estleg:summary": {
+        "@value": "1 (1) Eristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse hinnetega „3”, „4” või „5” ning ebapiisavaks tulemuseks õpiväljundite saavutamine lävendi tasemest madalamal tasemel ja seda väljendatakse hindega „2”. Numbrilise hindega väljendatakse õpiväljundite saavutatuse taset järgmiselt: 1 1) hinne „5” – „väga hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Eristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse hinnetega „3”, „4” või „5” ning ebapiisavaks tulemuseks õpiväljundite saavutamine lävendi tasemest madalamal tasemel ja seda väljendatakse hindega „2”. Numbrilise hindega väljendatakse õpiväljundite saavutatuse taset järgmiselt: 1 1) hinne „5” – „väga hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite iseseisev, eesmärgipärane ja loov kasutamine; 2 2) hinne „4” – „hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite eesmärgipärane kasutamine; 3 3) hinne „3” – „rahuldav” – õpilane on saavutanud kõik õpiväljundid lävendi tasemel; 4 4) hinne „2” – „puudulik” – õpilane ei ole saavutanud kõiki õpiväljundeid lävendi tasemel. 2 (2) Mitteeristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse sõnaga „arvestatud”. Ebapiisavaks tulemuseks on õpiväljundite saavutamine lävendi tasemest madalamal tasemel ning seda väljendatakse sõnaga „mittearvestatud”.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -159,7 +373,47 @@
         {
           "@id": "estleg:Reg_1016110_Par_4_v1016110"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1016110_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse hinnetega „3”, „4” või „5” ning ebapiisavaks tulemuseks õpiväljundite saavutamine lävendi tasemest madalamal tasemel ja seda väljendatakse hindega „2”. Numbrilise hindega väljendatakse õpiväljundite saavutatuse taset järgmiselt: 1) hinne „5” – „väga hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite iseseisev, eesmärgipärane ja loov kasutamine; 2) hinne „4” – „hea” – õpilane on saavutanud õpiväljundid lävendit ületaval tasemel, mida iseloomustab väljundite eesmärgipärane kasutamine; 3) hinne „3” – „rahuldav” – õpilane on saavutanud kõik õpiväljundid lävendi tasemel; 4) hinne „2” – „puudulik” – õpilane ei ole saavutanud kõiki õpiväljundeid lävendi tasemel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Mitteeristava hindamise puhul on piisavaks tulemuseks õpiväljundite saavutamine lävendi tasemele vastaval või seda ületaval tasemel ja seda väljendatakse sõnaga „arvestatud”. Ebapiisavaks tulemuseks on õpiväljundite saavutamine lävendi tasemest madalamal tasemel ning seda väljendatakse sõnaga „mittearvestatud”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_1016110_Par_5",
@@ -168,13 +422,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Hindamine varasemate õpingute ja varasema töökogemuse arvestamisel",
+      "rdfs:label": {
+        "@value": "§ 5. Hindamine varasemate õpingute ja varasema töökogemuse arvestamisel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Kutseõppes kasutatav ühtne hindamissüsteem, õpiväljundite saavutatuse hindamise alused, hindamismeetodid ja -kriteeriumid ning hinnete kirjeldused",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1016110_Map"
       },
-      "estleg:summary": "1 (1) Varem hindamata õpingute ja varasemast töökogemusest õpitu arvestamisel antakse mitteeristava hindamisega hinnang taotleja varem omandatud teadmiste ja oskuste vastavuse kohta mooduli õpiväljunditele. Varem hindamata õpingute ja varasemast töökogemusest õpitu arvestamisel antakse mitteeristava hindamisega hinnang taotleja varem omandatud teadmiste ja oskuste vastavuse kohta mooduli õpiväljunditele. 2 (2) Varem hinnatud õpingute arvestamisel: 1 1) kantakse hinne üle, kui õpingud on varem hi",
-      "estleg:legalText": "1 (1) Varem hindamata õpingute ja varasemast töökogemusest õpitu arvestamisel antakse mitteeristava hindamisega hinnang taotleja varem omandatud teadmiste ja oskuste vastavuse kohta mooduli õpiväljunditele. Varem hindamata õpingute ja varasemast töökogemusest õpitu arvestamisel antakse mitteeristava hindamisega hinnang taotleja varem omandatud teadmiste ja oskuste vastavuse kohta mooduli õpiväljunditele. 2 (2) Varem hinnatud õpingute arvestamisel: 1 1) kantakse hinne üle, kui õpingud on varem hinnatud samas hindamissüsteemis või 2 2) arvutatakse võrreldava hindamissüsteemi hinnetele vasted kehtivas hindamissüsteemis või kasutatakse võrreldavas hindamissüsteemis antud hinnet või 3 3) kantakse hinded üle mitteeristava hindamisega, kui hindamissüsteeme ei ole võimalik võrrelda. Varem hinnatud õpingute arvestamisel: kantakse hinne üle, kui õpingud on varem hinnatud samas hindamissüsteemis või arvutatakse võrreldava hindamissüsteemi hinnetele vasted kehtivas hindamissüsteemis või kasutatakse võrreldavas hindamissüsteemis antud hinnet või kantakse hinded üle mitteeristava hindamisega, kui hindamissüsteeme ei ole võimalik võrrelda. 3 (3) Varasemate õpingute ja varasema töökogemuse hindamise ja arvestamise nõuded sätestatakse kooli õppekorralduseeskirjas. Varasemate õpingute ja varasema töökogemuse hindamise ja arvestamise nõuded sätestatakse kooli õppekorralduseeskirjas.",
+      "estleg:summary": {
+        "@value": "1 (1) Varem hindamata õpingute ja varasemast töökogemusest õpitu arvestamisel antakse mitteeristava hindamisega hinnang taotleja varem omandatud teadmiste ja oskuste vastavuse kohta mooduli õpiväljunditele. 2 (2) Varem hinnatud õpingute arvestamisel: 1 1) kantakse hinne üle, kui õpingud on varem hinnatud samas hindamissüsteemis või 2 2) arvutatakse võrreldava hindamissüsteemi hinnetele vasted kehtivas hindamissüsteemis või kasutatakse võrreldavas hindamissüsteemis antud hinnet või 3 3) kantakse…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Varem hindamata õpingute ja varasemast töökogemusest õpitu arvestamisel antakse mitteeristava hindamisega hinnang taotleja varem omandatud teadmiste ja oskuste vastavuse kohta mooduli õpiväljunditele. 2 (2) Varem hinnatud õpingute arvestamisel: 1 1) kantakse hinne üle, kui õpingud on varem hinnatud samas hindamissüsteemis või 2 2) arvutatakse võrreldava hindamissüsteemi hinnetele vasted kehtivas hindamissüsteemis või kasutatakse võrreldavas hindamissüsteemis antud hinnet või 3 3) kantakse hinded üle mitteeristava hindamisega, kui hindamissüsteeme ei ole võimalik võrrelda. 3 (3) Varasemate õpingute ja varasema töökogemuse hindamise ja arvestamise nõuded sätestatakse kooli õppekorralduseeskirjas.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -196,6 +456,17 @@
         {
           "@id": "estleg:Reg_1016110_Par_5_v1016110"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1016110_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1016110_Par_5_Lg_3"
+        }
       ]
     },
     {
@@ -209,6 +480,50 @@
       },
       "estleg:citationDetail": "lg 2",
       "estleg:citationText": "Määrus kehtestatakse kutseõppeasutuse seaduse § 31 lõike 2"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Varem hindamata õpingute ja varasemast töökogemusest õpitu arvestamisel antakse mitteeristava hindamisega hinnang taotleja varem omandatud teadmiste ja oskuste vastavuse kohta mooduli õpiväljunditele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Varem hinnatud õpingute arvestamisel: 1) kantakse hinne üle, kui õpingud on varem hinnatud samas hindamissüsteemis või 2) arvutatakse võrreldava hindamissüsteemi hinnetele vasted kehtivas hindamissüsteemis või kasutatakse võrreldavas hindamissüsteemis antud hinnet või 3) kantakse hinded üle mitteeristava hindamisega, kui hindamissüsteeme ei ole võimalik võrrelda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1016110_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Varasemate õpingute ja varasema töökogemuse hindamise ja arvestamise nõuded sätestatakse kooli õppekorralduseeskirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1016110_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
     }
   ]
 }

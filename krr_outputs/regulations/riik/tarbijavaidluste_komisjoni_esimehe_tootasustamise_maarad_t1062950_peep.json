@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Tarbijavaidluste komisjoni esimehe töötasustamise määrad (määrus)",
+      "rdfs:label": {
+        "@value": "Tarbijavaidluste komisjoni esimehe töötasustamise määrad (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Tarbijavaidluste komisjoni esimehe töötasustamise määrad",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2026-03-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2026-02-26",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -64,7 +66,13 @@
         {
           "@id": "http://eurovoc.europa.eu/557"
         }
-      ]
+      ],
+      "dcterms:title": "Tarbijavaidluste komisjoni esimehe töötasustamise määrad",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1062950_Par_1",
@@ -73,13 +81,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Tarbijavaidluste komisjoni esimehe töötasustamise määrad",
+      "rdfs:label": {
+        "@value": "§ 1. Tarbijavaidluste komisjoni esimehe töötasustamise määrad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tarbijavaidluste komisjoni esimehe töötasustamise määrad",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1062950_Map"
       },
-      "estleg:summary": "1 (1) Komisjoni esimehele makstakse vaidluse menetlemise eest tasu 24 eurot iga vaidluse menetlemisele kulunud tunni kohta. Komisjoni esimehele makstakse vaidluse menetlemise eest tasu 24 eurot iga vaidluse menetlemisele kulunud tunni kohta. 2 (2) Komisjoni esimehele ühe vaidluse menetlemise eest makstav töötasu ei või ületada 220 eurot. Komisjoni esimehele ühe vaidluse menetlemise eest makstav töötasu ei või ületada 220 eurot.",
-      "estleg:legalText": "1 (1) Komisjoni esimehele makstakse vaidluse menetlemise eest tasu 24 eurot iga vaidluse menetlemisele kulunud tunni kohta. Komisjoni esimehele makstakse vaidluse menetlemise eest tasu 24 eurot iga vaidluse menetlemisele kulunud tunni kohta. 2 (2) Komisjoni esimehele ühe vaidluse menetlemise eest makstav töötasu ei või ületada 220 eurot. Komisjoni esimehele ühe vaidluse menetlemise eest makstav töötasu ei või ületada 220 eurot.",
+      "estleg:summary": {
+        "@value": "1 (1) Komisjoni esimehele makstakse vaidluse menetlemise eest tasu 24 eurot iga vaidluse menetlemisele kulunud tunni kohta. 2 (2) Komisjoni esimehele ühe vaidluse menetlemise eest makstav töötasu ei või ületada 220 eurot.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Komisjoni esimehele makstakse vaidluse menetlemise eest tasu 24 eurot iga vaidluse menetlemisele kulunud tunni kohta. 2 (2) Komisjoni esimehele ühe vaidluse menetlemise eest makstav töötasu ei või ületada 220 eurot.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -96,7 +110,41 @@
         {
           "@id": "estleg:Reg_1062950_Par_1_v1062950"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1062950_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1062950_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1062950_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Komisjoni esimehele makstakse vaidluse menetlemise eest tasu 24 eurot iga vaidluse menetlemisele kulunud tunni kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1062950_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1062950_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Komisjoni esimehele ühe vaidluse menetlemise eest makstav töötasu ei või ületada 220 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1062950_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1062950_Par_2",
@@ -105,13 +153,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Määruse kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 2. Määruse kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tarbijavaidluste komisjoni esimehe töötasustamise määrad",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1062950_Map"
       },
-      "estleg:summary": "Tunnistan kehtetuks majandus- ja taristuministri 15. märtsi 2016. a määruse nr 23 „Tarbijavaidluste komisjoni esimehe töötasustamise määr”.",
-      "estleg:legalText": "Tunnistan kehtetuks majandus- ja taristuministri 15. märtsi 2016. a määruse nr 23 „Tarbijavaidluste komisjoni esimehe töötasustamise määr”. Tunnistan kehtetuks majandus- ja taristuministri 15. märtsi 2016. a määruse nr 23 „Tarbijavaidluste komisjoni esimehe töötasustamise määr”.",
+      "estleg:summary": {
+        "@value": "Tunnistan kehtetuks majandus- ja taristuministri 15. märtsi 2016. a määruse nr 23 „Tarbijavaidluste komisjoni esimehe töötasustamise määr”.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Tunnistan kehtetuks majandus- ja taristuministri 15. märtsi 2016. a määruse nr 23 „Tarbijavaidluste komisjoni esimehe töötasustamise määr”.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -130,7 +184,25 @@
         {
           "@id": "estleg:Institution_taristuminister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1062950_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1062950_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tunnistan kehtetuks majandus- ja taristuministri 15. märtsi 2016. a määruse nr 23 „Tarbijavaidluste komisjoni esimehe töötasustamise määr”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1062950_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1062950_Par_3",
@@ -139,16 +211,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 3. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Tarbijavaidluste komisjoni esimehe töötasustamise määrad",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1062950_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. märtsil 2026. a.",
-      "estleg:legalText": "Määrus jõustub 1. märtsil 2026. a. Määrus jõustub 1. märtsil 2026. a.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. märtsil 2026. a.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. märtsil 2026. a.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1062950_Par_3_v1062950"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1062950_Par_3_Lg_1"
         }
       ]
     },
@@ -163,6 +246,19 @@
       },
       "estleg:citationDetail": "lg 2",
       "estleg:citationText": "Määrus kehtestatakse tarbijakaitseseaduse § 45 lõike 2"
+    },
+    {
+      "@id": "estleg:Reg_1062950_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. märtsil 2026. a.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1062950_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     }
   ]
 }

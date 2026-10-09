@@ -5,26 +5,47 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
       "dcterms:title": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/226092017001.xml"
+        "@id": "https://www.riigiteataja.ee/akt/226092017001"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/226092017001/xml"
+      },
+      "estleg:globalId": "226092017001",
+      "eli:id_local": "226092017001",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "1040106",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "cae7018dc5b121da98009033c07ecf40a23584022477647c951f4b52295e2726",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2017-10-06",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -53,30 +74,39 @@
       ]
     },
     {
-      "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_naistevastase_vagivalla_ja_perevagivalla_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_naistevastase_vagivalla_ja_perevagivalla_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–2 Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
-      "skos:prefLabel": "§1–2 Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
+      "rdfs:label": {
+        "@value": "§1–2 Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–2 Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_TopicScheme"
       },
       "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_naistevastase_vagivalla_ja_perevagivalla_default"
+        }
+      ]
     },
     {
       "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_Par_1",
@@ -85,12 +115,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. [Ratifitseerida juurde lisatud , mis avati allakirjutamiseks 2011. aasta 11. mail...]",
+      "rdfs:label": {
+        "@value": "§ 1. [Ratifitseerida juurde lisatud , mis avati allakirjutamiseks 2011. aasta 11. mail...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_Map"
       },
-      "estleg:summary": "Ratifitseerida juurde lisatud , mis avati allakirjutamiseks 2011. aasta 11. mail Istanbulis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 2. detsembril.",
+      "estleg:summary": {
+        "@value": "Ratifitseerida juurde lisatud , mis avati allakirjutamiseks 2011. aasta 11. mail Istanbulis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 2. detsembril.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ratifitseerida juurde lisatud , mis avati allakirjutamiseks 2011. aasta 11. mail Istanbulis ja millele Eesti Vabariik on alla kirjutanud 2014. aasta 2. detsembril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_naistevastase_vagivalla_ja_perevagivalla_default"
@@ -125,12 +161,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. [Kooskõlas konventsiooni artikli 10 lõikega 1 deklareerib Eesti Vabariik, et konv...]",
+      "rdfs:label": {
+        "@value": "§ 2. [Kooskõlas konventsiooni artikli 10 lõikega 1 deklareerib Eesti Vabariik, et konv...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Naistevastase vägivalla ja perevägivalla ennetamise ja tõkestamise Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_Map"
       },
-      "estleg:summary": "Kooskõlas konventsiooni artikli 10 lõikega 1 deklareerib Eesti Vabariik, et konventsiooni täitmist koordineeriv organ on Justiitsministeerium.",
+      "estleg:summary": {
+        "@value": "Kooskõlas konventsiooni artikli 10 lõikega 1 deklareerib Eesti Vabariik, et konventsiooni täitmist koordineeriv organ on Justiitsministeerium.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kooskõlas konventsiooni artikli 10 lõikega 1 deklareerib Eesti Vabariik, et konventsiooni täitmist koordineeriv organ on Justiitsministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_naistevastase_vagivalla_ja_perevagivalla_default"

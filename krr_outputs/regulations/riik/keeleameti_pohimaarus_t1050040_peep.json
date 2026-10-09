@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Keeleameti põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Keeleameti põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Keeleameti põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2020-08-01",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2020-07-28",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -76,7 +78,13 @@
         {
           "@id": "http://eurovoc.europa.eu/517"
         }
-      ]
+      ],
+      "dcterms:title": "Keeleameti põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1050040_Par_1",
@@ -85,13 +93,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Keeleamet",
+      "rdfs:label": {
+        "@value": "§ 1. Keeleamet",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Keeleamet (edaspidi amet) on Haridus- ja Teadusministeeriumi (edaspidi ministeerium) valitsemisalas tegutsev valitsusasutus. Keeleamet (edaspidi amet) on Haridus- ja Teadusministeeriumi (edaspidi ministeerium) valitsemisalas tegutsev valitsusasutus. 2 (2) Ülesannete täitmisel esindab amet riiki. Ülesannete täitmisel esindab amet riiki.",
-      "estleg:legalText": "1 (1) Keeleamet (edaspidi amet) on Haridus- ja Teadusministeeriumi (edaspidi ministeerium) valitsemisalas tegutsev valitsusasutus. Keeleamet (edaspidi amet) on Haridus- ja Teadusministeeriumi (edaspidi ministeerium) valitsemisalas tegutsev valitsusasutus. 2 (2) Ülesannete täitmisel esindab amet riiki. Ülesannete täitmisel esindab amet riiki.",
+      "estleg:summary": {
+        "@value": "1 (1) Keeleamet (edaspidi amet) on Haridus- ja Teadusministeeriumi (edaspidi ministeerium) valitsemisalas tegutsev valitsusasutus. 2 (2) Ülesannete täitmisel esindab amet riiki.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Keeleamet (edaspidi amet) on Haridus- ja Teadusministeeriumi (edaspidi ministeerium) valitsemisalas tegutsev valitsusasutus. 2 (2) Ülesannete täitmisel esindab amet riiki.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -130,7 +144,41 @@
         {
           "@id": "estleg:Institution_haridus_ja_teadusministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Keeleamet (edaspidi amet) on Haridus- ja Teadusministeeriumi (edaspidi ministeerium) valitsemisalas tegutsev valitsusasutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ülesannete täitmisel esindab amet riiki.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1050040_Par_2",
@@ -139,13 +187,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Ameti asukoht",
+      "rdfs:label": {
+        "@value": "§ 2. Ameti asukoht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukoha ning postiaadressi määrab ameti peadirektor.",
-      "estleg:legalText": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukoha ning postiaadressi määrab ameti peadirektor. Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukoha ning postiaadressi määrab ameti peadirektor.",
+      "estleg:summary": {
+        "@value": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukoha ning postiaadressi määrab ameti peadirektor.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukoha ning postiaadressi määrab ameti peadirektor.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -176,7 +230,25 @@
         {
           "@id": "estleg:Reg_1050040_Par_2_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_2_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti asukoht on Tallinn. Ameti mujal asuvate üksuste ja esinduste asukoha ning postiaadressi määrab ameti peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:Reg_1050040_Par_3",
@@ -185,13 +257,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ameti eelarve, pitsat, sümboolika",
+      "rdfs:label": {
+        "@value": "§ 3. Ameti eelarve, pitsat, sümboolika",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Ametil on oma eelarve, mille kinnitab, mida muudab ja mille täitmist kontrollib valdkonna eest vastutav minister (edaspidi minister) seaduses kehtestatud korras. Ametil on oma eelarve, mille kinnitab, mida muudab ja mille täitmist kontrollib valdkonna eest vastutav minister (edaspidi minister) seaduses kehtestatud korras. 2 (2) Ametil on oma nimega dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti asjaajamiskorras. Ameti struktuuriüksusel võib olla oma nimega dokumendiplank",
-      "estleg:legalText": "1 (1) Ametil on oma eelarve, mille kinnitab, mida muudab ja mille täitmist kontrollib valdkonna eest vastutav minister (edaspidi minister) seaduses kehtestatud korras. Ametil on oma eelarve, mille kinnitab, mida muudab ja mille täitmist kontrollib valdkonna eest vastutav minister (edaspidi minister) seaduses kehtestatud korras. 2 (2) Ametil on oma nimega dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti asjaajamiskorras. Ameti struktuuriüksusel võib olla oma nimega dokumendiplank, kui see on ette nähtud struktuuriüksuse põhimääruses. Ametil on oma nimega dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti asjaajamiskorras. Ameti struktuuriüksusel võib olla oma nimega dokumendiplank, kui see on ette nähtud struktuuriüksuse põhimääruses. 3 (3) Ametil on sõõrikujuline 35 mm läbimõõduga pitsat, mille keskel on väikese riigivapi kujutis ja äärel sõna „Keeleamet”. Ametil on sõõrikujuline 35 mm läbimõõduga pitsat, mille keskel on väikese riigivapi kujutis ja äärel sõna „Keeleamet”.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametil on oma eelarve, mille kinnitab, mida muudab ja mille täitmist kontrollib valdkonna eest vastutav minister (edaspidi minister) seaduses kehtestatud korras. 2 (2) Ametil on oma nimega dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti asjaajamiskorras. Ameti struktuuriüksusel võib olla oma nimega dokumendiplank, kui see on ette nähtud struktuuriüksuse põhimääruses.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametil on oma eelarve, mille kinnitab, mida muudab ja mille täitmist kontrollib valdkonna eest vastutav minister (edaspidi minister) seaduses kehtestatud korras. 2 (2) Ametil on oma nimega dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti asjaajamiskorras. Ameti struktuuriüksusel võib olla oma nimega dokumendiplank, kui see on ette nähtud struktuuriüksuse põhimääruses. 3 (3) Ametil on sõõrikujuline 35 mm läbimõõduga pitsat, mille keskel on väikese riigivapi kujutis ja äärel sõna „Keeleamet”.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -233,7 +311,57 @@
         {
           "@id": "estleg:Institution_keeleamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_3_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametil on oma eelarve, mille kinnitab, mida muudab ja mille täitmist kontrollib valdkonna eest vastutav minister (edaspidi minister) seaduses kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametil on oma nimega dokumendiplangid, mille kasutamise kord määratakse kindlaks ameti asjaajamiskorras. Ameti struktuuriüksusel võib olla oma nimega dokumendiplank, kui see on ette nähtud struktuuriüksuse põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ametil on sõõrikujuline 35 mm läbimõõduga pitsat, mille keskel on väikese riigivapi kujutis ja äärel sõna „Keeleamet”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:Reg_1050040_Par_4",
@@ -242,13 +370,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Tegevuse koordineerimine ja aruandekohustus",
+      "rdfs:label": {
+        "@value": "§ 4. Tegevuse koordineerimine ja aruandekohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes suunab ja koordineerib ameti tegevust ning teeb ameti üle teenistuslikku järelevalvet õigusaktidega sätestatud korras. Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes suunab ja koordineerib ameti tegevust ning teeb ameti üle teenistuslikku järelevalvet õigusaktidega sätestatud korras. 2 (2) Ameti koostööd ministeeriumiga koordineerib ministeeriumi kantsler. Ameti koostööd ministeeriumiga koordineeri",
-      "estleg:legalText": "1 (1) Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes suunab ja koordineerib ameti tegevust ning teeb ameti üle teenistuslikku järelevalvet õigusaktidega sätestatud korras. Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes suunab ja koordineerib ameti tegevust ning teeb ameti üle teenistuslikku järelevalvet õigusaktidega sätestatud korras. 2 (2) Ameti koostööd ministeeriumiga koordineerib ministeeriumi kantsler. Ameti koostööd ministeeriumiga koordineerib ministeeriumi kantsler.",
+      "estleg:summary": {
+        "@value": "1 (1) Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes suunab ja koordineerib ameti tegevust ning teeb ameti üle teenistuslikku järelevalvet õigusaktidega sätestatud korras. 2 (2) Ameti koostööd ministeeriumiga koordineerib ministeeriumi kantsler.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes suunab ja koordineerib ameti tegevust ning teeb ameti üle teenistuslikku järelevalvet õigusaktidega sätestatud korras. 2 (2) Ameti koostööd ministeeriumiga koordineerib ministeeriumi kantsler.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -279,7 +413,41 @@
         {
           "@id": "estleg:Reg_1050040_Par_4_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Amet on aruandekohustuslik valdkonna eest vastutava ministri ees, kes suunab ja koordineerib ameti tegevust ning teeb ameti üle teenistuslikku järelevalvet õigusaktidega sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ameti koostööd ministeeriumiga koordineerib ministeeriumi kantsler.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_1050040_Par_5",
@@ -288,13 +456,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Ameti nimetus eri keeltes",
+      "rdfs:label": {
+        "@value": "§ 5. Ameti nimetus eri keeltes",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "Ameti nimetus inglise keeles on Language Board.",
-      "estleg:legalText": "Ameti nimetus inglise keeles on Language Board. Ameti nimetus inglise keeles on Language Board.",
+      "estleg:summary": {
+        "@value": "Ameti nimetus inglise keeles on Language Board.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti nimetus inglise keeles on Language Board.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -322,7 +496,25 @@
         {
           "@id": "estleg:Reg_1050040_Par_5_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti nimetus inglise keeles on Language Board.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_1050040_Par_6",
@@ -331,13 +523,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Ameti tegevusvaldkonnad ja ülesanded",
+      "rdfs:label": {
+        "@value": "§ 6. Ameti tegevusvaldkonnad ja ülesanded",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Ameti tegevusvaldkonnad on keelepoliitika elluviimine ning keeleseaduse ja teiste keeleoskust ja keelekasutust reguleerivate õigusaktide täitmise riiklik- ja haldusjärelevalve ja riikliku sunni kohaldamine seaduses ette nähtud alustel ja ulatuses. Ameti tegevusvaldkonnad on keelepoliitika elluviimine ning keeleseaduse ja teiste keeleoskust ja keelekasutust reguleerivate õigusaktide täitmise riiklik- ja haldusjärelevalve ja riikliku sunni kohaldamine seaduses ette nähtud alustel ja ulatuses",
-      "estleg:legalText": "1 (1) Ameti tegevusvaldkonnad on keelepoliitika elluviimine ning keeleseaduse ja teiste keeleoskust ja keelekasutust reguleerivate õigusaktide täitmise riiklik- ja haldusjärelevalve ja riikliku sunni kohaldamine seaduses ette nähtud alustel ja ulatuses. Ameti tegevusvaldkonnad on keelepoliitika elluviimine ning keeleseaduse ja teiste keeleoskust ja keelekasutust reguleerivate õigusaktide täitmise riiklik- ja haldusjärelevalve ja riikliku sunni kohaldamine seaduses ette nähtud alustel ja ulatuses. 2 (2) Keelepoliitika elluviimise valdkonnas täidab amet järgmisi ülesandeid: 1 1) teeb ettepanekuid Eesti ja Euroopa Liidu keelepoliitika kujundamiseks ja keelealaste õigusaktide eelnõude väljatöötamiseks; 2 2) koordineerib ja viib koostöös teiste asutustega läbi eesti keele staatuse ja maine parandamisele suunatud tegevusi; 3 3) analüüsib eri valdkondade ja piirkondade keeleolukorda, keelealaste õigusaktide tõhusust ja järelevalvetöö tulemuslikkust; 4 4) edendab eri valdkondade keelekasutust ning teeb ettepanekuid keelekasutuse hea tava, stiiliraamatute, eestikeelse tehnilise dokumentatsiooni ja eestikeelsete standardite väljatöötamiseks; 5 5) koordineerib täiskasvanute keeleõpet ja edendab sellekohast teabevahetust, teeb ministeeriumile ettepanekuid täiskasvanute keeleõppesüsteemi tõhustamiseks ja arendamiseks; 6 6) selgitab avalikkusele keeleseaduse nõudeid ja teavitab avalikkust keeleolukorrast; 7 7) nõustab isikuid ja asutusi keeleliste inimõiguste ja keelealaste õigusaktide rakendamise küsimustes; 8 8) nõustab tööandjaid töötajatele eesti keele oskuse nõuete kohaldamisel ja eesti keele õppe korraldamisel; 9 9) hindab töötaja või ametniku eesti keele oskuse vastavust töö- või ametikohal töötamiseks; 10 10) teavitab eesti keelt mittevaldavaid inimesi keeleõppevõimalustest ja nõustab neid sobiva keeleõppekursuse valikul; 11 11) jälgib keeletehnoloogia rakendamist eri eluvaldkondades, teeb oma tegevusvaldkonnast lähtudes ministeeriumile ettepanekuid keeletehnoloogiliste lahenduste paremaks rakendamiseks ja uute rakenduste väljatöötamiseks. Keelepoliitika elluviimise valdkonnas täidab amet järgmisi ülesandeid: teeb ettepanekuid Eesti ja Euroopa Liidu keelepoliitika kujundamiseks ja keelealaste õigusaktide eelnõude väljatöötamiseks; koordineerib ja viib koostöös teiste asutustega läbi eesti keele staatuse ja maine parandamisele suunatud tegevusi; analüüsib eri valdkondade ja piirkondade keeleolukorda, keelealaste õigusaktide tõhusust ja järelevalvetöö tulemuslikkust; edendab eri valdkondade keelekasutust ning teeb ettepanekuid keelekasutuse hea tava, stiiliraamatute, eestikeelse tehnilise dokumentatsiooni ja eestikeelsete standardite väljatöötamiseks; koordineerib täiskasvanute keeleõpet ja edendab sellekohast teabevahetust, teeb ministeeriumile ettepanekuid täiskasvanute keeleõppesüsteemi tõhustamiseks ja arendamiseks; selgitab avalikkusele keeleseaduse nõudeid ja teavitab avalikkust keeleolukorrast; nõustab isikuid ja asutusi keeleliste inimõiguste ja keelealaste õigusaktide rakendamise küsimustes; nõustab tööandjaid töötajatele eesti keele oskuse nõuete kohaldamisel ja eesti keele õppe korraldamisel; hindab töötaja või ametniku eesti keele oskuse vastavust töö- või ametikohal töötamiseks; teavitab eesti keelt mittevaldavaid inimesi keeleõppevõimalustest ja nõustab neid sobiva keeleõppekursuse valikul; jälgib keeletehnoloogia rakendamist eri eluvaldkondades, teeb oma tegevusvaldkonnast lähtudes ministeeriumile ettepanekuid keeletehnoloogiliste lahenduste paremaks rakendamiseks ja uute rakenduste väljatöötamiseks. 3 (3) Järelevalve valdkonnas täidab amet järgmisi ülesandeid: 1 1) teeb järelevalvet seaduste alusel kehtestatud eesti keele ja võõrkeelte kasutamise nõuete järgimise üle riigiasutuses, kohalikus omavalitsuses ja nende hallatavas asutuses ning avalik-õigusliku juriidilise isiku asutuses (edaspidi asutus), notari, kohtutäituri või vandetõlgi büroos, äriühingus, mittetulundusühingus või sihtasutuses ning füüsilisest isikust ettevõtja tegevuses; 2 2) kontrollib ametnikele või töötajatele teenistuskohustuste või tööülesannete täitmiseks vajalikul tasemel eesti keele oskuse nõuete kohaldamist tööandja poolt; 3 3) kontrollib ametniku või töötaja eesti keele oskuse vastavust keeleseaduse ja teiste keeleoskusnõudeid sätestavate õigusaktide alusel kehtestatud eesti keele oskuse nõuetele ning vajaduse korral teeb ettekirjutuse nõutava keeleoskustaseme omandamiseks, suunab ametniku või töötaja tasemeeksamile või teeb ettepaneku ametniku ametisse nimetamise otsuse kehtetuks tunnistamiseks või töötaja töölepingu lõpetamiseks; 4 4) kontrollib ametliku keelekasutuse, sh ametlike veebilehtede keelekasutuse vastavust eesti kirjakeele normile ning keelekasutuse hea tava järgimist avalikel siltidel, viitadel, kuulutustel, teadaannetes ja reklaamis; 5 5) kontrollib ametliku nimekuju kasutamist ja ümberkirjutusreeglite järgimist ametlikus keelekasutuses; 6 6) kontrollib eestikeelse tõlke olemasolu võõrkeelse audiovisuaalse teose avalikul esitamisel, telejaamade võõrkeelsete saadete edastamisel ja avalikkusele suunatud rahvusvaheliste ürituste korraldamisel; 7 7) kontrollib eestikeelse kasutusjuhendi ja nõuetekohase eestikeelse märgistuse olemasolu kaupade ja teenuste pakkumisel ning eestikeelse üldteabe olemasolu müügi- ja teenindusasutuses; 8 8) hindab eesti keele täienduskoolituse läbiviimiseks tegevusluba taotleva täienduskoolitusasutuse õppekavade, õppekeskkonna ja õpetajate vastavust seaduses või seaduse alusel kehtestatud nõuetele; 9 9) tutvub tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ja kontrollib selle läbiviimist vastavalt keeleseaduse nõuetele; 10 10) teeb ettepanekuid eesti keele täienduskoolituse kvaliteedi parandamiseks. Järelevalve valdkonnas täidab amet järgmisi ülesandeid: teeb järelevalvet seaduste alusel kehtestatud eesti keele ja võõrkeelte kasutamise nõuete järgimise üle riigiasutuses, kohalikus omavalitsuses ja nende hallatavas asutuses ning avalik-õigusliku juriidilise isiku asutuses (edaspidi asutus), notari, kohtutäituri või vandetõlgi büroos, äriühingus, mittetulundusühingus või sihtasutuses ning füüsilisest isikust ettevõtja tegevuses; kontrollib ametnikele või töötajatele teenistuskohustuste või tööülesannete täitmiseks vajalikul tasemel eesti keele oskuse nõuete kohaldamist tööandja poolt; kontrollib ametniku või töötaja eesti keele oskuse vastavust keeleseaduse ja teiste keeleoskusnõudeid sätestavate õigusaktide alusel kehtestatud eesti keele oskuse nõuetele ning vajaduse korral teeb ettekirjutuse nõutava keeleoskustaseme omandamiseks, suunab ametniku või töötaja tasemeeksamile või teeb ettepaneku ametniku ametisse nimetamise otsuse kehtetuks tunnistamiseks või töötaja töölepingu lõpetamiseks; kontrollib ametliku keelekasutuse, sh ametlike veebilehtede keelekasutuse vastavust eesti kirjakeele normile ning keelekasutuse hea tava järgimist avalikel siltidel, viitadel, kuulutustel, teadaannetes ja reklaamis; kontrollib ametliku nimekuju kasutamist ja ümberkirjutusreeglite järgimist ametlikus keelekasutuses; kontrollib eestikeelse tõlke olemasolu võõrkeelse audiovisuaalse teose avalikul esitamisel, telejaamade võõrkeelsete saadete edastamisel ja avalikkusele suunatud rahvusvaheliste ürituste korraldamisel; kontrollib eestikeelse kasutusjuhendi ja nõuetekohase eestikeelse märgistuse olemasolu kaupade ja teenuste pakkumisel ning eestikeelse üldteabe olemasolu müügi- ja teenindusasutuses; hindab eesti keele täienduskoolituse läbiviimiseks tegevusluba taotleva täienduskoolitusasutuse õppekavade, õppekeskkonna ja õpetajate vastavust seaduses või seaduse alusel kehtestatud nõuetele; tutvub tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ja kontrollib selle läbiviimist vastavalt keeleseaduse nõuetele; teeb ettepanekuid eesti keele täienduskoolituse kvaliteedi parandamiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti tegevusvaldkonnad on keelepoliitika elluviimine ning keeleseaduse ja teiste keeleoskust ja keelekasutust reguleerivate õigusaktide täitmise riiklik- ja haldusjärelevalve ja riikliku sunni kohaldamine seaduses ette nähtud alustel ja ulatuses. 2 (2) Keelepoliitika elluviimise valdkonnas täidab amet järgmisi ülesandeid: 1 1) teeb ettepanekuid Eesti ja Euroopa Liidu keelepoliitika kujundamiseks ja keelealaste õigusaktide eelnõude väljatöötamiseks; 2 2) koordineerib ja viib koostöös…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti tegevusvaldkonnad on keelepoliitika elluviimine ning keeleseaduse ja teiste keeleoskust ja keelekasutust reguleerivate õigusaktide täitmise riiklik- ja haldusjärelevalve ja riikliku sunni kohaldamine seaduses ette nähtud alustel ja ulatuses. 2 (2) Keelepoliitika elluviimise valdkonnas täidab amet järgmisi ülesandeid: 1 1) teeb ettepanekuid Eesti ja Euroopa Liidu keelepoliitika kujundamiseks ja keelealaste õigusaktide eelnõude väljatöötamiseks; 2 2) koordineerib ja viib koostöös teiste asutustega läbi eesti keele staatuse ja maine parandamisele suunatud tegevusi; 3 3) analüüsib eri valdkondade ja piirkondade keeleolukorda, keelealaste õigusaktide tõhusust ja järelevalvetöö tulemuslikkust; 4 4) edendab eri valdkondade keelekasutust ning teeb ettepanekuid keelekasutuse hea tava, stiiliraamatute, eestikeelse tehnilise dokumentatsiooni ja eestikeelsete standardite väljatöötamiseks; 5 5) koordineerib täiskasvanute keeleõpet ja edendab sellekohast teabevahetust, teeb ministeeriumile ettepanekuid täiskasvanute keeleõppesüsteemi tõhustamiseks ja arendamiseks; 6 6) selgitab avalikkusele keeleseaduse nõudeid ja teavitab avalikkust keeleolukorrast; 7 7) nõustab isikuid ja asutusi keeleliste inimõiguste ja keelealaste õigusaktide rakendamise küsimustes; 8 8) nõustab tööandjaid töötajatele eesti keele oskuse nõuete kohaldamisel ja eesti keele õppe korraldamisel; 9 9) hindab töötaja või ametniku eesti keele oskuse vastavust töö- või ametikohal töötamiseks; 10 10) teavitab eesti keelt mittevaldavaid inimesi keeleõppevõimalustest ja nõustab neid sobiva keeleõppekursuse valikul; 11 11) jälgib keeletehnoloogia rakendamist eri eluvaldkondades, teeb oma tegevusvaldkonnast lähtudes ministeeriumile ettepanekuid keeletehnoloogiliste lahenduste paremaks rakendamiseks ja uute rakenduste väljatöötamiseks. 3 (3) Järelevalve valdkonnas täidab amet järgmisi ülesandeid: 1 1) teeb järelevalvet seaduste alusel kehtestatud eesti keele ja võõrkeelte kasutamise nõuete järgimise üle riigiasutuses, kohalikus omavalitsuses ja nende hallatavas asutuses ning avalik-õigusliku juriidilise isiku asutuses (edaspidi asutus), notari, kohtutäituri või vandetõlgi büroos, äriühingus, mittetulundusühingus või sihtasutuses ning füüsilisest isikust ettevõtja tegevuses; 2 2) kontrollib ametnikele või töötajatele teenistuskohustuste või tööülesannete täitmiseks vajalikul tasemel eesti keele oskuse nõuete kohaldamist tööandja poolt; 3 3) kontrollib ametniku või töötaja eesti keele oskuse vastavust keeleseaduse ja teiste keeleoskusnõudeid sätestavate õigusaktide alusel kehtestatud eesti keele oskuse nõuetele ning vajaduse korral teeb ettekirjutuse nõutava keeleoskustaseme omandamiseks, suunab ametniku või töötaja tasemeeksamile või teeb ettepaneku ametniku ametisse nimetamise otsuse kehtetuks tunnistamiseks või töötaja töölepingu lõpetamiseks; 4 4) kontrollib ametliku keelekasutuse, sh ametlike veebilehtede keelekasutuse vastavust eesti kirjakeele normile ning keelekasutuse hea tava järgimist avalikel siltidel, viitadel, kuulutustel, teadaannetes ja reklaamis; 5 5) kontrollib ametliku nimekuju kasutamist ja ümberkirjutusreeglite järgimist ametlikus keelekasutuses; 6 6) kontrollib eestikeelse tõlke olemasolu võõrkeelse audiovisuaalse teose avalikul esitamisel, telejaamade võõrkeelsete saadete edastamisel ja avalikkusele suunatud rahvusvaheliste ürituste korraldamisel; 7 7) kontrollib eestikeelse kasutusjuhendi ja nõuetekohase eestikeelse märgistuse olemasolu kaupade ja teenuste pakkumisel ning eestikeelse üldteabe olemasolu müügi- ja teenindusasutuses; 8 8) hindab eesti keele täienduskoolituse läbiviimiseks tegevusluba taotleva täienduskoolitusasutuse õppekavade, õppekeskkonna ja õpetajate vastavust seaduses või seaduse alusel kehtestatud nõuetele; 9 9) tutvub tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ja kontrollib selle läbiviimist vastavalt keeleseaduse nõuetele; 10 10) teeb ettepanekuid eesti keele täienduskoolituse kvaliteedi parandamiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -354,6 +552,81 @@
         {
           "@id": "estleg:Reg_1050040_Par_6_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_6_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti tegevusvaldkonnad on keelepoliitika elluviimine ning keeleseaduse ja teiste keeleoskust ja keelekasutust reguleerivate õigusaktide täitmise riiklik- ja haldusjärelevalve ja riikliku sunni kohaldamine seaduses ette nähtud alustel ja ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Keelepoliitika elluviimise valdkonnas täidab amet järgmisi ülesandeid: 1) teeb ettepanekuid Eesti ja Euroopa Liidu keelepoliitika kujundamiseks ja keelealaste õigusaktide eelnõude väljatöötamiseks; 2) koordineerib ja viib koostöös teiste asutustega läbi eesti keele staatuse ja maine parandamisele suunatud tegevusi; 3) analüüsib eri valdkondade ja piirkondade keeleolukorda, keelealaste õigusaktide tõhusust ja järelevalvetöö tulemuslikkust; 4) edendab eri valdkondade keelekasutust ning teeb ettepanekuid keelekasutuse hea tava, stiiliraamatute, eestikeelse tehnilise dokumentatsiooni ja eestikeelsete standardite väljatöötamiseks; 5) koordineerib täiskasvanute keeleõpet ja edendab sellekohast teabevahetust, teeb ministeeriumile ettepanekuid täiskasvanute keeleõppesüsteemi tõhustamiseks ja arendamiseks; 6) selgitab avalikkusele keeleseaduse nõudeid ja teavitab avalikkust keeleolukorrast; 7) nõustab isikuid ja asutusi keeleliste inimõiguste ja keelealaste õigusaktide rakendamise küsimustes; 8) nõustab tööandjaid töötajatele eesti keele oskuse nõuete kohaldamisel ja eesti keele õppe korraldamisel; 9) hindab töötaja või ametniku eesti keele oskuse vastavust töö- või ametikohal töötamiseks; 10) teavitab eesti keelt mittevaldavaid inimesi keeleõppevõimalustest ja nõustab neid sobiva keeleõppekursuse valikul; 11) jälgib keeletehnoloogia rakendamist eri eluvaldkondades, teeb oma tegevusvaldkonnast lähtudes ministeeriumile ettepanekuid keeletehnoloogiliste lahenduste paremaks rakendamiseks ja uute rakenduste väljatöötamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Järelevalve valdkonnas täidab amet järgmisi ülesandeid: 1) teeb järelevalvet seaduste alusel kehtestatud eesti keele ja võõrkeelte kasutamise nõuete järgimise üle riigiasutuses, kohalikus omavalitsuses ja nende hallatavas asutuses ning avalik-õigusliku juriidilise isiku asutuses (edaspidi asutus), notari, kohtutäituri või vandetõlgi büroos, äriühingus, mittetulundusühingus või sihtasutuses ning füüsilisest isikust ettevõtja tegevuses; 2) kontrollib ametnikele või töötajatele teenistuskohustuste või tööülesannete täitmiseks vajalikul tasemel eesti keele oskuse nõuete kohaldamist tööandja poolt; 3) kontrollib ametniku või töötaja eesti keele oskuse vastavust keeleseaduse ja teiste keeleoskusnõudeid sätestavate õigusaktide alusel kehtestatud eesti keele oskuse nõuetele ning vajaduse korral teeb ettekirjutuse nõutava keeleoskustaseme omandamiseks, suunab ametniku või töötaja tasemeeksamile või teeb ettepaneku ametniku ametisse nimetamise otsuse kehtetuks tunnistamiseks või töötaja töölepingu lõpetamiseks; 4) kontrollib ametliku keelekasutuse, sh ametlike veebilehtede keelekasutuse vastavust eesti kirjakeele normile ning keelekasutuse hea tava järgimist avalikel siltidel, viitadel, kuulutustel, teadaannetes ja reklaamis; 5) kontrollib ametliku nimekuju kasutamist ja ümberkirjutusreeglite järgimist ametlikus keelekasutuses; 6) kontrollib eestikeelse tõlke olemasolu võõrkeelse audiovisuaalse teose avalikul esitamisel, telejaamade võõrkeelsete saadete edastamisel ja avalikkusele suunatud rahvusvaheliste ürituste korraldamisel; 7) kontrollib eestikeelse kasutusjuhendi ja nõuetekohase eestikeelse märgistuse olemasolu kaupade ja teenuste pakkumisel ning eestikeelse üldteabe olemasolu müügi- ja teenindusasutuses; 8) hindab eesti keele täienduskoolituse läbiviimiseks tegevusluba taotleva täienduskoolitusasutuse õppekavade, õppekeskkonna ja õpetajate vastavust seaduses või seaduse alusel kehtestatud nõuetele; 9) tutvub tasemeeksamiks ettevalmistamisele suunatud eesti keele täienduskoolituse korraldusega ja kontrollib selle läbiviimist vastavalt keeleseaduse nõuetele; 10) teeb ettepanekuid eesti keele täienduskoolituse kvaliteedi parandamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
       ]
     },
     {
@@ -363,13 +636,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Struktuuriüksused",
+      "rdfs:label": {
+        "@value": "§ 7. Struktuuriüksused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Ameti struktuuriüksused on osakonnad. Osakonna koosseisu võivad kuuluda talitused. Ameti struktuuriüksused on osakonnad. Osakonna koosseisu võivad kuuluda talitused. 2 (2) Osakonnad täidavad ameti tegevusvaldkonnas nende pädevuses olevaid ülesandeid, mis määratakse kindlaks osakonna põhimääruses. Osakonnad täidavad ameti tegevusvaldkonnas nende pädevuses olevaid ülesandeid, mis määratakse kindlaks osakonna põhimääruses. 3 (3) Ameti teenistuskohtade koosseisu kinnitab valdkonna eest vastuta",
-      "estleg:legalText": "1 (1) Ameti struktuuriüksused on osakonnad. Osakonna koosseisu võivad kuuluda talitused. Ameti struktuuriüksused on osakonnad. Osakonna koosseisu võivad kuuluda talitused. 2 (2) Osakonnad täidavad ameti tegevusvaldkonnas nende pädevuses olevaid ülesandeid, mis määratakse kindlaks osakonna põhimääruses. Osakonnad täidavad ameti tegevusvaldkonnas nende pädevuses olevaid ülesandeid, mis määratakse kindlaks osakonna põhimääruses. 3 (3) Ameti teenistuskohtade koosseisu kinnitab valdkonna eest vastutav minister või tema volitusel peadirektor. Ameti teenistuskohtade koosseisu kinnitab valdkonna eest vastutav minister või tema volitusel peadirektor. 4 (4) Peadirektori vahetus alluvuses võib olla osakonnaväliseid talitusi, ametnikke ja töötajaid. Peadirektorile vahetult alluva ametniku või töötaja ülesanded määratakse kindlaks ametijuhendis või töölepingus. Peadirektori vahetus alluvuses võib olla osakonnaväliseid talitusi, ametnikke ja töötajaid. Peadirektorile vahetult alluva ametniku või töötaja ülesanded määratakse kindlaks ametijuhendis või töölepingus. 5 (5) Struktuuriüksuste juhtide pädevuse ja avaliku võimu volitused määrab peadirektor nende ametijuhendis. Struktuuriüksuste juhtide pädevuse ja avaliku võimu volitused määrab peadirektor nende ametijuhendis.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti struktuuriüksused on osakonnad. Osakonna koosseisu võivad kuuluda talitused. 2 (2) Osakonnad täidavad ameti tegevusvaldkonnas nende pädevuses olevaid ülesandeid, mis määratakse kindlaks osakonna põhimääruses. 3 (3) Ameti teenistuskohtade koosseisu kinnitab valdkonna eest vastutav minister või tema volitusel peadirektor. 4 (4) Peadirektori vahetus alluvuses võib olla osakonnaväliseid talitusi, ametnikke ja töötajaid.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti struktuuriüksused on osakonnad. Osakonna koosseisu võivad kuuluda talitused. 2 (2) Osakonnad täidavad ameti tegevusvaldkonnas nende pädevuses olevaid ülesandeid, mis määratakse kindlaks osakonna põhimääruses. 3 (3) Ameti teenistuskohtade koosseisu kinnitab valdkonna eest vastutav minister või tema volitusel peadirektor. 4 (4) Peadirektori vahetus alluvuses võib olla osakonnaväliseid talitusi, ametnikke ja töötajaid. Peadirektorile vahetult alluva ametniku või töötaja ülesanded määratakse kindlaks ametijuhendis või töölepingus. 5 (5) Struktuuriüksuste juhtide pädevuse ja avaliku võimu volitused määrab peadirektor nende ametijuhendis.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -394,7 +673,89 @@
         {
           "@id": "estleg:Reg_1050040_Par_7_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_7_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti struktuuriüksused on osakonnad. Osakonna koosseisu võivad kuuluda talitused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Osakonnad täidavad ameti tegevusvaldkonnas nende pädevuses olevaid ülesandeid, mis määratakse kindlaks osakonna põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ameti teenistuskohtade koosseisu kinnitab valdkonna eest vastutav minister või tema volitusel peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Peadirektori vahetus alluvuses võib olla osakonnaväliseid talitusi, ametnikke ja töötajaid. Peadirektorile vahetult alluva ametniku või töötaja ülesanded määratakse kindlaks ametijuhendis või töölepingus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Struktuuriüksuste juhtide pädevuse ja avaliku võimu volitused määrab peadirektor nende ametijuhendis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
     },
     {
       "@id": "estleg:Reg_1050040_Par_8",
@@ -403,13 +764,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Peadirektor",
+      "rdfs:label": {
+        "@value": "§ 8. Peadirektor",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Ametit juhib peadirektor. Ametit juhib peadirektor. 2 (2) Ameti peadirektor: 1 1) juhib ameti tööd ja korraldab ameti pädevusse kuuluvate ülesannete täitmist; 2 2) vastutab ameti tegevust korraldavate õigusaktide täpse ja tõhusa täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3 3) tegutseb ameti nimel ja esindab ametit ning annab teistele ametnikele ja töötajatele volitusi ameti esindamiseks; 4 4) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti eelarve k",
-      "estleg:legalText": "1 (1) Ametit juhib peadirektor. Ametit juhib peadirektor. 2 (2) Ameti peadirektor: 1 1) juhib ameti tööd ja korraldab ameti pädevusse kuuluvate ülesannete täitmist; 2 2) vastutab ameti tegevust korraldavate õigusaktide täpse ja tõhusa täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3 3) tegutseb ameti nimel ja esindab ametit ning annab teistele ametnikele ja töötajatele volitusi ameti esindamiseks; 4 4) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti eelarve kohta ning vastutab selle täpse ja otstarbeka täitmise eest; 5 5) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti tegevusvaldkonna korraldamiseks ning keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide muutmiseks ja täiendamiseks; 6 6) kinnitab ameti tööplaanid, töökorralduse reeglid, asjaajamiskorra ning ametnike ja töötajate ametijuhendid; 7 7) nimetab ametikohale ja vabastab ametikohalt ameti koosseisu kuuluvad ametnikud, sõlmib ja lõpetab töölepingud töötajatega, määrab vastavalt palgajuhendile ametnike palga ja lepib töötajatega kokku töötasu; 8 8) kohaldab ametnikele ergutusi ja määrab distsiplinaarkaristusi ning teeb töötajatele töölepingu ülesütlemise hoiatusi ja vajaduse korral muid hoiatusi; 9 9) kehtestab ametnike ja töötajate arengu- ja hindamisvestluste korra; 10 10) vaatab läbi ameti haldusakti või toimingu peale esitatud vaided ja annab otsuseid konkreetsete üksikjuhtude kohta; 11 11) tagab ameti sisekontrollisüsteemi rakendamise ja siseauditi, lähtudes kokkuleppest valitsemisala siseauditi juhiga; 12 12) valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid kooskõlas õigusaktidega; 13 13) annab seaduse ja seaduse alusel antud õigusaktide alusel ja täitmiseks teenistusalastes küsimustes käskkirju; 14 14) kinnitab struktuuriüksuse põhimääruse; 15 15) esindab ametit põhimäärusest ja muudest õigusaktidest tulenevate ülesannete täitmisel ning annab volitusi ameti esindamiseks; 16 16) sõlmib ameti nimel lepinguid kinnitatud eelarve piires või volitab selleks teisi ametnikke või töötajaid; 17 17) täidab muid talle õigusaktidega pandud ülesandeid. Ameti peadirektor: juhib ameti tööd ja korraldab ameti pädevusse kuuluvate ülesannete täitmist; vastutab ameti tegevust korraldavate õigusaktide täpse ja tõhusa täitmise eest ning annab aru valdkonna eest vastutavale ministrile; tegutseb ameti nimel ja esindab ametit ning annab teistele ametnikele ja töötajatele volitusi ameti esindamiseks; esitab valdkonna eest vastutavale ministrile ettepanekuid ameti eelarve kohta ning vastutab selle täpse ja otstarbeka täitmise eest; esitab valdkonna eest vastutavale ministrile ettepanekuid ameti tegevusvaldkonna korraldamiseks ning keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide muutmiseks ja täiendamiseks; kinnitab ameti tööplaanid, töökorralduse reeglid, asjaajamiskorra ning ametnike ja töötajate ametijuhendid; nimetab ametikohale ja vabastab ametikohalt ameti koosseisu kuuluvad ametnikud, sõlmib ja lõpetab töölepingud töötajatega, määrab vastavalt palgajuhendile ametnike palga ja lepib töötajatega kokku töötasu; kohaldab ametnikele ergutusi ja määrab distsiplinaarkaristusi ning teeb töötajatele töölepingu ülesütlemise hoiatusi ja vajaduse korral muid hoiatusi; kehtestab ametnike ja töötajate arengu- ja hindamisvestluste korra; vaatab läbi ameti haldusakti või toimingu peale esitatud vaided ja annab otsuseid konkreetsete üksikjuhtude kohta; tagab ameti sisekontrollisüsteemi rakendamise ja siseauditi, lähtudes kokkuleppest valitsemisala siseauditi juhiga; valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid kooskõlas õigusaktidega; annab seaduse ja seaduse alusel antud õigusaktide alusel ja täitmiseks teenistusalastes küsimustes käskkirju; kinnitab struktuuriüksuse põhimääruse; esindab ametit põhimäärusest ja muudest õigusaktidest tulenevate ülesannete täitmisel ning annab volitusi ameti esindamiseks; sõlmib ameti nimel lepinguid kinnitatud eelarve piires või volitab selleks teisi ametnikke või töötajaid; täidab muid talle õigusaktidega pandud ülesandeid. 3 (3) Peadirektori äraolekul asendab teda peadirektori määratud ametnik. Peadirektori äraolekul asendab teda peadirektori määratud ametnik. 4 (4) Erandjuhtudel võib minister määrata peadirektori asendajaks käesoleva paragrahvi lõikes 3 nimetamata isiku. Erandjuhtudel võib minister määrata peadirektori asendajaks käesoleva paragrahvi lõikes 3 nimetamata isiku.",
+      "estleg:summary": {
+        "@value": "1 (1) Ametit juhib peadirektor. 2 (2) Ameti peadirektor: 1 1) juhib ameti tööd ja korraldab ameti pädevusse kuuluvate ülesannete täitmist; 2 2) vastutab ameti tegevust korraldavate õigusaktide täpse ja tõhusa täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3 3) tegutseb ameti nimel ja esindab ametit ning annab teistele ametnikele ja töötajatele volitusi ameti esindamiseks; 4 4) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti eelarve kohta ning vastutab selle…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ametit juhib peadirektor. 2 (2) Ameti peadirektor: 1 1) juhib ameti tööd ja korraldab ameti pädevusse kuuluvate ülesannete täitmist; 2 2) vastutab ameti tegevust korraldavate õigusaktide täpse ja tõhusa täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3 3) tegutseb ameti nimel ja esindab ametit ning annab teistele ametnikele ja töötajatele volitusi ameti esindamiseks; 4 4) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti eelarve kohta ning vastutab selle täpse ja otstarbeka täitmise eest; 5 5) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti tegevusvaldkonna korraldamiseks ning keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide muutmiseks ja täiendamiseks; 6 6) kinnitab ameti tööplaanid, töökorralduse reeglid, asjaajamiskorra ning ametnike ja töötajate ametijuhendid; 7 7) nimetab ametikohale ja vabastab ametikohalt ameti koosseisu kuuluvad ametnikud, sõlmib ja lõpetab töölepingud töötajatega, määrab vastavalt palgajuhendile ametnike palga ja lepib töötajatega kokku töötasu; 8 8) kohaldab ametnikele ergutusi ja määrab distsiplinaarkaristusi ning teeb töötajatele töölepingu ülesütlemise hoiatusi ja vajaduse korral muid hoiatusi; 9 9) kehtestab ametnike ja töötajate arengu- ja hindamisvestluste korra; 10 10) vaatab läbi ameti haldusakti või toimingu peale esitatud vaided ja annab otsuseid konkreetsete üksikjuhtude kohta; 11 11) tagab ameti sisekontrollisüsteemi rakendamise ja siseauditi, lähtudes kokkuleppest valitsemisala siseauditi juhiga; 12 12) valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid kooskõlas õigusaktidega; 13 13) annab seaduse ja seaduse alusel antud õigusaktide alusel ja täitmiseks teenistusalastes küsimustes käskkirju; 14 14) kinnitab struktuuriüksuse põhimääruse; 15 15) esindab ametit põhimäärusest ja muudest õigusaktidest tulenevate ülesannete täitmisel ning annab volitusi ameti esindamiseks; 16 16) sõlmib ameti nimel lepinguid kinnitatud eelarve piires või volitab selleks teisi ametnikke või töötajaid; 17 17) täidab muid talle õigusaktidega pandud ülesandeid. 3 (3) Peadirektori äraolekul asendab teda peadirektori määratud ametnik. 4 (4) Erandjuhtudel võib minister määrata peadirektori asendajaks käesoleva paragrahvi lõikes 3 nimetamata isiku.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -443,7 +810,92 @@
         {
           "@id": "estleg:Reg_1050040_Par_8_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_8_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametit juhib peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ameti peadirektor: 1) juhib ameti tööd ja korraldab ameti pädevusse kuuluvate ülesannete täitmist; 2) vastutab ameti tegevust korraldavate õigusaktide täpse ja tõhusa täitmise eest ning annab aru valdkonna eest vastutavale ministrile; 3) tegutseb ameti nimel ja esindab ametit ning annab teistele ametnikele ja töötajatele volitusi ameti esindamiseks; 4) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti eelarve kohta ning vastutab selle täpse ja otstarbeka täitmise eest; 5) esitab valdkonna eest vastutavale ministrile ettepanekuid ameti tegevusvaldkonna korraldamiseks ning keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide muutmiseks ja täiendamiseks; 6) kinnitab ameti tööplaanid, töökorralduse reeglid, asjaajamiskorra ning ametnike ja töötajate ametijuhendid; 7) nimetab ametikohale ja vabastab ametikohalt ameti koosseisu kuuluvad ametnikud, sõlmib ja lõpetab töölepingud töötajatega, määrab vastavalt palgajuhendile ametnike palga ja lepib töötajatega kokku töötasu; 8) kohaldab ametnikele ergutusi ja määrab distsiplinaarkaristusi ning teeb töötajatele töölepingu ülesütlemise hoiatusi ja vajaduse korral muid hoiatusi; 9) kehtestab ametnike ja töötajate arengu- ja hindamisvestluste korra; 10) vaatab läbi ameti haldusakti või toimingu peale esitatud vaided ja annab otsuseid konkreetsete üksikjuhtude kohta; 11) tagab ameti sisekontrollisüsteemi rakendamise ja siseauditi, lähtudes kokkuleppest valitsemisala siseauditi juhiga; 12) valdab, kasutab ja käsutab ameti valdusesse antud riigivara ja vahendeid kooskõlas õigusaktidega; 13) annab seaduse ja seaduse alusel antud õigusaktide alusel ja täitmiseks teenistusalastes küsimustes käskkirju; 14) kinnitab struktuuriüksuse põhimääruse; 15) esindab ametit põhimäärusest ja muudest õigusaktidest tulenevate ülesannete täitmisel ning annab volitusi ameti esindamiseks; 16) sõlmib ameti nimel lepinguid kinnitatud eelarve piires või volitab selleks teisi ametnikke või töötajaid; 17) täidab muid talle õigusaktidega pandud ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Peadirektori äraolekul asendab teda peadirektori määratud ametnik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Erandjuhtudel võib minister määrata peadirektori asendajaks käesoleva paragrahvi lõikes 3 nimetamata isiku.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
     },
     {
       "@id": "estleg:Reg_1050040_Par_9",
@@ -452,13 +904,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Ameti struktuuriüksuste juhtimine",
+      "rdfs:label": {
+        "@value": "§ 9. Ameti struktuuriüksuste juhtimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Ameti osakonda juhib osakonnajuhataja, kes allub vahetult peadirektorile. Ameti osakonda juhib osakonnajuhataja, kes allub vahetult peadirektorile. 2 (2) Talitust juhib osakonnajuhataja määratud peainspektor. Talitust juhib osakonnajuhataja määratud peainspektor.",
-      "estleg:legalText": "1 (1) Ameti osakonda juhib osakonnajuhataja, kes allub vahetult peadirektorile. Ameti osakonda juhib osakonnajuhataja, kes allub vahetult peadirektorile. 2 (2) Talitust juhib osakonnajuhataja määratud peainspektor. Talitust juhib osakonnajuhataja määratud peainspektor.",
+      "estleg:summary": {
+        "@value": "1 (1) Ameti osakonda juhib osakonnajuhataja, kes allub vahetult peadirektorile. 2 (2) Talitust juhib osakonnajuhataja määratud peainspektor.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Ameti osakonda juhib osakonnajuhataja, kes allub vahetult peadirektorile. 2 (2) Talitust juhib osakonnajuhataja määratud peainspektor.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -483,7 +941,41 @@
         {
           "@id": "estleg:Reg_1050040_Par_9_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti osakonda juhib osakonnajuhataja, kes allub vahetult peadirektorile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Talitust juhib osakonnajuhataja määratud peainspektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_1050040_Par_10",
@@ -492,13 +984,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Ameti osakonnad",
+      "rdfs:label": {
+        "@value": "§ 10. Ameti osakonnad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "Ameti osakonnad on: 1 1) keelepoliitika elluviimise ja arendamise osakond; 2 2) järelevalveosakond. Ameti osakonnad on: keelepoliitika elluviimise ja arendamise osakond; järelevalveosakond.",
-      "estleg:legalText": "Ameti osakonnad on: 1 1) keelepoliitika elluviimise ja arendamise osakond; 2 2) järelevalveosakond. Ameti osakonnad on: keelepoliitika elluviimise ja arendamise osakond; järelevalveosakond.",
+      "estleg:summary": {
+        "@value": "Ameti osakonnad on: 1 1) keelepoliitika elluviimise ja arendamise osakond; 2 2) järelevalveosakond.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Ameti osakonnad on: 1 1) keelepoliitika elluviimise ja arendamise osakond; 2 2) järelevalveosakond.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -512,6 +1010,28 @@
         {
           "@id": "estleg:Reg_1050040_Par_10_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_10_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ameti osakonnad on: 1) keelepoliitika elluviimise ja arendamise osakond; 2) järelevalveosakond.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
       ]
     },
     {
@@ -521,13 +1041,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Keelepoliitika elluviimise ja arendamise osakond",
+      "rdfs:label": {
+        "@value": "§ 11. Keelepoliitika elluviimise ja arendamise osakond",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "Keelepoliitika elluviimise ja arendamise osakonna põhiülesanded on: 1 1) osalemine keelepoliitika väljatöötamises ja keelealases mainetegevuses; 2 2) eri valdkondade ja piirkondade keeleolukorra ja keelekasutust reguleerivate õigusaktide tõhususe ja keeleseaduse täitmise järelevalve tulemuslikkuse analüüs; 3 3) ettepanekute ettevalmistamine keeleoskust ja keelekasutust reguleerivate õigusaktide muutmiseks ning keelevaldkonna paremaks korraldamiseks; 4 4) isikute ja asutuste nõustamine keelepolii",
-      "estleg:legalText": "Keelepoliitika elluviimise ja arendamise osakonna põhiülesanded on: 1 1) osalemine keelepoliitika väljatöötamises ja keelealases mainetegevuses; 2 2) eri valdkondade ja piirkondade keeleolukorra ja keelekasutust reguleerivate õigusaktide tõhususe ja keeleseaduse täitmise järelevalve tulemuslikkuse analüüs; 3 3) ettepanekute ettevalmistamine keeleoskust ja keelekasutust reguleerivate õigusaktide muutmiseks ning keelevaldkonna paremaks korraldamiseks; 4 4) isikute ja asutuste nõustamine keelepoliitika ja keelevaldkonda puudutavate õigusaktide rakendamise ning keeleõppe küsimustes; 5 5) ettepanekute ettevalmistamine keelekasutuse hea tava väljatöötamiseks ja laia kasutusalaga standardite eesti keelde tõlkimiseks; 6 6) täiskasvanute eesti keele täiendusõppe koordineerimine; 7 7) keeletehnoloogia seire oma tegevusvaldkonna piires ning ettepanekute tegemine keeletehnoloogia rakenduste väljatöötamiseks ja kasutuselevõtu toetamiseks. Keelepoliitika elluviimise ja arendamise osakonna põhiülesanded on: osalemine keelepoliitika väljatöötamises ja keelealases mainetegevuses; eri valdkondade ja piirkondade keeleolukorra ja keelekasutust reguleerivate õigusaktide tõhususe ja keeleseaduse täitmise järelevalve tulemuslikkuse analüüs; ettepanekute ettevalmistamine keeleoskust ja keelekasutust reguleerivate õigusaktide muutmiseks ning keelevaldkonna paremaks korraldamiseks; isikute ja asutuste nõustamine keelepoliitika ja keelevaldkonda puudutavate õigusaktide rakendamise ning keeleõppe küsimustes; ettepanekute ettevalmistamine keelekasutuse hea tava väljatöötamiseks ja laia kasutusalaga standardite eesti keelde tõlkimiseks; täiskasvanute eesti keele täiendusõppe koordineerimine; keeletehnoloogia seire oma tegevusvaldkonna piires ning ettepanekute tegemine keeletehnoloogia rakenduste väljatöötamiseks ja kasutuselevõtu toetamiseks.",
+      "estleg:summary": {
+        "@value": "Keelepoliitika elluviimise ja arendamise osakonna põhiülesanded on: 1 1) osalemine keelepoliitika väljatöötamises ja keelealases mainetegevuses; 2 2) eri valdkondade ja piirkondade keeleolukorra ja keelekasutust reguleerivate õigusaktide tõhususe ja keeleseaduse täitmise järelevalve tulemuslikkuse analüüs; 3 3) ettepanekute ettevalmistamine keeleoskust ja keelekasutust reguleerivate õigusaktide muutmiseks ning keelevaldkonna paremaks korraldamiseks; 4 4) isikute ja asutuste nõustamine…",
+        "@language": "et"
+      },
+      "estleg:legalText": "Keelepoliitika elluviimise ja arendamise osakonna põhiülesanded on: 1 1) osalemine keelepoliitika väljatöötamises ja keelealases mainetegevuses; 2 2) eri valdkondade ja piirkondade keeleolukorra ja keelekasutust reguleerivate õigusaktide tõhususe ja keeleseaduse täitmise järelevalve tulemuslikkuse analüüs; 3 3) ettepanekute ettevalmistamine keeleoskust ja keelekasutust reguleerivate õigusaktide muutmiseks ning keelevaldkonna paremaks korraldamiseks; 4 4) isikute ja asutuste nõustamine keelepoliitika ja keelevaldkonda puudutavate õigusaktide rakendamise ning keeleõppe küsimustes; 5 5) ettepanekute ettevalmistamine keelekasutuse hea tava väljatöötamiseks ja laia kasutusalaga standardite eesti keelde tõlkimiseks; 6 6) täiskasvanute eesti keele täiendusõppe koordineerimine; 7 7) keeletehnoloogia seire oma tegevusvaldkonna piires ning ettepanekute tegemine keeletehnoloogia rakenduste väljatöötamiseks ja kasutuselevõtu toetamiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -544,6 +1070,33 @@
         {
           "@id": "estleg:Reg_1050040_Par_11_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_11_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Keelepoliitika elluviimise ja arendamise osakonna põhiülesanded on: 1) osalemine keelepoliitika väljatöötamises ja keelealases mainetegevuses; 2) eri valdkondade ja piirkondade keeleolukorra ja keelekasutust reguleerivate õigusaktide tõhususe ja keeleseaduse täitmise järelevalve tulemuslikkuse analüüs; 3) ettepanekute ettevalmistamine keeleoskust ja keelekasutust reguleerivate õigusaktide muutmiseks ning keelevaldkonna paremaks korraldamiseks; 4) isikute ja asutuste nõustamine keelepoliitika ja keelevaldkonda puudutavate õigusaktide rakendamise ning keeleõppe küsimustes; 5) ettepanekute ettevalmistamine keelekasutuse hea tava väljatöötamiseks ja laia kasutusalaga standardite eesti keelde tõlkimiseks; 6) täiskasvanute eesti keele täiendusõppe koordineerimine; 7) keeletehnoloogia seire oma tegevusvaldkonna piires ning ettepanekute tegemine keeletehnoloogia rakenduste väljatöötamiseks ja kasutuselevõtu toetamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7"
       ]
     },
     {
@@ -553,13 +1106,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Järelevalveosakond",
+      "rdfs:label": {
+        "@value": "§ 12. Järelevalveosakond",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "1 (1) Järelevalveosakonna põhiülesanded on: 1 1) keeleseaduse ja teiste keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide täitmise järelevalve; 2 2) eesti keele täienduskoolitusasutuste tegevuslubade menetlemine; 3 3) ettepanekute tegemine eesti keele täienduskoolitusasutuste kvaliteedi parendamiseks; 4 4) isikute ja asutuste nõustamine keeleoskust ja keelekasutust reguleerivate õigusaktide rakendamisel. Järelevalveosakonna põhiülesanded on: keeleseaduse ja teiste keeleoskusnõudeid ja k",
-      "estleg:legalText": "1 (1) Järelevalveosakonna põhiülesanded on: 1 1) keeleseaduse ja teiste keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide täitmise järelevalve; 2 2) eesti keele täienduskoolitusasutuste tegevuslubade menetlemine; 3 3) ettepanekute tegemine eesti keele täienduskoolitusasutuste kvaliteedi parendamiseks; 4 4) isikute ja asutuste nõustamine keeleoskust ja keelekasutust reguleerivate õigusaktide rakendamisel. Järelevalveosakonna põhiülesanded on: keeleseaduse ja teiste keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide täitmise järelevalve; eesti keele täienduskoolitusasutuste tegevuslubade menetlemine; ettepanekute tegemine eesti keele täienduskoolitusasutuste kvaliteedi parendamiseks; isikute ja asutuste nõustamine keeleoskust ja keelekasutust reguleerivate õigusaktide rakendamisel. 2 (2) Järelevalveosakonna koosseisus on järgmised piirkondlikud järelevalvetalitused: 1 1) Tallinna ja Harjumaa järelevalvetalitus – asukoht Tallinn; 2 2) Ida-Viru järelevalvetalitus – asukoht Kohtla-Järve; 3 3) Lõuna-Eesti järelevalvetalitus – asukoht Valga. Järelevalveosakonna koosseisus on järgmised piirkondlikud järelevalvetalitused: Tallinna ja Harjumaa järelevalvetalitus – asukoht Tallinn; Ida-Viru järelevalvetalitus – asukoht Kohtla-Järve; Lõuna-Eesti järelevalvetalitus – asukoht Valga.",
+      "estleg:summary": {
+        "@value": "1 (1) Järelevalveosakonna põhiülesanded on: 1 1) keeleseaduse ja teiste keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide täitmise järelevalve; 2 2) eesti keele täienduskoolitusasutuste tegevuslubade menetlemine; 3 3) ettepanekute tegemine eesti keele täienduskoolitusasutuste kvaliteedi parendamiseks; 4 4) isikute ja asutuste nõustamine keeleoskust ja keelekasutust reguleerivate õigusaktide rakendamisel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Järelevalveosakonna põhiülesanded on: 1 1) keeleseaduse ja teiste keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide täitmise järelevalve; 2 2) eesti keele täienduskoolitusasutuste tegevuslubade menetlemine; 3 3) ettepanekute tegemine eesti keele täienduskoolitusasutuste kvaliteedi parendamiseks; 4 4) isikute ja asutuste nõustamine keeleoskust ja keelekasutust reguleerivate õigusaktide rakendamisel. 2 (2) Järelevalveosakonna koosseisus on järgmised piirkondlikud järelevalvetalitused: 1 1) Tallinna ja Harjumaa järelevalvetalitus – asukoht Tallinn; 2 2) Ida-Viru järelevalvetalitus – asukoht Kohtla-Järve; 3 3) Lõuna-Eesti järelevalvetalitus – asukoht Valga.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -576,6 +1135,51 @@
         {
           "@id": "estleg:Reg_1050040_Par_12_v1050040"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1050040_Par_12_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Järelevalveosakonna põhiülesanded on: 1) keeleseaduse ja teiste keeleoskusnõudeid ja keelekasutust sätestavate õigusaktide täitmise järelevalve; 2) eesti keele täienduskoolitusasutuste tegevuslubade menetlemine; 3) ettepanekute tegemine eesti keele täienduskoolitusasutuste kvaliteedi parendamiseks; 4) isikute ja asutuste nõustamine keeleoskust ja keelekasutust reguleerivate õigusaktide rakendamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Järelevalveosakonna koosseisus on järgmised piirkondlikud järelevalvetalitused: 1) Tallinna ja Harjumaa järelevalvetalitus – asukoht Tallinn; 2) Ida-Viru järelevalvetalitus – asukoht Kohtla-Järve; 3) Lõuna-Eesti järelevalvetalitus – asukoht Valga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -585,13 +1189,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Kehtetuks tunnistamine",
+      "rdfs:label": {
+        "@value": "§ 13. Kehtetuks tunnistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "Haridus- ja teadusministri 9. veebruari 2007. a määrus nr 15 „Keeleinspektsiooni põhimäärus” tunnistatakse kehtetuks.",
-      "estleg:legalText": "Haridus- ja teadusministri 9. veebruari 2007. a määrus nr 15 „Keeleinspektsiooni põhimäärus” tunnistatakse kehtetuks. Haridus- ja teadusministri 9. veebruari 2007. a määrus nr 15 „Keeleinspektsiooni põhimäärus” tunnistatakse kehtetuks.",
+      "estleg:summary": {
+        "@value": "Haridus- ja teadusministri 9. veebruari 2007. a määrus nr 15 „Keeleinspektsiooni põhimäärus” tunnistatakse kehtetuks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Haridus- ja teadusministri 9. veebruari 2007. a määrus nr 15 „Keeleinspektsiooni põhimäärus” tunnistatakse kehtetuks.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1050040_Par_13_v1050040"
@@ -604,7 +1214,25 @@
         {
           "@id": "estleg:Institution_keeleinspektsioon"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_13_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haridus- ja teadusministri 9. veebruari 2007. a määrus nr 15 „Keeleinspektsiooni põhimäärus” tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
       "@id": "estleg:Reg_1050040_Par_14",
@@ -613,16 +1241,27 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Määruse jõustumine",
+      "rdfs:label": {
+        "@value": "§ 14. Määruse jõustumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Keeleameti põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1050040_Map"
       },
-      "estleg:summary": "Määrus jõustub 1. augustil 2020. aastal.",
-      "estleg:legalText": "Määrus jõustub 1. augustil 2020. aastal. Määrus jõustub 1. augustil 2020. aastal.",
+      "estleg:summary": {
+        "@value": "Määrus jõustub 1. augustil 2020. aastal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus jõustub 1. augustil 2020. aastal.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1050040_Par_14_v1050040"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1050040_Par_14_Lg_1"
         }
       ]
     },
@@ -637,6 +1276,19 @@
       },
       "estleg:citationDetail": "lg 1",
       "estleg:citationText": "Määrus kehtestatakse Vabariigi Valitsuse seaduse § 42 lõike 1"
+    },
+    {
+      "@id": "estleg:Reg_1050040_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus jõustub 1. augustil 2020. aastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1050040_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
     }
   ]
 }

@@ -5,36 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:KRASS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta teemakaardistus",
+      "rdfs:label": {
+        "@value": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "dcterms:title": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/22216.xml"
+        "@id": "https://www.riigiteataja.ee/akt/22216"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/22216/xml"
+      },
+      "estleg:globalId": "22216",
+      "eli:id_local": "22216",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "159175",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "1f17618ab0aad9360eca36adbb2375b378052e6ee117f2e1f8651088b5134c3c",
+      "estleg:issuer": "Ülemnõukogu",
+      "estleg:entryIntoForce": {
+        "@value": "1992-02-19",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2002-06-01",
-        "@type": "xsd:date"
       },
       "estleg:references": [
         {
@@ -84,30 +105,39 @@
       ]
     },
     {
-      "@id": "estleg:KRASS_TopicScheme",
-      "@type": [
-        "skos:ConceptScheme"
-      ],
-      "rdfs:label": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta teemaskeem",
-      "skos:hasTopConcept": [
-        {
-          "@id": "estleg:Cluster_KRASS_default"
-        }
-      ]
-    },
-    {
       "@id": "estleg:Cluster_KRASS_default",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§1–10 Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
-      "skos:prefLabel": "§1–10 Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
+      "rdfs:label": {
+        "@value": "§1–10 Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–10 Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:KRASS_TopicScheme"
       },
       "estleg:provisionCount": 10
+    },
+    {
+      "@id": "estleg:KRASS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": {
+        "@value": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta teemaskeem",
+        "@language": "et"
+      },
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KRASS_default"
+        }
+      ]
     },
     {
       "@id": "estleg:KRASS_Par_1",
@@ -116,15 +146,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": {
+        "@value": "§ 1.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
+      "estleg:summary": "§ 1.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
       },
-      "estleg:summary": "§ 1.",
       "estleg:referencedBy": [
         {
           "@id": "estleg:KRASS_Par_7"
@@ -141,15 +174,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": {
+        "@value": "§ 2.",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
+      "estleg:summary": "§ 2.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
-      },
-      "estleg:summary": "§ 2."
+      }
     },
     {
       "@id": "estleg:KRASS_Par_3",
@@ -158,12 +194,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. [1 (1) Riigikohtul on õigus tunnistada isikud, kes on süüdi genotsiidis või muude...]",
+      "rdfs:label": {
+        "@value": "§ 3. [(1) Riigikohtul on õigus tunnistada isikud, kes on süüdi genotsiidis või muudes...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "(1) Riigikohtul on õigus tunnistada isikud, kes on süüdi genotsiidis või muudes inimsusevastastes kuritegudes või sõjavangide või tsiviilisikute tahtlikus tapmises, neile üliraskete või raskete kehavigastuste tahtlikus tekitamises või nende piinamises, §-s 2 toodud alustel rehabiliteerimisele mittekuuluvaks. (2) Riigikohus vaatab 1.lõikes näidatud isikute kriminaalasjad läbi kohtuotsuste uuesti läbivaatamise korras kodanike, nende ühenduste, kohaliku omavalitsuse või riigiorganite taotlusel.",
+      "estleg:summary": {
+        "@value": "(1) Riigikohtul on õigus tunnistada isikud, kes on süüdi genotsiidis või muudes inimsusevastastes kuritegudes või sõjavangide või tsiviilisikute tahtlikus tapmises, neile üliraskete või raskete kehavigastuste tahtlikus tekitamises või nende piinamises, §-s 2 toodud alustel rehabiliteerimisele mittekuuluvaks. (2) Riigikohus vaatab 1.lõikes näidatud isikute kriminaalasjad läbi kohtuotsuste uuesti läbivaatamise korras kodanike, nende ühenduste, kohaliku omavalitsuse või riigiorganite taotlusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigikohtul on õigus tunnistada isikud, kes on süüdi genotsiidis või muudes inimsusevastastes kuritegudes või sõjavangide või tsiviilisikute tahtlikus tapmises, neile üliraskete või raskete kehavigastuste tahtlikus tekitamises või nende piinamises, §-s 2 toodud alustel rehabiliteerimisele mittekuuluvaks. (2) Riigikohus vaatab 1.lõikes näidatud isikute kriminaalasjad läbi kohtuotsuste uuesti läbivaatamise korras kodanike, nende ühenduste, kohaliku omavalitsuse või riigiorganite taotlusel. (3) 2.lõikes näidatud kohtuasjade arutamine toimub avalikul kohtuistungil, millest võivad osa võtta süüdimõistetu või tema esindaja või õigusjärglased ning kriminaalasja läbivaatamist taotlenud kodanikud, kodanike ühenduste, kohaliku omavalitsuse ning riigiorganite esindajad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -315,12 +357,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. [1 (1) Tunnistada õigustühiseks §-des 1 ja 2 näidatud isikute vara konfiskeerimin...]",
+      "rdfs:label": {
+        "@value": "§ 4. [(1) Tunnistada õigustühiseks §-des 1 ja 2 näidatud isikute vara konfiskeerimine...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "(1) Tunnistada õigustühiseks §-des 1 ja 2 näidatud isikute vara konfiskeerimine või muul viisil õigusvastaselt võõrandamine. (2) 1.lõikes näidatud isikute vara konfiskeerimine või muul viisil õigusvastaselt võõrandamine on õigustühine ka juhul, kui isik tunnistatakse rehabiliteerimisele mittekuuluvaks vastavalt §-le 3.",
+      "estleg:summary": {
+        "@value": "(1) Tunnistada õigustühiseks §-des 1 ja 2 näidatud isikute vara konfiskeerimine või muul viisil õigusvastaselt võõrandamine. (2) 1.lõikes näidatud isikute vara konfiskeerimine või muul viisil õigusvastaselt võõrandamine on õigustühine ka juhul, kui isik tunnistatakse rehabiliteerimisele mittekuuluvaks vastavalt §-le 3.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Tunnistada õigustühiseks §-des 1 ja 2 näidatud isikute vara konfiskeerimine või muul viisil õigusvastaselt võõrandamine. (2) 1.lõikes näidatud isikute vara konfiskeerimine või muul viisil õigusvastaselt võõrandamine on õigustühine ka juhul, kui isik tunnistatakse rehabiliteerimisele mittekuuluvaks vastavalt §-le 3.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -399,12 +447,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. [1 (1) Riigikohtul on õigus rehabiliteerida ajavahemikus 1940.aasta 16.juunist ku...]",
+      "rdfs:label": {
+        "@value": "§ 5. [(1) Riigikohtul on õigus rehabiliteerida ajavahemikus 1940.aasta 16.juunist kuni...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "(1) Riigikohtul on õigus rehabiliteerida ajavahemikus 1940.aasta 16.juunist kuni 1991.aasta 20.augustini Eestis või endise NSV Liidu territooriumil kohtute poolt süüdimõistetud isikuid nende taotlusel, kui on tõendatud, et süüdimõistmise aluseks olnud teod olid võitluseks Eesti Vabariigi iseseisvuse eest või Eesti rahvale tehtud ülekohtu vastu. (2) 1.lõikes näidatud isikud ei kuulu rehabiliteerimisele, kui on tõendatud nende süüdimõistmise aluseks olnud tegude ilmne mittevastavus 1.lõikes",
+      "estleg:summary": {
+        "@value": "(1) Riigikohtul on õigus rehabiliteerida ajavahemikus 1940.aasta 16.juunist kuni 1991.aasta 20.augustini Eestis või endise NSV Liidu territooriumil kohtute poolt süüdimõistetud isikuid nende taotlusel, kui on tõendatud, et süüdimõistmise aluseks olnud teod olid võitluseks Eesti Vabariigi iseseisvuse eest või Eesti rahvale tehtud ülekohtu vastu. (2) 1.lõikes näidatud isikud ei kuulu rehabiliteerimisele, kui on tõendatud nende süüdimõistmise aluseks olnud tegude ilmne mittevastavus 1.lõikes",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Riigikohtul on õigus rehabiliteerida ajavahemikus 1940.aasta 16.juunist kuni 1991.aasta 20.augustini Eestis või endise NSV Liidu territooriumil kohtute poolt süüdimõistetud isikuid nende taotlusel, kui on tõendatud, et süüdimõistmise aluseks olnud teod olid võitluseks Eesti Vabariigi iseseisvuse eest või Eesti rahvale tehtud ülekohtu vastu. (2) 1.lõikes näidatud isikud ei kuulu rehabiliteerimisele, kui on tõendatud nende süüdimõistmise aluseks olnud tegude ilmne mittevastavus 1.lõikes näidatud eesmärkidele või kui nad on süüdi § 3 1.lõikes näidatud kuritegudes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -509,12 +563,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. [1 (1) Käesoleva seaduse alusel rehabiliteeritud isikutele tagastatakse või kompe...]",
+      "rdfs:label": {
+        "@value": "§ 6. [(1) Käesoleva seaduse alusel rehabiliteeritud isikutele tagastatakse või kompens...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse alusel rehabiliteeritud isikutele tagastatakse või kompenseeritakse neilt õigusvastaselt võõrandatud vara 1991.aasta 13.juuni \"Eesti Vabariigi omandireformi aluste seaduses\" ettenähtud korras. (2) Avaldused õigusvastaselt võõrandatud vara tagastamiseks või kompenseerimiseks tuleb esitada õigusvastaselt võõrandatud vara asukoha järgsele maakonna- või linnavalitsusele kahe kuu jooksul rehabiliteerimise päevast arvates, kui vastavat avaldust ei ole seni esitatud.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse alusel rehabiliteeritud isikutele tagastatakse või kompenseeritakse neilt õigusvastaselt võõrandatud vara 1991.aasta 13.juuni \"Eesti Vabariigi omandireformi aluste seaduses\" ettenähtud korras. (2) Avaldused õigusvastaselt võõrandatud vara tagastamiseks või kompenseerimiseks tuleb esitada õigusvastaselt võõrandatud vara asukoha järgsele maakonna- või linnavalitsusele kahe kuu jooksul rehabiliteerimise päevast arvates, kui vastavat avaldust ei ole seni esitatud.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse alusel rehabiliteeritud isikutele tagastatakse või kompenseeritakse neilt õigusvastaselt võõrandatud vara 1991.aasta 13.juuni \"Eesti Vabariigi omandireformi aluste seaduses\" ettenähtud korras. (2) Avaldused õigusvastaselt võõrandatud vara tagastamiseks või kompenseerimiseks tuleb esitada õigusvastaselt võõrandatud vara asukoha järgsele maakonna- või linnavalitsusele kahe kuu jooksul rehabiliteerimise päevast arvates, kui vastavat avaldust ei ole seni esitatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -590,12 +650,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. [1 (1) Käesoleva seaduse §-s 1 ja paragrahvi 2 1. lõikes näidatud isikutel piisab...]",
+      "rdfs:label": {
+        "@value": "§ 7. [(1) Käesoleva seaduse §-s 1 ja paragrahvi 2 1. lõikes näidatud isikutel piisab õ...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse §-s 1 ja paragrahvi 2 1. lõikes näidatud isikutel piisab õigusvastaselt võõrandatud vara tagastamise või kompenseerimise taotlemisel ning rehabiliteeritutele ettenähtud muude õiguste realiseerimisel dokumentide esitamisest, millest nähtub kohtuväline represseerimine või paragrahvi 2 1. lõikes loetletud paragrahvide järgi süüdimõistmine. (2) 1.lõikes näidatud isikutele võidakse nende soovil välja anda rehabiliteerimistunnistus.",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse §-s 1 ja paragrahvi 2 1. lõikes näidatud isikutel piisab õigusvastaselt võõrandatud vara tagastamise või kompenseerimise taotlemisel ning rehabiliteeritutele ettenähtud muude õiguste realiseerimisel dokumentide esitamisest, millest nähtub kohtuväline represseerimine või paragrahvi 2 1. lõikes loetletud paragrahvide järgi süüdimõistmine. (2) 1.lõikes näidatud isikutele võidakse nende soovil välja anda rehabiliteerimistunnistus.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse §-s 1 ja paragrahvi 2 1. lõikes näidatud isikutel piisab õigusvastaselt võõrandatud vara tagastamise või kompenseerimise taotlemisel ning rehabiliteeritutele ettenähtud muude õiguste realiseerimisel dokumentide esitamisest, millest nähtub kohtuväline represseerimine või paragrahvi 2 1. lõikes loetletud paragrahvide järgi süüdimõistmine. (2) 1.lõikes näidatud isikutele võidakse nende soovil välja anda rehabiliteerimistunnistus. Nende väljaandmise korra määrab Eesti Vabariigi Valitsus. (3) Käesoleva seaduse § 5 alusel rehabiliteeritud isikutele annab rehabiliteerimistunnistuse Riigikohus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -722,12 +788,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. [Isikute rehabiliteerimise avaldused, mis on esitatud Riigikohtule ning on käesol...]",
+      "rdfs:label": {
+        "@value": "§ 8. [Isikute rehabiliteerimise avaldused, mis on esitatud Riigikohtule ning on käesol...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "Isikute rehabiliteerimise avaldused, mis on esitatud Riigikohtule ning on käesoleva seaduse vastuvõtmise päevaks lahendamata või jäetud rahuldamata, vaatab läbi Riigikohus § 5 alusel, kui avalduse esitajat ei loeta rehabiliteerituks §-de 1 ja 2 alusel.",
+      "estleg:summary": {
+        "@value": "Isikute rehabiliteerimise avaldused, mis on esitatud Riigikohtule ning on käesoleva seaduse vastuvõtmise päevaks lahendamata või jäetud rahuldamata, vaatab läbi Riigikohus § 5 alusel, kui avalduse esitajat ei loeta rehabiliteerituks §-de 1 ja 2 alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isikute rehabiliteerimise avaldused, mis on esitatud Riigikohtule ning on käesoleva seaduse vastuvõtmise päevaks lahendamata või jäetud rahuldamata, vaatab läbi Riigikohus § 5 alusel, kui avalduse esitajat ei loeta rehabiliteerituks §-de 1 ja 2 alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -764,10 +836,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isikute rehabiliteerimise avaldused, mis on esitatud Riigikohtule ning on käesoleva seaduse vastuvõtmise päevaks lahendamata või jäetud rahuldamata, vaatab läbi Riigikohus § 5 alusel, kui avalduse esitajat ei loeta rehabiliteerituks §-de 1 ja 2 alusel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikute rehabiliteerimise avaldused, mis on esitatud Riigikohtule ning on käesoleva seaduse vastuvõtmise päevaks lahendamata või jäetud rahuldamata, vaatab läbi Riigikohus § 5 alusel, kui avalduse esitajat ei loeta rehabiliteerituks §-de 1 ja 2 alusel.",
       "estleg:parentProvision": {
         "@id": "estleg:KRASS_Par_8"
       },
+      "rdfs:label": "§ 8 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -791,12 +865,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. [Tunnistada kehtetuks Eesti NSV Ülemnõukogu Presiidiumi 1990.aasta 19.veebruari s...]",
+      "rdfs:label": {
+        "@value": "§ 9. [Tunnistada kehtetuks Eesti NSV Ülemnõukogu Presiidiumi 1990.aasta 19.veebruari s...]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "Tunnistada kehtetuks Eesti NSV Ülemnõukogu Presiidiumi 1990.aasta 19.veebruari seadlus \"Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimisest\".",
+      "estleg:summary": {
+        "@value": "Tunnistada kehtetuks Eesti NSV Ülemnõukogu Presiidiumi 1990.aasta 19.veebruari seadlus \"Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimisest\".",
+        "@language": "et"
+      },
       "estleg:legalText": "Tunnistada kehtetuks Eesti NSV Ülemnõukogu Presiidiumi 1990.aasta 19.veebruari seadlus \"Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimisest\".",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -830,10 +910,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Tunnistada kehtetuks Eesti NSV Ülemnõukogu Presiidiumi 1990.aasta 19.veebruari seadlus \"Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimisest\".",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tunnistada kehtetuks Eesti NSV Ülemnõukogu Presiidiumi 1990.aasta 19.veebruari seadlus \"Kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimisest\".",
       "estleg:parentProvision": {
         "@id": "estleg:KRASS_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -854,12 +936,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. [Käesolev seadus jõustub vastuvõtmise päevast. Käesolev seadus jõustub vastuvõtmi...]",
+      "rdfs:label": {
+        "@value": "§ 10. [Käesolev seadus jõustub vastuvõtmise päevast.]",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Seadus kohtuväliselt represseeritud ja alusetult süüdimõistetud isikute rehabiliteerimise kohta",
       "estleg:partOfAct": {
         "@id": "estleg:KRASS_Map"
       },
-      "estleg:summary": "Käesolev seadus jõustub vastuvõtmise päevast.",
+      "estleg:summary": {
+        "@value": "Käesolev seadus jõustub vastuvõtmise päevast.",
+        "@language": "et"
+      },
       "estleg:legalText": "Käesolev seadus jõustub vastuvõtmise päevast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KRASS_default"
@@ -881,10 +969,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Käesolev seadus jõustub vastuvõtmise päevast.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub vastuvõtmise päevast.",
       "estleg:parentProvision": {
         "@id": "estleg:KRASS_Par_10"
-      }
+      },
+      "rdfs:label": "§ 10 lg 1"
     }
   ]
 }

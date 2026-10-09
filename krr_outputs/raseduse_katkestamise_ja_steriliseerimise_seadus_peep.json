@@ -5,35 +5,51 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:RKSS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Raseduse katkestamise ja steriliseerimise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Raseduse katkestamise ja steriliseerimise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Raseduse katkestamise ja steriliseerimise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Raseduse katkestamise ja steriliseerimise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Termination of Pregnancy and Sterilisation Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/113032019134.xml"
+        "@id": "https://www.riigiteataja.ee/akt/113032019134"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/113032019134/xml"
+      },
+      "estleg:globalId": "113032019134",
+      "eli:id_local": "113032019134",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "152292",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "bee1be9fa6dddef18dcf5d2f7d6fbaf048aabc7f3b2b91991a6e7712abb8492c",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "1998-12-21",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2019-03-15",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
@@ -45,10 +61,6 @@
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2019-03-15",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/502042019003"
@@ -112,14 +124,40 @@
         {
           "@id": "estleg:Draft_RIIGIKOGU14_1341"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/502042019003"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_RKSS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:RKSS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:RKSS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Raseduse katkestamise ja steriliseerimise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Raseduse katkestamise ja steriliseerimise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_RKSS_1"
@@ -136,26 +174,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_RKSS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–4 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:RKSS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_RKSS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
@@ -175,8 +202,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–18 RASEDUSE KATKESTAMINE",
-      "skos:prefLabel": "§5–18 RASEDUSE KATKESTAMINE",
+      "rdfs:label": {
+        "@value": "§5–18 RASEDUSE KATKESTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–18 RASEDUSE KATKESTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RKSS_TopicScheme"
       },
@@ -188,7 +221,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – RASEDUSE KATKESTAMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – RASEDUSE KATKESTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
@@ -208,8 +244,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§19–25 STERILISEERIMINE",
-      "skos:prefLabel": "§19–25 STERILISEERIMINE",
+      "rdfs:label": {
+        "@value": "§19–25 STERILISEERIMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§19–25 STERILISEERIMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RKSS_TopicScheme"
       },
@@ -221,7 +263,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – STERILISEERIMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – STERILISEERIMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
@@ -241,8 +286,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§26–26 RAKENDUSSÄTTED",
-      "skos:prefLabel": "§26–26 RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "§26–26 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§26–26 RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:RKSS_TopicScheme"
       },
@@ -254,7 +305,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – RAKENDUSSÄTTED",
+      "rdfs:label": {
+        "@value": "4. peatükk – RAKENDUSSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
@@ -274,12 +328,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Seaduse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Raseduse katkestamise ja steriliseerimise seadus määrab kindlaks raseduse katkestamise ja steriliseerimise tingimused ja korra.",
+      "estleg:summary": {
+        "@value": "Raseduse katkestamise ja steriliseerimise seadus määrab kindlaks raseduse katkestamise ja steriliseerimise tingimused ja korra.",
+        "@language": "et"
+      },
       "estleg:legalText": "Raseduse katkestamise ja steriliseerimise seadus määrab kindlaks raseduse katkestamise ja steriliseerimise tingimused ja korra.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_1"
@@ -304,10 +364,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Raseduse katkestamise ja steriliseerimise seadus määrab kindlaks raseduse katkestamise ja steriliseerimise tingimused ja korra.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raseduse katkestamise ja steriliseerimise seadus määrab kindlaks raseduse katkestamise ja steriliseerimise tingimused ja korra.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_1"
-      }
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:RKSS_Par_2",
@@ -316,12 +378,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Raseduse katkestamine",
+      "rdfs:label": {
+        "@value": "§ 2. Raseduse katkestamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Raseduse katkestamine on embrüo või loote eemaldamine emakaõõnest kirurgiliselt või ravimite manustamisega.",
+      "estleg:summary": {
+        "@value": "Raseduse katkestamine on embrüo või loote eemaldamine emakaõõnest kirurgiliselt või ravimite manustamisega.",
+        "@language": "et"
+      },
       "estleg:legalText": "Raseduse katkestamine on embrüo või loote eemaldamine emakaõõnest kirurgiliselt või ravimite manustamisega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_1"
@@ -351,10 +419,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Raseduse katkestamine on embrüo või loote eemaldamine emakaõõnest kirurgiliselt või ravimite manustamisega.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raseduse katkestamine on embrüo või loote eemaldamine emakaõõnest kirurgiliselt või ravimite manustamisega.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_2"
-      }
+      },
+      "rdfs:label": "§ 2 lg 1"
     },
     {
       "@id": "estleg:RKSS_Par_3",
@@ -363,12 +433,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Raseduse kestus",
+      "rdfs:label": {
+        "@value": "§ 3. Raseduse kestus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Raseduse kestust arvestatakse nädalates.",
+      "estleg:summary": {
+        "@value": "Raseduse kestust arvestatakse nädalates.",
+        "@language": "et"
+      },
       "estleg:legalText": "Raseduse kestust arvestatakse nädalates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_1"
@@ -393,10 +469,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Raseduse kestust arvestatakse nädalates.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raseduse kestust arvestatakse nädalates.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_3"
-      }
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
       "@id": "estleg:RKSS_Par_4",
@@ -405,13 +483,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Steriliseerimine",
+      "rdfs:label": {
+        "@value": "§ 4. Steriliseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Steriliseerimine on: naise munajuhade sulgemine või läbilõikamine raseduse vältimiseks või mehe seemnejuhade sulgemine või läbilõikamine viljastamise vältimiseks.",
-      "estleg:legalText": "Steriliseerimine on: naise munajuhade sulgemine või läbilõikamine raseduse vältimiseks või mehe seemnejuhade sulgemine või läbilõikamine viljastamise vältimiseks.",
+      "estleg:summary": {
+        "@value": "Steriliseerimine on: 1) naise munajuhade sulgemine või läbilõikamine raseduse vältimiseks või 2) mehe seemnejuhade sulgemine või läbilõikamine viljastamise vältimiseks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Steriliseerimine on: 1) naise munajuhade sulgemine või läbilõikamine raseduse vältimiseks või 2) mehe seemnejuhade sulgemine või läbilõikamine viljastamise vältimiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_1"
       },
@@ -435,10 +519,16 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Steriliseerimine on: naise munajuhade sulgemine või läbilõikamine raseduse vältimiseks või mehe seemnejuhade sulgemine või läbilõikamine viljastamise vältimiseks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Steriliseerimine on: 1) naise munajuhade sulgemine või läbilõikamine raseduse vältimiseks või 2) mehe seemnejuhade sulgemine või läbilõikamine viljastamise vältimiseks.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_4"
-      }
+      },
+      "rdfs:label": "§ 4 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
     },
     {
       "@id": "estleg:RKSS_Par_5",
@@ -447,12 +537,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Raseduse katkestamise vabatahtlikkus",
+      "rdfs:label": {
+        "@value": "§ 5. Raseduse katkestamise vabatahtlikkus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Naise rasedust võib katkestada üksnes tema enda soovil. Keegi ei tohi sundida ega mõjutada naist oma rasedust katkestama. Nõusolek raseduse katkestamiseks peab olema vormistatud kirjalikult. (2) Piiratud teovõimega naise raseduse võib katkestada tema enda nõusolekul või seadusliku esindaja nõusolekul vastavalt võlaõigusseaduse § 766 lõikele 4. (3) Kui piiratud teovõimega naine ei ole nõus võlaõigusseaduse § 766 lõikes 4 sätestatud juhul mõjuvatel põhjustel kaasama oma seaduslikku esindajat",
+      "estleg:summary": {
+        "@value": "(1) Naise rasedust võib katkestada üksnes tema enda soovil. Keegi ei tohi sundida ega mõjutada naist oma rasedust katkestama. Nõusolek raseduse katkestamiseks peab olema vormistatud kirjalikult. (2) Piiratud teovõimega naise raseduse võib katkestada tema enda nõusolekul või seadusliku esindaja nõusolekul vastavalt võlaõigusseaduse § 766 lõikele 4. (3) Kui piiratud teovõimega naine ei ole nõus võlaõigusseaduse § 766 lõikes 4 sätestatud juhul mõjuvatel põhjustel kaasama oma seaduslikku esindajat",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Naise rasedust võib katkestada üksnes tema enda soovil. Keegi ei tohi sundida ega mõjutada naist oma rasedust katkestama. Nõusolek raseduse katkestamiseks peab olema vormistatud kirjalikult. (2) Piiratud teovõimega naise raseduse võib katkestada tema enda nõusolekul või seadusliku esindaja nõusolekul vastavalt võlaõigusseaduse § 766 lõikele 4. (3) Kui piiratud teovõimega naine ei ole nõus võlaõigusseaduse § 766 lõikes 4 sätestatud juhul mõjuvatel põhjustel kaasama oma seaduslikku esindajat või kui seadusliku esindaja otsus on vastuolus naise huvidega, lähtub tervishoiutöötaja raseduse katkestamisel isiku enda nõusolekust. (4) Tervishoiutöötaja on kohustatud informeerima piiratud teovõimega naist seadusliku esindaja või muu tema poolt usaldatud täisealise teovõimelise isiku kaasamise olulisusest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -638,13 +734,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Raseduse katkestamise tähtaeg",
+      "rdfs:label": {
+        "@value": "§ 6. Raseduse katkestamise tähtaeg",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Rasedust võib katkestada, kui see on kestnud vähem kui 12 nädalat. (2) Kauem kui 12 ning vähem kui 22 nädalat kestnud raseduse võib katkestada, kui: rasedus ohustab raseda tervist; sündival lapsel võib olla raske vaimne või kehaline tervisekahjustus; raseda haigus või tervisega seotud probleem takistab lapse kasvatamist; rase on alla 15-aastane; rase on üle 45-aastane.",
-      "estleg:legalText": "(1) Rasedust võib katkestada, kui see on kestnud vähem kui 12 nädalat. (2) Kauem kui 12 ning vähem kui 22 nädalat kestnud raseduse võib katkestada, kui: rasedus ohustab raseda tervist; sündival lapsel võib olla raske vaimne või kehaline tervisekahjustus; raseda haigus või tervisega seotud probleem takistab lapse kasvatamist; rase on alla 15-aastane; rase on üle 45-aastane.",
+      "estleg:summary": {
+        "@value": "(1) Rasedust võib katkestada, kui see on kestnud vähem kui 12 nädalat. (2) Kauem kui 12 ning vähem kui 22 nädalat kestnud raseduse võib katkestada, kui: 1) rasedus ohustab raseda tervist; 2) sündival lapsel võib olla raske vaimne või kehaline tervisekahjustus; 3) raseda haigus või tervisega seotud probleem takistab lapse kasvatamist; 4) rase on alla 15-aastane; 5) rase on üle 45-aastane.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rasedust võib katkestada, kui see on kestnud vähem kui 12 nädalat. (2) Kauem kui 12 ning vähem kui 22 nädalat kestnud raseduse võib katkestada, kui: 1) rasedus ohustab raseda tervist; 2) sündival lapsel võib olla raske vaimne või kehaline tervisekahjustus; 3) raseda haigus või tervisega seotud probleem takistab lapse kasvatamist; 4) rase on alla 15-aastane; 5) rase on üle 45-aastane.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
       },
@@ -707,11 +809,18 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kauem kui 12 ning vähem kui 22 nädalat kestnud raseduse võib katkestada, kui: rasedus ohustab raseda tervist; sündival lapsel võib olla raske vaimne või kehaline tervisekahjustus; raseda haigus või tervisega seotud probleem takistab lapse kasvatamist; rase on alla 15-aastane; rase on üle 45-aastane.",
+      "estleg:legalText": "(2) Kauem kui 12 ning vähem kui 22 nädalat kestnud raseduse võib katkestada, kui: 1) rasedus ohustab raseda tervist; 2) sündival lapsel võib olla raske vaimne või kehaline tervisekahjustus; 3) raseda haigus või tervisega seotud probleem takistab lapse kasvatamist; 4) rase on alla 15-aastane; 5) rase on üle 45-aastane.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_6"
       },
       "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -743,12 +852,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Günekoloogi ainuõigus rasedust katkestada",
+      "rdfs:label": {
+        "@value": "§ 7. Günekoloogi ainuõigus rasedust katkestada",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Rasedust võib katkestada ainult günekoloog.",
+      "estleg:summary": {
+        "@value": "Rasedust võib katkestada ainult günekoloog.",
+        "@language": "et"
+      },
       "estleg:legalText": "Rasedust võib katkestada ainult günekoloog.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -788,10 +903,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Rasedust võib katkestada ainult günekoloog.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rasedust võib katkestada ainult günekoloog.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_7"
       },
+      "rdfs:label": "§ 7 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -807,12 +924,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Raseduse katkestamise toimingu vabatahtlikkus",
+      "rdfs:label": {
+        "@value": "§ 8. Raseduse katkestamise toimingu vabatahtlikkus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Günekoloogi või muud tervishoiutöötajat ei saa kohustada rasedust katkestama ega raseduse katkestamise protseduurist osa võtma.",
+      "estleg:summary": {
+        "@value": "Günekoloogi või muud tervishoiutöötajat ei saa kohustada rasedust katkestama ega raseduse katkestamise protseduurist osa võtma.",
+        "@language": "et"
+      },
       "estleg:legalText": "Günekoloogi või muud tervishoiutöötajat ei saa kohustada rasedust katkestama ega raseduse katkestamise protseduurist osa võtma.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -840,10 +963,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Günekoloogi või muud tervishoiutöötajat ei saa kohustada rasedust katkestama ega raseduse katkestamise protseduurist osa võtma.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Günekoloogi või muud tervishoiutöötajat ei saa kohustada rasedust katkestama ega raseduse katkestamise protseduurist osa võtma.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_8"
-      }
+      },
+      "rdfs:label": "§ 8 lg 1"
     },
     {
       "@id": "estleg:RKSS_Par_9",
@@ -852,13 +977,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Raseduse katkestamise koht",
+      "rdfs:label": {
+        "@value": "§ 9. Raseduse katkestamise koht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Rasedust võib katkestada tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia tegevusluba. (2) Kehtetu -",
-      "estleg:legalText": "(1) Rasedust võib katkestada tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia tegevusluba. (2) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Rasedust võib katkestada tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia tegevusluba.",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Rasedust võib katkestada tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia tegevusluba.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
       },
@@ -868,9 +999,6 @@
       "estleg:hasSubsection": [
         {
           "@id": "estleg:RKSS_Par_9_Lg_1"
-        },
-        {
-          "@id": "estleg:RKSS_Par_9_Lg_2"
         }
       ],
       "estleg:normativeType": {
@@ -918,31 +1046,24 @@
       }
     },
     {
-      "@id": "estleg:RKSS_Par_9_Lg_2",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "2",
-      "estleg:legalText": "(2) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:RKSS_Par_9"
-      },
-      "rdfs:label": "§ 9 lg 2"
-    },
-    {
       "@id": "estleg:RKSS_Par_10",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Raseduse olemasolu ja kestuse tuvastamine",
+      "rdfs:label": {
+        "@value": "§ 10. Raseduse olemasolu ja kestuse tuvastamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Raseduse olemasolu ja kestuse tuvastab günekoloog, perearst või ämmaemand. Raseduse olemasolu ja kestus tuvastatakse teabe alusel, mida saadakse naise küsitlemise, vaatluse ning vajaduse korral diagnostikavahendite abil.",
+      "estleg:summary": {
+        "@value": "Raseduse olemasolu ja kestuse tuvastab günekoloog, perearst või ämmaemand. Raseduse olemasolu ja kestus tuvastatakse teabe alusel, mida saadakse naise küsitlemise, vaatluse ning vajaduse korral diagnostikavahendite abil.",
+        "@language": "et"
+      },
       "estleg:legalText": "Raseduse olemasolu ja kestuse tuvastab günekoloog, perearst või ämmaemand. Raseduse olemasolu ja kestus tuvastatakse teabe alusel, mida saadakse naise küsitlemise, vaatluse ning vajaduse korral diagnostikavahendite abil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -970,10 +1091,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Raseduse olemasolu ja kestuse tuvastab günekoloog, perearst või ämmaemand. Raseduse olemasolu ja kestus tuvastatakse teabe alusel, mida saadakse naise küsitlemise, vaatluse ning vajaduse korral diagnostikavahendite abil.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raseduse olemasolu ja kestuse tuvastab günekoloog, perearst või ämmaemand. Raseduse olemasolu ja kestus tuvastatakse teabe alusel, mida saadakse naise küsitlemise, vaatluse ning vajaduse korral diagnostikavahendite abil.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_10"
-      }
+      },
+      "rdfs:label": "§ 10 lg 1"
     },
     {
       "@id": "estleg:RKSS_Par_11",
@@ -982,12 +1105,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Raseduse katkestamise lubatavuse otsustamine",
+      "rdfs:label": {
+        "@value": "§ 11. Raseduse katkestamise lubatavuse otsustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Raseduse katkestamise lubatavuse otsustab rasedust katkestav arst, lähtudes käesoleva seaduse §-des 5 ja 6 toodud nõuetest. (2) Käesoleva seaduse § 6 lõike 2 punktides 1, 2 ja 3 kirjeldatud juhtudel tehakse raseduse katkestamise lubatavus kindlaks vähemalt kolme arsti – kahe või enama günekoloogi ja naise haigusest või tervisega seotud probleemist tuleneva eriarsti või -arstide – otsuse alusel. Vajaduse korral tuleb käesoleva seaduse § 6 lõike 2 punktis 3 nimetatud juhtudel kaasata otsuse",
+      "estleg:summary": {
+        "@value": "(1) Raseduse katkestamise lubatavuse otsustab rasedust katkestav arst, lähtudes käesoleva seaduse §-des 5 ja 6 toodud nõuetest. (2) Käesoleva seaduse § 6 lõike 2 punktides 1, 2 ja 3 kirjeldatud juhtudel tehakse raseduse katkestamise lubatavus kindlaks vähemalt kolme arsti – kahe või enama günekoloogi ja naise haigusest või tervisega seotud probleemist tuleneva eriarsti või -arstide – otsuse alusel. Vajaduse korral tuleb käesoleva seaduse § 6 lõike 2 punktis 3 nimetatud juhtudel kaasata otsuse",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Raseduse katkestamise lubatavuse otsustab rasedust katkestav arst, lähtudes käesoleva seaduse §-des 5 ja 6 toodud nõuetest. (2) Käesoleva seaduse § 6 lõike 2 punktides 1, 2 ja 3 kirjeldatud juhtudel tehakse raseduse katkestamise lubatavus kindlaks vähemalt kolme arsti – kahe või enama günekoloogi ja naise haigusest või tervisega seotud probleemist tuleneva eriarsti või -arstide – otsuse alusel. Vajaduse korral tuleb käesoleva seaduse § 6 lõike 2 punktis 3 nimetatud juhtudel kaasata otsuse tegemisele lisaks arstidele ka sotsiaaltöötaja. Otsus raseduse katkestamise lubatavuse kohta vormistatakse kirjalikult ja seda tõendavad kõik otsuse tegijad oma allkirjaga. (3) Käesoleva seaduse § 6 lõike 2 punktides 4 ja 5 nimetatud tingimuste olemasolu tehakse kindlaks raseda passi, sünnitunnistuse või muu isikut tõendava dokumendi alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -1138,12 +1267,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Nõustamise kohustus",
+      "rdfs:label": {
+        "@value": "§ 12. Nõustamise kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Rasedust katkestada soovivale naisele või võlaõigusseaduse § 766 lõikes 4 sätestatud juhul tema seaduslikule esindajale peab tervishoiutöötaja enne raseduse katkestamist selgitama raseduse katkestamise bioloogilist ja meditsiinilist olemust ning sellega seonduvaid riske, sealhulgas võimalikke tüsistusi. (1¹) Rasedat naist, rasedust katkestada soovivat naist või võlaõigusseaduse § 766 lõikes 4 sätestatud juhul tema seaduslikku esindajat peab tervishoiutöötaja vajaduse korral teavitama",
+      "estleg:summary": {
+        "@value": "(1) Rasedust katkestada soovivale naisele või võlaõigusseaduse § 766 lõikes 4 sätestatud juhul tema seaduslikule esindajale peab tervishoiutöötaja enne raseduse katkestamist selgitama raseduse katkestamise bioloogilist ja meditsiinilist olemust ning sellega seonduvaid riske, sealhulgas võimalikke tüsistusi. (1¹) Rasedat naist, rasedust katkestada soovivat naist või võlaõigusseaduse § 766 lõikes 4 sätestatud juhul tema seaduslikku esindajat peab tervishoiutöötaja vajaduse korral teavitama",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Rasedust katkestada soovivale naisele või võlaõigusseaduse § 766 lõikes 4 sätestatud juhul tema seaduslikule esindajale peab tervishoiutöötaja enne raseduse katkestamist selgitama raseduse katkestamise bioloogilist ja meditsiinilist olemust ning sellega seonduvaid riske, sealhulgas võimalikke tüsistusi. (1¹) Rasedat naist, rasedust katkestada soovivat naist või võlaõigusseaduse § 766 lõikes 4 sätestatud juhul tema seaduslikku esindajat peab tervishoiutöötaja vajaduse korral teavitama psühholoogilise või muu asjakohase nõustamise võimalustest. (2) Käesoleva paragrahvi lõikes 1 nimetatud kohustusliku nõustamise kohta koostatakse akt, millele kirjutavad alla nõustatud isik ja nõustamise läbiviinud tervishoiutöötaja. Nõustamisakt vormistatakse kahes eksemplaris, millest üks jääb tervishoiutöötajale ja teine antakse nõustatavale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -1270,12 +1405,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Raseduse katkestamise ettevalmistamine",
+      "rdfs:label": {
+        "@value": "§ 13. Raseduse katkestamise ettevalmistamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Raseduse olemasolu ja kestuse tuvastanud arst on kohustatud enne raseduse katkestamisele suunamist tegema kõik asjakohasele ravistandardile vastavad uuringud ja toimingud. Raseduse katkestamisele eelnevate ja järgnevate uuringute ja toimingute loetelu oma määrusega. (2) Rasedust katkestav arst on enne raseduse katkestamist kohustatud kontrollima käesoleva paragrahvi lõikes 1 nimetatud uuringute tulemusi. (3) Kui rasedus on kestnud kauem kui 12 nädalat või seda nõuab naise tervise seisund,",
+      "estleg:summary": {
+        "@value": "(1) Raseduse olemasolu ja kestuse tuvastanud arst on kohustatud enne raseduse katkestamisele suunamist tegema kõik asjakohasele ravistandardile vastavad uuringud ja toimingud. Raseduse katkestamisele eelnevate ja järgnevate uuringute ja toimingute loetelu oma määrusega. (2) Rasedust katkestav arst on enne raseduse katkestamist kohustatud kontrollima käesoleva paragrahvi lõikes 1 nimetatud uuringute tulemusi. (3) Kui rasedus on kestnud kauem kui 12 nädalat või seda nõuab naise tervise seisund,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Raseduse olemasolu ja kestuse tuvastanud arst on kohustatud enne raseduse katkestamisele suunamist tegema kõik asjakohasele ravistandardile vastavad uuringud ja toimingud. Raseduse katkestamisele eelnevate ja järgnevate uuringute ja toimingute loetelu oma määrusega. (2) Rasedust katkestav arst on enne raseduse katkestamist kohustatud kontrollima käesoleva paragrahvi lõikes 1 nimetatud uuringute tulemusi. (3) Kui rasedus on kestnud kauem kui 12 nädalat või seda nõuab naise tervise seisund, võetakse naine, kelle rasedust katkestatakse, haiglaravile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -1371,12 +1512,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Raseduse katkestamisele järgnevad toimingud",
+      "rdfs:label": {
+        "@value": "§ 14. Raseduse katkestamisele järgnevad toimingud",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Vahetult pärast raseduse katkestamist on arst kohustatud tarvitusele võtma abinõud, mis väldivad raseduse katkestamisega kaasneda võivaid tüsistusi. Abinõude loetelu oma määrusega. (2) Naisel, kelle rasedus katkestati, on õigus raseduse katkestamisele järgneva kahe nädala jooksul väljaspool järjekorda konsulteerida raseduse olemasolu ja kestuse tuvastanud arstiga vältimatu abi tingimustel.",
+      "estleg:summary": {
+        "@value": "(1) Vahetult pärast raseduse katkestamist on arst kohustatud tarvitusele võtma abinõud, mis väldivad raseduse katkestamisega kaasneda võivaid tüsistusi. Abinõude loetelu oma määrusega. (2) Naisel, kelle rasedus katkestati, on õigus raseduse katkestamisele järgneva kahe nädala jooksul väljaspool järjekorda konsulteerida raseduse olemasolu ja kestuse tuvastanud arstiga vältimatu abi tingimustel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Vahetult pärast raseduse katkestamist on arst kohustatud tarvitusele võtma abinõud, mis väldivad raseduse katkestamisega kaasneda võivaid tüsistusi. Abinõude loetelu oma määrusega. (2) Naisel, kelle rasedus katkestati, on õigus raseduse katkestamisele järgneva kahe nädala jooksul väljaspool järjekorda konsulteerida raseduse olemasolu ja kestuse tuvastanud arstiga vältimatu abi tingimustel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -1451,12 +1598,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Raseduse katkestamist puudutavad dokumendid",
+      "rdfs:label": {
+        "@value": "§ 15. Raseduse katkestamist puudutavad dokumendid",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Raseduse katkestamine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele.",
+      "estleg:summary": {
+        "@value": "Raseduse katkestamine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele.",
+        "@language": "et"
+      },
       "estleg:legalText": "Raseduse katkestamine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
@@ -1487,10 +1640,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Raseduse katkestamine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raseduse katkestamine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_15"
-      }
+      },
+      "rdfs:label": "§ 15 lg 1"
     },
     {
       "@id": "estleg:RKSS_Par_16",
@@ -1499,13 +1654,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Andmete kogumine raseduse katkestamise kohta",
+      "rdfs:label": {
+        "@value": "§ 16. Andmete kogumine raseduse katkestamise kohta",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 16. Andmete kogumine raseduse katkestamise kohta",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
       },
@@ -1537,13 +1697,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Raseduskatkestusandmekogu asutamine",
+      "rdfs:label": {
+        "@value": "§ 17. Raseduskatkestusandmekogu asutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 17. Raseduskatkestusandmekogu asutamine",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
       },
@@ -1575,13 +1740,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Andmekogu vastutav ja volitatud töötleja",
+      "rdfs:label": {
+        "@value": "§ 18. Andmekogu vastutav ja volitatud töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Kehtetu -",
-      "estleg:legalText": "Kehtetu -",
+      "estleg:summary": {
+        "@value": "§ 18. Andmekogu vastutav ja volitatud töötleja",
+        "@language": "et"
+      },
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_2"
       },
@@ -1619,12 +1789,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Steriliseerimise vabatahtlikkus",
+      "rdfs:label": {
+        "@value": "§ 19. Steriliseerimise vabatahtlikkus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Isikut võib steriliseerida üksnes tema enda soovil. Sooviavaldus steriliseerimiseks peab olema vormistatud kirjalikult. (2) Piiratud teovõimega isiku steriliseerimise otsustab maakohus hagita menetluses isiku eestkostja avalduse alusel. Alaealist isikut ei või steriliseerida.",
+      "estleg:summary": {
+        "@value": "(1) Isikut võib steriliseerida üksnes tema enda soovil. Sooviavaldus steriliseerimiseks peab olema vormistatud kirjalikult. (2) Piiratud teovõimega isiku steriliseerimise otsustab maakohus hagita menetluses isiku eestkostja avalduse alusel. Alaealist isikut ei või steriliseerida.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Isikut võib steriliseerida üksnes tema enda soovil. Sooviavaldus steriliseerimiseks peab olema vormistatud kirjalikult. (2) Piiratud teovõimega isiku steriliseerimise otsustab maakohus hagita menetluses isiku eestkostja avalduse alusel. Alaealist isikut ei või steriliseerida.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_3"
@@ -1733,13 +1909,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Steriliseerimise lubatavus",
+      "rdfs:label": {
+        "@value": "§ 20. Steriliseerimise lubatavus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Täisealist teovõimelist isikut võib steriliseerida, kui esineb vähemalt üks järgmistest tingimustest: isikul on vähemalt kolm last; isik on vanem kui 35-aastane; rasedus ohustab naise tervist; muud rasestumisvastased vahendid on vastunäidustatud; isikul on oht saada raske vaimse või kehalise tervisekahjustusega laps; isiku haigus või tervisega seotud probleem takistab lapse kasvatamist. (2) Täisealist piiratud teovõimega isikut võib steriliseerida, kui esineb vähemalt üks tingimus käesoleva",
-      "estleg:legalText": "(1) Täisealist teovõimelist isikut võib steriliseerida, kui esineb vähemalt üks järgmistest tingimustest: isikul on vähemalt kolm last; isik on vanem kui 35-aastane; rasedus ohustab naise tervist; muud rasestumisvastased vahendid on vastunäidustatud; isikul on oht saada raske vaimse või kehalise tervisekahjustusega laps; isiku haigus või tervisega seotud probleem takistab lapse kasvatamist. (2) Täisealist piiratud teovõimega isikut võib steriliseerida, kui esineb vähemalt üks tingimus käesoleva paragrahvi lõike 1 punktides 3, 4, 5 või 6 toodud juhtudest. (3) Kehtetu -",
+      "estleg:summary": {
+        "@value": "(1) Täisealist teovõimelist isikut võib steriliseerida, kui esineb vähemalt üks järgmistest tingimustest: 1) isikul on vähemalt kolm last; 2) isik on vanem kui 35-aastane; 3) rasedus ohustab naise tervist; 4) muud rasestumisvastased vahendid on vastunäidustatud; 5) isikul on oht saada raske vaimse või kehalise tervisekahjustusega laps; 6) isiku haigus või tervisega seotud probleem takistab lapse kasvatamist. (2) Täisealist piiratud teovõimega isikut võib steriliseerida, kui esineb vähemalt üks",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Täisealist teovõimelist isikut võib steriliseerida, kui esineb vähemalt üks järgmistest tingimustest: 1) isikul on vähemalt kolm last; 2) isik on vanem kui 35-aastane; 3) rasedus ohustab naise tervist; 4) muud rasestumisvastased vahendid on vastunäidustatud; 5) isikul on oht saada raske vaimse või kehalise tervisekahjustusega laps; 6) isiku haigus või tervisega seotud probleem takistab lapse kasvatamist. (2) Täisealist piiratud teovõimega isikut võib steriliseerida, kui esineb vähemalt üks tingimus käesoleva paragrahvi lõike 1 punktides 3, 4, 5 või 6 toodud juhtudest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_3"
       },
@@ -1752,9 +1934,6 @@
         },
         {
           "@id": "estleg:RKSS_Par_20_Lg_2"
-        },
-        {
-          "@id": "estleg:RKSS_Par_20_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -1791,11 +1970,19 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Täisealist teovõimelist isikut võib steriliseerida, kui esineb vähemalt üks järgmistest tingimustest: isikul on vähemalt kolm last; isik on vanem kui 35-aastane; rasedus ohustab naise tervist; muud rasestumisvastased vahendid on vastunäidustatud; isikul on oht saada raske vaimse või kehalise tervisekahjustusega laps; isiku haigus või tervisega seotud probleem takistab lapse kasvatamist.",
+      "estleg:legalText": "(1) Täisealist teovõimelist isikut võib steriliseerida, kui esineb vähemalt üks järgmistest tingimustest: 1) isikul on vähemalt kolm last; 2) isik on vanem kui 35-aastane; 3) rasedus ohustab naise tervist; 4) muud rasestumisvastased vahendid on vastunäidustatud; 5) isikul on oht saada raske vaimse või kehalise tervisekahjustusega laps; 6) isiku haigus või tervisega seotud probleem takistab lapse kasvatamist.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_20"
       },
       "rdfs:label": "§ 20 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1846,31 +2033,24 @@
       }
     },
     {
-      "@id": "estleg:RKSS_Par_20_Lg_3",
-      "@type": [
-        "estleg:Subsection",
-        "owl:NamedIndividual"
-      ],
-      "estleg:subsectionNumber": "3",
-      "estleg:legalText": "(3) Kehtetu -",
-      "estleg:parentProvision": {
-        "@id": "estleg:RKSS_Par_20"
-      },
-      "rdfs:label": "§ 20 lg 3"
-    },
-    {
       "@id": "estleg:RKSS_Par_21",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Arsti ainuõigus teostada steriliseerimist",
+      "rdfs:label": {
+        "@value": "§ 21. Arsti ainuõigus teostada steriliseerimist",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Isikut võib steriliseerida günekoloog, üldkirurg või uroloog.",
+      "estleg:summary": {
+        "@value": "Isikut võib steriliseerida günekoloog, üldkirurg või uroloog.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isikut võib steriliseerida günekoloog, üldkirurg või uroloog.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_3"
@@ -1910,10 +2090,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isikut võib steriliseerida günekoloog, üldkirurg või uroloog.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikut võib steriliseerida günekoloog, üldkirurg või uroloog.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_21"
       },
+      "rdfs:label": "§ 21 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -1934,12 +2116,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Steriliseerimise koht",
+      "rdfs:label": {
+        "@value": "§ 22. Steriliseerimise koht",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Isikut võib steriliseerida ainult tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia, üldkirurgia või uroloogia tegevusluba.",
+      "estleg:summary": {
+        "@value": "Isikut võib steriliseerida ainult tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia, üldkirurgia või uroloogia tegevusluba.",
+        "@language": "et"
+      },
       "estleg:legalText": "Isikut võib steriliseerida ainult tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia, üldkirurgia või uroloogia tegevusluba.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_3"
@@ -1979,10 +2167,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Isikut võib steriliseerida ainult tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia, üldkirurgia või uroloogia tegevusluba.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isikut võib steriliseerida ainult tervishoiuteenuse osutaja, kellel on tervishoiuteenuse osutamiseks günekoloogia, üldkirurgia või uroloogia tegevusluba.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_22"
       },
+      "rdfs:label": "§ 22 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2003,12 +2193,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Steriliseerimise lubatavuse otsustamine",
+      "rdfs:label": {
+        "@value": "§ 23. Steriliseerimise lubatavuse otsustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Käesoleva seaduse § 20 lõike 1 punktides 1 ja 2 nimetatud tingimused teeb kindlaks steriliseeriv arst isiku passi alusel. (2) Käesoleva seaduse § 20 lõike 1 punktides 3, 4 ja 5 toodud juhtudel steriliseerimise lubatavus otsustatakse vähemalt kolme arsti otsusel. Vajaduse korral tuleb käesoleva seaduse § 20 lõike 1 punktis 6 nimetatud juhul lisaks arstidele kaasata otsuse tegemisele ka sotsiaaltöötaja. Otsus steriliseerimise lubatavuse kohta vormistatakse kirjalikult ja seda tõendavad kõik",
+      "estleg:summary": {
+        "@value": "(1) Käesoleva seaduse § 20 lõike 1 punktides 1 ja 2 nimetatud tingimused teeb kindlaks steriliseeriv arst isiku passi alusel. (2) Käesoleva seaduse § 20 lõike 1 punktides 3, 4 ja 5 toodud juhtudel steriliseerimise lubatavus otsustatakse vähemalt kolme arsti otsusel. Vajaduse korral tuleb käesoleva seaduse § 20 lõike 1 punktis 6 nimetatud juhul lisaks arstidele kaasata otsuse tegemisele ka sotsiaaltöötaja. Otsus steriliseerimise lubatavuse kohta vormistatakse kirjalikult ja seda tõendavad kõik",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesoleva seaduse § 20 lõike 1 punktides 1 ja 2 nimetatud tingimused teeb kindlaks steriliseeriv arst isiku passi alusel. (2) Käesoleva seaduse § 20 lõike 1 punktides 3, 4 ja 5 toodud juhtudel steriliseerimise lubatavus otsustatakse vähemalt kolme arsti otsusel. Vajaduse korral tuleb käesoleva seaduse § 20 lõike 1 punktis 6 nimetatud juhul lisaks arstidele kaasata otsuse tegemisele ka sotsiaaltöötaja. Otsus steriliseerimise lubatavuse kohta vormistatakse kirjalikult ja seda tõendavad kõik otsuse tegijad oma allkirjaga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_3"
@@ -2112,12 +2308,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Nõustamise kohustus",
+      "rdfs:label": {
+        "@value": "§ 24. Nõustamise kohustus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "(1) Enda steriliseerimist soovivale isikule ja vajaduse korral tema eestkostjale peab arst enne ja pärast protseduuri lubatavuse otsustamist selgitama steriliseerimise bioloogilist ja meditsiinilist olemust ning sellega seonduvaid riske, sealhulgas võimalikke tüsistusi. (2) Käesoleva paragrahvi lõikes 1 nimetatud nõustamise kohta koostatakse akt, millele kirjutavad alla nõustatud isik ja nõustanud arst. Nõustamise akti vormi nõuded kehtestab valdkonna eest vastutav minister määrusega.",
+      "estleg:summary": {
+        "@value": "(1) Enda steriliseerimist soovivale isikule ja vajaduse korral tema eestkostjale peab arst enne ja pärast protseduuri lubatavuse otsustamist selgitama steriliseerimise bioloogilist ja meditsiinilist olemust ning sellega seonduvaid riske, sealhulgas võimalikke tüsistusi. (2) Käesoleva paragrahvi lõikes 1 nimetatud nõustamise kohta koostatakse akt, millele kirjutavad alla nõustatud isik ja nõustanud arst. Nõustamise akti vormi nõuded kehtestab valdkonna eest vastutav minister määrusega.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Enda steriliseerimist soovivale isikule ja vajaduse korral tema eestkostjale peab arst enne ja pärast protseduuri lubatavuse otsustamist selgitama steriliseerimise bioloogilist ja meditsiinilist olemust ning sellega seonduvaid riske, sealhulgas võimalikke tüsistusi. (2) Käesoleva paragrahvi lõikes 1 nimetatud nõustamise kohta koostatakse akt, millele kirjutavad alla nõustatud isik ja nõustanud arst. Nõustamise akti vormi nõuded kehtestab valdkonna eest vastutav minister määrusega. (3) Isikut ei või steriliseerida enne, kui käesolevas paragrahvis nimetatud nõustamisest on möödunud üks kuu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_3"
@@ -2245,12 +2447,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Steriliseerimise dokumenteerimine",
+      "rdfs:label": {
+        "@value": "§ 25. Steriliseerimise dokumenteerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "Steriliseerimine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele. Steriliseerimist puudutavad andmed on eriliiki isikuandmed ning andmekogude moodustamine neist ei ole lubatud.",
+      "estleg:summary": {
+        "@value": "Steriliseerimine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele. Steriliseerimist puudutavad andmed on eriliiki isikuandmed ning andmekogude moodustamine neist ei ole lubatud.",
+        "@language": "et"
+      },
       "estleg:legalText": "Steriliseerimine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele. Steriliseerimist puudutavad andmed on eriliiki isikuandmed ning andmekogude moodustamine neist ei ole lubatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_3"
@@ -2288,10 +2496,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Steriliseerimine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele. Steriliseerimist puudutavad andmed on eriliiki isikuandmed ning andmekogude moodustamine neist ei ole lubatud.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Steriliseerimine dokumenteeritakse vastavalt tervishoiuteenuste korraldamise seadusega kehtestatud nõuetele. Steriliseerimist puudutavad andmed on eriliiki isikuandmed ning andmekogude moodustamine neist ei ole lubatud.",
       "estleg:parentProvision": {
         "@id": "estleg:RKSS_Par_25"
       },
+      "rdfs:label": "§ 25 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -2307,12 +2517,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Kriminaalkoodeksi muutmine",
+      "rdfs:label": {
+        "@value": "§ 26. Kriminaalkoodeksi muutmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Raseduse katkestamise ja steriliseerimise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:RKSS_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_RKSS_4"
@@ -2328,6 +2544,22 @@
           "@id": "estleg:RKSS_Par_26_v113032019134"
         }
       ]
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/502042019003",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:RKSS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Termination of Pregnancy and Sterilisation Act",
+        "@language": "en"
+      }
     }
   ]
 }

@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Jälitustoimiku pidamise ja säilitamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Jälitustoimiku pidamise ja säilitamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -36,11 +43,6 @@
         "@value": "2013-01-11",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2013-01-08",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -76,7 +78,13 @@
         {
           "@id": "http://eurovoc.europa.eu/2924"
         }
-      ]
+      ],
+      "dcterms:title": "Jälitustoimiku pidamise ja säilitamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1009355_Par_1",
@@ -85,18 +93,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Määruse reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Määruse reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009355_Map"
       },
-      "estleg:summary": "1 (1) Määrusega kehtestatakse jälitusasutuses jälitustoimiku pidamise ja säilitamise kord. Määrusega kehtestatakse jälitusasutuses jälitustoimiku pidamise ja säilitamise kord. 2 (2) Määrust ei kohaldata tunnistajakaitse seaduse ja selle alusel kehtestatud õigusaktides sätestatud korras tunnistajakaitse teostamisel jälitustoimingutega kogutud teabe säilitamisel. Määrust ei kohaldata tunnistajakaitse seaduse ja selle alusel kehtestatud õigusaktides sätestatud korras tunnistajakaitse teostamisel jä",
-      "estleg:legalText": "1 (1) Määrusega kehtestatakse jälitusasutuses jälitustoimiku pidamise ja säilitamise kord. Määrusega kehtestatakse jälitusasutuses jälitustoimiku pidamise ja säilitamise kord. 2 (2) Määrust ei kohaldata tunnistajakaitse seaduse ja selle alusel kehtestatud õigusaktides sätestatud korras tunnistajakaitse teostamisel jälitustoimingutega kogutud teabe säilitamisel. Määrust ei kohaldata tunnistajakaitse seaduse ja selle alusel kehtestatud õigusaktides sätestatud korras tunnistajakaitse teostamisel jälitustoimingutega kogutud teabe säilitamisel.",
+      "estleg:summary": {
+        "@value": "1 (1) Määrusega kehtestatakse jälitusasutuses jälitustoimiku pidamise ja säilitamise kord. 2 (2) Määrust ei kohaldata tunnistajakaitse seaduse ja selle alusel kehtestatud õigusaktides sätestatud korras tunnistajakaitse teostamisel jälitustoimingutega kogutud teabe säilitamisel.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Määrusega kehtestatakse jälitusasutuses jälitustoimiku pidamise ja säilitamise kord. 2 (2) Määrust ei kohaldata tunnistajakaitse seaduse ja selle alusel kehtestatud õigusaktides sätestatud korras tunnistajakaitse teostamisel jälitustoimingutega kogutud teabe säilitamisel.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1009355_Par_1_v1009355"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009355_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse jälitusasutuses jälitustoimiku pidamise ja säilitamise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Määrust ei kohaldata tunnistajakaitse seaduse ja selle alusel kehtestatud õigusaktides sätestatud korras tunnistajakaitse teostamisel jälitustoimingutega kogutud teabe säilitamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_1009355_Par_2",
@@ -105,13 +153,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Jälitustoimik",
+      "rdfs:label": {
+        "@value": "§ 2. Jälitustoimik",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009355_Map"
       },
-      "estleg:summary": "1 (1) Jälitustoimik on teabe süstematiseeritud kogum, mis sisaldab jälitustoiminguga kogutud andmeid, jälitustoimingu käigus tehtud teabetalletusi, kriminaalmenetluse seadustiku § 1261 lõikes 8 nimetatud viisil saadud andmeid ning jälitustoiminguga kogutud teabe terviklikkuse tajumiseks vajalikke andmeid variisiku ning teeseldud isiku, struktuuriüksuse, organi ja välisriigi äriühingu filiaali kohta. Jälitustoimikut peetakse paberkandjal või digitaalselt. Jälitustoimik on teabe süstematiseeritud ",
-      "estleg:legalText": "1 (1) Jälitustoimik on teabe süstematiseeritud kogum, mis sisaldab jälitustoiminguga kogutud andmeid, jälitustoimingu käigus tehtud teabetalletusi, kriminaalmenetluse seadustiku § 1261 lõikes 8 nimetatud viisil saadud andmeid ning jälitustoiminguga kogutud teabe terviklikkuse tajumiseks vajalikke andmeid variisiku ning teeseldud isiku, struktuuriüksuse, organi ja välisriigi äriühingu filiaali kohta. Jälitustoimikut peetakse paberkandjal või digitaalselt. Jälitustoimik on teabe süstematiseeritud kogum, mis sisaldab jälitustoiminguga kogutud andmeid, jälitustoimingu käigus tehtud teabetalletusi, kriminaalmenetluse seadustiku § 1261 lõikes 8 nimetatud viisil saadud andmeid ning jälitustoiminguga kogutud teabe terviklikkuse tajumiseks vajalikke andmeid variisiku ning teeseldud isiku, struktuuriüksuse, organi ja välisriigi äriühingu filiaali kohta. Jälitustoimikut peetakse paberkandjal või digitaalselt. 2 (2) Jälitustoimiku avamine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1 1) jälitustoimiku avamise kuupäev; 2 2) jälitustoimiku number; 3 3) jälitustoimiku liik kriminaalmenetluse seadustiku § 1262 lõike 1 punktide 1–4 alusel; 4 4) jälitusasutuse nimetus. Jälitustoimiku avamine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: jälitustoimiku avamise kuupäev; jälitustoimiku number; jälitustoimiku liik kriminaalmenetluse seadustiku § 1262 lõike 1 punktide 1–4 alusel; jälitusasutuse nimetus. 3 (3) Lähtudes jälitustoimingu tegemise asjaoludest võib jälitustoimik sisaldada järgmisi dokumente ja andmeid: 1 1) jälitustoimingu luba ja taotlus jälitustoimingu tegemiseks; 2 2) andmed jälitustoimiku avamise ja sulgemise kohta; 3 3) jälitustoimingu kokkuvõte; 4 4) koopia jälitustoimingust teavitamise teatest; 5 5) jälitustoimingust teavitamata jätmise luba; 6 6) jälitustoiminguga kogutud andmete tutvustamise protokoll; 7 7) jälitustoiminguga kogutud andmete tutvustamata jätmise luba; 8 8) nimekiri isikutest, kelle suhtes jälitustoiming tehti, ning isikutest, kelle perekonna- või eraelu puutumatust jälitustoiminguga oluliselt riivati ja kes on menetluse käigus tuvastatud; 9 9) jälitustoimikuga tutvumise registreerimisleht; 10 10) andmed jälitustoimingute peale kriminaalmenetluse seadustiku §-s 12616 toodud korras esitatud kaebuste ja nende lahendamiste kohta; 11 11) muud jälitustoimingu tegemise käigus koostatud ja kogutud dokumendid ning teabetalletused. Lähtudes jälitustoimingu tegemise asjaoludest võib jälitustoimik sisaldada järgmisi dokumente ja andmeid: jälitustoimingu luba ja taotlus jälitustoimingu tegemiseks; andmed jälitustoimiku avamise ja sulgemise kohta; jälitustoimingu kokkuvõte; koopia jälitustoimingust teavitamise teatest; jälitustoimingust teavitamata jätmise luba; jälitustoiminguga kogutud andmete tutvustamise protokoll; jälitustoiminguga kogutud andmete tutvustamata jätmise luba; nimekiri isikutest, kelle suhtes jälitustoiming tehti, ning isikutest, kelle perekonna- või eraelu puutumatust jälitustoiminguga oluliselt riivati ja kes on menetluse käigus tuvastatud; jälitustoimikuga tutvumise registreerimisleht; andmed jälitustoimingute peale kriminaalmenetluse seadustiku §-s 12616 toodud korras esitatud kaebuste ja nende lahendamiste kohta; muud jälitustoimingu tegemise käigus koostatud ja kogutud dokumendid ning teabetalletused.",
+      "estleg:summary": {
+        "@value": "1 (1) Jälitustoimik on teabe süstematiseeritud kogum, mis sisaldab jälitustoiminguga kogutud andmeid, jälitustoimingu käigus tehtud teabetalletusi, kriminaalmenetluse seadustiku § 1261 lõikes 8 nimetatud viisil saadud andmeid ning jälitustoiminguga kogutud teabe terviklikkuse tajumiseks vajalikke andmeid variisiku ning teeseldud isiku, struktuuriüksuse, organi ja välisriigi äriühingu filiaali kohta. Jälitustoimikut peetakse paberkandjal või digitaalselt.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Jälitustoimik on teabe süstematiseeritud kogum, mis sisaldab jälitustoiminguga kogutud andmeid, jälitustoimingu käigus tehtud teabetalletusi, kriminaalmenetluse seadustiku § 1261 lõikes 8 nimetatud viisil saadud andmeid ning jälitustoiminguga kogutud teabe terviklikkuse tajumiseks vajalikke andmeid variisiku ning teeseldud isiku, struktuuriüksuse, organi ja välisriigi äriühingu filiaali kohta. Jälitustoimikut peetakse paberkandjal või digitaalselt. 2 (2) Jälitustoimiku avamine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1 1) jälitustoimiku avamise kuupäev; 2 2) jälitustoimiku number; 3 3) jälitustoimiku liik kriminaalmenetluse seadustiku § 1262 lõike 1 punktide 1–4 alusel; 4 4) jälitusasutuse nimetus. 3 (3) Lähtudes jälitustoimingu tegemise asjaoludest võib jälitustoimik sisaldada järgmisi dokumente ja andmeid: 1 1) jälitustoimingu luba ja taotlus jälitustoimingu tegemiseks; 2 2) andmed jälitustoimiku avamise ja sulgemise kohta; 3 3) jälitustoimingu kokkuvõte; 4 4) koopia jälitustoimingust teavitamise teatest; 5 5) jälitustoimingust teavitamata jätmise luba; 6 6) jälitustoiminguga kogutud andmete tutvustamise protokoll; 7 7) jälitustoiminguga kogutud andmete tutvustamata jätmise luba; 8 8) nimekiri isikutest, kelle suhtes jälitustoiming tehti, ning isikutest, kelle perekonna- või eraelu puutumatust jälitustoiminguga oluliselt riivati ja kes on menetluse käigus tuvastatud; 9 9) jälitustoimikuga tutvumise registreerimisleht; 10 10) andmed jälitustoimingute peale kriminaalmenetluse seadustiku §-s 12616 toodud korras esitatud kaebuste ja nende lahendamiste kohta; 11 11) muud jälitustoimingu tegemise käigus koostatud ja kogutud dokumendid ning teabetalletused.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -133,6 +187,75 @@
         {
           "@id": "estleg:Reg_1009355_Par_2_v1009355"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009355_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_2_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Jälitustoimik on teabe süstematiseeritud kogum, mis sisaldab jälitustoiminguga kogutud andmeid, jälitustoimingu käigus tehtud teabetalletusi, kriminaalmenetluse seadustiku § 126¹ lõikes 8 nimetatud viisil saadud andmeid ning jälitustoiminguga kogutud teabe terviklikkuse tajumiseks vajalikke andmeid variisiku ning teeseldud isiku, struktuuriüksuse, organi ja välisriigi äriühingu filiaali kohta. Jälitustoimikut peetakse paberkandjal või digitaalselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Jälitustoimiku avamine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1) jälitustoimiku avamise kuupäev; 2) jälitustoimiku number; 3) jälitustoimiku liik kriminaalmenetluse seadustiku § 126² lõike 1 punktide 1–4 alusel; 4) jälitusasutuse nimetus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lähtudes jälitustoimingu tegemise asjaoludest võib jälitustoimik sisaldada järgmisi dokumente ja andmeid: 1) jälitustoimingu luba ja taotlus jälitustoimingu tegemiseks; 2) andmed jälitustoimiku avamise ja sulgemise kohta; 3) jälitustoimingu kokkuvõte; 4) koopia jälitustoimingust teavitamise teatest; 5) jälitustoimingust teavitamata jätmise luba; 6) jälitustoiminguga kogutud andmete tutvustamise protokoll; 7) jälitustoiminguga kogutud andmete tutvustamata jätmise luba; 8) nimekiri isikutest, kelle suhtes jälitustoiming tehti, ning isikutest, kelle perekonna- või eraelu puutumatust jälitustoiminguga oluliselt riivati ja kes on menetluse käigus tuvastatud; 9) jälitustoimikuga tutvumise registreerimisleht; 10) andmed jälitustoimingute peale kriminaalmenetluse seadustiku §-s 126¹⁶ toodud korras esitatud kaebuste ja nende lahendamiste kohta; 11) muud jälitustoimingu tegemise käigus koostatud ja kogutud dokumendid ning teabetalletused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11"
       ]
     },
     {
@@ -142,13 +265,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Jälitustoimiku numeratsioon",
+      "rdfs:label": {
+        "@value": "§ 3. Jälitustoimiku numeratsioon",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009355_Map"
       },
-      "estleg:summary": "1 (1) Jälitustoimiku number koosneb 10-kohalisest numbrist, kus kaks esimest näitavad aastat, kolm järgmist jälitusasutuse koodi ning viis viimast jälitustoimiku järjekorra numbrit. Jälitustoimikutel võib kasutada tingnimetusi. Jälitustoimiku number koosneb 10-kohalisest numbrist, kus kaks esimest näitavad aastat, kolm järgmist jälitusasutuse koodi ning viis viimast jälitustoimiku järjekorra numbrit. Jälitustoimikutel võib kasutada tingnimetusi. 2 (2) Jälitusasutuste koodid on järgmised: 1 1) Ka",
-      "estleg:legalText": "1 (1) Jälitustoimiku number koosneb 10-kohalisest numbrist, kus kaks esimest näitavad aastat, kolm järgmist jälitusasutuse koodi ning viis viimast jälitustoimiku järjekorra numbrit. Jälitustoimikutel võib kasutada tingnimetusi. Jälitustoimiku number koosneb 10-kohalisest numbrist, kus kaks esimest näitavad aastat, kolm järgmist jälitusasutuse koodi ning viis viimast jälitustoimiku järjekorra numbrit. Jälitustoimikutel võib kasutada tingnimetusi. 2 (2) Jälitusasutuste koodid on järgmised: 1 1) Kaitsepolitseiamet – 100; 2 2) Politsei- ja Piirivalveamet – 200; 3 3) Maksu- ja Tolliamet – 300; 4 4) Sõjaväepolitsei – 400; 5 5) Justiitsministeeriumi vanglate osakond ja vangla – 500. Jälitusasutuste koodid on järgmised: Kaitsepolitseiamet – 100; Politsei- ja Piirivalveamet – 200; Maksu- ja Tolliamet – 300; Sõjaväepolitsei – 400; Justiitsministeeriumi vanglate osakond ja vangla – 500. 3 (3) Jälitusasutuse juht võib oma käskkirjaga kinnitada lõikes 2 nimetatud jälitusasutuse koodi kahe viimase numbri jaotuse oma struktuuriüksuste vahel. Jälitusasutuse juht võib oma käskkirjaga kinnitada lõikes 2 nimetatud jälitusasutuse koodi kahe viimase numbri jaotuse oma struktuuriüksuste vahel. 4 (4) Jälitustoimikud registreeritakse ning nende üle peetakse arvestust jälitusasutuse juhi kehtestatud korras. Jälitustoimikud registreeritakse ning nende üle peetakse arvestust jälitusasutuse juhi kehtestatud korras.",
+      "estleg:summary": {
+        "@value": "1 (1) Jälitustoimiku number koosneb 10-kohalisest numbrist, kus kaks esimest näitavad aastat, kolm järgmist jälitusasutuse koodi ning viis viimast jälitustoimiku järjekorra numbrit. Jälitustoimikutel võib kasutada tingnimetusi. 2 (2) Jälitusasutuste koodid on järgmised: 1 1) Kaitsepolitseiamet – 100; 2 2) Politsei- ja Piirivalveamet – 200; 3 3) Maksu- ja Tolliamet – 300; 4 4) Sõjaväepolitsei – 400; 5 5) Justiitsministeeriumi vanglate osakond ja vangla – 500.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Jälitustoimiku number koosneb 10-kohalisest numbrist, kus kaks esimest näitavad aastat, kolm järgmist jälitusasutuse koodi ning viis viimast jälitustoimiku järjekorra numbrit. Jälitustoimikutel võib kasutada tingnimetusi. 2 (2) Jälitusasutuste koodid on järgmised: 1 1) Kaitsepolitseiamet – 100; 2 2) Politsei- ja Piirivalveamet – 200; 3 3) Maksu- ja Tolliamet – 300; 4 4) Sõjaväepolitsei – 400; 5 5) Justiitsministeeriumi vanglate osakond ja vangla – 500. 3 (3) Jälitusasutuse juht võib oma käskkirjaga kinnitada lõikes 2 nimetatud jälitusasutuse koodi kahe viimase numbri jaotuse oma struktuuriüksuste vahel. 4 (4) Jälitustoimikud registreeritakse ning nende üle peetakse arvestust jälitusasutuse juhi kehtestatud korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -179,7 +308,80 @@
         {
           "@id": "estleg:Institution_justiitsministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009355_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_3_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Jälitustoimiku number koosneb 10-kohalisest numbrist, kus kaks esimest näitavad aastat, kolm järgmist jälitusasutuse koodi ning viis viimast jälitustoimiku järjekorra numbrit. Jälitustoimikutel võib kasutada tingnimetusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Jälitusasutuste koodid on järgmised: 1) Kaitsepolitseiamet – 100; 2) Politsei- ja Piirivalveamet – 200; 3) Maksu- ja Tolliamet – 300; 4) Sõjaväepolitsei – 400; 5) Justiitsministeeriumi vanglate osakond ja vangla – 500.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Jälitusasutuse juht võib oma käskkirjaga kinnitada lõikes 2 nimetatud jälitusasutuse koodi kahe viimase numbri jaotuse oma struktuuriüksuste vahel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Jälitustoimikud registreeritakse ning nende üle peetakse arvestust jälitusasutuse juhi kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
     },
     {
       "@id": "estleg:Reg_1009355_Par_4",
@@ -188,17 +390,62 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Jälitustoimiku sulgemine",
+      "rdfs:label": {
+        "@value": "§ 4. Jälitustoimiku sulgemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009355_Map"
       },
-      "estleg:summary": "1 (1) Jälitustoimik suletakse kriminaalmenetluse seadustiku § 1262 lõike 1 punktides 1–4 nimetatud aluse äralangemise korral. Jälitustoimik suletakse kriminaalmenetluse seadustiku § 1262 lõike 1 punktides 1–4 nimetatud aluse äralangemise korral. 2 (2) Jälitustoimiku sulgemine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1 1) jälitustoimiku sulgemise kuupäev; 2 2) paragrahvi 2 lõikes 2 loetletud andmed; 3 3) jälitustoimiku sulgemise alus. Jälitustoimiku sulgemine vormistatak",
-      "estleg:legalText": "1 (1) Jälitustoimik suletakse kriminaalmenetluse seadustiku § 1262 lõike 1 punktides 1–4 nimetatud aluse äralangemise korral. Jälitustoimik suletakse kriminaalmenetluse seadustiku § 1262 lõike 1 punktides 1–4 nimetatud aluse äralangemise korral. 2 (2) Jälitustoimiku sulgemine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1 1) jälitustoimiku sulgemise kuupäev; 2 2) paragrahvi 2 lõikes 2 loetletud andmed; 3 3) jälitustoimiku sulgemise alus. Jälitustoimiku sulgemine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: jälitustoimiku sulgemise kuupäev; paragrahvi 2 lõikes 2 loetletud andmed; jälitustoimiku sulgemise alus.",
+      "estleg:summary": {
+        "@value": "1 (1) Jälitustoimik suletakse kriminaalmenetluse seadustiku § 1262 lõike 1 punktides 1–4 nimetatud aluse äralangemise korral. 2 (2) Jälitustoimiku sulgemine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1 1) jälitustoimiku sulgemise kuupäev; 2 2) paragrahvi 2 lõikes 2 loetletud andmed; 3 3) jälitustoimiku sulgemise alus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Jälitustoimik suletakse kriminaalmenetluse seadustiku § 1262 lõike 1 punktides 1–4 nimetatud aluse äralangemise korral. 2 (2) Jälitustoimiku sulgemine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1 1) jälitustoimiku sulgemise kuupäev; 2 2) paragrahvi 2 lõikes 2 loetletud andmed; 3 3) jälitustoimiku sulgemise alus.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1009355_Par_4_v1009355"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009355_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_4_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Jälitustoimik suletakse kriminaalmenetluse seadustiku § 126² lõike 1 punktides 1–4 nimetatud aluse äralangemise korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Jälitustoimiku sulgemine vormistatakse kirjalikult, märkides ära vähemalt järgmised andmed: 1) jälitustoimiku sulgemise kuupäev; 2) paragrahvi 2 lõikes 2 loetletud andmed; 3) jälitustoimiku sulgemise alus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -208,18 +455,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Jälitusteabe üleandmine",
+      "rdfs:label": {
+        "@value": "§ 5. Jälitusteabe üleandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009355_Map"
       },
-      "estleg:summary": "1 (1) Jälitustoimingu käigus saadud teave, mis ei ole jälitustoimingu teinud jälitusasutusele vajalik, kuid mis sisaldab informatsiooni ettevalmistatava või toimepandud kuriteo või kuritegevuse infrastruktuuri kohta, edastatakse prokuratuuriga kooskõlastatult pädevale jälitusasutusele või uurimisasutusele. Teabe edastamise saatekirja koopia säilitatakse jälitustoimikus. Jälitustoimingu käigus saadud teave, mis ei ole jälitustoimingu teinud jälitusasutusele vajalik, kuid mis sisaldab informatsioo",
-      "estleg:legalText": "1 (1) Jälitustoimingu käigus saadud teave, mis ei ole jälitustoimingu teinud jälitusasutusele vajalik, kuid mis sisaldab informatsiooni ettevalmistatava või toimepandud kuriteo või kuritegevuse infrastruktuuri kohta, edastatakse prokuratuuriga kooskõlastatult pädevale jälitusasutusele või uurimisasutusele. Teabe edastamise saatekirja koopia säilitatakse jälitustoimikus. Jälitustoimingu käigus saadud teave, mis ei ole jälitustoimingu teinud jälitusasutusele vajalik, kuid mis sisaldab informatsiooni ettevalmistatava või toimepandud kuriteo või kuritegevuse infrastruktuuri kohta, edastatakse prokuratuuriga kooskõlastatult pädevale jälitusasutusele või uurimisasutusele. Teabe edastamise saatekirja koopia säilitatakse jälitustoimikus. 2 (2) Lõikes 1 nimetatud teabe saanud jälitusasutus avab vajaduse korral jälitustoimiku, kui saadud jälitusteave sisaldab selleks piisavalt andmeid. Lõikes 1 nimetatud teabe saanud jälitusasutus avab vajaduse korral jälitustoimiku, kui saadud jälitusteave sisaldab selleks piisavalt andmeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Jälitustoimingu käigus saadud teave, mis ei ole jälitustoimingu teinud jälitusasutusele vajalik, kuid mis sisaldab informatsiooni ettevalmistatava või toimepandud kuriteo või kuritegevuse infrastruktuuri kohta, edastatakse prokuratuuriga kooskõlastatult pädevale jälitusasutusele või uurimisasutusele. Teabe edastamise saatekirja koopia säilitatakse jälitustoimikus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Jälitustoimingu käigus saadud teave, mis ei ole jälitustoimingu teinud jälitusasutusele vajalik, kuid mis sisaldab informatsiooni ettevalmistatava või toimepandud kuriteo või kuritegevuse infrastruktuuri kohta, edastatakse prokuratuuriga kooskõlastatult pädevale jälitusasutusele või uurimisasutusele. Teabe edastamise saatekirja koopia säilitatakse jälitustoimikus. 2 (2) Lõikes 1 nimetatud teabe saanud jälitusasutus avab vajaduse korral jälitustoimiku, kui saadud jälitusteave sisaldab selleks piisavalt andmeid.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1009355_Par_5_v1009355"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009355_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_5_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Jälitustoimingu käigus saadud teave, mis ei ole jälitustoimingu teinud jälitusasutusele vajalik, kuid mis sisaldab informatsiooni ettevalmistatava või toimepandud kuriteo või kuritegevuse infrastruktuuri kohta, edastatakse prokuratuuriga kooskõlastatult pädevale jälitusasutusele või uurimisasutusele. Teabe edastamise saatekirja koopia säilitatakse jälitustoimikus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõikes 1 nimetatud teabe saanud jälitusasutus avab vajaduse korral jälitustoimiku, kui saadud jälitusteave sisaldab selleks piisavalt andmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
     },
     {
       "@id": "estleg:Reg_1009355_Par_6",
@@ -228,13 +515,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Asjaajamine jälitustoimingu dokumentidega",
+      "rdfs:label": {
+        "@value": "§ 6. Asjaajamine jälitustoimingu dokumentidega",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009355_Map"
       },
-      "estleg:summary": "1 (1) Jälitustoimikut ja selles sisalduvat teavet käideldakse vastavalt jälitusasutuse juhi kehtestatud korrale. Jälitustoimikut ja selles sisalduvat teavet käideldakse vastavalt jälitusasutuse juhi kehtestatud korrale. 2 (2) Riigisaladust või salastatud välisteavet sisaldavat jälitustoimikut käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele. Riigisaladust või salastatud välisteavet sisaldavat jälitustoimikut käideldakse ja see märgistatakse vastavalt ri",
-      "estleg:legalText": "1 (1) Jälitustoimikut ja selles sisalduvat teavet käideldakse vastavalt jälitusasutuse juhi kehtestatud korrale. Jälitustoimikut ja selles sisalduvat teavet käideldakse vastavalt jälitusasutuse juhi kehtestatud korrale. 2 (2) Riigisaladust või salastatud välisteavet sisaldavat jälitustoimikut käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele. Riigisaladust või salastatud välisteavet sisaldavat jälitustoimikut käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
+      "estleg:summary": {
+        "@value": "1 (1) Jälitustoimikut ja selles sisalduvat teavet käideldakse vastavalt jälitusasutuse juhi kehtestatud korrale. 2 (2) Riigisaladust või salastatud välisteavet sisaldavat jälitustoimikut käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Jälitustoimikut ja selles sisalduvat teavet käideldakse vastavalt jälitusasutuse juhi kehtestatud korrale. 2 (2) Riigisaladust või salastatud välisteavet sisaldavat jälitustoimikut käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1011219_Par_5"
@@ -244,7 +537,41 @@
         {
           "@id": "estleg:Reg_1009355_Par_6_v1009355"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009355_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_6_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Jälitustoimikut ja selles sisalduvat teavet käideldakse vastavalt jälitusasutuse juhi kehtestatud korrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigisaladust või salastatud välisteavet sisaldavat jälitustoimikut käideldakse ja see märgistatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:Reg_1009355_Par_7",
@@ -253,13 +580,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Jälitustoimiku säilitamine",
+      "rdfs:label": {
+        "@value": "§ 7. Jälitustoimiku säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Jälitustoimiku pidamise ja säilitamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1009355_Map"
       },
-      "estleg:summary": "1 (1) Jälitustoimiku säilitamisel on jälitusasutus kohustatud kasutusele võtma organisatsioonilised, füüsilised ja infotehnilised turvameetmed, et tagada jälitustoimiku ja selles sisalduvate andmete terviklus ja muutmata kujul säilimine. Jälitustoimiku säilitamisel on jälitusasutus kohustatud kasutusele võtma organisatsioonilised, füüsilised ja infotehnilised turvameetmed, et tagada jälitustoimiku ja selles sisalduvate andmete terviklus ja muutmata kujul säilimine. 2 (2) Riigisaladust ja salasta",
-      "estleg:legalText": "1 (1) Jälitustoimiku säilitamisel on jälitusasutus kohustatud kasutusele võtma organisatsioonilised, füüsilised ja infotehnilised turvameetmed, et tagada jälitustoimiku ja selles sisalduvate andmete terviklus ja muutmata kujul säilimine. Jälitustoimiku säilitamisel on jälitusasutus kohustatud kasutusele võtma organisatsioonilised, füüsilised ja infotehnilised turvameetmed, et tagada jälitustoimiku ja selles sisalduvate andmete terviklus ja muutmata kujul säilimine. 2 (2) Riigisaladust ja salastatud välisteavet sisaldavaid jälitustoimikuid säilitatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele. Riigisaladust ja salastatud välisteavet sisaldavaid jälitustoimikuid säilitatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele. 3 (3) Jälitustoimingu käigus tehtud teabetalletuse, mida ei ole lisatud kriminaaltoimikusse ja mida ei ole vaja säilitada, võib isiku, keda on jälitustoimingu tegemisest teavitatud, taotlusel pärast jälitustoimiku sulgemist hävitada. Jälitustoimingu käigus tehtud teabetalletuse, mida ei ole lisatud kriminaaltoimikusse ja mida ei ole vaja säilitada, võib isiku, keda on jälitustoimingu tegemisest teavitatud, taotlusel pärast jälitustoimiku sulgemist hävitada. 4 (4) Esemeid, mida ei saa säilitada jälitustoimikus, hoitakse jälitusasutuse asitõendite hoidla või arhiivi selleks ettenähtud osas või selleks spetsiaalselt kohandatud ruumis. Esemete hoiustamise korra kehtestab jälitusasutuse juht. Esemeid, mida ei saa säilitada jälitustoimikus, hoitakse jälitusasutuse asitõendite hoidla või arhiivi selleks ettenähtud osas või selleks spetsiaalselt kohandatud ruumis. Esemete hoiustamise korra kehtestab jälitusasutuse juht. 5 (5) Jälitustoimingu käigus tehtud fotot, filmi, heli- või videosalvestist või muud teabetalletust või selle osa säilitatakse teabekandjal jälitustoimikus, jälitusasutuse salastatud teabe elektroonilises töötlussüsteemis või jälitusasutuses selleks spetsiaalselt kohandatud ruumis. Jälitustoimingu käigus tehtud fotot, filmi, heli- või videosalvestist või muud teabetalletust või selle osa säilitatakse teabekandjal jälitustoimikus, jälitusasutuse salastatud teabe elektroonilises töötlussüsteemis või jälitusasutuses selleks spetsiaalselt kohandatud ruumis.",
+      "estleg:summary": {
+        "@value": "1 (1) Jälitustoimiku säilitamisel on jälitusasutus kohustatud kasutusele võtma organisatsioonilised, füüsilised ja infotehnilised turvameetmed, et tagada jälitustoimiku ja selles sisalduvate andmete terviklus ja muutmata kujul säilimine. 2 (2) Riigisaladust ja salastatud välisteavet sisaldavaid jälitustoimikuid säilitatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Jälitustoimiku säilitamisel on jälitusasutus kohustatud kasutusele võtma organisatsioonilised, füüsilised ja infotehnilised turvameetmed, et tagada jälitustoimiku ja selles sisalduvate andmete terviklus ja muutmata kujul säilimine. 2 (2) Riigisaladust ja salastatud välisteavet sisaldavaid jälitustoimikuid säilitatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele. 3 (3) Jälitustoimingu käigus tehtud teabetalletuse, mida ei ole lisatud kriminaaltoimikusse ja mida ei ole vaja säilitada, võib isiku, keda on jälitustoimingu tegemisest teavitatud, taotlusel pärast jälitustoimiku sulgemist hävitada. 4 (4) Esemeid, mida ei saa säilitada jälitustoimikus, hoitakse jälitusasutuse asitõendite hoidla või arhiivi selleks ettenähtud osas või selleks spetsiaalselt kohandatud ruumis. Esemete hoiustamise korra kehtestab jälitusasutuse juht. 5 (5) Jälitustoimingu käigus tehtud fotot, filmi, heli- või videosalvestist või muud teabetalletust või selle osa säilitatakse teabekandjal jälitustoimikus, jälitusasutuse salastatud teabe elektroonilises töötlussüsteemis või jälitusasutuses selleks spetsiaalselt kohandatud ruumis.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -272,6 +605,23 @@
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1009355_Par_7_v1009355"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1009355_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1009355_Par_7_Lg_5"
         }
       ]
     },
@@ -321,6 +671,71 @@
         "@id": "estleg:KRIMIN_2_Par_126"
       },
       "estleg:citationText": "Määrus kehtestatakse kriminaalmenetluse seadustiku § 126"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Jälitustoimiku säilitamisel on jälitusasutus kohustatud kasutusele võtma organisatsioonilised, füüsilised ja infotehnilised turvameetmed, et tagada jälitustoimiku ja selles sisalduvate andmete terviklus ja muutmata kujul säilimine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigisaladust ja salastatud välisteavet sisaldavaid jälitustoimikuid säilitatakse vastavalt riigisaladuse ja salastatud välisteabe seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Jälitustoimingu käigus tehtud teabetalletuse, mida ei ole lisatud kriminaaltoimikusse ja mida ei ole vaja säilitada, võib isiku, keda on jälitustoimingu tegemisest teavitatud, taotlusel pärast jälitustoimiku sulgemist hävitada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Esemeid, mida ei saa säilitada jälitustoimikus, hoitakse jälitusasutuse asitõendite hoidla või arhiivi selleks ettenähtud osas või selleks spetsiaalselt kohandatud ruumis. Esemete hoiustamise korra kehtestab jälitusasutuse juht.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1009355_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Jälitustoimingu käigus tehtud fotot, filmi, heli- või videosalvestist või muud teabetalletust või selle osa säilitatakse teabekandjal jälitustoimikus, jälitusasutuse salastatud teabe elektroonilises töötlussüsteemis või jälitusasutuses selleks spetsiaalselt kohandatud ruumis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1009355_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
     }
   ]
 }

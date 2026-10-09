@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Laevapere liikmete Eestisse lubamise kord (määrus)",
+      "rdfs:label": {
+        "@value": "Laevapere liikmete Eestisse lubamise kord (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Laevapere liikmete Eestisse lubamise kord",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "155475",
       "estleg:preambleText": "Määrus kehtestatakse « Riigipiiri seaduse » § 14 lõike 2 punkti 4 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2002-09-01",
+        "@value": "2017-01-01",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2016-11-03",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2016-11-08",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_155475_69f37c6797"
@@ -91,7 +93,13 @@
         {
           "@id": "http://eurovoc.europa.eu/523"
         }
-      ]
+      ],
+      "dcterms:title": "Laevapere liikmete Eestisse lubamise kord",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_155475_Par_1",
@@ -100,13 +108,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Laevapere liikme Eestisse lubamine",
+      "rdfs:label": {
+        "@value": "§ 1. Laevapere liikme Eestisse lubamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laevapere liikmete Eestisse lubamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155475_Map"
       },
-      "estleg:summary": "1 (1) Laevapere liige lubatakse Eestisse välismaalaste seaduses sätestatud alustel. Laevapere liige lubatakse Eestisse välismaalaste seaduses sätestatud alustel. 2 (2) Laevapere liige lubatakse laeva Eesti sadamas viibimise ajal sadama või sadamaga piirneva maakonna territooriumile rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi alusel. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liige lubatakse laeva Eesti sadamas viibimise ajal sadama või sadamaga piirneva maakon",
-      "estleg:legalText": "1 (1) Laevapere liige lubatakse Eestisse välismaalaste seaduses sätestatud alustel. Laevapere liige lubatakse Eestisse välismaalaste seaduses sätestatud alustel. 2 (2) Laevapere liige lubatakse laeva Eesti sadamas viibimise ajal sadama või sadamaga piirneva maakonna territooriumile rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi alusel. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liige lubatakse laeva Eesti sadamas viibimise ajal sadama või sadamaga piirneva maakonna territooriumile rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi alusel.",
+      "estleg:summary": {
+        "@value": "1 (1) Laevapere liige lubatakse Eestisse välismaalaste seaduses sätestatud alustel. 2 (2) Laevapere liige lubatakse laeva Eesti sadamas viibimise ajal sadama või sadamaga piirneva maakonna territooriumile rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi alusel. RT I 2016-11-08 7 108112016007 2017-01-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Laevapere liige lubatakse Eestisse välismaalaste seaduses sätestatud alustel. 2 (2) Laevapere liige lubatakse laeva Eesti sadamas viibimise ajal sadama või sadamaga piirneva maakonna territooriumile rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi alusel. RT I 2016-11-08 7 108112016007 2017-01-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -120,7 +134,41 @@
         {
           "@id": "estleg:Reg_155475_Par_1_v155475"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155475_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_1_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laevapere liige lubatakse Eestisse välismaalaste seaduses sätestatud alustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Laevapere liige lubatakse laeva Eesti sadamas viibimise ajal sadama või sadamaga piirneva maakonna territooriumile rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:Reg_155475_Par_2",
@@ -129,13 +177,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Laevapere liikme transiitreisijana Eestisse lubamine",
+      "rdfs:label": {
+        "@value": "§ 2. Laevapere liikme transiitreisijana Eestisse lubamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laevapere liikmete Eestisse lubamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155475_Map"
       },
-      "estleg:summary": "1 (1) Laevapere liikme võib transiidiks vajalikuks ajaks Eestisse lubada, kui Eestisse saabumise eesmärk on Eesti sadamas asuval laeval laevapere liikmena töötamise alustamine või töötamise lõpetamine, tööle asumine teisele Eesti sadamas asuvale laevale, välislepingus ettenähtud juhtudel siirdumine laevale teises riigis või päritoluriiki tagasipöördumine. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liikme võib transiidiks vajalikuks ajaks Eestisse lubada, kui Eestisse saabumise eesmärk o",
-      "estleg:legalText": "1 (1) Laevapere liikme võib transiidiks vajalikuks ajaks Eestisse lubada, kui Eestisse saabumise eesmärk on Eesti sadamas asuval laeval laevapere liikmena töötamise alustamine või töötamise lõpetamine, tööle asumine teisele Eesti sadamas asuvale laevale, välislepingus ettenähtud juhtudel siirdumine laevale teises riigis või päritoluriiki tagasipöördumine. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liikme võib transiidiks vajalikuks ajaks Eestisse lubada, kui Eestisse saabumise eesmärk on Eesti sadamas asuval laeval laevapere liikmena töötamise alustamine või töötamise lõpetamine, tööle asumine teisele Eesti sadamas asuvale laevale, välislepingus ettenähtud juhtudel siirdumine laevale teises riigis või päritoluriiki tagasipöördumine. 2 (2) Laevapere liige lubatakse Eestisse rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi ning viisa alusel. Viisat ei vaja laevapere liige, kellele on meremehe isikut tõendava dokumendi väljastanud riik, kes on ühinenud Rahvusvahelise Tööorganisatsiooni konventsiooniga meremeeste riiklike isikut tõendavate dokumentide kohta (ILO 108 või ILO 185), või kes on sellise välisriigi kodanik, kellega on sõlmitud leping viisavaba liikumise kohta või kelle puhul on Eesti ühepoolselt viisanõudest loobunud, või kellel on muu välismaalaste seadusest tulenev seaduslik alus Eestis viibida. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liige lubatakse Eestisse rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi ning viisa alusel. Viisat ei vaja laevapere liige, kellele on meremehe isikut tõendava dokumendi väljastanud riik, kes on ühinenud Rahvusvahelise Tööorganisatsiooni konventsiooniga meremeeste riiklike isikut tõendavate dokumentide kohta (ILO 108 või ILO 185), või kes on sellise välisriigi kodanik, kellega on sõlmitud leping viisavaba liikumise kohta või kelle puhul on Eesti ühepoolselt viisanõudest loobunud, või kellel on muu välismaalaste seadusest tulenev seaduslik alus Eestis viibida. 2 (2¹) Lõike 2 teises lauses nimetatud isikule väljastatakse transiidiks vajalikuks ajaks viisa, kui see on vajalik teiste Schengeni konventsiooni liikmesriikide territooriumi läbimiseks. RT I 2016-11-08 7 108112016007 2017-01-01 Lõike 2 teises lauses nimetatud isikule väljastatakse transiidiks vajalikuks ajaks viisa, kui see on vajalik teiste Schengeni konventsiooni liikmesriikide territooriumi läbimiseks. 3 (3) Lõikes 1 nimetatud laevapere liige peab tõendama enda või peab laeva kapten või laevaagent tõendama nimetatud isiku asjaolusid Eestisse sisenemiseks. RT I 2016-11-08 7 108112016007 2017-01-01 Lõikes 1 nimetatud laevapere liige peab tõendama enda või peab laeva kapten või laevaagent tõendama nimetatud isiku asjaolusid Eestisse sisenemiseks. 4 (4) Lõikes 3 nimetatud laevapere liige peab Eestisse saabumisel politseiametniku nõudmisel tõendama, et tal on Eestis viibimise ja Eestist lahkumise kulude kandmiseks piisavalt rahalisi vahendeid. Piisavateks rahalisteks vahenditeks iga Eestis viibida lubatud päeva kohta loetakse 0,2-kordne Vabariigi Valitsuse kehtestatud kuupalga alammäär. RT I 2010 32 159 13324924 2010-06-18 Lõikes 3 nimetatud laevapere liige peab Eestisse saabumisel politseiametniku nõudmisel tõendama, et tal on Eestis viibimise ja Eestist lahkumise kulude kandmiseks piisavalt rahalisi vahendeid. Piisavateks rahalisteks vahenditeks iga Eestis viibida lubatud päeva kohta loetakse 0,2-kordne Vabariigi Valitsuse kehtestatud kuupalga alammäär.",
+      "estleg:summary": {
+        "@value": "1 (1) Laevapere liikme võib transiidiks vajalikuks ajaks Eestisse lubada, kui Eestisse saabumise eesmärk on Eesti sadamas asuval laeval laevapere liikmena töötamise alustamine või töötamise lõpetamine, tööle asumine teisele Eesti sadamas asuvale laevale, välislepingus ettenähtud juhtudel siirdumine laevale teises riigis või päritoluriiki tagasipöördumine.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Laevapere liikme võib transiidiks vajalikuks ajaks Eestisse lubada, kui Eestisse saabumise eesmärk on Eesti sadamas asuval laeval laevapere liikmena töötamise alustamine või töötamise lõpetamine, tööle asumine teisele Eesti sadamas asuvale laevale, välislepingus ettenähtud juhtudel siirdumine laevale teises riigis või päritoluriiki tagasipöördumine. RT I 2016-11-08 7 108112016007 2017-01-01 2 (2) Laevapere liige lubatakse Eestisse rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi ning viisa alusel. Viisat ei vaja laevapere liige, kellele on meremehe isikut tõendava dokumendi väljastanud riik, kes on ühinenud Rahvusvahelise Tööorganisatsiooni konventsiooniga meremeeste riiklike isikut tõendavate dokumentide kohta (ILO 108 või ILO 185), või kes on sellise välisriigi kodanik, kellega on sõlmitud leping viisavaba liikumise kohta või kelle puhul on Eesti ühepoolselt viisanõudest loobunud, või kellel on muu välismaalaste seadusest tulenev seaduslik alus Eestis viibida. RT I 2016-11-08 7 108112016007 2017-01-01 2 (2<sup>1</sup>) Lõike 2 teises lauses nimetatud isikule väljastatakse transiidiks vajalikuks ajaks viisa, kui see on vajalik teiste Schengeni konventsiooni liikmesriikide territooriumi läbimiseks. RT I 2016-11-08 7 108112016007 2017-01-01 3 (3) Lõikes 1 nimetatud laevapere liige peab tõendama enda või peab laeva kapten või laevaagent tõendama nimetatud isiku asjaolusid Eestisse sisenemiseks. RT I 2016-11-08 7 108112016007 2017-01-01 4 (4) Lõikes 3 nimetatud laevapere liige peab Eestisse saabumisel politseiametniku nõudmisel tõendama, et tal on Eestis viibimise ja Eestist lahkumise kulude kandmiseks piisavalt rahalisi vahendeid. Piisavateks rahalisteks vahenditeks iga Eestis viibida lubatud päeva kohta loetakse 0,2-kordne Vabariigi Valitsuse kehtestatud kuupalga alammäär. RT I 2010 32 159 13324924 2010-06-18",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -160,7 +214,89 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155475_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_2_Lg_2_1"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_2_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laevapere liikme võib transiidiks vajalikuks ajaks Eestisse lubada, kui Eestisse saabumise eesmärk on Eesti sadamas asuval laeval laevapere liikmena töötamise alustamine või töötamise lõpetamine, tööle asumine teisele Eesti sadamas asuvale laevale, välislepingus ettenähtud juhtudel siirdumine laevale teises riigis või päritoluriiki tagasipöördumine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Laevapere liige lubatakse Eestisse rahvusvahelistele nõuetele vastava ja Eesti tunnustatud reisidokumendi ning viisa alusel. Viisat ei vaja laevapere liige, kellele on meremehe isikut tõendava dokumendi väljastanud riik, kes on ühinenud Rahvusvahelise Tööorganisatsiooni konventsiooniga meremeeste riiklike isikut tõendavate dokumentide kohta (ILO 108 või ILO 185), või kes on sellise välisriigi kodanik, kellega on sõlmitud leping viisavaba liikumise kohta või kelle puhul on Eesti ühepoolselt viisanõudest loobunud, või kellel on muu välismaalaste seadusest tulenev seaduslik alus Eestis viibida.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_2_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2¹",
+      "estleg:legalText": "(2¹) Lõike 2 teises lauses nimetatud isikule väljastatakse transiidiks vajalikuks ajaks viisa, kui see on vajalik teiste Schengeni konventsiooni liikmesriikide territooriumi läbimiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2¹"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lõikes 1 nimetatud laevapere liige peab tõendama enda või peab laeva kapten või laevaagent tõendama nimetatud isiku asjaolusid Eestisse sisenemiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lõikes 3 nimetatud laevapere liige peab Eestisse saabumisel politseiametniku nõudmisel tõendama, et tal on Eestis viibimise ja Eestist lahkumise kulude kandmiseks piisavalt rahalisi vahendeid. Piisavateks rahalisteks vahenditeks iga Eestis viibida lubatud päeva kohta loetakse 0,2-kordne Vabariigi Valitsuse kehtestatud kuupalga alammäär.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:Reg_155475_Par_3",
@@ -169,13 +305,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Laevapere haige või vigastatud liikme Eestisse lubamine",
+      "rdfs:label": {
+        "@value": "§ 3. Laevapere haige või vigastatud liikme Eestisse lubamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laevapere liikmete Eestisse lubamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155475_Map"
       },
-      "estleg:summary": "1 (1) Laeva kapten teavitab Politsei- ja Piirivalveameti Pääste- ja Koordinatsioonikeskust laevapere haige või vigastatud liikme Eesti meditsiiniasutusse paigutamise või temale esmaabi andmise vajadusest, kirjeldades üksikasjalikult selle isiku seisundit. RT I 2010 32 159 13324924 2010-06-18 Laeva kapten teavitab Politsei- ja Piirivalveameti Pääste- ja Koordinatsioonikeskust laevapere haige või vigastatud liikme Eesti meditsiiniasutusse paigutamise või temale esmaabi andmise vajadusest, kirjelda",
-      "estleg:legalText": "1 (1) Laeva kapten teavitab Politsei- ja Piirivalveameti Pääste- ja Koordinatsioonikeskust laevapere haige või vigastatud liikme Eesti meditsiiniasutusse paigutamise või temale esmaabi andmise vajadusest, kirjeldades üksikasjalikult selle isiku seisundit. RT I 2010 32 159 13324924 2010-06-18 Laeva kapten teavitab Politsei- ja Piirivalveameti Pääste- ja Koordinatsioonikeskust laevapere haige või vigastatud liikme Eesti meditsiiniasutusse paigutamise või temale esmaabi andmise vajadusest, kirjeldades üksikasjalikult selle isiku seisundit. 2 (2) Laevapere haige või vigastatud liige lubatakse Eestisse §-s 2 sätestatud alustel, arvestades käesolevas paragrahvis toodud erisusi. Laevapere haige või vigastatud liige lubatakse Eestisse §-s 2 sätestatud alustel, arvestades käesolevas paragrahvis toodud erisusi. 3 (3) Laevapere liikme, kelle terviseseisund nõuab viivitamatut esmaabi andmist, piirikontroll teostatakse pärast esmaabi andmist. Kui laevapere haige või vigastatud liige ei ole ise võimeline nõutud dokumente esitama, esitab need tema eest laeva kapten või laevaagent. RT I 2004 31 216 744594 2004-05-01 Laevapere liikme, kelle terviseseisund nõuab viivitamatut esmaabi andmist, piirikontroll teostatakse pärast esmaabi andmist. Kui laevapere haige või vigastatud liige ei ole ise võimeline nõutud dokumente esitama, esitab need tema eest laeva kapten või laevaagent. 4 (4) Laevapere liikmel peab olema kindlustusleping, mis tagab tema haigusest või vigastusest tingitud ravikulude tasumise, selle puudumisel laeva kapteni või laevaagendi väljastatud garantiikiri, mis tagab laevapere liikme ravikulude tasumise ja päritoluriiki või tagasi laevale transportimise kulude kandmise. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liikmel peab olema kindlustusleping, mis tagab tema haigusest või vigastusest tingitud ravikulude tasumise, selle puudumisel laeva kapteni või laevaagendi väljastatud garantiikiri, mis tagab laevapere liikme ravikulude tasumise ja päritoluriiki või tagasi laevale transportimise kulude kandmise.",
+      "estleg:summary": {
+        "@value": "1 (1) Laeva kapten teavitab Politsei- ja Piirivalveameti Pääste- ja Koordinatsioonikeskust laevapere haige või vigastatud liikme Eesti meditsiiniasutusse paigutamise või temale esmaabi andmise vajadusest, kirjeldades üksikasjalikult selle isiku seisundit. RT I 2010 32 159 13324924 2010-06-18 2 (2) Laevapere haige või vigastatud liige lubatakse Eestisse §-s 2 sätestatud alustel, arvestades käesolevas paragrahvis toodud erisusi.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Laeva kapten teavitab Politsei- ja Piirivalveameti Pääste- ja Koordinatsioonikeskust laevapere haige või vigastatud liikme Eesti meditsiiniasutusse paigutamise või temale esmaabi andmise vajadusest, kirjeldades üksikasjalikult selle isiku seisundit. RT I 2010 32 159 13324924 2010-06-18 2 (2) Laevapere haige või vigastatud liige lubatakse Eestisse §-s 2 sätestatud alustel, arvestades käesolevas paragrahvis toodud erisusi. 3 (3) Laevapere liikme, kelle terviseseisund nõuab viivitamatut esmaabi andmist, piirikontroll teostatakse pärast esmaabi andmist. Kui laevapere haige või vigastatud liige ei ole ise võimeline nõutud dokumente esitama, esitab need tema eest laeva kapten või laevaagent. RT I 2004 31 216 744594 2004-05-01 4 (4) Laevapere liikmel peab olema kindlustusleping, mis tagab tema haigusest või vigastusest tingitud ravikulude tasumise, selle puudumisel laeva kapteni või laevaagendi väljastatud garantiikiri, mis tagab laevapere liikme ravikulude tasumise ja päritoluriiki või tagasi laevale transportimise kulude kandmise. RT I 2016-11-08 7 108112016007 2017-01-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -197,7 +339,73 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155475_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_3_Lg_4"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laeva kapten teavitab Politsei- ja Piirivalveameti Pääste- ja Koordinatsioonikeskust laevapere haige või vigastatud liikme Eesti meditsiiniasutusse paigutamise või temale esmaabi andmise vajadusest, kirjeldades üksikasjalikult selle isiku seisundit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Laevapere haige või vigastatud liige lubatakse Eestisse §-s 2 sätestatud alustel, arvestades käesolevas paragrahvis toodud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Laevapere liikme, kelle terviseseisund nõuab viivitamatut esmaabi andmist, piirikontroll teostatakse pärast esmaabi andmist. Kui laevapere haige või vigastatud liige ei ole ise võimeline nõutud dokumente esitama, esitab need tema eest laeva kapten või laevaagent.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Laevapere liikmel peab olema kindlustusleping, mis tagab tema haigusest või vigastusest tingitud ravikulude tasumise, selle puudumisel laeva kapteni või laevaagendi väljastatud garantiikiri, mis tagab laevapere liikme ravikulude tasumise ja päritoluriiki või tagasi laevale transportimise kulude kandmise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
     },
     {
       "@id": "estleg:Reg_155475_Par_4",
@@ -206,13 +414,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Piirikontroll",
+      "rdfs:label": {
+        "@value": "§ 4. Piirikontroll",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laevapere liikmete Eestisse lubamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155475_Map"
       },
-      "estleg:summary": "1 (1) Laevapere liikme piirikontroll toimub piiripunktis, laeval, laevatrapi juures või muus selleks ettenähtud kohas. Kui laeval ei ole võimalik sadamas silduda, võib laeva piirikontroll toimuda sisemerel Politsei- ja Piirivalveametiga kooskõlastatud kohas ja ajal. Laevapere liige lubatakse Eestisse, kui laeva saabumisega seotud formaalsused on täidetud. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liikme piirikontroll toimub piiripunktis, laeval, laevatrapi juures või muus selleks etten",
-      "estleg:legalText": "1 (1) Laevapere liikme piirikontroll toimub piiripunktis, laeval, laevatrapi juures või muus selleks ettenähtud kohas. Kui laeval ei ole võimalik sadamas silduda, võib laeva piirikontroll toimuda sisemerel Politsei- ja Piirivalveametiga kooskõlastatud kohas ja ajal. Laevapere liige lubatakse Eestisse, kui laeva saabumisega seotud formaalsused on täidetud. RT I 2016-11-08 7 108112016007 2017-01-01 Laevapere liikme piirikontroll toimub piiripunktis, laeval, laevatrapi juures või muus selleks ettenähtud kohas. Kui laeval ei ole võimalik sadamas silduda, võib laeva piirikontroll toimuda sisemerel Politsei- ja Piirivalveametiga kooskõlastatud kohas ja ajal. Laevapere liige lubatakse Eestisse, kui laeva saabumisega seotud formaalsused on täidetud. 2 (2) Laevapere haige või vigastatud liikme piirikontroll võib toimuda transpordivahendis, millega teda transporditakse Eestisse, või meditsiiniasutuses pärast esmaabi andmist. Laevapere haige või vigastatud liikme piirikontroll võib toimuda transpordivahendis, millega teda transporditakse Eestisse, või meditsiiniasutuses pärast esmaabi andmist.",
+      "estleg:summary": {
+        "@value": "1 (1) Laevapere liikme piirikontroll toimub piiripunktis, laeval, laevatrapi juures või muus selleks ettenähtud kohas. Kui laeval ei ole võimalik sadamas silduda, võib laeva piirikontroll toimuda sisemerel Politsei- ja Piirivalveametiga kooskõlastatud kohas ja ajal. Laevapere liige lubatakse Eestisse, kui laeva saabumisega seotud formaalsused on täidetud.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Laevapere liikme piirikontroll toimub piiripunktis, laeval, laevatrapi juures või muus selleks ettenähtud kohas. Kui laeval ei ole võimalik sadamas silduda, võib laeva piirikontroll toimuda sisemerel Politsei- ja Piirivalveametiga kooskõlastatud kohas ja ajal. Laevapere liige lubatakse Eestisse, kui laeva saabumisega seotud formaalsused on täidetud. RT I 2016-11-08 7 108112016007 2017-01-01 2 (2) Laevapere haige või vigastatud liikme piirikontroll võib toimuda transpordivahendis, millega teda transporditakse Eestisse, või meditsiiniasutuses pärast esmaabi andmist.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -237,7 +451,41 @@
         {
           "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155475_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_155475_Par_4_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Laevapere liikme piirikontroll toimub piiripunktis, laeval, laevatrapi juures või muus selleks ettenähtud kohas. Kui laeval ei ole võimalik sadamas silduda, võib laeva piirikontroll toimuda sisemerel Politsei- ja Piirivalveametiga kooskõlastatud kohas ja ajal. Laevapere liige lubatakse Eestisse, kui laeva saabumisega seotud formaalsused on täidetud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Laevapere haige või vigastatud liikme piirikontroll võib toimuda transpordivahendis, millega teda transporditakse Eestisse, või meditsiiniasutuses pärast esmaabi andmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:Reg_155475_Par_5",
@@ -246,13 +494,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Määruse kohaldamise erisused",
+      "rdfs:label": {
+        "@value": "§ 5. Määruse kohaldamise erisused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laevapere liikmete Eestisse lubamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155475_Map"
       },
-      "estleg:summary": "Määrust ei kohaldata sõjalaevade ja väikelaevade ning laevapere liikme, kes on Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigi või Šveitsi Konföderatsiooni kodanik, suhtes. RT I 2004 31 216 744594 2004-05-01",
-      "estleg:legalText": "Määrust ei kohaldata sõjalaevade ja väikelaevade ning laevapere liikme, kes on Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigi või Šveitsi Konföderatsiooni kodanik, suhtes. RT I 2004 31 216 744594 2004-05-01 Määrust ei kohaldata sõjalaevade ja väikelaevade ning laevapere liikme, kes on Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigi või Šveitsi Konföderatsiooni kodanik, suhtes.",
+      "estleg:summary": {
+        "@value": "Määrust ei kohaldata sõjalaevade ja väikelaevade ning laevapere liikme, kes on Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigi või Šveitsi Konföderatsiooni kodanik, suhtes. RT I 2004 31 216 744594 2004-05-01",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrust ei kohaldata sõjalaevade ja väikelaevade ning laevapere liikme, kes on Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigi või Šveitsi Konföderatsiooni kodanik, suhtes. RT I 2004 31 216 744594 2004-05-01",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -283,7 +537,25 @@
         {
           "@id": "estleg:Reg_155475_Par_5_v155475"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_155475_Par_5_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_155475_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrust ei kohaldata sõjalaevade ja väikelaevade ning laevapere liikme, kes on Euroopa Liidu või Euroopa Majanduspiirkonna liikmesriigi või Šveitsi Konföderatsiooni kodanik, suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_155475_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
     },
     {
       "@id": "estleg:Reg_155475_Par_6",
@@ -292,12 +564,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Muudatused teistes õigusaktides",
+      "rdfs:label": {
+        "@value": "§ 6. Muudatused teistes õigusaktides",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Laevapere liikmete Eestisse lubamise kord",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_155475_Map"
       },
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:summary": {
+        "@value": "[Käesolevast tekstist välja jäetud.]",
+        "@language": "et"
+      },
       "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:hasVersion": [
         {

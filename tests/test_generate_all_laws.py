@@ -79,7 +79,9 @@ def test_law_stub_preserves_no_body_act():
     assert ontology["estleg:contentStatus"] == "noStructuredBody"
     assert "estleg:Act" in ontology["@type"]
     assert "estleg:Law" in ontology["@type"]
-    assert ontology["dcterms:source"]["@id"].endswith("/akt/123.xml")
+    assert ontology["dcterms:source"]["@id"] == "https://www.riigiteataja.ee/akt/123"
+    assert ontology["estleg:sourceXml"]["@id"].endswith("/public-api/api/v1/akt/123/xml")
+    assert ontology["estleg:globalId"] == "123"
 
 
 def test_merge_existing_enrichments_skips_stale_requested_cluster(tmp_path):
@@ -1312,6 +1314,8 @@ class TestStaleOsaReconciledOutsideToGenerate:
                         "@value": tid,
                         "@type": "xsd:string",
                     },
+                    # The redaction _patch_common's search row names (#692).
+                    "estleg:globalId": "1",
                 },
                 {"@id": f"Par_{osa_nr}", "@type": ["owl:NamedIndividual"]},
             ],

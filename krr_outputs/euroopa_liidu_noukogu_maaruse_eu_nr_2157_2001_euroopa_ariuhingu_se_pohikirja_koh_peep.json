@@ -5,45 +5,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
       "@id": "estleg:SEPS_Map",
       "@type": [
         "estleg:Act",
-        "estleg:Law"
+        "estleg:Law",
+        "schema:Legislation"
       ],
-      "rdfs:label": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus teemakaardistus",
+      "rdfs:label": {
+        "@value": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus teemakaardistus",
+        "@language": "et"
+      },
       "dc:source": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
-      "dcterms:title": [
-        {
-          "@value": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
-          "@language": "et"
-        },
-        {
-          "@value": "Council Regulation (EC) No 2157/2001 of 8 October 2001 on the Statute for a European company (SE) Implementation Act",
-          "@language": "en"
-        }
-      ],
+      "dcterms:title": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:contentStatus": "structuredBody",
       "dcterms:source": {
-        "@id": "https://www.riigiteataja.ee/akt/105052022011.xml"
+        "@id": "https://www.riigiteataja.ee/akt/105052022011"
       },
+      "estleg:sourceXml": {
+        "@id": "https://www.riigiteataja.ee/public-api/api/v1/akt/105052022011/xml"
+      },
+      "estleg:globalId": "105052022011",
+      "eli:id_local": "105052022011",
       "estleg:kehtiv": {
-        "@value": "2026-05-24",
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      },
+      "estleg:terviktekstId": "158234",
+      "estleg:skeemiNimi": "tyviseadus_1_10.02.2010.xsd",
+      "estleg:contentHash": "541de61e62ecb636d746299c660e2a14aa0e426be763bc11382e3474b4086cb2",
+      "estleg:issuer": "Riigikogu",
+      "estleg:entryIntoForce": {
+        "@value": "2004-12-10",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2023-02-01",
         "@type": "xsd:date"
       },
       "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
-      },
-      "estleg:lastAmendmentDate": {
-        "@value": "2023-02-01",
-        "@type": "xsd:date"
       },
       "estleg:officialEnglishText": {
         "@id": "https://www.riigiteataja.ee/en/eli/525012023001"
@@ -165,14 +177,40 @@
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
         }
-      ]
+      ],
+      "eli:is_realized_by": {
+        "@id": "https://www.riigiteataja.ee/en/eli/525012023001"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_SEPS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§1–4 ÜLDSÄTTED",
+        "@language": "et"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:SEPS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
       "@id": "estleg:SEPS_TopicScheme",
       "@type": [
         "skos:ConceptScheme"
       ],
-      "rdfs:label": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus teemaskeem",
+      "rdfs:label": {
+        "@value": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus teemaskeem",
+        "@language": "et"
+      },
       "skos:hasTopConcept": [
         {
           "@id": "estleg:Cluster_SEPS_1"
@@ -192,26 +230,15 @@
       ]
     },
     {
-      "@id": "estleg:Cluster_SEPS_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster",
-        "skos:Concept"
-      ],
-      "rdfs:label": "§1–4 ÜLDSÄTTED",
-      "skos:prefLabel": "§1–4 ÜLDSÄTTED",
-      "skos:inScheme": {
-        "@id": "estleg:SEPS_TopicScheme"
-      },
-      "estleg:provisionCount": 4
-    },
-    {
       "@id": "estleg:Chapter_SEPS_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "rdfs:label": {
+        "@value": "1. peatükk – ÜLDSÄTTED",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "1",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
@@ -231,8 +258,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§5–8 SE ASUKOHA MUUTMINE",
-      "skos:prefLabel": "§5–8 SE ASUKOHA MUUTMINE",
+      "rdfs:label": {
+        "@value": "§5–8 SE ASUKOHA MUUTMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§5–8 SE ASUKOHA MUUTMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SEPS_TopicScheme"
       },
@@ -244,7 +277,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "2. peatükk – SE ASUKOHA MUUTMINE",
+      "rdfs:label": {
+        "@value": "2. peatükk – SE ASUKOHA MUUTMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "2",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
@@ -264,12 +300,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "SE ASUTAMINE",
-      "skos:prefLabel": "SE ASUTAMINE",
+      "rdfs:label": {
+        "@value": "SE ASUTAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "SE ASUTAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SEPS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 7
     },
     {
       "@id": "estleg:Division_SEPS_3_1",
@@ -277,7 +319,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – SE asutamine ühinemise teel",
+      "rdfs:label": {
+        "@value": "1. jagu – SE asutamine ühinemise teel",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SEPS_3"
       }
@@ -288,7 +333,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Valdus-SE asutamine",
+      "rdfs:label": {
+        "@value": "2. jagu – Valdus-SE asutamine",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SEPS_3"
       }
@@ -299,7 +347,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "3. jagu – Aktsiaseltsi ümberkujundamine SE-ks",
+      "rdfs:label": {
+        "@value": "3. jagu – Aktsiaseltsi ümberkujundamine SE-ks",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SEPS_3"
       }
@@ -310,7 +361,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "3. peatükk – SE ASUTAMINE",
+      "rdfs:label": {
+        "@value": "3. peatükk – SE ASUTAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "3",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
@@ -341,12 +395,18 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "SE ORGANID",
-      "skos:prefLabel": "SE ORGANID",
+      "rdfs:label": {
+        "@value": "SE ORGANID",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "SE ORGANID",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SEPS_TopicScheme"
       },
-      "estleg:provisionCount": 0
+      "estleg:provisionCount": 13
     },
     {
       "@id": "estleg:Division_SEPS_4_1",
@@ -354,7 +414,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "1. jagu – Kaheastmeline juhtimissüsteem",
+      "rdfs:label": {
+        "@value": "1. jagu – Kaheastmeline juhtimissüsteem",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SEPS_4"
       }
@@ -365,7 +428,10 @@
         "owl:NamedIndividual",
         "estleg:Division"
       ],
-      "rdfs:label": "2. jagu – Üheastmeline juhtimissüsteem",
+      "rdfs:label": {
+        "@value": "2. jagu – Üheastmeline juhtimissüsteem",
+        "@language": "et"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Chapter_SEPS_4"
       }
@@ -376,7 +442,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "4. peatükk – SE ORGANID",
+      "rdfs:label": {
+        "@value": "4. peatükk – SE ORGANID",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "4",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
@@ -404,8 +473,14 @@
         "estleg:TopicCluster",
         "skos:Concept"
       ],
-      "rdfs:label": "§29–29 LÕPETAMINE",
-      "skos:prefLabel": "§29–29 LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "§29–29 LÕPETAMINE",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "§29–29 LÕPETAMINE",
+        "@language": "et"
+      },
       "skos:inScheme": {
         "@id": "estleg:SEPS_TopicScheme"
       },
@@ -417,7 +492,10 @@
         "owl:NamedIndividual",
         "estleg:Chapter"
       ],
-      "rdfs:label": "5. peatükk – LÕPETAMINE",
+      "rdfs:label": {
+        "@value": "5. peatükk – LÕPETAMINE",
+        "@language": "et"
+      },
       "estleg:chapterNumber": "5",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
@@ -437,12 +515,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Euroopa äriühingule kohaldatavad sätted",
+      "rdfs:label": {
+        "@value": "§ 1. Euroopa äriühingule kohaldatavad sätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Käesolev seadus reguleerib Eestis asuva Euroopa äriühingu (ladina keeles: Societas Europaea, edaspidi SE) õiguslikku seisundit niivõrd, kuivõrd seda ei ole reguleeritud Euroopa Liidu Nõukogu 8. oktoobri 2001 määrusega (EÜ) nr 2157/2001 Euroopa äriühingu (SE) põhikirja kohta (edaspidi määrus). (2) SE suhtes kohaldatakse käesolevat seadust ja muid riigisiseseid õigusakte, kui määruse järgi tuleb lähtuda riigisisesest õigusest või kui määrus annab võimaluse reguleerida teatavaid valdkondi",
+      "estleg:summary": {
+        "@value": "(1) Käesolev seadus reguleerib Eestis asuva Euroopa äriühingu (ladina keeles: Societas Europaea, edaspidi SE) õiguslikku seisundit niivõrd, kuivõrd seda ei ole reguleeritud Euroopa Liidu Nõukogu 8. oktoobri 2001 määrusega (EÜ) nr 2157/2001 Euroopa äriühingu (SE) põhikirja kohta (edaspidi määrus). (2) SE suhtes kohaldatakse käesolevat seadust ja muid riigisiseseid õigusakte, kui määruse järgi tuleb lähtuda riigisisesest õigusest või kui määrus annab võimaluse reguleerida teatavaid valdkondi",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Käesolev seadus reguleerib Eestis asuva Euroopa äriühingu (ladina keeles: Societas Europaea, edaspidi SE) õiguslikku seisundit niivõrd, kuivõrd seda ei ole reguleeritud Euroopa Liidu Nõukogu 8. oktoobri 2001 määrusega (EÜ) nr 2157/2001 Euroopa äriühingu (SE) põhikirja kohta (edaspidi määrus). (2) SE suhtes kohaldatakse käesolevat seadust ja muid riigisiseseid õigusakte, kui määruse järgi tuleb lähtuda riigisisesest õigusest või kui määrus annab võimaluse reguleerida teatavaid valdkondi riigisisese õiguse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_1"
@@ -533,12 +617,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. SE äriregistrisse kandmine",
+      "rdfs:label": {
+        "@value": "§ 2. SE äriregistrisse kandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "SE kantakse äriregistrisse vastavalt äriregistri seaduses ja äriseadustikus aktsiaseltsi äriregistrisse kandmise kohta sätestatule.",
+      "estleg:summary": {
+        "@value": "SE kantakse äriregistrisse vastavalt äriregistri seaduses ja äriseadustikus aktsiaseltsi äriregistrisse kandmise kohta sätestatule.",
+        "@language": "et"
+      },
       "estleg:legalText": "SE kantakse äriregistrisse vastavalt äriregistri seaduses ja äriseadustikus aktsiaseltsi äriregistrisse kandmise kohta sätestatule.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_1"
@@ -580,10 +670,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "SE kantakse äriregistrisse vastavalt äriregistri seaduses ja äriseadustikus aktsiaseltsi äriregistrisse kandmise kohta sätestatule.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) SE kantakse äriregistrisse vastavalt äriregistri seaduses ja äriseadustikus aktsiaseltsi äriregistrisse kandmise kohta sätestatule.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_2"
       },
+      "rdfs:label": "§ 2 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -601,12 +693,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. SE aktsiakapital ja raamatupidamine",
+      "rdfs:label": {
+        "@value": "§ 3. SE aktsiakapital ja raamatupidamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) SE aktsiakapitali väljendatakse vastavalt määruse artikli 67 lõikele 1 eurodes. (2) SE raamatupidamise aastaaruannete koostamisel väljendatakse rahalised näitajad vastavalt määruse artikli 67 lõikele 2 eurodes.",
+      "estleg:summary": {
+        "@value": "(1) SE aktsiakapitali väljendatakse vastavalt määruse artikli 67 lõikele 1 eurodes. (2) SE raamatupidamise aastaaruannete koostamisel väljendatakse rahalised näitajad vastavalt määruse artikli 67 lõikele 2 eurodes.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) SE aktsiakapitali väljendatakse vastavalt määruse artikli 67 lõikele 1 eurodes. (2) SE raamatupidamise aastaaruannete koostamisel väljendatakse rahalised näitajad vastavalt määruse artikli 67 lõikele 2 eurodes.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_1"
@@ -667,12 +765,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Pädevus",
+      "rdfs:label": {
+        "@value": "§ 4. Pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Määruse artikli 8 lõikes 8 nimetatud kohustus on registripidajal. (2) Määruse artikli 22 alusel esitatud avalduse vaatab läbi Harju Maakohus hagita menetluses. (3) Määruse artikli 25 lõikes 2 nimetatud kohustus on registripidajal. (4) Määruse artiklis 26 nimetatud kohustused on registripidajal. (4¹) Määruse artikli 55 lõike 3 esimeses lauses sätestatud õigused on kohtul, mille tööpiirkonnas on SE registrijärgne asukoht. (5) Määruse artikli 64 lõikes 4 sätestatud kohustus on kohtul, kes",
+      "estleg:summary": {
+        "@value": "(1) Määruse artikli 8 lõikes 8 nimetatud kohustus on registripidajal. (2) Määruse artikli 22 alusel esitatud avalduse vaatab läbi Harju Maakohus hagita menetluses. (3) Määruse artikli 25 lõikes 2 nimetatud kohustus on registripidajal. (4) Määruse artiklis 26 nimetatud kohustused on registripidajal. (4¹) Määruse artikli 55 lõike 3 esimeses lauses sätestatud õigused on kohtul, mille tööpiirkonnas on SE registrijärgne asukoht. (5) Määruse artikli 64 lõikes 4 sätestatud kohustus on kohtul, kes",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Määruse artikli 8 lõikes 8 nimetatud kohustus on registripidajal. (2) Määruse artikli 22 alusel esitatud avalduse vaatab läbi Harju Maakohus hagita menetluses. (3) Määruse artikli 25 lõikes 2 nimetatud kohustus on registripidajal. (4) Määruse artiklis 26 nimetatud kohustused on registripidajal. (4¹) Määruse artikli 55 lõike 3 esimeses lauses sätestatud õigused on kohtul, mille tööpiirkonnas on SE registrijärgne asukoht. (5) Määruse artikli 64 lõikes 4 sätestatud kohustus on kohtul, kes tuvastas määruse artikli 7 rikkumise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_1"
@@ -868,12 +972,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Asukohamuutmise kava avaldamine",
+      "rdfs:label": {
+        "@value": "§ 5. Asukohamuutmise kava avaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Juhatus esitab määruse artikli 8 lõikes 2 käsitletud asukohamuutmise kava äriregistri pidajale ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asukohamuutmise kava koostamise kohta. Teates tuleb märkida, et asukohamuutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:summary": {
+        "@value": "Juhatus esitab määruse artikli 8 lõikes 2 käsitletud asukohamuutmise kava äriregistri pidajale ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asukohamuutmise kava koostamise kohta. Teates tuleb märkida, et asukohamuutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+        "@language": "et"
+      },
       "estleg:legalText": "Juhatus esitab määruse artikli 8 lõikes 2 käsitletud asukohamuutmise kava äriregistri pidajale ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asukohamuutmise kava koostamise kohta. Teates tuleb märkida, et asukohamuutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_2"
@@ -913,10 +1023,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Juhatus esitab määruse artikli 8 lõikes 2 käsitletud asukohamuutmise kava äriregistri pidajale ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asukohamuutmise kava koostamise kohta. Teates tuleb märkida, et asukohamuutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juhatus esitab määruse artikli 8 lõikes 2 käsitletud asukohamuutmise kava äriregistri pidajale ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asukohamuutmise kava koostamise kohta. Teates tuleb märkida, et asukohamuutmise kavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_5"
       },
+      "rdfs:label": "§ 5 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -932,12 +1044,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Hüvitis asukoha muutmisega mittenõustumise korral",
+      "rdfs:label": {
+        "@value": "§ 6. Hüvitis asukoha muutmisega mittenõustumise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Kui SE asukoht viiakse määruses sätestatud korras Eestist üle teise Euroopa Liidu liikmesriiki, võib aktsionär, kes ei ole asukohamuutmisega nõus, SE teise liikmesriigi vastavasse registrisse kandmisest arvates kahe kuu jooksul nõuda, et SE omandaks tema aktsiad rahalise hüvitise eest. Rahaline hüvitis peab olema sama suur kui rahasumma, mida aktsionär oleks saanud SE likvideerimisel järelejäänud vara jaotamisel, kui SE oleks likvideeritud asukohamuutmise otsuse tegemise ajal.",
+      "estleg:summary": {
+        "@value": "(1) Kui SE asukoht viiakse määruses sätestatud korras Eestist üle teise Euroopa Liidu liikmesriiki, võib aktsionär, kes ei ole asukohamuutmisega nõus, SE teise liikmesriigi vastavasse registrisse kandmisest arvates kahe kuu jooksul nõuda, et SE omandaks tema aktsiad rahalise hüvitise eest. Rahaline hüvitis peab olema sama suur kui rahasumma, mida aktsionär oleks saanud SE likvideerimisel järelejäänud vara jaotamisel, kui SE oleks likvideeritud asukohamuutmise otsuse tegemise ajal.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui SE asukoht viiakse määruses sätestatud korras Eestist üle teise Euroopa Liidu liikmesriiki, võib aktsionär, kes ei ole asukohamuutmisega nõus, SE teise liikmesriigi vastavasse registrisse kandmisest arvates kahe kuu jooksul nõuda, et SE omandaks tema aktsiad rahalise hüvitise eest. Rahaline hüvitis peab olema sama suur kui rahasumma, mida aktsionär oleks saanud SE likvideerimisel järelejäänud vara jaotamisel, kui SE oleks likvideeritud asukohamuutmise otsuse tegemise ajal. (2) SE poolt aktsiate omandamisele käesoleva paragrahvi lõikes 1 nimetatud alustel ei kohaldata äriseadustiku § 283 lõike 2 punktis 2 sätestatut. (3) Aktsionäride nimed, kes ei olnud nõus SE asukoha muutmisega ja soovivad kasutada käesoleva paragrahvi lõikes 1 nimetatud õigust, lisatakse asukohamuutmise otsusele. Asukohamuutmise otsusega mittenõustumist kinnitab iga aktsionär oma allkirjaga. (4) Alates SE kandmisest uue asukohariigi registrisse peab SE maksma hüvitiselt viivist seadusega sätestatud suuruses. (5) Kui SE asukoha muutmisega mittenõustunud aktsionär ei nõua käesolevas paragrahvis nimetatud hüvitist, võib ta oma aktsiad võõrandada kahe kuu jooksul, sõltumata seadusega sätestatud või põhikirjaga ettenähtud käsutuspiirangutest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_2"
@@ -1115,12 +1233,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Võlausaldajate kaitse asukohamuutmise korral",
+      "rdfs:label": {
+        "@value": "§ 7. Võlausaldajate kaitse asukohamuutmise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Asukohamuutmist kavandava SE võlausaldajad võivad asukohamuutmise kava avaldamisest arvates kahe kuu jooksul esitada SE-le oma nõuded tagatise saamiseks. (2) SE peab tagama asukohamuutmise kava avaldamisest arvates kahe kuu jooksul esitatud võlausaldajate nõuded, kui võlausaldajad ei saa nõuda nõuete rahuldamist ja nad põhistavad, et asukohamuutmine võib ohustada nende nõuete täitmist.",
+      "estleg:summary": {
+        "@value": "(1) Asukohamuutmist kavandava SE võlausaldajad võivad asukohamuutmise kava avaldamisest arvates kahe kuu jooksul esitada SE-le oma nõuded tagatise saamiseks. (2) SE peab tagama asukohamuutmise kava avaldamisest arvates kahe kuu jooksul esitatud võlausaldajate nõuded, kui võlausaldajad ei saa nõuda nõuete rahuldamist ja nad põhistavad, et asukohamuutmine võib ohustada nende nõuete täitmist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Asukohamuutmist kavandava SE võlausaldajad võivad asukohamuutmise kava avaldamisest arvates kahe kuu jooksul esitada SE-le oma nõuded tagatise saamiseks. (2) SE peab tagama asukohamuutmise kava avaldamisest arvates kahe kuu jooksul esitatud võlausaldajate nõuded, kui võlausaldajad ei saa nõuda nõuete rahuldamist ja nad põhistavad, et asukohamuutmine võib ohustada nende nõuete täitmist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_2"
@@ -1213,12 +1337,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Maksu- ja Tolliameti nõusolek SE asukoha muutmise korral",
+      "rdfs:label": {
+        "@value": "§ 8. Maksu- ja Tolliameti nõusolek SE asukoha muutmise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Kui SE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 8 lõikes 8 nimetatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei",
+      "estleg:summary": {
+        "@value": "Kui SE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 8 lõikes 8 nimetatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui SE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 8 lõikes 8 nimetatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet asukohamuutmisega nõus olevaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_2"
@@ -1277,10 +1407,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui SE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 8 lõikes 8 nimetatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet asukohamuutmisega nõus olevaks.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui SE asukoht viiakse Eestist üle teise Euroopa Liidu liikmesriiki, ei anna registripidaja määruse artikli 8 lõikes 8 nimetatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet asukohamuutmisega nõus olevaks.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_8"
       },
+      "rdfs:label": "§ 8 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1307,13 +1439,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Maksu- ja Tolliameti nõusolek SE asutamise korral ühinemise teel",
+      "rdfs:label": {
+        "@value": "§ 9. Maksu- ja Tolliameti nõusolek SE asutamise korral ühinemise teel",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Kui SE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud aktsiaselts, mis lõpeb seoses SE asutamisega välisriigis, ei anna registripidaja määruse artikli 25 lõikes 2 sätestatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal",
+      "estleg:summary": {
+        "@value": "Kui SE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud aktsiaselts, mis lõpeb seoses SE asutamisega välisriigis, ei anna registripidaja määruse artikli 25 lõikes 2 sätestatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui SE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud aktsiaselts, mis lõpeb seoses SE asutamisega välisriigis, ei anna registripidaja määruse artikli 25 lõikes 2 sätestatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet nõus olevaks SE asutamisega ühinemise teel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_3_1"
       },
@@ -1368,10 +1509,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui SE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud aktsiaselts, mis lõpeb seoses SE asutamisega välisriigis, ei anna registripidaja määruse artikli 25 lõikes 2 sätestatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet nõus olevaks SE asutamisega ühinemise teel.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui SE asutamisel ühinemise teel osaleb Eesti äriregistrisse kantud aktsiaselts, mis lõpeb seoses SE asutamisega välisriigis, ei anna registripidaja määruse artikli 25 lõikes 2 sätestatud tunnistust ilma Maksu- ja Tolliameti nõusolekuta. Nõusoleku saamiseks esitab registripidaja kirjaliku taotluse Maksu- ja Tolliametile. Maksu- ja Tolliamet ei või nõusoleku andmisest keelduda, kui tal ei ole nõudeid SE vastu, samuti siis, kui Maksu- ja Tolliamet peab tõenäoliseks, et nõusoleku küsimise ajal käimasoleva maksuhalduri kontrollimenetluse käigus ei tuvastata maksuseaduste rikkumisi. Kui nõusolekut ei ole saadud 20 päeva jooksul pärast taotluse saatmist, loetakse Maksu- ja Tolliamet nõus olevaks SE asutamisega ühinemise teel.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_9"
       },
+      "rdfs:label": "§ 9 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -1401,13 +1544,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Ühinemise teatavakstegemine",
+      "rdfs:label": {
+        "@value": "§ 10. Ühinemise teatavakstegemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Määruse artiklis 21 nimetatud andmed ühinevate äriühingute kohta avaldatakse ametlikus väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+      "estleg:summary": {
+        "@value": "Määruse artiklis 21 nimetatud andmed ühinevate äriühingute kohta avaldatakse ametlikus väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+        "@language": "et"
+      },
       "estleg:legalText": "Määruse artiklis 21 nimetatud andmed ühinevate äriühingute kohta avaldatakse ametlikus väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_3_1"
       },
@@ -1447,10 +1599,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Määruse artiklis 21 nimetatud andmed ühinevate äriühingute kohta avaldatakse ametlikus väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määruse artiklis 21 nimetatud andmed ühinevate äriühingute kohta avaldatakse ametlikus väljaandes Ametlikud Teadaanded koos äriseadustiku § 399 kohase teatega ühinemise kohta.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_10"
       },
+      "rdfs:label": "§ 10 lg 1",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -1473,13 +1627,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Hüvitis aktsiate asendussuhtega või ühinemisega mittenõustumise korral",
+      "rdfs:label": {
+        "@value": "§ 11. Hüvitis aktsiate asendussuhtega või ühinemisega mittenõustumise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Ühinemise teel SE asutamisele kohaldatakse äriseadustiku § 398 lõikeid 2–4 ning vastavalt äriseadustiku § 404.",
+      "estleg:summary": {
+        "@value": "Ühinemise teel SE asutamisele kohaldatakse äriseadustiku § 398 lõikeid 2–4 ning vastavalt äriseadustiku § 404.",
+        "@language": "et"
+      },
       "estleg:legalText": "Ühinemise teel SE asutamisele kohaldatakse äriseadustiku § 398 lõikeid 2–4 ning vastavalt äriseadustiku § 404.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_3_1"
       },
@@ -1508,10 +1671,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Ühinemise teel SE asutamisele kohaldatakse äriseadustiku § 398 lõikeid 2–4 ning vastavalt äriseadustiku § 404.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühinemise teel SE asutamisele kohaldatakse äriseadustiku § 398 lõikeid 2–4 ning vastavalt äriseadustiku § 404.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_11"
       },
+      "rdfs:label": "§ 11 lg 1",
       "estleg:references": [
         {
           "@id": "estleg:ariseadustik_Par_398"
@@ -1528,13 +1693,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Valdus-SE asutamise otsuse vaidlustamine ja kahju hüvitamine",
+      "rdfs:label": {
+        "@value": "§ 12. Valdus-SE asutamise otsuse vaidlustamine ja kahju hüvitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Kui valdus-SE asutamisel määrati osade või aktsiate asendussuhe liiga madalaks, võib osanik või aktsionär nõuda valdus-SE-lt hüvitist. Alates valdus-SE kandmisest registrisse peab valdus-SE tasuma hüvitiselt viivist seadusega sätestatud suuruses. See ei välista ega piira viivist ületava kahju hüvitamise nõude esitamist.",
+      "estleg:summary": {
+        "@value": "Kui valdus-SE asutamisel määrati osade või aktsiate asendussuhe liiga madalaks, võib osanik või aktsionär nõuda valdus-SE-lt hüvitist. Alates valdus-SE kandmisest registrisse peab valdus-SE tasuma hüvitiselt viivist seadusega sätestatud suuruses. See ei välista ega piira viivist ületava kahju hüvitamise nõude esitamist.",
+        "@language": "et"
+      },
       "estleg:legalText": "Kui valdus-SE asutamisel määrati osade või aktsiate asendussuhe liiga madalaks, võib osanik või aktsionär nõuda valdus-SE-lt hüvitist. Alates valdus-SE kandmisest registrisse peab valdus-SE tasuma hüvitiselt viivist seadusega sätestatud suuruses. See ei välista ega piira viivist ületava kahju hüvitamise nõude esitamist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_3_2"
       },
@@ -1572,10 +1746,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Kui valdus-SE asutamisel määrati osade või aktsiate asendussuhe liiga madalaks, võib osanik või aktsionär nõuda valdus-SE-lt hüvitist. Alates valdus-SE kandmisest registrisse peab valdus-SE tasuma hüvitiselt viivist seadusega sätestatud suuruses. See ei välista ega piira viivist ületava kahju hüvitamise nõude esitamist.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui valdus-SE asutamisel määrati osade või aktsiate asendussuhe liiga madalaks, võib osanik või aktsionär nõuda valdus-SE-lt hüvitist. Alates valdus-SE kandmisest registrisse peab valdus-SE tasuma hüvitiselt viivist seadusega sätestatud suuruses. See ei välista ega piira viivist ületava kahju hüvitamise nõude esitamist.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_12"
       },
+      "rdfs:label": "§ 12 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1596,13 +1772,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Hüvitis valdus-SE asutamise korral",
+      "rdfs:label": {
+        "@value": "§ 13. Hüvitis valdus-SE asutamise korral",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Valdus-SE asutamisel osaleva ühingu osanik või aktsionär, kes ei ole valdus-SE asutamisega nõus, võib valdus-SE registrisse kandmisest arvates kahe kuu jooksul nõuda, et osaühing või aktsiaselts omandaks tema osa või aktsiad rahalise hüvitise eest. Vastavalt kehtib äriseadustiku § 404 lõike 1 teine lause. (2) Osaühingu poolt oma osa omandamisel käesoleva paragrahvi lõikes 1 nimetatud alusel võib omandatava osa nimiväärtus ületada 1/10 osakapitalist.",
+      "estleg:summary": {
+        "@value": "(1) Valdus-SE asutamisel osaleva ühingu osanik või aktsionär, kes ei ole valdus-SE asutamisega nõus, võib valdus-SE registrisse kandmisest arvates kahe kuu jooksul nõuda, et osaühing või aktsiaselts omandaks tema osa või aktsiad rahalise hüvitise eest. Vastavalt kehtib äriseadustiku § 404 lõike 1 teine lause. (2) Osaühingu poolt oma osa omandamisel käesoleva paragrahvi lõikes 1 nimetatud alusel võib omandatava osa nimiväärtus ületada 1/10 osakapitalist.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Valdus-SE asutamisel osaleva ühingu osanik või aktsionär, kes ei ole valdus-SE asutamisega nõus, võib valdus-SE registrisse kandmisest arvates kahe kuu jooksul nõuda, et osaühing või aktsiaselts omandaks tema osa või aktsiad rahalise hüvitise eest. Vastavalt kehtib äriseadustiku § 404 lõike 1 teine lause. (2) Osaühingu poolt oma osa omandamisel käesoleva paragrahvi lõikes 1 nimetatud alusel võib omandatava osa nimiväärtus ületada 1/10 osakapitalist. Aktsiaseltsi poolt oma aktsiate omandamisel käesoleva paragrahvi lõikes 1 nimetatud alusel võib omandatavate aktsiate nimiväärtus või arvestuslik väärtus ületada 1/10 aktsiakapitalist. (3) Osanike või aktsionäride nimed, kes ei olnud nõus valdus-SE asutamise otsusega ja soovivad kasutada käesoleva seaduse §-s 12 ja käesoleva paragrahvi lõikes 1 nimetatud õigusi, lisatakse asutamisotsusele. Asutamisotsusega mittenõustumist kinnitab iga osanik või aktsionär oma allkirjaga. (4) Alates valdus-SE kandmisest registrisse peab hüvitist maksma kohustatud ühing maksma hüvitiselt viivist seadusega sätestatud suuruses. (5) Kui valdus-SE asutamise otsusega mittenõustunud osanik või aktsionär ei nõua käesolevas paragrahvis nimetatud hüvitist, võib ta osa või aktsia võõrandada kahe kuu jooksul, sõltumata seadusega sätestatud või põhikirjaga ettenähtud käsutuspiirangutest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_3_2"
       },
@@ -1799,13 +1984,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Asutamislepingu avaldamine",
+      "rdfs:label": {
+        "@value": "§ 14. Asutamislepingu avaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Vähemalt üks kuu enne valdus-SE asutamist otsustavat üldkoosolekut esitab iga SE asutamises osaleva Eesti äriregistrisse kantud ühingu juhatus äriregistri pidajale asutamislepingu ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asutamislepingu koostamise kohta. Teates tuleb märkida, et asutamislepinguga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:summary": {
+        "@value": "Vähemalt üks kuu enne valdus-SE asutamist otsustavat üldkoosolekut esitab iga SE asutamises osaleva Eesti äriregistrisse kantud ühingu juhatus äriregistri pidajale asutamislepingu ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asutamislepingu koostamise kohta. Teates tuleb märkida, et asutamislepinguga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemalt üks kuu enne valdus-SE asutamist otsustavat üldkoosolekut esitab iga SE asutamises osaleva Eesti äriregistrisse kantud ühingu juhatus äriregistri pidajale asutamislepingu ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asutamislepingu koostamise kohta. Teates tuleb märkida, et asutamislepinguga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_3_2"
       },
@@ -1846,10 +2040,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemalt üks kuu enne valdus-SE asutamist otsustavat üldkoosolekut esitab iga SE asutamises osaleva Eesti äriregistrisse kantud ühingu juhatus äriregistri pidajale asutamislepingu ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asutamislepingu koostamise kohta. Teates tuleb märkida, et asutamislepinguga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemalt üks kuu enne valdus-SE asutamist otsustavat üldkoosolekut esitab iga SE asutamises osaleva Eesti äriregistrisse kantud ühingu juhatus äriregistri pidajale asutamislepingu ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate asutamislepingu koostamise kohta. Teates tuleb märkida, et asutamislepinguga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_14"
       },
+      "rdfs:label": "§ 14 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1870,13 +2066,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Ümberkujundamiskava avaldamine",
+      "rdfs:label": {
+        "@value": "§ 15. Ümberkujundamiskava avaldamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Vähemalt üks kuu enne aktsiaseltsi SE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:summary": {
+        "@value": "Vähemalt üks kuu enne aktsiaseltsi SE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+        "@language": "et"
+      },
       "estleg:legalText": "Vähemalt üks kuu enne aktsiaseltsi SE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_3"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_3_3"
       },
@@ -1917,10 +2122,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Vähemalt üks kuu enne aktsiaseltsi SE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vähemalt üks kuu enne aktsiaseltsi SE-ks ümberkujundamist otsustavat üldkoosolekut esitab juhatus äriregistri pidajale ümberkujundamiskava ning avaldab ametlikus väljaandes Ametlikud Teadaanded teate ümberkujundamiskava koostamise kohta. Teates tuleb märkida, et ümberkujundamiskavaga on võimalik tutvuda registriosakonnas ja juhatuse määratud kohas.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_15"
       },
+      "rdfs:label": "§ 15 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -1941,13 +2148,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Juhtimisülesannete täitmine nõukogu liikmete poolt",
+      "rdfs:label": {
+        "@value": "§ 16. Juhtimisülesannete täitmine nõukogu liikmete poolt",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Nõukogu võib määrata oma liikme määruse artikli 39 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva järelevalveorgani liikme ametiaeg kokku ei ületa üht aastat.",
+      "estleg:summary": {
+        "@value": "Nõukogu võib määrata oma liikme määruse artikli 39 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva järelevalveorgani liikme ametiaeg kokku ei ületa üht aastat.",
+        "@language": "et"
+      },
       "estleg:legalText": "Nõukogu võib määrata oma liikme määruse artikli 39 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva järelevalveorgani liikme ametiaeg kokku ei ületa üht aastat.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_1"
       },
@@ -1985,10 +2201,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Nõukogu võib määrata oma liikme määruse artikli 39 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva järelevalveorgani liikme ametiaeg kokku ei ületa üht aastat.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu võib määrata oma liikme määruse artikli 39 lõike 3 kohaselt juhtorgani liikme ülesannetesse varem kindlaksmääratud ajavahemikuks, mis ei või ületada üht aastat. Korduv nimetamine või ametiaja pikendamine on lubatud, kui juhatuse liikmena tegutseva järelevalveorgani liikme ametiaeg kokku ei ületa üht aastat.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_16"
       },
+      "rdfs:label": "§ 16 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -2009,13 +2227,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Tehingud, mille tegemiseks on vaja järelevalveorgani nõusolekut",
+      "rdfs:label": {
+        "@value": "§ 17. Tehingud, mille tegemiseks on vaja järelevalveorgani nõusolekut",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+      "estleg:summary": {
+        "@value": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+        "@language": "et"
+      },
       "estleg:legalText": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_1"
       },
@@ -2048,10 +2275,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu võib oma otsusega määrata tehingud, mille tegemiseks on vaja tema nõusolekut.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_17"
       },
+      "rdfs:label": "§ 17 lg 1",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
       },
@@ -2067,13 +2296,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Kohaldatavad sätted",
+      "rdfs:label": {
+        "@value": "§ 18. Kohaldatavad sätted",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Kui SE põhikirjas on määruse artikli 38 punkti b kohaselt ette nähtud, et SE juhtimine toimub üheastmelise haldusnõukogu kaudu, kehtivad äriseadustiku §-de 306–327 asemel käesoleva jao sätted. (2) Haldusnõukogule kohaldatakse aktsiaseltsi juhatuse sätteid ning nõukogu sätteid niivõrd, kuivõrd see on ühe juhtorganiga äriühingu puhul võimalik.",
+      "estleg:summary": {
+        "@value": "(1) Kui SE põhikirjas on määruse artikli 38 punkti b kohaselt ette nähtud, et SE juhtimine toimub üheastmelise haldusnõukogu kaudu, kehtivad äriseadustiku §-de 306–327 asemel käesoleva jao sätted. (2) Haldusnõukogule kohaldatakse aktsiaseltsi juhatuse sätteid ning nõukogu sätteid niivõrd, kuivõrd see on ühe juhtorganiga äriühingu puhul võimalik.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui SE põhikirjas on määruse artikli 38 punkti b kohaselt ette nähtud, et SE juhtimine toimub üheastmelise haldusnõukogu kaudu, kehtivad äriseadustiku §-de 306–327 asemel käesoleva jao sätted. (2) Haldusnõukogule kohaldatakse aktsiaseltsi juhatuse sätteid ning nõukogu sätteid niivõrd, kuivõrd see on ühe juhtorganiga äriühingu puhul võimalik.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -2278,13 +2516,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Haldusnõukogu pädevus",
+      "rdfs:label": {
+        "@value": "§ 19. Haldusnõukogu pädevus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Haldusnõukogu on SE juhtimisorgan, mis esindab ja juhib SE-d. Haldusnõukogu on kohustatud tegutsema majanduslikult kõige otstarbekamal viisil. (2) Kui SE on maksejõuetu ning maksejõuetus ei ole tema majanduslikust olukorrast tulenevalt ajutine, peab haldusnõukogu esitama viivitamata, kuid mitte hiljem kui maksejõuetuse ilmnemisest arvates kolme nädala jooksul kohtule SE pankrotiavalduse. Pärast maksejõuetuse ilmnemist ei või haldusnõukogu liikmed teha SE eest makseid, välja arvatud maksed,",
+      "estleg:summary": {
+        "@value": "(1) Haldusnõukogu on SE juhtimisorgan, mis esindab ja juhib SE-d. Haldusnõukogu on kohustatud tegutsema majanduslikult kõige otstarbekamal viisil. (2) Kui SE on maksejõuetu ning maksejõuetus ei ole tema majanduslikust olukorrast tulenevalt ajutine, peab haldusnõukogu esitama viivitamata, kuid mitte hiljem kui maksejõuetuse ilmnemisest arvates kolme nädala jooksul kohtule SE pankrotiavalduse. Pärast maksejõuetuse ilmnemist ei või haldusnõukogu liikmed teha SE eest makseid, välja arvatud maksed,",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Haldusnõukogu on SE juhtimisorgan, mis esindab ja juhib SE-d. Haldusnõukogu on kohustatud tegutsema majanduslikult kõige otstarbekamal viisil. (2) Kui SE on maksejõuetu ning maksejõuetus ei ole tema majanduslikust olukorrast tulenevalt ajutine, peab haldusnõukogu esitama viivitamata, kuid mitte hiljem kui maksejõuetuse ilmnemisest arvates kolme nädala jooksul kohtule SE pankrotiavalduse. Pärast maksejõuetuse ilmnemist ei või haldusnõukogu liikmed teha SE eest makseid, välja arvatud maksed, mille tegemine maksejõuetuse olukorras on kooskõlas korraliku ettevõtja hoolsusega. Haldusnõukogu liikmed on kohustatud solidaarselt hüvitama SE-le pärast maksejõuetuse ilmnemist SE poolt tehtud maksed, mille tegemine selles olukorras ei olnud kooskõlas korraliku ettevõtja hoolsusega. Haldusnõukogu liikmete vastutusele kohaldatakse äriseadustiku §-s 315 sätestatut. (3) Haldusnõukogu korraldab SE raamatupidamist. (4) Haldusnõukogu täpsema töökorra võib ette näha põhikirjaga või haldusnõukogu otsusega. (5) Haldusnõukogu valmistab ette üldkoosolekul arutamisele tulevad küsimused, koostab vajalikud projektid ning tagab üldkoosoleku otsuste täitmise. (6) Haldusnõukogu tagab vajalike abinõude rakendamise, eelkõige sisekontrolli korraldamise, et võimalikult varakult avastada SE tegutsemist ohustavad asjaolud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -2448,13 +2695,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Haldusnõukogu esindusõigus",
+      "rdfs:label": {
+        "@value": "§ 20. Haldusnõukogu esindusõigus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) SE-d võib kõigis õigustoimingutes esindada iga haldusnõukogu liige, kui põhikirjas ei ole ette nähtud, et haldusnõukogu liikmed või mõned neist võivad esindada SE-d ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse. (2) Haldusnõukogu liikmed on SE nimel tehingute tegemisel kohustatud SE suhtes järgima põhikirjas ettenähtud või üldkoosoleku või haldusnõukogu kehtestatud piiranguid. Esindusõiguse piiramine ei kehti kolmandate isikute suhtes.",
+      "estleg:summary": {
+        "@value": "(1) SE-d võib kõigis õigustoimingutes esindada iga haldusnõukogu liige, kui põhikirjas ei ole ette nähtud, et haldusnõukogu liikmed või mõned neist võivad esindada SE-d ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse. (2) Haldusnõukogu liikmed on SE nimel tehingute tegemisel kohustatud SE suhtes järgima põhikirjas ettenähtud või üldkoosoleku või haldusnõukogu kehtestatud piiranguid. Esindusõiguse piiramine ei kehti kolmandate isikute suhtes.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) SE-d võib kõigis õigustoimingutes esindada iga haldusnõukogu liige, kui põhikirjas ei ole ette nähtud, et haldusnõukogu liikmed või mõned neist võivad esindada SE-d ühiselt. Kolmandate isikute suhtes kehtib ühine esindus ainult siis, kui see on kantud äriregistrisse. (2) Haldusnõukogu liikmed on SE nimel tehingute tegemisel kohustatud SE suhtes järgima põhikirjas ettenähtud või üldkoosoleku või haldusnõukogu kehtestatud piiranguid. Esindusõiguse piiramine ei kehti kolmandate isikute suhtes. (3) SE ja haldusnõukogu liikme vaheline tehing on tühine, kui tehinguga ei ole nõustunud üldkoosolek. See ei kehti tehingute suhtes, mis tehakse SE igapäevases majandustegevuses kauba või teenuse turuhinna alusel. (4) Haldusnõukogu liikmel ei ole õigust esindada SE-d õigustoimingute tegemisel, mille puhul vastavalt seadusele otsustavad esindaja määramise eraldi aktsionärid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -2599,13 +2855,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Haldusnõukogu liikmed",
+      "rdfs:label": {
+        "@value": "§ 21. Haldusnõukogu liikmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Haldusnõukogul on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu. (2) Haldusnõukogu liige peab olema piiramata teovõimega füüsiline isik. (3) Haldusnõukogu liige ei pea olema aktsionär. (4) Haldusnõukogu liikmeks ei või olla isik, kelle suhtes kohus on vastavalt karistusseadustiku §-le 49 kohaldanud juhatuse liikmena tegutsemise keeldu, samuti isik, kellel on keelatud tegutseda SE-ga samal tegevusalal või kellel on keelatud olla juhatuse liige seaduse või kohtulahendi alusel.",
+      "estleg:summary": {
+        "@value": "(1) Haldusnõukogul on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu. (2) Haldusnõukogu liige peab olema piiramata teovõimega füüsiline isik. (3) Haldusnõukogu liige ei pea olema aktsionär. (4) Haldusnõukogu liikmeks ei või olla isik, kelle suhtes kohus on vastavalt karistusseadustiku §-le 49 kohaldanud juhatuse liikmena tegutsemise keeldu, samuti isik, kellel on keelatud tegutseda SE-ga samal tegevusalal või kellel on keelatud olla juhatuse liige seaduse või kohtulahendi alusel.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Haldusnõukogul on kolm liiget, kui põhikiri ei näe ette suuremat liikmete arvu. (2) Haldusnõukogu liige peab olema piiramata teovõimega füüsiline isik. (3) Haldusnõukogu liige ei pea olema aktsionär. (4) Haldusnõukogu liikmeks ei või olla isik, kelle suhtes kohus on vastavalt karistusseadustiku §-le 49 kohaldanud juhatuse liikmena tegutsemise keeldu, samuti isik, kellel on keelatud tegutseda SE-ga samal tegevusalal või kellel on keelatud olla juhatuse liige seaduse või kohtulahendi alusel. Põhikirjas võib sätestada haldusnõukogu liikmeks oleku keelu ka muude isikute suhtes. (5) Vähemalt poolte haldusnõukogu liikmete elukoht peab olema Eestis, mõnes teises Euroopa Majanduspiirkonna liikmesriigis või Šveitsis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -2790,13 +3055,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Haldusnõukogu liikmete valimine ja tagasikutsumine",
+      "rdfs:label": {
+        "@value": "§ 22. Haldusnõukogu liikmete valimine ja tagasikutsumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Haldusnõukogu liikme valimiseks on vaja valitava isiku kirjalikku nõusolekut. (2) Haldusnõukogu liikme kutsub tagasi üldkoosolek. Üldkoosoleku otsusel võib üldkoosoleku valitud haldusnõukogu liikme mis tahes põhjusel tagasi kutsuda, kusjuures temaga sõlmitud lepingust tulenevad õigused ja kohustused lõpevad vastavalt lepingule. (3) Haldusnõukogu liikme enne volituste tähtaja lõppu tagasikutsumise otsus on vastu võetud, kui selle poolt on antud vähemalt 2/3 üldkoosolekul esindatud häältest.",
+      "estleg:summary": {
+        "@value": "(1) Haldusnõukogu liikme valimiseks on vaja valitava isiku kirjalikku nõusolekut. (2) Haldusnõukogu liikme kutsub tagasi üldkoosolek. Üldkoosoleku otsusel võib üldkoosoleku valitud haldusnõukogu liikme mis tahes põhjusel tagasi kutsuda, kusjuures temaga sõlmitud lepingust tulenevad õigused ja kohustused lõpevad vastavalt lepingule. (3) Haldusnõukogu liikme enne volituste tähtaja lõppu tagasikutsumise otsus on vastu võetud, kui selle poolt on antud vähemalt 2/3 üldkoosolekul esindatud häältest.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Haldusnõukogu liikme valimiseks on vaja valitava isiku kirjalikku nõusolekut. (2) Haldusnõukogu liikme kutsub tagasi üldkoosolek. Üldkoosoleku otsusel võib üldkoosoleku valitud haldusnõukogu liikme mis tahes põhjusel tagasi kutsuda, kusjuures temaga sõlmitud lepingust tulenevad õigused ja kohustused lõpevad vastavalt lepingule. (3) Haldusnõukogu liikme enne volituste tähtaja lõppu tagasikutsumise otsus on vastu võetud, kui selle poolt on antud vähemalt 2/3 üldkoosolekul esindatud häältest. (4) Aktsionärid, kelle aktsiatega on esindatud vähemalt 1/10 aktsiakapitalist, võivad mõjuval põhjusel nõuda haldusnõukogu liikme tagasikutsumist kohtu poolt. (5) Haldusnõukogu liikme volituste lõppemise või haldusnõukogu uue liikme registrisse kandmise avaldusele kirjutab alla haldusnõukogu liige. Uue haldusnõukogu liikme äriregistrisse kandmise avaldusele kirjutab alla ka see haldusnõukogu liige. Ta peab avalduses kinnitama, et tal on seaduse kohaselt õigus olla haldusnõukogu liige. Avaldusele tuleb lisada üldkoosoleku otsus ja koosoleku protokoll või hääletusprotokoll. (6) Mõjuval põhjusel võib väljalangenud haldusnõukogu liikme asemele uue liikme määrata haldusnõukogu, aktsionäri või muu huvitatud isiku nõudel kohus. Kohtu määratud haldusnõukogu liikme volitused kestavad kuni uue haldusnõukogu liikme valimiseni üldkoosoleku poolt. (7) Haldusnõukogu liige võib haldusnõukogust tagasi astuda mõjuval põhjusel, teatades sellest üldkoosolekule või enda määrajale, selle võimatuse korral esitades asjakohase avalduse äriregistri pidajale. Vastavalt kohaldatakse võlaõigusseaduse §-s 631 sätestatut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -3014,13 +3288,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Haldusnõukogu kokkukutsumine",
+      "rdfs:label": {
+        "@value": "§ 23. Haldusnõukogu kokkukutsumine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Haldusnõukogu koosoleku kutsub kokku haldusnõukogu esimees või teda asendav haldusnõukogu liige. Koosoleku toimumisest ja selle päevakorrast tuleb teatada vähemalt üks päev ette, kui põhikirjaga ei ole ette nähtud pikemat tähtaega. (2) Haldusnõukogu liiget ei või koosolekul ega otsuse tegemisel esindada teine haldusnõukogu liige ega kolmas isik. (3) Haldusnõukogu koosolek kutsutakse kokku, kui seda nõuab haldusnõukogu liige, audiitor või aktsionärid, kelle aktsiad esindavad vähemalt 1/10",
+      "estleg:summary": {
+        "@value": "(1) Haldusnõukogu koosoleku kutsub kokku haldusnõukogu esimees või teda asendav haldusnõukogu liige. Koosoleku toimumisest ja selle päevakorrast tuleb teatada vähemalt üks päev ette, kui põhikirjaga ei ole ette nähtud pikemat tähtaega. (2) Haldusnõukogu liiget ei või koosolekul ega otsuse tegemisel esindada teine haldusnõukogu liige ega kolmas isik. (3) Haldusnõukogu koosolek kutsutakse kokku, kui seda nõuab haldusnõukogu liige, audiitor või aktsionärid, kelle aktsiad esindavad vähemalt 1/10",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Haldusnõukogu koosoleku kutsub kokku haldusnõukogu esimees või teda asendav haldusnõukogu liige. Koosoleku toimumisest ja selle päevakorrast tuleb teatada vähemalt üks päev ette, kui põhikirjaga ei ole ette nähtud pikemat tähtaega. (2) Haldusnõukogu liiget ei või koosolekul ega otsuse tegemisel esindada teine haldusnõukogu liige ega kolmas isik. (3) Haldusnõukogu koosolek kutsutakse kokku, kui seda nõuab haldusnõukogu liige, audiitor või aktsionärid, kelle aktsiad esindavad vähemalt 1/10 aktsiakapitalist. Kui koosolekut ei kutsuta kokku kahe nädala jooksul, arvates taotluse saamisest, on haldusnõukogu liikmel, audiitoritel või aktsionäridel õigus koosolek ise kokku kutsuda. (4) Haldusnõukogu kokkukutsumisel teatavaks tegemata küsimuse võib haldusnõukogu päevakorda võtta üksnes juhul, kui koosolekul osalevad kõik haldusnõukogu liikmed ja otsuse päevakorda võtmise poolt on vähemalt 3/4 haldusnõukogu liikmetest. (5) Haldusnõukogu koosolek protokollitakse. Protokollile kirjutavad alla kõik koosolekul osalenud haldusnõukogu liikmed ja koosoleku protokollija. Protokolli kantakse haldusnõukogu liikme eriarvamus, mille ta kinnitab oma allkirjaga. (6) Kui haldusnõukogu kokkukutsumisel on rikutud seaduse või põhikirja nõudeid, ei ole haldusnõukogu õigustatud otsuseid vastu võtma, välja arvatud siis, kui haldusnõukogu koosolekul osalevad kõik haldusnõukogu liikmed. Sellisel haldusnõukogu koosolekul tehtud otsused on tühised, kui haldusnõukogu liikmed, kelle suhtes kokkukutsumise korda rikuti, otsust heaks ei kiida.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -3204,13 +3487,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Haldusnõukogu otsus",
+      "rdfs:label": {
+        "@value": "§ 24. Haldusnõukogu otsus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Igal haldusnõukogu liikmel on üks hääl. Haldusnõukogu liikmel ei ole õigust hääletamisest keelduda ega erapooletuks jääda. (2) Haldusnõukogu otsustusvõimet ega otsuse kehtivust ei mõjuta asjaolu, et haldusnõukogusse kuulub vähem liikmeid, kui on ette nähtud põhikirjaga. (3) Koosolekult puuduvad haldusnõukogu liikmed võivad osaleda hääletamisel, edastades oma hääle kirjalikku taasesitamist võimaldavas vormis. (4) Haldusnõukogu liige ei võta osa hääletamisest, millega otsustatakse kolmanda",
+      "estleg:summary": {
+        "@value": "(1) Igal haldusnõukogu liikmel on üks hääl. Haldusnõukogu liikmel ei ole õigust hääletamisest keelduda ega erapooletuks jääda. (2) Haldusnõukogu otsustusvõimet ega otsuse kehtivust ei mõjuta asjaolu, et haldusnõukogusse kuulub vähem liikmeid, kui on ette nähtud põhikirjaga. (3) Koosolekult puuduvad haldusnõukogu liikmed võivad osaleda hääletamisel, edastades oma hääle kirjalikku taasesitamist võimaldavas vormis. (4) Haldusnõukogu liige ei võta osa hääletamisest, millega otsustatakse kolmanda",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Igal haldusnõukogu liikmel on üks hääl. Haldusnõukogu liikmel ei ole õigust hääletamisest keelduda ega erapooletuks jääda. (2) Haldusnõukogu otsustusvõimet ega otsuse kehtivust ei mõjuta asjaolu, et haldusnõukogusse kuulub vähem liikmeid, kui on ette nähtud põhikirjaga. (3) Koosolekult puuduvad haldusnõukogu liikmed võivad osaleda hääletamisel, edastades oma hääle kirjalikku taasesitamist võimaldavas vormis. (4) Haldusnõukogu liige ei võta osa hääletamisest, millega otsustatakse kolmanda isiku ja SE vaheliseks tehinguks nõusoleku andmist, kui sellest tehingust tulenevad haldusnõukogu liikme huvid on vastuolus SE huvidega. (5) Kohus võib aktsionäri või haldusnõukogu liikme nõudel tunnistada seaduse või põhikirjaga vastuolus oleva haldusnõukogu otsuse kehtetuks, kui nõue on esitatud kolme kuu jooksul, arvates otsuse vastuvõtmisest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -3355,13 +3647,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Otsuse vastuvõtmine koosolekut kokku kutsumata",
+      "rdfs:label": {
+        "@value": "§ 25. Otsuse vastuvõtmine koosolekut kokku kutsumata",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Haldusnõukogul on õigus vastu võtta otsuseid haldusnõukogu koosolekut kokku kutsumata, kui põhikirjaga ei ole ette nähtud teisiti ja sellega on nõus kõik haldusnõukogu liikmed. (2) Haldusnõukogu esimees saadab käesoleva paragrahvi lõikes 1 nimetatud otsuse eelnõu kõigile haldusnõukogu liikmetele, määrates tähtaja, mille jooksul haldusnõukogu liige peab esitama selle kohta oma kirjaliku seisukoha. Kui haldusnõukogu liige nimetatud tähtaja jooksul ei teata, kas ta on otsuse poolt või vastu,",
-      "estleg:legalText": "(1) Haldusnõukogul on õigus vastu võtta otsuseid haldusnõukogu koosolekut kokku kutsumata, kui põhikirjaga ei ole ette nähtud teisiti ja sellega on nõus kõik haldusnõukogu liikmed. (2) Haldusnõukogu esimees saadab käesoleva paragrahvi lõikes 1 nimetatud otsuse eelnõu kõigile haldusnõukogu liikmetele, määrates tähtaja, mille jooksul haldusnõukogu liige peab esitama selle kohta oma kirjaliku seisukoha. Kui haldusnõukogu liige nimetatud tähtaja jooksul ei teata, kas ta on otsuse poolt või vastu, loetakse, et ta hääletab otsuse vastu. (3) Käesolevas paragrahvis sätestatud korras otsuse tegemisel on see vastu võetud, kui selle poolt on antud üle poole haldusnõukogu liikmete häältest, kui seaduse või põhikirjaga ei ole ette nähtud suurema häälteenamuse nõuet. (4) Hääletustulemuste kohta koostab haldusnõukogu esimees nõukogu koosoleku protokolli asendava hääletusprotokolli ning saadab selle viivitamata haldusnõukogu liikmetele. Hääletusprotokolli kantakse: SE ärinimi ja asukoht; vastuvõetud otsused koos hääletustulemustega (sealhulgas iga otsuse poolt hääletanud liikmete nimed); muud hääletamise suhtes olulise tähtsusega asjaolud. (5) Käesoleva paragrahvi lõikes 2 nimetatud liikmete kirjalikud seisukohad on hääletusprotokolli lahutamatu lisa. (6) Kui kõik haldusnõukogu liikmed otsusega nõustuvad ja otsuse allkirjastavad, võib otsuse vormistada ka etteteatamiseta ja hääletusprotokollita. Otsusesse tuleb märkida haldusnõukogu liikmete nimed ja otsuse tegemise aeg.",
+      "estleg:summary": {
+        "@value": "(1) Haldusnõukogul on õigus vastu võtta otsuseid haldusnõukogu koosolekut kokku kutsumata, kui põhikirjaga ei ole ette nähtud teisiti ja sellega on nõus kõik haldusnõukogu liikmed. (2) Haldusnõukogu esimees saadab käesoleva paragrahvi lõikes 1 nimetatud otsuse eelnõu kõigile haldusnõukogu liikmetele, määrates tähtaja, mille jooksul haldusnõukogu liige peab esitama selle kohta oma kirjaliku seisukoha. Kui haldusnõukogu liige nimetatud tähtaja jooksul ei teata, kas ta on otsuse poolt või vastu,",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Haldusnõukogul on õigus vastu võtta otsuseid haldusnõukogu koosolekut kokku kutsumata, kui põhikirjaga ei ole ette nähtud teisiti ja sellega on nõus kõik haldusnõukogu liikmed. (2) Haldusnõukogu esimees saadab käesoleva paragrahvi lõikes 1 nimetatud otsuse eelnõu kõigile haldusnõukogu liikmetele, määrates tähtaja, mille jooksul haldusnõukogu liige peab esitama selle kohta oma kirjaliku seisukoha. Kui haldusnõukogu liige nimetatud tähtaja jooksul ei teata, kas ta on otsuse poolt või vastu, loetakse, et ta hääletab otsuse vastu. (3) Käesolevas paragrahvis sätestatud korras otsuse tegemisel on see vastu võetud, kui selle poolt on antud üle poole haldusnõukogu liikmete häältest, kui seaduse või põhikirjaga ei ole ette nähtud suurema häälteenamuse nõuet. (4) Hääletustulemuste kohta koostab haldusnõukogu esimees nõukogu koosoleku protokolli asendava hääletusprotokolli ning saadab selle viivitamata haldusnõukogu liikmetele. Hääletusprotokolli kantakse: 1) SE ärinimi ja asukoht; 2) vastuvõetud otsused koos hääletustulemustega (sealhulgas iga otsuse poolt hääletanud liikmete nimed); 3) muud hääletamise suhtes olulise tähtsusega asjaolud. (5) Käesoleva paragrahvi lõikes 2 nimetatud liikmete kirjalikud seisukohad on hääletusprotokolli lahutamatu lisa. (6) Kui kõik haldusnõukogu liikmed otsusega nõustuvad ja otsuse allkirjastavad, võib otsuse vormistada ka etteteatamiseta ja hääletusprotokollita. Otsusesse tuleb märkida haldusnõukogu liikmete nimed ja otsuse tegemise aeg.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -3485,11 +3786,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "4",
-      "estleg:legalText": "(4) Hääletustulemuste kohta koostab haldusnõukogu esimees nõukogu koosoleku protokolli asendava hääletusprotokolli ning saadab selle viivitamata haldusnõukogu liikmetele. Hääletusprotokolli kantakse: SE ärinimi ja asukoht; vastuvõetud otsused koos hääletustulemustega (sealhulgas iga otsuse poolt hääletanud liikmete nimed); muud hääletamise suhtes olulise tähtsusega asjaolud.",
+      "estleg:legalText": "(4) Hääletustulemuste kohta koostab haldusnõukogu esimees nõukogu koosoleku protokolli asendava hääletusprotokolli ning saadab selle viivitamata haldusnõukogu liikmetele. Hääletusprotokolli kantakse: 1) SE ärinimi ja asukoht; 2) vastuvõetud otsused koos hääletustulemustega (sealhulgas iga otsuse poolt hääletanud liikmete nimed); 3) muud hääletamise suhtes olulise tähtsusega asjaolud.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_25"
       },
       "rdfs:label": "§ 25 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -3540,13 +3846,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Haldusnõukogu liikmega tehingu tegemine ja temaga õigusvaidluse pidamine",
+      "rdfs:label": {
+        "@value": "§ 26. Haldusnõukogu liikmega tehingu tegemine ja temaga õigusvaidluse pidamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "Üldkoosolek otsustab haldusnõukogu liikmetega tehingute tegemise ja määrab tehingute tingimused, samuti õigusvaidluste pidamise haldusnõukogu liikmetega. Tehingu tegemiseks ja õigusvaidluse pidamiseks määrab üldkoosolek SE esindaja.",
+      "estleg:summary": {
+        "@value": "Üldkoosolek otsustab haldusnõukogu liikmetega tehingute tegemise ja määrab tehingute tingimused, samuti õigusvaidluste pidamise haldusnõukogu liikmetega. Tehingu tegemiseks ja õigusvaidluse pidamiseks määrab üldkoosolek SE esindaja.",
+        "@language": "et"
+      },
       "estleg:legalText": "Üldkoosolek otsustab haldusnõukogu liikmetega tehingute tegemise ja määrab tehingute tingimused, samuti õigusvaidluste pidamise haldusnõukogu liikmetega. Tehingu tegemiseks ja õigusvaidluse pidamiseks määrab üldkoosolek SE esindaja.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -3567,10 +3882,12 @@
         "estleg:Subsection",
         "owl:NamedIndividual"
       ],
-      "estleg:legalText": "Üldkoosolek otsustab haldusnõukogu liikmetega tehingute tegemise ja määrab tehingute tingimused, samuti õigusvaidluste pidamise haldusnõukogu liikmetega. Tehingu tegemiseks ja õigusvaidluse pidamiseks määrab üldkoosolek SE esindaja.",
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Üldkoosolek otsustab haldusnõukogu liikmetega tehingute tegemise ja määrab tehingute tingimused, samuti õigusvaidluste pidamise haldusnõukogu liikmetega. Tehingu tegemiseks ja õigusvaidluse pidamiseks määrab üldkoosolek SE esindaja.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_26"
-      }
+      },
+      "rdfs:label": "§ 26 lg 1"
     },
     {
       "@id": "estleg:SEPS_Par_27",
@@ -3579,13 +3896,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Konkurentsikeeld",
+      "rdfs:label": {
+        "@value": "§ 27. Konkurentsikeeld",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Haldusnõukogu liige ei või üldkoosoleku nõusolekuta: olla füüsilisest isikust ettevõtja SE tegevusalal; olla SE-ga samal tegevusalal tegutseva täisühingu osanik või usaldusühingu täisosanik; olla SE-ga samal tegevusalal tegutseva äriühingu juhtimisorgani liige, välja arvatud siis, kui tegemist on ühte kontserni kuuluvate äriühingutega. (2) Kui haldusnõukogu liikme tegevus on vastuolus käesoleva paragrahvi lõikes 1 sätestatuga, võib SE haldusnõukogu liikmelt nõuda keelatud tegevuse",
-      "estleg:legalText": "(1) Haldusnõukogu liige ei või üldkoosoleku nõusolekuta: olla füüsilisest isikust ettevõtja SE tegevusalal; olla SE-ga samal tegevusalal tegutseva täisühingu osanik või usaldusühingu täisosanik; olla SE-ga samal tegevusalal tegutseva äriühingu juhtimisorgani liige, välja arvatud siis, kui tegemist on ühte kontserni kuuluvate äriühingutega. (2) Kui haldusnõukogu liikme tegevus on vastuolus käesoleva paragrahvi lõikes 1 sätestatuga, võib SE haldusnõukogu liikmelt nõuda keelatud tegevuse lõpetamist, keelatud tegevusest saadud tulu üleandmist SE-le ning kahju hüvitamist ulatuses, mis ületab sissenõutud tulu. (3) Keelatud tegevuse lõpetamise ja keelatud tegevusest saadud tulu üleandmise nõude aegumistähtaeg on kolm kuud, arvates päevast, mil SE sai teada konkurentsikeelu rikkumisest, kuid mitte pikem kui kolm aastat, arvates konkurentsikeelu rikkumisest. Kahju hüvitamise nõudele kohaldatakse üldist aegumistähtaega.",
+      "estleg:summary": {
+        "@value": "(1) Haldusnõukogu liige ei või üldkoosoleku nõusolekuta: 1) olla füüsilisest isikust ettevõtja SE tegevusalal; 2) olla SE-ga samal tegevusalal tegutseva täisühingu osanik või usaldusühingu täisosanik; 3) olla SE-ga samal tegevusalal tegutseva äriühingu juhtimisorgani liige, välja arvatud siis, kui tegemist on ühte kontserni kuuluvate äriühingutega. (2) Kui haldusnõukogu liikme tegevus on vastuolus käesoleva paragrahvi lõikes 1 sätestatuga, võib SE haldusnõukogu liikmelt nõuda keelatud tegevuse",
+        "@language": "et"
+      },
+      "estleg:legalText": "(1) Haldusnõukogu liige ei või üldkoosoleku nõusolekuta: 1) olla füüsilisest isikust ettevõtja SE tegevusalal; 2) olla SE-ga samal tegevusalal tegutseva täisühingu osanik või usaldusühingu täisosanik; 3) olla SE-ga samal tegevusalal tegutseva äriühingu juhtimisorgani liige, välja arvatud siis, kui tegemist on ühte kontserni kuuluvate äriühingutega. (2) Kui haldusnõukogu liikme tegevus on vastuolus käesoleva paragrahvi lõikes 1 sätestatuga, võib SE haldusnõukogu liikmelt nõuda keelatud tegevuse lõpetamist, keelatud tegevusest saadud tulu üleandmist SE-le ning kahju hüvitamist ulatuses, mis ületab sissenõutud tulu. (3) Keelatud tegevuse lõpetamise ja keelatud tegevusest saadud tulu üleandmise nõude aegumistähtaeg on kolm kuud, arvates päevast, mil SE sai teada konkurentsikeelu rikkumisest, kuid mitte pikem kui kolm aastat, arvates konkurentsikeelu rikkumisest. Kahju hüvitamise nõudele kohaldatakse üldist aegumistähtaega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -3645,11 +3971,16 @@
         "owl:NamedIndividual"
       ],
       "estleg:subsectionNumber": "1",
-      "estleg:legalText": "(1) Haldusnõukogu liige ei või üldkoosoleku nõusolekuta: olla füüsilisest isikust ettevõtja SE tegevusalal; olla SE-ga samal tegevusalal tegutseva täisühingu osanik või usaldusühingu täisosanik; olla SE-ga samal tegevusalal tegutseva äriühingu juhtimisorgani liige, välja arvatud siis, kui tegemist on ühte kontserni kuuluvate äriühingutega.",
+      "estleg:legalText": "(1) Haldusnõukogu liige ei või üldkoosoleku nõusolekuta: 1) olla füüsilisest isikust ettevõtja SE tegevusalal; 2) olla SE-ga samal tegevusalal tegutseva täisühingu osanik või usaldusühingu täisosanik; 3) olla SE-ga samal tegevusalal tegutseva äriühingu juhtimisorgani liige, välja arvatud siis, kui tegemist on ühte kontserni kuuluvate äriühingutega.",
       "estleg:parentProvision": {
         "@id": "estleg:SEPS_Par_27"
       },
       "rdfs:label": "§ 27 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
@@ -3703,13 +4034,22 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Haldusnõukogu liikme tasustamine",
+      "rdfs:label": {
+        "@value": "§ 28. Haldusnõukogu liikme tasustamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Haldusnõukogu liikmete tasustamise korra ja tasu suurused otsustab üldkoosolek. Esimestele haldusnõukogu liikmetele tasu maksmise otsustavad asutajad. (2) Haldusnõukogu liikme tasustamise korra ning tasude ja muude hüvede suuruse määramisel ning haldusnõukogu liikmega lepingu sõlmimisel tuleb tagada, et haldusnõukogu liikmele SE poolt tehtavate maksete kogusumma oleks mõistlikus vastavuses haldusnõukogu liikme ülesannete ja SE majandusliku olukorraga.",
+      "estleg:summary": {
+        "@value": "(1) Haldusnõukogu liikmete tasustamise korra ja tasu suurused otsustab üldkoosolek. Esimestele haldusnõukogu liikmetele tasu maksmise otsustavad asutajad. (2) Haldusnõukogu liikme tasustamise korra ning tasude ja muude hüvede suuruse määramisel ning haldusnõukogu liikmega lepingu sõlmimisel tuleb tagada, et haldusnõukogu liikmele SE poolt tehtavate maksete kogusumma oleks mõistlikus vastavuses haldusnõukogu liikme ülesannete ja SE majandusliku olukorraga.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Haldusnõukogu liikmete tasustamise korra ja tasu suurused otsustab üldkoosolek. Esimestele haldusnõukogu liikmetele tasu maksmise otsustavad asutajad. (2) Haldusnõukogu liikme tasustamise korra ning tasude ja muude hüvede suuruse määramisel ning haldusnõukogu liikmega lepingu sõlmimisel tuleb tagada, et haldusnõukogu liikmele SE poolt tehtavate maksete kogusumma oleks mõistlikus vastavuses haldusnõukogu liikme ülesannete ja SE majandusliku olukorraga. (3) Kui SE majanduslik olukord halveneb oluliselt ja haldusnõukogu liikmele määratud või temaga kokkulepitud tasude edasimaksmine või muude hüvede jätkuv võimaldamine oleks SE suhtes äärmiselt ebaõiglane, võib SE nõuda tasude ja muude hüvede vähendamist. (4) Käesoleva paragrahvi lõikes 3 nimetatud vähendamine ei puuduta haldusnõukogu liikmega sõlmitud lepingu muid tingimusi. Haldusnõukogu liikmel on tasude või muude hüvede vähendamise korral õigus temaga sõlmitud leping ühekuulise etteteatamisega erakorraliselt üles öelda. (5) Kui välja kuulutatakse SE pankrot ja haldusnõukogu liikme leping lõpeb, võib haldusnõukogu liige pankrotimenetluses nõuda lepingu lõppemisest tekkinud kahju hüvitamist lepingu lõppemisest alates kuni ühe aasta eest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SEPS_4"
+      },
       "estleg:isPartOf": {
         "@id": "estleg:Division_SEPS_4_2"
       },
@@ -3853,12 +4193,18 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. SE lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 29. SE lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Euroopa Liidu Nõukogu määruse (EÜ) nr 2157/2001 «Euroopa äriühingu (SE) põhikirja kohta» rakendamise seadus",
       "estleg:partOfAct": {
         "@id": "estleg:SEPS_Map"
       },
-      "estleg:summary": "(1) Kui Eesti äriregistris registreeritud SE ei vasta enam määruse artiklis 7 sätestatud nõuetele, annab registripidaja SE-le tähtaja, mille jooksul SE peab oma juhatuse tooma üle Eestisse või viima oma registrijärgse asukoha vastavalt määruse artiklile 8 üle teise liikmesriiki. Tähtaeg ei tohi olla lühem kui kaks kuud. (2) Kui SE määratud tähtaja jooksul puudusi ei kõrvalda, võib registripidaja otsustada SE sundlõpetamise.",
+      "estleg:summary": {
+        "@value": "(1) Kui Eesti äriregistris registreeritud SE ei vasta enam määruse artiklis 7 sätestatud nõuetele, annab registripidaja SE-le tähtaja, mille jooksul SE peab oma juhatuse tooma üle Eestisse või viima oma registrijärgse asukoha vastavalt määruse artiklile 8 üle teise liikmesriiki. Tähtaeg ei tohi olla lühem kui kaks kuud. (2) Kui SE määratud tähtaja jooksul puudusi ei kõrvalda, võib registripidaja otsustada SE sundlõpetamise.",
+        "@language": "et"
+      },
       "estleg:legalText": "(1) Kui Eesti äriregistris registreeritud SE ei vasta enam määruse artiklis 7 sätestatud nõuetele, annab registripidaja SE-le tähtaja, mille jooksul SE peab oma juhatuse tooma üle Eestisse või viima oma registrijärgse asukoha vastavalt määruse artiklile 8 üle teise liikmesriiki. Tähtaeg ei tohi olla lühem kui kaks kuud. (2) Kui SE määratud tähtaja jooksul puudusi ei kõrvalda, võib registripidaja otsustada SE sundlõpetamise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SEPS_5"
@@ -3942,6 +4288,22 @@
       "estleg:assertionConfidence": {
         "@value": "0.65",
         "@type": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "https://www.riigiteataja.ee/en/eli/525012023001",
+      "@type": [
+        "eli:LegalExpression"
+      ],
+      "eli:language": {
+        "@id": "http://publications.europa.eu/resource/authority/language/ENG"
+      },
+      "eli:realizes": {
+        "@id": "estleg:SEPS_Map"
+      },
+      "rdfs:label": {
+        "@value": "Council Regulation (EC) No 2157/2001 of 8 October 2001 on the Statute for a European company (SE) Implementation Act",
+        "@language": "en"
       }
     }
   ]

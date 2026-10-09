@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:GovernmentRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Vabariigi Valitsuse sanktsiooni kehtestamine inimõiguste järgimise tagamiseks (määrus)",
+      "rdfs:label": {
+        "@value": "Vabariigi Valitsuse sanktsiooni kehtestamine inimõiguste järgimise tagamiseks (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Vabariigi Valitsuse sanktsiooni kehtestamine inimõiguste järgimise tagamiseks",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -40,11 +47,6 @@
         "@value": "2028-05-20",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2023-05-20",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:assertionConfidence": {
         "@value": "0.55",
         "@type": "xsd:decimal"
@@ -76,7 +78,13 @@
         {
           "@id": "http://eurovoc.europa.eu/538"
         }
-      ]
+      ],
+      "dcterms:title": "Vabariigi Valitsuse sanktsiooni kehtestamine inimõiguste järgimise tagamiseks",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1056637_Par_1",
@@ -85,13 +93,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Reguleerimisala",
+      "rdfs:label": {
+        "@value": "§ 1. Reguleerimisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Valitsuse sanktsiooni kehtestamine inimõiguste järgimise tagamiseks",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056637_Map"
       },
-      "estleg:summary": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina sissesõidukeeld.",
-      "estleg:legalText": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina sissesõidukeeld. Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina sissesõidukeeld.",
+      "estleg:summary": {
+        "@value": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina sissesõidukeeld.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina sissesõidukeeld.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_PublicBody"
@@ -132,7 +146,25 @@
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1056637_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1056637_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega kehtestatakse rahvusvahelise sanktsiooni seaduse § 3 lõikes 1 ja §-s 4 nimetatud eesmärkide toetamiseks Vabariigi Valitsuse sanktsioonina sissesõidukeeld.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056637_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1056637_Par_2",
@@ -141,13 +173,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Kohaldamisala",
+      "rdfs:label": {
+        "@value": "§ 2. Kohaldamisala",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Valitsuse sanktsiooni kehtestamine inimõiguste järgimise tagamiseks",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056637_Map"
       },
-      "estleg:summary": "1 (1) Sissesõidukeeldu kohaldatakse Eesti Vabariigi territooriumil rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas määratud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad on osalenud inimõiguste rikkumises või aidanud inimõiguste rikkumisele kaasa. Sissesõidukeeldu kohaldatakse Eesti Vabariigi territooriumil rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas määratud isikute suhtes, kelle koh",
-      "estleg:legalText": "1 (1) Sissesõidukeeldu kohaldatakse Eesti Vabariigi territooriumil rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas määratud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad on osalenud inimõiguste rikkumises või aidanud inimõiguste rikkumisele kaasa. Sissesõidukeeldu kohaldatakse Eesti Vabariigi territooriumil rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas määratud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad on osalenud inimõiguste rikkumises või aidanud inimõiguste rikkumisele kaasa. 2 (2) Sissesõidukeeldu rakendatakse väljasõidukohustuse ja sissesõidukeelu seaduses sätestatud korras. Sissesõidukeeldu rakendatakse väljasõidukohustuse ja sissesõidukeelu seaduses sätestatud korras.",
+      "estleg:summary": {
+        "@value": "1 (1) Sissesõidukeeldu kohaldatakse Eesti Vabariigi territooriumil rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas määratud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad on osalenud inimõiguste rikkumises või aidanud inimõiguste rikkumisele kaasa. 2 (2) Sissesõidukeeldu rakendatakse väljasõidukohustuse ja sissesõidukeelu seaduses sätestatud korras.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Sissesõidukeeldu kohaldatakse Eesti Vabariigi territooriumil rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas määratud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad on osalenud inimõiguste rikkumises või aidanud inimõiguste rikkumisele kaasa. 2 (2) Sissesõidukeeldu rakendatakse väljasõidukohustuse ja sissesõidukeelu seaduses sätestatud korras.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -182,7 +220,41 @@
         {
           "@id": "estleg:Institution_valisminister"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1056637_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1056637_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1056637_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sissesõidukeeldu kohaldatakse Eesti Vabariigi territooriumil rahvusvahelise sanktsiooni seaduse § 27 lõike 2 alusel antud välisministri käskkirjas määratud isikute suhtes, kelle kohta on andmeid või on põhjendatud alust arvata, et nad on osalenud inimõiguste rikkumises või aidanud inimõiguste rikkumisele kaasa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056637_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1056637_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sissesõidukeeldu rakendatakse väljasõidukohustuse ja sissesõidukeelu seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056637_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1056637_Par_3",
@@ -191,13 +263,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Kehtivus",
+      "rdfs:label": {
+        "@value": "§ 3. Kehtivus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Vabariigi Valitsuse sanktsiooni kehtestamine inimõiguste järgimise tagamiseks",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1056637_Map"
       },
-      "estleg:summary": "Määrus kehtib viis aastat selle jõustumisest arvates.",
-      "estleg:legalText": "Määrus kehtib viis aastat selle jõustumisest arvates. Määrus kehtib viis aastat selle jõustumisest arvates.",
+      "estleg:summary": {
+        "@value": "Määrus kehtib viis aastat selle jõustumisest arvates.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrus kehtib viis aastat selle jõustumisest arvates.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KIIRGU_Par_91"
@@ -219,6 +297,11 @@
         {
           "@id": "estleg:Reg_1056637_Par_3_v1056637"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1056637_Par_3_Lg_1"
+        }
       ]
     },
     {
@@ -232,6 +315,19 @@
       },
       "estleg:citationDetail": "lg 1",
       "estleg:citationText": "Määrus kehtestatakse rahvusvahelise sanktsiooni seaduse § 27 lõike 1"
+    },
+    {
+      "@id": "estleg:Reg_1056637_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrus kehtib viis aastat selle jõustumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1056637_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     }
   ]
 }

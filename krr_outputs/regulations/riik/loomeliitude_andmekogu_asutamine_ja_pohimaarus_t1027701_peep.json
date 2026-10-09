@@ -5,9 +5,13 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "eli": "http://data.europa.eu/eli/ontology#"
+    "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
+    "void": "http://rdfs.org/ns/void#",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/"
   },
   "@graph": [
     {
@@ -17,7 +21,10 @@
         "estleg:MinisterialRegulation",
         "estleg:NationalRegulation"
       ],
-      "rdfs:label": "Loomeliitude andmekogu asutamine ja põhimäärus (määrus)",
+      "rdfs:label": {
+        "@value": "Loomeliitude andmekogu asutamine ja põhimäärus (määrus)",
+        "@language": "et"
+      },
       "dc:source": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:documentType": "määrus",
       "estleg:isKov": {
@@ -33,18 +40,13 @@
       "estleg:terviktekstId": "1027701",
       "estleg:preambleText": "Määrus kehtestatakse loovisikute ja loomeliitude seaduse § 11 lõike 1 ja 2 alusel.",
       "estleg:entryIntoForce": {
-        "@value": "2015-01-09",
+        "@value": "2019-04-12",
         "@type": "xsd:date"
       },
       "estleg:lastAmendmentDate": {
         "@value": "2019-04-03",
         "@type": "xsd:date"
       },
-      "estleg:publicationDate": {
-        "@value": "2015-01-06",
-        "@type": "xsd:date"
-      },
-      "estleg:temporalStatus": "inForce",
       "estleg:amendedBy": [
         {
           "@id": "estleg:Amendment_Reg_1027701_5b056f5a20"
@@ -96,7 +98,13 @@
         {
           "@id": "estleg:Institution_andmekaitseinspektsioon"
         }
-      ]
+      ],
+      "dcterms:title": "Loomeliitude andmekogu asutamine ja põhimäärus",
+      "estleg:parseMode": "structured",
+      "estleg:kehtiv": {
+        "@value": "2026-10-09",
+        "@type": "xsd:date"
+      }
     },
     {
       "@id": "estleg:Reg_1027701_Par_1",
@@ -105,13 +113,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Loomeliitude andmekogu asutamine",
+      "rdfs:label": {
+        "@value": "§ 1. Loomeliitude andmekogu asutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "Määrusega asutatakse andmekogu nimetusega „Loomeliitude andmekogu” (edaspidi andmekogu). Andmekogu ametlik lühend on „LLA”.",
-      "estleg:legalText": "Määrusega asutatakse andmekogu nimetusega „Loomeliitude andmekogu” (edaspidi andmekogu). Andmekogu ametlik lühend on „LLA”. Määrusega asutatakse andmekogu nimetusega „Loomeliitude andmekogu” (edaspidi andmekogu). Andmekogu ametlik lühend on „LLA”.",
+      "estleg:summary": {
+        "@value": "Määrusega asutatakse andmekogu nimetusega „Loomeliitude andmekogu” (edaspidi andmekogu). Andmekogu ametlik lühend on „LLA”.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Määrusega asutatakse andmekogu nimetusega „Loomeliitude andmekogu” (edaspidi andmekogu). Andmekogu ametlik lühend on „LLA”.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1012558_Par_1"
@@ -133,7 +147,25 @@
         {
           "@id": "estleg:Reg_1027701_Par_1_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_1_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Määrusega asutatakse andmekogu nimetusega „Loomeliitude andmekogu” (edaspidi andmekogu). Andmekogu ametlik lühend on „LLA”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
     },
     {
       "@id": "estleg:Reg_1027701_Par_2",
@@ -142,18 +174,58 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Andmekogu pidamise eesmärk",
+      "rdfs:label": {
+        "@value": "§ 2. Andmekogu pidamise eesmärk",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu pidamise eesmärk on loomeliidu toetuse maksmiseks ning loomeliidu üle järelevalve teostamiseks loomeliitude ja loovisikute üle arvestuse pidamine. RT I 2019-04-09 1 109042019001 2019-04-12 Andmekogu pidamise eesmärk on loomeliidu toetuse maksmiseks ning loomeliidu üle järelevalve teostamiseks loomeliitude ja loovisikute üle arvestuse pidamine. 2 (2) Juurdepääs andmekogule toimub e-teenuse keskkonna „e-äriregister” kaudu. Andmekogu on muudest andmekogudest õiguslikult sõltumatu. J",
-      "estleg:legalText": "1 (1) Andmekogu pidamise eesmärk on loomeliidu toetuse maksmiseks ning loomeliidu üle järelevalve teostamiseks loomeliitude ja loovisikute üle arvestuse pidamine. RT I 2019-04-09 1 109042019001 2019-04-12 Andmekogu pidamise eesmärk on loomeliidu toetuse maksmiseks ning loomeliidu üle järelevalve teostamiseks loomeliitude ja loovisikute üle arvestuse pidamine. 2 (2) Juurdepääs andmekogule toimub e-teenuse keskkonna „e-äriregister” kaudu. Andmekogu on muudest andmekogudest õiguslikult sõltumatu. Juurdepääs andmekogule toimub e-teenuse keskkonna „e-äriregister” kaudu. Andmekogu on muudest andmekogudest õiguslikult sõltumatu.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu pidamise eesmärk on loomeliidu toetuse maksmiseks ning loomeliidu üle järelevalve teostamiseks loomeliitude ja loovisikute üle arvestuse pidamine. RT I 2019-04-09 1 109042019001 2019-04-12 2 (2) Juurdepääs andmekogule toimub e-teenuse keskkonna „e-äriregister” kaudu. Andmekogu on muudest andmekogudest õiguslikult sõltumatu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu pidamise eesmärk on loomeliidu toetuse maksmiseks ning loomeliidu üle järelevalve teostamiseks loomeliitude ja loovisikute üle arvestuse pidamine. RT I 2019-04-09 1 109042019001 2019-04-12 2 (2) Juurdepääs andmekogule toimub e-teenuse keskkonna „e-äriregister” kaudu. Andmekogu on muudest andmekogudest õiguslikult sõltumatu.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1027701_Par_2_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_2_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu pidamise eesmärk on loomeliidu toetuse maksmiseks ning loomeliidu üle järelevalve teostamiseks loomeliitude ja loovisikute üle arvestuse pidamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juurdepääs andmekogule toimub e-teenuse keskkonna „e-äriregister” kaudu. Andmekogu on muudest andmekogudest õiguslikult sõltumatu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:Reg_1027701_Par_3",
@@ -162,13 +234,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Andmekogu vastutav ja volitatud töötleja",
+      "rdfs:label": {
+        "@value": "§ 3. Andmekogu vastutav ja volitatud töötleja",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu vastutav töötleja on Kultuuriministeerium. Andmekogu vastutav töötleja on Kultuuriministeerium. 2 (2) Andmekogu volitatud töötleja on Registrite ja Infosüsteemide Keskus. Andmekogu volitatud töötleja on Registrite ja Infosüsteemide Keskus. 3 (3) Vastutav töötleja: 1 1) lahendab andmekogu puudutavaid õiguslikke küsimusi; 2 2) teavitab volitatud töötlejat andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja andmekogu pidamist reguleerivate õigusaktide muu",
-      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja on Kultuuriministeerium. Andmekogu vastutav töötleja on Kultuuriministeerium. 2 (2) Andmekogu volitatud töötleja on Registrite ja Infosüsteemide Keskus. Andmekogu volitatud töötleja on Registrite ja Infosüsteemide Keskus. 3 (3) Vastutav töötleja: 1 1) lahendab andmekogu puudutavaid õiguslikke küsimusi; 2 2) teavitab volitatud töötlejat andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja andmekogu pidamist reguleerivate õigusaktide muutmise kavatsusest; 3 3) vastutab andmekogu pidamise, järelevalve toimimise ning andmete väljastamise õiguspärasuse eest; 4 4) määrab andmekogu turvanõuded. Vastutav töötleja: lahendab andmekogu puudutavaid õiguslikke küsimusi; teavitab volitatud töötlejat andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja andmekogu pidamist reguleerivate õigusaktide muutmise kavatsusest; vastutab andmekogu pidamise, järelevalve toimimise ning andmete väljastamise õiguspärasuse eest; määrab andmekogu turvanõuded. 4 (4) Volitatud töötleja: 1 1) võimaldab e-äriregistri kaudu selleks määratud isikutel kanda andmekogusse andmeid, nendega tutvuda ning nõustab andmekogu kasutajaid tehnilistes küsimustes; 2 2) korraldab andmekogu andmete säilimise vastavalt kehtestatud nõuetele; 3 3) teavitab vastutavat töötlejat viivitamatult andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja annab vastutavale töötlejale andmekogu pidamise kohta aru. Volitatud töötleja: võimaldab e-äriregistri kaudu selleks määratud isikutel kanda andmekogusse andmeid, nendega tutvuda ning nõustab andmekogu kasutajaid tehnilistes küsimustes; korraldab andmekogu andmete säilimise vastavalt kehtestatud nõuetele; teavitab vastutavat töötlejat viivitamatult andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja annab vastutavale töötlejale andmekogu pidamise kohta aru.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu vastutav töötleja on Kultuuriministeerium. 2 (2) Andmekogu volitatud töötleja on Registrite ja Infosüsteemide Keskus. 3 (3) Vastutav töötleja: 1 1) lahendab andmekogu puudutavaid õiguslikke küsimusi; 2 2) teavitab volitatud töötlejat andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja andmekogu pidamist reguleerivate õigusaktide muutmise kavatsusest; 3 3) vastutab andmekogu pidamise, järelevalve toimimise ning andmete väljastamise õiguspärasuse eest;…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu vastutav töötleja on Kultuuriministeerium. 2 (2) Andmekogu volitatud töötleja on Registrite ja Infosüsteemide Keskus. 3 (3) Vastutav töötleja: 1 1) lahendab andmekogu puudutavaid õiguslikke küsimusi; 2 2) teavitab volitatud töötlejat andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja andmekogu pidamist reguleerivate õigusaktide muutmise kavatsusest; 3 3) vastutab andmekogu pidamise, järelevalve toimimise ning andmete väljastamise õiguspärasuse eest; 4 4) määrab andmekogu turvanõuded. 4 (4) Volitatud töötleja: 1 1) võimaldab e-äriregistri kaudu selleks määratud isikutel kanda andmekogusse andmeid, nendega tutvuda ning nõustab andmekogu kasutajaid tehnilistes küsimustes; 2 2) korraldab andmekogu andmete säilimise vastavalt kehtestatud nõuetele; 3 3) teavitab vastutavat töötlejat viivitamatult andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja annab vastutavale töötlejale andmekogu pidamise kohta aru.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -195,6 +273,83 @@
         {
           "@id": "estleg:Institution_kultuuriministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_3_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu vastutav töötleja on Kultuuriministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu volitatud töötleja on Registrite ja Infosüsteemide Keskus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vastutav töötleja: 1) lahendab andmekogu puudutavaid õiguslikke küsimusi; 2) teavitab volitatud töötlejat andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja andmekogu pidamist reguleerivate õigusaktide muutmise kavatsusest; 3) vastutab andmekogu pidamise, järelevalve toimimise ning andmete väljastamise õiguspärasuse eest; 4) määrab andmekogu turvanõuded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Volitatud töötleja: 1) võimaldab e-äriregistri kaudu selleks määratud isikutel kanda andmekogusse andmeid, nendega tutvuda ning nõustab andmekogu kasutajaid tehnilistes küsimustes; 2) korraldab andmekogu andmete säilimise vastavalt kehtestatud nõuetele; 3) teavitab vastutavat töötlejat viivitamatult andmekogu pidamist puudutavate kohustuste täitmist takistavatest asjaoludest ja annab vastutavale töötlejale andmekogu pidamise kohta aru.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -204,13 +359,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Andmekogusse sisestatud andmete õiguslik tähendus",
+      "rdfs:label": {
+        "@value": "§ 4. Andmekogusse sisestatud andmete õiguslik tähendus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "Andmekogusse sisestatud andmetel on informatiivne tähendus.",
-      "estleg:legalText": "Andmekogusse sisestatud andmetel on informatiivne tähendus. Andmekogusse sisestatud andmetel on informatiivne tähendus.",
+      "estleg:summary": {
+        "@value": "Andmekogusse sisestatud andmetel on informatiivne tähendus.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogusse sisestatud andmetel on informatiivne tähendus.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1012583_Par_6"
@@ -232,7 +393,25 @@
         {
           "@id": "estleg:Reg_1027701_Par_4_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_4_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse sisestatud andmetel on informatiivne tähendus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
     },
     {
       "@id": "estleg:Reg_1027701_Par_5",
@@ -241,13 +420,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Andmekogu ülesehitus ja andmete töötlemine",
+      "rdfs:label": {
+        "@value": "§ 5. Andmekogu ülesehitus ja andmete töötlemine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu koosneb: 1 1) loomeliitude ja loovisikute andmetest (edaspidi digitaalne andmebaas); 2 2) digitaalsest arhiivist. Andmekogu koosneb: loomeliitude ja loovisikute andmetest (edaspidi digitaalne andmebaas); digitaalsest arhiivist. 2 (2) Andmekogu turbeaste on madal (L) ja andmekogu turvaklass on K1T1S1. Andmekogu turbeaste on madal (L) ja andmekogu turvaklass on K1T1S1. 3 (3) Andmekogu on liidestatud infosüsteemide andmevahetuskihiga ning see kuulub riigi infosüsteemi koosseisu. And",
-      "estleg:legalText": "1 (1) Andmekogu koosneb: 1 1) loomeliitude ja loovisikute andmetest (edaspidi digitaalne andmebaas); 2 2) digitaalsest arhiivist. Andmekogu koosneb: loomeliitude ja loovisikute andmetest (edaspidi digitaalne andmebaas); digitaalsest arhiivist. 2 (2) Andmekogu turbeaste on madal (L) ja andmekogu turvaklass on K1T1S1. Andmekogu turbeaste on madal (L) ja andmekogu turvaklass on K1T1S1. 3 (3) Andmekogu on liidestatud infosüsteemide andmevahetuskihiga ning see kuulub riigi infosüsteemi koosseisu. Andmekogu on liidestatud infosüsteemide andmevahetuskihiga ning see kuulub riigi infosüsteemi koosseisu. 4 (4) Andmekogu andmete korral tagatakse nende käideldavus, kättesaadavus volitatud isikutele ja isikutele, kellel on õigustatud huvi ning terviklus, välistades andmete tahtmatu või tahtliku muutmise. Andmekogu andmete korral tagatakse nende käideldavus, kättesaadavus volitatud isikutele ja isikutele, kellel on õigustatud huvi ning terviklus, välistades andmete tahtmatu või tahtliku muutmise. 5 (5) Andmekogu andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks rakendatakse infosüsteemide kolmeastmelises etalonturbes ette nähtud organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 Andmekogu andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks rakendatakse infosüsteemide kolmeastmelises etalonturbes ette nähtud organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu koosneb: 1 1) loomeliitude ja loovisikute andmetest (edaspidi digitaalne andmebaas); 2 2) digitaalsest arhiivist. 2 (2) Andmekogu turbeaste on madal (L) ja andmekogu turvaklass on K1T1S1. 3 (3) Andmekogu on liidestatud infosüsteemide andmevahetuskihiga ning see kuulub riigi infosüsteemi koosseisu. 4 (4) Andmekogu andmete korral tagatakse nende käideldavus, kättesaadavus volitatud isikutele ja isikutele, kellel on õigustatud huvi ning terviklus, välistades andmete tahtmatu või…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu koosneb: 1 1) loomeliitude ja loovisikute andmetest (edaspidi digitaalne andmebaas); 2 2) digitaalsest arhiivist. 2 (2) Andmekogu turbeaste on madal (L) ja andmekogu turvaklass on K1T1S1. 3 (3) Andmekogu on liidestatud infosüsteemide andmevahetuskihiga ning see kuulub riigi infosüsteemi koosseisu. 4 (4) Andmekogu andmete korral tagatakse nende käideldavus, kättesaadavus volitatud isikutele ja isikutele, kellel on õigustatud huvi ning terviklus, välistades andmete tahtmatu või tahtliku muutmise. 5 (5) Andmekogu andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks rakendatakse infosüsteemide kolmeastmelises etalonturbes ette nähtud organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1037179_Par_4"
@@ -263,7 +448,93 @@
         {
           "@id": "estleg:Reg_1027701_Par_5_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_5_Lg_5"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu koosneb: 1) loomeliitude ja loovisikute andmetest (edaspidi digitaalne andmebaas); 2) digitaalsest arhiivist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu turbeaste on madal (L) ja andmekogu turvaklass on K1T1S1.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu on liidestatud infosüsteemide andmevahetuskihiga ning see kuulub riigi infosüsteemi koosseisu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmekogu andmete korral tagatakse nende käideldavus, kättesaadavus volitatud isikutele ja isikutele, kellel on õigustatud huvi ning terviklus, välistades andmete tahtmatu või tahtliku muutmise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmekogu andmete käideldavuse, tervikluse ja konfidentsiaalsuse tagamiseks rakendatakse infosüsteemide kolmeastmelises etalonturbes ette nähtud organisatsioonilisi, füüsilisi ja infotehnoloogilisi turvameetmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
     },
     {
       "@id": "estleg:Reg_1027701_Par_6",
@@ -272,13 +543,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Andmekogu andmed",
+      "rdfs:label": {
+        "@value": "§ 6. Andmekogu andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Tunnustatud loomeliidu andmetena kantakse digitaalsesse andmebaasi: 1 1) loomeliidu nimetus; 2 2) mittetulundusühingute ja sihtasutuste registri kood; 3 3) põhikiri; 4 4) kontaktandmed (telefoninumber, elektronposti aadress ja postiaadress); 5 5) juhatuse liikmete ees- ja perekonnanimed ning isikukoodid; 6 6) loomeliiduna tunnustamise aeg; 7 7) loomeliidu loomeala; 7 7¹) loomeliidu kutseala; 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 8 8) arvelduskonto number; 9 9) l",
-      "estleg:legalText": "1 (1) Tunnustatud loomeliidu andmetena kantakse digitaalsesse andmebaasi: 1 1) loomeliidu nimetus; 2 2) mittetulundusühingute ja sihtasutuste registri kood; 3 3) põhikiri; 4 4) kontaktandmed (telefoninumber, elektronposti aadress ja postiaadress); 5 5) juhatuse liikmete ees- ja perekonnanimed ning isikukoodid; 6 6) loomeliiduna tunnustamise aeg; 7 7) loomeliidu loomeala; 7 7¹) loomeliidu kutseala; 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 8 8) arvelduskonto number; 9 9) loomeliidu toetuse eest vastutava kontaktisiku ees- ja perekonnanimi, telefoninumber, elektronposti aadress; 10 10) loomeliidu veebiaadress; 11 11) toetuse taotleja volitatud esindaja nimi ja ametikoht; 12 12) loomeliiduna tunnustamise kehtetuks tunnistamise aeg. Tunnustatud loomeliidu andmetena kantakse digitaalsesse andmebaasi: loomeliidu nimetus; mittetulundusühingute ja sihtasutuste registri kood; põhikiri; kontaktandmed (telefoninumber, elektronposti aadress ja postiaadress); juhatuse liikmete ees- ja perekonnanimed ning isikukoodid; loomeliiduna tunnustamise aeg; loomeliidu loomeala; loomeliidu kutseala; arvelduskonto number; loomeliidu toetuse eest vastutava kontaktisiku ees- ja perekonnanimi, telefoninumber, elektronposti aadress; loomeliidu veebiaadress; toetuse taotleja volitatud esindaja nimi ja ametikoht; loomeliiduna tunnustamise kehtetuks tunnistamise aeg. 2 (2) Tunnustatud loomeliitu kuuluva loovisiku andmetena kantakse digitaalsesse andmebaasi: 1 1) ees- ja perekonnanimi ning isikukood; 2 2) loomeliitu astumise aeg; 3 3) loomeliitu kuuluvuse peatamise aeg; 4 4) loomeliidust väljaastumise või väljaarvamise aeg; 5 5) loovisiku vastavus loovisikute ja loomeliitude seaduse § 4 lõikes 3 sätestatud tingimustele; 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 6 6) loomeliidud, mis saavad tema eest arvestatud toetust koos loomeliidule esitatud avaldusega, juhul, kui loovisik kuulub mitmesse loomeliitu ja ta on esitanud vastava avalduse. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 Tunnustatud loomeliitu kuuluva loovisiku andmetena kantakse digitaalsesse andmebaasi: ees- ja perekonnanimi ning isikukood; loomeliitu astumise aeg; loomeliitu kuuluvuse peatamise aeg; loomeliidust väljaastumise või väljaarvamise aeg; loovisiku vastavus loovisikute ja loomeliitude seaduse § 4 lõikes 3 sätestatud tingimustele; loomeliidud, mis saavad tema eest arvestatud toetust koos loomeliidule esitatud avaldusega, juhul, kui loovisik kuulub mitmesse loomeliitu ja ta on esitanud vastava avalduse.",
+      "estleg:summary": {
+        "@value": "1 (1) Tunnustatud loomeliidu andmetena kantakse digitaalsesse andmebaasi: 1 1) loomeliidu nimetus; 2 2) mittetulundusühingute ja sihtasutuste registri kood; 3 3) põhikiri; 4 4) kontaktandmed (telefoninumber, elektronposti aadress ja postiaadress); 5 5) juhatuse liikmete ees- ja perekonnanimed ning isikukoodid; 6 6) loomeliiduna tunnustamise aeg; 7 7) loomeliidu loomeala; 7 7<sup>1</sup>) loomeliidu kutseala; 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 8 8) arvelduskonto number; 9 9)…",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Tunnustatud loomeliidu andmetena kantakse digitaalsesse andmebaasi: 1 1) loomeliidu nimetus; 2 2) mittetulundusühingute ja sihtasutuste registri kood; 3 3) põhikiri; 4 4) kontaktandmed (telefoninumber, elektronposti aadress ja postiaadress); 5 5) juhatuse liikmete ees- ja perekonnanimed ning isikukoodid; 6 6) loomeliiduna tunnustamise aeg; 7 7) loomeliidu loomeala; 7 7<sup>1</sup>) loomeliidu kutseala; 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 8 8) arvelduskonto number; 9 9) loomeliidu toetuse eest vastutava kontaktisiku ees- ja perekonnanimi, telefoninumber, elektronposti aadress; 10 10) loomeliidu veebiaadress; 11 11) toetuse taotleja volitatud esindaja nimi ja ametikoht; 12 12) loomeliiduna tunnustamise kehtetuks tunnistamise aeg. 2 (2) Tunnustatud loomeliitu kuuluva loovisiku andmetena kantakse digitaalsesse andmebaasi: 1 1) ees- ja perekonnanimi ning isikukood; 2 2) loomeliitu astumise aeg; 3 3) loomeliitu kuuluvuse peatamise aeg; 4 4) loomeliidust väljaastumise või väljaarvamise aeg; 5 5) loovisiku vastavus loovisikute ja loomeliitude seaduse § 4 lõikes 3 sätestatud tingimustele; 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 6 6) loomeliidud, mis saavad tema eest arvestatud toetust koos loomeliidule esitatud avaldusega, juhul, kui loovisik kuulub mitmesse loomeliitu ja ta on esitanud vastava avalduse. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -295,6 +572,63 @@
         {
           "@id": "estleg:Reg_1027701_Par_6_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_6_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Tunnustatud loomeliidu andmetena kantakse digitaalsesse andmebaasi: 1) loomeliidu nimetus; 2) mittetulundusühingute ja sihtasutuste registri kood; 3) põhikiri; 4) kontaktandmed (telefoninumber, elektronposti aadress ja postiaadress); 5) juhatuse liikmete ees- ja perekonnanimed ning isikukoodid; 6) loomeliiduna tunnustamise aeg; 7) loomeliidu loomeala; 7¹) loomeliidu kutseala; 8) arvelduskonto number; 9) loomeliidu toetuse eest vastutava kontaktisiku ees- ja perekonnanimi, telefoninumber, elektronposti aadress; 10) loomeliidu veebiaadress; 11) toetuse taotleja volitatud esindaja nimi ja ametikoht; 12) loomeliiduna tunnustamise kehtetuks tunnistamise aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "7¹",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tunnustatud loomeliitu kuuluva loovisiku andmetena kantakse digitaalsesse andmebaasi: 1) ees- ja perekonnanimi ning isikukood; 2) loomeliitu astumise aeg; 3) loomeliitu kuuluvuse peatamise aeg; 4) loomeliidust väljaastumise või väljaarvamise aeg; 5) loovisiku vastavus loovisikute ja loomeliitude seaduse § 4 lõikes 3 sätestatud tingimustele; 6) loomeliidud, mis saavad tema eest arvestatud toetust koos loomeliidule esitatud avaldusega, juhul, kui loovisik kuulub mitmesse loomeliitu ja ta on esitanud vastava avalduse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
       ]
     },
     {
@@ -304,13 +638,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Digitaalsesse arhiivi kantavad andmed",
+      "rdfs:label": {
+        "@value": "§ 7. Digitaalsesse arhiivi kantavad andmed",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "Digitaalsesse arhiivi kantakse digitaalsest andmebaasist kustutatud andmed.",
-      "estleg:legalText": "Digitaalsesse arhiivi kantakse digitaalsest andmebaasist kustutatud andmed. Digitaalsesse arhiivi kantakse digitaalsest andmebaasist kustutatud andmed.",
+      "estleg:summary": {
+        "@value": "Digitaalsesse arhiivi kantakse digitaalsest andmebaasist kustutatud andmed.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Digitaalsesse arhiivi kantakse digitaalsest andmebaasist kustutatud andmed.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KARIST_Par_37_3"
@@ -326,7 +666,25 @@
         {
           "@id": "estleg:Reg_1027701_Par_7_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_7_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Digitaalsesse arhiivi kantakse digitaalsest andmebaasist kustutatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
     },
     {
       "@id": "estleg:Reg_1027701_Par_8",
@@ -335,13 +693,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Andmeandjad",
+      "rdfs:label": {
+        "@value": "§ 8. Andmeandjad",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse esitavad andmeid tunnustatud loomeliidud ja Kultuuriministeerium. Andmekogusse esitavad andmeid tunnustatud loomeliidud ja Kultuuriministeerium. 2 (2) Andmeandja nimel esitavad käesoleva määruse §-s 10 sätestatud korras andmeid isikud, kellele on vajalikus ulatuses antud andmekogu kasutajaõigused vastavalt käesoleva määruse §-le 12. Andmeandja nimel esitavad käesoleva määruse §-s 10 sätestatud korras andmeid isikud, kellele on vajalikus ulatuses antud andmekogu kasutajaõigused",
-      "estleg:legalText": "1 (1) Andmekogusse esitavad andmeid tunnustatud loomeliidud ja Kultuuriministeerium. Andmekogusse esitavad andmeid tunnustatud loomeliidud ja Kultuuriministeerium. 2 (2) Andmeandja nimel esitavad käesoleva määruse §-s 10 sätestatud korras andmeid isikud, kellele on vajalikus ulatuses antud andmekogu kasutajaõigused vastavalt käesoleva määruse §-le 12. Andmeandja nimel esitavad käesoleva määruse §-s 10 sätestatud korras andmeid isikud, kellele on vajalikus ulatuses antud andmekogu kasutajaõigused vastavalt käesoleva määruse §-le 12.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse esitavad andmeid tunnustatud loomeliidud ja Kultuuriministeerium. 2 (2) Andmeandja nimel esitavad käesoleva määruse §-s 10 sätestatud korras andmeid isikud, kellele on vajalikus ulatuses antud andmekogu kasutajaõigused vastavalt käesoleva määruse §-le 12.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse esitavad andmeid tunnustatud loomeliidud ja Kultuuriministeerium. 2 (2) Andmeandja nimel esitavad käesoleva määruse §-s 10 sätestatud korras andmeid isikud, kellele on vajalikus ulatuses antud andmekogu kasutajaõigused vastavalt käesoleva määruse §-le 12.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -368,7 +732,41 @@
         {
           "@id": "estleg:Institution_kultuuriministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_8_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse esitavad andmeid tunnustatud loomeliidud ja Kultuuriministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmeandja nimel esitavad käesoleva määruse §-s 10 sätestatud korras andmeid isikud, kellele on vajalikus ulatuses antud andmekogu kasutajaõigused vastavalt käesoleva määruse §-le 12.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:Reg_1027701_Par_9",
@@ -377,13 +775,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Andmete ristkasutus",
+      "rdfs:label": {
+        "@value": "§ 9. Andmete ristkasutus",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmete andmekogusse kandmisel esitatakse päringuid ja saadakse andmeid sellega liidestatud andmekogudest. Andmete andmekogusse kandmisel esitatakse päringuid ja saadakse andmeid sellega liidestatud andmekogudest. 2 (2) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu. Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu.",
-      "estleg:legalText": "1 (1) Andmete andmekogusse kandmisel esitatakse päringuid ja saadakse andmeid sellega liidestatud andmekogudest. Andmete andmekogusse kandmisel esitatakse päringuid ja saadakse andmeid sellega liidestatud andmekogudest. 2 (2) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu. Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete andmekogusse kandmisel esitatakse päringuid ja saadakse andmeid sellega liidestatud andmekogudest. 2 (2) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete andmekogusse kandmisel esitatakse päringuid ja saadakse andmeid sellega liidestatud andmekogudest. 2 (2) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1001104_Par_12"
@@ -399,7 +803,41 @@
         {
           "@id": "estleg:Reg_1027701_Par_9_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_9_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete andmekogusse kandmisel esitatakse päringuid ja saadakse andmeid sellega liidestatud andmekogudest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmevahetus teiste andmekogudega toimub infosüsteemide andmevahetuskihi kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:Reg_1027701_Par_10",
@@ -408,13 +846,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Andmete esitamine andmekogusse",
+      "rdfs:label": {
+        "@value": "§ 10. Andmete esitamine andmekogusse",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Kultuuriministeerium esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7, 71 ja 12 nimetatud andmed. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 Kultuuriministeerium esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7, 71 ja 12 nimetatud andmed. 2 (2) Tunnustatud loomeliit esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 8–11 ning lõikes 2 nimetatud andmed. Tunnustatud loomeliit esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 8–11",
-      "estleg:legalText": "1 (1) Kultuuriministeerium esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7, 71 ja 12 nimetatud andmed. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 Kultuuriministeerium esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7, 71 ja 12 nimetatud andmed. 2 (2) Tunnustatud loomeliit esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 8–11 ning lõikes 2 nimetatud andmed. Tunnustatud loomeliit esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 8–11 ning lõikes 2 nimetatud andmed.",
+      "estleg:summary": {
+        "@value": "1 (1) Kultuuriministeerium esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7, 71 ja 12 nimetatud andmed. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 2 (2) Tunnustatud loomeliit esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 8–11 ning lõikes 2 nimetatud andmed.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Kultuuriministeerium esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7, 71 ja 12 nimetatud andmed. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 2 (2) Tunnustatud loomeliit esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 8–11 ning lõikes 2 nimetatud andmed.",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1037179_Par_5_7"
@@ -435,7 +879,41 @@
         {
           "@id": "estleg:Institution_kultuuriministeerium"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_10_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuuriministeerium esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7, 7¹ ja 12 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tunnustatud loomeliit esitab andmekogusse käesoleva määruse § 6 lõike 1 punktides 8–11 ning lõikes 2 nimetatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:Reg_1027701_Par_11",
@@ -444,13 +922,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Andmete esitamise kord",
+      "rdfs:label": {
+        "@value": "§ 11. Andmete esitamise kord",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmete esitamine on andmete andmekogusse sisestamine ja sellesse kantud andmete muutmine või kustutamine. Andmete esitamine on andmete andmekogusse sisestamine ja sellesse kantud andmete muutmine või kustutamine. 2 (2) Õigus andmeandja nimel andmete esitamiseks on vastavas ulatuses kasutajaõigustega isikul. Õigus andmeandja nimel andmete esitamiseks on vastavas ulatuses kasutajaõigustega isikul. 3 (3) Andmete esitaja identifitseeritakse autentimise teenuse alusel. 2015-12-31 RT I 2016-01-",
-      "estleg:legalText": "1 (1) Andmete esitamine on andmete andmekogusse sisestamine ja sellesse kantud andmete muutmine või kustutamine. Andmete esitamine on andmete andmekogusse sisestamine ja sellesse kantud andmete muutmine või kustutamine. 2 (2) Õigus andmeandja nimel andmete esitamiseks on vastavas ulatuses kasutajaõigustega isikul. Õigus andmeandja nimel andmete esitamiseks on vastavas ulatuses kasutajaõigustega isikul. 3 (3) Andmete esitaja identifitseeritakse autentimise teenuse alusel. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 Andmete esitaja identifitseeritakse autentimise teenuse alusel. 4 (4) Andmed esitatakse käesolevas peatükis sätestatud toimingute teostamisel ja nimetatud tähtajal. Andmed esitatakse käesolevas peatükis sätestatud toimingute teostamisel ja nimetatud tähtajal. 5 (5) Andmete esitamisel registreeritakse automaatselt: 1 1) andmete esitaja ees- ja perekonnanimi; 2 2) loomeliit või asutus, kelle nimel andmed esitatakse; 3 3) andmete esitamise kuupäev ja kellaaeg. Andmete esitamisel registreeritakse automaatselt: andmete esitaja ees- ja perekonnanimi; loomeliit või asutus, kelle nimel andmed esitatakse; andmete esitamise kuupäev ja kellaaeg.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete esitamine on andmete andmekogusse sisestamine ja sellesse kantud andmete muutmine või kustutamine. 2 (2) Õigus andmeandja nimel andmete esitamiseks on vastavas ulatuses kasutajaõigustega isikul. 3 (3) Andmete esitaja identifitseeritakse autentimise teenuse alusel. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 4 (4) Andmed esitatakse käesolevas peatükis sätestatud toimingute teostamisel ja nimetatud tähtajal.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete esitamine on andmete andmekogusse sisestamine ja sellesse kantud andmete muutmine või kustutamine. 2 (2) Õigus andmeandja nimel andmete esitamiseks on vastavas ulatuses kasutajaõigustega isikul. 3 (3) Andmete esitaja identifitseeritakse autentimise teenuse alusel. 2015-12-31 RT I 2016-01-06 3 106012016003 2016-01-11 6 4 (4) Andmed esitatakse käesolevas peatükis sätestatud toimingute teostamisel ja nimetatud tähtajal. 5 (5) Andmete esitamisel registreeritakse automaatselt: 1 1) andmete esitaja ees- ja perekonnanimi; 2 2) loomeliit või asutus, kelle nimel andmed esitatakse; 3 3) andmete esitamise kuupäev ja kellaaeg.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -467,6 +951,93 @@
         {
           "@id": "estleg:Reg_1027701_Par_11_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_11_Lg_5"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete esitamine on andmete andmekogusse sisestamine ja sellesse kantud andmete muutmine või kustutamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Õigus andmeandja nimel andmete esitamiseks on vastavas ulatuses kasutajaõigustega isikul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmete esitaja identifitseeritakse autentimise teenuse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmed esitatakse käesolevas peatükis sätestatud toimingute teostamisel ja nimetatud tähtajal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmete esitamisel registreeritakse automaatselt: 1) andmete esitaja ees- ja perekonnanimi; 2) loomeliit või asutus, kelle nimel andmed esitatakse; 3) andmete esitamise kuupäev ja kellaaeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
       ]
     },
     {
@@ -476,13 +1047,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Andmekogu kasutajaõigused",
+      "rdfs:label": {
+        "@value": "§ 12. Andmekogu kasutajaõigused",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmekogu kasutajaõigused võib anda: 1 1) vastutava ja volitatud töötleja ametnikule ja töötajale; 2 2) loomeliidu juhatuse liikmele ja töötajale; 3 3) loovisikule. Andmekogu kasutajaõigused võib anda: vastutava ja volitatud töötleja ametnikule ja töötajale; loomeliidu juhatuse liikmele ja töötajale; loovisikule. 2 (2) Vastutav töötleja annab kasutajaõigused vähemalt ühele vastutava või volitatud töötleja ametnikule või töötajale (edaspidi andmekogu haldur). Vastutav töötleja annab kasutaj",
-      "estleg:legalText": "1 (1) Andmekogu kasutajaõigused võib anda: 1 1) vastutava ja volitatud töötleja ametnikule ja töötajale; 2 2) loomeliidu juhatuse liikmele ja töötajale; 3 3) loovisikule. Andmekogu kasutajaõigused võib anda: vastutava ja volitatud töötleja ametnikule ja töötajale; loomeliidu juhatuse liikmele ja töötajale; loovisikule. 2 (2) Vastutav töötleja annab kasutajaõigused vähemalt ühele vastutava või volitatud töötleja ametnikule või töötajale (edaspidi andmekogu haldur). Vastutav töötleja annab kasutajaõigused vähemalt ühele vastutava või volitatud töötleja ametnikule või töötajale (edaspidi andmekogu haldur). 3 (3) Andmekogu haldur annab loomeliidu juhatuse liikmele asutuse halduri õigused ja kasutajaõigused vastutava ja volitatud töötleja ametnikele ja töötajatele. Andmekogu haldur annab loomeliidu juhatuse liikmele asutuse halduri õigused ja kasutajaõigused vastutava ja volitatud töötleja ametnikele ja töötajatele. 4 (4) Asutuse haldur annab kasutajaõigused loomeliidu töötajale ja loovisikule. Asutuse haldur annab kasutajaõigused loomeliidu töötajale ja loovisikule. 5 (5) Andmekogu kasutajaõiguste andmisel määrab asutuse haldur kindlaks isiku kasutajaõiguste, sealhulgas andmete esitamise ja andmetele juurdepääsu õiguse ulatuse. Andmekogu kasutajaõiguste andmisel määrab asutuse haldur kindlaks isiku kasutajaõiguste, sealhulgas andmete esitamise ja andmetele juurdepääsu õiguse ulatuse. 6 (6) Kui loomeliidu või loovisiku andmed kantakse arhiivi, eemaldatakse vastava asutuse halduri, loomeliidu töötajate ja loovisiku kasutajaõigused. Kui loomeliidu või loovisiku andmed kantakse arhiivi, eemaldatakse vastava asutuse halduri, loomeliidu töötajate ja loovisiku kasutajaõigused.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogu kasutajaõigused võib anda: 1 1) vastutava ja volitatud töötleja ametnikule ja töötajale; 2 2) loomeliidu juhatuse liikmele ja töötajale; 3 3) loovisikule. 2 (2) Vastutav töötleja annab kasutajaõigused vähemalt ühele vastutava või volitatud töötleja ametnikule või töötajale (edaspidi andmekogu haldur). 3 (3) Andmekogu haldur annab loomeliidu juhatuse liikmele asutuse halduri õigused ja kasutajaõigused vastutava ja volitatud töötleja ametnikele ja töötajatele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogu kasutajaõigused võib anda: 1 1) vastutava ja volitatud töötleja ametnikule ja töötajale; 2 2) loomeliidu juhatuse liikmele ja töötajale; 3 3) loovisikule. 2 (2) Vastutav töötleja annab kasutajaõigused vähemalt ühele vastutava või volitatud töötleja ametnikule või töötajale (edaspidi andmekogu haldur). 3 (3) Andmekogu haldur annab loomeliidu juhatuse liikmele asutuse halduri õigused ja kasutajaõigused vastutava ja volitatud töötleja ametnikele ja töötajatele. 4 (4) Asutuse haldur annab kasutajaõigused loomeliidu töötajale ja loovisikule. 5 (5) Andmekogu kasutajaõiguste andmisel määrab asutuse haldur kindlaks isiku kasutajaõiguste, sealhulgas andmete esitamise ja andmetele juurdepääsu õiguse ulatuse. 6 (6) Kui loomeliidu või loovisiku andmed kantakse arhiivi, eemaldatakse vastava asutuse halduri, loomeliidu töötajate ja loovisiku kasutajaõigused.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -502,7 +1079,110 @@
         {
           "@id": "estleg:Reg_1027701_Par_12_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_12_Lg_5"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_12_Lg_6"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu kasutajaõigused võib anda: 1) vastutava ja volitatud töötleja ametnikule ja töötajale; 2) loomeliidu juhatuse liikmele ja töötajale; 3) loovisikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vastutav töötleja annab kasutajaõigused vähemalt ühele vastutava või volitatud töötleja ametnikule või töötajale (edaspidi andmekogu haldur).",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogu haldur annab loomeliidu juhatuse liikmele asutuse halduri õigused ja kasutajaõigused vastutava ja volitatud töötleja ametnikele ja töötajatele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Asutuse haldur annab kasutajaõigused loomeliidu töötajale ja loovisikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_12_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Andmekogu kasutajaõiguste andmisel määrab asutuse haldur kindlaks isiku kasutajaõiguste, sealhulgas andmete esitamise ja andmetele juurdepääsu õiguse ulatuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 5"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_12_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kui loomeliidu või loovisiku andmed kantakse arhiivi, eemaldatakse vastava asutuse halduri, loomeliidu töötajate ja loovisiku kasutajaõigused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 6"
     },
     {
       "@id": "estleg:Reg_1027701_Par_13",
@@ -511,13 +1191,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Andmete muutmine ja uuendamine",
+      "rdfs:label": {
+        "@value": "§ 13. Andmete muutmine ja uuendamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Digitaalses andmebaasis võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete andmekogusse kandmiseks; 3 3) kande aluseks olevate andmete muutumisel; 4 4) muul õigusaktidest tulenevatel põhjustel. Digitaalses andmebaasis võib andmeid muuta: andmete parandamiseks; uute andmete andmekogusse kandmiseks; kande aluseks olevate andmete muutumisel; muul õigusaktidest tulenevatel põhjustel. 2 (2) Andmeandjad peavad uuendama andmekogu digitaalsesse andmebaasi kantavaid andmeid hiljemalt",
-      "estleg:legalText": "1 (1) Digitaalses andmebaasis võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete andmekogusse kandmiseks; 3 3) kande aluseks olevate andmete muutumisel; 4 4) muul õigusaktidest tulenevatel põhjustel. Digitaalses andmebaasis võib andmeid muuta: andmete parandamiseks; uute andmete andmekogusse kandmiseks; kande aluseks olevate andmete muutumisel; muul õigusaktidest tulenevatel põhjustel. 2 (2) Andmeandjad peavad uuendama andmekogu digitaalsesse andmebaasi kantavaid andmeid hiljemalt iga kalendriaasta 1. veebruariks. Andmeandjad peavad uuendama andmekogu digitaalsesse andmebaasi kantavaid andmeid hiljemalt iga kalendriaasta 1. veebruariks.",
+      "estleg:summary": {
+        "@value": "1 (1) Digitaalses andmebaasis võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete andmekogusse kandmiseks; 3 3) kande aluseks olevate andmete muutumisel; 4 4) muul õigusaktidest tulenevatel põhjustel. 2 (2) Andmeandjad peavad uuendama andmekogu digitaalsesse andmebaasi kantavaid andmeid hiljemalt iga kalendriaasta 1. veebruariks.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Digitaalses andmebaasis võib andmeid muuta: 1 1) andmete parandamiseks; 2 2) uute andmete andmekogusse kandmiseks; 3 3) kande aluseks olevate andmete muutumisel; 4 4) muul õigusaktidest tulenevatel põhjustel. 2 (2) Andmeandjad peavad uuendama andmekogu digitaalsesse andmebaasi kantavaid andmeid hiljemalt iga kalendriaasta 1. veebruariks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -542,7 +1228,47 @@
         {
           "@id": "estleg:Reg_1027701_Par_13_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_13_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Digitaalses andmebaasis võib andmeid muuta: 1) andmete parandamiseks; 2) uute andmete andmekogusse kandmiseks; 3) kande aluseks olevate andmete muutumisel; 4) muul õigusaktidest tulenevatel põhjustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmeandjad peavad uuendama andmekogu digitaalsesse andmebaasi kantavaid andmeid hiljemalt iga kalendriaasta 1. veebruariks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
     },
     {
       "@id": "estleg:Reg_1027701_Par_14",
@@ -551,13 +1277,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Andmete kustutamine",
+      "rdfs:label": {
+        "@value": "§ 14. Andmete kustutamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Digitaalsest andmebaasist kustutatakse ja digitaalsesse arhiivi kantakse: 1 1) loomeliidu andmed loomeliidu tunnustamise kehtetuks tunnistamisel; 2 2) loovisiku andmed tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust. Digitaalsest andmebaasist kustutatakse ja digitaalsesse arhiivi kantakse: loomeliidu andmed loomeliidu tunnustamise kehtetuks tunnistamisel; loovisiku andmed tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust. 2 (2) Digitaalsesse arhiivi kantud and",
-      "estleg:legalText": "1 (1) Digitaalsest andmebaasist kustutatakse ja digitaalsesse arhiivi kantakse: 1 1) loomeliidu andmed loomeliidu tunnustamise kehtetuks tunnistamisel; 2 2) loovisiku andmed tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust. Digitaalsest andmebaasist kustutatakse ja digitaalsesse arhiivi kantakse: loomeliidu andmed loomeliidu tunnustamise kehtetuks tunnistamisel; loovisiku andmed tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust. 2 (2) Digitaalsesse arhiivi kantud andmeid võib volitatud töötleja kanda tagasi digitaalsesse andmekogusse, kui: 1 1) andmed on kustutatud ekslikult; 2 2) isik, kelle andmed kustutati, tuleb uuesti kanda digitaalsesse andmekogusse. Digitaalsesse arhiivi kantud andmeid võib volitatud töötleja kanda tagasi digitaalsesse andmekogusse, kui: andmed on kustutatud ekslikult; isik, kelle andmed kustutati, tuleb uuesti kanda digitaalsesse andmekogusse. 3 (3) Andmeid loomeliidu kohta loomeliidu tunnustamise kehtetuks tunnistamisel ja andmeid loovisiku kohta tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust säilitatakse kuni kuus aastat. RT I 2019-04-09 1 109042019001 2019-04-12 Andmeid loomeliidu kohta loomeliidu tunnustamise kehtetuks tunnistamisel ja andmeid loovisiku kohta tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust säilitatakse kuni kuus aastat.",
+      "estleg:summary": {
+        "@value": "1 (1) Digitaalsest andmebaasist kustutatakse ja digitaalsesse arhiivi kantakse: 1 1) loomeliidu andmed loomeliidu tunnustamise kehtetuks tunnistamisel; 2 2) loovisiku andmed tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust. 2 (2) Digitaalsesse arhiivi kantud andmeid võib volitatud töötleja kanda tagasi digitaalsesse andmekogusse, kui: 1 1) andmed on kustutatud ekslikult; 2 2) isik, kelle andmed kustutati, tuleb uuesti kanda digitaalsesse andmekogusse.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Digitaalsest andmebaasist kustutatakse ja digitaalsesse arhiivi kantakse: 1 1) loomeliidu andmed loomeliidu tunnustamise kehtetuks tunnistamisel; 2 2) loovisiku andmed tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust. 2 (2) Digitaalsesse arhiivi kantud andmeid võib volitatud töötleja kanda tagasi digitaalsesse andmekogusse, kui: 1 1) andmed on kustutatud ekslikult; 2 2) isik, kelle andmed kustutati, tuleb uuesti kanda digitaalsesse andmekogusse. 3 (3) Andmeid loomeliidu kohta loomeliidu tunnustamise kehtetuks tunnistamisel ja andmeid loovisiku kohta tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust säilitatakse kuni kuus aastat. RT I 2019-04-09 1 109042019001 2019-04-12",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -574,7 +1306,65 @@
         {
           "@id": "estleg:Reg_1027701_Par_14_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_14_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Digitaalsest andmebaasist kustutatakse ja digitaalsesse arhiivi kantakse: 1) loomeliidu andmed loomeliidu tunnustamise kehtetuks tunnistamisel; 2) loovisiku andmed tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Digitaalsesse arhiivi kantud andmeid võib volitatud töötleja kanda tagasi digitaalsesse andmekogusse, kui: 1) andmed on kustutatud ekslikult; 2) isik, kelle andmed kustutati, tuleb uuesti kanda digitaalsesse andmekogusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2",
+      "estleg:itemNumber": [
+        "1",
+        "2"
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmeid loomeliidu kohta loomeliidu tunnustamise kehtetuks tunnistamisel ja andmeid loovisiku kohta tema väljaastumisel või väljaarvamisel tunnustatud loomeliidust säilitatakse kuni kuus aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
     },
     {
       "@id": "estleg:Reg_1027701_Par_15",
@@ -583,13 +1373,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Juurdepääs andmekogusse kantud andmetele",
+      "rdfs:label": {
+        "@value": "§ 15. Juurdepääs andmekogusse kantud andmetele",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmekogusse kantud andmetele võimaldatakse juurdepääs ja andmekogust väljastatakse andmeid õigusaktides sätestatu kohaselt. RT I 2019-04-09 1 109042019001 2019-04-12 Andmekogusse kantud andmetele võimaldatakse juurdepääs ja andmekogust väljastatakse andmeid õigusaktides sätestatu kohaselt. 2 (2) Andmekogusse kantud juurdepääsupiiranguga andmetele on juurdepääs kasutajaõigustega isikul vastutava ja volitatud töötleja kaudu teenistus- või tööülesannetega seotud ulatuses, andmekogusse kantud",
-      "estleg:legalText": "1 (1) Andmekogusse kantud andmetele võimaldatakse juurdepääs ja andmekogust väljastatakse andmeid õigusaktides sätestatu kohaselt. RT I 2019-04-09 1 109042019001 2019-04-12 Andmekogusse kantud andmetele võimaldatakse juurdepääs ja andmekogust väljastatakse andmeid õigusaktides sätestatu kohaselt. 2 (2) Andmekogusse kantud juurdepääsupiiranguga andmetele on juurdepääs kasutajaõigustega isikul vastutava ja volitatud töötleja kaudu teenistus- või tööülesannetega seotud ulatuses, andmekogusse kantud loomeliidu kaudu vastava loomeliidu ja selle liikmete osas ning loovisikul oma andmete osas. Andmekogusse kantud juurdepääsupiiranguga andmetele on juurdepääs kasutajaõigustega isikul vastutava ja volitatud töötleja kaudu teenistus- või tööülesannetega seotud ulatuses, andmekogusse kantud loomeliidu kaudu vastava loomeliidu ja selle liikmete osas ning loovisikul oma andmete osas. 3 (3) Andmekogusse kantud andmeid väljastatakse valitsusasutustele, kui need on vajalikud neile õigusaktidega pandud ülesannete täitmiseks. Andmekogusse kantud andmeid väljastatakse valitsusasutustele, kui need on vajalikud neile õigusaktidega pandud ülesannete täitmiseks.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmekogusse kantud andmetele võimaldatakse juurdepääs ja andmekogust väljastatakse andmeid õigusaktides sätestatu kohaselt. RT I 2019-04-09 1 109042019001 2019-04-12 2 (2) Andmekogusse kantud juurdepääsupiiranguga andmetele on juurdepääs kasutajaõigustega isikul vastutava ja volitatud töötleja kaudu teenistus- või tööülesannetega seotud ulatuses, andmekogusse kantud loomeliidu kaudu vastava loomeliidu ja selle liikmete osas ning loovisikul oma andmete osas.",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmekogusse kantud andmetele võimaldatakse juurdepääs ja andmekogust väljastatakse andmeid õigusaktides sätestatu kohaselt. RT I 2019-04-09 1 109042019001 2019-04-12 2 (2) Andmekogusse kantud juurdepääsupiiranguga andmetele on juurdepääs kasutajaõigustega isikul vastutava ja volitatud töötleja kaudu teenistus- või tööülesannetega seotud ulatuses, andmekogusse kantud loomeliidu kaudu vastava loomeliidu ja selle liikmete osas ning loovisikul oma andmete osas. 3 (3) Andmekogusse kantud andmeid väljastatakse valitsusasutustele, kui need on vajalikud neile õigusaktidega pandud ülesannete täitmiseks.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Citizen"
@@ -611,7 +1407,57 @@
         {
           "@id": "estleg:Reg_1027701_Par_15_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_15_Lg_3"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogusse kantud andmetele võimaldatakse juurdepääs ja andmekogust väljastatakse andmeid õigusaktides sätestatu kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogusse kantud juurdepääsupiiranguga andmetele on juurdepääs kasutajaõigustega isikul vastutava ja volitatud töötleja kaudu teenistus- või tööülesannetega seotud ulatuses, andmekogusse kantud loomeliidu kaudu vastava loomeliidu ja selle liikmete osas ning loovisikul oma andmete osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Andmekogusse kantud andmeid väljastatakse valitsusasutustele, kui need on vajalikud neile õigusaktidega pandud ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
     },
     {
       "@id": "estleg:Reg_1027701_Par_15_15",
@@ -619,14 +1465,20 @@
         "owl:NamedIndividual",
         "estleg:LegalProvision"
       ],
-      "estleg:paragrahv": "§ 15¹.",
-      "rdfs:label": "§ 15¹. Andmete logimine ja logiandmete säilitamine",
+      "estleg:paragrahv": "§ 15<sup>1</sup>.",
+      "rdfs:label": {
+        "@value": "§ 15<sup>1</sup>. Andmete logimine ja logiandmete säilitamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "1 (1) Andmete töötlemine andmekogus logitakse. Andmete töötlemine andmekogus logitakse. 2 (2) Andmekogu logiandmeid säilitatakse kolm aastat andmete tekkimisest. RT I 2019-04-09 1 109042019001 2019-04-12 Andmekogu logiandmeid säilitatakse kolm aastat andmete tekkimisest.",
-      "estleg:legalText": "1 (1) Andmete töötlemine andmekogus logitakse. Andmete töötlemine andmekogus logitakse. 2 (2) Andmekogu logiandmeid säilitatakse kolm aastat andmete tekkimisest. RT I 2019-04-09 1 109042019001 2019-04-12 Andmekogu logiandmeid säilitatakse kolm aastat andmete tekkimisest.",
+      "estleg:summary": {
+        "@value": "1 (1) Andmete töötlemine andmekogus logitakse. 2 (2) Andmekogu logiandmeid säilitatakse kolm aastat andmete tekkimisest. RT I 2019-04-09 1 109042019001 2019-04-12",
+        "@language": "et"
+      },
+      "estleg:legalText": "1 (1) Andmete töötlemine andmekogus logitakse. 2 (2) Andmekogu logiandmeid säilitatakse kolm aastat andmete tekkimisest. RT I 2019-04-09 1 109042019001 2019-04-12",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_1039196_Par_10"
@@ -642,7 +1494,41 @@
         {
           "@id": "estleg:Reg_1027701_Par_15_15_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_15_15_Lg_1"
+        },
+        {
+          "@id": "estleg:Reg_1027701_Par_15_15_Lg_2"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_15_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmete töötlemine andmekogus logitakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_15_15"
+      },
+      "rdfs:label": "§ 15<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_15_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmekogu logiandmeid säilitatakse kolm aastat andmete tekkimisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_15_15"
+      },
+      "rdfs:label": "§ 15<sup>1</sup> lg 2"
     },
     {
       "@id": "estleg:Reg_1027701_Par_16",
@@ -651,13 +1537,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Järelevalve andmekogu pidamise üle",
+      "rdfs:label": {
+        "@value": "§ 16. Järelevalve andmekogu pidamise üle",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "Järelevalvet andmekogu pidamise üle teostavad andmekogu vastutav töötleja, Majandus- ja Kommunikatsiooniministeerium ning Andmekaitse Inspektsioon vastavalt oma pädevusele.",
-      "estleg:legalText": "Järelevalvet andmekogu pidamise üle teostavad andmekogu vastutav töötleja, Majandus- ja Kommunikatsiooniministeerium ning Andmekaitse Inspektsioon vastavalt oma pädevusele. Järelevalvet andmekogu pidamise üle teostavad andmekogu vastutav töötleja, Majandus- ja Kommunikatsiooniministeerium ning Andmekaitse Inspektsioon vastavalt oma pädevusele.",
+      "estleg:summary": {
+        "@value": "Järelevalvet andmekogu pidamise üle teostavad andmekogu vastutav töötleja, Majandus- ja Kommunikatsiooniministeerium ning Andmekaitse Inspektsioon vastavalt oma pädevusele.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Järelevalvet andmekogu pidamise üle teostavad andmekogu vastutav töötleja, Majandus- ja Kommunikatsiooniministeerium ning Andmekaitse Inspektsioon vastavalt oma pädevusele.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -700,7 +1592,25 @@
           "@id": "estleg:Institution_andmekaitseinspektsioon"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:competenceType": "enforcement",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_16_Lg_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Järelevalvet andmekogu pidamise üle teostavad andmekogu vastutav töötleja, Majandus- ja Kommunikatsiooniministeerium ning Andmekaitse Inspektsioon vastavalt oma pädevusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
     },
     {
       "@id": "estleg:Reg_1027701_Par_17",
@@ -709,13 +1619,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Andmekogu pidamise finantseerimine",
+      "rdfs:label": {
+        "@value": "§ 17. Andmekogu pidamise finantseerimine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "Andmekogu asutamine ja pidamine finantseeritakse riigieelarvest vastutavale töötlejale selleks otstarbeks eraldatud vahenditest.",
-      "estleg:legalText": "Andmekogu asutamine ja pidamine finantseeritakse riigieelarvest vastutavale töötlejale selleks otstarbeks eraldatud vahenditest. Andmekogu asutamine ja pidamine finantseeritakse riigieelarvest vastutavale töötlejale selleks otstarbeks eraldatud vahenditest.",
+      "estleg:summary": {
+        "@value": "Andmekogu asutamine ja pidamine finantseeritakse riigieelarvest vastutavale töötlejale selleks otstarbeks eraldatud vahenditest.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu asutamine ja pidamine finantseeritakse riigieelarvest vastutavale töötlejale selleks otstarbeks eraldatud vahenditest.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Business"
@@ -746,7 +1662,25 @@
         {
           "@id": "estleg:Reg_1027701_Par_17_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_17_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu asutamine ja pidamine finantseeritakse riigieelarvest vastutavale töötlejale selleks otstarbeks eraldatud vahenditest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
     },
     {
       "@id": "estleg:Reg_1027701_Par_18",
@@ -755,13 +1689,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Andmekogu tegevuse lõpetamine",
+      "rdfs:label": {
+        "@value": "§ 18. Andmekogu tegevuse lõpetamine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "Andmekogu tegevuse lõpetamise otsustab valdkonna eest vastutav minister. Andmekogu tegevus lõpetatakse kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
-      "estleg:legalText": "Andmekogu tegevuse lõpetamise otsustab valdkonna eest vastutav minister. Andmekogu tegevus lõpetatakse kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega. Andmekogu tegevuse lõpetamise otsustab valdkonna eest vastutav minister. Andmekogu tegevus lõpetatakse kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
+      "estleg:summary": {
+        "@value": "Andmekogu tegevuse lõpetamise otsustab valdkonna eest vastutav minister. Andmekogu tegevus lõpetatakse kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Andmekogu tegevuse lõpetamise otsustab valdkonna eest vastutav minister. Andmekogu tegevus lõpetatakse kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
       "estleg:targetGroup": [
         {
           "@id": "estleg:TargetGroup_Official"
@@ -792,7 +1732,25 @@
         {
           "@id": "estleg:Reg_1027701_Par_18_v1027701"
         }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_18_Lg_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Andmekogu tegevuse lõpetamise otsustab valdkonna eest vastutav minister. Andmekogu tegevus lõpetatakse kooskõlas avaliku teabe seaduses ja arhiiviseaduses sätestatud nõuetega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
     },
     {
       "@id": "estleg:Reg_1027701_Par_19",
@@ -801,13 +1759,19 @@
         "estleg:LegalProvision"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Enne käesoleva määruse jõustumist kogutud andmete andmekogusse kandmine",
+      "rdfs:label": {
+        "@value": "§ 19. Enne käesoleva määruse jõustumist kogutud andmete andmekogusse kandmine",
+        "@language": "et"
+      },
       "estleg:sourceAct": "Loomeliitude andmekogu asutamine ja põhimäärus",
       "estleg:partOfAct": {
         "@id": "estleg:Reg_1027701_Map"
       },
-      "estleg:summary": "Enne käesoleva määruse jõustumist tunnustatud loomeliidu andmed kantakse andmekogusse järgmiselt: 1 1) hiljemalt 2015. aasta 1. veebruariks kannab Kultuuriministeerium andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7 ja 12 nimetatud andmed; 2 2) hiljemalt 2015. aasta 1. veebruariks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktides 8, 9 ja 11 ning lõike 2 punktides 1, 2 ja 6 nimetatud andmed; 3 3) hiljemalt 2015. aasta 1. maiks kannab tunnustatud loomeliit",
-      "estleg:legalText": "Enne käesoleva määruse jõustumist tunnustatud loomeliidu andmed kantakse andmekogusse järgmiselt: 1 1) hiljemalt 2015. aasta 1. veebruariks kannab Kultuuriministeerium andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7 ja 12 nimetatud andmed; 2 2) hiljemalt 2015. aasta 1. veebruariks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktides 8, 9 ja 11 ning lõike 2 punktides 1, 2 ja 6 nimetatud andmed; 3 3) hiljemalt 2015. aasta 1. maiks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktis 10 ja lõike 2 punktides 3–5 nimetatud andmed. Paragrahvi 6 lõike 2 punktis 5 nimetatud andmed tuleb andmekogusse kanda vähemalt alates 2012. aasta 1. jaanuarist. Enne käesoleva määruse jõustumist tunnustatud loomeliidu andmed kantakse andmekogusse järgmiselt: hiljemalt 2015. aasta 1. veebruariks kannab Kultuuriministeerium andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7 ja 12 nimetatud andmed; hiljemalt 2015. aasta 1. veebruariks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktides 8, 9 ja 11 ning lõike 2 punktides 1, 2 ja 6 nimetatud andmed; hiljemalt 2015. aasta 1. maiks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktis 10 ja lõike 2 punktides 3–5 nimetatud andmed. Paragrahvi 6 lõike 2 punktis 5 nimetatud andmed tuleb andmekogusse kanda vähemalt alates 2012. aasta 1. jaanuarist.",
+      "estleg:summary": {
+        "@value": "Enne käesoleva määruse jõustumist tunnustatud loomeliidu andmed kantakse andmekogusse järgmiselt: 1 1) hiljemalt 2015. aasta 1. veebruariks kannab Kultuuriministeerium andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7 ja 12 nimetatud andmed; 2 2) hiljemalt 2015. aasta 1. veebruariks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktides 8, 9 ja 11 ning lõike 2 punktides 1, 2 ja 6 nimetatud andmed; 3 3) hiljemalt 2015. aasta 1.",
+        "@language": "et"
+      },
+      "estleg:legalText": "Enne käesoleva määruse jõustumist tunnustatud loomeliidu andmed kantakse andmekogusse järgmiselt: 1 1) hiljemalt 2015. aasta 1. veebruariks kannab Kultuuriministeerium andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7 ja 12 nimetatud andmed; 2 2) hiljemalt 2015. aasta 1. veebruariks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktides 8, 9 ja 11 ning lõike 2 punktides 1, 2 ja 6 nimetatud andmed; 3 3) hiljemalt 2015. aasta 1. maiks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktis 10 ja lõike 2 punktides 3–5 nimetatud andmed. Paragrahvi 6 lõike 2 punktis 5 nimetatud andmed tuleb andmekogusse kanda vähemalt alates 2012. aasta 1. jaanuarist.",
       "estleg:hasVersion": [
         {
           "@id": "estleg:Reg_1027701_Par_19_v1027701"
@@ -816,6 +1780,11 @@
       "estleg:mentionsInstitution": [
         {
           "@id": "estleg:Institution_kultuuriministeerium"
+        }
+      ],
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:Reg_1027701_Par_19_Lg_1"
         }
       ]
     },
@@ -830,6 +1799,24 @@
       },
       "estleg:citationDetail": "lg 1",
       "estleg:citationText": "Määrus kehtestatakse loovisikute ja loomeliitude seaduse § 11 lõike 1"
+    },
+    {
+      "@id": "estleg:Reg_1027701_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne käesoleva määruse jõustumist tunnustatud loomeliidu andmed kantakse andmekogusse järgmiselt: 1) hiljemalt 2015. aasta 1. veebruariks kannab Kultuuriministeerium andmekogusse käesoleva määruse § 6 lõike 1 punktides 6, 7 ja 12 nimetatud andmed; 2) hiljemalt 2015. aasta 1. veebruariks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktides 8, 9 ja 11 ning lõike 2 punktides 1, 2 ja 6 nimetatud andmed; 3) hiljemalt 2015. aasta 1. maiks kannab tunnustatud loomeliit andmekogusse käesoleva määruse § 6 lõike 1 punktis 10 ja lõike 2 punktides 3–5 nimetatud andmed. Paragrahvi 6 lõike 2 punktis 5 nimetatud andmed tuleb andmekogusse kanda vähemalt alates 2012. aasta 1. jaanuarist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:Reg_1027701_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1",
+      "estleg:itemNumber": [
+        "1",
+        "2",
+        "3"
+      ]
     }
   ]
 }
