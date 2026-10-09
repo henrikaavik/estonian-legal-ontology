@@ -132,7 +132,8 @@ def test_stamp_sets_subjects_is_about_and_provenance():
 
 
 def test_stamp_empty_removes_only_cellar_subjects():
-    cellar = {"@id": "a", "dcterms:subject": [{"@id": "x"}], "eli:is_about": [{"@id": "x"}],
+    cellar = {"@id": "a", "dcterms:subject": [{"@id": "http://eurovoc.europa.eu/10"}],
+              "eli:is_about": [{"@id": "http://eurovoc.europa.eu/10"}],
               "estleg:subjectSource": "cellar"}
     assert fo.stamp_official_subjects(cellar, []) is True
     assert set(cellar) == {"@id"}
