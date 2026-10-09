@@ -73,8 +73,6 @@ def _fetchers(xml_by_id: dict[str, str], current: str | None = ACT, calls: list 
         ("(1) Kehtetu - (2) Tekst.", "(2) Tekst."),
         ("(1¹) Kehtetu - (2) Tekst.", "(2) Tekst."),
         ("Kehtetu -", ""),
-        ("märkida: 1) nimi; 2) kehtetu - 3) asukoht;", "märkida: nimi; asukoht;"),
-        ("märkida: nimi; asukoht;", "märkida: 1) nimi; 2¹) asukoht;"),
     ],
 )
 def test_normalise_text_folds_rendering_only_differences(corpus: str, rt_text: str) -> None:
@@ -86,6 +84,7 @@ def test_normalise_text_folds_rendering_only_differences(corpus: str, rt_text: s
     [
         ("Tehing on kehtetu.", "Tehing on tühine."),
         ("Tehing on kehtetu.", "Tehing on."),
+        ("märkida: 1) nimi; 2) asukoht;", "märkida: nimi; asukoht;"),
         ("(1) Tekst. (jõustumine muudetud - RT I, 22.12.2013, 1)", "(1) Tekst."),
         ("trahv kuni 300 trahviühikut", "trahv kuni 30 trahviühikut"),
         ("(1) Tekst.", "(2) Tekst."),
@@ -168,7 +167,7 @@ def test_text_from_newer_redaction_is_stale_source_id() -> None:
         ACT, [rec], **_fetchers({ACT: RT_XML, NEWER: RT_XML_NEWER}, current=NEWER)
     )
     assert res.status == ctf.STALE_SOURCE_ID
-    assert res.status not in ctf.FAILING_STATUSES
+    assert res.status in ctf.FAILING_STATUSES
 
 
 def test_drift_does_not_excuse_a_real_mismatch() -> None:
