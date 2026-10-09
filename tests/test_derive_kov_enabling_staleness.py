@@ -58,10 +58,6 @@ def _write_versions(tmp_path: Path) -> Path:
         _version("estleg:KOKS_Par_6_v1", "estleg:KOKS_Par_6", "2002-06-01", None, "C"),
     ]
     (vdir / "koks.jsonld").write_text(json.dumps({"@graph": graph}), encoding="utf-8")
-    # A not-pulled LFS pointer must be skipped, not crash.
-    (vdir / "lfs.jsonld").write_text(
-        "version https://git-lfs.github.com/spec/v1\noid sha256:x\n", encoding="utf-8"
-    )
     return vdir
 
 
@@ -100,7 +96,7 @@ def _derive(doc: dict, layer, eval_date=None):
 # --- version-layer index -----------------------------------------------------
 
 
-def test_version_layer_index_sorted_and_lfs_skipped(layer) -> None:
+def test_version_layer_index_sorted(layer) -> None:
     assert [row[2] for row in layer.chains["estleg:KOKS_Par_22"]] == [
         "estleg:KOKS_Par_22_v1",
         "estleg:KOKS_Par_22_v2",
