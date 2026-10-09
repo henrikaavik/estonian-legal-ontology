@@ -75,8 +75,10 @@ python3 scripts/generate_eu_legislation.py
 python3 scripts/generate_eu_court_decisions.py
 ```
 
-After any court refresh, mask personal identification codes before
-committing. The `validate_all.py` gate fails on any surviving code.
+After a Riigikohus refresh, run its personal-code screening before committing.
+This command targets the Riigikohus decision type and directory; it is not a
+screening pass for CURIA or the lower-court corpus. Run the validation gates
+below and follow each corpus's policy in DATA_PROTECTION.md.
 
 ```bash
 python3 scripts/screen_court_personal_data.py
@@ -115,7 +117,7 @@ never into the generated files.
 ## 3. Run the gates
 
 ```bash
-python3 -m ruff check scripts/ src/estleg/ tests/
+python3 -m ruff check scripts/ src/estleg/ tests/ mcp_server/
 python3 -m pytest -q                    # default tier, no LFS needed
 python3 -m pytest -q -m corpus          # LFS / whole-corpus gates
 python3 scripts/validate_all.py
