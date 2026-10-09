@@ -1811,7 +1811,7 @@ PINNED_RUN_TIMESTAMP: str = f"{BUILD_EVALUATION_DATE}T00:00:00+00:00"
 # mechanism that keeps local and CI file counts identical.
 #
 # The corpus count this exclusion yields is pinned by ``metadata.jsonld``
-# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 28626), which
+# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 28624), which
 # ``validate_metadata_catalog`` enforces — treat that file as the source of
 # truth rather than this prose. Any change here that moves that number means
 # the classifier was broadened or narrowed incorrectly.
@@ -1821,6 +1821,8 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
         ".regen_state.json",
         "generation_manifest_laws.json",
         "latest_pipeline_manifest.json",
+        "concept_crossref_report.json",
+        "kov_similarity_index.json",
     }
 )
 
@@ -1828,7 +1830,7 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
 # also be excluded even when they don't match a basename in
 # ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
 # known integration-report directory) so the pinned ``metadata.jsonld``
-# count (currently 28626) is unchanged: the only ``*.json`` currently living under
+# count (currently 28624) is unchanged: the only ``*.json`` currently living under
 # ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
 # already excluded by basename. The pattern guard is forward-looking — it
 # stops a *new* generated state manifest dropped into that directory from
@@ -1916,6 +1918,15 @@ def iter_krr_jsonld_files(krr_dir: Path) -> Iterator[Path]:
 # ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
+
+def _sup_to_unicode(text: str) -> str:
+    """Preserve superscript digits when flattening literal RT HTML markup."""
+    if not text or "<sup>" not in text:
+        return text
+    digits = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
+    converted = re.sub(r"<sup>\s*(\d+)\s*</sup>", lambda m: m.group(1).translate(digits), text)
+    return converted.replace("<sup>", "").replace("</sup>", "")
+
 
 def save_json(filepath: Path, doc: dict | list) -> None:
     """Write JSON-LD document to file with consistent formatting.

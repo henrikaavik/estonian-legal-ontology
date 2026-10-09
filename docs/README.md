@@ -5,7 +5,7 @@ This project provides a comprehensive, machine-readable ontology of Estonian and
 
 Canonical headline counts live in the root [README.md](../README.md) and `metadata.jsonld` (`estleg:statistics`). Do not edit those two independently.
 
-**Status: 1,127 enacted laws (1,200 law files) + 22,832 drafts + 3,893 state regulations + 11,845 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **28,626 JSON/JSON-LD files** | ontology **1.0.0** (catalogue updated 2026-09-07)
+**Status: 1,127 enacted laws (1,200 law files) + 22,832 drafts + 3,893 state regulations + 11,845 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **28,624 JSON/JSON-LD files** | ontology **1.0.0** (catalogue updated 2026-09-07)
 
 ## Project status
 

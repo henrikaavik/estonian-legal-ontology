@@ -1,13 +1,13 @@
 # Validation Report
 
-**Last updated:** 2026-09-07 (Tier 1 #702 merged; documentation status refreshed)
+**Last updated:** 2026-10-10 (wave-six review and corpus checks)
 **Primary validator:** `scripts/validate_all.py`
 
 ## Summary
 
 <!-- BEGIN GENERATED: validation-summary -->
 
-*Measured by `scripts/generate_validation_report.py` at commit `c3dd2ff7cf807a082a0fee7ba0658dac7cd08da2`, 2026-10-09 19:25 UTC. Do not hand-edit this block.*
+*Measured by `scripts/generate_validation_report.py` at commit `16c278d742d8d0d188fc45a43b8b938b18a7d0b0`, 2026-10-09 21:10 UTC. Do not hand-edit this block.*
 
 | Metric | Count |
 |--------|------:|
@@ -26,29 +26,32 @@
 > real run and stamps the commit SHA, and `--check` fails CI if the committed
 > numbers drift from the corpus. Baselines: 26,791 files / 3,558 errors on the
 > pre-Tier-0 tree (`c96577d50c`), 26,961 / 3,549 after Tier 0, and 26,961 /
-> 122-123 after the #702 validator repair. The total moves by one because the
+> 122-123 after the #702 validator repair. That historical total moved by one because the
 > `older than at least one canonical source file` rule counts filesystem
 > mtimes, not content: regenerating a T-Box artifact makes it newer than the
 > aggregates embedding it, and a fresh checkout assigns mtimes in arbitrary
-> order. That rule is excluded from the `--check` comparison and belongs with
-> the stale-aggregate work (#705).
+> order. The mtime rule was subsequently removed under #705; current checks
+> compare content and all reported error counts.
 
 Both report checks fail when the input file count differs from the recorded
 count. Materialise missing LFS inputs before checking; when the corpus has
 changed, regenerate the reports. A count difference cannot establish that the
 report is current.
 
-The repository advertises 27,029 generated JSON/JSON-LD files (`metadata.jsonld`
+The repository advertises 28,624 generated JSON/JSON-LD files (`metadata.jsonld`
 `estleg:totalFiles`). `validate_all.py` excludes generated reports, indexes,
 manifests, and probe outputs that are not corpus inputs, which is why it
-validates 26,978.
+validates 28,572. Ignored local concept reports and KOV similarity indexes are
+excluded from catalogue counts so fresh checkouts and operator workspaces agree.
 
-## What the errors are
+## Historical validation failures
 
-Every error is itemised below with its status. **#702 removed 3,426 of the
+The following table records the earlier Tier 1 backlog, not current failures.
+The generated summary above reports the current measured result.
+**#702 removed 3,426 of the
 3,549 errors (96.5%) by repairing two stale validator rules** — they were
 validator bugs, not data defects, and they buried the ~122 findings that
-remain (the total moves by one with the mtime-based freshness rule; see the
+remained then (including the mtime-based freshness rule; see the
 Correction note above).
 No new validation error category appeared; all internal object references
 resolve.
@@ -83,9 +86,8 @@ stale-aggregate finding on each of the `eurlex` / `curia` / `eelnoud` files
 (combined rebuild, #681/#682). `dataset_build_manifest.json` was regenerated so its
 `catalogModified` matches the new `dcterms:modified` (#686).
 
-Warnings (2): `generation_manifest_laws.json` is not committed
-(Tier 1 #692/#704), and 9 amendment chains carry 1.0% duplicate `AmendmentEvent`
-nodes (re-run `generate_amendment_history.py`).
+Current warning: 11 amendment chains carry duplicate `AmendmentEvent` nodes
+(1,072 repeated events, 3.6% overall). The generation manifest is now committed.
 
 ## Load surfaces and validation gates
 

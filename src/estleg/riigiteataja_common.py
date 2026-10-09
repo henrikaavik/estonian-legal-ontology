@@ -36,6 +36,7 @@ import requests  # tests monkeypatch ``requests.get``
 from estleg.estleg_common import (  # noqa: F401  -- re-exports for public API
     _ESTONIAN_TRANSLITERATION,
     _TRANSLIT_TABLE,
+    _sup_to_unicode,
     CONTEXT,
     KRR_DIR,
     NS,
@@ -95,7 +96,7 @@ def _child_text(el: ET.Element) -> str:
             text = text.translate(_SUPERSCRIPT_DIGITS)
         parts.append(text)
         parts.append(child.tail or "")
-    return "".join(parts)
+    return _sup_to_unicode("".join(parts))
 
 
 def ct(el: ET.Element, name: str) -> str | None:
@@ -172,7 +173,7 @@ def _iter_outermost_text(el: ET.Element) -> Iterator[str]:
     """
     for child in el:
         if ln(child.tag) in _TEXT_TAGS:
-            txt = re.sub(r"\s+", " ", "".join(child.itertext())).strip()
+            txt = re.sub(r"\s+", " ", _child_text(child)).strip()
             if len(txt) > 3:
                 yield txt
         else:
@@ -835,10 +836,11 @@ def strip_html_tags(text: str) -> str:
     Tags are stripped again *after* unescape (#554) so ``&lt;script&gt;``
     cannot reconstitute a live tag in published legal text.
     """
+    text = _sup_to_unicode(text)
     text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"</p>", "\n", text, flags=re.IGNORECASE)
     text = re.sub(r"<[^>]+>", "", text)
-    text = html.unescape(text)
+    text = _sup_to_unicode(html.unescape(text))
     text = re.sub(r"<[^>]+>", "", text)
     text = re.sub(r" ", " ", text)
     text = re.sub(r"\s+", " ", text)

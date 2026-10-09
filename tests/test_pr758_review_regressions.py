@@ -6,9 +6,11 @@ from datetime import date
 from pathlib import Path
 
 import yaml
+from xml.etree import ElementTree as ET
 
 from estleg import eval_harness, generate_court_decisions as courts
-from estleg.estleg_common import pair_peep_with_xml
+from estleg.estleg_common import iter_krr_jsonld_files, pair_peep_with_xml
+from estleg import riigiteataja_common as rt
 
 
 def test_court_refresh_reserves_older_year_iris_before_processing_new_year(tmp_path, monkeypatch):
@@ -89,3 +91,24 @@ def test_gold_edits_trigger_ci_and_score_current_corpus():
     commands = [step.get("run", "") for job in workflow["jobs"].values() for step in job["steps"]]
     gates = [command for command in commands if "eval_harness.py" in command and "--gate" in command]
     assert gates and all("--current-corpus" in command for command in gates)
+
+
+def test_local_reports_cannot_change_catalogue_file_counts(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    for rel in ("concepts/concept_crossref_report.json", "similarity/kov_similarity_index.json", "law_peep.json"):
+        path = krr / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("{}")
+    assert list(iter_krr_jsonld_files(krr)) == [krr / "law_peep.json"]
+
+
+def test_regulation_text_preserves_real_and_escaped_superscripts():
+    root = ET.fromstring("""<paragrahv>
+      <paragrahvPealkiri><![CDATA[Nõuded § 2<sup>1</sup> alusel]]></paragrahvPealkiri>
+      <loige><sisuTekst><tavatekst>Viide § 21<sup>2</sup> ning
+        &lt;sup&gt;3&lt;/sup&gt; astmele.</tavatekst></sisuTekst></loige>
+    </paragrahv>""")
+    assert rt.ct(root, "paragrahvPealkiri") == "Nõuded § 2¹ alusel"
+    assert rt.collect_full_text(root) == "Viide § 21² ning ³ astmele."
+    assert rt.collect_text(root) == rt.collect_full_text(root)
+    assert rt.strip_html_tags("<p>§ 2<sup>1</sup> ja &lt;sup&gt;3&lt;/sup&gt;</p>") == "§ 2¹ ja ³"

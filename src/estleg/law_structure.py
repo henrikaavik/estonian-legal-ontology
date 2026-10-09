@@ -12,7 +12,7 @@ import re
 import xml.etree.ElementTree as ET
 from collections import Counter
 
-from estleg.estleg_common import et_literal, sanitize_id
+from estleg.estleg_common import _sup_to_unicode, et_literal, sanitize_id
 from estleg.riigiteataja_common import ct, ln
 
 
@@ -169,21 +169,6 @@ _SUPERSCRIPT_DIGIT_MAP: dict[str, str] = {
 # (``§ 1<sup>1</sup>.``); without conversion the markup leaks verbatim into
 # rdfs:label / estleg:paragrahv / legalText / subsectionNumber / summary.
 _DIGIT_TO_SUPERSCRIPT: dict[str, str] = {v: k for k, v in _SUPERSCRIPT_DIGIT_MAP.items()}
-_SUP_TAG_RE = re.compile(r"<sup>\s*(\d+)\s*</sup>")
-
-
-def _sup_to_unicode(text: str) -> str:
-    """Convert literal ``<sup>N</sup>`` markup to Unicode superscript digits (#572).
-
-    Any residual bare ``<sup>``/``</sup>`` tags (non-digit content) are stripped
-    so no HTML markup survives into the citable strings.
-    """
-    if not text or "<sup>" not in text:
-        return text
-    converted = _SUP_TAG_RE.sub(
-        lambda m: "".join(_DIGIT_TO_SUPERSCRIPT.get(d, d) for d in m.group(1)), text
-    )
-    return converted.replace("<sup>", "").replace("</sup>", "")
 
 
 def _digits_to_superscript(text: str) -> str:
