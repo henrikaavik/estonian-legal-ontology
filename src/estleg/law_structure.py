@@ -194,6 +194,16 @@ def _digits_to_superscript(text: str) -> str:
     return "".join(_DIGIT_TO_SUPERSCRIPT.get(ch, ch) for ch in text)
 
 
+def paragraph_display(paragraph: ET.Element) -> str:
+    """Preserve real and CDATA superscripts in the human-readable § number."""
+    for child in paragraph:
+        if ln(child.tag) == "kuvatavNr":
+            display = _sup_to_unicode(_marker_pruned_text(child)).strip()
+            if display:
+                return display
+    return f"§ {ct(paragraph, 'paragrahvNr') or '?'}"
+
+
 def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
     """Extract the superscript index carried by ``el``'s ``number_tag`` child.
 
@@ -1085,9 +1095,8 @@ def emit_hierarchy_and_provisions(
     par_iri_by_elem: dict[int, str] = {}
     seen_subsection_ids: set[str] = set()
     for paragraph in paragrahvid:
-        p_nr = ct(paragraph, "paragrahvNr") or "?"
         p_title = ct(paragraph, "paragrahvPealkiri") or ""
-        p_display = _sup_to_unicode(ct(paragraph, "kuvatavNr")) or f"§ {p_nr}"
+        p_display = paragraph_display(paragraph)
         text = collect_text(paragraph)
         full_text = collect_full_text(paragraph)
         raw_par_suffix = _paragraph_id_suffix(paragraph)
