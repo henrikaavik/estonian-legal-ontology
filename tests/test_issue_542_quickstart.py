@@ -12,7 +12,9 @@ from pathlib import Path
 import pytest
 from rdflib import Graph
 
-import quickstart
+from tests._script_loader import load_script
+
+quickstart = load_script("examples/quickstart.py")
 
 REPO = Path(__file__).resolve().parent.parent
 EXAMPLES = REPO / "examples"

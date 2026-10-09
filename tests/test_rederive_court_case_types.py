@@ -4,7 +4,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import rederive_court_case_types as rc
+from tests._script_loader import load_script
+
+rc = load_script("scripts/archive/rederive_court_case_types.py")
 
 
 def _decision(case_nr: str, case_type_id: str, iso_date: str = "2015-12-21") -> dict:

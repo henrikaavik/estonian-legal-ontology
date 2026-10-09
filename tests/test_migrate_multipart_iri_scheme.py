@@ -4,16 +4,17 @@ import json
 from pathlib import Path
 
 import pytest
-from migrate_multipart_iri_scheme import (
-    OLD_PAR_RE,
-    _apply_substitution,
-    _atomic_write_text,
-    _build_substitution_pattern,
-    build_plan,
-    discover_multipart_laws,
-    execute_plan,
-    main,
-)
+from tests._script_loader import load_script
+
+mmis = load_script("scripts/archive/migrate_multipart_iri_scheme.py")
+OLD_PAR_RE = mmis.OLD_PAR_RE
+_apply_substitution = mmis._apply_substitution
+_atomic_write_text = mmis._atomic_write_text
+_build_substitution_pattern = mmis._build_substitution_pattern
+build_plan = mmis.build_plan
+discover_multipart_laws = mmis.discover_multipart_laws
+execute_plan = mmis.execute_plan
+main = mmis.main
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -638,7 +639,7 @@ class TestAtomicWrites:
         self, tmp_path: Path, monkeypatch
     ):
         """A rename failure mid-write leaves the original file intact (#280)."""
-        import migrate_multipart_iri_scheme as mod
+        mod = mmis
 
         target = tmp_path / "out.txt"
         target.write_text("original\n", encoding="utf-8")
