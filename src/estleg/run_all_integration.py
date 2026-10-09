@@ -1488,7 +1488,7 @@ def hash_release_artifacts() -> dict:
             found[_rel(m)] = _sha256_file(m)
     from estleg.build_release_assets import verify_sums
 
-    assets = verify_sums(RELEASE_ASSET_DIR)
+    assets = verify_sums(RELEASE_ASSET_DIR, require_complete=True)
     # SHA256SUMS itself is hashed via RELEASE_ARTIFACTS above.
     found.update({_rel(path): sha for path, sha in assets["files"].items()})
     missing.extend(_rel(path) for path in assets["missing"])

@@ -73,12 +73,14 @@ class JoinStats:
         }
 
 
-def _load(path: Path) -> dict | None:
+def _load(path: Path) -> dict:
     try:
         doc = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
-        return None
-    return doc if isinstance(doc, dict) else None
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+        raise ValueError(f"unreadable amendment/version input: {path}") from exc
+    if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+        raise ValueError(f"{path}: expected an object with an @graph array")
+    return doc
 
 
 def law_groups(krr_dir: Path) -> dict[str, list[tuple[str, Path]]]:

@@ -233,11 +233,11 @@ def write_nquads_gz(
     """Write gzipped N-Quads. Returns the number of non-empty lines."""
     dest.parent.mkdir(parents=True, exist_ok=True)
     count = 0
-    with gzip.open(dest, "wt", encoding="utf-8") as handle:
+    with dest.open("wb") as raw, gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as handle:
         for chunk in chunks:
             if chunk.strip():
                 count += 1
-            handle.write(chunk if chunk.endswith("\n") else f"{chunk}\n")
+            handle.write((chunk if chunk.endswith("\n") else f"{chunk}\n").encode("utf-8"))
     return count
 
 
