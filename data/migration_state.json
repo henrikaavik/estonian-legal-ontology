@@ -1,8 +1,50 @@
 {
   "last_applied_at": "2026-05-11T12:00:00+00:00",
-  "last_applied_registry_hash": "302a5f9bb70a282880a4bbabe6ac896322d1eeeb29c428387d021d1f1c31407e",
+  "last_applied_registry_hash": "a05f893c552e9db27987cdadbaffc7b3ccef75d38983338cd730bb8a14f2394b",
   "last_applied_corpus_hash": "cc941648662c4f12b2fd6d6cc8334c249c74ff0255b3478f03e4ca5b74d2c7fe",
   "total_renames_applied": 100462,
   "files_changed": 11323,
-  "note": "Two migration layers. Layer 1 (issue #83, commits 3880cb688 + c5c0f88b2): compact law/regulation prefixes (LegalProvision_<slug> -> LegalProvision_<ABBREV>, <slug>_Par_/_Map_/Cluster_, LegalConcept_ -> Concept_). Layer 2 (issue #192, this PR): Amendment_/AmendmentChain_/AmendmentLink_ IRI shortening -- the long <base_slug> segment is replaced by the law's compact abbreviation (data/law_abbreviations.json) or, for regulations, the Reg_<id> stem recovered from the chain's estleg:amends target; 100462 distinct Amendment-family IRI types renamed across ~11.3k files, 0 collisions, 0 chains skipped. total_renames_applied counts distinct IRI types (the underlying replacement count -- @id definitions plus every estleg:amendedBy reference -- is higher). (A parallel Sanctions_<slug>_Map / Sanction_<slug>_Par_... cleanup is implemented in migrate_uris.py's `sanction` family but NOT applied here -- its definitions live in krr_outputs/sanctions/, outside issue #192's file scope; pass `--legacy` to include it.) last_applied_registry_hash = compute_registry_hash(data/law_abbreviations.json); last_applied_corpus_hash = compute_corpus_hash(get_all_scannable_files()) over the post-Layer-2 corpus as committed here (plus this PR's scripts/migrate_uris.py + scripts/generate_amendment_history.py changes). Unrelated scanned-file edits in later commits will drift last_applied_corpus_hash; `migrate_uris.py apply` detects that and asks for a fresh dry-run. scripts/generate_amendment_history.py now emits the compact Amendment_<ABBREV>_... form natively."
+  "note": "Two migration layers. Layer 1 (issue #83, commits 3880cb688 + c5c0f88b2): compact law/regulation prefixes (LegalProvision_<slug> -> LegalProvision_<ABBREV>, <slug>_Par_/_Map_/Cluster_, LegalConcept_ -> Concept_). Layer 2 (issue #192, this PR): Amendment_/AmendmentChain_/AmendmentLink_ IRI shortening -- the long <base_slug> segment is replaced by the law's compact abbreviation (data/law_abbreviations.json) or, for regulations, the Reg_<id> stem recovered from the chain's estleg:amends target; 100462 distinct Amendment-family IRI types renamed across ~11.3k files, 0 collisions, 0 chains skipped. total_renames_applied counts distinct IRI types (the underlying replacement count -- @id definitions plus every estleg:amendedBy reference -- is higher). (A parallel Sanctions_<slug>_Map / Sanction_<slug>_Par_... cleanup is implemented in migrate_uris.py's `sanction` family but NOT applied here -- its definitions live in krr_outputs/sanctions/, outside issue #192's file scope; pass `--legacy` to include it.) last_applied_registry_hash = compute_registry_hash(data/law_abbreviations.json); last_applied_corpus_hash = compute_corpus_hash(get_all_scannable_files()) over the post-Layer-2 corpus as committed here (plus this PR's scripts/migrate_uris.py + scripts/generate_amendment_history.py changes). Unrelated scanned-file edits in later commits will drift last_applied_corpus_hash; `migrate_uris.py apply` detects that and asks for a fresh dry-run. scripts/generate_amendment_history.py now emits the compact Amendment_<ABBREV>_... form natively. Layer 3 (resolve-collisions): registry abbreviations that collide once transliterated by sanitize_id (REÕS/REOS, RÕS/ROS, ÜKS/UKS, TsÜS/TsUS), and #426 deprecated duplicates sharing ids with an unregistered live law (TsMS), were split with a file-scoped rename of the yielding law's own files; see collision_resolutions. last_applied_registry_hash is refreshed whenever this layer rewrites the registry.",
+  "collision_resolutions": {
+    "riigi_eraoiguslikes_juriidilistes_isikutes_osalemise_seadus": {
+      "keeper_slug": "rahvusvahelise_eraoiguse_seadus",
+      "old_abbrev": "REOS",
+      "new_abbrev": "REOS_2",
+      "from_prefix": "REOS",
+      "to_prefix": "REOS_2",
+      "previous_old_prefix": "REOS"
+    },
+    "riigi_oigusabi_seadus": {
+      "keeper_slug": "rahvusooperi_seadus",
+      "old_abbrev": "RÕS",
+      "new_abbrev": "RÕS_2",
+      "from_prefix": "ROS",
+      "to_prefix": "ROS_2",
+      "previous_old_prefix": "RS"
+    },
+    "tsiviilseadustik": {
+      "keeper_slug": "tsiviilseadustiku_uldosa_seadus",
+      "old_abbrev": "TsUS",
+      "new_abbrev": "TsUS_2",
+      "from_prefix": "TsUS",
+      "to_prefix": "TsUS_2",
+      "previous_old_prefix": "TsUS"
+    },
+    "ulikooli": {
+      "keeper_slug": "ulikooliseadus",
+      "old_abbrev": "UKS",
+      "new_abbrev": "UKS_2",
+      "from_prefix": "UKS",
+      "to_prefix": "UKS_2",
+      "previous_old_prefix": "UKS"
+    },
+    "tsiviilkohtumenetluse": {
+      "keeper_slug": "tsiviilkohtumenetluse_seadustik",
+      "old_abbrev": "TsMS",
+      "new_abbrev": "TsMS_2",
+      "from_prefix": "TsMS",
+      "to_prefix": "TsMS_2",
+      "previous_old_prefix": "TsMS"
+    }
+  }
 }

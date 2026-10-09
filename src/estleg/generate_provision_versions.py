@@ -1487,8 +1487,11 @@ def _xsd_date(value: str) -> dict:
 def _day_before(iso_date: str) -> str:
     """Return the ISO ``YYYY-MM-DD`` calendar day immediately before ``iso_date``.
 
-    Used to derive a version's *exclusive* ``versionValidTo`` from its successor's
-    ``versionValidFrom`` (issue #306). Falls back to the input unchanged if it is
+    Used to derive a version's ``versionValidTo`` -- the *inclusive* last day the
+    text was in force -- from its successor's ``versionValidFrom`` (issue #306).
+    A version whose successor starts the very next day therefore has
+    ``versionValidFrom == versionValidTo`` (a one-day version), which
+    ``ProvisionVersionShape`` admits via ``sh:lessThanOrEquals``. Falls back to the input unchanged if it is
     not a parseable ISO date (defensive — upstream values are ``_strip_offset``
     normalised, so this should not occur).
     """
@@ -1555,12 +1558,15 @@ def synthesise_versions(
     ``estleg:ProvisionVersion`` (``<provision IRI>_v<globalId>``). Consecutive versions
     of the same provision are chained with ``estleg:supersededByVersion``; ``versionValidTo``
     of version *k* is set to the day *before* ``versionValidFrom`` of version *k+1*
-    (an exclusive end, so an as-of-date query matches exactly one version on the
-    transition day — issue #306); the last version stays open (no ``versionValidTo``
-    / ``supersededByVersion``).
+    (an inclusive last day, so an as-of-date query matches exactly one version on
+    the transition day — issue #306); the last version stays open (no
+    ``versionValidTo`` / ``supersededByVersion``). Two consecutive redactions one
+    day apart legitimately yield a one-day version with
+    ``versionValidFrom == versionValidTo``; only a reversed interval is an error.
 
     Redactions sharing an entry-into-force date are collapsed first (issue #393)
-    so no zero-duration (``versionValidFrom == versionValidTo``) version is emitted.
+    so two editions taking effect on one calendar day cannot yield a reversed or
+    duplicated interval.
     """
     # Issue #393: collapse same-``valid_from`` redactions before diffing/chaining so
     # two editions taking effect on one calendar day cannot yield a zero-day version.

@@ -179,6 +179,85 @@ def test_inference_unsafe_properties_keep_required_gaps() -> None:
         assert "rdfs:range" not in node, term
 
 
+def test_multi_valued_keys_are_arrays_in_the_committed_cv() -> None:
+    """validate_all wants @type and SKOS mapping links as arrays on every node,
+    the ontology header and the NormType_* individuals included."""
+    validate_all.reset()
+    doc = load_jsonld(VOCAB_PATH)
+    validate_all.validate_types(VOCAB_PATH, doc)
+    validate_all.validate_multi_valued(VOCAB_PATH, doc)
+    assert validate_all.errors == []
+
+
+def test_scalar_type_and_exact_match_from_a_source_are_wrapped() -> None:
+    sources = [
+        {"@id": "estleg:Probe", "@type": "owl:Class"},
+        {
+            "@id": "estleg:NormType_Probe",
+            "@type": "skos:Concept",
+            "skos:exactMatch": {"@id": "http://example.org/probe"},
+        },
+    ]
+    graph, _ = build_consolidated_graph({"@graph": []}, extra_sources=sources)
+    idx = index_by_id(graph)
+    assert idx[VOCABULARY_IRI]["@type"] == ["owl:Ontology"]
+    assert idx["estleg:Probe"]["@type"] == ["owl:Class"]
+    assert idx["estleg:NormType_Probe"]["skos:exactMatch"] == [
+        {"@id": "http://example.org/probe"}
+    ]
+
+
+@pytest.mark.parametrize(
+    ("term", "domain", "range_"),
+    [
+        ("estleg:citationSource", "owl:Thing", "rdfs:Resource"),
+        ("estleg:itemNumber", "owl:Thing", "xsd:string"),
+        ("estleg:provisionRef", "owl:Thing", "xsd:string"),
+        ("estleg:resultedInVersion", "owl:Thing", "rdfs:Resource"),
+        ("estleg:rtUrl", "estleg:ProvisionVersion", "xsd:string"),
+    ],
+)
+def test_corpus_terms_are_declared_without_phantom_axioms(term, domain, range_) -> None:
+    """These five reached the corpus undeclared. Only rtUrl, owned by
+    ProvisionVersionShape, may name a shaped class as its domain."""
+    for graph in (_vocab_nodes(), build_consolidated_graph({"@graph": []}, extra_sources=[])[0]):
+        node = index_by_id(graph)[term]
+        assert node["rdfs:domain"] == {"@id": domain}, term
+        assert node["rdfs:range"] == {"@id": range_}, term
+        labels = {item["@language"] for item in node["rdfs:label"]}
+        assert labels == {"et", "en"}, term
+        assert node["rdfs:comment"], term
+
+
+def test_fallback_placeholder_shadowed_by_an_instance_file_is_dropped() -> None:
+    """A CV fallback copy of a node a real institutions/ file declares is a
+    cross-file duplicate; a schema-declared one and an unshadowed one stay."""
+    fallback = {
+        "@type": ["owl:NamedIndividual", "estleg:Institution"],
+        "estleg:referenceStatus": "fallbackMaterialized",
+    }
+    vocab = {
+        "@graph": [
+            {"@id": "estleg:Institution_real", **fallback},
+            {"@id": "estleg:Institution_orphan", **fallback},
+            {"@id": "estleg:Institution_live", "@type": ["owl:NamedIndividual"]},
+        ]
+    }
+    graph, _ = build_consolidated_graph(
+        vocab,
+        extra_sources=[],
+        instance_ids={"estleg:Institution_real", "estleg:Institution_live"},
+    )
+    ids = set(index_by_id(graph))
+    assert "estleg:Institution_real" not in ids
+    assert {"estleg:Institution_orphan", "estleg:Institution_live"} <= ids
+
+
+def test_committed_cv_redeclares_no_instance_file_node() -> None:
+    shadowed = consolidate_tbox.instance_data_ids() & set(index_by_id(_vocab_nodes()))
+    assert shadowed == set()
+
+
 def test_peeps_no_longer_use_junk_predicates() -> None:
     sample = REPO / "krr_outputs" / "volgade_sissenoudmise_peep.json"
     text = sample.read_text(encoding="utf-8")

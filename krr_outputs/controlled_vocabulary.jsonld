@@ -15,7 +15,9 @@
   "@graph": [
     {
       "@id": "https://w3id.org/estleg/vocabulary",
-      "@type": "owl:Ontology",
+      "@type": [
+        "owl:Ontology"
+      ],
       "owl:versionInfo": "1.0.0",
       "rdfs:label": [
         {
@@ -171,7 +173,9 @@
     },
     {
       "@id": "estleg:Citation",
-      "@type": "owl:Class",
+      "@type": [
+        "owl:Class"
+      ],
       "rdfs:label": [
         {
           "@value": "Viide",
@@ -893,7 +897,9 @@
     },
     {
       "@id": "estleg:ReleaseDelta",
-      "@type": "owl:Class",
+      "@type": [
+        "owl:Class"
+      ],
       "rdfs:label": [
         {
           "@value": "Väljalaske muutus",
@@ -1096,7 +1102,9 @@
     },
     {
       "@id": "estleg:added",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "lisatud",
@@ -1117,7 +1125,9 @@
     },
     {
       "@id": "estleg:addedCount",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "lisatud arv",
@@ -1612,7 +1622,9 @@
     },
     {
       "@id": "estleg:bodyType",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "organi liik",
@@ -1795,7 +1807,9 @@
     },
     {
       "@id": "estleg:citationDetail",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "viite täpsustus",
@@ -1815,8 +1829,46 @@
       }
     },
     {
+      "@id": "estleg:citationSource",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "viitav säte",
+          "@language": "et"
+        },
+        {
+          "@value": "Citation Source",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links a reified estleg:Citation to the provision (a § or a lõige) whose text contains the citation: the citing side, where citationTarget is the cited side. Written by extract_cross_references.py; an unresolved law citation keeps citationSource and citationText and omits citationTarget (#514).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Citation"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:LegalProvision"
+        },
+        {
+          "@id": "estleg:Subsection"
+        }
+      ]
+    },
+    {
       "@id": "estleg:citationTarget",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "viite sihtmärk",
@@ -1845,7 +1897,9 @@
     },
     {
       "@id": "estleg:citationText",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "viite tekst",
@@ -2007,7 +2061,9 @@
     },
     {
       "@id": "estleg:containsPersonalData",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "sisaldab isikuandmeid",
@@ -2097,7 +2153,9 @@
     },
     {
       "@id": "estleg:county",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "maakond",
@@ -2204,7 +2262,9 @@
     },
     {
       "@id": "estleg:currentMunicipality",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "kehtiv omavalitsus",
@@ -2609,7 +2669,9 @@
     },
     {
       "@id": "estleg:ehakCode",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "EHAK kood",
@@ -2727,7 +2789,9 @@
     },
     {
       "@id": "estleg:enactedBy",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "enactedBy",
@@ -2756,7 +2820,9 @@
     },
     {
       "@id": "estleg:enactedByMunicipality",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "enactedByMunicipality",
@@ -2785,7 +2851,9 @@
     },
     {
       "@id": "estleg:enforcedAtLevel",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "enforcedAtLevel",
@@ -3653,7 +3721,9 @@
     },
     {
       "@id": "estleg:historicalMunicipalityName",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "ajalooline omavalitsuse nimi",
@@ -3674,7 +3744,9 @@
     },
     {
       "@id": "estleg:implementedBy",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "rakendatud",
@@ -3708,7 +3780,9 @@
     },
     {
       "@id": "estleg:implementedByCount",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "rakendajate arv",
@@ -3737,7 +3811,9 @@
     },
     {
       "@id": "estleg:implementsCitation",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "rakendab viidet",
@@ -4295,7 +4371,9 @@
     },
     {
       "@id": "estleg:issuedUnder",
-      "@type": "owl:ObjectProperty",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "antud alusel",
@@ -4338,6 +4416,34 @@
       "rdfs:domain": {
         "@id": "estleg:Act"
       },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:itemNumber",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "punkti number",
+          "@language": "et"
+        },
+        {
+          "@value": "Item Number",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Number of a punkt (enumerated item) inside a lõige, as a display string such as \"3\"; repeated when the lõige lists several punktid. Written by law_structure.py from the Riigi Teataja punktNr elements, falling back to the punkt numbers cited in the lõige text (#514).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:Subsection"
+        }
+      ],
       "rdfs:range": {
         "@id": "xsd:string"
       }
@@ -4511,7 +4617,9 @@
     },
     {
       "@id": "estleg:mappingEvidence",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "kaardistuse tõend",
@@ -4532,7 +4640,9 @@
     },
     {
       "@id": "estleg:mappingSource",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "kaardistuse allikas",
@@ -5220,6 +5330,34 @@
       }
     },
     {
+      "@id": "estleg:provisionRef",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "sätteviide",
+          "@language": "et"
+        },
+        {
+          "@value": "Provision Reference",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Human-readable citation of the provision a ProvisionVersion is a version of, e.g. \"PKS § 1\" or \"KARIST_2 § 88 lg 1\", derived from the versionOf IRI. A denormalised display string, not a graph join: use versionOf. Written by generate_provision_versions.py (#524).",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:ProvisionVersion"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:publicationDate",
       "@type": [
         "owl:DatatypeProperty"
@@ -5447,7 +5585,9 @@
     },
     {
       "@id": "estleg:removed",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "eemaldatud",
@@ -5468,7 +5608,9 @@
     },
     {
       "@id": "estleg:removedCount",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "eemaldatud arv",
@@ -5563,6 +5705,39 @@
       }
     },
     {
+      "@id": "estleg:resultedInVersion",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "tulemuseks redaktsioon",
+          "@language": "et"
+        },
+        {
+          "@value": "resulted in version",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links an AmendmentEvent to each estleg:ProvisionVersion that took effect on the event's date (#429). Written by generate_amendment_history.py. The versions live in the provision_versions/ sidecars, so the term carries no rdfs:range (schema:rangeIncludes only) and is stripped from combined_ontology.jsonld via estleg_common.COMBINED_STRIPPED_PREDICATES (#681); it resolves on the full load surface.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:AmendmentEvent"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "rdfs:Resource"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:ProvisionVersion"
+        }
+      ]
+    },
+    {
       "@id": "estleg:rikObjectId",
       "@type": [
         "owl:DatatypeProperty"
@@ -5651,6 +5826,29 @@
       "rdfs:comment": "Riigi Teataja reference string on an AmendmentEvent.",
       "rdfs:domain": {
         "@id": "estleg:AmendmentEvent"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:rtUrl",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Riigi Teataja URL",
+          "@language": "et"
+        },
+        {
+          "@value": "Riigi Teataja URL",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Riigi Teataja URL of the redaction (terviktekst) that produced a ProvisionVersion, built from its versionRedactionId. Written by generate_provision_versions.py as a plain string literal; ProvisionVersionShape also accepts xsd:anyURI (#524).",
+      "rdfs:domain": {
+        "@id": "estleg:ProvisionVersion"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -6254,7 +6452,9 @@
     },
     {
       "@id": "estleg:titleNormalized",
-      "@type": "owl:DatatypeProperty",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
       "rdfs:label": [
         {
           "@value": "normaliseeritud pealkiri",
@@ -8506,78 +8706,6 @@
       "estleg:referenceStatus": "fallbackMaterialized"
     },
     {
-      "@id": "estleg:Institution_harno",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Institution"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "Institution harno",
-          "@language": "et"
-        },
-        {
-          "@value": "Institution harno",
-          "@language": "en"
-        }
-      ],
-      "estleg:referenceStatus": "fallbackMaterialized"
-    },
-    {
-      "@id": "estleg:Institution_mta",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Institution"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "Institution mta",
-          "@language": "et"
-        },
-        {
-          "@value": "Institution mta",
-          "@language": "en"
-        }
-      ],
-      "estleg:referenceStatus": "fallbackMaterialized"
-    },
-    {
-      "@id": "estleg:Institution_ppa",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Institution"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "Institution ppa",
-          "@language": "et"
-        },
-        {
-          "@value": "Institution ppa",
-          "@language": "en"
-        }
-      ],
-      "estleg:referenceStatus": "fallbackMaterialized"
-    },
-    {
-      "@id": "estleg:Institution_ttja",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:Institution"
-      ],
-      "rdfs:label": [
-        {
-          "@value": "Institution ttja",
-          "@language": "et"
-        },
-        {
-          "@value": "Institution ttja",
-          "@language": "en"
-        }
-      ],
-      "estleg:referenceStatus": "fallbackMaterialized"
-    },
-    {
       "@id": "estleg:LegalConceptScheme",
       "@type": [
         "skos:ConceptScheme"
@@ -8625,9 +8753,11 @@
       "owl:sameAs": {
         "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#ConstitutiveStatement"
       },
-      "skos:exactMatch": {
-        "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#ConstitutiveStatement"
-      }
+      "skos:exactMatch": [
+        {
+          "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#ConstitutiveStatement"
+        }
+      ]
     },
     {
       "@id": "estleg:NormType_Obligation",
@@ -8649,9 +8779,11 @@
       "owl:sameAs": {
         "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Obligation"
       },
-      "skos:exactMatch": {
-        "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Obligation"
-      }
+      "skos:exactMatch": [
+        {
+          "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:NormType_Permission",
@@ -8673,9 +8805,11 @@
       "owl:sameAs": {
         "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Permission"
       },
-      "skos:exactMatch": {
-        "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Permission"
-      }
+      "skos:exactMatch": [
+        {
+          "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:NormType_Prohibition",
@@ -8697,9 +8831,11 @@
       "owl:sameAs": {
         "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Prohibition"
       },
-      "skos:exactMatch": {
-        "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Prohibition"
-      }
+      "skos:exactMatch": [
+        {
+          "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Prohibition"
+        }
+      ]
     },
     {
       "@id": "estleg:NormType_Right",
@@ -8721,9 +8857,11 @@
       "owl:sameAs": {
         "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Right"
       },
-      "skos:exactMatch": {
-        "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Right"
-      }
+      "skos:exactMatch": [
+        {
+          "@id": "http://docs.oasis-open.org/legalruleml/ns/v1.0/#Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Phase_Enacted",

@@ -202,38 +202,43 @@ class TestChecksRequireComparableCorpora:
         assert dup.main(["--check"]) == (0 if change == "none" else 1)
 
 
-class TestMtimeDerivedRowsAreExcluded:
-    """#702: the freshness rule counts by mtime, so --check must ignore it.
+class TestComparableBlock:
+    """#702 / #705: --check compares content-derived rows, including the total.
 
-    `older than at least one canonical source file` compares filesystem
-    timestamps, not content. Regenerating a T-Box artifact makes it newer than
-    an aggregate that embeds it, and a fresh checkout assigns mtimes in
-    arbitrary order -- so this row moved 3 -> 4 (and the total 122 -> 123) with
-    a clean `git status`, which made --check report a stale report twice over.
+    The mtime-based `older than at least one canonical source file` rule was
+    removed from validate_all (staleness now surfaces as missing / stale-extra /
+    drifting ids), so no category is environment-dependent any more and the
+    `Errors` total is compared again. Only the stamp line is ignored.
     """
 
-    def _block(self, freshness: int, duplicates: int = 38):
-        return vr.render_block(
-            {"files": 26961, "errors": freshness + duplicates, "warnings": 2},
+    def _block(self, duplicates: int = 38, missing: int = 1, stamp: str = "abc1234"):
+        block = vr.render_block(
+            {"files": 26961, "errors": duplicates + missing, "warnings": 2},
             Counter(
                 {
                     "Duplicate @id within file": duplicates,
-                    "older than at least one canonical source file": freshness,
+                    "missing N source graph IDs": missing,
                 }
             ),
         )
+        return block.replace("*Measured by", f"*Measured by {stamp} ", 1)
 
-    def test_freshness_drift_alone_is_not_treated_as_stale(self):
-        assert vr._comparable(self._block(3)) == vr._comparable(self._block(4))
+    def test_no_category_is_environment_dependent(self):
+        assert vr.ENVIRONMENT_DEPENDENT_CATEGORIES == ()
+
+    def test_stamp_line_alone_is_not_treated_as_stale(self):
+        assert vr._comparable(self._block(stamp="a")) == vr._comparable(self._block(stamp="b"))
 
     def test_a_content_category_drifting_is_still_caught(self):
-        assert vr._comparable(self._block(3)) != vr._comparable(
-            self._block(3, duplicates=39)
-        )
+        assert vr._comparable(self._block()) != vr._comparable(self._block(duplicates=39))
 
-    def test_the_committed_block_still_shows_the_real_totals(self):
-        """Excluded from comparison, but still published for the reader."""
+    def test_the_total_is_compared(self):
+        same_rows_different_total = self._block().replace("| Errors | 39 |", "| Errors | 40 |")
+        assert "| Errors | 40 |" in same_rows_different_total
+        assert vr._comparable(self._block()) != vr._comparable(same_rows_different_total)
+
+    def test_the_committed_block_no_longer_carries_the_mtime_row(self):
         text = vr.REPORT_PATH.read_text(encoding="utf-8")
         block = text[text.find(vr.BEGIN_MARKER) : text.find(vr.END_MARKER)]
         assert "| Errors |" in block
-        assert "older than at least one canonical source file" in block
+        assert "older than at least one canonical source file" not in block

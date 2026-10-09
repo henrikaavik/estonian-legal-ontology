@@ -90,8 +90,21 @@ class TestIssue393ProvisionVersionInterval:
             "@graph": [_provision_version(valid_from="2020-01-02", valid_to="2020-01-01")],
         })
         assert not ok
-        assert "ProvisionVersionShape" in msg or "LessThanConstraintComponent" in msg
-        assert "versionValidFrom" in msg or "lessThan" in msg.lower()
+        # versionValidTo is the inclusive last day, so the shape uses
+        # sh:lessThanOrEquals; a reversed interval is still a violation.
+        assert (
+            "ProvisionVersionShape" in msg
+            or "LessThanOrEqualsConstraintComponent" in msg
+        )
+        assert "versionValidFrom" in msg or "lessthan" in msg.lower()
+
+    def test_one_day_version_conforms(self):
+        # from == to is a legal one-day version (inclusive end).
+        ok, msg = _validate({
+            "@context": CONTEXT,
+            "@graph": [_provision_version(valid_from="2020-01-02", valid_to="2020-01-02")],
+        })
+        assert ok, msg
 
     def test_open_ended_version_does_not_fail_less_than(self):
         ok, msg = _validate({

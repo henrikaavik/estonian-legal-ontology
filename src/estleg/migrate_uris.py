@@ -15,10 +15,16 @@ import os
 import re
 import sys
 import tempfile
+from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 
-from estleg.estleg_common import act_prefix_from_iri
+from estleg.estleg_common import (
+    act_prefix_from_iri,
+    iter_krr_jsonld_files,
+    sanitize_id,
+    save_json,
+)
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
 
@@ -486,6 +492,64 @@ def _shorten_amendment_iri(
     return None
 
 
+# ── Abbreviation reservation (shared by build-registry / resolve-collisions) ──
+
+#: Source tiers in reservation order. An unknown source sorts after ``auto``.
+SOURCE_TIERS = ("rt_api", "existing", "auto")
+
+
+def corpus_prefix(abbrev: str) -> str:
+    """Return the IRI prefix ``abbrev`` actually yields in the corpus.
+
+    Registry abbreviations keep Estonian letters (``TsÜS``, ``RÕS``), but
+    every ``@id`` is minted through :func:`estleg_common.sanitize_id`, which
+    transliterates them (``TsÜS`` → ``TsUS``). Two abbreviations are only
+    distinct in the corpus if their sanitized forms differ, so collision
+    checks MUST compare this form, never the raw registry string.
+    """
+    return sanitize_id(abbrev)
+
+
+def _tier_rank(source: str) -> int:
+    try:
+        return SOURCE_TIERS.index(source)
+    except ValueError:
+        return len(SOURCE_TIERS)
+
+
+def reserve_abbreviations(
+    candidates: list[tuple[str, str, str]],
+) -> dict[str, str]:
+    """Reserve one abbreviation per slug; return ``slug -> abbrev``.
+
+    ``candidates`` holds ``(slug, candidate_abbrev, source)`` triples. They
+    are reserved in tier order (:data:`SOURCE_TIERS`), slug-sorted within a
+    tier, so higher tiers always keep the bare form. Reservations are keyed
+    on :func:`corpus_prefix`: ``REÕS`` and ``REOS`` collide because both mint
+    ``estleg:REOS_*``. The loser keeps its raw candidate plus the first free
+    ``_2``, ``_3``… suffix (free in corpus form too).
+    """
+    used: dict[str, str] = {}  # corpus prefix -> slug
+    assigned: dict[str, str] = {}
+    for slug, candidate, _source in sorted(
+        candidates, key=lambda c: (_tier_rank(c[2]), c[0])
+    ):
+        abbrev = candidate
+        owner = used.get(corpus_prefix(abbrev))
+        if owner is not None and owner != slug:
+            counter = 2
+            while corpus_prefix(f"{candidate}_{counter}") in used:
+                counter += 1
+            abbrev = f"{candidate}_{counter}"
+            print(
+                f"  COLLISION resolved: {candidate} -> {abbrev} for {slug} "
+                f"(corpus prefix {corpus_prefix(candidate)!r} held by {owner})"
+            )
+        used[corpus_prefix(abbrev)] = slug
+        assigned[slug] = abbrev
+    return assigned
+
+
 # ── Stub functions (to be implemented in later tasks) ─────────────────────────
 
 def assign_abbreviations(
@@ -505,57 +569,36 @@ def assign_abbreviations(
     Within each tier we iterate in slug-sorted order for deterministic output.
     """
     registry: dict[str, dict] = {}
-    used_abbrevs: dict[str, str] = {}  # abbrev -> slug
     stats = {"rt_api": 0, "existing": 0, "auto": 0}
 
-    # Classify every slug into its source tier up front so we can do a strict
-    # three-pass assignment.
-    classified: dict[str, list[tuple[str, dict, str]]] = {
-        "rt_api": [],
-        "existing": [],
-        "auto": [],
-    }
+    # Classify every slug into its source tier up front; the shared reserver
+    # then applies the strict three-pass order (rt_api, existing, auto).
+    candidates: list[tuple[str, str, str]] = []
     for slug, info in sorted(peep_data.items()):
         title = info["title"]
         current_prefix = info["prefix"]
         if slug in rt_abbrevs:
-            classified["rt_api"].append((slug, info, rt_abbrevs[slug]))
+            candidates.append((slug, rt_abbrevs[slug], "rt_api"))
         elif len(current_prefix) <= SHORT_PREFIX_THRESHOLD:
-            classified["existing"].append((slug, info, current_prefix))
+            candidates.append((slug, current_prefix, "existing"))
         else:
-            classified["auto"].append(
-                (slug, info, auto_derive_abbreviation(title, slug))
+            candidates.append(
+                (slug, auto_derive_abbreviation(title, slug), "auto")
             )
 
-    def _reserve(slug: str, info: dict, candidate: str, source: str) -> None:
-        """Reserve ``candidate`` for ``slug``, suffixing on collision."""
-        abbrev = candidate
-        if abbrev in used_abbrevs and used_abbrevs[abbrev] != slug:
-            base = abbrev
-            counter = 2
-            while f"{base}_{counter}" in used_abbrevs:
-                counter += 1
-            abbrev = f"{base}_{counter}"
-            print(f"  COLLISION resolved: {base} -> {abbrev} for {slug}")
-        used_abbrevs[abbrev] = slug
+    assigned = reserve_abbreviations(candidates)
+    # Emit in reservation order (tier, then slug) as the registry always has.
+    for slug, _candidate, source in sorted(
+        candidates, key=lambda c: (_tier_rank(c[2]), c[0])
+    ):
+        info = peep_data[slug]
         stats[source] += 1
         registry[slug] = {
-            "abbrev": abbrev,
+            "abbrev": assigned[slug],
             "source": source,
             "title": info["title"],
             "old_prefix": info["prefix"],
         }
-
-    # Pass 1 — rt_api claims its bare abbrevs first.
-    for slug, info, candidate in classified["rt_api"]:
-        _reserve(slug, info, candidate, "rt_api")
-    # Pass 2 — existing short prefixes claim next; only suffixed if they
-    # collide with an rt_api reservation.
-    for slug, info, candidate in classified["existing"]:
-        _reserve(slug, info, candidate, "existing")
-    # Pass 3 — auto-derived comes last so it never displaces a higher tier.
-    for slug, info, candidate in classified["auto"]:
-        _reserve(slug, info, candidate, "auto")
 
     return registry, stats
 
@@ -1438,6 +1481,722 @@ def _verify_plan(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
 
 # ── CLI ────────────────────────────────────────────────────────────────────────
 
+# ── resolve-collisions: file-scoped repair of transliteration collisions ─────
+#
+# Before the ``reserve_abbreviations`` fix, ``assign_abbreviations`` compared
+# RAW registry strings, so ``REÕS``/``REOS``, ``RÕS``/``ROS``, ``ÜKS``/``UKS``
+# and ``TsÜS``/``TsUS`` were all "distinct" — yet each pair mints the same
+# ``estleg:`` prefix through ``sanitize_id``. Two laws then declared the same
+# act root and overlapping provision IRIs.
+#
+# The global ``apply`` path cannot repair that: it rewrites every occurrence
+# of an IRI across all files, but when two laws share a string it cannot tell
+# which law a reference meant. ``resolve-collisions`` therefore renames ONLY
+# inside the yielding law's own files (peep/parts, provision_versions,
+# amendments, sanctions), re-points cross-file references only when the old
+# IRI was declared by that law alone (unambiguous), and leaves every
+# formerly-ambiguous cross-file reference on the bare-prefix law, reporting
+# them for re-resolution by the enrichment steps.
+
+LEGACY_DECISIONS_PATH = DATA_DIR / "legacy_statute_decisions.json"
+COLLISION_STATE_KEY = "collision_resolutions"
+# Aggregates rebuilt by their canonical builders — never patched in place.
+COLLISION_REBUILT_ARTIFACTS = frozenset({
+    "combined_ontology.jsonld",
+    "analytical/analytical_overlay.jsonld",
+    "act_expressions_combined.jsonld",
+})
+# Predicates in a renamed law's own files that point AT the canonical
+# (bare-prefix) law: ``dcterms:isReplacedBy`` on a #426-deprecated root and
+# the #427 ``owl:sameAs`` provision bridges. Their values are never renamed.
+PROTECTED_LINK_KEYS = frozenset({"owl:sameAs", "dcterms:isReplacedBy"})
+# Enrichment steps that re-derive cross-law links from source text and would
+# re-resolve the formerly-ambiguous references against the new prefixes.
+CROSS_REF_RESOLVERS = (
+    "scripts/extract_cross_references.py",
+    "scripts/generate_similarity_index.py",
+)
+
+
+@dataclass(frozen=True)
+class CollisionRename:
+    """One law that must yield its corpus prefix to ``keeper_slug``."""
+
+    slug: str
+    keeper_slug: str
+    old_abbrev: str
+    new_abbrev: str
+
+    @property
+    def from_prefix(self) -> str:
+        return corpus_prefix(self.old_abbrev)
+
+    @property
+    def to_prefix(self) -> str:
+        return corpus_prefix(self.new_abbrev)
+
+
+def plan_registry_collisions(registry: dict) -> list[CollisionRename]:
+    """Return the laws whose registry abbreviation collides in corpus form.
+
+    Re-runs :func:`reserve_abbreviations` over the registry's current
+    abbreviations and sources, so the documented priority decides who keeps
+    the bare prefix (rt_api, then existing, then auto; slug order within a
+    tier). An already-resolved registry yields ``[]``.
+    """
+    candidates = [
+        (slug, entry["abbrev"], entry.get("source", "auto"))
+        for slug, entry in registry.items()
+        if isinstance(entry, dict) and isinstance(entry.get("abbrev"), str)
+    ]
+    assigned = reserve_abbreviations(candidates)
+    owner_by_prefix = {corpus_prefix(a): s for s, a in assigned.items()}
+    renames: list[CollisionRename] = []
+    for slug, new_abbrev in sorted(assigned.items()):
+        old_abbrev = registry[slug]["abbrev"]
+        if new_abbrev != old_abbrev:
+            renames.append(CollisionRename(
+                slug=slug,
+                keeper_slug=owner_by_prefix[corpus_prefix(old_abbrev)],
+                old_abbrev=old_abbrev,
+                new_abbrev=new_abbrev,
+            ))
+    return renames
+
+
+_LAW_PEEP_NAME_RE = r"^{slug}(?:_osa\d+|_map)?_peep\.json$"
+
+
+def _law_slug_of_peep(name: str) -> str:
+    """``tsiviilkohtumenetluse_seadustik_osa3_peep.json`` → its law slug."""
+    return re.sub(r"(?:_osa\d+|_map)?_peep\.json$", "", name)
+
+
+def plan_corpus_collisions(
+    registry: dict,
+    krr_dir: Path,
+    decisions_path: Path,
+    *,
+    skip: set[str] = frozenset(),
+) -> list[CollisionRename]:
+    """Find #426-deprecated registry laws that share ids with another law.
+
+    The registry cannot see a pair whose live side was never registered (e.g.
+    the deprecated ``tsiviilkohtumenetluse`` stub vs the unregistered
+    multipart ``tsiviilkohtumenetluse_seadustik``, which both declare
+    ``estleg:TsMS_Map``). For every registry law whose act peeps are ALL
+    listed in the #426 ``deprecations``, any prefix-bearing id that another
+    law's top-level peep also declares means the deprecated duplicate must
+    yield: it gets the first ``_N`` suffix free in corpus form across the
+    registry. Laws in ``skip`` (already recorded) are ignored.
+    """
+    if not decisions_path.is_file():
+        return []
+    decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
+    deprecated_files = {e.get("file") for e in decisions.get("deprecations", [])}
+
+    candidates: dict[str, tuple[str, set[str], set[Path]]] = {}
+    for slug, entry in sorted(registry.items()):
+        if slug in skip or not isinstance(entry, dict) or not entry.get("abbrev"):
+            continue
+        own = law_own_files(slug, krr_dir)
+        peeps = [p for p in own if p.parent == krr_dir]
+        if not peeps or not all(p.name in deprecated_files for p in peeps):
+            continue
+        prefix = corpus_prefix(entry["abbrev"])
+        mine: set[str] = set()
+        for path in own:
+            doc = _load_json_file(path)
+            if doc is not None:
+                mine |= {
+                    d for d in declared_ids(doc)
+                    if d.startswith("estleg:") and _prefix_segment_span(d[7:], prefix)
+                }
+        if mine:
+            candidates[slug] = (prefix, mine, set(own))
+    if not candidates:
+        return []
+
+    wanted = set().union(*(c[1] for c in candidates.values()))
+    needles = {c[0] for c in candidates.values()}
+    shared_by: dict[str, set[str]] = {}  # id -> law slugs declaring it
+    for path in sorted(krr_dir.glob("*_peep.json")):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        if not any(n in text for n in needles):
+            continue
+        doc = _load_json_file(path)
+        if doc is None:
+            continue
+        for d in declared_ids(doc) & wanted:
+            shared_by.setdefault(d, set()).add(_law_slug_of_peep(path.name))
+
+    used = {corpus_prefix(e["abbrev"]) for e in registry.values()
+            if isinstance(e, dict) and e.get("abbrev")}
+    renames: list[CollisionRename] = []
+    for slug, (_prefix, mine, _own) in sorted(candidates.items()):
+        keepers = sorted({k for d in mine for k in shared_by.get(d, ()) if k != slug})
+        if not keepers:
+            continue
+        old_abbrev = registry[slug]["abbrev"]
+        counter = 2
+        while corpus_prefix(f"{old_abbrev}_{counter}") in used:
+            counter += 1
+        new_abbrev = f"{old_abbrev}_{counter}"
+        used.add(corpus_prefix(new_abbrev))
+        print(
+            f"  COLLISION resolved: {old_abbrev} -> {new_abbrev} for {slug} "
+            f"(#426 deprecated; ids also declared by {', '.join(keepers)})"
+        )
+        renames.append(CollisionRename(
+            slug=slug, keeper_slug=keepers[0],
+            old_abbrev=old_abbrev, new_abbrev=new_abbrev,
+        ))
+    return renames
+
+
+def law_own_files(slug: str, krr_dir: Path) -> list[Path]:
+    """Return the files that belong to law ``slug`` alone (existing only).
+
+    The act peep (``<slug>_peep.json``, the ``_osaN`` parts, the ``_map``
+    root), its provision redaction chain, amendment chain and sanctions
+    sidecar. The name match is exact so ``tsiviilseadustik`` never picks up
+    ``tsiviilseadustiku_uldosa_seadus_*``.
+    """
+    name_re = re.compile(_LAW_PEEP_NAME_RE.format(slug=re.escape(slug)))
+    files = sorted(p for p in krr_dir.glob(f"{slug}*_peep.json") if name_re.match(p.name))
+    for rel in (
+        f"provision_versions/{slug}.jsonld",
+        f"amendments/amendments_{slug}.json",
+        f"sanctions/sanctions_{slug}.json",
+    ):
+        if (krr_dir / rel).is_file():
+            files.append(krr_dir / rel)
+    return files
+
+
+def _prefix_segment_span(local: str, prefix: str) -> tuple[int, int] | None:
+    """Locate ``prefix`` as a whole ``_``-delimited segment run in ``local``.
+
+    The prefix sits at the start (``ROS_Par_1``) or after a family token
+    (``Cluster_ROS_1``, ``Amendment_ROS_vf_…``); for
+    ``AmendmentLink_<draft_id>_<prefix>`` it is the LAST segment run, so the
+    last match is used there and the first one everywhere else.
+    """
+    pattern = re.compile(r"(?:^|(?<=_))" + re.escape(prefix) + r"(?=_|$)")
+    matches = list(pattern.finditer(local))
+    if not matches:
+        return None
+    m = matches[-1] if local.startswith("AmendmentLink_") else matches[0]
+    return m.start(), m.end()
+
+
+def rename_prefix_in_iri(iri: str, from_prefix: str, to_prefix: str) -> str | None:
+    """``estleg:Cluster_ROS_2`` → ``estleg:Cluster_ROS_2_2`` (None if no prefix)."""
+    if not iri.startswith("estleg:"):
+        return None
+    local = iri[len("estleg:"):]
+    span = _prefix_segment_span(local, from_prefix)
+    if span is None:
+        return None
+    return "estleg:" + local[: span[0]] + to_prefix + local[span[1]:]
+
+
+def _carries_new_prefix(iri: str, from_prefix: str, to_prefix: str) -> bool:
+    """True iff the prefix segment of ``iri`` already reads ``to_prefix``."""
+    local = iri[len("estleg:"):]
+    span = _prefix_segment_span(local, from_prefix)
+    if span is None:
+        return False
+    rest = local[span[0]:]
+    return rest == to_prefix or rest.startswith(to_prefix + "_")
+
+
+def declared_ids(doc: object) -> set[str]:
+    """Every ``@id`` that is *described* (carries more than ``@id``) in ``doc``."""
+    out: set[str] = set()
+    stack = [doc]
+    while stack:
+        value = stack.pop()
+        if isinstance(value, dict):
+            node_id = value.get("@id")
+            if isinstance(node_id, str) and len(value) > 1:
+                out.add(node_id)
+            stack.extend(value.values())
+        elif isinstance(value, list):
+            stack.extend(value)
+    return out
+
+
+def _rewrite_strings(
+    value: object, pattern: re.Pattern, lookup: dict[str, str], key: str | None = None
+) -> tuple[object, int]:
+    """Token-boundary rewrite of every string in ``value``.
+
+    Values under :data:`PROTECTED_LINK_KEYS` are left untouched (they point
+    at the canonical law, not at the renamed one).
+    """
+    if key in PROTECTED_LINK_KEYS:
+        return value, 0
+    if isinstance(value, str):
+        new, n = pattern.subn(lambda m: lookup[m.group(1)], value)
+        return new, n
+    count = 0
+    if isinstance(value, dict):
+        for k, item in value.items():
+            new_item, n = _rewrite_strings(item, pattern, lookup, k)
+            if n:
+                value[k] = new_item
+                count += n
+    elif isinstance(value, list):
+        for i, item in enumerate(value):
+            new_item, n = _rewrite_strings(item, pattern, lookup, key)
+            if n:
+                value[i] = new_item
+                count += n
+    return value, count
+
+
+def _token_pattern(iris) -> re.Pattern:
+    alternatives = "|".join(re.escape(i) for i in sorted(iris, key=len, reverse=True))
+    return re.compile(TOKEN_BOUNDARY_RE.format(alternatives))
+
+
+def _load_json_file(path: Path) -> object | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        return None
+
+
+def _write_json_like(path: Path, doc: object, *, trailing_newline: bool) -> None:
+    text = json.dumps(doc, indent=2, ensure_ascii=False)
+    _atomic_write_text(path, text + ("\n" if trailing_newline else ""))
+
+
+def apply_registry_resolutions(
+    registry: dict, renames: list[CollisionRename], state: dict
+) -> bool:
+    """Record ``renames`` in the registry and the migration state in place.
+
+    The registry entry gets the suffixed ``abbrev``; its ``old_prefix`` is set
+    to the new corpus prefix (the data carries it once the file-scoped rename
+    ran), so the ``--legacy`` remap never proposes a global ``UKS_*`` →
+    ``UKS_2_*`` rewrite. The previous values are kept in the state record.
+    Returns True iff anything changed.
+    """
+    records = state.setdefault(COLLISION_STATE_KEY, {})
+    changed = False
+    for r in renames:
+        entry = registry[r.slug]
+        records[r.slug] = {
+            "keeper_slug": r.keeper_slug,
+            "old_abbrev": r.old_abbrev,
+            "new_abbrev": r.new_abbrev,
+            "from_prefix": r.from_prefix,
+            "to_prefix": r.to_prefix,
+            "previous_old_prefix": entry.get("old_prefix", ""),
+        }
+        entry["abbrev"] = r.new_abbrev
+        entry["old_prefix"] = r.to_prefix
+        changed = True
+    return changed
+
+
+def _scan_other_files(
+    krr_dir: Path,
+    own_paths: set[Path],
+    needles: set[str],
+    keys: set[str],
+    keeper_paths: set[Path] = frozenset(),
+) -> tuple[set[str], set[str], dict[str, dict[str, int]]]:
+    """Scan every non-own corpus file that mentions one of ``needles``.
+
+    Returns ``(declared_elsewhere, iris_elsewhere, refs)``: the ``keys`` IRIs
+    that some other file declares, every ``estleg:`` token seen elsewhere
+    (for :func:`target_iri_collisions`), and ``refs[iri][rel_path]`` — the
+    reference count of each ``keys`` IRI per other file. The keeper law's
+    own files count for ``declared_elsewhere`` (that is what makes an IRI
+    ambiguous) but not for ``refs``: they are its own nodes, not citations.
+    """
+    declared_elsewhere: set[str] = set()
+    iris_elsewhere: set[str] = set()
+    refs: dict[str, dict[str, int]] = {}
+    for path in iter_krr_jsonld_files(krr_dir):
+        if path in own_paths:
+            continue
+        rel = path.relative_to(krr_dir).as_posix()
+        if rel in COLLISION_REBUILT_ARTIFACTS:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        if not any(n in text for n in needles):
+            continue
+        tokens = ESTLEG_FULL_RE.findall(text)
+        iris_elsewhere.update(tokens)
+        hits = [t for t in tokens if t in keys]
+        if not hits:
+            continue
+        if path not in keeper_paths:
+            for t in hits:
+                refs.setdefault(t, {})
+                refs[t][rel] = refs[t].get(rel, 0) + 1
+        doc = _load_json_file(path)
+        if doc is not None:
+            declared_elsewhere |= declared_ids(doc) & keys
+    return declared_elsewhere, iris_elsewhere, refs
+
+
+def plan_law_collision(record: dict, slug: str, krr_dir: Path) -> dict:
+    """Plan the file-scoped rename of ``slug`` (no writes).
+
+    A file is "migrated" once every prefix-bearing IRI it declares already
+    carries ``to_prefix``; migrated files are never rewritten again, which
+    makes the command idempotent. Raises ``RuntimeError`` if an IRI this run
+    would mint already exists outside the law's own files.
+    """
+    from_prefix, to_prefix = record["from_prefix"], record["to_prefix"]
+    own = law_own_files(slug, krr_dir)
+    docs = {p: _load_json_file(p) for p in own}
+    unreadable = [str(path) for path, doc in docs.items() if doc is None]
+    if unreadable:
+        raise RuntimeError(f"{slug}: unreadable collision inputs: {', '.join(unreadable)}")
+
+    rename_map: dict[str, str] = {}
+    fresh: dict[str, str] = {}  # renames minted by THIS run (pending files)
+    pending: list[Path] = []
+    for path, doc in docs.items():
+        if doc is None:
+            continue
+        mine = {
+            d for d in declared_ids(doc)
+            if d.startswith("estleg:") and _prefix_segment_span(d[7:], from_prefix)
+        }
+        if not mine:
+            continue
+        if all(_carries_new_prefix(d, from_prefix, to_prefix) for d in mine):
+            # Already migrated — register the inverse so a still-pending file
+            # that references it (interrupted run) is rewritten consistently.
+            for d in mine:
+                old = rename_prefix_in_iri(d, to_prefix, from_prefix)
+                if old:
+                    rename_map.setdefault(old, d)
+            continue
+        pending.append(path)
+        for d in mine:
+            new = rename_prefix_in_iri(d, from_prefix, to_prefix)
+            if new and new != d:
+                rename_map[d] = new
+                fresh[d] = new
+
+    declared_elsewhere, iris_elsewhere, refs = _scan_other_files(
+        krr_dir,
+        set(own),
+        {from_prefix},
+        set(rename_map),
+        keeper_paths=set(law_own_files(record["keeper_slug"], krr_dir)),
+    )
+    clashes = target_iri_collisions(fresh, iris_elsewhere)
+    if clashes:
+        raise RuntimeError(
+            f"{slug}: refusing to mint IRIs that already exist outside its own "
+            f"files: {sorted(clashes)[:10]}"
+        )
+    return {
+        "slug": slug,
+        "keeper_slug": record["keeper_slug"],
+        "from_prefix": from_prefix,
+        "to_prefix": to_prefix,
+        "krr_dir": krr_dir,
+        "own": own,
+        "docs": docs,
+        "pending": pending,
+        "rename_map": rename_map,
+        "refs": refs,
+        "declared_elsewhere": declared_elsewhere,
+    }
+
+
+def execute_law_collision(plan: dict, *, dry_run: bool) -> dict:
+    """Apply a :func:`plan_law_collision` plan; return the per-law summary."""
+    krr_dir: Path = plan["krr_dir"]
+    rename_map: dict[str, str] = plan["rename_map"]
+    refs: dict[str, dict[str, int]] = plan["refs"]
+    declared_elsewhere: set[str] = plan["declared_elsewhere"]
+
+    own_writes: dict[str, int] = {}
+    if plan["pending"] and rename_map:
+        pattern = _token_pattern(rename_map)
+        for path in plan["pending"]:
+            doc = plan["docs"][path]
+            _, n = _rewrite_strings(doc, pattern, rename_map)
+            if n:
+                own_writes[path.relative_to(krr_dir).as_posix()] = n
+                if not dry_run:
+                    save_json(path, doc)
+
+    # Cross-file references: re-point only IRIs no other file declares.
+    unambiguous = {
+        old: new for old, new in rename_map.items()
+        if old in refs and old not in declared_elsewhere
+    }
+    cross_writes: dict[str, int] = {}
+    if unambiguous:
+        files = sorted({rel for old in unambiguous for rel in refs[old]})
+        ordered = sorted(unambiguous.items(), key=lambda kv: -len(kv[0]))
+        for rel in files:
+            if dry_run:
+                cross_writes[rel] = sum(refs[o].get(rel, 0) for o in unambiguous)
+                continue
+            n = apply_renames_to_file(krr_dir / rel, ordered)
+            if n:
+                cross_writes[rel] = n
+
+    return {
+        "slug": plan["slug"],
+        "keeper_slug": plan["keeper_slug"],
+        "from_prefix": plan["from_prefix"],
+        "to_prefix": plan["to_prefix"],
+        "own_files": [p.relative_to(krr_dir).as_posix() for p in plan["own"]],
+        "renamed_iris": len(rename_map),
+        "rename_map": rename_map,
+        "own_writes": own_writes,
+        "cross_writes": cross_writes,
+        "ambiguous_refs": {
+            iri: per_file for iri, per_file in refs.items() if iri in declared_elsewhere
+        },
+    }
+
+
+def repair_legacy_decisions(
+    rename_maps: dict[str, str],
+    renamed_files: set[str],
+    krr_dir: Path,
+    decisions_path: Path,
+    *,
+    dry_run: bool,
+) -> list[dict]:
+    """Re-point #426 records of renamed legacy files at their new roots.
+
+    ``rootIri`` follows the rename (``estleg:UKS_Map`` → ``estleg:UKS_2_Map``)
+    while ``replacedByIri`` stays on the live act, so the record is no longer
+    self-referential. The root then gets the ``mark_deprecated_root`` marks
+    (a no-op when already present; ``dcterms:isReplacedBy`` is reset to the
+    live root if it ever drifted) and the #427 ``owl:sameAs`` provision
+    bridge, which the collision had suppressed (legacy and canonical
+    provisions shared one IRI).
+    """
+    from estleg import deprecate_legacy_statutes as dls
+
+    if not decisions_path.is_file():
+        return []
+    decisions = json.loads(decisions_path.read_text(encoding="utf-8"))
+    changes: list[dict] = []
+    touched = False
+    for entry in decisions.get("deprecations", []):
+        if entry.get("file") not in renamed_files:
+            continue
+        old_root = entry["rootIri"]
+        new_root = rename_maps.get(old_root, old_root)
+        if new_root != old_root:
+            entry["rootIri"] = new_root
+            touched = True
+        path = krr_dir / entry["file"]
+        doc = _load_json_file(path)
+        if not isinstance(doc, dict):
+            continue
+        root = next(
+            (n for n in doc.get("@graph", [])
+             if isinstance(n, dict) and n.get("@id") == new_root),
+            None,
+        )
+        fixed_link = False
+        if root is not None:
+            expected = {"@id": entry["replacedByIri"]}
+            if "dcterms:isReplacedBy" in root and root["dcterms:isReplacedBy"] != expected:
+                root["dcterms:isReplacedBy"] = expected
+                fixed_link = True
+        marked = dls.mark_deprecated_root(doc, new_root, entry["replacedByIri"])
+        canonical = _load_json_file(krr_dir / entry["replacedByFile"])
+        bridged = (
+            dls.bridge_legacy_provisions(doc, canonical)
+            if isinstance(canonical, dict) else 0
+        )
+        if (fixed_link or marked or bridged) and not dry_run:
+            save_json(path, doc)
+        if new_root != old_root or fixed_link or marked or bridged:
+            changes.append({
+                "file": entry["file"],
+                "rootIri": [old_root, new_root],
+                "replacedByIri": entry["replacedByIri"],
+                "isReplacedBy_fixed": fixed_link,
+                "marked": marked,
+                "bridged": bridged,
+            })
+    if touched and not dry_run:
+        _write_json_like(decisions_path, decisions, trailing_newline=True)
+    return changes
+
+
+COLLISION_STATE_NOTE = (
+    " Layer 3 (resolve-collisions): registry abbreviations that collide once "
+    "transliterated by sanitize_id (REÕS/REOS, RÕS/ROS, ÜKS/UKS, TsÜS/TsUS), "
+    "and #426 deprecated duplicates sharing ids with an unregistered live law "
+    "(TsMS), "
+    "were split with a file-scoped rename of the yielding law's own files; "
+    "see collision_resolutions. last_applied_registry_hash is refreshed "
+    "whenever this layer rewrites the registry."
+)
+
+
+def _stamp_collision_state(state: dict, registry_path: Path) -> None:
+    """Bind the state sentinel to the registry this layer just wrote."""
+    state["last_applied_registry_hash"] = compute_registry_hash(registry_path)
+    note = state.get("note", "")
+    marker = " Layer 3 (resolve-collisions)"
+    if marker in note:
+        note = note[: note.index(marker)]
+    state["note"] = note + COLLISION_STATE_NOTE
+
+
+def resolve_collisions(
+    *,
+    krr_dir: Path | None = None,
+    registry_path: Path | None = None,
+    state_path: Path | None = None,
+    decisions_path: Path | None = None,
+    dry_run: bool = False,
+) -> dict:
+    """Resolve corpus-prefix collisions in the registry and the data.
+
+    1. Re-plan the registry with :func:`plan_registry_collisions`, add the
+       #426 duplicates :func:`plan_corpus_collisions` finds against
+       unregistered live laws, and record any new resolution (registry +
+       ``migration_state.json``).
+    2. For every recorded resolution, run the file-scoped rename
+       (:func:`resolve_law_collision`).
+    3. Repair the #426 records of renamed deprecated legacy files.
+
+    Idempotent: a second run finds nothing to plan, every own file already
+    migrated and every record already repaired, and writes nothing.
+    """
+    krr_dir = krr_dir if krr_dir is not None else KRR_DIR
+    registry_path = registry_path if registry_path is not None else REGISTRY_PATH
+    state_path = state_path if state_path is not None else MIGRATION_STATE_PATH
+    decisions_path = decisions_path if decisions_path is not None else LEGACY_DECISIONS_PATH
+
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    state = (
+        json.loads(state_path.read_text(encoding="utf-8"))
+        if state_path.is_file() else {}
+    )
+    renames = plan_registry_collisions(registry)
+    recorded = set(state.get(COLLISION_STATE_KEY, {})) | {r.slug for r in renames}
+    renames += plan_corpus_collisions(
+        registry, krr_dir, decisions_path, skip=recorded
+    )
+    registry_changed = apply_registry_resolutions(registry, renames, state)
+
+    # Plan every law first: a refused rename aborts before ANY write,
+    # registry included.
+    plans = [
+        plan_law_collision(record, slug, krr_dir)
+        for slug, record in sorted(state.get(COLLISION_STATE_KEY, {}).items())
+    ]
+    if registry_changed and not dry_run:
+        _write_json_like(registry_path, registry, trailing_newline=False)
+        _stamp_collision_state(state, registry_path)
+        _write_json_like(state_path, state, trailing_newline=True)
+
+    results = []
+    all_maps: dict[str, str] = {}
+    renamed_files: set[str] = set()
+    for plan in plans:
+        result = execute_law_collision(plan, dry_run=dry_run)
+        results.append(result)
+        all_maps.update(result["rename_map"])
+        renamed_files.update(result["own_files"])
+
+    legacy_changes = repair_legacy_decisions(
+        all_maps, renamed_files, krr_dir, decisions_path, dry_run=dry_run
+    )
+    return {
+        "dry_run": dry_run,
+        "planned": [r.__dict__ for r in renames],
+        "laws": results,
+        "legacy_changes": legacy_changes,
+    }
+
+
+def print_collision_summary(summary: dict) -> None:
+    """Print the outcome plus the cross-reference census comment block."""
+    print("=" * 70)
+    print("Resolve corpus-prefix collisions (file-scoped)")
+    if summary["dry_run"]:
+        print("  MODE: --dry-run (no files written)")
+    print("=" * 70)
+    if summary["planned"]:
+        print("  Registry resolutions recorded this run:")
+        for r in summary["planned"]:
+            print(f"    {r['slug']}: {r['old_abbrev']} -> {r['new_abbrev']} "
+                  f"(bare prefix kept by {r['keeper_slug']})")
+    else:
+        print("  Registry: no new collisions (already resolved).")
+    total_writes = 0
+    for law in summary["laws"]:
+        own_n = sum(law["own_writes"].values())
+        cross_n = sum(law["cross_writes"].values())
+        total_writes += len(law["own_writes"]) + len(law["cross_writes"])
+        print(f"\n  {law['slug']}: {law['from_prefix']} -> {law['to_prefix']} "
+              f"(keeper {law['keeper_slug']})")
+        print(f"    own files: {len(law['own_files'])}, "
+              f"rewritten now: {len(law['own_writes'])} ({own_n} replacements)")
+        for rel, n in sorted(law["own_writes"].items()):
+            print(f"      {n:>6}  {rel}")
+        print(f"    unambiguous cross-file refs re-pointed: {cross_n} "
+              f"in {len(law['cross_writes'])} file(s)")
+        for rel, n in sorted(law["cross_writes"].items()):
+            print(f"      {n:>6}  {rel}")
+    for ch in summary["legacy_changes"]:
+        print(f"\n  #426 record {ch['file']}: rootIri {ch['rootIri'][0]} -> "
+              f"{ch['rootIri'][1]}, replacedBy {ch['replacedByIri']}, "
+              f"marked={ch['marked']} bridged={ch['bridged']}")
+    print(f"\n  Files written this run: {total_writes}")
+
+    print("\n# ── Cross-reference census: formerly-ambiguous IRIs ─────────────")
+    print("# These IRIs were declared by BOTH laws of a pair. References in")
+    print("# other files were left on the bare-prefix (keeper) law, which now")
+    print("# owns them unambiguously. Re-derive them from source text with:")
+    for step in CROSS_REF_RESOLVERS:
+        print(f"#   {step}")
+    print("# (act_expressions_combined.jsonld is rebuilt by")
+    print("#  scripts/generate_act_expressions_608.py --apply; combined/")
+    print("#  analytical aggregates are rebuilt by their builders.)")
+    for law in summary["laws"]:
+        amb = law["ambiguous_refs"]
+        n_refs = sum(sum(v.values()) for v in amb.values())
+        n_files = len({f for v in amb.values() for f in v})
+        print(f"# {law['from_prefix']} (kept by {law['keeper_slug']}): "
+              f"{len(amb)} IRIs, {n_refs} refs in {n_files} files")
+        for iri, per_file in sorted(amb.items(), key=lambda kv: (-sum(kv[1].values()), kv[0])):
+            files = ", ".join(f"{f}:{n}" for f, n in sorted(per_file.items()))
+            print(f"#   {sum(per_file.values()):>5}  {iri}  [{files}]")
+
+
+def resolve_collisions_cmd(*, dry_run: bool = False) -> None:
+    """CLI entry point for ``resolve-collisions``."""
+    try:
+        summary = resolve_collisions(dry_run=dry_run)
+    except RuntimeError as exc:
+        print(f"ERROR: {exc}")
+        sys.exit(1)
+    print_collision_summary(summary)
+
+
 def main() -> None:
     """Parse command-line arguments and dispatch to the appropriate command."""
     parser = argparse.ArgumentParser(
@@ -1445,8 +2204,18 @@ def main() -> None:
     )
     parser.add_argument(
         "command",
-        choices=["build-registry", "dry-run", "apply"],
-        help="Command to run: build-registry, dry-run, or apply",
+        choices=["build-registry", "dry-run", "apply", "resolve-collisions"],
+        help=(
+            "Command to run: build-registry, dry-run, apply, or "
+            "resolve-collisions (file-scoped repair of abbreviations that "
+            "collide once transliterated, e.g. REÕS vs REOS)"
+        ),
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        dest="resolve_dry_run",
+        help="resolve-collisions only: report without writing any file.",
     )
     parser.add_argument(
         "--rewrite-python",
@@ -1482,6 +2251,9 @@ def main() -> None:
         "apply": lambda: apply_cmd(
             rewrite_python=args.rewrite_python,
             force_reapply=args.force_reapply,
+        ),
+        "resolve-collisions": lambda: resolve_collisions_cmd(
+            dry_run=args.resolve_dry_run
         ),
     }
     dispatch[args.command]()

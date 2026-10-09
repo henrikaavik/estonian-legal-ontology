@@ -72,7 +72,7 @@ build time; full separation and DAG input coverage remain open (#697/#704).
 ## Pipeline
 
 `scripts/run_all_integration.py` is the **enrich + combine + validate**
-DAG (18 declared steps, serial by default). It does **not** ingest from Riigi Teataja /
+DAG (20 declared steps, serial by default). It does **not** ingest from Riigi Teataja /
 EUR-Lex. Ingest generators (`generate_all_laws.py`, regulations, courts,
 drafts, EU) are a prior stage. `--release` validates whatever peeps are
 on disk.

@@ -3952,14 +3952,14 @@ class TestSubsectionHelpers:
         assert display == "2²"
         assert suffix == "2_2"
 
-    def test_loige_body_text_joins_and_filters(self):
+    def test_loige_body_text_joins_and_preserves_short_fragments(self):
         lg = ET.fromstring(
             "<loige><loigeNr>1</loigeNr>"
             "<lause>Esimene lause.</lause><lause>ok</lause>"
             "<tavatekst>Teine tekstiosa.</tavatekst></loige>"
         )
-        # "ok" is <= 3 chars and is dropped.
-        assert generate_all_laws._loige_body_text(lg) == "Esimene lause. Teine tekstiosa."
+        # Short words can carry legal meaning and must survive extraction.
+        assert generate_all_laws._loige_body_text(lg) == "Esimene lause. ok Teine tekstiosa."
 
     def test_build_subsections_returns_empty_for_no_loige(self):
         par = ET.fromstring(

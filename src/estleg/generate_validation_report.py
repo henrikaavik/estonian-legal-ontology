@@ -136,29 +136,27 @@ def _files_validated(block: str) -> int | None:
     return int(match.group(1).replace(",", "")) if match else None
 
 
-# Error categories whose count is derived from filesystem mtimes rather than
-# from file content. `git status` can be clean while these move: regenerating a
-# T-Box artifact makes it newer than an aggregate that embeds it, and a fresh
-# checkout assigns mtimes in arbitrary order. They are excluded from --check so
-# the guard reports real drift instead of clock noise (#702). The rule itself
-# being mtime-based is a separate problem, tracked with the aggregates (#705).
-ENVIRONMENT_DEPENDENT_CATEGORIES = ("older than at least one canonical source file",)
+# Error categories excluded from --check because their count depends on the
+# environment rather than on file content. The only such category, the
+# mtime-based "older than at least one canonical source file" rule, was removed
+# from validate_all (staleness is now reported through missing / stale-extra /
+# drifting ids, #705), so the tuple is empty and every row -- including the
+# `Errors` total -- is compared. The mechanism stays so a future
+# environment-dependent rule can be excluded deliberately, with a comment.
+ENVIRONMENT_DEPENDENT_CATEGORIES: tuple[str, ...] = ()
 
 
 def _comparable(block: str) -> str:
     """Normalise a block for comparison.
 
-    Drops the stamp line, the mtime-derived category rows, and the total
-    `Errors` row -- the total moves with those rows, so comparing it would
-    reintroduce exactly the clock noise the exclusions remove. Every
-    content-derived category row is still compared, which is where real drift
-    shows up.
+    Drops the stamp line and any environment-dependent category rows (none
+    today). Every content-derived row, including the `Errors` total, is
+    compared, which is where real drift shows up.
     """
     return "\n".join(
         line
         for line in block.splitlines()
         if not line.startswith("*Measured by")
-        and not line.startswith("| Errors |")
         and not any(cat in line for cat in ENVIRONMENT_DEPENDENT_CATEGORIES)
     )
 

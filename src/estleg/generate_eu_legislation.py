@@ -30,7 +30,6 @@ from estleg.estleg_common import (
     CONTEXT,
     mint_act_iri,
     save_json,
-    stamp_combined_dataset_head,
     title_langstrings,
 )
 from estleg.eurlex_common import (
@@ -884,60 +883,20 @@ def apply_estonia_relevance_lens(
 
 
 def rebuild_eurlex_combined_from_peeps(eurlex_dir: Path = EURLEX_DIR) -> dict:
-    """Rebuild ``eurlex_combined.jsonld`` from the current peeps (#417).
+    """Rebuild ``eurlex_combined.jsonld`` offline from schema + peeps (#417).
 
-    The SPARQL generator writes combined from fetched rows *before*
-    transposition enrichment. Consumers that load only combined then miss
-    every ``transposedBy`` / ``transpositionDeadline`` edge. This pass
-    concatenates instance nodes from ``eurlex_*_peep.json`` so combined
-    stays a complete view of the peeps.
+    The SPARQL generator used to write combined from fetched rows *before*
+    transposition enrichment and without the schema graph, so consumers that
+    load only combined missed ``transposedBy`` edges and the schema terms.
+    Thin wrapper over
+    :func:`estleg.rebuild_subcorpus_combined.rebuild_subcorpus_combined`, the
+    single offline producer whose source list is the parity gate's own.
     """
-    header = {
-        "@id": mint_act_iri("EURlex_Combined"),
-        "@type": ["owl:Ontology"],
-        "rdfs:label": {
-            "@value": "EL õigusaktid – kõik liigid (Combined)",
-            "@language": "et",
-        },
-        "dc:description": {
-            "@value": "Kõik Euroopa Liidu õigusaktid eesti keeles EUR-Lexist.",
-            "@language": "et",
-        },
-        "dc:source": "EUR-Lex – eur-lex.europa.eu",
-        "owl:imports": {"@id": "estleg:EURlex_Schema_2026"},
-    }
-    graph: list[dict] = [header]
-    seen = {header["@id"]}
-    for path in sorted(eurlex_dir.glob("*_peep.json")):
-        try:
-            doc = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            continue
-        for node in doc.get("@graph", []):
-            if not isinstance(node, dict):
-                continue
-            nid = node.get("@id")
-            if not isinstance(nid, str) or nid in seen:
-                continue
-            types = node.get("@type", [])
-            if isinstance(types, str):
-                types = [types]
-            if "owl:Ontology" in types:
-                continue
-            seen.add(nid)
-            graph.append(node)
-    combined_doc = {"@context": CONTEXT, "@graph": graph}
-    stamp_combined_dataset_head(
-        combined_doc,
-        label="Estonian Legal Ontology — EUR-Lex combined",
-    )
-    dest = eurlex_dir / "eurlex_combined.jsonld"
-    save_json(dest, combined_doc)
-    return {
-        "path": dest,
-        "nodes": len(graph),
-        "files": len(list(eurlex_dir.glob("*_peep.json"))),
-    }
+    from estleg.rebuild_subcorpus_combined import rebuild_subcorpus_combined
+
+    return rebuild_subcorpus_combined(
+        "eurlex", eurlex_dir.parent, subcorpus_dir=eurlex_dir
+    ).as_dict()
 
 
 def parse_args() -> argparse.Namespace:
@@ -1021,7 +980,7 @@ def main():
         stats = rebuild_eurlex_combined_from_peeps()
         print(
             f"Rebuilt {stats['path']} from peeps: "
-            f"{stats['nodes']} nodes, {stats['files']} peep files"
+            f"{stats['nodes']} nodes, {stats['files']} source files"
         )
         return
     print("=" * 60)
@@ -1120,14 +1079,11 @@ def main():
             combined_graph.append(node)
             total += 1
 
-    combined_doc = {"@context": CONTEXT, "@graph": combined_graph}
-    stamp_combined_dataset_head(
-        combined_doc,
-        label="Estonian Legal Ontology — EUR-Lex combined",
-    )
-    combined_path = EURLEX_DIR / "eurlex_combined.jsonld"
-    save_json(combined_path, combined_doc)
-    print(f"  Saved: {combined_path.name} ({len(combined_graph)} nodes)")
+    # The aggregate itself is written by the offline rebuild (schema + peeps,
+    # the parity gate's own source list) so the live and offline paths cannot
+    # drift. ``combined_graph`` above still feeds the index tally below.
+    stats = rebuild_eurlex_combined_from_peeps(EURLEX_DIR)
+    print(f"  Saved: {stats['path'].name} ({stats['nodes']} nodes)")
 
     # Generate index
     print("\n--- Generating index ---")
