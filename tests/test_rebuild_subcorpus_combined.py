@@ -226,8 +226,9 @@ def test_committed_aggregate_equals_fresh_rebuild(name: str) -> None:
     krr = REPO_ROOT / "krr_outputs"
     spec = rsc.subcorpus_spec(name)
     committed = krr / spec.combined_path_rel
-    if committed.read_text(encoding="utf-8")[:40].startswith("version https://git-lfs"):
-        pytest.skip(f"{spec.combined_path_rel} is an un-materialised LFS pointer")
+    assert not committed.read_text(encoding="utf-8").startswith("version https://git-lfs"), (
+        f"{spec.combined_path_rel} is an un-materialised LFS pointer; run git lfs pull"
+    )
     doc, _ = rsc.build_subcorpus_combined(name, krr)
     assert committed.read_text(encoding="utf-8") == rsc.serialize(doc), (
         f"{spec.combined_path_rel} drifted from its sources; run "
