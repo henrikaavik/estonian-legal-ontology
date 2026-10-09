@@ -215,7 +215,7 @@ def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
     kuv = None
     for c in el:
         if ln(c.tag) == "kuvatavNr":
-            kuv = "".join(c.itertext()) or ""
+            kuv = _marker_pruned_text(c)
             break
     if not kuv:
         return ""
@@ -497,8 +497,8 @@ def _alampunkt_number(alampunkt_el: ET.Element) -> str:
 def _text_parts(el: ET.Element) -> list[str]:
     """Collect the normalised text fragments below ``el`` in document order.
 
-    Keeps ``lauseOsa``/``lause``/``tavatekst`` fragments longer than three
-    characters (marker subtrees pruned, #255) and — #694 — emits each
+    Keeps nonempty ``lauseOsa``/``lause``/``tavatekst`` fragments
+    (marker subtrees pruned, #255) and — #694 — emits each
     ``alampunkt``'s ``k)`` marker right before its text, so enumerated
     sub-points read ``… ning: 1) … 2) …`` instead of a run-on body.
     """
@@ -512,7 +512,7 @@ def _text_parts(el: ET.Element) -> list[str]:
         elif tag in _TEXT_TAGS:
             txt = _marker_pruned_text(node).strip()
             txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
+            if txt:
                 parts.append(txt)
     return parts
 
@@ -565,7 +565,7 @@ def _loige_numbers(loige_el: ET.Element) -> tuple[str, str]:
     kuv_raw = ""
     for sub in loige_el:
         if ln(sub.tag) == "kuvatavNr":
-            kuv_raw = "".join(sub.itertext()).strip()
+            kuv_raw = _marker_pruned_text(sub).strip()
             break
     kuv_inner = re.sub(r"[()]", "", kuv_raw).strip() if kuv_raw else ""
 
@@ -1143,6 +1143,5 @@ def emit_hierarchy_and_provisions(
             chapter_node["estleg:hasPart"].extend(
                 {"@id": iri} for iri in direct_iris
             )
-
 
 
