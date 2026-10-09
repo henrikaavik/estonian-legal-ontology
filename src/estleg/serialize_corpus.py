@@ -304,7 +304,8 @@ def serialize_jsonld_streaming(
     ``outputs`` maps a format (``nt`` / ``nq`` / ``ttl``) to its destination.
     N-Triples and N-Quads are line-sorted and de-duplicated exactly like
     :func:`serialize_graph`'s output; Turtle is a concatenation of per-batch
-    Turtle documents (repeated ``@prefix`` directives are legal Turtle).
+    triples using N-Triples syntax (a Turtle subset), preserving blank-node
+    labels across batches rather than inlining them as unrelated ``[]`` nodes.
     Writes go to ``<dest>.tmp`` first and are renamed into place on success.
     Returns ``{"triples": <distinct N-Triples lines or parsed count>, "graph_iri",
     "outputs": {fmt: {"path", "bytes"}}}``.
@@ -338,7 +339,7 @@ def serialize_jsonld_streaming(
         nonlocal parsed
         graph = graph_from_jsonld({"@context": context, "@graph": batch})
         parsed += len(graph)
-        if "nt" in handles or "nq" in handles:
+        if handles:
             lines = [
                 line + "\n"
                 for line in graph.serialize(format="nt").splitlines()
@@ -346,11 +347,10 @@ def serialize_jsonld_streaming(
             ]
             if "nt" in handles:
                 handles["nt"].writelines(lines)
+            if "ttl" in handles:
+                handles["ttl"].writelines(sorted(lines))
             if "nq" in handles:
                 handles["nq"].writelines(nquad_from_ntriple(line, iri) for line in lines)
-        if "ttl" in handles:
-            handles["ttl"].write(graph.serialize(format="turtle"))
-            handles["ttl"].write("\n")
 
     try:
         batch: list[dict] = []
