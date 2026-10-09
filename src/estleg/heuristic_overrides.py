@@ -359,9 +359,11 @@ def parse_overrides_text(text: str, source: Path | None = None) -> OverrideStore
 
 
 def load_overrides(path: Path | str | None = None) -> OverrideStore:
-    """Load and validate the store. A missing file is an empty store."""
+    """Load and validate the store; an explicitly requested file must exist."""
     src = Path(path) if path is not None else OVERRIDES_PATH
     if not src.exists():
+        if path is not None:
+            raise OverrideError(f"{src}: override store is missing")
         return OverrideStore(source=src)
     try:
         text = src.read_text(encoding="utf-8")
