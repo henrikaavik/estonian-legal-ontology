@@ -797,6 +797,11 @@ def clear_eurovoc_subjects_from_file(
 
     modified = False
     for node in data.get("@graph", []):
+        if overrides is not None:
+            # Deleting an override must retract its human attribution and
+            # certainty even if no EuroVoc subject remains on the node.
+            modified |= apply_node_overrides(node, overrides, ())
+            modified |= restamp_confidence(node, overrides)
         if overrides is not None and overrides.owns(node.get("@id"), "dcterms:subject"):
             continue
         existing = node.get("dcterms:subject")

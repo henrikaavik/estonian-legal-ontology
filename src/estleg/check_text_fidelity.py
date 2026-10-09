@@ -33,7 +33,7 @@ Two checks protect the authoritative provision text rather than the derived
     (``kehtivId`` != committed id). When the committed redaction does not
     match but the current one does, the text was regenerated from a newer
     consolidation without updating ``dcterms:source``; that is reported as
-    ``stale-source-id`` and does not fail the gate.
+    ``stale-source-id`` and fails until the source metadata is corrected.
 
 Exit codes: 0 all good; 1 coverage regression, text mismatch, missing
 provision, unknown act id or RT format change; 2 Riigi Teataja unreachable
@@ -97,14 +97,12 @@ NOT_FOUND = "not-found"
 FETCH_ERROR = "fetch-error"
 FORMAT_ERROR = "format-error"
 UNREACHABLE = "unreachable"
-FAILING_STATUSES = frozenset({MISMATCH, NOT_FOUND, FETCH_ERROR, FORMAT_ERROR})
+FAILING_STATUSES = frozenset({MISMATCH, NOT_FOUND, FETCH_ERROR, FORMAT_ERROR, STALE_SOURCE_ID})
 
 _SUP_TAG_RE = re.compile(r"</?sup\s*>", re.IGNORECASE)
 _WS_RE = re.compile(r"\s+")
-# After NFKC: "(1) Kehtetu -", "(2 1) Kehtetu" (superscript folded).
-_REPEALED_LOIGE_RE = re.compile(r"\(\s*\d+(?:\s*\d+)*\s*\)\s*Kehtetu\s*[-\u2013\u2014]?")
-# A whitespace-delimited enumerator token: "1)", "12)", "21)" (from "2¹)").
-_ITEM_MARKER_RE = re.compile(r"(?<!\S)\d+[a-z]?\)(?=\s|$)")
+# Superscripts are preserved as ^N in the comparison form.
+_REPEALED_LOIGE_RE = re.compile(r"\(\s*\d+(?:\s*\^\d+)?\s*\)\s*Kehtetu\s*[-\u2013\u2014]?")
 # A repealed paragraph or list item rendered as "Kehtetu -" / "kehtetu -".
 # Only the dash-terminated RT placeholder: "Tehing on kehtetu." is wording.
 _REPEALED_PLACEHOLDER_RE = re.compile(r"\bkehtetu\s*[-\u2013\u2014](?=\s|$)", re.IGNORECASE)
@@ -122,21 +120,23 @@ def normalise_text(text: str) -> str:
     no normative wording, so a parser change in ``law_structure`` (the
     ``<sup>`` / alampunkt fix) cannot turn into a false mismatch:
 
-    * ``<sup>`` markup is dropped and NFKC folds superscripts (``§ 7²`` and
-      ``§ 72`` compare equal);
+    * ``<sup>N</sup>`` and Unicode superscripts use the same ``^N`` form,
+      keeping ``§ 7²`` distinct from ``§ 72``;
     * repealed placeholders are dropped, for a subsection (``(1) Kehtetu -``),
       a whole paragraph (``Kehtetu -``) or a list item (``kehtetu -``):
       older corpus text keeps them, the current parser emits nothing for an
       empty repealed element. Only the dash-terminated placeholder is
       dropped; ``Tehing on kehtetu.`` is wording and still compared;
-    * standalone list-item markers (``1)``, ``2¹)``) are dropped: older
-      corpus text omits the alampunkt numbers the current parser adds;
+    * list-item markers are retained because they identify citable items;
     * every whitespace run is removed.
     """
-    text = _SUP_TAG_RE.sub("", text or "")
+    text = _SUP_OPEN_RE.sub("^", text or "")
+    text = _SUP_TAG_RE.sub("", text)
+    text = _SUPERSCRIPT_RUN_RE.sub(
+        lambda m: "^" + m.group(0).translate(_SUPERSCRIPT_DIGITS), text
+    )
     text = unicodedata.normalize("NFKC", text)
     text = _REPEALED_LOIGE_RE.sub(" ", text)
-    text = _ITEM_MARKER_RE.sub(" ", text)
     text = _REPEALED_PLACEHOLDER_RE.sub(" ", text)
     return _WS_RE.sub("", text)
 
@@ -172,13 +172,17 @@ def _text_value(value: object) -> str:
 
 def iter_root_law_docs(krr: Path = KRR) -> Iterator[tuple[Path, dict]]:
     """Yield ``(path, doc)`` for every root law peep, in path order."""
-    for path in sorted(krr.glob("*_peep.json")):
+    paths = sorted(krr.glob("*_peep.json"))
+    if not paths:
+        raise ValueError(f"{krr}: no root law peeps found")
+    for path in paths:
         try:
             doc = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            continue
-        if isinstance(doc, dict) and isinstance(doc.get("@graph"), list):
-            yield path, doc
+        except (OSError, ValueError) as exc:
+            raise ValueError(f"{path}: unreadable law peep") from exc
+        if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+            raise ValueError(f"{path}: expected an object with an @graph array")
+        yield path, doc
 
 
 def _is_provision(node: dict) -> bool:
@@ -272,8 +276,17 @@ def run_coverage(
     out=None,
 ) -> int:
     out = out or sys.stdout
-    current = measure_coverage(krr)
+    try:
+        current = measure_coverage(krr)
+    except ValueError as exc:
+        print(f"::error::{exc}", file=out)
+        return EXIT_FAIL
     if update:
+        if baseline_path.exists() and any(
+            delta.new for delta in compare_coverage(current, load_baseline(baseline_path))
+        ):
+            print("::error::baseline may only shrink; fix new offenders before updating", file=out)
+            return EXIT_FAIL
         write_baseline(current, baseline_path)
         for rule in COVERAGE_RULES:
             print(f"{rule}: {len(current[rule])} offender(s) written", file=out)
@@ -685,7 +698,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.coverage:
         return run_coverage(args.krr_dir, args.baseline, update=args.update_baseline)
 
-    population = collect_sample_population(args.krr_dir)
+    try:
+        population = collect_sample_population(args.krr_dir)
+    except ValueError as exc:
+        print(f"::error::{exc}")
+        return EXIT_FAIL
     if not population:
         print("::error::no sampleable provisions found (corpus missing?)")
         return EXIT_FAIL
