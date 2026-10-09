@@ -28,6 +28,8 @@ from pathlib import Path
 import pytest
 
 from estleg import run_all_integration as r
+from estleg.build_release_assets import required_asset_names
+from estleg.estleg_common import ONTOLOGY_VERSION
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -69,14 +71,21 @@ def fake_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
         (krr / sub).mkdir(parents=True, exist_ok=True)
         (krr / sub / name).write_text("{}", encoding="utf-8")
 
-    # #705: the release-asset manifest and one asset it lists.
+    # The release gate requires the complete inventory, not just a checksum
+    # file containing one valid asset.
     release = repo / "release"
     release.mkdir()
-    (release / "LICENSE").write_text("license\n", encoding="utf-8")
     import hashlib
 
-    digest = hashlib.sha256(b"license\n").hexdigest()
-    (release / "SHA256SUMS").write_text(f"{digest}  LICENSE\n", encoding="utf-8")
+    sums = []
+    for name in sorted(required_asset_names()):
+        content = f"fixture {name}\n".encode()
+        (release / name).write_bytes(content)
+        sums.append(f"{hashlib.sha256(content).hexdigest()}  {name}\n")
+    (release / "SHA256SUMS").write_text("".join(sums), encoding="utf-8")
+    (release / "release_assets.json").write_text(json.dumps({
+        "ontologyVersion": ONTOLOGY_VERSION, "skipped": {}, "unstampedHeads": [],
+    }), encoding="utf-8")
     monkeypatch.setattr(r, "RELEASE_ASSET_DIR", release, raising=True)
 
     # A stub file per step so the scripts are not "missing".
