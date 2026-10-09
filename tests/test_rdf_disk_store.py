@@ -15,6 +15,39 @@ from estleg.rdf_disk_store import DiskStore
 EX = Namespace("https://example.org/")
 
 
+def test_repeated_graph_truth_checks_do_not_rescan_the_database(tmp_path):
+    graph = Graph(store=DiskStore())
+    graph.open(str(tmp_path / "store"), create=True)
+    backend = graph.store._store
+
+    class CountingBackend:
+        queries = 0
+
+        def query(self, *args, **kwargs):
+            self.queries += 1
+            return backend.query(*args, **kwargs)
+
+        def __getattr__(self, name):
+            return getattr(backend, name)
+
+    counter = CountingBackend()
+    graph.store._store = counter
+    try:
+        graph.add((EX.subject, EX.name, Literal("A")))
+        assert len(graph) == 1
+        for _ in range(10):
+            assert bool(graph)
+        assert counter.queries == 1
+        graph.add((EX.subject, EX.name, Literal("B")))
+        assert len(graph) == 2
+        graph.remove((EX.subject, EX.name, None))
+        assert len(graph) == 0
+        assert not graph
+        assert counter.queries == 3
+    finally:
+        graph.close()
+
+
 @pytest.mark.parametrize("valid", [True, False])
 def test_jsonld_disk_and_memory_have_same_graph_and_shacl_results(tmp_path, valid):
     source = tmp_path / "data.jsonld"

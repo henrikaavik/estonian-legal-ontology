@@ -45,7 +45,25 @@ def _from_storage(term):
 class DiskStore(OxigraphStore):
     """Use Oxigraph's disk indexes but keep RDFLib query semantics."""
 
+    def __init__(self, *args, **kwargs):
+        self._lengths = {}
+        super().__init__(*args, **kwargs)
+
+    def open(self, configuration, create=False):
+        self._lengths.clear()
+        return super().open(configuration, create)
+
+    def close(self, commit_pending_transaction=False):
+        self._lengths.clear()
+        return super().close(commit_pending_transaction)
+
     def __len__(self, context=None):
+        key = context.identifier if context is not None else None
+        if key not in self._lengths:
+            self._lengths[key] = self._count(context)
+        return self._lengths[key]
+
+    def _count(self, context):
         if context is None:
             return super().__len__(context)
         # Within one graph every triple is already unique. The adapter's
@@ -66,6 +84,7 @@ class DiskStore(OxigraphStore):
     def add(self, triple, context, quoted=False):
         if quoted:
             raise ValueError("DiskStore is not formula aware")
+        self._lengths.clear()
         self._inner.add(Quad(*(_to_storage(t) for t in triple), to_ox(context)))
         Store.add(self, triple, context, quoted)
 
@@ -74,9 +93,18 @@ class DiskStore(OxigraphStore):
             self.add((s, p, o), context)
 
     def remove(self, triple, context=None):
+        self._lengths.clear()
         for quad in self._inner.quads_for_pattern(*_pattern(triple, context)):
             self._inner.remove(quad)
         Store.remove(self, triple, context)
+
+    def add_graph(self, graph):
+        self._lengths.clear()
+        super().add_graph(graph)
+
+    def remove_graph(self, graph):
+        self._lengths.clear()
+        super().remove_graph(graph)
 
     def contexts(self, triple=None):
         if triple is None:
