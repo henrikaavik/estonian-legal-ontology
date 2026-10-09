@@ -661,6 +661,15 @@ that publish step stays manual.
 
 ## Runtime, memory and disk envelope
 
+The full public-load gate (`validate_seadusloome_sync.py`) uses a temporary
+disk-backed RDF store. The wave-six union contains 18.2 million statements;
+an in-memory prototype exceeded 17 GB, exhausting a standard CI runner.
+The gate keeps RDFLib's JSON-LD parser and SPARQL evaluator and the existing
+pySHACL rules. Literal values are stored losslessly so storage cannot change
+validation results. The temporary database is closed and removed after the
+run, including validation failures. Set `TMPDIR` to a volume with enough free
+space when the system temporary directory is small; do not put it on a RAM disk.
+
 Measured on the `tier1/wave4` branch (Apple Silicon laptop, SSD, Python 3.14)
 unless marked as an estimate. Use these figures to size a runner. They are
 not guarantees.
