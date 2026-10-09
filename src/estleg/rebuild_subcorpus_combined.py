@@ -244,7 +244,7 @@ def build_subcorpus_combined(
         raise RebuildError(f"{name}: no peep files match {pattern}")
     for rel in spec.schema_files:
         if not _resolve(rel, krr_dir, subcorpus_dir).is_file():
-            print(f"  WARNING: {name}: schema file {rel} not found; rebuilding from peeps only")
+            raise RebuildError(f"{name}: required schema file {rel} not found")
 
     head = {"@id": head_id(spec), "@type": ["owl:Ontology"], **json.loads(
         json.dumps(HEAD_FIELDS.get(name, {}), ensure_ascii=False)
