@@ -1481,6 +1481,22 @@ def bind_clause(clause: str) -> list[MentionBinding]:
     if not mentions:
         return []
     verbs = _competence_verbs(clause)
+    # A coordinated clause with its own named subject must be typed separately.
+    # Keep coordinated subjects (X and Y inspect) and one subject's coordinated
+    # powers (X inspects and grants licences) together.
+    for mention in mentions[1:]:
+        surface = mention.head_surface or mention.surface
+        nominative = mention.head_nominative or mention.nominative
+        if mention_case(surface, nominative) not in ("nom", "nom_gen"):
+            continue
+        separator = re.search(r"(?:,\s*|\b(?:ja|ning|kuid|aga)\s+)$", clause[:mention.start])
+        if separator is None:
+            continue
+        boundary = separator.start()
+        if any(v.end <= boundary for v in verbs) and any(
+            v.start >= (mention.head_end or mention.end) for v in verbs
+        ):
+            return bind_clause(clause[:boundary]) + bind_clause(clause[mention.start:])
     masked = _masked(clause, mentions)
     bindings = [_bind_mention(clause, m, verbs, masked) for m in mentions]
     # Coordinated genitive agents (``Politsei- ja Piirivalveameti või
@@ -2754,8 +2770,15 @@ def apply_institution_identity(
     wd = wikidata_iri_for_slug(slug, wd_map)
     merge_same_as(node, keep + ([wd] if wd else []))
     see_also = wikidata_see_also_iri_for_slug(slug, wd_map)
+    existing = node.get("rdfs:seeAlso", [])
+    existing = existing if isinstance(existing, list) else [existing]
+    kept = [ref for ref in existing if not (
+        isinstance(ref, dict) and str(ref.get("@id", "")).startswith(WIKIDATA_ENTITY_PREFIX)
+    )]
     if see_also:
-        node["rdfs:seeAlso"] = {"@id": see_also}
+        kept.append({"@id": see_also})
+    if kept:
+        node["rdfs:seeAlso"] = kept[0] if len(kept) == 1 else kept
     else:
         node.pop("rdfs:seeAlso", None)
     record = identity.get(slug, {})

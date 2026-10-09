@@ -1422,14 +1422,23 @@ def load_snapshot_dates(root: Path) -> dict[str, str]:
     return out
 
 
-def _load_jsonld(path: Path) -> dict[str, Any] | list[Any] | None:
+def _load_jsonld(path: Path, *, required: bool = False) -> dict[str, Any] | list[Any] | None:
     if is_lfs_pointer(path):
+        if required:
+            raise ValueError(f"Unmaterialized JSON-LD input: {path}")
         print(f"WARN: skip LFS pointer {path}", file=sys.stderr)
         return None
     try:
         with path.open(encoding="utf-8") as handle:
-            return json.load(handle)
+            doc = json.load(handle)
+        if required and not isinstance(doc if isinstance(doc, list) else (
+            doc.get("@graph") if isinstance(doc, dict) else None
+        ), list):
+            raise ValueError("expected a JSON-LD graph list")
+        return doc
     except (OSError, ValueError) as exc:
+        if required:
+            raise ValueError(f"Cannot load required JSON-LD input {path}: {exc}") from exc
         print(f"WARN: skip {path}: {exc}", file=sys.stderr)
         return None
 
@@ -1635,7 +1644,7 @@ def load_kov_context(ehak_dir: Path | None = None) -> KovContext:
     root = Path(ehak_dir) if ehak_dir is not None else REPO_ROOT / "data" / "ehak"
     municipalities = load_municipalities(root / "municipalities.json")
     historical_names: dict[str, str] = {}
-    doc = _load_jsonld(root / "historical_municipalities.jsonld")
+    doc = _load_jsonld(root / "historical_municipalities.jsonld", required=True)
     for node in iter_nodes(doc):
         name = jsonld_text(node.get("estleg:formerName"))
         if name and "estleg:HistoricalMunicipality" in node_types(node):
@@ -1742,12 +1751,16 @@ def serialize_kov_legality(
         context = load_kov_context()
     wanted = set(municipalities or ())
     rows: list[dict[str, str]] = []
-    for path in resolve_globs(root, kov_globs or DEFAULT_KOV_GLOBS):
+    paths = []
+    for pattern in kov_globs or DEFAULT_KOV_GLOBS:
+        matches = resolve_globs(root, [pattern])
+        if not matches:
+            raise ValueError(f"No KOV inputs match {pattern!r} under {root}")
+        paths.extend(matches)
+    for path in sorted(set(paths)):
         if path.name.startswith("REGULATIONS_KOV_INDEX"):
             continue
-        doc = _load_jsonld(path)
-        if doc is None:
-            continue
+        doc = _load_jsonld(path, required=True)
         for row in kov_legality_rows(doc, versions=versions, context=context):
             if not wanted or row["municipality_ehak"] in wanted:
                 rows.append(row)
