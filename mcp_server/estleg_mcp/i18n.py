@@ -257,6 +257,10 @@ MESSAGES: dict[str, dict[str, str]] = {
         "et": "Redaktsioonide ajalugu korpuses pole.",
         "en": "No redaction history is recorded.",
     },
+    "explain_history_not_active": {
+        "et": "Korpuses ei ole kuupäeval {date} kehtivat redaktsiooni.",
+        "en": "No recorded redaction is in force on {date}.",
+    },
     "explain_history_ceased": {
         "et": (
             "Korpuses on {n} redaktsiooni alates {first}; viimane kehtis kuni "
