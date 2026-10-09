@@ -940,17 +940,18 @@ def run_lifecycle_from_peeps(eelnoud_dir: Path | None = None) -> dict:
 
 
 def fetch_rss(url: str) -> list[dict]:
-    """Fetch and parse an RSS feed, returning list of items."""
+    """Fetch RSS items, failing before output writes if the feed is unavailable."""
     print(f"  Fetching {url}...")
     try:
         resp = allowed_get(url, timeout=60)
         resp.raise_for_status()
         resp.encoding = "utf-8"
     except Exception as e:
-        print(f"  ERROR: {e}")
-        return []
+        raise RuntimeError(f"RSS fetch failed for {url}: {e}") from e
 
     root = parse_xml(resp.text)
+    if root.tag != "rss" or root.find("channel") is None:
+        raise RuntimeError(f"RSS feed {url} has no rss/channel structure")
     items = []
 
     for item in root.iter("item"):
