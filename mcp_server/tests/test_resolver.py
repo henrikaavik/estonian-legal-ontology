@@ -418,3 +418,13 @@ def test_without_rdflib_turtle_is_406_and_jsonld_still_served(monkeypatch, sink)
         assert 'href="/id/X_Map">Test Act <code>estleg:X_Map</code></a>' in page
     statuses = [r["status"] for r in _lines(sink) if r.get("tool") == "resolve"]
     assert statuses == ["rdf_unavailable", "ok", "ok"]
+
+
+@pytest.mark.parametrize("header,expected", [
+    ("application/json;q=0,application/ld+json;q=1", "jsonld"),
+    ("text/n3;q=0,text/turtle;q=1", "turtle"),
+    ("text/n3;q=1,text/turtle;q=0,*/*;q=0.5", "html"),
+    ("text/turtle;q=0,text/n3;q=1,*/*;q=0.5", "html"),
+])
+def test_canonical_media_quality_wins_over_alias(header, expected):
+    assert resolver_web.negotiate(header) == expected

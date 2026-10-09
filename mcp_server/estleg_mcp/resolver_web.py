@@ -118,12 +118,14 @@ def negotiate(accept: str | None, format_param: str | None = None) -> str | None
     # wildcard cannot reinstate a representation explicitly assigned q=0.
     for fmt in ("html", "jsonld", "turtle", "ntriples", "rdfxml"):
         media = FORMATS[fmt][0]
-        matches = [(spec, -pos, q) for offered, q, spec, pos in ranges
+        # The response uses the canonical media type. Its explicit quality
+        # takes precedence over compatibility aliases, regardless of order.
+        matches = [(spec, offered == media, q, -pos) for offered, q, spec, pos in ranges
                    if offered == "*/*" or offered == media.split("/", 1)[0] + "/*"
                    or _MEDIA.get(offered) == fmt]
         if not matches:
             continue
-        specificity, order, q = max(matches)
+        specificity, _canonical, q, order = max(matches)
         if q <= 0:
             continue
         key = (q, specificity, order)
