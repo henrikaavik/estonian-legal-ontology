@@ -946,12 +946,16 @@ def _assign_distinct_local_ids(candidates: list[_IdCandidate]) -> list[str]:
     # ranked by a stable composite key so the same input set always maps the same row to
     # the same ordinal suffix.
     final_ids: list[str] = list(interim_ids)
-    for interim_id, positions in collisions.items():
+    used = set(interim_ids)
+    for interim_id, positions in sorted(collisions.items()):
         if len(positions) <= 1:
             continue
         ordered = sorted(
             positions,
             key=lambda p: (
+                # A pre-existing unique base owns its id even when another
+                # group's hash happens to produce the same interim id.
+                candidates[p].base != interim_id,
                 candidates[p].url,
                 candidates[p].date_iso,
                 candidates[p].title,
@@ -961,8 +965,15 @@ def _assign_distinct_local_ids(candidates: list[_IdCandidate]) -> list[str]:
                 ),
             ),
         )
+        suffix = 2
         for rank, pos in enumerate(ordered):
-            final_ids[pos] = interim_id if rank == 0 else f"{interim_id}_{rank + 1}"
+            if rank == 0:
+                continue
+            while f"{interim_id}_{suffix}" in used:
+                suffix += 1
+            final_ids[pos] = f"{interim_id}_{suffix}"
+            used.add(final_ids[pos])
+            suffix += 1
     return final_ids
 
 
