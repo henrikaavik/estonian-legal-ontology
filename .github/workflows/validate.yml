@@ -108,7 +108,7 @@ jobs:
         # share one definition of the lint paths.
         run: make lint
 
-  pytest:
+  pytest-matrix:
     runs-on: ubuntu-latest
     # #721: test every Python the package declares (requires-python >=3.11).
     # The other jobs stay on 3.12, the version constraints.txt was resolved on.
@@ -135,6 +135,18 @@ jobs:
         # #706: parallel; the default tier excludes `corpus` via addopts
         # (the json-validation job runs `-m corpus` with LFS materialised).
         run: python3 -m pytest -q
+
+  # Keep the stable check context required by main's branch protection.
+  # A matrix job alone publishes only names such as "pytest-matrix (3.12)".
+  pytest:
+    needs: pytest-matrix
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every Python version to pass
+        env:
+          MATRIX_RESULT: ${{ needs.pytest-matrix.result }}
+        run: test "$MATRIX_RESULT" = success
 
   mcp-server:
     name: estleg-mcp tests
