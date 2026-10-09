@@ -203,7 +203,14 @@ def is_lfs_pointer(path: Path) -> bool:
 
 def _corpus_input_problem(path: Path) -> str | None:
     if path.is_dir():
-        return None if any(path.iterdir()) else "is an empty directory"
+        found_file = False
+        for child in path.rglob("*"):
+            if not child.is_file():
+                continue
+            found_file = True
+            if is_lfs_pointer(child):
+                return f"contains a Git LFS pointer: {child.relative_to(path)} (run `git lfs pull`)"
+        return None if found_file else "is an empty directory"
     if not path.exists():
         return "is missing"
     if is_lfs_pointer(path):
