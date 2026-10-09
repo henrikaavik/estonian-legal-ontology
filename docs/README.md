@@ -34,6 +34,7 @@ Documentation checked against `main` at `0cb9ac91bc` on **2026-09-07**:
 | Python and SPARQL examples | [API_GUIDE.md](API_GUIDE.md) |
 | MCP tools and deployment configuration | [MCP README](../mcp_server/README.md) |
 | Classes, properties, and literal shapes | [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) |
+| Correcting classifier output so it survives regeneration | [HEURISTIC_OVERRIDES.md](HEURISTIC_OVERRIDES.md) |
 | Release procedure and validation evidence | [RELEASE.md](RELEASE.md), [VALIDATION_REPORT.md](VALIDATION_REPORT.md) |
 | Rights and personal-data handling | [DATA_RIGHTS.md](DATA_RIGHTS.md), [DATA_PROTECTION.md](DATA_PROTECTION.md) |
 | Estonian overview | [HTML overview](eesti-oigusontoloogia-ulevaade.html) |

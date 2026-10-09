@@ -7,7 +7,7 @@
 
 <!-- BEGIN GENERATED: validation-summary -->
 
-*Measured by `scripts/generate_validation_report.py` at commit `5dd79f9401e66533d2be6497b135c6fb63d60af4`, 2026-10-08 14:46 UTC. Do not hand-edit this block.*
+*Measured by `scripts/generate_validation_report.py` at commit `da4fbdd0b893782727978993bc9955f712db654e`, 2026-10-08 15:55 UTC. Do not hand-edit this block.*
 
 | Metric | Count |
 |--------|------:|
@@ -360,6 +360,63 @@ closure on
 stale LFS aggregate) before SHACL runs. Rebuilding every aggregate in one DAG
 step is **#705**; until then this gate is red for a known reason and is not a
 statement about the source data.
+
+## Legal-Text Fidelity Gate (#703)
+
+The SHACL contract requires the derived `estleg:summary` and leaves the
+authoritative `estleg:legalText` optional. `scripts/check_text_fidelity.py`
+guards the authoritative text instead, in two modes.
+
+**Coverage (`--coverage`, offline, about 1 s).** The gate measures three rules
+over the root law peeps (`krr_outputs/*_peep.json`). It compares them with the
+committed baseline `data/text_fidelity_baseline.json`, which may only shrink.
+A node missing from the baseline fails the gate. A fixed node prints a request
+to shrink the baseline with `--coverage --update-baseline`.
+
+| Rule | Definition | Baseline (2026-10-08) |
+|---|---|---:|
+| `missing_legal_text` | `estleg:LegalProvision` with `estleg:paragrahv`, in a file whose head (`act_root_node`) has `contentStatus "structuredBody"`, without `estleg:legalText` | 481 of 34,870 |
+| `root_missing_source` | root law peep file head without `dcterms:source` | 174 of 1,193 |
+| `root_missing_kehtiv` | root law peep file head without `estleg:kehtiv` | 175 of 1,193 |
+
+The file head is the act root, or the `estleg:Part` of a multi-part law. That
+is the node parsed from the Riigi Teataja (RT) XML. State and KOV regulations
+are out of scope because they carry no `kehtiv` by design.
+
+**Sampling (`--sample N --seed S`, live).** The gate draws N provisions that
+carry `legalText` from structured law files whose head has an RT `/akt/{id}`
+source. It fetches that exact redaction with `riigiteataja_common.fetch_xml`
+and re-parses it with the generator's own `emit_hierarchy_and_provisions`.
+Then it diffs the texts after normalisation. HTML and Unicode superscripts
+use the same comparison form, distinct from plain digits. List-item numbers
+are retained. Whitespace and repealed `Kehtetu -` placeholders are ignored.
+A mismatch prints a word-level unified diff. Missing or unreadable corpus
+inputs fail the gate, and updating an existing baseline cannot add offenders.
+
+- A newer consolidation (`kehtivId` differs from the committed id) is a note,
+  not a failure, because the committed redaction is the one compared.
+- Text that matches only the newer redaction is reported as
+  `stale-source-id` and fails until its source metadata is corrected.
+- Exit codes: 0 all match; 1 mismatch, missing §, unknown act or RT format
+  change; 2 RT unreachable.
+
+The first live runs found one real defect class. Some committed `legalText`
+values still contain RT editorial notes, such as
+`(jõustumine muudetud - RT I, 22.12.2013, 1)` or `… alusel asendatud sõna …`.
+The current parser excludes these notes. At least 440 provisions (1.3%) match
+those patterns, and regenerating the affected laws clears them.
+
+The provenance rules also exist as `estleg:LawActProvenanceShape` in
+`shacl/estonian_legal_shapes.ttl`. It targets `estleg:Law` only, has
+`sh:Warning` severity and ships with `sh:deactivated true`. Both SHACL gates
+fail on Warning results, so it may be activated only once both provenance
+baseline lists are empty. `tests/test_shacl_text_fidelity.py` enforces that
+rule.
+
+The `legalText` rule has no SHACL shape. It needs a join from each provision to
+its file head, and SHACL can express that only with `sh:sparql`. The shapes
+stay core SHACL so that `inference="rdfs"` and `inference="none"` agree.
+The rule is therefore enforced only by `check_text_fidelity.py --coverage`.
 
 ## Similarity Coverage
 

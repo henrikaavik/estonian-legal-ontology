@@ -13,6 +13,7 @@ Outputs:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import time
@@ -23,11 +24,20 @@ from estleg.classify_target_group import classify_text, emit_target_group
 from estleg.estleg_common import (
     BUILD_EVALUATION_DATE,
     classifier_text,
-    heuristic_confidence_for_node,
     iter_peep_files,
     jsonld_text,
     save_json,  # #376: atomic tempfile+os.replace writer (replaces local non-atomic def)
-    stamp_assertion_confidence,
+)
+from estleg.heuristic_overrides import (
+    DEONTIC_PREDICATES,
+    OverrideError,
+    apply_node_overrides,
+    check_overrides,
+    clear_unowned,
+    ensure_prov_context,
+    load_overrides,
+    print_check_report,
+    restamp_confidence,
 )
 from estleg.kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
@@ -480,13 +490,38 @@ def duty_holder_for_text(text: str) -> list[dict[str, str]] | None:
     return emit_target_group(groups)
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--overrides",
+        type=Path,
+        default=None,
+        help="human override store (#700; default data/heuristic_overrides.jsonl)",
+    )
+    parser.add_argument(
+        "--check-overrides",
+        action="store_true",
+        help="dry run: report how many deontic overrides would apply and which "
+        "are stale (node not found); writes nothing",
+    )
+    args = parser.parse_args(argv)
+    try:
+        overrides = load_overrides(args.overrides)
+    except OverrideError as exc:
+        print(f"ERROR: {exc}")
+        return 1
+
+    law_files = iter_peep_files()  # uses new include_kov=True default
+    if args.check_overrides:
+        report = check_overrides(overrides, law_files, DEONTIC_PREDICATES)
+        print_check_report(report, "classify_deontic")
+        return 0
+
     print("=" * 70)
     print("Estonian Legal Ontology - Deontic Classification")
     print("=" * 70)
 
     _start = time.perf_counter()
-    law_files = iter_peep_files()  # uses new include_kov=True default
     _kov_files = [f for f in law_files if "regulations/kov" in str(f)]
     print(f"\n[1/3] Found {len(law_files)} law files to process")
 
@@ -504,6 +539,7 @@ def main() -> None:
     _failures: list[str] = []
 
     # --- Clearing pass: remove old deontic data from all files ---
+    # #700: a (node, predicate) owned by a human override is never cleared.
     print("  Clearing old deontic classification data from all files...")
     for filepath in law_files:
         doc = load_json(filepath)
@@ -511,11 +547,9 @@ def main() -> None:
             continue
         cleared = False
         for node in doc["@graph"]:
-            if "estleg:normativeType" in node:
-                del node["estleg:normativeType"]
-                cleared = True
-            if "estleg:dutyHolder" in node:
-                del node["estleg:dutyHolder"]
+            if isinstance(node, dict) and clear_unowned(
+                node, DEONTIC_PREDICATES, overrides
+            ):
                 cleared = True
         if cleared:
             save_json(filepath, doc)
@@ -527,6 +561,7 @@ def main() -> None:
     total_provisions = 0
     total_classified = 0
     total_duty_holders = 0
+    total_overridden = 0
     files_modified = 0
 
     for idx, filepath in enumerate(law_files, 1):
@@ -550,17 +585,30 @@ def main() -> None:
             modified = False
 
             for node in doc["@graph"]:
+                if not isinstance(node, dict):
+                    continue
+                node_id = node.get("@id")
+                owned = overrides.for_node(node_id, DEONTIC_PREDICATES)
                 # #368: read legalText first so the 500-char summary cap
                 # cannot hide the deontic cue. jsonld_text still unwraps
                 # {"@value": ..., "@language": "et"} shapes.
                 summary = classifier_text(node)
                 if not summary:
+                    # #700: overrides apply even where there is no text to
+                    # classify (and stale attribution is retracted).
+                    if apply_node_overrides(node, overrides, DEONTIC_PREDICATES):
+                        modified = True
+                    if restamp_confidence(node, overrides):
+                        modified = True
+                    total_overridden += len(owned)
                     continue
 
                 total_provisions += 1
 
                 heading = jsonld_text(node.get("rdfs:label", ""))
                 norm_iri = classify_provision(summary, heading=heading)
+                if "estleg:normativeType" in owned:
+                    norm_iri = None  # #700: the human value is applied below
                 if norm_iri:
                     node["estleg:normativeType"] = {"@id": norm_iri}
                     _triples += 1
@@ -573,7 +621,11 @@ def main() -> None:
                     stats_per_type[short] += 1
                     modified = True
 
-                holder = duty_holder_for_text(summary)
+                holder = (
+                    None
+                    if "estleg:dutyHolder" in owned
+                    else duty_holder_for_text(summary)
+                )
                 if holder:
                     node["estleg:dutyHolder"] = holder
                     _triples += 1
@@ -582,11 +634,20 @@ def main() -> None:
                     total_duty_holders += 1
                     modified = True
 
-                confidence = heuristic_confidence_for_node(node)
-                if confidence and stamp_assertion_confidence(node, confidence):
+                # #700: human overrides win — applied LAST, then the
+                # override-aware confidence (1.0 for owned layers).
+                if apply_node_overrides(node, overrides, DEONTIC_PREDICATES):
+                    modified = True
+                total_overridden += len(owned)
+                if restamp_confidence(node, overrides):
                     modified = True
 
             if modified:
+                if any(
+                    isinstance(n, dict) and "prov:wasAttributedTo" in n
+                    for n in doc["@graph"]
+                ):
+                    ensure_prov_context(doc)
                 save_json(filepath, doc)
                 files_modified += 1
 
@@ -617,6 +678,7 @@ def main() -> None:
             "total_provisions_with_text": total_provisions,
             "total_classified": total_classified,
             "total_duty_holders_extracted": total_duty_holders,
+            "human_overrides_applied": total_overridden,
             "classification_rate": f"{total_classified / max(total_provisions, 1) * 100:.1f}%",
         },
         "by_normative_type": dict(sorted(stats_per_type.items(), key=lambda x: -x[1])),
@@ -635,6 +697,7 @@ def main() -> None:
     print(f"  Provisions analysed:    {total_provisions}")
     print(f"  Classified:             {total_classified}")
     print(f"  Duty holders extracted: {total_duty_holders}")
+    print(f"  Human overrides:        {total_overridden}")
     print(f"  Files modified:         {files_modified}")
     print()
     for ntype, count in sorted(stats_per_type.items(), key=lambda x: -x[1]):
@@ -669,7 +732,8 @@ def main() -> None:
         REPO_ROOT / "krr_outputs" / "reports" / "kov"
         / "classify_deontic_coverage.json",
     )
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

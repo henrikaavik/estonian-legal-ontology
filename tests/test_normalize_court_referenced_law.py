@@ -1,8 +1,9 @@
-"""Tests for normalize_court_referenced_law.py (#596).
+"""Tests for normalize_court_referenced_law.py (#596, #696).
 
-Covers genitive→abbrev resolution, case-variant normalization, dropping
-unresolvable dead-tokens, list de-duplication, key removal on empty
-lists, scalar shape, the matching generator-side fix, and idempotency.
+Covers genitive→abbrev resolution, case-variant normalization, keeping
+unresolvable values as target-less Citation nodes (#696, was: dropped),
+list de-duplication, key removal on empty lists, scalar shape, the
+matching generator-side fix, and idempotency (on a tmp corpus, #706).
 """
 from __future__ import annotations
 
@@ -35,8 +36,10 @@ from estleg.normalize_court_referenced_law import (
         ("Liiklusseaduse", "LS"),  # capitalized genitive resolves too
         ("põhiseaduse", "PS"),
         ("Põhiseaduse", "PS"),
-        ("kalapüügiseaduse", None),  # dead-token, no table entry
-        ("jahiseaduse", None),
+        # #696: genitive title fold -> the law's abbreviation
+        ("kalapüügiseaduse", "KLS"),
+        ("tolliseaduse", "TKS"),
+        ("jahiseaduse", None),  # no citation abbreviation -> kept as Citation
         ("Pôhiseaduse", None),  # typo'd char -> unresolvable
         ("Karistusseadustik", None),  # nominative full name, not an abbrev/genitive
         ("", None),
@@ -57,17 +60,17 @@ def test_resolve_mirrors_fullname_genitive_table():
 
 def test_value_list_rewrite_and_drop_with_dedup():
     new, rewritten, dropped = normalize_referenced_law_value(
-        ["liiklusseaduse", "KarS", "kalapüügiseaduse", "Liiklusseaduse"]
+        ["liiklusseaduse", "KarS", "jahiseaduse", "Liiklusseaduse"]
     )
     # liiklusseaduse+Liiklusseaduse both -> LS (deduped), KarS kept,
-    # kalapüügiseaduse dropped
+    # jahiseaduse moved out (normalize_doc keeps it as a Citation)
     assert new == ["LS", "KarS"]
     assert rewritten == 2  # both liiklusseaduse variants differ from canonical
     assert dropped == 1
 
 
 def test_value_all_dead_returns_none():
-    new, rewritten, dropped = normalize_referenced_law_value(["kalapüügiseaduse"])
+    new, rewritten, dropped = normalize_referenced_law_value(["jahiseaduse"])
     assert new is None
     assert dropped == 1
 
@@ -94,7 +97,7 @@ def test_normalize_doc_removes_emptied_key_keeps_interprets():
         "@graph": [
             {
                 "@id": "estleg:RK_1",
-                REFERENCED_LAW_KEY: ["kalapüügiseaduse"],  # all dead
+                REFERENCED_LAW_KEY: ["jahiseaduse"],  # all unresolvable
                 "estleg:interpretsLaw": [{"@id": "estleg:KLS_Par_1"}],
             },
             {
@@ -111,8 +114,41 @@ def test_normalize_doc_removes_emptied_key_keeps_interprets():
     # node 2: kept resolvable LS, dropped dead jahiseaduse
     assert g[1][REFERENCED_LAW_KEY] == ["LS"]
     assert keys_removed == 1
-    assert dropped == 2  # kalapüügiseaduse + jahiseaduse
+    assert dropped == 2  # jahiseaduse twice (one per decision)
     assert rewritten == 1  # liiklusseaduse -> LS
+
+
+def test_normalize_doc_keeps_unresolved_as_targetless_citations():
+    """#696: an unresolvable value is not deleted — it becomes a
+    target-less estleg:Citation (the in-law #514 shape)."""
+    doc = {"@graph": [{"@id": "estleg:RK_1", REFERENCED_LAW_KEY: ["jahiseaduse", "KarS"]}]}
+    normalize_doc(doc)
+    g = doc["@graph"]
+    assert g[0][REFERENCED_LAW_KEY] == ["KarS"]
+    citations = [n for n in g if "estleg:Citation" in n.get("@type", [])]
+    assert citations == [
+        {
+            "@id": "estleg:Citation_RK_1_RefLaw_1",
+            "@type": ["owl:NamedIndividual", "estleg:Citation"],
+            "estleg:citationSource": {"@id": "estleg:RK_1"},
+            "estleg:citationText": "jahiseaduse",
+        }
+    ]
+    # Idempotent: nothing left to move, no duplicate node.
+    assert normalize_doc(doc) == (0, 0, 0)
+    assert sum("estleg:Citation" in n.get("@type", []) for n in doc["@graph"]) == 1
+
+
+def test_court_pass_does_not_own_referenced_law_citations():
+    """The court-links pass clears only its own target-less Citations."""
+    from estleg.extract_court_provision_links import is_court_pass_unresolved_citation
+
+    ref_law = {"@id": "estleg:Citation_RK_1_RefLaw_1", "@type": ["estleg:Citation"]}
+    court = {"@id": "estleg:Citation_RK_1_1", "@type": ["estleg:Citation"],
+             "estleg:citationSource": {"@id": "estleg:RK_1"},
+             "estleg:citationDetail": "KarS"}
+    assert not is_court_pass_unresolved_citation(ref_law)
+    assert is_court_pass_unresolved_citation(court)
 
 
 def test_normalize_doc_no_graph_safe():
@@ -126,7 +162,7 @@ def test_process_file_writes_and_idempotent(tmp_path: Path):
     path = tmp_path / "riigikohus_2000_peep.json"
     path.write_text(
         json.dumps(
-            {"@graph": [{"@id": "x", REFERENCED_LAW_KEY: ["liiklusseaduse", "tolliseaduse"]}]},
+            {"@graph": [{"@id": "x", REFERENCED_LAW_KEY: ["liiklusseaduse", "jahiseaduse"]}]},
             ensure_ascii=False,
         ),
         encoding="utf-8",
@@ -135,6 +171,7 @@ def test_process_file_writes_and_idempotent(tmp_path: Path):
     assert (rewritten, dropped, keys_removed) == (1, 1, 0)
     after = json.loads(path.read_text(encoding="utf-8"))
     assert after["@graph"][0][REFERENCED_LAW_KEY] == ["LS"]
+    assert after["@graph"][1]["estleg:citationText"] == "jahiseaduse"
     # re-run: LS is canonical, no genitive left -> no change
     assert process_file(path, dry_run=False) == (0, 0, 0)
 
@@ -172,11 +209,26 @@ def test_generator_detect_referenced_laws_resolves_genitives():
     assert "KarS" in out3
 
 
-def test_main_idempotent_on_real_corpus(capsys):
-    """After the migration is applied, a re-run leaves no genitive
-    dead-tokens to change."""
-    rc = mod.main([])
-    assert rc == 0
+def test_main_idempotent_on_tmp_corpus(tmp_path: Path, capsys):
+    """main() migrates a tmp corpus, then a re-run changes nothing.
+
+    #706: runs against ``--krr-dir tmp_path`` — never the real corpus.
+    """
+    rk = tmp_path / "riigikohus"
+    rk.mkdir()
+    (rk / "riigikohus_2002_peep.json").write_text(
+        json.dumps(
+            {"@graph": [{"@id": "estleg:RK_9", REFERENCED_LAW_KEY: ["liiklusseaduse", "jahiseaduse"]}]},
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    assert mod.main(["--krr-dir", str(tmp_path)]) == 0
+    first = capsys.readouterr().out
+    assert "Values kept as unresolved Citation nodes: 1" in first
+    assert "Values rewritten (genitive/case-variant -> abbrev): 1" in first
+
+    assert mod.main(["--krr-dir", str(tmp_path)]) == 0
     out = capsys.readouterr().out
-    assert "Values dropped (unresolvable dead-tokens): 0" in out
+    assert "Values kept as unresolved Citation nodes: 0" in out
     assert "Values rewritten (genitive/case-variant -> abbrev): 0" in out

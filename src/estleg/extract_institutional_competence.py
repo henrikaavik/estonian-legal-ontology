@@ -32,6 +32,17 @@ from estleg.estleg_common import (
     sanitize_id as _shared_sanitize_id,
 )
 from estleg.extract_cross_references import build_issuer_registry
+from estleg.heuristic_overrides import (
+    COMPETENCE_PREDICATES,
+    OverrideError,
+    OverrideStore,
+    check_overrides,
+    clear_unowned,
+    ensure_prov_context,
+    finalize_node,
+    load_overrides,
+    print_check_report,
+)
 from estleg.extract_sanctions import _find_act_node
 from estleg.kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
@@ -1203,6 +1214,15 @@ class _PipelineState:
         # Finding 7: institutions whose appliesToProvision list would have
         # been truncated. Logged once per (institution, ctype) pair.
         self.truncated_institution_competences: set[tuple[str, str]] = set()
+        # #700: human override store (empty unless main()/callers load one),
+        # applied overrides, and the institution back-links an overridden
+        # competentAuthority contributes. Back-links are recorded after the
+        # whole corpus is scanned (record_override_links) so the result does
+        # not depend on file order.
+        self.overrides: OverrideStore = OverrideStore()
+        self.overrides_applied = 0
+        self.override_links: list[tuple[str, str, str, str]] = []
+        self.override_links_skipped = 0
 
 
 def _record_provision_for_institution(
@@ -1256,9 +1276,14 @@ def _process_provision_node(
     issuer_registry: dict[str, tuple[str, str, str]],
     canonical_suffixes: set[str],
     law_name: str,
+    forced_competence_type: str | None = None,
 ) -> bool:
     """Detect institutions in one provision node, mutate the node with
     competentAuthority/competenceType triples, and update ``state``.
+
+    ``forced_competence_type`` (#700) is a human-reviewed competenceType that
+    replaces the detected one for this provision, including in the
+    institution back-links.
 
     Returns True iff the node was mutated.
     """
@@ -1272,7 +1297,7 @@ def _process_provision_node(
         return False
 
     state.provisions_with_institutions += 1
-    competence_type = detect_competence_type(summary)
+    competence_type = forced_competence_type or detect_competence_type(summary)
     provision_iri = node.get("@id", "")
 
     authority_refs: list[dict] = []
@@ -1401,10 +1426,12 @@ def process_law_file(
     )
 
     # Clear unconditionally — the per-provision loop below
-    # re-emits when detection succeeds.
+    # re-emits when detection succeeds. #700: except a (node, predicate)
+    # owned by a human override, which is never cleared.
+    overrides = state.overrides
     for n in doc["@graph"]:
-        n.pop("estleg:competentAuthority", None)
-        n.pop("estleg:competenceType", None)
+        if isinstance(n, dict):
+            clear_unowned(n, COMPETENCE_PREDICATES, overrides)
 
     # Store the granting act as an IRI when available; CompetenceShape
     # constrains estleg:grantedBy to IRI values.
@@ -1412,7 +1439,20 @@ def process_law_file(
     modified = False
 
     for node in doc["@graph"]:
-        if _process_provision_node(
+        if not isinstance(node, dict):
+            continue
+        owned = overrides.for_node(node.get("@id"), COMPETENCE_PREDICATES)
+        ctype_rec = owned.get("estleg:competenceType")
+        forced_ctype = (
+            ctype_rec.value
+            if ctype_rec is not None and ctype_rec.action == "set"
+            # A removal also vetoes the heuristic type in institution
+            # back-links; retain only a general authority relationship.
+            else "general" if ctype_rec is not None else None
+        )
+        # #700: a reviewed competentAuthority replaces detection outright —
+        # the heuristic neither writes the node nor records back-links for it.
+        if "estleg:competentAuthority" not in owned and _process_provision_node(
             node=node,
             state=state,
             source_municipality=source_municipality,
@@ -1420,7 +1460,31 @@ def process_law_file(
             issuer_registry=issuer_registry,
             canonical_suffixes=canonical_suffixes,
             law_name=law_name,
+            forced_competence_type=forced_ctype,
         ):
+            modified = True
+        # Human overrides LAST (+ prov:wasAttributedTo, confidence 1.0).
+        if finalize_node(node, overrides, COMPETENCE_PREDICATES):
+            modified = True
+        if owned:
+            state.overrides_applied += len(owned)
+            authority_rec = owned.get("estleg:competentAuthority")
+            if authority_rec is not None and authority_rec.action == "set":
+                ctype = node.get("estleg:competenceType")
+                for ref in authority_rec.value:
+                    state.override_links.append(
+                        (
+                            ref["@id"],
+                            node.get("@id", ""),
+                            ctype if isinstance(ctype, str) else "general",
+                            law_name,
+                        )
+                    )
+
+    if any(
+        isinstance(n, dict) and "prov:wasAttributedTo" in n for n in doc["@graph"]
+    ):
+        if ensure_prov_context(doc):
             modified = True
 
     # Note: triples counts COMPETENT-AUTHORITY REFERENCES
@@ -1444,6 +1508,47 @@ def process_law_file(
     # Save when EITHER fresh output OR pre-existing output existed.
     if modified or had_existing_peep:
         save_json(filepath, doc)
+
+
+def record_override_links(
+    state: _PipelineState, canonical_suffixes: set[str]
+) -> None:
+    """Add institution back-links for overridden competentAuthority (#700).
+
+    Only ``estleg:Institution_*`` refs get institution files (KOV issuer refs
+    never do, matching the heuristic path). A ref is linked when its suffix is
+    canonical (or the registry is in bootstrap mode) and its label/type is
+    known from this run's detections or the curated named registry; anything
+    else is counted in ``override_links_skipped``.
+    """
+    named_registry = named_institution_by_suffix()
+    for inst_iri, provision_iri, ctype, law_name in sorted(state.override_links):
+        prefix = "estleg:Institution_"
+        if not inst_iri.startswith(prefix):
+            continue
+        suffix = inst_iri[len(prefix):]
+        if canonical_suffixes and suffix not in canonical_suffixes:
+            state.override_links_skipped += 1
+            continue
+        known = state.inst_data.get(inst_iri)
+        named = named_registry.get(suffix)
+        if known is not None:
+            name, itype = known["name"], known["type"]
+        elif named is not None:
+            name, itype = named
+        else:
+            state.override_links_skipped += 1
+            continue
+        _record_provision_for_institution(
+            state=state,
+            inst_iri=inst_iri,
+            canon_name=name,
+            iri_suffix=suffix,
+            itype=itype,
+            provision_iri=provision_iri,
+            competence_type=ctype,
+            law_name=law_name,
+        )
 
 
 def write_institution_files(state: _PipelineState) -> set[str]:
@@ -1784,9 +1889,30 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Remint existing institution overlay files without rescanning peeps (#457).",
     )
+    parser.add_argument(
+        "--overrides",
+        type=Path,
+        default=None,
+        help="human override store (#700; default data/heuristic_overrides.jsonl)",
+    )
+    parser.add_argument(
+        "--check-overrides",
+        action="store_true",
+        help="dry run: report how many competence overrides would apply and "
+        "which are stale (node not found); writes nothing",
+    )
     args = parser.parse_args([] if argv is None else argv)
     if args.cleanup_only:
         print(cleanup_institution_overlay())
+        return 0
+    try:
+        overrides = load_overrides(args.overrides)
+    except OverrideError as exc:
+        print(f"ERROR: {exc}")
+        return 1
+    if args.check_overrides:
+        report = check_overrides(overrides, iter_peep_files(), COMPETENCE_PREDICATES)
+        print_check_report(report, "extract_institutional_competence")
         return 0
 
     print("=" * 70)
@@ -1818,6 +1944,7 @@ def main(argv: list[str] | None = None) -> int:
     print("\n[1/4] Processing law files (per-file idempotent)...")
 
     state = _PipelineState()
+    state.overrides = overrides
     start_time = time.perf_counter()
 
     pre_existing_institution_files: list[Path] = []
@@ -1834,6 +1961,12 @@ def main(argv: list[str] | None = None) -> int:
         if idx % 100 == 0 or idx == len(law_files):
             print(f"  [{idx}/{len(law_files)}] processed – {len(state.inst_data)} institutions found")
 
+    record_override_links(state, canonical_suffixes)
+    if state.overrides_applied or state.override_links_skipped:
+        print(
+            f"  Human overrides applied: {state.overrides_applied} "
+            f"(institution back-links skipped: {state.override_links_skipped})"
+        )
     written_slugs = write_institution_files(state)
     write_report(state, total_law_files=len(law_files))
 

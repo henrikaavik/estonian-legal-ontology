@@ -2,7 +2,12 @@
 """Analytical overlay: citation counts, coverage-gap flags, scored similarity (#521).
 
 Counts and gap flags are stamped onto the same IRIs as the published graph.
-Similarity scores are reified as ``estleg:Similarity`` nodes (the pair-level
+The gap flags are corpus-coverage facts, not legal findings (#701):
+``estleg:noTranspositionEdgeInCorpus`` means no transposition edge was found in
+this corpus and ``estleg:competentAuthorityNotExtracted`` means no authority
+edge was extracted. Every flagged node also carries the method and as-of date
+(``estleg:coverageFlagMethod`` / ``estleg:coverageFlagAsOf``) on both the
+overlay and the ``--patch-combined`` path. Similarity scores are reified as ``estleg:Similarity`` nodes (the pair-level
 shape KOV already uses) because a nested score on ``semanticallySimilarTo``
 mis-attaches to the target (#422).
 
@@ -25,11 +30,10 @@ from estleg.estleg_common import (
     save_json,
 )
 from estleg.materialize_combined_inverses import (
-    apply_updates,
+    _dump_indented,
     iri_values,
     iter_combined_objects,
     node_types,
-    rewrite_combined,
 )
 
 STATUTE_TYPES = frozenset({"estleg:Act", "estleg:Law"})
@@ -51,6 +55,58 @@ COMBINED_NAME = "combined_ontology.jsonld"
 DIRECTIVE_ID = re.compile(r"estleg:EU_3\d{3}L")
 BOOL_TRUE = {"@value": "true", "@type": "xsd:boolean"}
 SIMILARITY_MODEL = "keyword_jaccard"
+
+# Coverage-gap flags (#701). They record that the corpus lacks an extracted
+# edge, never that the law lacks a transposition or an authority.
+NO_TRANSPOSITION_FLAG = "estleg:noTranspositionEdgeInCorpus"
+NO_AUTHORITY_FLAG = "estleg:competentAuthorityNotExtracted"
+COVERAGE_FLAG_KEYS = (NO_TRANSPOSITION_FLAG, NO_AUTHORITY_FLAG)
+# Pre-#701 names. Never emitted; stripped from a node when it is restamped.
+LEGACY_FLAG_KEYS = ("estleg:hasNoTransposition", "estleg:hasNoCompetentAuthority")
+COVERAGE_METHOD_KEY = "estleg:coverageFlagMethod"
+COVERAGE_AS_OF_KEY = "estleg:coverageFlagAsOf"
+# Bump the trailing rule revision whenever the flag derivation changes. A git
+# sha would make every commit re-diff the overlay, so the marker is a constant.
+COVERAGE_FLAG_METHOD = "analytical-overlay/generate_analytical_overlay@1"
+# Keys this module owns outright: a restamp sets exactly the planned subset.
+OWNED_COVERAGE_KEYS = frozenset(
+    (*COVERAGE_FLAG_KEYS, *LEGACY_FLAG_KEYS, COVERAGE_METHOD_KEY, COVERAGE_AS_OF_KEY)
+)
+
+
+def coverage_provenance(as_of: str = BUILD_EVALUATION_DATE) -> dict:
+    """Method + pinned as-of date (#295: never the wall clock) for a flag."""
+    return {
+        COVERAGE_METHOD_KEY: COVERAGE_FLAG_METHOD,
+        COVERAGE_AS_OF_KEY: {"@value": as_of, "@type": "xsd:date"},
+    }
+
+
+def mark_coverage_gap(props: dict, flag: str) -> None:
+    """Set a coverage-gap ``flag`` on ``props`` together with its provenance."""
+    if flag not in COVERAGE_FLAG_KEYS:
+        raise ValueError(f"not a coverage-gap flag: {flag}")
+    props[flag] = dict(BOOL_TRUE)
+    props.update(coverage_provenance())
+
+
+def sync_analytical_node(node: dict, updates: dict | None) -> bool:
+    """Apply ``updates`` and drop owned coverage keys the plan no longer has.
+
+    Counts are only ever set; the flag/provenance keys are replaced as a set so
+    a restamp removes legacy names and flags whose gap has since closed.
+    """
+    wanted = updates or {}
+    changed = False
+    for key in OWNED_COVERAGE_KEYS:
+        if key in node and key not in wanted:
+            del node[key]
+            changed = True
+    for key, value in wanted.items():
+        if node.get(key) != value:
+            node[key] = value
+            changed = True
+    return changed
 
 
 def is_statute(types: list[str]) -> bool:
@@ -141,7 +197,7 @@ def plan_analytical_updates(
     *,
     in_force_directives: set[str] | None = None,
 ) -> dict[str, dict]:
-    """Counts + gap flags for existing IRIs. Omits zeros and false flags."""
+    """Counts + coverage-gap flags for existing IRIs. Omits zeros and false flags."""
     transposed_targets: set[str] = set()
     planned: dict[str, dict] = defaultdict(dict)
     known_force = in_force_directives if in_force_directives is not None else set()
@@ -170,7 +226,7 @@ def plan_analytical_updates(
             authorities = len(iri_values(node.get("estleg:competentAuthority")))
             planned[nid]["estleg:competentAuthorityCount"] = authorities
             if authorities == 0:
-                planned[nid]["estleg:hasNoCompetentAuthority"] = BOOL_TRUE
+                mark_coverage_gap(planned[nid], NO_AUTHORITY_FLAG)
 
     for node in nodes:
         if not isinstance(node, dict):
@@ -189,7 +245,7 @@ def plan_analytical_updates(
             continue
         if nid in transposed_targets:
             continue
-        planned[nid]["estleg:hasNoTransposition"] = BOOL_TRUE
+        mark_coverage_gap(planned[nid], NO_TRANSPOSITION_FLAG)
 
     return {nid: props for nid, props in planned.items() if props}
 
@@ -208,7 +264,7 @@ def stamp_analytical_properties(
             continue
         nid = node.get("@id")
         updates = planned.get(nid) if isinstance(nid, str) else None
-        if updates and apply_updates(node, updates):
+        if sync_analytical_node(node, updates):
             updated += 1
     return {"nodes_updated": updated}
 
@@ -235,7 +291,7 @@ def build_analytical_overlay(
             transposed.add(target)
     for nid in sorted(known_force):
         if nid not in transposed:
-            planned.setdefault(nid, {})["estleg:hasNoTransposition"] = BOOL_TRUE
+            mark_coverage_gap(planned.setdefault(nid, {}), NO_TRANSPOSITION_FLAG)
     graph: list[dict] = [
         {
             "@id": "estleg:AnalyticalOverlay",
@@ -245,6 +301,10 @@ def build_analytical_overlay(
                 "Joinable analytical overlay (#521): inboundCitationCount / "
                 "interpretationCount / competentAuthorityCount and coverage-gap "
                 "booleans on the same IRIs as combined_ontology.jsonld. "
+                "The booleans (estleg:noTranspositionEdgeInCorpus, "
+                "estleg:competentAuthorityNotExtracted) record a missing edge "
+                "in this corpus, not a legal finding (#701); each flagged node "
+                "carries estleg:coverageFlagMethod and estleg:coverageFlagAsOf. "
                 "Similarity scores are reified estleg:Similarity nodes."
             ),
         }
@@ -276,11 +336,83 @@ def patch_combined_analytical(
     *,
     in_force_directives: set[str] | None = None,
 ) -> int:
+    """Stream-restamp counts, coverage flags and their provenance on combined.
+
+    Unlike ``rewrite_combined`` this also strips owned coverage keys that the
+    plan no longer carries (legacy pre-#701 names, closed gaps).
+    """
     nodes = [obj for _, _, obj in iter_combined_objects(combined_path)]
     planned = plan_analytical_updates(
         nodes, in_force_directives=in_force_directives
     )
-    return rewrite_combined(combined_path, planned)
+    touched = coverage_touched_ids(nodes, planned)
+    del nodes
+    return rewrite_combined_synced(combined_path, planned, touched)
+
+
+def coverage_touched_ids(nodes: list[dict], planned: dict[str, dict]) -> set[str]:
+    """Planned ids plus every node already carrying an owned coverage key."""
+    touched = set(planned)
+    for node in nodes:
+        nid = node.get("@id") if isinstance(node, dict) else None
+        if isinstance(nid, str) and OWNED_COVERAGE_KEYS.intersection(node):
+            touched.add(nid)
+    return touched
+
+
+def rewrite_combined_synced(
+    path: Path, planned: dict[str, dict], touched: set[str]
+) -> int:
+    """``rewrite_combined`` with :func:`sync_analytical_node` semantics.
+
+    ``planned`` may also carry non-coverage keys (e.g. #520 inverse edges);
+    those are only set, as ``apply_updates`` would.
+    """
+    if not touched or not path.exists():
+        return 0
+    text = path.read_text(encoding="utf-8")
+    marker = text.find('"@graph"')
+    if marker < 0:
+        raise ValueError(f"{path}: no @graph")
+    bracket = text.find("[", marker)
+    if bracket < 0:
+        raise ValueError(f"{path}: @graph is not an array")
+    decoder = json.JSONDecoder()
+    index = bracket + 1
+    length = len(text)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    updated = 0
+    first = True
+    with tmp.open("w", encoding="utf-8") as handle:
+        handle.write(text[: bracket + 1])
+        handle.write("\n")
+        while True:
+            while index < length and text[index] in " \t\r\n,":
+                index += 1
+            if index >= length:
+                raise ValueError(f"{path}: unterminated @graph")
+            if text[index] == "]":
+                break
+            obj, end = decoder.raw_decode(text, index)
+            nid = obj.get("@id") if isinstance(obj, dict) else None
+            if not first:
+                handle.write(",\n")
+            else:
+                first = False
+            handle.write("    ")
+            if (
+                isinstance(nid, str)
+                and nid in touched
+                and sync_analytical_node(obj, planned.get(nid))
+            ):
+                handle.write(_dump_indented(obj))
+                updated += 1
+            else:
+                handle.write(text[index:end])
+            index = end
+        handle.write(text[index:])
+    tmp.replace(path)
+    return updated
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -293,7 +425,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--patch-combined",
         action="store_true",
-        help="Stamp counts/flags onto combined_ontology.jsonld (no Similarity nodes).",
+        help=(
+            "Stamp counts, coverage flags and their method/as-of provenance "
+            "onto combined_ontology.jsonld (no Similarity nodes)."
+        ),
     )
     parser.add_argument(
         "--combined",
