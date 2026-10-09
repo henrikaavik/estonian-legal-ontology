@@ -3,11 +3,21 @@
 #
 # Mirrors the Seadusloome image conventions (python:3.13-slim + uv) so it
 # deploys the same way on Coolify. The ~1.5 GB ontology corpus is NOT baked
-# into the image; docker/entrypoint.sh clones/pulls it onto a persistent
-# volume at boot (LFS skipped — estleg reads only the per-file JSON blobs).
+# into the image; docker/entrypoint.sh clones the pinned release tag
+# (ESTLEG_CORPUS_REF, default v1.0.0) onto a persistent volume at boot. LFS is
+# skipped: estleg reads only the per-file JSON blobs, never the LFS artifacts
+# (combined_ontology.jsonld, similarity_index.json, analytical_overlay.jsonld,
+# eurlex_combined.jsonld).
+#
+# The server runs as the unprivileged user `estleg` (uid/gid 10001, #714).
+# The /data volume must be writable by that uid: a fresh named volume
+# inherits the ownership of /data below; a pre-existing or bind-mounted volume
+# created by the old root image needs a one-off `chown -R 10001:10001` (the
+# entrypoint checks and says so instead of failing obscurely).
 #
 # Coolify: set Base Directory = mcp_server, Dockerfile = docker/Dockerfile,
-# attach a persistent volume at /data, and set ESTLEG_TOKEN (+ the domain).
+# attach a persistent volume at /data, and set ESTLEG_TOKENS (+ the domain).
+# HTTP refuses to start without credentials.
 
 FROM python:3.13-slim AS builder
 COPY --from=ghcr.io/astral-sh/uv:0.11.5 /uv /usr/local/bin/uv
@@ -24,18 +34,27 @@ FROM python:3.13-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git git-lfs curl && \
     rm -rf /var/lib/apt/lists/*
+# Unprivileged runtime user with a real home (git writes ~/.gitconfig for the
+# safe.directory entry the entrypoint adds).
+RUN groupadd --system --gid 10001 estleg && \
+    useradd --system --uid 10001 --gid estleg --home-dir /home/estleg \
+      --create-home --shell /usr/sbin/nologin estleg && \
+    mkdir -p /data && chown estleg:estleg /data
 WORKDIR /app
 COPY --from=builder /app/.venv /app/.venv
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN chmod 0755 /usr/local/bin/entrypoint.sh
 ENV PATH="/app/.venv/bin:$PATH" \
+    HOME=/home/estleg \
     ESTLEG_TRANSPORT=http \
     ESTLEG_HOST=0.0.0.0 \
     ESTLEG_PORT=8000 \
     ESTLEG_CORPUS=/data/estonian-legal-ontology \
     ESTLEG_CORPUS_REPO=https://github.com/henrikaavik/estonian-legal-ontology.git \
-    ESTLEG_CORPUS_BRANCH=main
+    ESTLEG_CORPUS_REF=v1.0.0
+VOLUME ["/data"]
+USER estleg:estleg
 EXPOSE 8000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
   CMD curl -fsS "http://127.0.0.1:${ESTLEG_PORT}/healthz" || exit 1
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
