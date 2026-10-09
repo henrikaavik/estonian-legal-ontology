@@ -51,16 +51,28 @@ def _marker_pruned_text(el: ET.Element) -> str:
     inside a ``muutmismarge``/``avaldamismarge``/``joustumismarge``
     subtree, so a marker nested *inside* a ``loige``/``lause`` does not
     leak into the citable text the way raw ``itertext()`` would.
+
+    #694: a real ``<sup>`` child element (``217<sup>2</sup>``) is rendered
+    as Unicode superscript digits (``217²``) instead of being concatenated
+    into the base number (``2172``). The escaped-string form is still
+    handled downstream by :func:`_sup_to_unicode`.
     """
+    if ln(el.tag) == "viide":
+        # A citation's display label is legal text; its target URI is not.
+        return "".join(_marker_pruned_text(c) for c in el if ln(c.tag) == "kuvatavTekst")
     out: list[str] = []
     if el.text:
         out.append(el.text)
     for child in el:
-        if ln(child.tag) in _MARKER_TAGS:
+        tag = ln(child.tag)
+        if tag in _MARKER_TAGS:
             if child.tail:
                 out.append(child.tail)
             continue
-        out.append(_marker_pruned_text(child))
+        inner = _marker_pruned_text(child)
+        if tag == "sup":
+            inner = _digits_to_superscript(inner.strip())
+        out.append(inner)
         if child.tail:
             out.append(child.tail)
     return "".join(out)
@@ -173,6 +185,25 @@ def _sup_to_unicode(text: str) -> str:
     return converted.replace("<sup>", "").replace("</sup>", "")
 
 
+def _digits_to_superscript(text: str) -> str:
+    """Render the ASCII digits of ``text`` as Unicode superscript glyphs (#694).
+
+    Non-digit characters are kept as-is (RT ``<sup>`` elements only carry
+    digits in practice, but a stray letter must not be dropped).
+    """
+    return "".join(_DIGIT_TO_SUPERSCRIPT.get(ch, ch) for ch in text)
+
+
+def paragraph_display(paragraph: ET.Element) -> str:
+    """Preserve real and CDATA superscripts in the human-readable § number."""
+    for child in paragraph:
+        if ln(child.tag) == "kuvatavNr":
+            display = _sup_to_unicode(_marker_pruned_text(child)).strip()
+            if display:
+                return display
+    return f"§ {ct(paragraph, 'paragrahvNr') or '?'}"
+
+
 def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
     """Extract the superscript index carried by ``el``'s ``number_tag`` child.
 
@@ -197,7 +228,7 @@ def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
     kuv = None
     for c in el:
         if ln(c.tag) == "kuvatavNr":
-            kuv = "".join(c.itertext()) or ""
+            kuv = _marker_pruned_text(c)
             break
     if not kuv:
         return ""
@@ -437,15 +468,75 @@ def _loige_body_text(loige_el: ET.Element) -> str:
     ``estleg:legalText`` on a Subsection node also does, mirroring the
     provision-level form).
     """
-    body_parts: list[str] = []
-    for grandchild in _iter_text_nodes(loige_el):
-        tag = ln(grandchild.tag)
-        if tag in ("lauseOsa", "lause", "tavatekst"):
-            txt = _marker_pruned_text(grandchild).strip()
+    return _sup_to_unicode(" ".join(_text_parts(loige_el)).strip())
+
+
+_TEXT_TAGS: tuple[str, ...] = ("lauseOsa", "lause", "tavatekst")
+
+
+def _alampunkt_marker(alampunkt_el: ET.Element) -> str:
+    """Return the display marker of one ``alampunkt`` sub-point (#694).
+
+    Prefers the ``kuvatavNr`` CDATA (``1) ``, ``1<sup>1</sup>) ``), mirroring
+    ``generate_tsus_osa7_jsonld._render_alampunkt``; falls back to
+    ``alampunktNr`` (+ ``ylaIndeks`` superscript) followed by ``)``.
+    """
+    for sub in alampunkt_el:
+        if ln(sub.tag) == "kuvatavNr":
+            kuv = re.sub(r"\s+", " ", _marker_pruned_text(sub)).strip()
+            if kuv:
+                return _sup_to_unicode(kuv)
+    number = _alampunkt_number(alampunkt_el)
+    return f"{number})" if number else ""
+
+
+def _alampunkt_number(alampunkt_el: ET.Element) -> str:
+    """Return the ``alampunktNr`` of a sub-point as a display string (#694).
+
+    The ``ylaIndeks`` attribute (``1`` with ``ylaIndeks="1"`` → ``1¹``) is
+    rendered as a Unicode superscript so ``§ 209 lg 2 p 1¹`` stays distinct
+    from ``p 1``. Returns ``""`` when there is no numeric ``alampunktNr``.
+    """
+    for sub in alampunkt_el:
+        if ln(sub.tag) == "alampunktNr":
+            nr = (sub.text or "").strip()
+            if not nr.isdigit():
+                return ""
+            ya = (sub.attrib.get("ylaIndeks") or "").strip()
+            return nr + _digits_to_superscript(ya) if ya else nr
+    return ""
+
+
+def _text_parts(el: ET.Element) -> list[str]:
+    """Collect the normalised text fragments below ``el`` in document order.
+
+    Keeps nonempty ``lauseOsa``/``lause``/``tavatekst`` fragments
+    (marker subtrees pruned, #255) and — #694 — emits each
+    ``alampunkt``'s ``k)`` marker right before its text, so enumerated
+    sub-points read ``… ning: 1) … 2) …`` instead of a run-on body.
+    """
+    parts: list[str] = []
+
+    def collect(node: ET.Element) -> None:
+        tag = ln(node.tag)
+        if tag in _MARKER_TAGS:
+            return
+        if tag == "alampunkt":
+            marker = _alampunkt_marker(node)
+            if marker:
+                parts.append(marker)
+        elif tag in _TEXT_TAGS or tag == "viide":
+            txt = _marker_pruned_text(node).strip()
             txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
-                body_parts.append(txt)
-    return _sup_to_unicode(" ".join(body_parts).strip())
+            if txt:
+                parts.append(txt)
+            # Descendants have already been included in this fragment.
+            return
+        for child in node:
+            collect(child)
+
+    collect(el)
+    return parts
 
 
 def _superscript_from_text(value: str) -> str:
@@ -496,7 +587,7 @@ def _loige_numbers(loige_el: ET.Element) -> tuple[str, str]:
     kuv_raw = ""
     for sub in loige_el:
         if ln(sub.tag) == "kuvatavNr":
-            kuv_raw = "".join(sub.itertext()).strip()
+            kuv_raw = _marker_pruned_text(sub).strip()
             break
     kuv_inner = re.sub(r"[()]", "", kuv_raw).strip() if kuv_raw else ""
 
@@ -550,15 +641,7 @@ def collect_full_text(el: ET.Element) -> str:
     if lõige_blocks:
         return _sup_to_unicode(" ".join(lõige_blocks))
 
-    parts: list[str] = []
-    for child in _iter_text_nodes(el):
-        tag = ln(child.tag)
-        if tag in ("lauseOsa", "lause", "tavatekst"):
-            txt = _marker_pruned_text(child).strip()
-            txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
-                parts.append(txt)
-    return _sup_to_unicode(" ".join(parts))
+    return _sup_to_unicode(" ".join(_text_parts(el)))
 
 
 def build_subsections(
@@ -652,10 +735,22 @@ _UNKNOWN_LG_IRI_RE = re.compile(r"^(estleg:.+_Lg_)Unknown_(\d+)$")
 
 
 def _loige_item_numbers(loige_el: ET.Element, body: str) -> list[str]:
-    """Punkt numbers from RT ``punktNr`` children, else from the lõige text (#514)."""
+    """Sub-point numbers of one lõige (#514, #694).
+
+    Riigi Teataja XML encodes enumerated sub-points as ``alampunkt``
+    elements numbered by ``alampunktNr`` (with an optional ``ylaIndeks``
+    superscript); the legacy ``punktNr`` tag is still honoured. Only when
+    the lõige has no structural sub-points do we fall back to the punkt
+    numbers cited in the lõige text (#514).
+    """
     nums: list[str] = []
-    for child in loige_el.iter():
-        if ln(child.tag) == "punktNr" and child.text and child.text.strip().isdigit():
+    for child in _iter_text_nodes(loige_el):
+        tag = ln(child.tag)
+        if tag == "alampunkt":
+            number = _alampunkt_number(child)
+            if number:
+                nums.append(number)
+        elif tag == "punktNr" and child.text and child.text.strip().isdigit():
             nums.append(child.text.strip())
     if not nums:
         nums = _PUNKT_NR_RE.findall(body or "")
@@ -1000,9 +1095,8 @@ def emit_hierarchy_and_provisions(
     par_iri_by_elem: dict[int, str] = {}
     seen_subsection_ids: set[str] = set()
     for paragraph in paragrahvid:
-        p_nr = ct(paragraph, "paragrahvNr") or "?"
         p_title = ct(paragraph, "paragrahvPealkiri") or ""
-        p_display = _sup_to_unicode(ct(paragraph, "kuvatavNr")) or f"§ {p_nr}"
+        p_display = paragraph_display(paragraph)
         text = collect_text(paragraph)
         full_text = collect_full_text(paragraph)
         raw_par_suffix = _paragraph_id_suffix(paragraph)
@@ -1070,6 +1164,3 @@ def emit_hierarchy_and_provisions(
             chapter_node["estleg:hasPart"].extend(
                 {"@id": iri} for iri in direct_iris
             )
-
-
-

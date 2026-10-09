@@ -127,7 +127,7 @@ https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=1&limiit=500&dokumen
 https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=1&limiit=500&dokument=m%C3%A4%C3%A4rus&tekst=terviktekst&kehtiv=YYYY-MM-DD&kehtivKehtetus=false&mitteJoustunud=false
 ```
 
-The search result includes `globaalID`, `terviktekstID`, `url`, `pealkiri`, `liik`, `valjaandja`, and `kehtivus`. Fetch the XML from `https://www.riigiteataja.ee{url}`, for example `https://www.riigiteataja.ee/akt/191725.xml`.
+The search result includes `globaalID`, `terviktekstID`, `url`, `pealkiri`, `liik`, `valjaandja`, and `kehtivus`. Since the 2026-06-01 RT relaunch that `url` (`/akt/{id}.xml`) serves the HTML app shell. Fetch the XML from the public API instead, for example `https://www.riigiteataja.ee/public-api/api/v1/akt/191725/xml` (`riigiteataja_common.build_xml_url`, #691).
 
 Control query run for `kehtiv=2026-05-01`:
 

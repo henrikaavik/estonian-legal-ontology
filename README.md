@@ -311,11 +311,14 @@ clone of `main`. A Zenodo DOI is not yet minted. Consumer contract:
 
 Corpus target is monthly Riigi Teataja consolidation.
 `estleg:kehtiv` is the snapshot date the committed act text is valid as of.
-`dcterms:accrualPeriodicity` is monthly. The content-staleness canary is
-`python3 scripts/check_rt_staleness.py` (offline; `--fetch` is operator-run).
-Its default evaluation date is still pinned to `2026-06-01` (#693), so a green
-default run does not establish current freshness. For today's comparison use
-`python3 scripts/check_rt_staleness.py --evaluation-date "$(date -u +%F)"`.
+`dcterms:accrualPeriodicity` is monthly for the dataset, and each
+`dcat:distribution` carries its own value (monthly for laws, regulations and
+drafts; quarterly for court and EU corpora). The freshness gate is
+`python3 scripts/check_rt_staleness.py`. It is offline and compares every
+corpus's committed snapshot stamp against **today** with a per-corpus lag
+budget (#693). Pass `--evaluation-date YYYY-MM-DD` only to reproduce a past
+run. `--fetch` is operator-run. The committed snapshot predates the current
+budgets, so the gate reports the corpus as behind SLA until it is refreshed.
 The committed `krr_outputs/changes-0.11.0.jsonld` is a historical IRI delta,
 not a delta for every later commit.
 
@@ -552,21 +555,22 @@ Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
 
 ### API Details
 
-**RT migration status (2026-09-07):** the law/regulation generators still use
-the legacy endpoints below. The September review found `/akt/{id}.xml`
-returning the HTML application shell. Migration to
-`GET https://www.riigiteataja.ee/public-api/api/v1/akt/{id}/xml` is open in
-[#691](https://github.com/henrikaavik/estonian-legal-ontology/issues/691).
-The legacy URLs document the current implementation; they are not a verified
-working refresh recipe.
+**RT per-act endpoint (#691):** since the RT relaunch on 2026-06-01 the
+legacy `/akt/{id}.xml` path returns the HTML application shell, not XML. The
+generators now fetch act XML from the public API through
+`riigiteataja_common.build_xml_url`. The search API is unchanged; its
+`url` field (`/akt/{id}.xml`) is mapped onto the public API. The endpoint must
+be probed with `GET`: `HEAD` on `/xml` redirects to a login page. An HTML
+response raises `RTFormatError` instead of being skipped silently.
 
 **Riigi Teataja** (enacted laws):
 - Search: `GET https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=N&dokument=seadus`
-- XML: `GET https://www.riigiteataja.ee/akt/GLOBALID.xml`
+- XML: `GET https://www.riigiteataja.ee/public-api/api/v1/akt/GLOBALID/xml` (schema `tyviseadus_1_10.02.2010`, served as `application/octet-stream`)
+- Metadata (JSON): `GET https://www.riigiteataja.ee/public-api/api/v1/akt/GLOBALID` (`kehtivId` = redaction in force now, `grupiId`, `lyhend`, `kehtivuseAlgus`, `tolkeSeosId`)
 
 **Riigi Teataja** (domestic regulations):
 - Search: `GET https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=N&dokument=määrus`
-- XML: `GET https://www.riigiteataja.ee/akt/GLOBALID.xml` (same XML schema as laws; pre-2010 acts may use `<HTMLKonteiner>` rather than structured XML)
+- XML: `GET https://www.riigiteataja.ee/public-api/api/v1/akt/GLOBALID/xml` (same XML schema as laws; pre-2010 acts may use `<HTMLKonteiner>` rather than structured XML)
 
 **EIS** (draft legislation):
 - Public consultation: `GET https://eelnoud.valitsus.ee/main/mount/rss/home/publicConsult.rss`

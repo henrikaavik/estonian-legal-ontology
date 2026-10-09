@@ -1861,8 +1861,13 @@ class TestFetchXmlCacheThresholdAndValidation:
         assert calls["n"] == 1, "second call must be served from cache"
 
     def test_html_error_page_is_not_cached(self, tmp_path, monkeypatch):
-        # An >threshold HTML error page that still parses as XML must be
-        # rejected (return None) and never written to the cache.
+        # An >threshold HTML page that still parses as XML must never be
+        # written to the cache. Since #691 it is also loud: RT serving HTML
+        # for an act (the post-2026-06-01 app shell) is an endpoint contract
+        # change, so fetch_xml raises RTFormatError naming the URL instead of
+        # returning None and letting the whole refresh SKIP every act.
+        from estleg.riigiteataja_common import RTFormatError
+
         data_dir = tmp_path / "data" / "riigiteataja"
         data_dir.mkdir(parents=True)
         monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
@@ -1871,8 +1876,8 @@ class TestFetchXmlCacheThresholdAndValidation:
         monkeypatch.setattr(
             generate_all_laws.requests, "get", lambda *a, **kw: self._resp(html)
         )
-        root = generate_all_laws.fetch_xml("/akt/x.xml", "slugB", tid="1")
-        assert root is None
+        with pytest.raises(RTFormatError, match="public-api/api/v1/akt/x/xml"):
+            generate_all_laws.fetch_xml("/akt/x.xml", "slugB", tid="1")
         assert list(data_dir.glob("*.xml")) == []
 
     def test_cached_html_root_is_treated_as_miss(self, tmp_path, monkeypatch):
@@ -3947,14 +3952,14 @@ class TestSubsectionHelpers:
         assert display == "2²"
         assert suffix == "2_2"
 
-    def test_loige_body_text_joins_and_filters(self):
+    def test_loige_body_text_joins_and_preserves_short_fragments(self):
         lg = ET.fromstring(
             "<loige><loigeNr>1</loigeNr>"
             "<lause>Esimene lause.</lause><lause>ok</lause>"
             "<tavatekst>Teine tekstiosa.</tavatekst></loige>"
         )
-        # "ok" is <= 3 chars and is dropped.
-        assert generate_all_laws._loige_body_text(lg) == "Esimene lause. Teine tekstiosa."
+        # Short words can carry legal meaning and must survive extraction.
+        assert generate_all_laws._loige_body_text(lg) == "Esimene lause. ok Teine tekstiosa."
 
     def test_build_subsections_returns_empty_for_no_loige(self):
         par = ET.fromstring(
