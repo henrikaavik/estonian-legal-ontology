@@ -86,9 +86,22 @@ def parse_token_spec(spec: str, source: str = "ESTLEG_TOKENS") -> dict[str, str]
     if not spec:
         return tokens
     path = Path(spec).expanduser()
-    if path.is_file():
+    try:
+        is_file = path.is_file()
+    except OSError:
+        # Inline maps can exceed a filesystem component's length limit.
+        is_file = False
+    if is_file:
+        def unique_object(pairs):
+            result = {}
+            for key, value in pairs:
+                if key in result:
+                    raise TokenConfigError(f"{source}: duplicate consumer in token file")
+                result[key] = value
+            return result
+
         try:
-            doc = json.loads(path.read_text(encoding="utf-8"))
+            doc = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object)
         except (OSError, ValueError) as exc:
             raise TokenConfigError(f"{source}: cannot read token file {spec!r}: {exc}") from exc
         if not isinstance(doc, dict) or not all(
@@ -106,7 +119,7 @@ def parse_token_spec(spec: str, source: str = "ESTLEG_TOKENS") -> dict[str, str]
         name, sep, token = entry.partition("=")
         if not sep:
             raise TokenConfigError(
-                f"{source}: entry {entry.strip()[:12]!r}… is not name=token "
+                f"{source}: an entry is not name=token "
                 "(and the value is not an existing file path)"
             )
         _add(tokens, name, token, source)
