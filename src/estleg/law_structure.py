@@ -622,6 +622,24 @@ def collect_full_text(el: ET.Element) -> str:
     return _sup_to_unicode(" ".join(_text_parts(el)))
 
 
+_REPEAL_PLACEHOLDER_RE = re.compile(r"^\s*kehtetu\b", re.IGNORECASE)
+
+
+def is_repealed_paragraph(par_el: ET.Element) -> bool:
+    """True when Riigi Teataja marks a whole § as repealed.
+
+    A repealed § has no body; its only text is the RT editorial placeholder
+    ``Kehtetu -`` — either in a direct ``muutmismarge`` note (current
+    consolidations, with the repeal's ``joustumine`` date) or as the § text
+    itself (older consolidations). Callers use it only when the § yielded no
+    legal text, so a § that still has a body is never marked.
+    """
+    for el in par_el.iter():
+        if ln(el.tag) == "tavatekst" and _REPEAL_PLACEHOLDER_RE.match(el.text or ""):
+            return True
+    return False
+
+
 def build_subsections(
     par_el: ET.Element,
     provision_id: str,
@@ -1109,6 +1127,11 @@ def emit_hierarchy_and_provisions(
         }
         if full_text:
             node["estleg:legalText"] = full_text
+        elif is_repealed_paragraph(paragraph):
+            # #703: a § Riigi Teataja marks "Kehtetu -" carries no text by
+            # design; say so, so text-coverage gates do not count it as a
+            # missing body (a § with no text and no such note still does).
+            node["estleg:provisionRepealed"] = True
         if cluster_ref:
             node["estleg:requestedCluster"] = {"@id": cluster_ref}
         container_ref = par_to_container.get(id(paragraph))

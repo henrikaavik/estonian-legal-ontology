@@ -185,6 +185,8 @@ def identity_keys(doc: dict) -> dict[str, tuple]:
     occurrences: Counter[tuple] = Counter()
 
     def _assign(iri: str, base: tuple) -> None:
+        if base[-1] in ("", None):  # no label / number: no identity to match on
+            return
         occurrences[base] += 1
         keys[iri] = (*base, occurrences[base])
 
@@ -205,7 +207,7 @@ def identity_keys(doc: dict) -> dict[str, tuple]:
         if kinds[node["@id"]] != KIND_CLUSTER:
             continue
         chapter = twin_of.get(node["@id"])
-        if chapter is not None:
+        if chapter in keys:
             _assign(node["@id"], (KIND_CLUSTER, "chapter", keys[chapter]))
         else:
             label = _PAR_RANGE_RE.sub("", normalise_text(node.get("rdfs:label") or node.get("skos:prefLabel")))
@@ -221,6 +223,8 @@ def identity_keys(doc: dict) -> dict[str, tuple]:
             continue
         parent = _ref(node.get("estleg:parentProvision"))
         parent_key = keys.get(parent) if parent in by_id else ("orphan", parent)
+        if parent_key is None:
+            continue
         _assign(node["@id"], (KIND_SUBSECTION, parent_key, _subsection_number(node)))
     return keys
 
@@ -378,3 +382,55 @@ class PinTotals:
             f"{sum(self.counts['removed'].values())} committed node(s) removed, "
             f"{sum(self.counts['disambiguated'].values())} disambiguated"
         )
+
+
+def drop_dangling_overlay_nodes(
+    merged_doc: dict, raw_ids: set[str], committed_doc: dict | None
+) -> Counter:
+    """Drop overlay nodes that point at an element removed by this regeneration.
+
+    An overlay node is one the merge carried over from the committed file
+    (its ``@id`` is not in ``raw_ids``, the freshly generated node set), e.g.
+    a cross-reference ``estleg:Citation`` whose ``citationSource`` is a lõige.
+    When it references an IRI the committed file defined and the merged file
+    no longer does (a § or lõige repealed in the new redaction), the node
+    describes something that is gone and is removed. References to other
+    files are not judged. Returns the dropped count per node type.
+    """
+    dropped: Counter = Counter()
+    graph = merged_doc.get("@graph")
+    if not isinstance(graph, list) or not isinstance(committed_doc, dict):
+        return dropped
+    committed_ids = {
+        n["@id"] for n in committed_doc.get("@graph", [])
+        if isinstance(n, dict) and isinstance(n.get("@id"), str)
+    }
+    while True:
+        present = {n["@id"] for n in graph if isinstance(n, dict) and isinstance(n.get("@id"), str)}
+        gone = committed_ids - present
+        keep: list = []
+        for node in graph:
+            nid = node.get("@id") if isinstance(node, dict) else None
+            if isinstance(nid, str) and nid not in raw_ids:
+                refs = {r for key, value in node.items() if key != "@id" for r in _refs_deep(value)}
+                if refs & gone:
+                    specific = [t for t in _types(node) if t != "owl:NamedIndividual"]
+                    dropped[(specific or ["(untyped)"])[0]] += 1
+                    continue
+            keep.append(node)
+        if len(keep) == len(graph):
+            break
+        graph[:] = keep
+    return dropped
+
+
+def _refs_deep(value: object) -> set[str]:
+    if isinstance(value, dict):
+        refs = {value["@id"]} if isinstance(value.get("@id"), str) else set()
+        for item in value.values():
+            if isinstance(item, (dict, list)):
+                refs |= _refs_deep(item)
+        return refs
+    if isinstance(value, list):
+        return set().union(*(_refs_deep(v) for v in value)) if value else set()
+    return set()

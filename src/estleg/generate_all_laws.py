@@ -48,7 +48,14 @@ from estleg.estleg_common import (
     sha256_hex,
     slugify,
 )
-from estleg.law_iri_pinning import PinTotals, pin_to_committed
+from estleg.ingest_overlay import (
+    IngestLayer,
+    MergeReport,
+    add_replace_overlays_argument,
+    log_replace_overlays_mode,
+    prepare_write,
+)
+from estleg.law_iri_pinning import PinTotals, drop_dangling_overlay_nodes, pin_to_committed
 from estleg.law_structure import (  # noqa: F401 — re-exported for tests / generate_missing_parts
     _chapter_id_suffix,
     _division_id_suffix,
@@ -95,11 +102,8 @@ _CONTENT_HASHES: dict[str, str] = {}
 # #692: what that hash attests — the cache file it was taken from, its size
 # and the redaction (globaalID) inside it — keyed like ``_CONTENT_HASHES``.
 _FETCH_RECORDS: dict[str, dict] = {}
-# Offline replay: serve every act from data/riigiteataja/ and never touch the
-# network. A cache miss is a fetch failure (main sets this from --cache-only).
-CACHE_ONLY = False
-# Committed-IRI pinning totals for this run (law_iri_pinning), per kind.
-PIN_TOTALS = PinTotals()
+CACHE_ONLY = False  # --cache-only: parse from data/riigiteataja/ only, never fetch
+PIN_TOTALS = PinTotals()  # committed-IRI pinning totals for this run
 
 # Issue #601: ONE shared minimum-size threshold for the on-disk XML cache,
 # applied to BOTH the fresh-download floor and the cache-accept floor.
@@ -326,12 +330,10 @@ def _is_trustworthy_xml_root(root: ET.Element | None) -> bool:
 
 
 def xml_root_global_id(root: ET.Element | None) -> str | None:
-    """``<metaandmed><globaalID>`` of an RT act root, or None when absent.
+    """Numeric ``<metaandmed><globaalID>`` of an RT act root, else None.
 
-    Only the numeric RT act id counts. Some legacy RT II texts (five treaty
-    acts of 2010 in the 2026-10-09 snapshot) carry a document UUID there
-    instead; it is not the id the search API, the act page and
-    ``eli:id_local`` use, so it is reported as absent rather than compared.
+    Legacy RT II texts (five 2010 treaty acts) carry a document UUID there,
+    not the act id the search API and act page use; it is not compared.
     """
     if root is None:
         return None
@@ -435,10 +437,7 @@ def fetch_xml(
     if cached is not None:
         return cached
     if CACHE_ONLY:
-        print(
-            f"    CACHE-ONLY: no cached XML for {cache_name!r} "
-            f"(tid={tid!r}, gid={gid!r}); not fetching"
-        )
+        print(f"    CACHE-ONLY: no cached XML for {cache_name!r} (tid={tid!r}, gid={gid!r})")
         return None
     primary = (
         f"{cache_name}__tid{sanitize_id(tid)}" if tid else cache_name
@@ -1177,17 +1176,14 @@ _MERGE_BLOCKED_FIELDS = frozenset({
     "estleg:contentHash",
     "estleg:issuer",
     "estleg:actNumber",
-    # Generator-owned structure and text. A value the regenerated node no
-    # longer has (a § repealed in the new redaction keeps no text and no
-    # lõiked) describes the old redaction: carried over, ``hasSubsection``
-    # pointed at lõiked that no longer exist (483 phantom-typed Subsection
-    # targets after the 2026-10-09 refresh) and ``legalText`` kept repealed
-    # wording.
+    # Generator-owned structure and text: a value the regenerated node lacks
+    # describes the old redaction (a repealed § kept dangling hasSubsection
+    # links and its repealed legalText before the 2026-10-09 refresh).
     "estleg:legalText", "estleg:hasSubsection", "estleg:parentProvision",
     "estleg:subsectionNumber", "estleg:itemNumber", "estleg:paragrahv",
     "estleg:chapterNumber", "estleg:isPartOf", "estleg:hasPart", "estleg:partOfAct",
     "estleg:provisionCount", "skos:inScheme", "skos:hasTopConcept", "skos:broader",
-    "skos:narrower",
+    "skos:narrower", "estleg:provisionRepealed",
 })
 
 
@@ -1206,58 +1202,55 @@ def _should_preserve_textless_summary(new_node: dict, existing_node: dict) -> bo
     return "estleg:legalText" not in new_node and "estleg:legalText" not in existing_node
 
 
-def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
-    """Additive-merge: copy enrichment fields from an existing law file onto
-    matching nodes in ``new_doc``. Generator-emitted fields always win — only
-    keys MISSING from the new node are pulled across from the existing one.
+# #697: the law generator's raw layer. It owns the structural node set and the
+# _MERGE_BLOCKED_FIELDS keys; every other key and node (cross-reference
+# Citation nodes, EuroVoc, court links, sanctions …) is overlay and survives.
+LAW_LAYER = IngestLayer(
+    name="generate_all_laws",
+    raw_keys=_MERGE_BLOCKED_FIELDS,
+    raw_node_types=frozenset({
+        "estleg:Act", "estleg:Law", "estleg:Part", "estleg:Chapter", "estleg:Division",
+        "estleg:Subdivision", "estleg:TopicCluster", "estleg:LegalProvision",
+        "estleg:Subsection", "skos:ConceptScheme", "skos:Concept", "eli:LegalExpression",
+    }),
+    # The RT dates are a fallback; the temporal / amendment-history passes own
+    # them once they have run (#695, #429).
+    combiners={k: (lambda old, new: new if old in (None, "", {}, []) else old)
+               for k in ENRICHMENT_PREFERRED_FIELDS},
+)
+REPLACE_OVERLAYS = False  # main sets this from --replace-overlays
+OVERLAY_TOTALS = MergeReport()
+DANGLING_OVERLAY_DROPPED: Counter = Counter()
 
-    The generator owns structural fields (``@type``, ``rdfs:label``,
-    ``estleg:paragrahv``, ``estleg:summary``, ``estleg:legalText``,
-    ``estleg:sourceAct``, ``estleg:contentStatus``, ``estleg:kehtiv``,
-    ``estleg:hasSubsection``, ``estleg:requestedCluster`` …). Everything else on an act or provision node
-    — EuroVoc ``dcterms:subject`` (#123/#126), ``estleg:transposesDirective``
-    (#129/#96), ``estleg:harmonisedWith`` (#197), ``estleg:affectedBy``
-    (drafts), ``estleg:normativeType``, ``estleg:hasVersion`` (#198),
-    ``estleg:hasOpinion`` (#199), sanctions/court-link side-channel fields —
-    is layered on by separate enrichment scripts and would otherwise be
-    wiped on every regen. Acceptance test: re-running ``generate_all_laws``
-    twice in a row over an enriched corpus is a no-op (#205, drift #3).
+
+def merge_existing_enrichments(
+    new_doc: dict, existing_path: Path, *, existing_doc: dict | None = None
+) -> dict:
+    """Merge the on-disk peep's overlay onto ``new_doc`` via ``prepare_write`` (#205, #697).
+
+    Emitted keys win; a dropped ``_MERGE_BLOCKED_FIELDS`` key goes; every other
+    key and overlay node (``Citation_*``) stays in place, so a re-run is a no-op.
+    A curated textless summary survives; a dangling overlay node is dropped.
     """
-    if not existing_path.exists():
-        return new_doc
-    existing = _load_existing_doc(existing_path)
+    existing = existing_doc if existing_doc is not None else _load_existing_doc(existing_path)
     if not isinstance(existing, dict):
         return new_doc
     existing_by_id = {
-        n.get("@id"): n
-        for n in existing.get("@graph", [])
-        if isinstance(n, dict) and n.get("@id")
+        n.get("@id"): n for n in existing.get("@graph", []) if isinstance(n, dict) and n.get("@id")
     }
     for new_node in new_doc.get("@graph", []):
-        if not isinstance(new_node, dict):
-            continue
-        node_id = new_node.get("@id")
-        if not node_id or node_id not in existing_by_id:
-            continue
-        existing_node = existing_by_id[node_id]
-        for key, value in existing_node.items():
-            if key.startswith("@"):
-                continue
-            if key == "estleg:summary" and _should_preserve_textless_summary(
-                new_node, existing_node
-            ):
-                new_node[key] = value
-                continue
-            if key in _MERGE_BLOCKED_FIELDS:
-                continue
-            if key in ENRICHMENT_PREFERRED_FIELDS and value not in (None, "", {}, []):
-                # The RT dates are a fallback; the temporal / amendment-history
-                # passes own them once they have run (#695, #429).
-                new_node[key] = value
-                continue
-            if key not in new_node:
-                new_node[key] = value
-    return new_doc
+        old = existing_by_id.get(new_node.get("@id")) if isinstance(new_node, dict) else None
+        if old is not None and _should_preserve_textless_summary(new_node, old):
+            new_node["estleg:summary"] = old["estleg:summary"]
+    raw_ids = {n.get("@id") for n in new_doc.get("@graph", []) if isinstance(n, dict)}
+    merged, report = prepare_write(
+        existing_path, new_doc, LAW_LAYER, replace_overlays=REPLACE_OVERLAYS, existing_doc=existing
+    )
+    OVERLAY_TOTALS.update(report)
+    if merged is not new_doc:
+        dropped = drop_dangling_overlay_nodes(merged, raw_ids, existing)
+        DANGLING_OVERLAY_DROPPED.update(dropped)
+    return merged
 
 
 _ENGLISH_TITLES: dict[str, str] | None = None
@@ -1294,24 +1287,20 @@ def write_law_output(
       * ``force`` — always rewrite (``forceRewritten``, or
         ``newlyGenerated`` when the file did not exist).
 
-    When ``pin_iris`` is true (default), the structural nodes of ``doc`` first
-    take the IRIs the file on disk already publishes (``law_iri_pinning``):
-    a regeneration must not rename a committed law/provision IRI
-    (docs/STABILITY.md). When ``preserve_enrichments`` is true (default),
-    enrichment fields on matching @id nodes in an existing file are then
-    merged onto ``doc`` before writing. See ``merge_existing_enrichments``.
+    With ``pin_iris`` (default) the structural nodes first take the IRIs the
+    on-disk file publishes (``law_iri_pinning``; docs/STABILITY.md); with
+    ``preserve_enrichments`` (default) its overlay is then merged on (#697).
     """
     if mode not in GENERATION_MODES:
         raise ValueError(f"Unsupported generation mode: {mode}")
 
     existed = out_path.exists()
-    if existed and pin_iris:
-        committed = _load_existing_doc(out_path)
-        if committed is not None:
-            doc, pin_stats = pin_to_committed(doc, committed)
-            PIN_TOTALS.record(out_path.name, pin_stats)
-    if existed and preserve_enrichments:
-        doc = merge_existing_enrichments(doc, out_path)
+    committed = _load_existing_doc(out_path) if existed else None
+    if committed is not None and pin_iris:
+        doc, pin_stats = pin_to_committed(doc, committed)
+        PIN_TOTALS.record(out_path.name, pin_stats)
+    if committed is not None and preserve_enrichments:
+        doc = merge_existing_enrichments(doc, out_path, existing_doc=committed)
     # #707: the (possibly merged) officialEnglishText becomes an
     # eli:LegalExpression node, so a regen keeps it without a backfill pass.
     promote_english_expression(doc, english_titles=_english_titles())
@@ -1665,6 +1654,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cache-only", action="store_true", help=(
         "Never fetch: parse every act from data/riigiteataja/; a cache miss is a failed "
         "fetch. With --from-manifest this is an offline replay."))
+    add_replace_overlays_argument(parser)
     parser.add_argument("--no-pin-iris", action="store_true", help=(
         "Write regenerated structural IRIs as minted instead of keeping the ones the "
         "on-disk peep publishes. A committed IRI rename is MAJOR (docs/STABILITY.md)."))
@@ -2039,6 +2029,13 @@ def main():
             "as minted and may rename committed law/provision IRIs (MAJOR)."
         )
     PIN_TOTALS.clear()
+    global REPLACE_OVERLAYS, OVERLAY_TOTALS
+    REPLACE_OVERLAYS = bool(getattr(args, "replace_overlays", False))
+    log_replace_overlays_mode(LAW_LAYER, REPLACE_OVERLAYS)
+    if REPLACE_OVERLAYS:
+        print("WARNING: --replace-overlays: enrichment overlays on existing law peeps are DISCARDED.")
+    OVERLAY_TOTALS = MergeReport()
+    DANGLING_OVERLAY_DROPPED.clear()
 
     # Step 1: Get the law list — either replayed from a manifest (#108)
     # or queried live from Riigi Teataja.
@@ -2500,6 +2497,8 @@ def main():
     print(f"  Multipart map roots updated: {map_roots_stamped}")
     if pin_iris:
         print(f"  IRI pinning:                 {PIN_TOTALS.summary()}")
+    print(f"  Overlay merge (#697):        {OVERLAY_TOTALS.summary()}; overlay nodes "
+          f"dropped as dangling {dict(DANGLING_OVERLAY_DROPPED)}")
     print(f"  Stub acts (no paragraphs):   {skipped}")
     print(f"  Failed (fetch errors):       {failed}")
     print(f"  Source-removed peep files:   {len(source_removed)}")
@@ -2574,6 +2573,9 @@ def main():
             "obsoleteMultipartRemoved": run_counts["obsoleteMultipartRemoved"],
             "mapRootsUpdated": map_roots_stamped,
             "iriPinning": PIN_TOTALS.as_dict() if pin_iris else "disabled",
+            "overlayNodesKept": dict(sorted(OVERLAY_TOTALS.overlay_nodes_kept.items())),
+            "overlayNodesDroppedDangling": dict(sorted(DANGLING_OVERLAY_DROPPED.items())),
+            "replaceOverlays": REPLACE_OVERLAYS,
             "xmlParsed": len(processed_acts),
             "failedFetches": failed,
             "partialAllowed": args.allow_partial,

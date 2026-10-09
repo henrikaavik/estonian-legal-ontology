@@ -9,6 +9,7 @@ different unless ``law_iri_pinning.pin_to_committed`` maps them back.
 from __future__ import annotations
 
 import copy
+from collections import Counter
 import json
 
 from estleg import generate_all_laws as gal
@@ -353,3 +354,62 @@ def test_repealed_provision_does_not_keep_a_summary_of_its_old_text(tmp_path):
     assert _node(written, "estleg:T_Par_1")["estleg:summary"] == "§ 1. Pealkiri"
     # A summary curated for a node that never had text still survives.
     assert _node(written, "estleg:T_Par_2")["estleg:summary"] == "Käsitsi kirjutatud kokkuvõte."
+
+
+def _citation(iri: str, source: str) -> dict:
+    return {
+        "@id": iri,
+        "@type": ["owl:NamedIndividual", "estleg:Citation"],
+        "estleg:citationSource": {"@id": source},
+        "estleg:citationText": "Sotsiaalmaksuseaduse § 21",
+    }
+
+
+def _committed_with_citations() -> dict:
+    committed = _committed()
+    committed["@graph"] += [
+        _citation("estleg:Citation_T_P_1_Lg_2_1", "estleg:T_Par_1_Lg_2"),
+        _citation("estleg:Citation_T_P_2_1", "estleg:T_Par_2"),  # § 2 is repealed
+        _citation("estleg:Citation_T_P_3_Lg_1_1", "estleg:T_Par_3_Lg_1"),
+    ]
+    return committed
+
+
+def test_overlay_citation_nodes_survive_regeneration(tmp_path):
+    """#697: cross-reference Citation nodes are overlay, kept on unchanged identities."""
+    out = tmp_path / "t_peep.json"
+    out.write_text(json.dumps(_committed_with_citations()), encoding="utf-8")
+    before = Counter(gal.DANGLING_OVERLAY_DROPPED)
+    gal.write_law_output(out, _regenerated(), mode="force")
+    ids = _ids(json.loads(out.read_text(encoding="utf-8")))
+    assert {"estleg:Citation_T_P_1_Lg_2_1", "estleg:Citation_T_P_3_Lg_1_1"} <= ids
+    # The citation of the repealed § 2 points at nothing: dropped and counted.
+    assert "estleg:Citation_T_P_2_1" not in ids
+    assert gal.DANGLING_OVERLAY_DROPPED["estleg:Citation"] - before["estleg:Citation"] == 1
+
+
+def test_overlay_merge_is_idempotent(tmp_path):
+    out = tmp_path / "t_peep.json"
+    out.write_text(json.dumps(_committed_with_citations()), encoding="utf-8")
+    gal.write_law_output(out, _regenerated(), mode="force")
+    first = out.read_text(encoding="utf-8")
+    assert gal.write_law_output(out, _regenerated(), mode="refresh") == "unchanged"
+    assert out.read_text(encoding="utf-8") == first
+
+
+def test_replace_overlays_opt_out_drops_citations(tmp_path, monkeypatch):
+    monkeypatch.setattr(gal, "REPLACE_OVERLAYS", True)
+    out = tmp_path / "t_peep.json"
+    out.write_text(json.dumps(_committed_with_citations()), encoding="utf-8")
+    gal.write_law_output(out, _regenerated(), mode="force")
+    ids = _ids(json.loads(out.read_text(encoding="utf-8")))
+    assert not any(i.startswith("estleg:Citation_") for i in ids)
+    # IRIs are still pinned: the opt-out only discards the overlay.
+    assert "estleg:Chapter_T_6_807c6001" in ids
+
+
+def test_provisions_without_a_number_are_not_matched():
+    committed = _doc({"@id": "estleg:Old", "@type": ["estleg:LegalProvision"]})
+    regenerated = _doc({"@id": "estleg:New", "@type": ["estleg:LegalProvision"]})
+    pinned, stats = pin_to_committed(regenerated, committed)
+    assert "estleg:New" in _ids(pinned) and stats.renamed == {}

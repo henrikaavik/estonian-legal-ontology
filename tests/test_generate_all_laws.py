@@ -2341,8 +2341,11 @@ class TestWriteLawOutput:
 
     def test_refresh_rewrites_changed(self, tmp_path):
         p = tmp_path / "x_peep.json"
-        p.write_text(json.dumps({"@graph": [{"@id": "estleg:Old"}]}), encoding="utf-8")
-        new_doc = {"@graph": [{"@id": "estleg:New"}]}
+        # #697: a node of a generator-owned type that the new build no longer
+        # emits is dropped (an untyped node would be kept as overlay).
+        old_node = {"@id": "estleg:Old", "@type": ["estleg:LegalProvision"]}
+        p.write_text(json.dumps({"@graph": [old_node]}), encoding="utf-8")
+        new_doc = {"@graph": [{"@id": "estleg:New", "@type": ["estleg:LegalProvision"]}]}
         assert generate_all_laws.write_law_output(p, new_doc, mode="refresh") == "refreshed"
         assert json.loads(p.read_text(encoding="utf-8")) == new_doc
 

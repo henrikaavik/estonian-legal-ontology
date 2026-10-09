@@ -7,7 +7,7 @@ gate's default is the wall clock (#693), and tests must not depend on it.
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -51,12 +51,20 @@ def test_evaluation_date_rejects_garbage() -> None:
 
 
 def test_gate_fails_when_committed_kehtiv_is_past_sla() -> None:
+    """The gate fails exactly when the committed snapshot lags past the SLA.
+
+    Measured relative to the committed kehtiv (not a fixed calendar date), so
+    the test holds before and after a corpus refresh: #693 pinned it to the
+    2026-09-04 re-validation, which a 2026-10-09 refresh made meaningless.
+    """
     samples = crs.load_sample()
-    late = date(2026, 9, 4)  # the #693 re-validation date: 103 d behind
+    newest = max(sample.kehtiv for sample in samples)
+    oldest = min(sample.kehtiv for sample in samples)
+    late = newest + timedelta(days=crs.SLA_MAX_LAG_DAYS + 1)
     failures = crs.check_samples(samples, as_of=late)
     assert len(failures) == len(samples)
-    assert all("SLA_MAX_LAG_DAYS=45" in line for line in failures)
-    assert crs.check_samples(samples, as_of=date(2026, 6, 1)) == []
+    assert all(f"SLA_MAX_LAG_DAYS={crs.SLA_MAX_LAG_DAYS}" in line for line in failures)
+    assert crs.check_samples(samples, as_of=oldest) == []
 
 
 def _write_index(path: Path, payload: dict) -> None:

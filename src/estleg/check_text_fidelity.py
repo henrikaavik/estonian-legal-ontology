@@ -203,9 +203,12 @@ def measure_coverage(krr: Path = KRR) -> dict[str, list[str]]:
         if head.get("estleg:contentStatus") != "structuredBody":
             continue
         for node in doc["@graph"]:
-            if isinstance(node, dict) and _is_provision(node) and not _text_value(
-                node.get("estleg:legalText")
-            ):
+            if not (isinstance(node, dict) and _is_provision(node)):
+                continue
+            if node.get("estleg:provisionRepealed") is True:
+                # A § Riigi Teataja marks "Kehtetu -" has no body by design.
+                continue
+            if not _text_value(node.get("estleg:legalText")):
                 offenders["missing_legal_text"].add(str(node.get("@id", "")))
     return {rule: sorted(ids) for rule, ids in offenders.items()}
 
