@@ -147,6 +147,28 @@ def test_what_changed_notes(fake_law) -> None:
         assert server.what_changed("FAKE", "x")["note"].startswith("since must be")
 
 
+def test_what_changed_reports_event_only_truncation(fake_law, monkeypatch):
+    monkeypatch.setattr(data, "law_version_index", lambda rec: {})
+    out = server.what_changed("FAKE", "2014-01-01", "2014-12-31", limit=1)
+    assert out["changes"] == []
+    assert len(out["amendment_events"]) == 1
+    assert out["truncated"] is True
+
+
+@pytest.mark.parametrize("start,end,expected", [
+    ("2010-01-01", "2999-12-31", True),
+    ("2999-01-01", "", False),
+])
+def test_explain_provision_checks_current_date(fake_law, monkeypatch, start, end, expected):
+    monkeypatch.setattr(data, "provision_version_timeline", lambda *a: [_version("v1", start, end)])
+    monkeypatch.setattr(data, "sanctions_for_provision", lambda *a: [])
+    monkeypatch.setattr(data, "kov_regulations_citing", lambda *a: [])
+    out = server.explain_provision("FAKE § 1")
+    assert out["history"]["currently_in_force"] is expected
+    monkeypatch.setattr(data, "resolve_law", lambda law: FAKE)
+    assert server.provision_history("FAKE", "1")[0]["currently_in_force"] is expected
+
+
 # ---------------------------------------------------------------------------
 # transposition_gaps
 # ---------------------------------------------------------------------------
@@ -210,6 +232,27 @@ def test_transposition_gaps_single_directive_fixture(fake_directives) -> None:
     ]
     assert server.transposition_gaps("32005L0004")["coverage_flag"] == ""  # mapping edge
     assert "note" in server.transposition_gaps("39999L9999")
+
+
+def test_unresolved_transposition_edge_is_still_an_edge(fake_directives, monkeypatch):
+    directive = {**_DIRECTIVES["32001L0001"], "transposed_by": ["estleg:UNKNOWN_Map"]}
+    monkeypatch.setattr(data, "_eu_directives", lambda: {"32001L0001": directive})
+    assert data.transposition_status("32001L0001")["coverage_flag"] == ""
+    assert data.transposition_gaps() == []
+
+
+@pytest.mark.parametrize("value", [True, False])
+def test_typed_json_boolean(value):
+    assert data._json_bool({"@value": value, "@type": "xsd:boolean"}) is value
+
+
+def test_explain_marks_truncated_lists(fake_law, monkeypatch):
+    monkeypatch.setattr(data, "provision_version_timeline", lambda *a: [])
+    monkeypatch.setattr(data, "sanctions_for_provision", lambda *a: [{"sanction_type": "x"}] * 11)
+    monkeypatch.setattr(data, "kov_regulations_citing", lambda *a: [])
+    out = server.explain_provision("FAKE § 1")
+    assert len(out["sanctions"]) == 10
+    assert out["truncated"] is True
 
 
 # ---------------------------------------------------------------------------

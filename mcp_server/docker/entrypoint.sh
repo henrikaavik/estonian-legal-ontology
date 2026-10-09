@@ -41,7 +41,8 @@ if [ -d "$CORPUS_DIR/.git" ]; then
      || git -C "$CORPUS_DIR" fetch --depth 1 origin "$REF"; then
     git -C "$CORPUS_DIR" -c advice.detachedHead=false checkout --force --detach FETCH_HEAD
   else
-    echo "[entrypoint] fetch of $REF failed; serving the existing checkout"
+    echo "[entrypoint] ERROR: fetch of $REF failed; refusing to serve a different release" >&2
+    exit 1
   fi
 else
   echo "[entrypoint] cloning corpus $REF -> $CORPUS_DIR (LFS skipped)"
