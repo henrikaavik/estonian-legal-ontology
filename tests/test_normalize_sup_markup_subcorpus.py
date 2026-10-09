@@ -136,5 +136,7 @@ def test_main_normalizes_then_is_idempotent_on_isolated_corpus(isolated_krr, cap
 @pytest.mark.corpus
 def test_real_corpus_has_no_sup_markup_left(corpus_krr, capsys):
     """Corpus gate: the real subcorpus is already normalized (dry run only)."""
-    assert mod.main(["--krr-dir", str(corpus_krr.path("regulations").parent), "--dry-run"]) == 0
+    for sub in SUBCORPUS_DIRS:
+        corpus_krr.path(sub)
+    assert mod.main(["--krr-dir", str(corpus_krr.root), "--dry-run"]) == 0
     assert "Strings would normalize: 0" in capsys.readouterr().out
