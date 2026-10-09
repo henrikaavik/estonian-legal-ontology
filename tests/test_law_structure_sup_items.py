@@ -151,3 +151,35 @@ def test_lõige_without_sub_points_has_no_item_number(paragraphs) -> None:
     node = _subsections(paragraphs["para7"], "7")["estleg:KARIST_Par_7_Lg_2"]
     assert "estleg:itemNumber" not in node
     assert ")" not in node["estleg:legalText"].split(" ", 1)[1]
+
+
+def test_real_superscript_in_subsection_marker_matches_escaped_form() -> None:
+    def nodes(marker):
+        par = ET.fromstring(
+            f"<paragrahv><loige><loigeNr>2</loigeNr><kuvatavNr>{marker}</kuvatavNr>"
+            "<sisuTekst><tavatekst>Kehtiv tekst.</tavatekst></sisuTekst></loige></paragrahv>"
+        )
+        return _subsections(par, "1")
+
+    actual = nodes("(2<sup>1</sup>)")
+    expected = nodes("(2&lt;sup&gt;1&lt;/sup&gt;)")
+    assert actual == expected
+    assert actual["estleg:KARIST_Par_1_Lg_2_1"]["estleg:legalText"] == "(2¹) Kehtiv tekst."
+
+
+def test_short_subpoint_body_is_not_lost_after_its_marker() -> None:
+    loige = ET.fromstring(
+        "<loige><alampunkt><alampunktNr>1</alampunktNr>"
+        "<sisuTekst><tavatekst>ei</tavatekst></sisuTekst></alampunkt></loige>"
+    )
+    assert _loige_body_text(loige) == "1) ei"
+
+
+def test_real_superscript_in_section_display_keeps_distinct_id() -> None:
+    from estleg.law_structure import _paragraph_id_suffix
+
+    par = ET.fromstring(
+        "<paragrahv><paragrahvNr>22</paragrahvNr>"
+        "<kuvatavNr>§ 22<sup>1</sup>.</kuvatavNr></paragrahv>"
+    )
+    assert _paragraph_id_suffix(par) == "22_1"
