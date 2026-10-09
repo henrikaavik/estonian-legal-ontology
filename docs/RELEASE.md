@@ -669,6 +669,8 @@ pySHACL rules. Literal values are stored losslessly so storage cannot change
 validation results. The temporary database is closed and removed after the
 run, including validation failures. Set `TMPDIR` to a volume with enough free
 space when the system temporary directory is small; do not put it on a RAM disk.
+The separate bucket validator (`shacl_validate_all.py`) applies RDFS inference
+to its disposable graph in place, avoiding a second full corpus copy.
 
 Measured on the `tier1/wave4` branch (Apple Silicon laptop, SSD, Python 3.14)
 unless marked as an estimate. Use these figures to size a runner. They are

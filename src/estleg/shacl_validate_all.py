@@ -207,7 +207,10 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"\nLoaded {len(g)} triples. Running pyshacl...")
     shapes = rdflib.Graph().parse(str(SHAPES), format="turtle")
-    ok, _, msg = pyshacl.validate(g, shacl_graph=shapes, inference="rdfs")
+    # This graph is private to the command and is discarded after validation.
+    # Cloning it before RDFS inference doubles the largest buckets' memory
+    # demand and can stall the municipal gate on a standard CI runner.
+    ok, _, msg = pyshacl.validate(g, shacl_graph=shapes, inference="rdfs", inplace=True)
     print("SHACL", "PASS" if ok else "FAIL")
     if not ok:
         print(msg)

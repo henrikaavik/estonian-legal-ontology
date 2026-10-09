@@ -4,6 +4,40 @@ from pathlib import Path
 from estleg import shacl_validate_all
 
 
+def test_bucket_inference_uses_its_disposable_graph_without_a_full_copy(tmp_path, monkeypatch):
+    import pyshacl.validator
+    import pytest
+
+    source = tmp_path / "law.jsonld"
+    source.write_text('''{
+        "@context": {"ex": "https://example.org/", "rdfs": "http://www.w3.org/2000/01/rdf-schema#"},
+        "@graph": [
+            {"@id": "ex:Child", "rdfs:subClassOf": {"@id": "ex:Parent"}},
+            {"@id": "ex:label", "rdfs:subPropertyOf": {"@id": "ex:name"}},
+            {"@id": "ex:item", "@type": "ex:Child"}
+        ]
+    }''')
+    shapes = tmp_path / "shapes.ttl"
+    shapes.write_text('''
+        @prefix ex: <https://example.org/> .
+        @prefix sh: <http://www.w3.org/ns/shacl#> .
+        ex:Shape a sh:NodeShape; sh:targetClass ex:Parent;
+            sh:property [sh:path ex:name; sh:minCount 1] .
+    ''')
+    monkeypatch.setattr(shacl_validate_all, "collect_files", lambda *a, **k: [source])
+    monkeypatch.setattr(shacl_validate_all, "SHAPES", shapes)
+
+    def unexpected_clone(*args, **kwargs):
+        pytest.fail("Do not duplicate the whole disposable corpus before inference")
+
+    monkeypatch.setattr(pyshacl.validator, "clone_graph", unexpected_clone)
+    assert shacl_validate_all.main(["--bucket", "laws"]) == 1
+    source.write_text(source.read_text().replace(
+        '"@type": "ex:Child"', '"@type": "ex:Child", "ex:label": "Present"'
+    ))
+    assert shacl_validate_all.main(["--bucket", "laws"]) == 0
+
+
 def touch(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("{}", encoding="utf-8")
