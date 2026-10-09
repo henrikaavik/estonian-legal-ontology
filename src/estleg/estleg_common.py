@@ -601,6 +601,13 @@ SHAPE_REQUIRED_CLOSURE_PROPS: dict[str, tuple[str, ...]] = {
         "estleg:enactedByMunicipality",
         "estleg:partOfAct",
     ),
+    # SubsectionShape: a lõige carries its text and its parent §. Regulations
+    # gained lõige nodes in the 2026-10-09 refresh (#722), and amendment events
+    # (#713), law back-references, competence and sanction rows now point at
+    # 55k of them, so combined holds them as stubs; a stub must still conform.
+    # `parentProvision` is an IRI edge in STUB_SEMANTIC_EDGE_PREDICATES (the
+    # builder fixpoint closes the parent § stub).
+    "estleg:Subsection": ("estleg:legalText", "estleg:parentProvision"),
     # ProposedAmendmentShape — amendingDraft is the only required IRI edge
     # (rdfs:label comes from STUB_KEEP_PROPS).
     "estleg:ProposedAmendment": ("estleg:amendingDraft",),
@@ -637,6 +644,12 @@ STUB_SEMANTIC_EDGE_PREDICATES: frozenset[str] = frozenset(
         "estleg:enactedBy",
         "estleg:enactedByMunicipality",
         "estleg:partOfAct",
+        # SubsectionShape: a lõige stub's parent § (closed by the fixpoint).
+        "estleg:parentProvision",
+        # #520: its inverse, which materialize_combined_inverses re-asserts onto
+        # the parent § stub from a lõige stub already in combined — closed by
+        # construction, like estleg:references below.
+        "estleg:hasSubsection",
         "estleg:amendingDraft",
         "estleg:harmonises",
         "estleg:sharedDirective",

@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. Its 35 steps form an explicit, declarative directed acyclic
+release build. Its 36 steps form an explicit, declarative directed acyclic
 graph (DAG) in four tiers: ingest (network fetches), enrichment (offline
 corpus passes and aggregate rebuilds), build (the combined/INDEX rebuild) and
 package (release assets). The runner topologically sorts it, runs it
@@ -382,7 +382,7 @@ This is the **unified release command**. It:
    `--no-restore-on-failure` or `--snapshot none`). With `--snapshot auto`
    and a clean `git status --porcelain krr_outputs`, the copy is skipped
    and a failure rolls back to git HEAD instead (#722).
-3. Runs all 35 steps in topo order. Ingest-tier steps are recorded as
+3. Runs all 36 steps in topo order. Ingest-tier steps are recorded as
    `skipped_ingest` unless `--with-ingest` is given. A failed step skips its
    dependents; the first hard failure stops the run and the snapshot is
    restored.
@@ -418,7 +418,7 @@ Useful flags:
 
 ## Incremental builds (`--only-changed`)
 
-A one-file correction does not need all 35 steps (#729). The runner keeps a
+A one-file correction does not need all 36 steps (#729). The runner keeps a
 per-file content-hash manifest and runs only the steps the change reaches.
 
 ```bash

@@ -1,10 +1,10 @@
 {
-  "generated": "2026-10-09T11:19:05.926410+00:00",
+  "generated": "2026-10-09T18:33:38.795777+00:00",
   "restoreOnFailure": false,
   "snapshotMode": "none",
   "rollback": "none",
   "dryRun": false,
-  "resumeFrom": "extract_cross_references.py",
+  "resumeFrom": "build_release_artifacts.py",
   "parallel": 1,
   "topoOrder": [
     "generate_provision_versions.py",
@@ -12,6 +12,7 @@
     "generate_annotations.py",
     "generate_draft_legislation.py",
     "generate_riigikogu_proceedings.py",
+    "enrich_kov_layer1.py",
     "extract_cross_references.py",
     "generate_inverse_references.py",
     "extract_ntm_directives.py",
@@ -44,10 +45,10 @@
     "build_release_assets.py"
   ],
   "summary": {
-    "totalScripts": 35,
-    "succeeded": 30,
+    "totalScripts": 36,
+    "succeeded": 4,
     "planned": 0,
-    "skipped": 5,
+    "skipped": 32,
     "failed": 0
   },
   "phases": [
@@ -82,450 +83,139 @@
       "status": "skipped_ingest"
     },
     {
+      "name": "enrich_kov_layer1.py",
+      "script": "enrich_kov_layer1.py",
+      "status": "skipped_before_resume_point"
+    },
+    {
       "name": "extract_cross_references.py",
       "script": "extract_cross_references.py",
-      "description": "Cross-law reference extraction",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_cross_references.py"
-      ],
-      "elapsedSeconds": 454.4,
-      "logPath": "krr_outputs/reports/integration/logs/extract_cross_references.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_inverse_references.py",
       "script": "generate_inverse_references.py",
-      "description": "Bidirectional reference links",
-      "dependsOn": [
-        "extract_cross_references.py"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_inverse_references.py"
-      ],
-      "elapsedSeconds": 153.69,
-      "logPath": "krr_outputs/reports/integration/logs/generate_inverse_references.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_ntm_directives.py",
       "script": "extract_ntm_directives.py",
-      "description": "RT normitehniline märkus -> estleg:transposesDirectiveAsserted (#711)",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_ntm_directives.py"
-      ],
-      "elapsedSeconds": 53.43,
-      "logPath": "krr_outputs/reports/integration/logs/extract_ntm_directives.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_transposition_mapping.py",
       "script": "generate_transposition_mapping.py",
-      "description": "EU directive transposition mapping",
-      "dependsOn": [
-        "extract_ntm_directives.py"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_transposition_mapping.py"
-      ],
-      "elapsedSeconds": 50.06,
-      "logPath": "krr_outputs/reports/integration/logs/generate_transposition_mapping.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "rebuild_eurlex_combined",
       "script": "generate_eu_legislation.py",
-      "description": "Rebuild eurlex_combined.jsonld from peeps after transposition (#417)",
-      "dependsOn": [
-        "generate_transposition_mapping.py"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_eu_legislation.py",
-        "--rebuild-combined-from-peeps"
-      ],
-      "elapsedSeconds": 1.72,
-      "logPath": "krr_outputs/reports/integration/logs/generate_eu_legislation.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "link_curia_eu_legislation.py",
       "script": "link_curia_eu_legislation.py",
-      "description": "CURIA decision → EU legislation interpretsEULaw (#418)",
-      "dependsOn": [
-        "rebuild_eurlex_combined"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/link_curia_eu_legislation.py"
-      ],
-      "elapsedSeconds": 3.29,
-      "logPath": "krr_outputs/reports/integration/logs/link_curia_eu_legislation.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "rebuild_curia_combined",
       "script": "rebuild_subcorpus_combined.py",
-      "description": "Rebuild curia_combined.jsonld from schema + peeps",
-      "dependsOn": [
-        "link_curia_eu_legislation.py"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/rebuild_subcorpus_combined.py",
-        "--subcorpus",
-        "curia"
-      ],
-      "elapsedSeconds": 0.84,
-      "logPath": "krr_outputs/reports/integration/logs/rebuild_subcorpus_combined.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_harmonisation_links.py",
       "script": "generate_harmonisation_links.py",
-      "description": "Cross-border harmonisation links",
-      "dependsOn": [
-        "generate_transposition_mapping.py"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_harmonisation_links.py"
-      ],
-      "elapsedSeconds": 10.76,
-      "logPath": "krr_outputs/reports/integration/logs/generate_harmonisation_links.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_court_provision_links.py",
       "script": "extract_court_provision_links.py",
-      "description": "Court decision -> provision links",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_court_provision_links.py"
-      ],
-      "elapsedSeconds": 147.89,
-      "logPath": "krr_outputs/reports/integration/logs/extract_court_provision_links.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "classify_eurovoc.py",
       "script": "classify_eurovoc.py",
-      "description": "EuroVoc subject classification",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/classify_eurovoc.py"
-      ],
-      "elapsedSeconds": 101.25,
-      "logPath": "krr_outputs/reports/integration/logs/classify_eurovoc.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_temporal_data.py",
       "script": "extract_temporal_data.py",
-      "description": "Temporal validity data",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_temporal_data.py",
-        "--evaluation-date",
-        "2026-06-01"
-      ],
-      "elapsedSeconds": 167.51,
-      "logPath": "krr_outputs/reports/integration/logs/extract_temporal_data.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "derive_act_temporal_status.py",
       "script": "derive_act_temporal_status.py",
-      "description": "Act temporalStatus from version sidecars (#617, #682)",
-      "dependsOn": [
-        "extract_temporal_data.py",
-        "generate_provision_versions.py",
-        "generate_provision_versions_regulations"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/derive_act_temporal_status.py",
-        "--all",
-        "--recompute",
-        "--evaluation-date",
-        "2026-06-01"
-      ],
-      "elapsedSeconds": 4.3,
-      "logPath": "krr_outputs/reports/integration/logs/derive_act_temporal_status.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_act_expressions_608.py",
       "script": "generate_act_expressions_608.py",
-      "description": "Act-level FRBR expressions per consolidation date (#608)",
-      "dependsOn": [
-        "generate_provision_versions.py",
-        "generate_provision_versions_regulations"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_act_expressions_608.py",
-        "--apply"
-      ],
-      "elapsedSeconds": 5.21,
-      "logPath": "krr_outputs/reports/integration/logs/generate_act_expressions_608.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_legal_concepts.py",
       "script": "extract_legal_concepts.py",
-      "description": "Legal concept extraction",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_legal_concepts.py"
-      ],
-      "elapsedSeconds": 142.1,
-      "logPath": "krr_outputs/reports/integration/logs/extract_legal_concepts.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "classify_deontic.py",
       "script": "classify_deontic.py",
-      "description": "Deontic classification",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/classify_deontic.py"
-      ],
-      "elapsedSeconds": 203.12,
-      "logPath": "krr_outputs/reports/integration/logs/classify_deontic.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "classify_target_group.py",
       "script": "classify_target_group.py",
-      "description": "Target-group classification",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/classify_target_group.py"
-      ],
-      "elapsedSeconds": 364.92,
-      "logPath": "krr_outputs/reports/integration/logs/classify_target_group.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_institutional_competence.py",
       "script": "extract_institutional_competence.py",
-      "description": "Institutional competence mapping",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_institutional_competence.py"
-      ],
-      "elapsedSeconds": 324.66,
-      "logPath": "krr_outputs/reports/integration/logs/extract_institutional_competence.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_draft_lifecycle",
       "script": "generate_draft_legislation.py",
-      "description": "Draft ProcessStep chain, legislativePhase, stale flag, initiatedBy (#717)",
-      "dependsOn": [
-        "generate_draft_legislation.py",
-        "generate_riigikogu_proceedings.py",
-        "extract_institutional_competence.py"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_draft_legislation.py",
-        "--lifecycle-from-peeps"
-      ],
-      "elapsedSeconds": 2.58,
-      "logPath": "krr_outputs/reports/integration/logs/generate_draft_legislation.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "rebuild_eelnoud_combined",
       "script": "rebuild_subcorpus_combined.py",
-      "description": "Rebuild eelnoud_combined.jsonld from schema + peeps",
-      "dependsOn": [
-        "generate_riigikogu_proceedings.py",
-        "generate_draft_lifecycle"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/rebuild_subcorpus_combined.py",
-        "--subcorpus",
-        "eelnoud"
-      ],
-      "elapsedSeconds": 2.58,
-      "logPath": "krr_outputs/reports/integration/logs/rebuild_subcorpus_combined.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_sanctions.py",
       "script": "extract_sanctions.py",
-      "description": "Sanction extraction",
-      "dependsOn": [],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_sanctions.py"
-      ],
-      "elapsedSeconds": 238.88,
-      "logPath": "krr_outputs/reports/integration/logs/extract_sanctions.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "extract_draft_impact.py",
       "script": "extract_draft_impact.py",
-      "description": "Draft impact analysis",
-      "dependsOn": [
-        "rebuild_eelnoud_combined"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/extract_draft_impact.py"
-      ],
-      "elapsedSeconds": 52.16,
-      "logPath": "krr_outputs/reports/integration/logs/extract_draft_impact.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_amendment_history.py",
       "script": "generate_amendment_history.py",
-      "description": "Amendment history chains + version join (#429, #713)",
-      "dependsOn": [
-        "generate_provision_versions.py",
-        "generate_provision_versions_regulations",
-        "rebuild_eelnoud_combined",
-        "extract_draft_impact.py"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_amendment_history.py"
-      ],
-      "elapsedSeconds": 247.43,
-      "logPath": "krr_outputs/reports/integration/logs/generate_amendment_history.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "link_amendment_versions.py",
       "script": "link_amendment_versions.py",
-      "description": "Re-run the amendment/version join; no-op after a chain rerun (#429, #713)",
-      "dependsOn": [
-        "generate_amendment_history.py",
-        "generate_provision_versions.py",
-        "generate_provision_versions_regulations"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/link_amendment_versions.py"
-      ],
-      "elapsedSeconds": 3.2,
-      "logPath": "krr_outputs/reports/integration/logs/link_amendment_versions.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "derive_court_interpretation_staleness.py",
       "script": "derive_court_interpretation_staleness.py",
-      "description": "Court interpretation staleness from version sidecars (#618)",
-      "dependsOn": [
-        "extract_court_provision_links.py",
-        "generate_provision_versions.py",
-        "generate_provision_versions_regulations"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/derive_court_interpretation_staleness.py",
-        "--apply"
-      ],
-      "elapsedSeconds": 5.11,
-      "logPath": "krr_outputs/reports/integration/logs/derive_court_interpretation_staleness.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "derive_kov_enabling_staleness.py",
       "script": "derive_kov_enabling_staleness.py",
-      "description": "KOV regulations whose enabling provision changed since adoption (#712)",
-      "dependsOn": [
-        "extract_cross_references.py",
-        "generate_provision_versions.py",
-        "generate_provision_versions_regulations"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/derive_kov_enabling_staleness.py",
-        "--apply"
-      ],
-      "elapsedSeconds": 8.05,
-      "logPath": "krr_outputs/reports/integration/logs/derive_kov_enabling_staleness.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "generate_similarity_index.py",
       "script": "generate_similarity_index.py",
-      "description": "Semantic similarity index",
-      "dependsOn": [
-        "extract_cross_references.py",
-        "generate_inverse_references.py",
-        "generate_transposition_mapping.py",
-        "generate_harmonisation_links.py",
-        "extract_court_provision_links.py",
-        "classify_eurovoc.py",
-        "extract_temporal_data.py",
-        "generate_amendment_history.py",
-        "extract_legal_concepts.py",
-        "classify_deontic.py",
-        "classify_target_group.py",
-        "extract_institutional_competence.py",
-        "extract_sanctions.py",
-        "extract_draft_impact.py",
-        "link_amendment_versions.py",
-        "derive_act_temporal_status.py",
-        "generate_act_expressions_608.py",
-        "derive_court_interpretation_staleness.py",
-        "derive_kov_enabling_staleness.py",
-        "extract_ntm_directives.py",
-        "generate_draft_lifecycle"
-      ],
-      "command": [
-        "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
-        "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_similarity_index.py"
-      ],
-      "elapsedSeconds": 310.74,
-      "logPath": "krr_outputs/reports/integration/logs/generate_similarity_index.log",
-      "exitCode": 0,
-      "status": "succeeded"
+      "status": "skipped_before_resume_point"
     },
     {
       "name": "build_release_artifacts.py",
@@ -537,6 +227,7 @@
         "generate_annotations.py",
         "generate_draft_legislation.py",
         "generate_riigikogu_proceedings.py",
+        "enrich_kov_layer1.py",
         "extract_cross_references.py",
         "generate_inverse_references.py",
         "extract_ntm_directives.py",
@@ -568,7 +259,7 @@
         "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
         "/Users/henrikaavik/progemoge/estleg-w3id/scripts/build_release_artifacts.py"
       ],
-      "elapsedSeconds": 49.48,
+      "elapsedSeconds": 45.47,
       "logPath": "krr_outputs/reports/integration/logs/build_release_artifacts.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -586,7 +277,7 @@
         "/Users/henrikaavik/progemoge/estleg-w3id/scripts/generate_analytical_overlay.py",
         "--write"
       ],
-      "elapsedSeconds": 6.79,
+      "elapsedSeconds": 6.07,
       "logPath": "krr_outputs/reports/integration/logs/generate_analytical_overlay.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -602,7 +293,7 @@
         "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
         "/Users/henrikaavik/progemoge/estleg-w3id/scripts/emit_release_changes.py"
       ],
-      "elapsedSeconds": 7.3,
+      "elapsedSeconds": 4.82,
       "logPath": "krr_outputs/reports/integration/logs/emit_release_changes.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -620,7 +311,7 @@
         "/Users/henrikaavik/progemoge/estleg-w3id/.venv/bin/python",
         "/Users/henrikaavik/progemoge/estleg-w3id/scripts/build_release_assets.py"
       ],
-      "elapsedSeconds": 839.76,
+      "elapsedSeconds": 774.58,
       "logPath": "krr_outputs/reports/integration/logs/build_release_assets.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -635,6 +326,7 @@
     "generate_annotations.py",
     "generate_draft_legislation.py",
     "generate_riigikogu_proceedings.py",
+    "enrich_kov_layer1.py",
     "extract_cross_references.py",
     "generate_inverse_references.py",
     "extract_ntm_directives.py",

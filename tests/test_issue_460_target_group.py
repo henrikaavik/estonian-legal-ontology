@@ -285,7 +285,11 @@ def test_citizen_share_sample_review_committed_provisions():
     )
     as17 = next(n for n in alcohol["@graph"] if n.get("@id") == "estleg:AS_Par_17")
     as_groups = _target_group_values(as17.get("estleg:targetGroup"))
-    assert as_groups == [BUSINESS_IRI]
+    # § 17(4) delegates the report rules to "valdkonna eest vastutav minister";
+    # those words sit in a <viide> element the parser dropped until the
+    # 2026-10 fidelity fix, so the § used to read as business-only.
+    assert BUSINESS_IRI in as_groups
+    assert CITIZEN_IRI not in as_groups
 
     tls = json.loads(
         (REPO / "krr_outputs" / "toolepinguseadus_peep.json").read_text(encoding="utf-8")

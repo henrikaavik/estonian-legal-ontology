@@ -815,8 +815,14 @@ def main(argv: list[str] | None = None) -> int:
         # Parallel path — order-insensitive results. The work is
         # naturally per-file so we don't need to pin a worker per
         # issuer slug.
+        # Run through ``scripts/enrich_kov_layer1.py`` (runpy, run_name
+        # "__main__") this module IS ``__main__``, and a spawned worker cannot
+        # unpickle ``__main__._enrich_one_kov``. Hand the pool the function
+        # of the importable module so it pickles by its qualified name.
+        from estleg import enrich_kov_layer1 as _importable
+
         with ProcessPoolExecutor(max_workers=args.workers) as pool:
-            for path, err in pool.map(_enrich_one_kov, work_items):
+            for path, err in pool.map(_importable._enrich_one_kov, work_items):
                 if err is not None:
                     errors.append((path, err))
                 else:

@@ -18,7 +18,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 
 The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. The current generated validation report
-records 26,978 validated files and **0 errors / 2 warnings**. This is the JSON
+records 28,572 validated files and **0 errors / 1 warning**. This is the JSON
 and corpus-integrity result; freshness, SHACL and consumer-sync are separate
 gates. The freshness gate still fails on the committed snapshots. See the
 measured [validation report](docs/VALIDATION_REPORT.md) and
@@ -458,7 +458,7 @@ State regulations are split between `estleg:GovernmentRegulation` (Vabariigi Val
 
 #### KOV (Municipal) Entity Model — Layer 1
 
-KOV regulations are a **first-class entity layer on the full load surface**: every act and provision is queryable by territorial unit and issuing body **once the `krr_outputs/regulations/kov/` files are loaded alongside `combined_ontology.jsonld`** (see [Load surfaces](#load-surfaces) below). The 11,845 municipal regulations (~125k `estleg:KovProvision` bodies) and the EHAK municipality/successor layer are **not** folded into `combined_ontology.jsonld` itself — that flagship file is kept lean and carries KOV regulations only as resolvable cross-corpus *stubs* (label + identifier + `estleg:partOfAct`/`enactedBy`/`enactedByMunicipality` links). Load the KOV surface for the full provision text and municipality registry.
+KOV regulations are a **first-class entity layer on the full load surface**: every act and provision is queryable by territorial unit and issuing body **once the `krr_outputs/regulations/kov/` files are loaded alongside `combined_ontology.jsonld`** (see [Load surfaces](#load-surfaces) below). The 11,845 municipal regulations (~125k `estleg:KovProvision` bodies) and the EHAK municipality/successor layer are **not** folded into `combined_ontology.jsonld` itself — that flagship file is kept lean and carries KOV regulations only as resolvable cross-corpus *stubs* (label + identifier + `estleg:partOfAct`/`enactedBy`/`enactedByMunicipality` links; a regulation lõige stub also carries its `estleg:legalText` and `estleg:parentProvision`, as `SubsectionShape` requires). Load the KOV surface for the full provision text and municipality registry.
 
 - **79 Municipality nodes** (`estleg:Municipality`, IRI pattern `estleg:Municipality_EHAK_<4-digit>`) — one per current Estonian KOV unit, keyed by EHAK code.
 - **357 Issuer nodes** (`estleg:Issuer`, subclass of `estleg:Institution`) — one per issuing body (volikogu, valitsus), each linked to its current Municipality.
@@ -637,7 +637,7 @@ The integration layers run as one dependency-ordered DAG (`scripts/run_all_integ
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (27,029 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (28,626 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry

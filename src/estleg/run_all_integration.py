@@ -4,7 +4,7 @@ Master orchestration script for the enrichment pipeline and release builds.
 
 This module owns three things:
 
-1. A declarative **step DAG** of 35 steps in four tiers (#704): ingest
+1. A declarative **step DAG** of 36 steps in four tiers (#704): ingest
    (network fetches), enrichment (offline corpus passes and sub-corpus
    aggregate rebuilds), build (the combined/INDEX rebuild) and package
    (consumer artefacts derived from the built corpus). Each step declares
@@ -302,12 +302,31 @@ STEPS: list[dict] = [
         "writes": ["eelnoud/*_peep.json", "eelnoud/EELNOUD_INDEX.json"],
     },
 
-    # -- Phase 1: Cross-references ------------------------------------------
+    # -- Phase 1: KOV Layer 1, then cross-references --------------------------
+    {
+        # Layer 1 types and links every municipal act (issuer, municipality,
+        # normalised title, KovProvision). It ran only from the operator
+        # runbook, so the 786 acts the 2026-10-09 refresh added had none of
+        # it; cross-references scope KOV local citations by
+        # enactedByMunicipality, so it runs first. Idempotent. main() also
+        # stamps estleg:Law/Act on law and state-regulation roots and writes
+        # data/ehak/historical_municipalities.jsonld (outside krr_outputs).
+        "name": "enrich_kov_layer1.py",
+        "description": "KOV Layer 1: enactedBy / enactedByMunicipality / titleNormalized / KovProvision on municipal acts (#472)",
+        "script": "enrich_kov_layer1.py",
+        "args": ["--workers", "8"],
+        "depends_on": [],
+        # Committed-input spellings (COMMITTED_INPUTS): Layer 1 reads only raw
+        # act fields, never an edge a later step writes.
+        "reads": ["regulations/**/*_peep.json", "*_peep.json", "INDEX.json"],
+        "writes": ["regulations/kov/*/*_peep.json", "regulations/riik/*_peep.json",
+                   "*_peep.json", "municipalities_peep.json", "issuers_kov_peep.json"],
+    },
     {
         "name": "extract_cross_references.py",
         "description": "Cross-law reference extraction",
         "script": "extract_cross_references.py",
-        "depends_on": [],
+        "depends_on": ["enrich_kov_layer1.py"],
         "reads": ["*_peep.json", "regulations/**/*_peep.json",
                   "riigikohus/*_peep.json", "eelnoud/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
@@ -445,9 +464,15 @@ STEPS: list[dict] = [
         "name": "classify_eurovoc.py",
         "description": "EuroVoc subject classification",
         "script": "classify_eurovoc.py",
+        # The committed peeps carry the stamped subjects too (wave 4 restored
+        # them); overlay-only runs (#463) left the peeps behind the overlay and
+        # the combined parity check failed on every re-run, so stamp both.
+        "args": ["--write-peeps"],
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": [
+            "*_peep.json",
+            "regulations/**/*_peep.json",
             "eurovoc/eurovoc_overlay.jsonld",
             "reports/eurovoc_classification.json",
             "eurovoc_concept_scheme.jsonld",
@@ -555,7 +580,7 @@ STEPS: list[dict] = [
         "name": "extract_institutional_competence.py",
         "description": "Institutional competence mapping",
         "script": "extract_institutional_competence.py",
-        "depends_on": [],
+        "depends_on": ["enrich_kov_layer1.py"],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["institutions/**/*.json", "*_peep.json",
                    "reports/institutional_competence_report.json"],
@@ -604,7 +629,7 @@ STEPS: list[dict] = [
         # committed-input pattern regulations/**/*_peep.json, as every other
         # regulation reader does; generate_similarity_index.py rewrites KOV
         # peeps afterwards and depends on this step.
-        "depends_on": ["extract_cross_references.py",
+        "depends_on": ["enrich_kov_layer1.py", "extract_cross_references.py",
                        "generate_provision_versions.py",
                        "generate_provision_versions_regulations"],
         "reads": ["regulations/**/*_peep.json", "provision_versions/*.jsonld"],
@@ -685,6 +710,7 @@ STEPS: list[dict] = [
             "generate_annotations.py",
             "generate_draft_legislation.py",
             "generate_riigikogu_proceedings.py",
+            "enrich_kov_layer1.py",
             "extract_cross_references.py",
             "generate_inverse_references.py",
             "extract_ntm_directives.py",

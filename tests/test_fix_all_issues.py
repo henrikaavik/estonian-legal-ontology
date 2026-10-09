@@ -2049,11 +2049,14 @@ def test_closure_stub_kov_provision_without_asserted_legalprovision_gets_trio():
 
 
 def test_closure_stub_subsection_is_waived_from_provision_trio():
-    """The #741 shapes excuse a lõige via sh:or ([sh:class estleg:Subsection] …):
-    a Subsection stub (rolled up to LegalProvision) stays a lean leaf."""
+    """The #741 shapes excuse a lõige via sh:or ([sh:class estleg:Subsection] …),
+    so a Subsection stub (rolled up to LegalProvision) never copies the
+    paragrahv/summary/partOfAct trio. It does carry what SubsectionShape itself
+    requires — legalText and parentProvision — since regulation lõiged became
+    stub targets in the 2026-10-09 refresh (the standalone combined gate)."""
     assert estleg_common.required_closure_props(
         ["estleg:Subsection", "estleg:LegalProvision"]
-    ) == ()
+    ) == ("estleg:legalText", "estleg:parentProvision")
     assert estleg_common.required_closure_props(["estleg:LegalProvision"]) == (
         "estleg:paragrahv",
         "estleg:summary",
@@ -2067,9 +2070,14 @@ def test_closure_stub_subsection_is_waived_from_provision_trio():
         "estleg:summary": "Lõike tekst.",
         "estleg:partOfAct": {"@id": "estleg:X_Map"},
         "estleg:parentProvision": {"@id": "estleg:X_Par_1"},
+        "estleg:legalText": "(1) Lõike tekst.",
     }
     stub = fix_all_issues._make_closure_stub(source)
-    assert set(stub) == {"@id", "@type", "rdfs:label", "estleg:isStubNode"}
+    assert set(stub) == {
+        "@id", "@type", "rdfs:label", "estleg:isStubNode",
+        "estleg:legalText", "estleg:parentProvision",
+    }
+    assert stub["estleg:parentProvision"] == {"@id": "estleg:X_Par_1"}
 
 
 def test_combined_stubs_carry_only_allowlisted_edges_after_inverse_pass(tmp_path):
@@ -2386,3 +2394,18 @@ def test_combined_regulation_stub_carries_harmonised_with_and_stays_closed(tmp_p
         assert validate_all.errors == [], validate_all.errors
     finally:
         validate_all.reset()
+
+
+
+def test_subsection_closure_stub_carries_text_and_parent():
+    """A regulation lõige stub must satisfy SubsectionShape (legalText +
+    parentProvision), and its parent § must be reachable via an allowed edge."""
+    required = estleg_common.required_closure_props(
+        ["estleg:Subsection", "owl:NamedIndividual", "estleg:LegalProvision"]
+    )
+    assert "estleg:legalText" in required
+    assert "estleg:parentProvision" in required
+    # The #741 provision trio stays waived for a lõige.
+    assert "estleg:paragrahv" not in required
+    assert "estleg:parentProvision" in estleg_common.STUB_SEMANTIC_EDGE_PREDICATES
+    assert "estleg:parentProvision" in fix_all_issues.STUB_EDGE_ALLOWLIST

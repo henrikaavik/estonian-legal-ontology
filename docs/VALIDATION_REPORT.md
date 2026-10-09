@@ -7,7 +7,7 @@
 
 <!-- BEGIN GENERATED: validation-summary -->
 
-*Measured by `scripts/generate_validation_report.py` at commit `f9e658db8a9ba4dd5cdf7b5eea970ee34066ff7c`, 2026-10-09 11:30 UTC. Do not hand-edit this block.*
+*Measured by `scripts/generate_validation_report.py` at commit `c3dd2ff7cf807a082a0fee7ba0658dac7cd08da2`, 2026-10-09 19:25 UTC. Do not hand-edit this block.*
 
 | Metric | Count |
 |--------|------:|
