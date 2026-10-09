@@ -9,7 +9,7 @@ from __future__ import annotations
 from estleg_mcp import data, server
 
 _UNKNOWN = "no-such-law-xyz"
-_NOTE = [{"note": f"law not found: {_UNKNOWN}"}]
+_NOTE = [{"note": f"seadust ei leitud: {_UNKNOWN}"}]
 
 
 def _fake_law() -> data.LawRecord:

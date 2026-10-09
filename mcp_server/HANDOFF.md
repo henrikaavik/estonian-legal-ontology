@@ -1,8 +1,8 @@
 # estleg-mcp — handoff / where this stands
 
-_Source status checked 2026-09-07 against `main` at `0cb9ac91bc`
-(`estleg-mcp` 0.1.0). This repository check does not establish the revision
-deployed at the remote endpoint._
+_Source status checked 2026-10-08 on branch `tier1/wave4` (`estleg-mcp`
+0.2.0, issue #714 hardening). This repository check does not establish the
+revision deployed at the remote endpoint._
 
 ## Goal
 
@@ -27,21 +27,33 @@ PR [#666](https://github.com/henrikaavik/estonian-legal-ontology/pull/666)
 - `estleg_mcp/data.py` — data-access layer over the per-file `*_peep.json`
   (never the LFS-only combined graph). Resolves laws by title / official
   abbreviation (KarS, VÕS, PS, ...) / slug, accent-insensitive.
-- `estleg_mcp/server.py` — FastMCP server, **20 tools**:
+- `estleg_mcp/server.py` — FastMCP server, **24 tools**:
   `search_laws`, `get_law`, `get_provision`, `who_references`, `references_of`,
   `drafts_affecting_law`, `court_decisions_for_law`, `sanctions_for_law`,
   `competent_authority_for_law`, `transposition`,
   `provision_history`, `regulations_for_law`, `get_regulation`,
   `regulations_by_issuer`, `define_term`, `laws_for_subject`,
   `amendment_history`, `eu_case_law_for_directive`,
-  `harmonisation_for_directive`, `layers_available`.
+  `harmonisation_for_directive`, `layers_available`, and (#714)
+  `what_changed`, `transposition_gaps`, `kov_regulations_citing`,
+  `explain_provision`.
   `get_law` / `get_provision` accept optional `as_of` for a historical redaction.
-- Transports: **stdio** (local IDEs) and **streamable-HTTP** with an
-  `ESTLEG_TOKEN` bearer gate (remote). `/healthz` is unauthenticated.
-- `docker/` — Coolify-style image (python:3.13-slim + uv, mirrors Seadusloome);
-  the entrypoint clones the corpus to a `/data` volume at boot (LFS skipped).
-- Tests: `mcp_server/tests/` — data-layer and tool-contract tests,
-  and HTTP host/`/healthz` transport tests.
+  Every MCP call goes through one wrapper (`server._wire`) that adds the
+  `language` argument, the `snapshot` envelope and the audit line.
+- `estleg_mcp/i18n.py` (Estonian-first descriptions, ET/EN result text),
+  `provenance.py` (snapshot), `audit.py` (JSON audit line), `security.py`
+  (per-consumer tokens, fail-closed check, rate limit, ASGI middleware).
+- Transports: **stdio** (local IDEs, no credentials) and **streamable-HTTP**
+  (remote), which **fails closed** without `ESTLEG_TOKENS` / `ESTLEG_TOKEN`.
+  `/healthz` is unauthenticated.
+- `docker/` — Coolify-style image (python:3.13-slim + uv, mirrors Seadusloome),
+  running as non-root uid 10001; the entrypoint checks out the corpus release
+  tag `ESTLEG_CORPUS_REF` (default `v1.0.0`) on a `/data` volume at boot (LFS
+  skipped) and exports the commit for the snapshot.
+- Tests: `mcp_server/tests/` — data-layer and tool-contract tests, HTTP
+  host/`/healthz` transport tests, `test_hardening.py` (security, audit,
+  envelope, language; no corpus needed) and `test_new_tools.py` (the four new
+  tools on fixtures and on the corpus).
 
 ## Status
 
@@ -87,14 +99,66 @@ tree, all of which failed **silently** (no error, just empty or wrong output):
 Historical fix-run result: 19 failing tests before, 0 after (104 passed,
 1 skipped). Use current CI for the present suite result.
 
+### 2026-10-08 — ministry / Bürokratt hardening (#714)
+
+Implemented the self-contained sub-items of #714; the SQLite index and the
+REST/OpenAPI + X-tee facade are deliberately **not** done (they wait for the
+authority conversation the owner asked for).
+
+- **Fail-closed HTTP + per-consumer tokens.** `ESTLEG_TOKENS`
+  (`name=token,…` or a JSON file) names each consumer; the legacy
+  `ESTLEG_TOKEN` is consumer `default`. HTTP exits `1` without credentials
+  unless `ESTLEG_ALLOW_ANONYMOUS_HTTP=1`. stdio stays credential-free.
+- **Audit line** per call (stderr or `ESTLEG_AUDIT_LOG`): timestamp,
+  consumer, transport, tool, `args_sha256` (optionally HMAC-keyed; raw
+  arguments never logged), status, result size, truncated flag, latency,
+  corpus commit / tag, ontology and server version. Format in README.
+- **Rate limit**: optional per-consumer token bucket (`ESTLEG_RATE_LIMIT`),
+  `429` + `Retry-After`, audited as `rate_limited`.
+- **Snapshot envelope** on every result: `corpus_commit`, `corpus_ref`,
+  `ontology_version`, `evaluation_date`, `server_version`, `language`. Dict
+  results gain a `snapshot` key; list results become `{result, snapshot}`.
+- **Truncation**: `truncated` + `full_length` on every cut text;
+  `full_text=True` now honoured by `get_provision(as_of=…)` and
+  `provision_history` too.
+- **Citations on every row**: `define_term`, `laws_for_subject`,
+  `amendment_history`, `competent_authority_for_law`,
+  `harmonisation_for_directive`, `provision_history` (redaction RT URL);
+  `get_provision(as_of=…)` adds `redaction_rt_url`. Missing RT citations stay
+  `""`.
+- **Estonian-first** descriptions; `language` (`et` default, `en`) on every
+  tool selects the text of notes, caveats and explanations. **Breaking for
+  callers that matched English note text**: notes are Estonian by default.
+- **Container**: non-root `USER estleg` (10001), corpus pinned to a release
+  tag. A `/data` volume created by the old root image needs a one-off
+  `chown -R 10001:10001` (the entrypoint says so).
+- **Four new tools** over the per-file corpus: `what_changed`
+  (provision_versions + `resultedInVersion`), `transposition_gaps` (#701 rule
+  from `eurlex_directives_peep.json` + `transposition_mapping.json`, not the
+  LFS overlay), `kov_regulations_citing` (KOV `implementsCitation` targets +
+  `issuedUnder`), `explain_provision`.
+
+Measured on this branch's corpus: 845 of 939 in-force directives carry no
+transposition edge; 6,704 KOV regulations cite or are issued under KOKS;
+740 KOV citation targets use law prefixes the resolver cannot map (largest:
+`KOFS` 291, `KalmS` 128, `KOVVS` 92) and are not attributed to a law.
+
 ## Next steps
 
-1. Point remaining local clients (Cursor on Mac + Windows, Copilot) at
-   `https://estleg.sixtyfour.ee/mcp` with the bearer token (README →
+1. **Before redeploying 0.2.0**: set `ESTLEG_TOKENS` (one entry per client)
+   on the Coolify service, or keep `ESTLEG_TOKEN` (consumer `default`);
+   without either the new image exits at boot. `chown -R 10001:10001` the
+   existing `/data` volume once (it was written by the root-run image).
+2. Point remaining local clients (Cursor on Mac + Windows, Copilot) at
+   `https://estleg.sixtyfour.ee/mcp` with their own bearer token (README →
    "Connect a client to the remote endpoint").
-2. Keep the Coolify `/data` volume's corpus clone current with `main`
-   (entrypoint already `git fetch --depth 1` + `reset --hard origin/main`
-   on boot; redeploy after corpus releases).
+3. Raise `ESTLEG_CORPUS_REF` when a new corpus release is tagged (the image
+   defaults to `v1.0.0`); redeploy to pick it up. Every answer names the tag
+   and commit it was served from.
+4. Ship the audit log somewhere durable (`ESTLEG_AUDIT_LOG` on the volume, or
+   stderr into the platform's log drain) and set `ESTLEG_AUDIT_HASH_KEY`.
+5. #714 remainder, after the authority conversation: SQLite index, REST /
+   OpenAPI facade over `data.py`, X-tee registration.
 
 ## Known gaps / follow-ups
 
@@ -109,6 +173,13 @@ Historical fix-run result: 19 failing tests before, 0 after (104 passed,
   No tool surfaces it today; `external_ids` deliberately covers only non-RT
   identifiers. Cheap to add to `get_law` if an English citation is wanted.
 
+- **KOV citation targets with unmapped law prefixes** (`KOFS`, `KalmS`,
+  `KOVVS`, … 740 targets) are skipped by `kov_regulations_citing`. Teaching
+  `_HUMAN_ABBREVIATIONS` (or the abbreviation registry) those prefixes would
+  attribute them.
+- **The container image was not built in the #714 session** (no Docker
+  daemon); the entrypoint was exercised against a local test repo (clone,
+  tag update, branch alias). Build and boot it once before the redeploy.
 - **Semantic search** is not in v1: `similarity_index.json` and
   `combined_ontology.jsonld` ship as Git-LFS pointers, so a semantic tool needs
   `git lfs pull` plus an embedding/index step over provision summaries.

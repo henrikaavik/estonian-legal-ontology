@@ -51,7 +51,7 @@ convention.
   recording the registry+corpus hashes the migration was last applied at) and
   `data/uri_migration_report.json` (the last dry-run preview).
 - **Segments** encode the law's structure, e.g. `_Par_<n>` (section §),
-  `_Lg<n>` (lõige / subsection), `_Osa<n>` (osa / part), `_Chapter_<n>`,
+  `_Lg_<n>` (lõige / subsection), `_Osa<n>` (osa / part), `_Chapter_<n>`,
   `_Division_<n>`, `_Map_2026` (act-level topic map node), `_TopicScheme`,
   `Cluster_<ABBREV>_<Label>` (concept cluster). Superscripted section numbers
   become a trailing `_<n>`: `§ 22¹` → `…_Par_22_1`. Bare-number forms such as
