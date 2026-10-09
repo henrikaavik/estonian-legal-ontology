@@ -195,10 +195,12 @@ class TestStructuredParsing:
         root = _parse(STRUCTURED_FIXTURE)
         doc, stats = build_regulation_jsonld(STRUCTURED_TITLE, {}, root, is_kov=False)
 
-        # Fixture has 2 paragraphs => 3 nodes (1 ontology + 2 provisions; no per-file class)
+        # Fixture has 2 paragraphs, each with one lõige => 5 nodes
+        # (1 ontology + 2 provisions + 2 estleg:Subsection since #722).
         assert stats["paragraphs"] == 2
+        assert stats["subsections"] == 2
         assert stats["annexes"] == 0
-        assert len(doc["@graph"]) == 3
+        assert len(doc["@graph"]) == 5
 
     def test_provision_node_shape(self):
         root = _parse(STRUCTURED_FIXTURE)
@@ -1942,3 +1944,335 @@ class TestGenerateRegulationsNoPartialWrite:
         assert pages["pagesFailed"] >= 1
         # The partial run still wrote (and indexed) the rows it got.
         assert index["totalRegulations"] >= 1
+
+
+# ---------------------------------------------------------------------------
+# Issue #722 — law-pipeline parity: provision IRIs, subsections, kehtiv,
+# --regen-state resume
+# ---------------------------------------------------------------------------
+
+_PARITY_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<oigusakt xmlns="maarus_1_10.02.2010">
+  <metaandmed>
+    <valjaandja>Vabariigi Valitsus</valjaandja>
+    <kehtivus><kehtivuseAlgus>2020-01-01+02:00</kehtivuseAlgus></kehtivus>
+    <globaalID>722001</globaalID>
+    <terviktekstiGrupiID>722</terviktekstiGrupiID>
+  </metaandmed>
+  <sisu>
+    <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr><![CDATA[§ 1.]]></kuvatavNr>
+      <paragrahvPealkiri>Reguleerimisala</paragrahvPealkiri>
+      <loige><loigeNr>1</loigeNr><kuvatavNr><![CDATA[(1)]]></kuvatavNr>
+        <sisuTekst><tavatekst>Esimene lõige.</tavatekst></sisuTekst></loige>
+      <loige><loigeNr>2</loigeNr><kuvatavNr><![CDATA[(2)]]></kuvatavNr>
+        <sisuTekst><tavatekst>Teine lõige.</tavatekst></sisuTekst></loige>
+      <loige><loigeNr ylaIndeks="1">2</loigeNr><kuvatavNr><![CDATA[(2¹)]]></kuvatavNr>
+        <sisuTekst><tavatekst>Lisatud lõige.</tavatekst></sisuTekst></loige>
+    </paragrahv>
+    <paragrahv><paragrahvNr ylaIndeks="1">1</paragrahvNr><kuvatavNr><![CDATA[§ 1¹.]]></kuvatavNr>
+      <paragrahvPealkiri>Lisatud paragrahv</paragrahvPealkiri>
+      <loige><sisuTekst><tavatekst>Lõikenumbrita tekst.</tavatekst></sisuTekst></loige>
+    </paragrahv>
+    <paragrahv><paragrahvNr>1a</paragrahvNr><kuvatavNr><![CDATA[§ 1a.]]></kuvatavNr>
+      <paragrahvPealkiri>Tähega paragrahv</paragrahvPealkiri>
+      <loige><sisuTekst><tavatekst>Tähega paragrahvi tekst.</tavatekst></sisuTekst></loige>
+    </paragrahv>
+    <paragrahv><paragrahvNr>2</paragrahvNr><kuvatavNr><![CDATA[§ 2.]]></kuvatavNr>
+      <paragrahvPealkiri>Teine</paragrahvPealkiri>
+      <loige><sisuTekst><tavatekst>Teise paragrahvi tekst.</tavatekst></sisuTekst></loige>
+    </paragrahv>
+    <paragrahv><paragrahvNr>2</paragrahvNr><kuvatavNr><![CDATA[§ 2.]]></kuvatavNr>
+      <paragrahvPealkiri>Kordus</paragrahvPealkiri>
+      <loige><sisuTekst><tavatekst>Korduva numbriga paragrahv.</tavatekst></sisuTekst></loige>
+    </paragrahv>
+  </sisu>
+</oigusakt>
+"""
+
+
+def _parity_root() -> ET.Element:
+    return ET.fromstring(_PARITY_XML.encode("utf-8"))
+
+
+def _provision_ids(doc: dict) -> list[str]:
+    return [n["@id"] for n in doc["@graph"] if "estleg:paragrahv" in n]
+
+
+def _subsections(doc: dict) -> list[dict]:
+    return [n for n in doc["@graph"] if "estleg:Subsection" in (n.get("@type") or [])]
+
+
+class TestProvisionIriParity722:
+    """Regulation § IRIs go through the law helpers (#156/#165 parity)."""
+
+    def test_law_scheme_matches_law_helpers(self):
+        from collections import Counter
+
+        from estleg.law_structure import _dedupe_paragraph_suffix, _paragraph_id_suffix
+
+        root = _parity_root()
+        counts: Counter[str] = Counter()
+        expected = [
+            f"estleg:Reg_722_Par_{_dedupe_paragraph_suffix(_paragraph_id_suffix(p), counts)}"
+            for p in root.iter() if p.tag.endswith("paragrahv")
+        ]
+        doc, _ = build_regulation_jsonld("Pariteet", {}, root, is_kov=False)
+        assert _provision_ids(doc) == expected
+        assert expected == [
+            "estleg:Reg_722_Par_1",
+            "estleg:Reg_722_Par_1_1",
+            "estleg:Reg_722_Par_1a",
+            "estleg:Reg_722_Par_2",
+            "estleg:Reg_722_Par_2_x2",
+        ]
+
+    def test_law_scheme_is_order_independent_for_superscripts(self):
+        doc, _ = build_regulation_jsonld("Pariteet", {}, _parity_root(), is_kov=False)
+        # § 1¹ is Par_1_1 because of its superscript, not its position.
+        sup = next(n for n in doc["@graph"] if n.get("estleg:paragrahv") == "§ 1¹.")
+        assert sup["@id"] == "estleg:Reg_722_Par_1_1"
+
+    def test_legacy_scheme_reproduces_pre_722_positional_ids(self):
+        doc, _ = build_regulation_jsonld(
+            "Pariteet", {}, _parity_root(), is_kov=False, iri_scheme="legacy"
+        )
+        # Old minting: sanitize_id("1") for § 1¹ collides with § 1 and is
+        # suffixed with len(seen_ids); the duplicate § 2 likewise.
+        assert _provision_ids(doc) == [
+            "estleg:Reg_722_Par_1",
+            "estleg:Reg_722_Par_1_1",
+            "estleg:Reg_722_Par_1a",
+            "estleg:Reg_722_Par_2",
+            "estleg:Reg_722_Par_2_4",
+        ]
+
+    def test_unknown_scheme_is_rejected(self):
+        with pytest.raises(ValueError):
+            build_regulation_jsonld("X", {}, _parity_root(), is_kov=False, iri_scheme="nope")
+
+    def test_html_prime_superscript_does_not_collide_with_real_number(self):
+        from estleg.generate_regulations import html_paragraph_id_suffix
+
+        assert html_paragraph_id_suffix("4′1") == "4_1"
+        assert html_paragraph_id_suffix("4'1") == "4_1"
+        assert html_paragraph_id_suffix("41") == "41"
+        assert html_paragraph_id_suffix("") == "Unknown"
+
+    def test_resolve_iri_scheme_auto_keeps_committed_acts_legacy(self):
+        from estleg.generate_regulations import resolve_iri_scheme
+
+        assert resolve_iri_scheme("auto", has_committed_peep=True) == "legacy"
+        assert resolve_iri_scheme("auto", has_committed_peep=False) == "law"
+        assert resolve_iri_scheme("law", has_committed_peep=True) == "law"
+
+    def test_existing_regulation_tids_reads_filenames(self, tmp_path):
+        from estleg.generate_regulations import existing_regulation_tids
+
+        (tmp_path / "issuer").mkdir()
+        (tmp_path / "a_t11_peep.json").write_text("{}", encoding="utf-8")
+        (tmp_path / "issuer" / "b_t22_peep.json").write_text("{}", encoding="utf-8")
+        (tmp_path / "REGULATIONS_RIIK_INDEX.json").write_text("{}", encoding="utf-8")
+        assert existing_regulation_tids(tmp_path) == {"11", "22"}
+
+
+class TestSubsectionEmission722:
+    """build_subsections is wired exactly as for laws."""
+
+    def test_each_loige_becomes_a_subsection(self):
+        doc, stats = build_regulation_jsonld("Pariteet", {}, _parity_root(), is_kov=False)
+        subs = _subsections(doc)
+        assert stats["subsections"] == len(subs) == 7
+        assert stats["paragraphs"] == 5
+        ids = [s["@id"] for s in subs]
+        assert ids[:3] == [
+            "estleg:Reg_722_Par_1_Lg_1",
+            "estleg:Reg_722_Par_1_Lg_2",
+            "estleg:Reg_722_Par_1_Lg_2_1",
+        ]
+        # #514: an unnumbered lõige is lõige <sibling index>.
+        assert "estleg:Reg_722_Par_1_1_Lg_1" in ids
+        # Under the duplicate § 2, the subsection follows the deduped suffix.
+        assert "estleg:Reg_722_Par_2_x2_Lg_1" in ids
+        assert len(set(ids)) == len(ids)
+
+    def test_subsection_shape_matches_laws(self):
+        doc, _ = build_regulation_jsonld("Pariteet", {}, _parity_root(), is_kov=False)
+        sub = next(s for s in _subsections(doc) if s["@id"].endswith("_Par_1_Lg_2_1"))
+        assert sub["@type"] == ["estleg:Subsection", "owl:NamedIndividual"]
+        assert sub["estleg:parentProvision"] == {"@id": "estleg:Reg_722_Par_1"}
+        assert sub["estleg:subsectionNumber"] == "2¹"
+        assert sub["estleg:legalText"].startswith("(2¹) ")
+        assert sub["rdfs:label"] == "§ 1 lg 2¹"
+        par = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_722_Par_1")
+        assert par["estleg:hasSubsection"] == [
+            {"@id": "estleg:Reg_722_Par_1_Lg_1"},
+            {"@id": "estleg:Reg_722_Par_1_Lg_2"},
+            {"@id": "estleg:Reg_722_Par_1_Lg_2_1"},
+        ]
+
+    def test_subsections_follow_their_paragraph_in_graph_order(self):
+        doc, _ = build_regulation_jsonld("Pariteet", {}, _parity_root(), is_kov=False)
+        graph_ids = [n["@id"] for n in doc["@graph"]]
+        assert graph_ids.index("estleg:Reg_722_Par_1_Lg_1") == graph_ids.index("estleg:Reg_722_Par_1") + 1
+
+    def test_summary_counts_ignore_subsections(self):
+        doc, _ = build_regulation_jsonld("Pariteet", {}, _parity_root(), is_kov=False)
+        assert summarize_regulation_doc(doc)["paragraphs"] == 5
+
+    def test_repealed_strip_drops_subsections(self):
+        doc, _ = build_regulation_jsonld("Pariteet", {}, _parity_root(), is_kov=False)
+        root_node = next(n for n in doc["@graph"] if "estleg:Act" in n["@type"])
+        root_node["estleg:temporalStatus"] = "repealed"
+        strip_repealed_provision_bodies(doc, kehtiv="2026-05-01")
+        assert _subsections(doc) == []
+        assert all("estleg:hasSubsection" not in n for n in doc["@graph"])
+
+
+class TestKehtivAlwaysStamped722:
+    def _kehtiv(self, doc: dict):
+        root_node = next(n for n in doc["@graph"] if "estleg:Act" in n["@type"])
+        return root_node.get("estleg:kehtiv")
+
+    def test_explicit_kehtiv(self):
+        doc, _ = build_regulation_jsonld("P", {}, _parity_root(), is_kov=False, kehtiv="2026-10-01")
+        assert self._kehtiv(doc) == {"@value": "2026-10-01", "@type": "xsd:date"}
+
+    def test_kehtiv_from_fetched_listing(self):
+        doc, _ = build_regulation_jsonld("P", {"kehtiv": "2026-09-01"}, _parity_root(), is_kov=False)
+        assert self._kehtiv(doc)["@value"] == "2026-09-01"
+
+    def test_default_kehtiv_when_nothing_given(self):
+        doc, _ = build_regulation_jsonld("P", {}, _parity_root(), is_kov=False)
+        assert self._kehtiv(doc)["@value"] == generate_regulations.DEFAULT_KEHTIV
+
+    def test_parse_mode_always_present(self):
+        doc, _ = build_regulation_jsonld("P", {}, _parity_root(), is_kov=False)
+        root_node = next(n for n in doc["@graph"] if "estleg:Act" in n["@type"])
+        assert root_node["estleg:parseMode"] == "structured"
+
+    def test_gather_records_snapshot_kehtiv_on_info(self, monkeypatch):
+        def fake_fetch_acts(**_kwargs):
+            yield {"terviktekstID": "5", "globaalID": "50", "pealkiri": "T", "url": "/akt/50"}
+
+        monkeypatch.setattr(generate_regulations, "fetch_acts", fake_fetch_acts)
+        regs, _ = gather_regulations(kov=False, kehtiv="2026-10-01", limit=None)
+        assert regs["5"]["kehtiv"] == "2026-10-01"
+
+
+class TestRegenStateResume722:
+    """--regen-state: interrupted runs resume; completed acts are skipped."""
+
+    def _setup(self, tmp_path, monkeypatch, n_acts: int = 4):
+        out = tmp_path / "riik"
+        monkeypatch.setattr(generate_regulations, "OUTPUT_RIIK", out)
+        monkeypatch.setattr(riigiteataja_common, "DATA_DIR", tmp_path / "rtcache")
+        regs = {
+            str(800 + i): {
+                "tid": str(800 + i), "gid": str(9800 + i), "url": f"/akt/{9800 + i}",
+                "pealkiri": f"Akt {i}", "valjaandja": "Vabariigi Valitsus",
+                "kehtivus": {}, "kehtiv": "2026-10-01",
+            }
+            for i in range(n_acts)
+        }
+        manifest = {"requestedDocument": "määrus", "kov": False, "kehtiv": "2026-10-01",
+                    "searchRowsSeen": n_acts, "uniqueActs": n_acts, "complete": True,
+                    "limited": False, "pages": {}}
+        monkeypatch.setattr(
+            generate_regulations, "gather_regulations",
+            lambda **_kw: (dict(regs), dict(manifest)),
+        )
+        return out, regs
+
+    def _fake_fetch(self, calls: list[str], *, interrupt_on: str | None = None):
+        def fetch(url, *, cache_name, cache_subdir, refresh):
+            calls.append(url)
+            if interrupt_on and url == interrupt_on:
+                raise KeyboardInterrupt
+            gid = url.rsplit("/", 1)[-1]
+            tid = str(int(gid) - 9000)
+            return ET.fromstring(
+                _PARITY_XML.replace("<globaalID>722001</globaalID>", f"<globaalID>{gid}</globaalID>")
+                .replace("<terviktekstiGrupiID>722</terviktekstiGrupiID>",
+                         f"<terviktekstiGrupiID>{tid}</terviktekstiGrupiID>")
+                .encode("utf-8")
+            )
+        return fetch
+
+    def _run(self, monkeypatch, *args: str) -> None:
+        monkeypatch.setattr(sys, "argv", ["generate_regulations", *args])
+        generate_regulations.main()
+
+    def test_interrupted_run_resumes_without_refetching(self, tmp_path, monkeypatch):
+        out, regs = self._setup(tmp_path, monkeypatch)
+        state = tmp_path / "state.json"
+        calls: list[str] = []
+        monkeypatch.setattr(
+            generate_regulations, "fetch_xml",
+            self._fake_fetch(calls, interrupt_on="/akt/9802"),
+        )
+        with pytest.raises(KeyboardInterrupt):
+            self._run(monkeypatch, "--refresh", "--kehtiv", "2026-10-01", "--sleep", "0",
+                      "--workers", "1", "--regen-state", str(state))
+        saved = json.loads(state.read_text(encoding="utf-8"))
+        assert sorted(saved["completed"]) == ["800", "801"]
+        assert saved["completed"]["800"]["kehtiv"] == "2026-10-01"
+        assert saved["completed"]["800"]["subsectionCount"] == 7
+
+        calls.clear()
+        monkeypatch.setattr(generate_regulations, "fetch_xml", self._fake_fetch(calls))
+        self._run(monkeypatch, "--refresh", "--kehtiv", "2026-10-01", "--sleep", "0",
+                  "--workers", "2", "--regen-state", str(state))
+        assert calls == ["/akt/9802", "/akt/9803"]
+        saved = json.loads(state.read_text(encoding="utf-8"))
+        assert sorted(saved["completed"]) == ["800", "801", "802", "803"]
+        index = json.loads((out / "REGULATIONS_RIIK_INDEX.json").read_text(encoding="utf-8"))
+        assert index["totalRegulations"] == 4
+        assert index["run"]["regenStateSkipped"] == 2
+        # Fresh acts with no committed peep get the law scheme under auto.
+        assert index["run"]["provisionIriScheme"] == {"law": 2}
+        peep = json.loads(next(out.glob("*_t803_peep.json")).read_text(encoding="utf-8"))
+        root_node = next(n for n in peep["@graph"] if "estleg:Act" in n["@type"])
+        assert root_node["estleg:kehtiv"]["@value"] == "2026-10-01"
+
+    def test_completed_entries_are_dropped_when_kehtiv_or_gid_changes(self, tmp_path):
+        from estleg.generate_regulations import prune_completed_regen_state
+
+        out = tmp_path / "riik"
+        out.mkdir()
+        (out / "a_t1_peep.json").write_text("{}", encoding="utf-8")
+        (out / "b_t2_peep.json").write_text("{}", encoding="utf-8")
+        state = {
+            "schemaVersion": generate_regulations.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {
+                "1": {"kehtiv": "2026-10-01", "globalId": "10", "output": "a_t1_peep.json",
+                      "outputSha256": generate_regulations.output_digest(out / "a_t1_peep.json")},
+                "2": {"kehtiv": "2026-09-01", "globalId": "20", "output": "b_t2_peep.json"},
+                "3": {"kehtiv": "2026-10-01", "globalId": "30", "output": "c_t3_peep.json"},
+                "4": {"kehtiv": "2026-10-01", "globalId": "40", "output": "a_t1_peep.json"},
+            },
+            "failed": {},
+        }
+        regs = {"1": {"gid": "10"}, "2": {"gid": "20"}, "3": {"gid": "30"}, "4": {"gid": "41"}}
+        valid = prune_completed_regen_state(state, regs, kehtiv="2026-10-01", out_dir=out)
+        assert valid == {"1"}
+        dropped = state["droppedCompleted"][-1]["entries"]
+        assert dropped == {
+            "2": "kehtiv changed",
+            "3": "output missing",
+            "4": "globalId changed",
+        }
+
+    def test_foreign_or_corrupt_state_starts_fresh(self, tmp_path):
+        from estleg.generate_regulations import load_regen_state
+
+        path = tmp_path / "s.json"
+        path.write_text("{not json", encoding="utf-8")
+        assert load_regen_state(path, is_kov=False)["completed"] == {}
+        path.write_text(json.dumps({"kind": "regulations", "kov": True,
+                                    "completed": {"1": {}}}), encoding="utf-8")
+        assert load_regen_state(path, is_kov=False)["completed"] == {}
+
+    def test_reset_requires_regen_state(self, tmp_path, monkeypatch):
+        self._setup(tmp_path, monkeypatch)
+        with pytest.raises(SystemExit):
+            self._run(monkeypatch, "--reset-regen-state")

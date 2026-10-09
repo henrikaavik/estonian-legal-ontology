@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. Its 29 steps form an explicit, declarative directed acyclic
+release build. Its 30 steps form an explicit, declarative directed acyclic
 graph (DAG) in four tiers: ingest (network fetches), enrichment (offline
 corpus passes and aggregate rebuilds), build (the combined/INDEX rebuild) and
 package (release assets). The runner topologically sorts it, runs it
@@ -35,7 +35,8 @@ drift.
 self-describing and a consumer can pin/cite it:
 
 - `metadata.jsonld` — the `dcat:Dataset` / `owl:Ontology` dataset header
-  (committed; bump by hand when you bump the constant).
+  (committed; bump by hand when you bump the constant). It is a DCAT-AP
+  3.0.1 catalogue record; see [DCAT_CATALOGUE.md](DCAT_CATALOGUE.md).
 - `combined_ontology.jsonld` — a dataset-level `owl:Ontology` /
   `void:Dataset` / `dcat:Dataset` node at `@graph[0]`, re-emitted from
   `estleg_common.combined_ontology_header()` every time
@@ -70,7 +71,9 @@ Corpus target is **monthly Riigi Teataja consolidation**. `estleg:kehtiv`
 on each act is the snapshot date the committed text is valid as of (not
 `temporalStatus`, not `BUILD_EVALUATION_DATE`). `metadata.jsonld`
 `dcterms:accrualPeriodicity` is
-[`http://purl.org/cld/freq/monthly`](http://purl.org/cld/freq/monthly) at
+[`http://publications.europa.eu/resource/authority/frequency/MONTHLY`](http://publications.europa.eu/resource/authority/frequency/MONTHLY)
+(the EU Publications Office frequency authority, as used by the
+`check_rt_staleness.py` `FREQ_*` constants) at
 dataset level, and every `dcat:distribution` carries its own value (#693).
 
 The freshness gate is `python3 scripts/check_rt_staleness.py`. It is offline
@@ -91,6 +94,7 @@ periodicities:
 | Lower-court sample | `KOHTUD_INDEX.json` `fetched` / `generated` | 120 d | (not a distribution) |
 | EUR-Lex | `EURLEX_INDEX.json` `fetched` / `generated` | 120 d | quarterly |
 | CURIA | `CURIA_INDEX.json` `fetched` / `generated` | 120 d | quarterly |
+| Retrieval chunks | release asset `chunks.jsonl.gz` | not gated | monthly |
 | Complete dataset | aggregate of the rows above | — | monthly |
 | Change record | frozen per release | — | irregular |
 
@@ -134,7 +138,10 @@ URLs) are #473 and are not produced by this in-repo record.
    and run the [release build](#running-a-release-build) + all gates.
 4. After merge, tag the release: `git tag v<version> && git push origin v<version>`,
    and create the GitHub release (this is an outward-facing publish step — do it
-   deliberately, not from CI).
+   deliberately, not from CI). After tagging, rerun the retrieval generator
+   (`generate_retrieval_projection.py`) so `llms.txt` and `manifest.json` point
+   at `releases/download/v<ONTOLOGY_VERSION>/chunks.jsonl.gz` (#723). Today the
+   v1.0.0 link returns 404, because that release has no chunks asset.
 5. Attach `NOTICE`, `LICENSE`, `docs/DATA_RIGHTS.md`, and
    `docs/DATA_PROTECTION.md` as **release assets** (#684). A downloader who takes
    only the release tarball must get the layered-rights and personal-data notices
@@ -249,10 +256,11 @@ phase order is preserved exactly.
 | 23 | enrichment | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
 | 24 | enrichment | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
 | 25 | enrichment | `derive_court_interpretation_staleness.py` (`--apply`) | 12, 1, 2 | `riigikohus/*_peep.json` |
-| 26 | enrichment | `generate_similarity_index.py` | the 18 enrichment steps listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
-| 27 | build | `build_release_artifacts.py` (embeds `materialize_combined_inverses` #520 and the #521 analytical stamps) | every non-package step | `combined_ontology.jsonld`, `INDEX.json` |
-| 28 | package | `generate_analytical_overlay.py` (`--write`) | 27, 26 | `analytical/analytical_overlay.jsonld` |
-| 29 | package | `build_release_assets.py` | 27, 28 | `../metadata.jsonld`, `../release/*` (incl. `release/rdf/combined_ontology.{nt,nq,ttl}`) |
+| 26 | enrichment | `derive_kov_enabling_staleness.py` (`--apply`, #712) | 4, 1, 2 | `regulations/kov/*/*_peep.json`, `reports/kov/derive_kov_enabling_staleness_coverage.json` |
+| 27 | enrichment | `generate_similarity_index.py` | the 19 enrichment steps listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
+| 28 | build | `build_release_artifacts.py` (embeds `materialize_combined_inverses` #520 and the #521 analytical stamps) | every non-package step | `combined_ontology.jsonld`, `INDEX.json` |
+| 29 | package | `generate_analytical_overlay.py` (`--write`) | 28, 27 | `analytical/analytical_overlay.jsonld` |
+| 30 | package | `build_release_assets.py` | 28, 29 | `../metadata.jsonld`, `../release/*` (incl. `release/rdf/combined_ontology.{nt,nq,ttl}`) |
 
 **Ingest tier.** Steps 1-3 fetch from Riigi Teataja or oiguskantsler.ee.
 They are declared so every produced layer has a producer and declared inputs.
@@ -265,15 +273,15 @@ stays with the law run until the generator writes its own report.
 without the #429 version join. Step 16 runs that join after the chains and the
 version sidecars exist. It re-mints the `_vf_` events and the
 `resultedInVersion` links, so a chain rerun cannot lose them. On the committed
-corpus the join is a no-op: 179 chains and 0 peeps change. Steps 17, 18 and
-25 derive act `temporalStatus`, the act expressions and court staleness from
-the same sidecars.
+corpus the join is a no-op: 179 chains and 0 peeps change. Steps 17, 18, 25
+and 26 derive act `temporalStatus`, the act expressions, court staleness and
+KOV enabling-provision staleness (#712) from the same sidecars.
 
-**Combined is the last enrichment step, not the last step.** Step 27 depends
+**Combined is the last enrichment step, not the last step.** Step 28 depends
 on every ingest and enrichment step. Only package-tier steps may follow it.
 They read the built corpus and must never write a file the build read; the
 ordering check above enforces this. `materialize_combined_inverses` (#520)
-and the analytical counts/flags (#521) run inside step 27 on the in-memory
+and the analytical counts/flags (#521) run inside step 28 on the in-memory
 graph, which `embeds` declares. They are never scheduled as separate passes.
 
 `rebuild_eurlex_combined` invokes `generate_eu_legislation.py` with
@@ -345,8 +353,10 @@ This is the **unified release command**. It:
 
 1. Validates the DAG (exit 2 on a structural problem).
 2. Takes an atomic rename-aside snapshot of `krr_outputs/` (unless
-   `--no-restore-on-failure`).
-3. Runs all 29 steps in topo order. Ingest-tier steps are recorded as
+   `--no-restore-on-failure` or `--snapshot none`). With `--snapshot auto`
+   and a clean `git status --porcelain krr_outputs`, the copy is skipped
+   and a failure rolls back to git HEAD instead (#722).
+3. Runs all 30 steps in topo order. Ingest-tier steps are recorded as
    `skipped_ingest` unless `--with-ingest` is given. A failed step skips its
    dependents; the first hard failure stops the run and the snapshot is
    restored.
@@ -367,7 +377,8 @@ Useful flags:
 |---|---|
 | `--dry-run` | Print the DAG topo order + validators; run nothing; exit 0. |
 | `--resume-from <step>` | Skip steps before `<step>` in topo order (treated as already done so dependents are not blocked). |
-| `--no-restore-on-failure` | Leave a partial `krr_outputs/` tree in place on failure instead of rolling back. |
+| `--no-restore-on-failure` | Leave a partial `krr_outputs/` tree in place on failure instead of rolling back. Same as `--snapshot none`. |
+| `--snapshot {copy,auto,none}` | Rollback strategy (#722). `copy` (default) renames `krr_outputs/` aside and copies it back, about 3.8 GB and 29k files. `auto` checks `git status --porcelain krr_outputs`. On a clean tree it skips the copy and restores from HEAD on failure (`git restore` + `git clean -fd`). On a dirty tree, or without git, it falls back to `copy`. Ignored files such as `krr_outputs/.cache/` are not restored. `none` does no rollback. |
 | `--validate-each` | Run `validate_all.py` after each successful step. Incompatible with `--parallel`. |
 | `--per-script-timeout N` | Per-step (and per-validator) timeout in seconds (default 1800; a timeout is recorded as exit code 124). |
 | `--parallel N` | Run up to N dependency-ready steps concurrently (default 1 = serial). **N > 1 is rejected (exit 2) for the current DAG** — independent steps share `*_peep.json` writes; see [Why serial by default](#why-serial-by-default). |
@@ -535,8 +546,11 @@ corpus files. The step runs these parts in order:
    dump fails when a slot has no source; `serialize_named_graphs --write
    --allow-partial` is the escape hatch. The regulations and riigikohus
    slots read their peep trees, because neither corpus has a combined file.
-4. **Chunks.** `chunks.jsonl.gz` comes from `generate_retrieval_projection
-   --chunks-only`, run into `release/retrieval/`.
+4. **Chunks.** `chunks.jsonl.gz` (catalogued as its own distribution in
+   `metadata.jsonld`; see [DCAT_CATALOGUE.md](DCAT_CATALOGUE.md)) comes from `generate_retrieval_projection
+   --chunks-only`, run into `release/retrieval/`. `build_release_assets.py`
+   builds it this way on every release. It uses chunk schema 2.0.0 and is a
+   single unsplit file (#723).
 5. **Combined dumps.** The four combined JSON-LD files the catalogue
    advertises, plus the annotations layer, are gzipped with `mtime=0` and no
    embedded filename. The output is byte-stable.
@@ -562,6 +576,133 @@ local run, but the release gate rejects packages with skipped assets or
 unstamped heads. Upload the assets listed in `SHA256SUMS`, together with
 `SHA256SUMS` and `release_assets.json`, to the GitHub Release by hand;
 that publish step stays manual.
+
+---
+
+## Runtime, memory and disk envelope
+
+Measured on the `tier1/wave4` branch (Apple Silicon laptop, SSD, Python 3.14)
+unless marked as an estimate. Use these figures to size a runner. They are
+not guarantees.
+
+| Job | Wall time | Peak RAM | Disk |
+|---|---|---|---|
+| `build_release_assets.py` (the release step, streamed dumps, #705) | ~6 min | ~3.4 GB | `release/` plus the external `sort -u` temp files |
+| `run_all_integration.py --release --validate-only` | dominated by the three validators | validator-bound | none extra |
+| Rollback snapshot, `--snapshot copy` | one full copy of `krr_outputs/` | low | +3.8 GB transient, 29k files |
+| Rollback snapshot, `--snapshot auto` on a clean tree | `git status` ≈ 0.2 s | low | none |
+| Regulations refresh, serial (`--workers 1`), estimate | ≈ 2.6 h for 14,871 acts (KOV ≈ 2.0 h, riik ≈ 0.7 h) | ≈ 1.3 GB (KOV) | see below |
+| Regulations refresh, `--workers 4 --max-rps 4` (default), estimate | ≈ 62 min (KOV ≈ 46 min, riik ≈ 16 min) | ≈ 1.3 GB (KOV) | see below |
+
+How the regulations estimates were derived:
+
+- **Fetch rate.** Five sequential public-API XML fetches averaged 0.34 s.
+  Serial ingest adds the 0.3 s politeness sleep, so one act costs ≈ 0.64 s.
+  Four workers would reach ≈ 6 requests/s, so the default 4 req/s cap
+  governs, giving ≈ 0.25 s per act. JSON-LD building is milliseconds per act.
+- **RAM.** The generator keeps every built document in memory for the index
+  pass. Holding all 11,059 committed KOV peeps took 1.0 GB RSS. Lõige nodes
+  add about 30% to that.
+- **Disk.** The XML cache under `data/riigiteataja/maarus{,_kov}/` is
+  git-ignored. A five-act sample averaged 148 KB per act, which projects to
+  ≈ 2 GB for a cold cache. The regulation peeps are 619 MB today. An
+  eight-act sample grew 1.7× once `estleg:Subsection` nodes were added, so
+  expect ≈ 1.0-1.1 GB after the first full refresh.
+- **Resume.** A `--regen-state` run that is interrupted loses at most 50 acts
+  of progress, because the ledger is checkpointed every 50 acts and on exit.
+  A resumed run replays cached XML at disk speed.
+
+---
+
+## Refreshing the regulations corpus
+
+`generate_regulations.py` refreshes the state (`riik`) and municipal
+(`--kov`) regulation peeps from the Riigi Teataja public API. Run it once
+per corpus:
+
+```bash
+python3 scripts/generate_regulations.py --kehtiv YYYY-MM-DD --refresh --regen-state
+python3 scripts/generate_regulations.py --kov --kehtiv YYYY-MM-DD --refresh --regen-state
+```
+
+- **`--regen-state [PATH]`** writes a per-act ledger. By default it goes to
+  `krr_outputs/.cache/regen_state_regulations_{riik,kov}.json`, which is
+  git-ignored. A rerun skips acts already completed for the same `kehtiv`
+  and `globalId` whose output file still matches the ledger's SHA-256.
+  An explicit IRI scheme change also invalidates a completed entry. Acts that failed are
+  retried. `--reset-regen-state` discards the ledger.
+- **`--workers N`** (default 4) sets how many XML fetches run at once.
+  `--max-rps` (default 4) caps request starts per second across all
+  workers. `--sleep` (default 0.3 s) is each worker's pause after a
+  network fetch. Retries on 429 and 5xx, with linear backoff, stay in
+  `riigiteataja_common.fetch_xml`. Results are written in source-list
+  order whatever the completion order, so the output is deterministic.
+- **Every act now carries `estleg:kehtiv`**, the snapshot date its redaction
+  was listed under, and `estleg:parseMode`. Structured acts gain one
+  `estleg:Subsection` per lõige, built by the same `build_subsections` the
+  laws use. The first full refresh therefore rewrites every peep. Re-run the
+  enrichment pipeline (`run_all_integration.py`) afterwards, because a
+  regenerated peep carries no enrichment layers.
+- **The index `run` block** records `regenStateSkipped`, `networkRequests`,
+  `workers`, `maxRequestsPerSecond`, `provisionIriScheme` and
+  `subsectionsGenerated`. Review it alongside the peep diff.
+
+The monthly workflow `.github/workflows/refresh-regulations.yml` runs both
+commands and opens a pull request containing the data and the index diff.
+It is disabled until the repository variable `ESTLEG_REFRESH_ENABLED` is set
+to `true`. Two decisions belong to the maintainer before it is turned on:
+
+- whether a scheduled job may call the public RT API monthly, and at what
+  rate;
+- which identity opens the pull request. The default `GITHUB_TOKEN` works,
+  but its pull requests do not trigger other workflows, so `validate.yml`
+  will not run on them automatically.
+
+### Provision IRIs and the pending MAJOR rename
+
+Regulation provision IRIs used to be minted by position: `sanitize_id(nr)`
+plus `_{len(seen_ids)}` on a collision. Under that scheme `§ 7¹` became
+`…_Par_7_6`, and a duplicate `§ 2` became `…_Par_2_4`. Laws use
+`law_structure._paragraph_id_suffix` with `_dedupe_paragraph_suffix`
+instead, which gives `…_Par_7_1` and `…_Par_2_x2`. The generator has three
+modes, selected with `--iri-scheme`:
+
+- `law` uses the law helpers.
+- `legacy` reproduces the committed IRIs byte for byte. This was verified on
+  three acts fetched from the public API.
+- `auto` is the default. New acts get `law`; existing acts retain their
+  recorded scheme. Each generated act records `dcterms:conformsTo` as
+  `https://w3id.org/estleg/iri-scheme/regulations/law` or the corresponding
+  `legacy` profile. Older peeps without a profile use `legacy`. Repeated
+  refreshes therefore keep the scheme chosen on the first generation.
+
+Moving the committed corpus to `law` is a **MAJOR** change under
+`docs/STABILITY.md`. It must be scheduled with a rename map, not run as a
+silent regeneration. Compute the map without applying it:
+
+```bash
+python3 scripts/regulation_iri_rename_map.py --scan-references --output /tmp/reg_iri_map.json
+python3 scripts/regulation_iri_rename_map.py --source xml   # authoritative, needs the XML cache
+```
+
+The dry run on this branch (offline, peep-derived) gave these totals:
+
+| | riik | KOV | total |
+|---|---|---|---|
+| acts | 3,812 | 11,059 | 14,871 |
+| provision IRIs | 51,712 | 116,708 | 168,420 |
+| IRIs that change | 1,767 | 782 | 2,549 (1.5%) |
+| acts with a change | 533 | 353 | 886 |
+| unresolved, kept as is | 8 | 0 | 8 |
+| new IRIs duplicated within an act | | | 0 |
+| new IRI equal to another node's current IRI | | | 64 |
+| references to changed IRIs from other regulation peeps | | | 1,200 |
+
+The 64 reused IRIs are the hazard. For example, `…_Par_7_7` is `§ 7¹` today
+and would become `§ 7⁷`. A redirect cannot express that, so the release
+notes must call it out. Apply the rename in one simultaneous pass. Then
+regenerate with `--iri-scheme law`, and publish the map as an `owl:sameAs` /
+redirect table.
 
 ---
 

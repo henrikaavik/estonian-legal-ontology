@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 4 — Regulations pipeline parity (#722)
+
+- **Regulations pipeline brought to law-pipeline parity (#722).** Every regulation now carries estleg:kehtiv. Structured regulations get one estleg:Subsection per lõige, built as for laws. generate_regulations.py gains --regen-state resume, a bounded fetch pool (--workers, --max-rps) and --iri-scheme, whose default keeps all published provision IRIs. The new regulation_iri_rename_map.py computes the old-to-new provision IRI map for the pending MAJOR rewrite without applying it: 2,549 of 168,420 IRIs change and 64 are reused. run_all_integration.py gains --snapshot auto, which skips the 3.8 GB copy on a clean tree and rolls back from git. docs/RELEASE.md documents the runtime, RAM and disk envelope and the refresh procedure. A monthly refresh-regulations workflow opens a PR with the index diff and stays disabled until the maintainer sets ESTLEG_REFRESH_ENABLED.
 ### Tier 1 wave 4 — #723
 
 - **Retrieval projection (#723).** Every chunks.jsonl record now carries an audit envelope (chunk_id, ontology_version, evaluation_date, act_iri, kehtiv, language) and a provision-level rt_url (the redaction's Riigi Teataja page with a #para<N> anchor). Optional --max-chars splits long paragraphs on sentence boundaries (part_index/part_count). act_title prefers the Estonian title. manifest.json reports the code's ontology version, chunk schema 2.0.0, key list and generator commit; llms.txt no longer links unpublished files and points at the chunks.jsonl.gz release asset. Committed samples regenerated.
