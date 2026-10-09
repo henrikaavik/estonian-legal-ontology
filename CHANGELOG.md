@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Tier 1 wave 5 — #721
+
+- **Governance, licensing and CI hardening (#721).** New GOVERNANCE.md, SECURITY.md and consumer-facing docs/RELEASE_NOTES.md. LICENSE is the bare MIT text again, so scanners detect it. Its scope note is in NOTICE, and REUSE.toml with LICENSES/ gives every path an SPDX licence (code MIT, compilation layer CC-BY-4.0, third-party text under source terms). pyproject.toml declares `license = "MIT"` (PEP 639). Workflow actions are pinned to commit SHAs, pytest runs on Python 3.11 to 3.13, and a Makefile gives CI and contributors one `make check` / `make lint`. The five DATA_RIGHTS verification items are dated, and one is closed from repository evidence.
+
 ### Tier 1 wave 4 — standards, coverage and product layers (#699, #708, #709, #710, #712, #714, #718, #719, #722, #723)
 
 - **Official EuroVoc for EU acts; tighter Estonian EuroVoc; no edit-distance concept matches (#699).** EU acts now carry the Publications Office's own EuroVoc subjects from CELLAR as `dcterms:subject` / `eli:is_about`, marked `estleg:subjectSource "cellar"`. 33,206 of 33,242 acts (99.9%) are covered. `scripts/fetch_eurovoc_official.py` caches the answers so reruns work offline. The Estonian keyword classifier no longer tags constitutional law on "valitsus"/"vabariik": the share fell from 65.8% to 0.7%. It ranks domains by hits per 1,000 tokens, needs at least 1 hit per 1,000 tokens, and assigns at most 3 domains, down from 5. The concepts layer no longer emits Levenshtein `skos:closeMatch`, which linked unrelated words such as laev/laps; all 279 pairs are removed. 15 spelling variants are folded into single concepts as `skos:altLabel`. EUR-Lex peeps no longer re-declare EU document-type individuals; those live only in the vocabulary as SKOS concepts.

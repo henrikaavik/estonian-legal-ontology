@@ -1,8 +1,18 @@
+# #721: PEP 639 ``license`` expressions need setuptools >= 77. Without this
+# table pip falls back to an unversioned setuptools and the legacy backend.
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "estonian-legal-ontology"
 version = "1.0.0"
 description = "Generation, enrichment, and validation tooling for the Estonian Legal Ontology corpus."
 requires-python = ">=3.11"
+# PEP 639 (#721). The MIT licence covers the code only; the data corpus is
+# not part of this package and its layered rights are set out in NOTICE.
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
 dependencies = [
   "requests>=2.32,<3",
   "rdflib>=7.1,<8",
@@ -28,6 +38,9 @@ dev = [
   "pytest-xdist>=3.5,<4",
   "pytest-timeout>=2.3,<3",
   "pytest-socket>=0.7,<1",
+  # Validates eval/benchmark items against item.schema.json
+  # (tests/test_build_legal_benchmark.py).
+  "jsonschema>=4.23,<5",
   # Workflow regression tests execute scripts parsed from the committed YAML.
   "PyYAML>=6,<7",
 ]
@@ -78,3 +91,7 @@ packages = ["estleg", "estleg_client"]
 
 [tool.setuptools.package-dir]
 estleg = "src/estleg"
+
+[tool.setuptools.package-data]
+# PEP 561 marker: estleg_client ships inline type hints.
+estleg_client = ["py.typed"]
