@@ -30,7 +30,8 @@ def test_transposition_schema_is_act_level() -> None:
 
     assert nodes["estleg:transposesDirective"]["rdfs:domain"] == {"@id": "estleg:Act"}
     assert nodes["estleg:transposedBy"]["rdfs:range"] == {"@id": "estleg:Act"}
-    assert nodes["estleg:transpositionStatus"]["rdfs:domain"] == {"@id": "estleg:Act"}
+    # #711: the three-valued status lives on the directive, not the act.
+    assert nodes["estleg:transpositionStatus"]["rdfs:domain"] == {"@id": "estleg:EULegislation"}
 
 
 def test_law_target_iri_uses_real_ontology_node(tmp_path: Path) -> None:

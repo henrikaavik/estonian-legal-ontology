@@ -154,7 +154,9 @@ FORBIDDEN_NO_AXIOM = frozenset(
 FORBIDDEN_NO_RANGE = frozenset(
     {
         "estleg:transposesDirective",
+        "estleg:transposesDirectiveAsserted",
         "estleg:transposedBy",
+        "estleg:initiatedBy",
         "estleg:harmonisedWith",
         "estleg:harmonises",
         "estleg:sharedDirective",
@@ -245,6 +247,13 @@ DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
         "pädevat asutust pole eraldatud",
         "competent authority not extracted",
     ),
+    # #711: the act's own RT normitehniline märkus, beside the CELLAR-notified
+    # estleg:transposesDirective (extract_ntm_directives.py).
+    "estleg:transposesDirectiveAsserted": (
+        ("owl:ObjectProperty",),
+        "võtab üle direktiivi (normitehnilise märkuse järgi)",
+        "transposes directive (asserted in the act)",
+    ),
     "estleg:coverageFlagMethod": (
         ("owl:DatatypeProperty",),
         "kattelipu meetod",
@@ -269,6 +278,18 @@ DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
     "estleg:editorialNote": (("owl:DatatypeProperty",), "toimetuse märkus", "editorial note"),
     "estleg:editorialSource": (("owl:DatatypeProperty",), "toimetuse märkuse autor", "editorial source"),
     "estleg:subjectSource": (("owl:DatatypeProperty",), "teema allikas", "subject source"),
+    # #717: draft lifecycle (generate_draft_legislation.lifecycle_schema_nodes).
+    "estleg:hasProcessStep": (("owl:ObjectProperty",), "menetlussamm", "has process step"),
+    "estleg:processStepOf": (("owl:ObjectProperty",), "menetlussammu eelnõu", "process step of"),
+    "estleg:processStage": (("owl:ObjectProperty",), "menetlusetapp", "process stage"),
+    "estleg:stepOrder": (("owl:DatatypeProperty",), "sammu järjekord", "step order"),
+    "estleg:riigikoguStatus": (("owl:DatatypeProperty",), "Riigikogu menetlusolek", "Riigikogu status"),
+    "estleg:initiatedBy": (("owl:ObjectProperty",), "algataja", "initiated by"),
+    "estleg:lifecycleStale": (("owl:DatatypeProperty",), "menetluselu aegunud", "lifecycle stale"),
+    "estleg:riigikoguMark": (("owl:DatatypeProperty",), "Riigikogu eelnõu tähis", "Riigikogu mark"),
+    "estleg:riigikoguUuid": (("owl:DatatypeProperty",), "Riigikogu UUID", "Riigikogu UUID"),
+    "estleg:riigikoguMembership": (("owl:DatatypeProperty",), "Riigikogu koosseis", "Riigikogu membership"),
+    "estleg:derivationMethod": (("owl:DatatypeProperty",), "tuletusmeetod", "derivation method"),
     # #712: KOV layer-1 enrichment (enrich_kov_layer1.py).
     "estleg:enactedByHistoricalMunicipality": (
         ("owl:ObjectProperty",),
@@ -290,6 +311,45 @@ DECLARED_TERMS: dict[str, tuple[tuple[str, ...], str, str]] = {
         ("owl:DatatypeProperty",),
         "volitusnorm muutunud",
         "enabling provision outdated",
+    ),
+    # #713: inferred kind of an effected amendment (generate_amendment_history.py).
+    "estleg:amendmentKind": (
+        ("owl:DatatypeProperty",),
+        "muudatuse liik (muutmismärge)",
+        "amendment kind",
+    ),
+    # #549 / #713: estleg:ReleaseDelta record terms (emit_release_changes.py).
+    "estleg:comparedFrom": (("owl:DatatypeProperty",), "võrreldud alates", "compared from"),
+    "estleg:comparedTo": (("owl:DatatypeProperty",), "võrreldud kuni", "compared to"),
+    "estleg:listedIriCap": (
+        ("owl:DatatypeProperty",),
+        "loetletud IRI-de ülempiir",
+        "listed IRI cap",
+    ),
+    "estleg:changed": (("owl:DatatypeProperty",), "muudetud", "changed"),
+    "estleg:changedCount": (("owl:DatatypeProperty",), "muudetute arv", "changed count"),
+    "estleg:addedLaw": (("owl:DatatypeProperty",), "lisatud seadus", "added law"),
+    "estleg:removedLaw": (("owl:DatatypeProperty",), "eemaldatud seadus", "removed law"),
+    "estleg:deprecatedLaw": (("owl:DatatypeProperty",), "aegunud seadus", "deprecated law"),
+    "estleg:addedLawCount": (
+        ("owl:DatatypeProperty",),
+        "lisatud seaduste arv",
+        "added law count",
+    ),
+    "estleg:removedLawCount": (
+        ("owl:DatatypeProperty",),
+        "eemaldatud seaduste arv",
+        "removed law count",
+    ),
+    "estleg:deprecatedLawCount": (
+        ("owl:DatatypeProperty",),
+        "aegunud seaduste arv",
+        "deprecated law count",
+    ),
+    "estleg:listedInline": (
+        ("owl:DatatypeProperty",),
+        "loetletud kirjes",
+        "listed inline",
     ),
 }
 
@@ -471,10 +531,6 @@ REAL_COMMENTS: dict[str, str] = {
     ),
     "estleg:amendmentDate": (
         "Date an AmendmentEvent took effect, as xsd:date."
-    ),
-    "estleg:amends": (
-        "Links an AmendmentEvent to the act it amends. Inverse of "
-        "estleg:amendedBy."
     ),
     "estleg:annexNumber": (
         "Ordinal or official number of an Annex."
@@ -671,6 +727,22 @@ REAL_COMMENTS: dict[str, str] = {
 # when a shaped class would type stubs under RDFS inference.
 DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:hasExpression": ("estleg:Act", "estleg:ActExpression"),
+    # #711: range dropped by FORBIDDEN_NO_RANGE (cross-bucket directive stubs).
+    "estleg:transposesDirectiveAsserted": ("estleg:Act", "estleg:EULegislation"),
+    # #717 draft lifecycle.
+    "estleg:hasProcessStep": ("estleg:DraftLegislation", "estleg:ProcessStep"),
+    "estleg:processStepOf": ("estleg:ProcessStep", "estleg:DraftLegislation"),
+    "estleg:processStage": ("estleg:ProcessStep", "estleg:LegislativePhase"),
+    "estleg:stepOrder": ("estleg:ProcessStep", "xsd:integer"),
+    "estleg:riigikoguStatus": ("estleg:ProcessStep", "xsd:string"),
+    # Range dropped by FORBIDDEN_NO_RANGE: bare Institution IRIs in the drafts bucket.
+    "estleg:initiatedBy": ("estleg:DraftLegislation", "estleg:Institution"),
+    "estleg:lifecycleStale": ("estleg:DraftLegislation", "xsd:boolean"),
+    "estleg:riigikoguMark": ("estleg:DraftLegislation", "xsd:string"),
+    "estleg:riigikoguUuid": ("estleg:DraftLegislation", "xsd:string"),
+    "estleg:riigikoguMembership": ("estleg:DraftLegislation", "xsd:integer"),
+    # Domain is owl:Thing via OVERWRITE_DOMAIN (schema:domainIncludes hints).
+    "estleg:derivationMethod": ("owl:Thing", "xsd:string"),
     "estleg:actNumber": ("estleg:Act", "xsd:string"),
     "estleg:affectedBy": ("estleg:Act", "rdfs:Resource"),
     "estleg:amendedBy": ("estleg:Act", "rdfs:Resource"),
@@ -872,6 +944,20 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
     "estleg:removed": ("estleg:ReleaseDelta", "xsd:string"),
     "estleg:addedCount": ("estleg:ReleaseDelta", "xsd:integer"),
     "estleg:removedCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    # #549 / #713 release-delta record terms.
+    "estleg:comparedFrom": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:comparedTo": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:listedIriCap": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:changed": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:changedCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:addedLaw": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:removedLaw": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:deprecatedLaw": ("estleg:ReleaseDelta", "xsd:string"),
+    "estleg:addedLawCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:removedLawCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:deprecatedLawCount": ("estleg:ReleaseDelta", "xsd:integer"),
+    "estleg:listedInline": ("estleg:ReleaseDelta", "xsd:boolean"),
+    "estleg:amendmentKind": ("estleg:AmendmentEvent", "xsd:string"),
     "estleg:containsPersonalData": ("owl:Thing", "xsd:boolean"),
     "estleg:legislativePhase": (
         "estleg:DraftLegislation",
@@ -917,6 +1003,11 @@ DOMAIN_RANGE: dict[str, tuple[str, str]] = {
 # Domains that schema files over-narrow (used on acts/amendments too).
 # Applied after merge so they win over schema copies.
 OVERWRITE_DOMAIN: dict[str, str] = {
+    # #711: the three-valued status is stamped on the directive, not the act
+    # (the act-level "unknown" placeholder is no longer emitted).
+    "estleg:transpositionStatus": "estleg:EULegislation",
+    # #717: shared by ProcessStep, CourtDecision and EUCourtDecision.
+    "estleg:derivationMethod": "owl:Thing",
     "estleg:publicationDate": "owl:Thing",
     "estleg:competentAuthority": "owl:Thing",
     "estleg:legalText": "owl:Thing",
@@ -1049,11 +1140,85 @@ OVERWRITE_RANGE: dict[str, str] = {
     "estleg:citationSource": "rdfs:Resource",
     # amendments/ -> provision_versions/: the interpretsVersion pattern again.
     "estleg:resultedInVersion": "rdfs:Resource",
+    # #711: three string tokens (sh:in in the EULegislation shape).
+    "estleg:transpositionStatus": "xsd:string",
 }
 
 # Comments the corpus contradicts. REAL_COMMENTS only replaces a placeholder,
 # so like DOMAIN_RANGE it never reaches a term whose comment is already there.
 OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
+    # #713: provision-level amendment history and the provision-level release
+    # delta (generate_amendment_history.py, emit_release_changes.py).
+    "estleg:amends": (
+        "Links an AmendmentEvent to the act it amends (act root(s) first) and, "
+        "since #713, to each estleg:LegalProvision / estleg:Subsection the "
+        "amending act touched (from the muutmismarge parent nesting). Inverse "
+        "of estleg:amendedBy."
+    ),
+    "estleg:publicationDate": (
+        "Publication date: of a draft in EIS, or, on an AmendmentEvent, of the "
+        "amending act in Riigi Teataja (avaldamineKuupaev, #713)."
+    ),
+    "estleg:amendmentKind": (
+        "Kind of an effected amendment, inferred from Riigi Teataja "
+        "muutmismarge text only where a token is present (Kehtetu / "
+        "täiendatud / muudetud / sõnastatud): repeals, supplements or amends. "
+        "Absent when no token is present. Values mirror estleg:changeType "
+        "(drafts). Issue #713."
+    ),
+    "estleg:ReleaseDelta": (
+        "Machine-readable inter-release delta: provision-level "
+        "added/removed/changed IRIs plus law-level changes (#549, #713)."
+    ),
+    "estleg:added": (
+        "IRI added between compared snapshots: a provision IRI (#713) or, in "
+        "the legacy #549 record, a law IRI. See estleg:addedCount."
+    ),
+    "estleg:removed": (
+        "IRI removed between compared snapshots: a provision IRI (#713) or, in "
+        "the legacy #549 record, a law IRI. See estleg:removedCount."
+    ),
+    "estleg:comparedFrom": (
+        "Label of the older snapshot a ReleaseDelta compares, e.g. "
+        "'git v1.0.0 (f018cf05f2)' (#549, #713)."
+    ),
+    "estleg:comparedTo": (
+        "Label of the newer snapshot a ReleaseDelta compares (#549, #713)."
+    ),
+    "estleg:listedIriCap": (
+        "Legacy #549 cap on the number of IRIs listed in a ReleaseDelta; the "
+        "counts stay complete. The #713 record is uncapped."
+    ),
+    "estleg:changed": (
+        "Provision IRI whose legalText, summary or temporal fields changed "
+        "between the compared snapshots (#713). See estleg:changedCount."
+    ),
+    "estleg:changedCount": (
+        "Full count of estleg:changed provision IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:addedLaw": (
+        "Act-root IRI of a law added to INDEX between the compared snapshots (#713)."
+    ),
+    "estleg:removedLaw": (
+        "Act-root IRI of a law removed from INDEX between the compared snapshots (#713)."
+    ),
+    "estleg:deprecatedLaw": (
+        "Act-root IRI of a law newly listed as deprecated in INDEX between the "
+        "compared snapshots (#713)."
+    ),
+    "estleg:addedLawCount": (
+        "Count of estleg:addedLaw IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:removedLawCount": (
+        "Count of estleg:removedLaw IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:deprecatedLawCount": (
+        "Count of estleg:deprecatedLaw IRIs in a ReleaseDelta (#713)."
+    ),
+    "estleg:listedInline": (
+        "False when a ReleaseDelta's IRI lists are in the changes-<version>.jsonl "
+        "sibling instead of inline (over 10,000 listed IRIs, #713)."
+    ),
     # The eelnoud generator's text (#443); the CV copy predated it, so a
     # projection of the eelnoud schema from the CV dropped the ELI-DL note.
     "estleg:DraftLegislation": (
@@ -1156,7 +1321,7 @@ OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
     "estleg:sourceTextLength": "Character length of the full extracted source body; present only when known (#719).",
     "estleg:editorialNote": "Project-authored paraphrase or note; never source text (#719).",
     "estleg:editorialSource": "Author of editorialNote (this project), never the cited authority (#719).",
-    "estleg:subjectSource": "Provenance of dcterms:subject on this node: 'cellar' = official EuroVoc indexing from the Publications Office (cdm:work_is_about_concept_eurovoc), #699.",
+    "estleg:subjectSource": "Provenance of dcterms:subject on this node: 'cellar' = official EuroVoc indexing from the Publications Office (cdm:work_is_about_concept_eurovoc), #699; 'riigikogu' = EuroVoc descriptors of a draft from api.riigikogu.ee (CC BY-SA 3.0), #717.",
     "estleg:registrikood": "The Estonian registry code of the legal person; a rename predecessor shares its successor's code (#718).",
     "estleg:xteeMemberCode": "The X-tee member id EE/GOV/<registrikood>, only on current institutions (#718).",
     "estleg:validFrom": "Inclusive start of the node's identity under this name; an open start is omitted (#718).",
@@ -1214,6 +1379,86 @@ OVERWRITE_COMMENT: dict[str, str | list[dict[str, str]]] = {
         "rendered as a Unicode superscript (#694); the legacy punktNr tag is "
         "still honoured. Falls back to the punkt numbers cited in the lõige "
         "text only when the lõige has no structural sub-points (#514)."
+    ),
+    # #711: three corpus-status values; the pre-#711 "full, partial, or
+    # unknown" wording is retired (only "unknown" was ever emitted, on acts).
+    "estleg:transpositionStatus": [
+        {
+            "@value": (
+                "Corpus transposition status of an EU directive (#711), one of "
+                "\"transposed\" (the corpus holds a transposing act: a CELLAR "
+                "national implementing measure matched to an Estonian law or "
+                "state regulation, estleg:transposedBy, or an act whose Riigi "
+                "Teataja normitehniline märkus names the directive, "
+                "estleg:transposesDirectiveAsserted), \"no_measure_required\" "
+                "(no transposing act; Estonia notified CELLAR that no national "
+                "measure is necessary) or \"no_evidence_in_corpus\" (neither). "
+                "NOT a legal finding: there is deliberately no \"not "
+                "transposed\" value, and \"transposed\" records evidence of a "
+                "measure, not complete or correct transposition. Stamped on "
+                "directives with a transposition deadline or any evidence. "
+                "Deprecated usage: the pre-#711 act-level values \"full\", "
+                "\"partial\" and \"unknown\" are retired and no longer emitted."
+            ),
+            "@language": "en",
+        },
+        {
+            "@value": (
+                "EL-i direktiivi ülevõtmise staatus selles korpuses (#711): "
+                "\"transposed\" (korpuses on ülevõttev akt — CELLAR-i "
+                "riikliku rakendusmeetme vaste Eesti seadusele või määrusele "
+                "või akt, mille normitehniline märkus direktiivi nimetab), "
+                "\"no_measure_required\" (Eesti teatas, et riiklikku meedet "
+                "pole vaja) või \"no_evidence_in_corpus\" (kumbagi pole). "
+                "MITTE õiguslik järeldus: väärtust \"üle võtmata\" ei ole."
+            ),
+            "@language": "et",
+        },
+    ],
+    "estleg:hasProcessStep": "A dated lifecycle step of the draft (#717).",
+    "estleg:processStepOf": "Inverse of estleg:hasProcessStep (#717).",
+    "estleg:processStage": (
+        "The estleg:LegislativePhase (eli-dl:ProcessStage) the step observed (#717)."
+    ),
+    "estleg:stepOrder": "Stable ordinal of the step within its draft; ids only append (#717).",
+    "estleg:riigikoguStatus": (
+        "Raw Riigikogu proceeding status code of the event the step records, "
+        "e.g. VASTU_VOETUD (#717)."
+    ),
+    "estleg:initiatedBy": (
+        "The estleg:Institution that owns the draft in EIS, dated along the "
+        "same-legal-person rename chain. No rdfs:range so bare institution IRIs "
+        "are not phantom-typed in the drafts bucket (#717)."
+    ),
+    "estleg:lifecycleStale": (
+        "True when the draft is still at public consultation with no evidence "
+        "newer than a year before the EIS snapshot; its outcome is unknown, not "
+        "invented (#717)."
+    ),
+    "estleg:riigikoguMark": (
+        "Riigikogu registration mark with draft type code, e.g. '897 SE' (#717)."
+    ),
+    "estleg:riigikoguUuid": (
+        "UUID of the Riigikogu draft volume (api.riigikogu.ee "
+        "/api/volumes/drafts/{uuid}), #717."
+    ),
+    "estleg:riigikoguMembership": (
+        "Riigikogu membership (koosseis) number the draft was proceeded in (#717)."
+    ),
+    "estleg:derivationMethod": (
+        "How a value was derived (closed vocabulary, docs/DRAFT_LIFECYCLE.md): "
+        "eis-feed, riigikogu-eis-number, riigikogu-mark, riigikogu-title-date "
+        "(on estleg:ProcessStep); minted-ecli, rederived-case-type (on a "
+        "Riigikohus estleg:CourtDecision); title-regex, cellar-interprets (on "
+        "an estleg:EUCourtDecision, describing its estleg:interpretsEULaw), #717."
+    ),
+    "estleg:transposesDirectiveAsserted": (
+        "Links an Estonian act to an EU directive that the act's own Riigi "
+        "Teataja normitehniline märkus (<normtehnmarkus>) says it transposes "
+        "(#711, extract_ntm_directives.py). Independent of the CELLAR-notified "
+        "estleg:transposesDirective, so the two can be diffed (asserted but "
+        "not notified, notified but not asserted). Deliberately carries no "
+        "rdfs:range (cross-bucket directive stubs, #563/#570)."
     ),
     # #701: bilingual, because the point is that neither reading is a finding.
     "estleg:noTranspositionEdgeInCorpus": [
@@ -1303,7 +1548,12 @@ DOMAIN_INCLUDES: dict[str, tuple[str, ...]] = {
     "estleg:sourceTextLength": ("estleg:Annotation",),
     "estleg:editorialNote": ("estleg:Annotation",),
     "estleg:editorialSource": ("estleg:Annotation",),
-    "estleg:subjectSource": ("estleg:EULegislation",),
+    "estleg:subjectSource": ("estleg:EULegislation", "estleg:DraftLegislation"),
+    "estleg:derivationMethod": (
+        "estleg:ProcessStep",
+        "estleg:CourtDecision",
+        "estleg:EUCourtDecision",
+    ),
     "estleg:enactedBy": ("estleg:Act", "estleg:LegalProvision"),
     "estleg:enactedByMunicipality": ("estleg:Act", "estleg:LegalProvision"),
     "estleg:hasVersion": ("estleg:LegalProvision",),
@@ -1342,6 +1592,8 @@ RANGE_INCLUDES: dict[str, tuple[str, ...]] = {
     "estleg:similarTarget": ("estleg:LegalProvision", "estleg:Act"),
     "estleg:transposedBy": ("estleg:Act",),
     "estleg:transposesDirective": ("estleg:EULegislation",),
+    "estleg:transposesDirectiveAsserted": ("estleg:EULegislation",),
+    "estleg:initiatedBy": ("estleg:Institution",),
     "estleg:versionOf": ("estleg:LegalProvision",),
 }
 
@@ -1434,6 +1686,59 @@ def normalize_node(node: dict) -> dict:
         if key in ordered and not isinstance(ordered[key], list):
             ordered[key] = [ordered[key]]
     return ordered
+
+
+# #717: the draft-lifecycle class and the Riigikogu-stage LegislativePhase
+# individuals (generate_draft_legislation.PHASES orders 7-12). Seeded only when
+# absent, like DECLARED_TERMS; apply_skos_schemes adds the SKOS scheme links.
+_RIIGIKOGU_PHASES: tuple[tuple[str, int, str, str, str], ...] = (
+    ("RiigikoguProceeding", 7, "Riigikogu menetluses", "In Riigikogu proceedings",
+     "Eelnõu on Riigikogus algatatud või menetlusse võetud."),
+    ("FirstReading", 8, "Esimene lugemine", "First reading",
+     "Eelnõu on Riigikogus esimesel lugemisel."),
+    ("SecondReading", 9, "Teine lugemine", "Second reading",
+     "Eelnõu on Riigikogus teisel lugemisel."),
+    ("ThirdReading", 10, "Kolmas lugemine", "Third reading",
+     "Eelnõu on Riigikogus kolmandal lugemisel."),
+    ("Reconsideration", 11, "Uuesti arutamine", "Reconsideration",
+     "Vabariigi President jättis seaduse välja kuulutamata; Riigikogu arutab uuesti."),
+    ("Lapsed", 12, "Menetlusest välja langenud", "Lapsed",
+     "Eelnõu langes menetlusest välja (koosseisu lõppemine, ühendamine, tagastamine vms)."),
+)
+
+
+def seeded_lifecycle_nodes() -> list[dict]:
+    """estleg:ProcessStep and the six Riigikogu-stage phases (#717)."""
+    nodes: list[dict] = [
+        {
+            "@id": "estleg:ProcessStep",
+            "@type": ["owl:Class"],
+            "rdfs:subClassOf": {"@id": "eli-dl:ProcessStep"},
+            "rdfs:label": [
+                {"@value": "Menetlussamm", "@language": "et"},
+                {"@value": "Process Step", "@language": "en"},
+            ],
+            "rdfs:comment": (
+                "One dated observation of a draft at a legislative stage (EIS "
+                "feed or Riigikogu proceeding event), #717."
+            ),
+        }
+    ]
+    for name, order, label_et, label_en, comment in _RIIGIKOGU_PHASES:
+        nodes.append(
+            {
+                "@id": f"estleg:Phase_{name}",
+                "@type": ["owl:NamedIndividual", "estleg:LegislativePhase", "eli-dl:ProcessStage"],
+                "rdfs:label": [
+                    {"@value": label_et, "@language": "et"},
+                    {"@value": label_en, "@language": "en"},
+                ],
+                "skos:prefLabel": label_en,
+                "rdfs:comment": comment,
+                "estleg:phaseOrder": {"@value": str(order), "@type": "xsd:integer"},
+            }
+        )
+    return nodes
 
 
 def declared_term_node(nid: str) -> dict:
@@ -1743,7 +2048,7 @@ def build_consolidated_graph(
     for nid in DECLARED_TERMS:
         if nid not in index:
             index[nid] = declared_term_node(nid)
-    for seeded in institution_type_nodes():
+    for seeded in [*institution_type_nodes(), *seeded_lifecycle_nodes()]:
         if seeded["@id"] not in index:
             index[seeded["@id"]] = seeded
 

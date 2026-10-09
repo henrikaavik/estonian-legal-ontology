@@ -42,8 +42,8 @@ Arvud on mõõdetud 8. oktoobril 2026 hoidla indeksfailidest
 | EL õigusaktid (EUR-Lex) | 33 242 | 2026-03-03 | Neist 12 131 kehtivad; 206 on seotud Eesti ülevõtuga. |
 | EL kohtulahendid (CURIA) | 22 290 | 2026-03-03 | Euroopa Kohus, Üldkohus, Avaliku Teenistuse Kohus. |
 
-Kataloogis on kokku 27 023 JSON/JSON-LD faili; valideerija valib neist
-kontrolliks 26 975. Ühte kuupäeva kogu andmestikule ei ole: iga korpus
+Kataloogis on kokku 27 029 JSON/JSON-LD faili; valideerija valib neist
+kontrolliks 26 978. Ühte kuupäeva kogu andmestikule ei ole: iga korpus
 uueneb eraldi.
 
 Allolev plokk kannab samu arve masinloetaval kujul. Test

@@ -14,6 +14,10 @@ returns a complete, correct answer. This directory holds that measurement.
   point-in-time, and inline-sanction completeness.
 - **`gold_sets/`** — hand-verified ground truth for the *accuracy* dimension
   (precision/recall per heuristic layer). Ships templated; see below.
+- **`benchmark/`** — the Estonian legal-reasoning benchmark for LLMs (#727):
+  point-in-time provision text, Riigikohus → provision interpretation and
+  cross-reference resolution, as deterministic JSONL splits. See
+  [`docs/BENCHMARK.md`](../docs/BENCHMARK.md).
 
 ## Refreshing the baseline
 

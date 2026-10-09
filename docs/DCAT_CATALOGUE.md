@@ -43,6 +43,7 @@ for the SHACL shapes and the controlled vocabulary.
 | Combined Supreme Court decisions ontology (Riigikohus) | CC BY 4.0 (compilation layer) | QUARTERLY |
 | Municipal regulations ontology (KOV) | CC BY 4.0 (compilation layer) | MONTHLY |
 | Inter-release change record 0.11.0 | CC BY 4.0 (wholly project-authored) | IRREG |
+| Inter-release change record 1.0.0 (provision level) | CC BY 4.0 (wholly project-authored) | IRREG |
 | Retrieval chunks (provision-version JSON Lines) | CC BY 4.0 (compilation layer) | MONTHLY |
 
 Licence IRIs come from the EU licence authority

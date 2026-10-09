@@ -53,6 +53,7 @@ EXPECTED_LICENCE = {
     "Combined Supreme Court decisions ontology (Riigikohus)": CC_BY,
     "Municipal regulations ontology (KOV)": CC_BY,
     "Inter-release change record 0.11.0": CC_BY,
+    "Inter-release change record 1.0.0 (provision level)": CC_BY,
     "Retrieval chunks (provision-version JSON Lines)": CC_BY,
 }
 

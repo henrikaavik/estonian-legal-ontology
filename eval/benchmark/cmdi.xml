@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CMDI 1.2 metadata STUB for a CLARIN-EE deposit of the Estonian legal-reasoning
+  benchmark (issue #727). NOT deposit-ready: every "TO-VERIFY" marker below is
+  an open item in docs/BENCHMARK.md ("CLARIN-EE deposit checklist").
+
+  Profile: shaped after the general CLARIN "OLAC-DcmiTerms" profile (Dublin Core
+  terms as a CMDI component). TO-VERIFY: the exact profile id
+  (clarin.eu:cr1:p_…) in the CLARIN Component Registry, and whether CLARIN-EE
+  (Center of Estonian Language Resources) prefers its own DataCollection /
+  corpus profile instead. The cmdp namespace below must be changed together
+  with MdProfile once the id is confirmed.
+-->
+<cmd:CMD xmlns:cmd="http://www.clarin.eu/cmd/1"
+         xmlns:cmdp="http://www.clarin.eu/cmd/1/profiles/clarin.eu:cr1:p_TO-VERIFY"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         CMDVersion="1.2"
+         xsi:schemaLocation="http://www.clarin.eu/cmd/1 https://infra.clarin.eu/CMDI/1.x/xsd/cmd-envelop.xsd">
+  <cmd:Header>
+    <!-- TO-VERIFY: metadata creator = the applicant organisation / PI (maintainer decision). -->
+    <cmd:MdCreator>Estonian Legal Ontology project (TO-VERIFY: applicant organisation / PI)</cmd:MdCreator>
+    <cmd:MdCreationDate>2026-10-08</cmd:MdCreationDate>
+    <!-- TO-VERIFY: assigned by the repository on deposit (handle / PID of this record). -->
+    <cmd:MdSelfLink>TO-VERIFY</cmd:MdSelfLink>
+    <cmd:MdProfile>clarin.eu:cr1:p_TO-VERIFY</cmd:MdProfile>
+    <cmd:MdCollectionDisplayName>Estonian Legal Ontology</cmd:MdCollectionDisplayName>
+  </cmd:Header>
+  <cmd:Resources>
+    <cmd:ResourceProxyList>
+      <!-- TO-VERIFY: replace the repository-relative refs with the deposit's handle URLs,
+           and confirm the MIME type CLARIN-EE accepts for JSON Lines. -->
+      <cmd:ResourceProxy id="train">
+        <cmd:ResourceType mimetype="application/jsonl">Resource</cmd:ResourceType>
+        <cmd:ResourceRef>eval/benchmark/full/train.jsonl</cmd:ResourceRef>
+      </cmd:ResourceProxy>
+      <cmd:ResourceProxy id="dev">
+        <cmd:ResourceType mimetype="application/jsonl">Resource</cmd:ResourceType>
+        <cmd:ResourceRef>eval/benchmark/full/dev.jsonl</cmd:ResourceRef>
+      </cmd:ResourceProxy>
+      <cmd:ResourceProxy id="test">
+        <cmd:ResourceType mimetype="application/jsonl">Resource</cmd:ResourceType>
+        <cmd:ResourceRef>eval/benchmark/full/test.jsonl</cmd:ResourceRef>
+      </cmd:ResourceProxy>
+      <cmd:ResourceProxy id="schema">
+        <cmd:ResourceType mimetype="application/schema+json">Resource</cmd:ResourceType>
+        <cmd:ResourceRef>eval/benchmark/item.schema.json</cmd:ResourceRef>
+      </cmd:ResourceProxy>
+      <cmd:ResourceProxy id="rights">
+        <cmd:ResourceType mimetype="application/json">Resource</cmd:ResourceType>
+        <cmd:ResourceRef>eval/benchmark/rights_provenance.json</cmd:ResourceRef>
+      </cmd:ResourceProxy>
+      <cmd:ResourceProxy id="landing">
+        <cmd:ResourceType mimetype="text/html">LandingPage</cmd:ResourceType>
+        <cmd:ResourceRef>https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/BENCHMARK.md</cmd:ResourceRef>
+      </cmd:ResourceProxy>
+    </cmd:ResourceProxyList>
+    <cmd:JournalFileProxyList/>
+    <cmd:ResourceRelationList/>
+  </cmd:Resources>
+  <cmd:Components>
+    <cmdp:OLAC-DcmiTerms>
+      <cmdp:title xml:lang="et">Eesti õigusliku arutluse hindamiskogum (estleg-legal-reasoning 0.1.0)</cmdp:title>
+      <cmdp:title xml:lang="en">Estonian legal-reasoning benchmark (estleg-legal-reasoning 0.1.0)</cmdp:title>
+      <cmdp:description xml:lang="en">Three deterministic task families derived from the Estonian Legal Ontology corpus: point-in-time provision text (Riigi Teataja redactions), Supreme Court (Riigikohus) decision to interpreted provisions, and statutory cross-reference resolution. Prompts in Estonian; answers are texts or estleg: provision IRIs; split train/dev/test by source law or decision.</cmdp:description>
+      <cmdp:description xml:lang="et">Kolm deterministlikult tuletatud ülesannete perekonda: sätte tekst antud kuupäeval, Riigikohtu lahendi tõlgendatud sätted ja õigusaktisisese/-vahelise viite lahendamine.</cmdp:description>
+      <!-- TO-VERIFY: creator / contributor list (PI, applicant organisation, TartuNLP / EKI / law-faculty partners). -->
+      <cmdp:creator>Aavik, Henrik</cmdp:creator>
+      <cmdp:contributor>TO-VERIFY</cmdp:contributor>
+      <cmdp:publisher>TO-VERIFY: CLARIN-EE / Center of Estonian Language Resources</cmdp:publisher>
+      <cmdp:language>est</cmdp:language>
+      <cmdp:subject>law</cmdp:subject>
+      <cmdp:subject>legal reasoning</cmdp:subject>
+      <cmdp:subject>evaluation benchmark</cmdp:subject>
+      <cmdp:subject>Estonian legislation</cmdp:subject>
+      <cmdp:type>Dataset</cmdp:type>
+      <cmdp:format>application/jsonl</cmdp:format>
+      <cmdp:created>2026-10-08</cmdp:created>
+      <cmdp:hasVersion>0.1.0</cmdp:hasVersion>
+      <!-- TO-VERIFY: persistent identifier (CLARIN-EE handle; may also satisfy the Zenodo DOI item #473). -->
+      <cmdp:identifier>TO-VERIFY</cmdp:identifier>
+      <cmdp:source>https://www.riigiteataja.ee</cmdp:source>
+      <cmdp:source>https://www.riigikohus.ee</cmdp:source>
+      <cmdp:isVersionOf>https://w3id.org/estleg/</cmdp:isVersionOf>
+      <!-- Rights mirror NOTICE / docs/DATA_RIGHTS.md and are a DRAFT pending sign-off. -->
+      <cmdp:license>https://creativecommons.org/licenses/by/4.0/</cmdp:license>
+      <cmdp:rights>DRAFT, pending legal / data-owner / DPO sign-off. Compilation layer (items, IRIs, links): CC BY 4.0 (draft election; CC0 1.0 alternative). Statutory text: not an object of copyright (Autoriõiguse seadus § 5); Riigi Teataja reuse/database terms TO-VERIFY. Court items: Riigikohus case metadata only (case number, ECLI, date, chamber), no decision text or names; personal-data position TO-VERIFY with the DPO (docs/DATA_PROTECTION.md, #720). Rights transfer to the depositing centre: TO-VERIFY (not closed in docs/DATA_RIGHTS.md).</cmdp:rights>
+      <cmdp:accessRights>TO-VERIFY: PUB (public) vs ACA (academic) licence category at CLARIN-EE</cmdp:accessRights>
+    </cmdp:OLAC-DcmiTerms>
+  </cmd:Components>
+</cmd:CMD>

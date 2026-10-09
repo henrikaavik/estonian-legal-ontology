@@ -48,6 +48,7 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field
 from functools import partial
 from pathlib import Path
 
@@ -71,6 +72,12 @@ from estleg.kov_pipeline_coverage import (
     measure_runtime,
     resolve_pipeline_version,
     write_coverage_report,
+)
+from estleg.law_structure import (
+    _iter_loiked,
+    _loige_body_text,
+    _paragraph_id_suffix,
+    build_subsections,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -559,14 +566,174 @@ def build_title_to_slug_map(laws: dict[str, dict]) -> dict[str, list[str]]:
     return mapping
 
 
+# Amendment-kind tokens (#713). Riigi Teataja XML carries no structured
+# muudetud / täiendatud / kehtetuks-tunnistatud field on ``<muutmismarge>``
+# (verified on KarS: the tokens appear only as free text). The kind is
+# therefore INFERRED, and only where a token is actually present: the
+# marker's own ``tavatekst`` (``"Kehtetu - "``, a Riigikohus invalidation
+# note) or the leading words of the provision text that carries the marker.
+# Values reuse the ``estleg:changeType`` vocabulary (repeals / supplements /
+# amends). "jõustumisaeg muudetud" changes an entry-into-force date, not the
+# provision, so it never counts as ``amends``.
+_KIND_REPEALS_RE = re.compile(r"\bkehtetu(?:ks)?\b", re.IGNORECASE)
+_KIND_SUPPLEMENTS_RE = re.compile(r"\btäiendatud\b", re.IGNORECASE)
+_KIND_AMENDS_RE = re.compile(
+    r"(?<!jõustumisaeg )\b(?:muudetud|sõnastatud)\b", re.IGNORECASE
+)
+# How many leading characters of the carrying provision's own text are
+# inspected for a kind token (RT renders a repealed unit as "Kehtetu - …").
+_KIND_LEAD_CHARS = 12
+
+# Context-element tags of ``<muutmismarge>`` (#713). A marker nested under a
+# ``paragrahv`` (directly, or via its ``loige`` / ``alampunkt`` /
+# ``sisuTekst``) is provision-level; anything else (act root, ``peatykk``,
+# ``jagu``, ``jaotis``, ``normtehnmarkus``) is act-level only.
+_PROVISION_TAG = "paragrahv"
+_SUBSECTION_TAG = "loige"
+
+
+def _marker_own_text(marker: ET.Element) -> str:
+    """Free text written INSIDE a ``<muutmismarge>`` (``tavatekst`` children)."""
+    return " ".join(
+        (el.text or "").strip()
+        for el in marker.iter()
+        if ln(el.tag) == "tavatekst" and el.text and el.text.strip()
+    )
+
+
+def _parent_lead_text(parent: ET.Element | None) -> str:
+    """Leading text of the element carrying the marker, markers excluded."""
+    if parent is None:
+        return ""
+    parts: list[str] = []
+    for el in parent.iter():
+        if el is not parent and ln(el.tag) == "muutmismarge":
+            break
+        if ln(el.tag) == "tavatekst" and el.text and el.text.strip():
+            parts.append(el.text.strip())
+            break
+    return " ".join(parts)[:_KIND_LEAD_CHARS]
+
+
+def infer_amendment_kind(marker: ET.Element, parent: ET.Element | None) -> str | None:
+    """Return ``repeals`` / ``supplements`` / ``amends`` or ``None`` (#713).
+
+    Only an explicit token counts; a marker without one stays unclassified
+    rather than defaulting to ``amends``.
+    """
+    own = _marker_own_text(marker)
+    lead = _parent_lead_text(parent)
+    for text in (own, lead):
+        if not text:
+            continue
+        if _KIND_REPEALS_RE.search(text):
+            return "repeals"
+        if _KIND_SUPPLEMENTS_RE.search(text):
+            return "supplements"
+        if _KIND_AMENDS_RE.search(text):
+            return "amends"
+    return None
+
+
+def _iter_markers_with_context(el: ET.Element, parent: ET.Element | None = None,
+                               par: ET.Element | None = None,
+                               loige: ET.Element | None = None):
+    """Yield ``(marker, parent, paragrahv, loige)`` in document order."""
+    tag = ln(el.tag)
+    if tag == "muutmismarge":
+        yield el, parent, par, loige
+        return
+    if tag == _PROVISION_TAG:
+        par, loige = el, None
+    elif tag == _SUBSECTION_TAG and par is not None:
+        loige = el
+    for child in el:
+        yield from _iter_markers_with_context(child, el, par, loige)
+
+
+def _subsection_suffixes(par_el: ET.Element) -> dict[int, str]:
+    """``id(loige element) -> _Lg_ suffix`` exactly as the law builder mints it.
+
+    Runs :func:`estleg.law_structure.build_subsections` with a placeholder
+    prefix and maps its nodes back onto the non-empty ``loige`` children (the
+    builder skips empty ones), so superscripts, ``Unknown`` → sibling index
+    (#514) and duplicate disambiguation all follow the canonical code path.
+    """
+    try:
+        nodes = build_subsections(
+            par_el, "estleg:_", abbrev_prefix="_", par_suffix="_", paragraph_display=""
+        )
+    except ValueError:
+        return {}
+    non_empty = [lg for lg in _iter_loiked(par_el) if _loige_body_text(lg)]
+    if len(non_empty) != len(nodes):
+        return {}
+    return {
+        id(lg): node["@id"].split("_Lg_", 1)[1]
+        for lg, node in zip(non_empty, nodes, strict=True)
+    }
+
+
+def _provision_ref(
+    par: ET.Element | None,
+    loige: ET.Element | None,
+    cache: dict[int, dict[int, str]],
+) -> tuple[str, str | None] | None:
+    """``(paragraph suffix, subsection suffix | None)`` for a marker, or None."""
+    if par is None:
+        return None
+    par_suffix = _paragraph_id_suffix(par)
+    if par_suffix == "Unknown":
+        return None
+    lg_suffix = None
+    if loige is not None:
+        key = id(par)
+        if key not in cache:
+            cache[key] = _subsection_suffixes(par)
+        lg_suffix = cache[key].get(id(loige))
+    return (par_suffix, lg_suffix)
+
+
+def _modern_rt_reference(rt_osa: str, publication_date: str | None, rt_artikkel: str) -> str | None:
+    """Post-2010 RT citation ``"RT I, 05.07.2013, 2"`` (no year/number fields)."""
+    if not (rt_osa and publication_date and rt_artikkel):
+        return None
+    yyyy, mm, dd = publication_date.split("-")
+    return f"{rt_osa}, {dd}.{mm}.{yyyy}, {rt_artikkel}"
+
+
 def extract_amendments_from_xml(
     xml_path: Path,
     *,
     failures: list[str] | None = None,
+    modern_rt_citations: bool = False,
 ) -> list[dict]:
     """
     Extract amendment references (muutmismarge blocks) from a law XML file.
     Each muutmismarge contains info about an amending act.
+
+    Besides the date / RT reference / entry-into-force / ``akt_viide`` fields,
+    every record carries (#713):
+
+    * ``provision_refs`` — ``(paragraph suffix, subsection suffix | None)``
+      for each marker nested under a ``paragrahv`` (via ``loige`` /
+      ``alampunkt`` / ``sisuTekst``), unioned across the markers that dedupe
+      into the record. Suffixes come from ``law_structure`` so they match the
+      ``_Par_<n>`` / ``_Lg_<m>`` IRIs the law builder mints.
+    * ``publication_date`` — ``avaldamismarge/avaldamineKuupaev``.
+    * ``kinds`` — inferred amendment kinds (:func:`infer_amendment_kind`).
+    * ``marker_count`` — how many ``<muutmismarge>`` collapsed into it.
+
+    A marker with neither a date nor a classic RT reference is not an event
+    of its own; its context is folded into the record of the same amending
+    act (:func:`_attach_orphan_markers`).
+
+    ``modern_rt_citations`` (default off): a post-2010 marker has no
+    ``RTaasta``/``RTnr``/``aktikuupaev`` and is dropped by the classic rule;
+    with the flag it is kept under its modern citation
+    (``"RT I, 05.07.2013, 2"``). Off by default because it re-keys the
+    events that such markers already dedupe into and absorbs version-layer
+    ``_vf_`` dates — see docs/AMENDMENT_HISTORY.md.
     """
     amendments: list[dict] = []
     try:
@@ -580,15 +747,18 @@ def extract_amendments_from_xml(
             )
         return amendments
 
-    for el in root.iter():
-        if ln(el.tag) != "muutmismarge":
-            continue
-
+    suffix_cache: dict[int, dict[int, str]] = {}
+    orphans: list[dict] = []
+    for el, parent, par, loige in _iter_markers_with_context(root):
         amendment: dict = {
             "date": None,
             "rt_reference": None,
             "entry_into_force": None,
             "akt_viide": None,
+            "publication_date": None,
+            "provision_refs": [],
+            "kinds": [],
+            "marker_count": 1,
         }
 
         # aktikuupaev — date of the amending act
@@ -614,6 +784,9 @@ def extract_amendments_from_xml(
             rt_nr = ct(avaldamismarge, "RTnr") or ""
             rt_artikkel = ct(avaldamismarge, "RTartikkel") or ""
             akt_viide = ct(avaldamismarge, "aktViide")
+            published = ct(avaldamismarge, "avaldamineKuupaev")
+            if published:
+                amendment["publication_date"] = parse_date(published)
 
             # Only mint an rt_reference when the components are enough to be
             # unique (issue #263). A reference needs the publication YEAR plus
@@ -625,13 +798,53 @@ def extract_amendments_from_xml(
                 amendment["rt_reference"] = (
                     f"{rt_osa}, {rt_aasta}, {rt_nr}, {rt_artikkel}".strip(", ")
                 )
+            elif modern_rt_citations:
+                amendment["rt_reference"] = _modern_rt_reference(
+                    rt_osa, amendment["publication_date"], rt_artikkel
+                )
             if akt_viide:
                 amendment["akt_viide"] = akt_viide
 
+        ref = _provision_ref(par, loige, suffix_cache)
+        if ref is not None:
+            amendment["provision_refs"].append(ref)
+        kind = infer_amendment_kind(el, parent)
+        if kind is not None:
+            amendment["kinds"].append(kind)
+
         if amendment["date"] or amendment["rt_reference"]:
             amendments.append(amendment)
+        else:
+            orphans.append(amendment)
 
-    return _dedupe_amendments(amendments, failures=failures)
+    records = _dedupe_amendments(amendments, failures=failures)
+    _attach_orphan_markers(records, orphans)
+    return records
+
+
+def _attach_orphan_markers(records: list[dict], orphans: list[dict]) -> int:
+    """Fold undated, unreferenced markers into their act's record (#713).
+
+    A post-2010 ``<muutmismarge>`` often carries only ``joustumine`` plus an
+    ``avaldamismarge`` with ``avaldamineKuupaev``/``RTartikkel``/``aktViide``
+    (no ``aktikuupaev``, no ``RTaasta``), so it cannot become an event of its
+    own. Its ``aktViide`` (the amending act's RT globalId) still identifies
+    the act; when exactly one kept record has the same ``akt_viide`` the
+    orphan's provision refs, kinds and publication date are merged into it.
+    No event is added or re-keyed. Returns the number of orphans attached.
+    """
+    by_akt: dict[str, list[dict]] = {}
+    for record in records:
+        if record.get("akt_viide"):
+            by_akt.setdefault(record["akt_viide"], []).append(record)
+    attached = 0
+    for orphan in orphans:
+        hits = by_akt.get(orphan.get("akt_viide") or "") or []
+        if len(hits) != 1:
+            continue
+        hits[0].update(_merge_marker_context(hits[0], orphan))
+        attached += 1
+    return attached
 
 
 # A merged record whose entry-into-force precedes its adoption date by more
@@ -734,6 +947,37 @@ def _would_invert(date: str | None, eif: str | None) -> bool:
     return delta is not None and delta < -_MAX_EIF_BEFORE_DATE_DAYS
 
 
+def _copy_amendment(amend: dict) -> dict:
+    """Shallow copy with private list fields (merge must not alias inputs)."""
+    out = dict(amend)
+    for key in ("provision_refs", "kinds"):
+        out[key] = list(amend.get(key) or [])
+    return out
+
+
+def _merge_marker_context(existing: dict, amend: dict) -> dict:
+    """Union the per-marker context of two records that dedupe together (#713).
+
+    Provision refs and kinds keep first-seen order; ``publication_date`` is
+    backfilled; ``marker_count`` adds up. Independent of which record wins the
+    completeness contest, so no marker's provision is lost to the dedupe.
+    """
+    refs = list(existing.get("provision_refs") or [])
+    for ref in amend.get("provision_refs") or []:
+        if ref not in refs:
+            refs.append(ref)
+    kinds = list(existing.get("kinds") or [])
+    for kind in amend.get("kinds") or []:
+        if kind not in kinds:
+            kinds.append(kind)
+    return {
+        "provision_refs": refs,
+        "kinds": kinds,
+        "publication_date": existing.get("publication_date") or amend.get("publication_date"),
+        "marker_count": int(existing.get("marker_count") or 1) + int(amend.get("marker_count") or 1),
+    }
+
+
 def _dedupe_amendments(
     amendments: list[dict],
     *,
@@ -768,9 +1012,10 @@ def _dedupe_amendments(
         key = _amend_dedup_key(amend)
         existing = merged.get(key)
         if existing is None:
-            merged[key] = dict(amend)
+            merged[key] = _copy_amendment(amend)
             order.append(key)
             continue
+        context = _merge_marker_context(existing, amend)
         # Pick the more-complete record as the base, then backfill.
         if _amend_completeness(amend) > _amend_completeness(existing):
             winner, loser = dict(amend), existing
@@ -791,6 +1036,7 @@ def _dedupe_amendments(
             ):
                 continue
             winner[field_name] = candidate
+        winner.update(context)
         merged[key] = winner
     # Sanitise EVERY surviving record, not only those that absorbed a duplicate
     # (issue #587). A single un-merged ``<muutmismarge>`` can itself carry an
@@ -1253,7 +1499,349 @@ def _has_valid_amend_date(amend: dict) -> bool:
     return bool(amend.get("entry_into_force") or amend.get("date"))
 
 
-def main() -> int:
+# ---------------------------------------------------------------------------
+# Provision-level ``estleg:amends`` (#713)
+# ---------------------------------------------------------------------------
+
+# Emit the inferred amendment kind on AmendmentEvents. The CV and SHACL
+# declare estleg:amendmentKind (``estleg:changeType`` is draft-scoped:
+# rdfs:domain estleg:DraftLegislation). It stays opt-in until the operator
+# chain refresh: regenerating the committed chains already changes them
+# beyond the new key (@context drift, pending provision-level amends), so a
+# default flip would not be a key-only change. See docs/AMENDMENT_HISTORY.md.
+AMENDMENT_KIND_PROPERTY = "estleg:amendmentKind"
+EMIT_AMENDMENT_KIND_DEFAULT = False
+
+
+@dataclass
+class ProvisionLinkStats:
+    """Counters for the provision-level ``amends`` resolution (#713)."""
+
+    events: int = 0
+    events_with_provisions: int = 0
+    provision_edges: int = 0
+    refs_total: int = 0
+    resolved_subsection: int = 0
+    resolved_paragraph: int = 0
+    subsection_fell_back_to_paragraph: int = 0
+    unresolved: int = 0
+    events_with_kind: int = 0
+    events_with_publication_date: int = 0
+    kinds: dict[str, int] = field(default_factory=dict)
+
+    def as_dict(self) -> dict:
+        return {
+            "events": self.events,
+            "events_with_provisions": self.events_with_provisions,
+            "provision_edges": self.provision_edges,
+            "refs_total": self.refs_total,
+            "resolved_subsection": self.resolved_subsection,
+            "resolved_paragraph": self.resolved_paragraph,
+            "subsection_fell_back_to_paragraph": self.subsection_fell_back_to_paragraph,
+            "unresolved": self.unresolved,
+            "events_with_kind": self.events_with_kind,
+            "events_with_publication_date": self.events_with_publication_date,
+            "kinds": dict(sorted(self.kinds.items())),
+        }
+
+
+class ProvisionIndex:
+    """Existing provision IRIs of one law, keyed by their ``_Par_``/``_Lg_`` suffixes.
+
+    Built from the law's peep graph(s) so ``amends`` only ever points at an
+    IRI the law builder actually minted: nothing is hand-rolled, and a
+    reference that does not resolve to exactly one node is dropped (counted)
+    rather than guessed.
+    """
+
+    def __init__(self, docs: list[dict]) -> None:
+        self.paragraphs: dict[str, list[str]] = {}
+        self.subsections: dict[tuple[str, str], list[str]] = {}
+        for doc in docs:
+            for node in doc.get("@graph") or []:
+                if not isinstance(node, dict):
+                    continue
+                iri = node.get("@id")
+                if not isinstance(iri, str):
+                    continue
+                types = _node_types(node)
+                if "estleg:Subsection" in types and "_Lg_" in iri:
+                    head, _sep, lg = iri.rpartition("_Lg_")
+                    if "_Par_" in head:
+                        par = head.rpartition("_Par_")[2]
+                        self.subsections.setdefault((par, lg), []).append(iri)
+                elif "estleg:LegalProvision" in types and "_Par_" in iri:
+                    self.paragraphs.setdefault(iri.rpartition("_Par_")[2], []).append(iri)
+
+    def _paragraph(self, par: str) -> str | None:
+        hits = self.paragraphs.get(par) or []
+        # ``_x2`` is the law builder's duplicate-number suffix: the XML
+        # position cannot tell the two apart, so refuse to pick one.
+        if len(hits) != 1 or f"{par}_x2" in self.paragraphs:
+            return None
+        return hits[0]
+
+    def resolve(self, ref: tuple[str, str | None]) -> tuple[str | None, str]:
+        """Return ``(iri | None, outcome)`` for one ``(par, lg)`` reference.
+
+        ``outcome`` names the :class:`ProvisionLinkStats` counter to bump.
+        """
+        par, lg = ref
+        if lg is not None:
+            hits = self.subsections.get((par, lg)) or []
+            if len(hits) == 1:
+                return hits[0], "resolved_subsection"
+            iri = self._paragraph(par)
+            return (iri, "subsection_fell_back_to_paragraph") if iri else (None, "unresolved")
+        iri = self._paragraph(par)
+        return (iri, "resolved_paragraph") if iri else (None, "unresolved")
+
+
+def amends_value_with_provisions(
+    act_ids: list[str], provision_ids: list[str]
+) -> AmendsValue | None:
+    """``estleg:amends`` payload: act root(s) first, then provision IRIs (#713).
+
+    With no provision IRIs this is exactly :func:`amends_value_from_ids` (a
+    single object for a one-part law), so laws without provision-level
+    markers are byte-identical to the pre-#713 output. Consumers that read the
+    act from ``amends`` can always take the first entry.
+    """
+    if not act_ids:
+        return None
+    extra = [iri for iri in dict.fromkeys(provision_ids) if iri not in act_ids]
+    if not extra:
+        return amends_value_from_ids(act_ids)
+    return [{"@id": oid} for oid in act_ids] + [{"@id": iri} for iri in extra]
+
+
+def build_effected_event_nodes(
+    amend_prefix: str,
+    xml_amendments_sorted: list[dict],
+    act_ids: list[str],
+    provision_index: ProvisionIndex | None = None,
+    *,
+    emit_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT,
+    stats: ProvisionLinkStats | None = None,
+) -> list[dict]:
+    """Build the RT-derived ``estleg:AmendmentEvent`` nodes of one chain.
+
+    ``xml_amendments_sorted`` must already be in :func:`_amend_sort_key`
+    order. ``estleg:amends`` carries every act root (issue #327) plus, when
+    a ``provision_index`` is given, the provision IRIs the record's markers
+    sit under (#713).
+    """
+    stats = stats if stats is not None else ProvisionLinkStats()
+    chain_entries: list[dict] = []
+    seen_amend_ids: set[str] = set()
+    # Index of the last chain entry whose source amendment carries a valid
+    # (plausibly-dated) date — the only entry eligible for the
+    # ``isCurrentAmendment`` flag (issue #587). Tracked alongside the
+    # lock-step build so a dateless record (e.g. one whose corrupt year was
+    # nulled by ``parse_date``) can never be flagged current.
+    last_valid_dated_idx: int | None = None
+    for amend in xml_amendments_sorted:
+        suffix = _stable_amend_suffix(amend)
+        amend_id = f"estleg:Amendment_{amend_prefix}_{suffix}"
+        # Collisions on hash prefix are extremely unlikely but
+        # defended against here so re-runs remain idempotent.
+        disambig = 1
+        base_id = amend_id
+        while amend_id in seen_amend_ids:
+            disambig += 1
+            amend_id = f"{base_id}_{disambig}"
+        seen_amend_ids.add(amend_id)
+
+        amend_node: dict = {
+            "@id": amend_id,
+            "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+        }
+        provision_ids: list[str] = []
+        if provision_index is not None:
+            for ref in amend.get("provision_refs") or []:
+                stats.refs_total += 1
+                iri, outcome = provision_index.resolve(ref)
+                setattr(stats, outcome, getattr(stats, outcome) + 1)
+                if iri is not None and iri not in provision_ids:
+                    provision_ids.append(iri)
+        amends_value = amends_value_with_provisions(act_ids, provision_ids)
+        if amends_value is not None:
+            amend_node["estleg:amends"] = amends_value
+            if provision_ids:
+                stats.events_with_provisions += 1
+                stats.provision_edges += len(provision_ids)
+        stats.events += 1
+
+        if amend.get("date"):
+            amend_node["estleg:amendmentDate"] = make_xsd_date(amend["date"])
+        if amend.get("entry_into_force"):
+            amend_node["estleg:entryIntoForce"] = make_xsd_date(amend["entry_into_force"])
+        # ``estleg:publicationDate`` — the RT ``avaldamineKuupaev`` (#713).
+        # Declared with rdfs:domain owl:Thing; previously never read.
+        if amend.get("publication_date"):
+            amend_node["estleg:publicationDate"] = make_xsd_date(amend["publication_date"])
+            stats.events_with_publication_date += 1
+        # ``estleg:amendingAct`` — WHICH act made this change (issue #587).
+        # Derived OFFLINE from the source ``<muutmismarge>``: ``akt_viide``
+        # is the amending act's Riigi Teataja globalId (e.g. ``178370``) and
+        # ``rt_reference`` is its publication marker (``RT I, 2002, 57, 356``).
+        # We surface the best available offline identifier as a literal on
+        # the event (NOT an ``@id`` to a corpus node: amending acts are
+        # overwhelmingly absent from the corpus, so an ``@id`` would dangle).
+        # No data is fabricated: emitted only when an identifier is present.
+        amending_act = _amending_act_value(amend)
+        if amending_act is not None:
+            amend_node["estleg:amendingAct"] = amending_act
+        if amend.get("rt_reference"):
+            amend_node["estleg:rtReference"] = amend["rt_reference"]
+            amend_node["rdfs:label"] = f"Muudatus: {amend['rt_reference']}"
+        else:
+            amend_node["rdfs:label"] = f"Muudatus {amend.get('date', 'unknown')}"
+        kinds = sorted(set(amend.get("kinds") or []))
+        if kinds:
+            stats.events_with_kind += 1
+            for kind in kinds:
+                stats.kinds[kind] = stats.kinds.get(kind, 0) + 1
+            if emit_kind:
+                amend_node[AMENDMENT_KIND_PROPERTY] = kinds if len(kinds) > 1 else kinds[0]
+        if _has_valid_amend_date(amend):
+            last_valid_dated_idx = len(chain_entries)
+        chain_entries.append(amend_node)
+
+    # Mark the LATEST *effected, validly-dated* amendment as the current one
+    # (issues #389, #587). ``chain_entries`` holds ONLY the RT-derived
+    # AmendmentEvent nodes (proposals are built separately — #423).
+    # ``xml_amendments_sorted`` is ascending by legal-effect date, so the last
+    # *plausibly-dated* node is the in-force tip. When NO entry has a valid
+    # date, the flag is omitted entirely rather than guessed.
+    if last_valid_dated_idx is not None:
+        chain_entries[last_valid_dated_idx]["estleg:isCurrentAmendment"] = {
+            "@value": "true",
+            "@type": "xsd:boolean",
+        }
+    return chain_entries
+
+
+def build_proposed_amendment_nodes(
+    amend_prefix: str, drafts: list[dict], amends_value: AmendsValue | None
+) -> list[dict]:
+    """Build ``estleg:ProposedAmendment`` nodes from draft bills (issue #423).
+
+    The referenced drafts are in Review/Submission/PublicConsultation phase —
+    none enacted — so they are NOT effected legal changes and must NOT be
+    typed ``estleg:AmendmentEvent``. They carry proposal-scoped predicates
+    only: ``estleg:proposesToAmend`` (NOT ``estleg:amends``),
+    ``estleg:publicationDate`` (the draft's EIS publication date) and
+    ``estleg:amendingDraft``. They NEVER carry ``estleg:isCurrentAmendment``.
+
+    IRIs stay ``AmendmentLink_{sanitize_id(draft_id)}_{amend_prefix}`` for
+    @id stability across the retype. IRIs are id-based and
+    position-independent, so sorting by publication_date fixes chain order
+    (issue #387) WITHOUT disturbing any @id. Undated drafts sort last.
+    """
+    proposed_nodes: list[dict] = []
+    for da in sorted(drafts, key=_draft_publication_sort_key):
+        draft_id = da["draft_id"]
+        proposed_node: dict = {
+            "@id": (
+                f"estleg:AmendmentLink_"
+                f"{sanitize_id(draft_id.replace('estleg:', ''))}_"
+                f"{amend_prefix}"
+            ),
+            "@type": ["owl:NamedIndividual", "estleg:ProposedAmendment"],
+            "rdfs:label": f"Eelnõu muudatus: {da['draft_label']}",
+            "estleg:amendingDraft": {"@id": draft_id},
+        }
+        if amends_value is not None:
+            # proposesToAmend mirrors the multipart ``amends`` payload shape
+            # (single object or list of objects) but with proposal scope.
+            proposed_node["estleg:proposesToAmend"] = copy.deepcopy(amends_value)
+        if da.get("publication_date"):
+            proposed_node["estleg:publicationDate"] = make_xsd_date(da["publication_date"])
+        proposed_nodes.append(proposed_node)
+    return proposed_nodes
+
+
+def chain_document(amend_prefix: str, canonical_title: str, chain_nodes: list[dict]) -> dict:
+    """The ``amendments_<base_slug>.json`` document for one law."""
+    return {
+        "@context": CONTEXT,
+        "@graph": [
+            {
+                "@id": f"estleg:AmendmentChain_{amend_prefix}",
+                "@type": ["owl:Ontology"],
+                "rdfs:label": f"Muudatuste ahel: {canonical_title}",
+                "dc:source": canonical_title,
+                "estleg:totalAmendments": {
+                    "@value": str(len(chain_nodes)),
+                    "@type": "xsd:integer",
+                },
+            },
+            *chain_nodes,
+        ],
+    }
+
+
+# ---------------------------------------------------------------------------
+# Version-layer join (#429, #704, #713) — ONE implementation, two callers:
+# ``main()`` (canonical regeneration) and ``link_amendment_versions`` (the
+# DAG step, which re-runs it as a verified no-op).
+# ---------------------------------------------------------------------------
+
+PROVISION_VERSIONS_DIRNAME = "provision_versions"
+
+
+def load_versions_by_date(versions_dir: Path, base_slug: str) -> dict[str, list[str]]:
+    """``versionValidFrom`` → ProvisionVersion IRIs from a law's sidecar.
+
+    ``{}`` when the sidecar is absent. An unreadable existing sidecar is an
+    error: rebuilding without it would discard the version-derived events.
+    """
+    sidecar = versions_dir / f"{base_slug}.jsonld"
+    if not sidecar.is_file():
+        return {}
+    try:
+        doc = json.loads(sidecar.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"Cannot read version sidecar {sidecar}: {exc}") from exc
+    if not isinstance(doc, dict) or not isinstance(doc.get("@graph"), list):
+        raise ValueError(f"Invalid version sidecar graph: {sidecar}")
+    return collect_versions_by_date(doc)
+
+
+def apply_version_join(
+    chain_doc: dict | None,
+    member_docs: list[tuple[str, dict]],
+    versions_by_date: dict[str, list[str]],
+) -> tuple[bool, list[str]]:
+    """Join one law's chain and act root(s) to its provision version layer.
+
+    ``member_docs`` is the base-slug group as ``[(slug, {"doc": peep}), …]``
+    in ``_osaN`` order. Runs :func:`link_amendments_to_versions` on the chain
+    (when there is one) with the act-root ``amends`` target, then
+    :func:`stamp_last_amendment_from_versions` on every member. Returns
+    ``(chain_changed, slugs_of_changed_members)``; mutates in place.
+    """
+    if not versions_by_date:
+        return False, []
+    chain_changed = False
+    if chain_doc is not None:
+        before = json.dumps(chain_doc, sort_keys=True)
+        link_amendments_to_versions(
+            chain_doc,
+            versions_by_date,
+            amends_target=amends_value_from_ids(act_root_ids_for_members(member_docs)),
+        )
+        chain_changed = json.dumps(chain_doc, sort_keys=True) != before
+    changed = [
+        slug
+        for slug, info in member_docs
+        if stamp_last_amendment_from_versions(info["doc"], versions_by_date)
+    ]
+    return chain_changed, changed
+
+
+def main(*, emit_amendment_kind: bool = EMIT_AMENDMENT_KIND_DEFAULT) -> int:
     AMENDMENTS_DIR.mkdir(parents=True, exist_ok=True)
     EELNOUD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -1286,6 +1874,10 @@ def main() -> int:
     _unsafe_cleanup_failures: list[str] = []
     _soft_failures: list[str] = []
     _skip_reasons: dict[str, int] = {}
+    # #713: provision-level amends + version-join counters (report summary).
+    _provision_stats = ProvisionLinkStats()
+    _laws_version_joined = 0
+    _version_events_total = 0
 
     # Step 0: Clear existing amendedBy references
     print("\n[0/5] Clearing existing estleg:amendedBy from all law files...")
@@ -1479,7 +2071,6 @@ def main() -> int:
         # Build chain entries ONCE for the whole base_slug.
         # Each Amendment node gets a stable IRI suffix derived from
         # its rt_reference so regenerations don't reshuffle IDs.
-        chain_entries: list[dict] = []
         # Use the first member's ontology IRI as the canonical "amends"
         # target for the chain document. (Each part still gets its own
         # estleg:amendedBy — see the per-member loop below.)
@@ -1521,122 +2112,44 @@ def main() -> int:
             base_slug, canonical_ontology_id, law_abbreviations
         )
 
-        seen_amend_ids: set[str] = set()
-        # Index of the last chain entry whose source amendment carries a valid
-        # (plausibly-dated) date — the only entry eligible for the
-        # ``isCurrentAmendment`` flag (issue #587). Tracked alongside the
-        # lock-step build so a dateless record (e.g. one whose corrupt year was
-        # nulled by ``parse_date``) can never be flagged current.
-        last_valid_dated_idx: int | None = None
-        for amend in xml_amendments_sorted:
-            suffix = _stable_amend_suffix(amend)
-            amend_id = f"estleg:Amendment_{amend_prefix}_{suffix}"
-            # Collisions on hash prefix are extremely unlikely but
-            # defended against here so re-runs remain idempotent.
-            disambig = 1
-            base_id = amend_id
-            while amend_id in seen_amend_ids:
-                disambig += 1
-                amend_id = f"{base_id}_{disambig}"
-            seen_amend_ids.add(amend_id)
+        provision_index = ProvisionIndex([info["doc"] for _slug, info in members])
+        chain_entries = build_effected_event_nodes(
+            amend_prefix,
+            xml_amendments_sorted,
+            member_ontology_ids,
+            provision_index,
+            emit_kind=emit_amendment_kind,
+            stats=_provision_stats,
+        )
+        proposed_nodes = build_proposed_amendment_nodes(
+            amend_prefix, drafts, _amends_value()
+        )
 
-            amend_node: dict = {
-                "@id": amend_id,
-                "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
-            }
-            amends_value = _amends_value()
-            if amends_value is not None:
-                amend_node["estleg:amends"] = amends_value
-
-            if amend.get("date"):
-                amend_node["estleg:amendmentDate"] = make_xsd_date(amend["date"])
-            if amend.get("entry_into_force"):
-                amend_node["estleg:entryIntoForce"] = make_xsd_date(amend["entry_into_force"])
-            # ``estleg:amendingAct`` — WHICH act made this change (issue #587).
-            # Derived OFFLINE from the source ``<muutmismarge>``: ``akt_viide``
-            # is the amending act's Riigi Teataja globalId (e.g. ``178370``) and
-            # ``rt_reference`` is its publication marker (``RT I, 2002, 57, 356``).
-            # Both were previously parsed only to seed the dedup hash and then
-            # discarded, so every same-day distinct amendment rendered as an
-            # identical ``"Muudatus YYYY-MM-DD"`` node with no way to say which
-            # act amended the law. We surface the best available offline
-            # identifier as a literal on the event (NOT an ``@id`` to a corpus
-            # node: amending acts are overwhelmingly absent from the corpus — 0
-            # of a 987-sample ``akt_viide`` matched a corpus act globalId — so an
-            # ``@id`` would dangle). No data is fabricated: emitted only when an
-            # identifier is actually present.
-            amending_act = _amending_act_value(amend)
-            if amending_act is not None:
-                amend_node["estleg:amendingAct"] = amending_act
-            if amend.get("rt_reference"):
-                amend_node["estleg:rtReference"] = amend["rt_reference"]
-                amend_node["rdfs:label"] = f"Muudatus: {amend['rt_reference']}"
-            else:
-                amend_node["rdfs:label"] = f"Muudatus {amend.get('date', 'unknown')}"
-            if _has_valid_amend_date(amend):
-                last_valid_dated_idx = len(chain_entries)
-            chain_entries.append(amend_node)
-
-        # Mark the LATEST *effected, validly-dated* amendment as the current one
-        # (issues #389, #587). ``chain_entries`` holds ONLY the RT-derived
-        # AmendmentEvent nodes (proposals are built separately below and are
-        # never flagged — #423). ``xml_amendments_sorted`` is ascending by
-        # legal-effect date, so the last *plausibly-dated* node is the in-force
-        # tip. We flag ``last_valid_dated_idx`` rather than ``chain_entries[-1]``
-        # so a record whose corrupt/future year was nulled by ``parse_date``
-        # (and which therefore sorts to the front with no date) can never win
-        # "current". When NO entry has a valid date, the flag is omitted
-        # entirely rather than guessed. SHACL note for the shapes team: this
-        # property warrants ``sh:maxCount 1`` per amended act on
-        # AmendmentEventShape (see report).
-        if last_valid_dated_idx is not None:
-            chain_entries[last_valid_dated_idx]["estleg:isCurrentAmendment"] = {
-                "@value": "true",
-                "@type": "xsd:boolean",
-            }
-
-        # Build PROPOSED-amendment nodes from draft bills (issue #423). The
-        # referenced drafts are in Review/Submission/PublicConsultation phase —
-        # none enacted — so they are NOT effected legal changes and must NOT be
-        # typed ``estleg:AmendmentEvent``. They become ``estleg:ProposedAmendment``
-        # and carry proposal-scoped predicates only:
-        #   * ``estleg:proposesToAmend`` (NOT ``estleg:amends`` — that asserts an
-        #     effected change and is the inverse of the act-root ``amendedBy``).
-        #   * ``estleg:publicationDate`` (the draft's EIS publication date — NOT
-        #     ``estleg:amendmentDate``, which is reserved for adoption dates).
-        #   * ``estleg:amendingDraft`` → the Draft_* node (kept).
-        # They NEVER carry ``estleg:isCurrentAmendment``.
-        #
-        # IRIs stay ``AmendmentLink_{sanitize_id(draft_id)}_{amend_prefix}`` for
-        # @id stability across the retype (existing consumers / git diffs key on
-        # the suffix, not the class). IRIs are id-based and position-independent,
-        # so sorting by publication_date fixes chain order (issue #387: 119
-        # chains were non-monotonic) WITHOUT disturbing any @id. Undated drafts
-        # sort last via a high sentinel.
-        drafts_sorted = sorted(drafts, key=_draft_publication_sort_key)
-        proposed_nodes: list[dict] = []
-        for da in drafts_sorted:
-            draft_id = da["draft_id"]
-            proposed_node: dict = {
-                "@id": (
-                    f"estleg:AmendmentLink_"
-                    f"{sanitize_id(draft_id.replace('estleg:', ''))}_"
-                    f"{amend_prefix}"
-                ),
-                "@type": ["owl:NamedIndividual", "estleg:ProposedAmendment"],
-                "rdfs:label": f"Eelnõu muudatus: {da['draft_label']}",
-                "estleg:amendingDraft": {"@id": draft_id},
-            }
-            amends_value = _amends_value()
-            if amends_value is not None:
-                # proposesToAmend mirrors the multipart ``amends`` payload shape
-                # (single object or list of objects) but with proposal scope.
-                proposed_node["estleg:proposesToAmend"] = amends_value
-            if da.get("publication_date"):
-                proposed_node["estleg:publicationDate"] = make_xsd_date(
-                    da["publication_date"]
-                )
-            proposed_nodes.append(proposed_node)
+        # Version-layer join (#429/#713): enacted laws with a
+        # provision_versions sidecar get their ``_vf_`` events and
+        # ``resultedInVersion`` stamps rebuilt HERE, so a regeneration can no
+        # longer drop them. Regulation sidecars (#431) are snapshot-only and
+        # are never joined, exactly as in link_amendment_versions.
+        versions_by_date: dict[str, list[str]] = {}
+        if all(info["path"].parent == KRR_DIR for _slug, info in members):
+            versions_by_date = load_versions_by_date(
+                KRR_DIR / PROVISION_VERSIONS_DIRNAME, base_slug
+            )
+        # Every node that lands in the chain document — effected AmendmentEvent
+        # nodes AND proposed-amendment nodes (#423). ``estleg:totalAmendments``
+        # historically counted the whole chain graph; the version join below
+        # resets it to the number of version dates, as on the committed corpus.
+        chain_nodes = chain_entries + proposed_nodes
+        chain_doc = (
+            chain_document(amend_prefix, canonical_title, chain_nodes)
+            if chain_nodes
+            else None
+        )
+        if versions_by_date:
+            # Mutates chain_doc (``_vf_`` events, resultedInVersion) and the
+            # member peeps (act-root lastAmendmentDate) before either is saved.
+            apply_version_join(chain_doc, members, versions_by_date)
+            _laws_version_joined += 1
 
         # Stamp the act-root amendment links on every member's ontology node so
         # each part's peep file references the shared chain. EFFECTED events go
@@ -1689,13 +2202,6 @@ def main() -> int:
                 _files_with_output_kov += 1
                 members_enriched_for_kov += 1
 
-        # Every node that lands in the chain document — effected AmendmentEvent
-        # nodes AND proposed-amendment nodes (#423). ``estleg:totalAmendments``
-        # historically counted the whole chain graph, so keep both kinds in the
-        # count to preserve the on-disk artifact's meaning (drafts were already
-        # included pre-#423; only their @type/predicates change).
-        chain_nodes = chain_entries + proposed_nodes
-
         # Amendment event triples: count properties on each chain node.
         if chain_nodes:
             event_triples = sum(
@@ -1719,23 +2225,10 @@ def main() -> int:
         # stable on-disk artifact key, not part of the IRI namespace). A
         # draft-only act (chain_entries empty, proposed_nodes non-empty) still
         # gets a chain file (#423).
-        if chain_nodes:
-            chain_doc = {
-                "@context": CONTEXT,
-                "@graph": [
-                    {
-                        "@id": f"estleg:AmendmentChain_{amend_prefix}",
-                        "@type": ["owl:Ontology"],
-                        "rdfs:label": f"Muudatuste ahel: {canonical_title}",
-                        "dc:source": canonical_title,
-                        "estleg:totalAmendments": {
-                            "@value": str(len(chain_nodes)),
-                            "@type": "xsd:integer",
-                        },
-                    },
-                    *chain_nodes,
-                ],
-            }
+        if chain_doc is not None:
+            _version_events_total += sum(
+                1 for node in chain_doc["@graph"] if _is_version_layer_event(node)
+            )
             chain_path = AMENDMENTS_DIR / f"amendments_{base_slug}.json"
             save_json(chain_path, chain_doc)
             amendment_chains.append({
@@ -1810,6 +2303,10 @@ def main() -> int:
             "triples_total": total_triples,
             "stale_chain_files_removed": stale_chain_files_removed,
             "failures": len(_failures),
+            # #713: version join inside the canonical path + provision amends.
+            "laws_version_joined": _laws_version_joined,
+            "version_layer_events": _version_events_total,
+            "provision_amends": _provision_stats.as_dict(),
         },
         "most_amended_laws": most_amended_list[:30],
         "amendment_chains": amendment_chains_sorted,
@@ -1960,6 +2457,15 @@ def cli(argv: list[str] | None = None) -> int:
         action="store_true",
         help="With --relink-version-events: report counts, write nothing.",
     )
+    parser.add_argument(
+        "--emit-amendment-kind",
+        action="store_true",
+        help=(
+            f"Emit the inferred amendment kind as {AMENDMENT_KIND_PROPERTY} "
+            "(declared in the CV and SHACL; opt-in until the operator chain "
+            "refresh, #713)."
+        ),
+    )
     args = parser.parse_args(argv)
     if args.relink_version_events:
         stats = relink_version_events(dry_run=args.dry_run)
@@ -1967,7 +2473,7 @@ def cli(argv: list[str] | None = None) -> int:
         return 1 if stats["files_unresolved"] else 0
     if args.dry_run:
         parser.error("--dry-run requires --relink-version-events")
-    return main()
+    return main(emit_amendment_kind=args.emit_amendment_kind)
 
 
 if __name__ == "__main__":

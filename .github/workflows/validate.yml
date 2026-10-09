@@ -16,6 +16,7 @@ on:
       - 'tests/**'
       - 'shacl/**'
       - 'mcp_server/**'
+      - 'estleg_client/**'
       - 'metadata.jsonld'
       - 'pyproject.toml'
       - 'constraints.txt'
@@ -32,6 +33,7 @@ on:
       - 'tests/**'
       - 'shacl/**'
       - 'mcp_server/**'
+      - 'estleg_client/**'
       - 'metadata.jsonld'
       - 'pyproject.toml'
       - 'constraints.txt'
@@ -371,6 +373,13 @@ jobs:
 
       - name: Validate JSON-LD hygiene
         run: python3 scripts/validate_all.py
+
+      # #713: offline (~3.5 s, no LFS). The amendment/version join must be a
+      # fixed point on the committed chains and peeps: re-running it may not
+      # change any file.
+      - name: Amendment/version join is a fixed point (#713)
+        if: ${{ !cancelled() }}
+        run: python3 scripts/link_amendment_versions.py --check
 
       # #703: offline (~1 s). Compares legal-text coverage with
       # data/text_fidelity_baseline.json, which may only shrink.

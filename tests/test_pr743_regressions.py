@@ -26,7 +26,7 @@ def test_missing_schema_does_not_replace_existing_aggregate(tmp_path):
     assert output.read_text() == "previous complete aggregate"
 
 
-def test_empty_draft_phase_drops_stale_drafts_from_combined(tmp_path, monkeypatch):
+def test_empty_live_feed_preserves_accumulated_draft_history(tmp_path, monkeypatch):
     directory = tmp_path / "eelnoud"
     for feed in drafts.RSS_FEEDS.values():
         write_graph(
@@ -38,9 +38,11 @@ def test_empty_draft_phase_drops_stale_drafts_from_combined(tmp_path, monkeypatc
     monkeypatch.setattr(drafts, "fetch_rss", lambda _url: [])
     assert drafts.main([]) == 0
     graph = json.loads((directory / "eelnoud_combined.jsonld").read_text())["@graph"]
-    assert "estleg:Draft_OLD" not in {node["@id"] for node in graph}
+    # #717 changes feeds into observations of an accumulated history. A draft
+    # disappearing from today's feed must no longer erase the earlier record.
+    assert "estleg:Draft_OLD" in {node["@id"] for node in graph}
     index = json.loads((directory / "EELNOUD_INDEX.json").read_text())
-    assert index["total_drafts"] == 0
+    assert index["total_drafts"] == 1
 
 
 def test_failed_draft_fetch_preserves_existing_snapshot(tmp_path, monkeypatch):

@@ -54,6 +54,7 @@ from estleg.estleg_common import (
     CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
+    add_derivation_method,
     allowed_get,
     save_json,
     screen_personal_data,
@@ -810,6 +811,8 @@ def generate_schema_nodes() -> list[dict]:
 # ECLI assigned to published Estonian Supreme Court case law from H2 2016
 # (e-justice.europa.eu EE page): ECLI:EE:RK:YYYY:<case with - and / as dots>.
 _ECLI_ASSIGNED_FROM = datetime(2016, 7, 1)
+# estleg:derivationMethod value for a locally minted ECLI (#717).
+ECLI_DERIVATION = "minted-ecli"
 
 
 def mint_riigikohus_ecli(
@@ -1266,6 +1269,8 @@ def decision_to_node(
     ecli = mint_riigikohus_ecli(dec["case_nr"], parsed_date)
     if ecli:
         node["estleg:ecliIdentifier"] = ecli
+        # #717: the ECLI is minted here, not read from a publisher.
+        add_derivation_method(node, ECLI_DERIVATION)
         _ensure_ecli_see_also(node, ecli)
 
     # Summary — #683: screen the scraped abstract for Estonian personal ID
@@ -1347,8 +1352,23 @@ def backfill_ecli_on_node(node: dict) -> bool:
     if not ecli:
         return False
     node["estleg:ecliIdentifier"] = ecli
+    add_derivation_method(node, ECLI_DERIVATION)
     _ensure_ecli_see_also(node, ecli)
     return True
+
+
+def backfill_ecli_derivation(node: dict) -> bool:
+    """Stamp ``derivationMethod "minted-ecli"`` on a node with an ECLI (#717).
+
+    Every Riigikohus ``ecliIdentifier`` in the corpus comes from
+    :func:`mint_riigikohus_ecli`; none is read from a publisher.
+    """
+    types = node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:CourtDecision" not in types or not node.get("estleg:ecliIdentifier"):
+        return False
+    return add_derivation_method(node, ECLI_DERIVATION)
 
 
 def backfill_ecli_see_also(node: dict) -> bool:
@@ -1401,6 +1421,8 @@ def backfill_rk_identity(node: dict) -> bool:
     if backfill_ecli_on_node(node):
         changed = True
     if backfill_ecli_see_also(node):
+        changed = True
+    if backfill_ecli_derivation(node):
         changed = True
     return changed
 

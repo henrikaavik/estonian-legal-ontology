@@ -1,35 +1,34 @@
 #!/usr/bin/env python3
-"""Join amendment chains to the provision version layer (#429, #704).
+"""Re-run the amendment/version join as a verified no-op DAG step (#429, #704, #713).
 
-``generate_amendment_history.py`` rebuilds ``amendments/amendments_<law>.json``
-from Riigi Teataja amendment markers, but its ``main()`` never runs the #429
-version join. The join (``link_amendments_to_versions``) mints one
-``estleg:AmendmentEvent`` per ``versionValidFrom`` date that has no RT-derived
+Since #713 ``generate_amendment_history.main()`` runs the #429 version join
+itself (``apply_version_join``): a chain regeneration mints one
+``estleg:AmendmentEvent`` per ``versionValidFrom`` date with no RT-derived
 event (``…_vf_YYYYMMDD``), stamps ``estleg:resultedInVersion`` on every
-event, and ``stamp_last_amendment_from_versions`` sets the act root's
-``estleg:lastAmendmentDate`` to the latest version date. Without this step a
-chain regeneration silently drops those version-layer events.
+event and sets the act root's ``estleg:lastAmendmentDate`` before it saves.
 
-This module is the DAG step for that join. It runs after the chains and the
-version sidecars exist, and touches only enacted-law chains: for every root
-law base slug (multipart ``_osaN`` parts grouped by ``base_slug_of``) with a
-``provision_versions/<base>.jsonld`` sidecar it
+This step re-runs THE SAME function (no second implementation) after the
+chains and the provision-version sidecars exist, so it is
 
-* joins ``amendments/amendments_<base>.json`` when the chain exists, passing
-  the act-root ``estleg:amends`` target exactly as ``relink_version_events``
-  resolves it, and
-* stamps ``lastAmendmentDate`` on each part's act root.
+* a no-op on a corpus produced by the canonical path (``--check`` exits 1
+  if it is not, naming the files that would change), and
+* the repair path when only the sidecars were regenerated
+  (``generate_provision_versions``) and the chains were not.
 
-State-regulation sidecars (``--regulations-riik``, #431) are current-snapshot
-only and were never joined, so regulation chains are left alone. No chain is
-created for a law that has none.
+It touches only enacted-law chains: for every root law base slug (multipart
+``_osaN`` parts grouped by ``base_slug_of``) with a
+``provision_versions/<base>.jsonld`` sidecar it joins
+``amendments/amendments_<base>.json`` when the chain exists and stamps
+``lastAmendmentDate`` on each part's act root. State-regulation sidecars
+(#431) are current-snapshot only and are never joined. No chain is created
+for a law that has none.
 
-Offline and idempotent: on the committed corpus the join is a no-op (179
-chains, 0 peeps change). Writes are atomic (``save_json``); ``--dry-run``
+Offline and idempotent. Writes are atomic (``save_json``); ``--dry-run``
 reports without writing.
 
     python3 scripts/link_amendment_versions.py
     python3 scripts/link_amendment_versions.py --dry-run
+    python3 scripts/link_amendment_versions.py --check
 """
 
 from __future__ import annotations
@@ -42,13 +41,11 @@ from pathlib import Path
 
 from estleg.estleg_common import KRR_DIR, save_json
 from estleg.generate_amendment_history import (
+    PROVISION_VERSIONS_DIRNAME,
     _osa_order_key,
-    act_root_ids_for_members,
-    amends_value_from_ids,
+    apply_version_join,
     base_slug_of,
-    collect_versions_by_date,
-    link_amendments_to_versions,
-    stamp_last_amendment_from_versions,
+    load_versions_by_date,
 )
 
 CHAIN_PREFIX = "amendments_"
@@ -95,27 +92,18 @@ def law_groups(krr_dir: Path) -> dict[str, list[tuple[str, Path]]]:
 
 
 def join_version_layer(krr_dir: Path = KRR_DIR, *, dry_run: bool = False) -> JoinStats:
-    """Run the #429 join over every enacted law with a version sidecar."""
+    """Run the shared #429 join over every enacted law with a version sidecar."""
     stats = JoinStats()
-    versions_dir = krr_dir / "provision_versions"
+    versions_dir = krr_dir / PROVISION_VERSIONS_DIRNAME
     amendments_dir = krr_dir / "amendments"
     for base, members in sorted(law_groups(krr_dir).items()):
-        sidecar = versions_dir / f"{base}.jsonld"
-        if not sidecar.is_file():
-            continue
-        version_doc = _load(sidecar)
-        if version_doc is None:
-            continue
-        by_date = collect_versions_by_date(version_doc)
+        by_date = load_versions_by_date(versions_dir, base)
         if not by_date:
             continue
         stats.laws_with_versions += 1
-        docs = [(path, _load(path)) for _slug, path in members]
-        member_docs = [
-            (slug, {"doc": doc})
-            for (slug, _path), (_p, doc) in zip(members, docs, strict=True)
-            if doc is not None
-        ]
+        loaded = [(slug, path, _load(path)) for slug, path in members]
+        member_docs = [(slug, {"doc": doc}) for slug, _path, doc in loaded if doc is not None]
+        paths = {slug: path for slug, path, doc in loaded if doc is not None}
 
         chain_path = amendments_dir / f"{CHAIN_PREFIX}{base}.json"
         chain = _load(chain_path) if chain_path.is_file() else None
@@ -123,36 +111,38 @@ def join_version_layer(krr_dir: Path = KRR_DIR, *, dry_run: bool = False) -> Joi
             stats.chains_absent += 1
         else:
             stats.chains_seen += 1
-            before = json.dumps(chain, sort_keys=True)
-            link_amendments_to_versions(
-                chain,
-                by_date,
-                amends_target=amends_value_from_ids(act_root_ids_for_members(member_docs)),
-            )
-            if json.dumps(chain, sort_keys=True) != before:
-                stats.chains_changed += 1
-                stats.changed_files.append(chain_path.name)
-                if not dry_run:
-                    save_json(chain_path, chain)
-
-        for path, doc in docs:
-            if doc is not None and stamp_last_amendment_from_versions(doc, by_date):
-                stats.peeps_changed += 1
-                stats.changed_files.append(path.name)
-                if not dry_run:
-                    save_json(path, doc)
+        chain_changed, changed_slugs = apply_version_join(chain, member_docs, by_date)
+        if chain_changed:
+            stats.chains_changed += 1
+            stats.changed_files.append(chain_path.name)
+            if not dry_run:
+                save_json(chain_path, chain)
+        docs = dict(member_docs)
+        for slug in changed_slugs:
+            stats.peeps_changed += 1
+            stats.changed_files.append(paths[slug].name)
+            if not dry_run:
+                save_json(paths[slug], docs[slug]["doc"])
     return stats
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n", 1)[0])
     parser.add_argument("--dry-run", action="store_true", help="Report without writing.")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Fixed-point gate: write nothing, exit 1 if the join would change any file.",
+    )
     parser.add_argument("--krr-dir", type=Path, default=KRR_DIR)
     args = parser.parse_args(argv)
-    stats = join_version_layer(args.krr_dir, dry_run=args.dry_run)
+    read_only = args.dry_run or args.check
+    stats = join_version_layer(args.krr_dir, dry_run=read_only)
     print(json.dumps(stats.as_dict(), indent=2))
     for name in stats.changed_files[:20]:
-        print(f"  {'would change' if args.dry_run else 'changed'}: {name}")
+        print(f"  {'would change' if read_only else 'changed'}: {name}")
+    if args.check and (stats.chains_changed or stats.peeps_changed):
+        return 1
     return 0
 
 

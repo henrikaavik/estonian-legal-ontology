@@ -242,3 +242,21 @@ class TestComparableBlock:
         block = text[text.find(vr.BEGIN_MARKER) : text.find(vr.END_MARKER)]
         assert "| Errors |" in block
         assert "older than at least one canonical source file" not in block
+
+
+def test_duplicate_report_skips_derived_and_cache_files(tmp_path):
+    """Git-ignored retrieval outputs and .cache ledgers never count as scanned files.
+
+    A working tree that has run the retrieval projection holds ~2,240 extra
+    per-law outline/context-pack JSON files that CI's clean checkout does not;
+    counting them made `--check` fail on CI for a report generated locally.
+    """
+    from estleg import generate_duplicate_ids_report as dup
+
+    krr = tmp_path / "krr_outputs"
+    (krr / "retrieval" / "outlines").mkdir(parents=True)
+    (krr / "retrieval" / "outlines" / "abipol.json").write_text("{}", encoding="utf-8")
+    (krr / ".cache").mkdir()
+    (krr / ".cache" / "hash_manifest.json").write_text("{}", encoding="utf-8")
+    (krr / "law_peep.json").write_text('{"@graph": []}', encoding="utf-8")
+    assert [p.name for p in dup.iter_corpus_files(krr)] == ["law_peep.json"]

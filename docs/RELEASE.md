@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. Its 30 steps form an explicit, declarative directed acyclic
+release build. Its 35 steps form an explicit, declarative directed acyclic
 graph (DAG) in four tiers: ingest (network fetches), enrichment (offline
 corpus passes and aggregate rebuilds), build (the combined/INDEX rebuild) and
 package (release assets). The runner topologically sorts it, runs it
@@ -96,7 +96,7 @@ periodicities:
 | CURIA | `CURIA_INDEX.json` `fetched` / `generated` | 120 d | quarterly |
 | Retrieval chunks | release asset `chunks.jsonl.gz` | not gated | monthly |
 | Complete dataset | aggregate of the rows above | — | monthly |
-| Change record | frozen per release | — | irregular |
+| Change record | frozen per release (0.11.0 law level, 1.0.0 provision level) | — | irregular |
 
 A budget is the publishing cadence plus at most one month of grace. When the
 gate fails, refresh the stale corpora through their generators and commit the
@@ -108,8 +108,10 @@ unreachable" is a warning there, and "RT answered with HTML or another schema"
 fails the job. `--fetch` compares the law sample with live RT metadata and
 XML and stays operator-run. Inter-release IRI deltas are published as
 `krr_outputs/changes-<version>.jsonld` and linked from `metadata.jsonld` as a
-`dcat:distribution`. The committed IRI delta is for 0.11.0, not every
-subsequent commit.
+`dcat:distribution`. Each release publishes
+`krr_outputs/changes-<version>.jsonld` (provision-level, uncapped;
+`scripts/emit_release_changes.py`, docs/AMENDMENT_HISTORY.md).
+`changes-0.11.0.jsonld` is the legacy law-level snapshot.
 
 The committed tree is recorded in
 `krr_outputs/dataset_build_manifest.json` (dataset version, git SHA,
@@ -175,7 +177,9 @@ The required merge checks are `lint`, `pytest`, and `estleg-mcp tests`.
 They are distinct from the full release gates below. Passing them permits
 reviewed incremental fixes; it does not make a data release SHACL-conformant.
 Bulk `.nt`/`.nq`/`.ttl` dumps and the other release assets are rebuilt by
-the last DAG step, `build_release_assets.py` (#705). See
+the last DAG step, `build_release_assets.py` (#705). Step 30,
+`emit_release_changes.py`, writes the provision-level delta against the
+latest `v*` tag first, so the asset catalogue sees the fresh record (#713). See
 [Release assets](#release-assets).
 
 Õiguskantsler PDF extraction uses pdfminer; OCR is not in the dependency set.
@@ -234,54 +238,76 @@ phase order is preserved exactly.
 | 1 | ingest | `generate_provision_versions.py` (`--all --today <BUILD_EVALUATION_DATE>`) | — | `provision_versions/*.jsonld`, `reports/provision_versions_report.json`, `reports/kov/extract_provision_versions_coverage.json` |
 | 2 | ingest | `generate_provision_versions_regulations` (`--regulations-riik`) | 1 | `provision_versions/*.jsonld`, `reports/regulation_versions_report.json`, `reports/kov/extract_provision_versions_coverage.json` |
 | 3 | ingest | `generate_annotations.py` (`--scrape --limit 0`) | — | `annotations/oiguskantsler_seisukohad.jsonld`, `reports/kov/extract_annotations_coverage.json` |
-| 4 | enrichment | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/cross_references_report.json` |
-| 5 | enrichment | `generate_inverse_references.py` | 4 | `*_peep.json`, `regulations/**/*_peep.json`, `reports/inverse_references_report.json` |
-| 6 | enrichment | `generate_transposition_mapping.py` | — | `*_peep.json`, `reports/transposition_mapping.json`, `eurlex/eurlex_combined.jsonld` |
-| 7 | enrichment | `rebuild_eurlex_combined` | 6 | `eurlex/eurlex_combined.jsonld` |
-| 8 | enrichment | `link_curia_eu_legislation.py` | 7 | `curia/*_peep.json`, `curia/curia_combined.jsonld`, `curia/curia_eu_link_report.json` |
-| 9 | enrichment | `rebuild_curia_combined` | 8 | `curia/curia_combined.jsonld` |
-| 10 | enrichment | `rebuild_eelnoud_combined` | — | `eelnoud/eelnoud_combined.jsonld` |
-| 11 | enrichment | `generate_harmonisation_links.py` | 6 | `*_peep.json`, `harmonisation/harmonisation_report.json` |
-| 12 | enrichment | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
-| 13 | enrichment | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
-| 14 | enrichment | `extract_temporal_data.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
-| 15 | enrichment | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json` |
-| 16 | enrichment | `link_amendment_versions.py` | 15, 1, 2 | `amendments/**/*.json`, `*_peep.json` |
-| 17 | enrichment | `derive_act_temporal_status.py` (`--all --recompute --evaluation-date …`) | 14, 1, 2 | `*_peep.json` |
+| 4 | ingest | `generate_draft_legislation.py` (#717) | — | `eelnoud/*_peep.json`, `eelnoud/EELNOUD_INDEX.json`, `eelnoud/eelnoud_combined.jsonld` |
+| 5 | ingest | `generate_riigikogu_proceedings.py` (#717) | 4 | `eelnoud/*_peep.json`, `eelnoud/EELNOUD_INDEX.json` |
+| 6 | enrichment | `extract_cross_references.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/cross_references_report.json` |
+| 7 | enrichment | `generate_inverse_references.py` | 6 | `*_peep.json`, `regulations/**/*_peep.json`, `reports/inverse_references_report.json` |
+| 8 | enrichment | `extract_ntm_directives.py` (#711) | — | `*_peep.json`, `regulations/riik/*_peep.json`, `reports/ntm_directives.json` |
+| 9 | enrichment | `generate_transposition_mapping.py` | 8 | `*_peep.json`, `reports/transposition_mapping.json`, `eurlex/eurlex_combined.jsonld`, `regulations/riik/*_peep.json`, `eurlex/eurlex_directives_peep.json`, `eurlex/*_peep.json`, `eurlex/EURLEX_INDEX.json`, `reports/transposition_measures.json`, `exports/transposition_gap.csv`, `transposition_schema.json` |
+| 10 | enrichment | `rebuild_eurlex_combined` (`--rebuild-combined-from-peeps`) | 9 | `eurlex/eurlex_combined.jsonld` |
+| 11 | enrichment | `link_curia_eu_legislation.py` | 10 | `curia/*_peep.json`, `curia/curia_combined.jsonld`, `curia/curia_eu_link_report.json` |
+| 12 | enrichment | `rebuild_curia_combined` (`--subcorpus curia`) | 11 | `curia/curia_combined.jsonld` |
+| 13 | enrichment | `generate_harmonisation_links.py` | 9 | `*_peep.json`, `harmonisation/harmonisation_report.json` |
+| 14 | enrichment | `extract_court_provision_links.py` | — | `riigikohus/*_peep.json`, `*_peep.json`, `reports/court_provision_links_report.json` |
+| 15 | enrichment | `classify_eurovoc.py` | — | `eurovoc/eurovoc_overlay.jsonld`, `reports/eurovoc_classification.json`, `eurovoc_concept_scheme.jsonld` |
+| 16 | enrichment | `extract_temporal_data.py` (`--evaluation-date <BUILD_EVALUATION_DATE>`) | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/temporal_data_report.json` |
+| 17 | enrichment | `derive_act_temporal_status.py` (`--all --recompute --evaluation-date <BUILD_EVALUATION_DATE>`) | 16, 1, 2 | `*_peep.json` |
 | 18 | enrichment | `generate_act_expressions_608.py` (`--apply`) | 1, 2 | `act_expressions_combined.jsonld` |
 | 19 | enrichment | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
 | 20 | enrichment | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/deontic_classification_report.json` |
 | 21 | enrichment | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `reports/target_group_report.json` |
 | 22 | enrichment | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `reports/institutional_competence_report.json` |
-| 23 | enrichment | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
-| 24 | enrichment | `extract_draft_impact.py` | — | `*_peep.json`, `reports/draft_impact_report.json` |
-| 25 | enrichment | `derive_court_interpretation_staleness.py` (`--apply`) | 12, 1, 2 | `riigikohus/*_peep.json` |
-| 26 | enrichment | `derive_kov_enabling_staleness.py` (`--apply`, #712) | 4, 1, 2 | `regulations/kov/*/*_peep.json`, `reports/kov/derive_kov_enabling_staleness_coverage.json` |
-| 27 | enrichment | `generate_similarity_index.py` | the 19 enrichment steps listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json`, `regulations/**/*_peep.json` |
-| 28 | build | `build_release_artifacts.py` (embeds `materialize_combined_inverses` #520 and the #521 analytical stamps) | every non-package step | `combined_ontology.jsonld`, `INDEX.json` |
-| 29 | package | `generate_analytical_overlay.py` (`--write`) | 28, 27 | `analytical/analytical_overlay.jsonld` |
-| 30 | package | `build_release_assets.py` | 28, 29 | `../metadata.jsonld`, `../release/*` (incl. `release/rdf/combined_ontology.{nt,nq,ttl}`) |
+| 23 | enrichment | `generate_draft_lifecycle` (`--lifecycle-from-peeps`) (#717) | 4, 5, 22 | `eelnoud/*_peep.json`, `eelnoud/EELNOUD_INDEX.json` |
+| 24 | enrichment | `rebuild_eelnoud_combined` (`--subcorpus eelnoud`) | 5, 23 | `eelnoud/eelnoud_combined.jsonld` |
+| 25 | enrichment | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `reports/sanctions_report.json` |
+| 26 | enrichment | `extract_draft_impact.py` | 24 | `*_peep.json`, `reports/draft_impact_report.json`, `eelnoud/eelnoud_combined.jsonld`, `eelnoud/*_peep.json`, `eelnoud/EELNOUD_INDEX.json` |
+| 27 | enrichment | `generate_amendment_history.py` (runs the #429 version join, #713) | 1, 2, 24, 26 | `amendments/**/*.json`, `*_peep.json`, `reports/amendment_history_report.json`, `reports/kov/generate_amendment_history_coverage.json` |
+| 28 | enrichment | `link_amendment_versions.py` | 27, 1, 2 | `amendments/**/*.json`, `*_peep.json` |
+| 29 | enrichment | `derive_court_interpretation_staleness.py` (`--apply`) | 14, 1, 2 | `riigikohus/*_peep.json` |
+| 30 | enrichment | `derive_kov_enabling_staleness.py` (`--apply`) (#712) | 6, 1, 2 | `regulations/kov/*/*_peep.json`, `reports/kov/derive_kov_enabling_staleness_coverage.json` |
+| 31 | enrichment | `generate_similarity_index.py` | the 21 enrichment steps listed in `STEPS` | `reports/similarity_index.json`, `reports/similarity_report.json`, `similarity/kov_similarity_index.json` (git-ignored, #539), `similarity/kov_state_similarity_index.json` (#729), `regulations/**/*_peep.json` |
+| 32 | build | `build_release_artifacts.py` (embeds `materialize_combined_inverses` #520 and the #521 analytical stamps) | every non-package step | `combined_ontology.jsonld`, `INDEX.json` |
+| 33 | package | `generate_analytical_overlay.py` (`--write`) | 32, 31 | `analytical/analytical_overlay.jsonld` |
+| 34 | package | `emit_release_changes.py` (#713) | 32 | `changes-*.jsonld`, `changes-*.jsonl`, `reports/release_changes_report.json` |
+| 35 | package | `build_release_assets.py` | 32, 33, 34 | `../metadata.jsonld`, `../release/*` (incl. `release/rdf/combined_ontology.{nt,nq,ttl}`) |
 
-**Ingest tier.** Steps 1-3 fetch from Riigi Teataja or oiguskantsler.ee.
+**Ingest tier.** Steps 1-5 fetch from Riigi Teataja, oiguskantsler.ee, the
+EIS draft feeds or api.riigikogu.ee (step 5 only on a `data/riigikogu/` cache
+miss).
 They are declared so every produced layer has a producer and declared inputs.
 The runner records them as `skipped_ingest` and uses their committed outputs,
 unless `--with-ingest` is given. Step 2 is offline, but it rewrites the same
 coverage report as step 1 (`generate_provision_versions.COVERAGE_PATH`), so it
-stays with the law run until the generator writes its own report.
+stays with the law run until the generator writes its own report. An ingest
+step may not depend on an enrichment step (#704), so step 4 does not declare
+its existence-only read of `institutions/*.json`. Step 23, the offline draft
+lifecycle pass, runs after `extract_institutional_competence.py` and after
+both draft ingest steps (#717). The EIS feeds have answered HTTP 403 since
+2026-10-01, so step 4 currently fetches nothing.
 
-**Version layer.** `generate_amendment_history.py` rebuilds the chains
-without the #429 version join. Step 16 runs that join after the chains and the
-version sidecars exist. It re-mints the `_vf_` events and the
-`resultedInVersion` links, so a chain rerun cannot lose them. On the committed
-corpus the join is a no-op: 179 chains and 0 peeps change. Steps 17, 18, 25
-and 26 derive act `temporalStatus`, the act expressions, court staleness and
+**Transposition (#711).** Step 8 reads the cached RT XML offline and writes
+`estleg:transposesDirectiveAsserted`; step 9 derives the transposition status
+from it. `reports/transposition_measures.json`, the CELLAR implementing-measure
+cache that step 9 reads under `--offline` and refreshes on a default run, is
+listed in `COMMITTED_INPUTS`.
+
+**Draft impact (#717).** Step 26 reads the rebuilt `eelnoud_combined.jsonld`
+(step 24) and rewrites it, so `generate_amendment_history.py` (step 27), which
+reads the same aggregate, depends on step 26.
+
+**Version layer.** `generate_amendment_history.py` runs the #429 version
+join itself (#713), so step 27 depends on the version sidecars (steps 1, 2) and
+writes provision-level `estleg:amends`. Step 28 re-runs the same join, so a
+sidecar-only rerun is repaired. After a chain rerun it is a no-op, which CI
+checks with `scripts/link_amendment_versions.py --check`. Steps 17, 18, 29
+and 30 derive act `temporalStatus`, the act expressions, court staleness and
 KOV enabling-provision staleness (#712) from the same sidecars.
 
-**Combined is the last enrichment step, not the last step.** Step 28 depends
+**Combined is the last enrichment step, not the last step.** Step 32 depends
 on every ingest and enrichment step. Only package-tier steps may follow it.
 They read the built corpus and must never write a file the build read; the
 ordering check above enforces this. `materialize_combined_inverses` (#520)
-and the analytical counts/flags (#521) run inside step 28 on the in-memory
+and the analytical counts/flags (#521) run inside step 32 on the in-memory
 graph, which `embeds` declares. They are never scheduled as separate passes.
 
 `rebuild_eurlex_combined` invokes `generate_eu_legislation.py` with
@@ -356,7 +382,7 @@ This is the **unified release command**. It:
    `--no-restore-on-failure` or `--snapshot none`). With `--snapshot auto`
    and a clean `git status --porcelain krr_outputs`, the copy is skipped
    and a failure rolls back to git HEAD instead (#722).
-3. Runs all 30 steps in topo order. Ingest-tier steps are recorded as
+3. Runs all 35 steps in topo order. Ingest-tier steps are recorded as
    `skipped_ingest` unless `--with-ingest` is given. A failed step skips its
    dependents; the first hard failure stops the run and the snapshot is
    restored.
@@ -384,6 +410,60 @@ Useful flags:
 | `--parallel N` | Run up to N dependency-ready steps concurrently (default 1 = serial). **N > 1 is rejected (exit 2) for the current DAG** — independent steps share `*_peep.json` writes; see [Why serial by default](#why-serial-by-default). |
 | `--with-ingest` | Also run the ingest-tier steps (network). Without it they are recorded as `skipped_ingest`. |
 | `--check-pipeline-versions` | Run only the [`pipeline_version` gate](#reproducibility-gates) and exit. |
+| `--only-changed` | Plain pipeline only: run just the steps a changed input reaches (#729). See [Incremental builds](#incremental-builds---only-changed). Rejected with `--release` or `--resume-from` (exit 2). |
+| `--manifest PATH` | Hash manifest for `--only-changed` / `--record-hash-manifest` (default `krr_outputs/.cache/hash_manifest.json`). |
+| `--record-hash-manifest` | Hash the current tree as the `--only-changed` baseline and exit. |
+
+---
+
+## Incremental builds (`--only-changed`)
+
+A one-file correction does not need all 35 steps (#729). The runner keeps a
+per-file content-hash manifest and runs only the steps the change reaches.
+
+```bash
+# Once: record the current tree as the baseline (~8 s cold, <1 s warm).
+python3 scripts/run_all_integration.py --record-hash-manifest
+# After editing inputs: preview, then run.
+python3 scripts/run_all_integration.py --only-changed --dry-run
+python3 scripts/run_all_integration.py --only-changed --snapshot auto
+```
+
+- **Manifest.** `src/estleg/build_hash_manifest.py` expands every `reads`
+  and `writes` glob in `STEPS` (relative to `krr_outputs/`; `../` is the
+  repository root) and stores one SHA-256 per file in
+  `krr_outputs/.cache/hash_manifest.json`. The directory is git-ignored and
+  survives `--snapshot auto` rollbacks. `--manifest PATH` points elsewhere.
+  Size and `mtime_ns` are only a cache: a file whose size and mtime are
+  unchanged keeps its recorded hash. A change is a content-hash difference,
+  so touching a file without changing it selects nothing. `manifestDigest`
+  hashes the sorted `(path, sha256)` pairs and is equal for equal trees.
+- **Plan.** A step is selected when one of its `reads` globs matches a
+  changed, added or removed file. A changed generated file that no committed
+  input pattern covers also selects its writer, so a hand-edited or deleted
+  artefact is regenerated. Every transitive dependent of a selected step is
+  added. Ingest-tier steps stay out unless `--with-ingest`.
+- **No manifest** means a full run, with a message. Any successful non-dry
+  run refreshes the manifest when `--only-changed` was given or a manifest
+  already exists. A failed run leaves it untouched.
+- **Run manifest.** `latest_pipeline_manifest.json` records `onlyChanged`,
+  `changedInputCount` (`null` without a manifest), the first 50
+  `changedInputs`, `selectedSteps` and `hashManifestDigest`.
+
+Most enrichment steps read the shared `*_peep.json` corpus, so the gain is
+step-level, not file-level. Measured plans against the real DAG:
+
+| Changed file | Steps selected (of 30 non-ingest) |
+|---|---|
+| one law peep (`kaitseliidu_seadus_peep.json`) | 30, all of them (law peeps reach the draft chain through `institutions/*.json`) |
+| one KOV peep | 27 |
+| one draft peep (`eelnoud/*_peep.json`) | 13 |
+| one CURIA peep | 6 (`link_curia_eu_legislation.py`, `rebuild_curia_combined`, then build and package) |
+| `reports/transposition_mapping.json` edited by hand | 10, starting with its writer |
+| nothing | 0 ("Nothing to do"), exit 0 |
+
+Per-file incrementality inside a step, such as re-enriching one law, is a
+separate change to each generator and is not done here.
 
 ---
 
@@ -591,6 +671,9 @@ not guarantees.
 | `run_all_integration.py --release --validate-only` | dominated by the three validators | validator-bound | none extra |
 | Rollback snapshot, `--snapshot copy` | one full copy of `krr_outputs/` | low | +3.8 GB transient, 29k files |
 | Rollback snapshot, `--snapshot auto` on a clean tree | `git status` ≈ 0.2 s | low | none |
+| Hash manifest, cold (`--record-hash-manifest`, 26,839 files) | 7.4 s | 82 MB | 6.3 MB under `krr_outputs/.cache/` |
+| `--only-changed --dry-run`, warm manifest | 0.8 s | 100 MB | none |
+| KOV↔state topical pass (`generate_kov_state_similarity.py`, #729) | 2.0-3.5 min | 1.1-1.3 GB | 11.9 MB index |
 | Regulations refresh, serial (`--workers 1`), estimate | ≈ 2.6 h for 14,871 acts (KOV ≈ 2.0 h, riik ≈ 0.7 h) | ≈ 1.3 GB (KOV) | see below |
 | Regulations refresh, `--workers 4 --max-rps 4` (default), estimate | ≈ 62 min (KOV ≈ 46 min, riik ≈ 16 min) | ≈ 1.3 GB (KOV) | see below |
 
@@ -790,7 +873,9 @@ delete and rebuild).
   `krr_outputs/regulations/` (the shaped per-item JSON-LD)
 - the cross-corpus indexes/maps `krr_outputs/reports/similarity_index.json`,
   `krr_outputs/reports/eurovoc_classification.json`,
-  `krr_outputs/reports/transposition_mapping.json`
+  `krr_outputs/reports/transposition_mapping.json`,
+  `krr_outputs/similarity/kov_state_similarity_index.json` (#729; the
+  bucketed `kov_similarity_index.json` beside it stays git-ignored, #539)
 - the per-domain `*_report.json` summaries under `krr_outputs/reports/`
   (`cross_references_report.json`, `inverse_references_report.json`,
   `court_provision_links_report.json`, `temporal_data_report.json`,

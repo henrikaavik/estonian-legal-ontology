@@ -894,6 +894,26 @@
       "rdfs:comment": "A procedural-stage node (e.g. a stage of criminal procedure under KrMS). Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
     },
     {
+      "@id": "estleg:ProcessStep",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:subClassOf": {
+        "@id": "eli-dl:ProcessStep"
+      },
+      "rdfs:label": [
+        {
+          "@value": "Menetlussamm",
+          "@language": "et"
+        },
+        {
+          "@value": "Process Step",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "One dated observation of a draft at a legislative stage (EIS feed or Riigikogu proceeding event), #717."
+    },
+    {
       "@id": "estleg:ProposedAmendment",
       "@type": [
         "owl:Class"
@@ -968,7 +988,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Machine-readable inter-release IRI delta (added/removed act IRIs and counts). Issue #549."
+      "rdfs:comment": "Machine-readable inter-release delta: provision-level added/removed/changed IRIs plus law-level changes (#549, #713)."
     },
     {
       "@id": "estleg:Sanction",
@@ -1176,7 +1196,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "IRI added between compared snapshots. Listed sample may be capped; see estleg:addedCount.",
+      "rdfs:comment": "IRI added between compared snapshots: a provision IRI (#713) or, in the legacy #549 record, a law IRI. See estleg:addedCount.",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },
@@ -1200,6 +1220,52 @@
         }
       ],
       "rdfs:comment": "Full count of IRIs added between compared snapshots.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:addedLaw",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "lisatud seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "added law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Act-root IRI of a law added to INDEX between the compared snapshots (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:addedLawCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "lisatud seaduste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "added law count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Count of estleg:addedLaw IRIs in a ReleaseDelta (#713).",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },
@@ -1354,6 +1420,29 @@
       }
     },
     {
+      "@id": "estleg:amendmentKind",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "muudatuse liik (muutmismärge)",
+          "@language": "et"
+        },
+        {
+          "@value": "amendment kind",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Kind of an effected amendment, inferred from Riigi Teataja muutmismarge text only where a token is present (Kehtetu / täiendatud / muudetud / sõnastatud): repeals, supplements or amends. Absent when no token is present. Values mirror estleg:changeType (drafts). Issue #713.",
+      "rdfs:domain": {
+        "@id": "estleg:AmendmentEvent"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:amends",
       "@type": [
         "owl:ObjectProperty"
@@ -1368,7 +1457,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Links an AmendmentEvent to the act it amends. Inverse of estleg:amendedBy.",
+      "rdfs:comment": "Links an AmendmentEvent to the act it amends (act root(s) first) and, since #713, to each estleg:LegalProvision / estleg:Subsection the amending act touched (from the muutmismarge parent nesting). Inverse of estleg:amendedBy.",
       "rdfs:domain": {
         "@id": "estleg:AmendmentEvent"
       },
@@ -1843,6 +1932,52 @@
       }
     },
     {
+      "@id": "estleg:changed",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "muudetud",
+          "@language": "et"
+        },
+        {
+          "@value": "changed",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Provision IRI whose legalText, summary or temporal fields changed between the compared snapshots (#713). See estleg:changedCount.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:changedCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "muudetute arv",
+          "@language": "et"
+        },
+        {
+          "@value": "changed count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Full count of estleg:changed provision IRIs in a ReleaseDelta (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
       "@id": "estleg:chapterNumber",
       "@type": [
         "owl:DatatypeProperty"
@@ -1973,6 +2108,52 @@
       "rdfs:comment": "Optional original citation string for traceability, e.g. '§ 42 lg 1 alusel'.",
       "rdfs:domain": {
         "@id": "estleg:Citation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:comparedFrom",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "võrreldud alates",
+          "@language": "et"
+        },
+        {
+          "@value": "compared from",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Label of the older snapshot a ReleaseDelta compares, e.g. 'git v1.0.0 (f018cf05f2)' (#549, #713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:comparedTo",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "võrreldud kuni",
+          "@language": "et"
+        },
+        {
+          "@value": "compared to",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Label of the newer snapshot a ReleaseDelta compares (#549, #713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -2672,6 +2853,86 @@
       },
       "rdfs:range": {
         "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:deprecatedLaw",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "aegunud seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "deprecated law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Act-root IRI of a law newly listed as deprecated in INDEX between the compared snapshots (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:deprecatedLawCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "aegunud seaduste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "deprecated law count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Count of estleg:deprecatedLaw IRIs in a ReleaseDelta (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:derivationMethod",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "tuletusmeetod",
+          "@language": "et"
+        },
+        {
+          "@value": "derivation method",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "How a value was derived (closed vocabulary, docs/DRAFT_LIFECYCLE.md): eis-feed, riigikogu-eis-number, riigikogu-mark, riigikogu-title-date (on estleg:ProcessStep); minted-ecli, rederived-case-type (on a Riigikohus estleg:CourtDecision); title-regex, cellar-interprets (on an estleg:EUCourtDecision, describing its estleg:interpretsEULaw), #717.",
+      "rdfs:domain": {
+        "@id": "owl:Thing"
+      },
+      "schema:domainIncludes": [
+        {
+          "@id": "estleg:ProcessStep"
+        },
+        {
+          "@id": "estleg:CourtDecision"
+        },
+        {
+          "@id": "estleg:EUCourtDecision"
+        }
+      ],
+      "rdfs:range": {
+        "@id": "xsd:string"
       }
     },
     {
@@ -3852,6 +4113,29 @@
       }
     },
     {
+      "@id": "estleg:hasProcessStep",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "menetlussamm",
+          "@language": "et"
+        },
+        {
+          "@value": "has process step",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "A dated lifecycle step of the draft (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:DraftLegislation"
+      },
+      "rdfs:range": {
+        "@id": "estleg:ProcessStep"
+      }
+    },
+    {
       "@id": "estleg:hasProposedAmendment",
       "@type": [
         "owl:ObjectProperty"
@@ -4276,6 +4560,31 @@
       "rdfs:range": {
         "@id": "xsd:integer"
       }
+    },
+    {
+      "@id": "estleg:initiatedBy",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "algataja",
+          "@language": "et"
+        },
+        {
+          "@value": "initiated by",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "The estleg:Institution that owns the draft in EIS, dated along the same-legal-person rename chain. No rdfs:range so bare institution IRIs are not phantom-typed in the drafts bucket (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:DraftLegislation"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:Institution"
+        }
+      ]
     },
     {
       "@id": "estleg:initiator",
@@ -4951,6 +5260,75 @@
       },
       "rdfs:range": {
         "@id": "estleg:LegislativePhase"
+      }
+    },
+    {
+      "@id": "estleg:lifecycleStale",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "menetluselu aegunud",
+          "@language": "et"
+        },
+        {
+          "@value": "lifecycle stale",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "True when the draft is still at public consultation with no evidence newer than a year before the EIS snapshot; its outcome is unknown, not invented (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:DraftLegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "estleg:listedInline",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "loetletud kirjes",
+          "@language": "et"
+        },
+        {
+          "@value": "listed inline",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "False when a ReleaseDelta's IRI lists are in the changes-<version>.jsonl sibling instead of inline (over 10,000 listed IRIs, #713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "estleg:listedIriCap",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "loetletud IRI-de ülempiir",
+          "@language": "et"
+        },
+        {
+          "@value": "listed IRI cap",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Legacy #549 cap on the number of IRIs listed in a ReleaseDelta; the counts stay complete. The #713 record is uncapped.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
       }
     },
     {
@@ -5719,6 +6097,52 @@
       }
     },
     {
+      "@id": "estleg:processStage",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "menetlusetapp",
+          "@language": "et"
+        },
+        {
+          "@value": "process stage",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "The estleg:LegislativePhase (eli-dl:ProcessStage) the step observed (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:ProcessStep"
+      },
+      "rdfs:range": {
+        "@id": "estleg:LegislativePhase"
+      }
+    },
+    {
+      "@id": "estleg:processStepOf",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "menetlussammu eelnõu",
+          "@language": "et"
+        },
+        {
+          "@value": "process step of",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Inverse of estleg:hasProcessStep (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:ProcessStep"
+      },
+      "rdfs:range": {
+        "@id": "estleg:DraftLegislation"
+      }
+    },
+    {
       "@id": "estleg:proposesToAmend",
       "@type": [
         "owl:ObjectProperty"
@@ -5838,7 +6262,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Date the draft was published/registered in EIS.",
+      "rdfs:comment": "Publication date: of a draft in EIS, or, on an AmendmentEvent, of the amending act in Riigi Teataja (avaldamineKuupaev, #713).",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
@@ -6092,7 +6516,7 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "IRI removed between compared snapshots. Listed sample may be capped; see estleg:removedCount.",
+      "rdfs:comment": "IRI removed between compared snapshots: a provision IRI (#713) or, in the legacy #549 record, a law IRI. See estleg:removedCount.",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },
@@ -6116,6 +6540,52 @@
         }
       ],
       "rdfs:comment": "Full count of IRIs removed between compared snapshots.",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:removedLaw",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "eemaldatud seadus",
+          "@language": "et"
+        },
+        {
+          "@value": "removed law",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Act-root IRI of a law removed from INDEX between the compared snapshots (#713).",
+      "rdfs:domain": {
+        "@id": "estleg:ReleaseDelta"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:removedLawCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "eemaldatud seaduste arv",
+          "@language": "et"
+        },
+        {
+          "@value": "removed law count",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Count of estleg:removedLaw IRIs in a ReleaseDelta (#713).",
       "rdfs:domain": {
         "@id": "estleg:ReleaseDelta"
       },
@@ -6230,6 +6700,98 @@
           "@id": "estleg:ProvisionVersion"
         }
       ]
+    },
+    {
+      "@id": "estleg:riigikoguMark",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Riigikogu eelnõu tähis",
+          "@language": "et"
+        },
+        {
+          "@value": "Riigikogu mark",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Riigikogu registration mark with draft type code, e.g. '897 SE' (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:DraftLegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:riigikoguMembership",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Riigikogu koosseis",
+          "@language": "et"
+        },
+        {
+          "@value": "Riigikogu membership",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Riigikogu membership (koosseis) number the draft was proceeded in (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:DraftLegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:riigikoguStatus",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Riigikogu menetlusolek",
+          "@language": "et"
+        },
+        {
+          "@value": "Riigikogu status",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Raw Riigikogu proceeding status code of the event the step records, e.g. VASTU_VOETUD (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:ProcessStep"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:riigikoguUuid",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Riigikogu UUID",
+          "@language": "et"
+        },
+        {
+          "@value": "Riigikogu UUID",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "UUID of the Riigikogu draft volume (api.riigikogu.ee /api/volumes/drafts/{uuid}), #717.",
+      "rdfs:domain": {
+        "@id": "estleg:DraftLegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:rikObjectId",
@@ -6737,6 +7299,29 @@
       }
     },
     {
+      "@id": "estleg:stepOrder",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "sammu järjekord",
+          "@language": "et"
+        },
+        {
+          "@value": "step order",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Stable ordinal of the step within its draft; ids only append (#717).",
+      "rdfs:domain": {
+        "@id": "estleg:ProcessStep"
+      },
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
+    },
+    {
       "@id": "estleg:subjectSource",
       "@type": [
         "owl:DatatypeProperty"
@@ -6751,13 +7336,16 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Provenance of dcterms:subject on this node: 'cellar' = official EuroVoc indexing from the Publications Office (cdm:work_is_about_concept_eurovoc), #699.",
+      "rdfs:comment": "Provenance of dcterms:subject on this node: 'cellar' = official EuroVoc indexing from the Publications Office (cdm:work_is_about_concept_eurovoc), #699; 'riigikogu' = EuroVoc descriptors of a draft from api.riigikogu.ee (CC BY-SA 3.0), #717.",
       "rdfs:domain": {
         "@id": "owl:Thing"
       },
       "schema:domainIncludes": [
         {
           "@id": "estleg:EULegislation"
+        },
+        {
+          "@id": "estleg:DraftLegislation"
         }
       ],
       "rdfs:range": {
@@ -7194,6 +7782,31 @@
       }
     },
     {
+      "@id": "estleg:transposesDirectiveAsserted",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "võtab üle direktiivi (normitehnilise märkuse järgi)",
+          "@language": "et"
+        },
+        {
+          "@value": "transposes directive (asserted in the act)",
+          "@language": "en"
+        }
+      ],
+      "rdfs:comment": "Links an Estonian act to an EU directive that the act's own Riigi Teataja normitehniline märkus (<normtehnmarkus>) says it transposes (#711, extract_ntm_directives.py). Independent of the CELLAR-notified estleg:transposesDirective, so the two can be diffed (asserted but not notified, notified but not asserted). Deliberately carries no rdfs:range (cross-bucket directive stubs, #563/#570).",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "schema:rangeIncludes": [
+        {
+          "@id": "estleg:EULegislation"
+        }
+      ]
+    },
+    {
       "@id": "estleg:transpositionDeadline",
       "@type": [
         "owl:DatatypeProperty"
@@ -7231,9 +7844,18 @@
           "@language": "en"
         }
       ],
-      "rdfs:comment": "Status of directive transposition: full, partial, or unknown. Folded into the controlled vocabulary for issue #563.",
+      "rdfs:comment": [
+        {
+          "@value": "Corpus transposition status of an EU directive (#711), one of \"transposed\" (the corpus holds a transposing act: a CELLAR national implementing measure matched to an Estonian law or state regulation, estleg:transposedBy, or an act whose Riigi Teataja normitehniline märkus names the directive, estleg:transposesDirectiveAsserted), \"no_measure_required\" (no transposing act; Estonia notified CELLAR that no national measure is necessary) or \"no_evidence_in_corpus\" (neither). NOT a legal finding: there is deliberately no \"not transposed\" value, and \"transposed\" records evidence of a measure, not complete or correct transposition. Stamped on directives with a transposition deadline or any evidence. Deprecated usage: the pre-#711 act-level values \"full\", \"partial\" and \"unknown\" are retired and no longer emitted.",
+          "@language": "en"
+        },
+        {
+          "@value": "EL-i direktiivi ülevõtmise staatus selles korpuses (#711): \"transposed\" (korpuses on ülevõttev akt — CELLAR-i riikliku rakendusmeetme vaste Eesti seadusele või määrusele või akt, mille normitehniline märkus direktiivi nimetab), \"no_measure_required\" (Eesti teatas, et riiklikku meedet pole vaja) või \"no_evidence_in_corpus\" (kumbagi pole). MITTE õiguslik järeldus: väärtust \"üle võtmata\" ei ole.",
+          "@language": "et"
+        }
+      ],
       "rdfs:domain": {
-        "@id": "estleg:Act"
+        "@id": "estleg:EULegislation"
       },
       "rdfs:range": {
         "@id": "xsd:string"
@@ -10374,7 +10996,16 @@
           "@id": "estleg:Phase_Enacted"
         },
         {
+          "@id": "estleg:Phase_FirstReading"
+        },
+        {
+          "@id": "estleg:Phase_Lapsed"
+        },
+        {
           "@id": "estleg:Phase_PublicConsultation"
+        },
+        {
+          "@id": "estleg:Phase_Reconsideration"
         },
         {
           "@id": "estleg:Phase_Rejected"
@@ -10383,7 +11014,16 @@
           "@id": "estleg:Phase_Review"
         },
         {
+          "@id": "estleg:Phase_RiigikoguProceeding"
+        },
+        {
+          "@id": "estleg:Phase_SecondReading"
+        },
+        {
           "@id": "estleg:Phase_Submission"
+        },
+        {
+          "@id": "estleg:Phase_ThirdReading"
         },
         {
           "@id": "estleg:Phase_Withdrawn"
@@ -10631,6 +11271,68 @@
       }
     },
     {
+      "@id": "estleg:Phase_FirstReading",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Esimene lugemine",
+          "@language": "et"
+        },
+        {
+          "@value": "First reading",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": "First reading",
+      "rdfs:comment": "Eelnõu on Riigikogus esimesel lugemisel.",
+      "estleg:phaseOrder": {
+        "@value": "8",
+        "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
+      }
+    },
+    {
+      "@id": "estleg:Phase_Lapsed",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Menetlusest välja langenud",
+          "@language": "et"
+        },
+        {
+          "@value": "Lapsed",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": "Lapsed",
+      "rdfs:comment": "Eelnõu langes menetlusest välja (koosseisu lõppemine, ühendamine, tagastamine vms).",
+      "estleg:phaseOrder": {
+        "@value": "12",
+        "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
+      }
+    },
+    {
       "@id": "estleg:Phase_PublicConsultation",
       "@type": [
         "owl:NamedIndividual",
@@ -10652,6 +11354,37 @@
       "rdfs:comment": "Eelnõu on avalikul konsultatsioonil – üldsus saab arvamust avaldada.",
       "estleg:phaseOrder": {
         "@value": "1",
+        "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
+      }
+    },
+    {
+      "@id": "estleg:Phase_Reconsideration",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Uuesti arutamine",
+          "@language": "et"
+        },
+        {
+          "@value": "Reconsideration",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": "Reconsideration",
+      "rdfs:comment": "Vabariigi President jättis seaduse välja kuulutamata; Riigikogu arutab uuesti.",
+      "estleg:phaseOrder": {
+        "@value": "11",
         "@type": "xsd:integer"
       },
       "skos:inScheme": {
@@ -10724,6 +11457,68 @@
       }
     },
     {
+      "@id": "estleg:Phase_RiigikoguProceeding",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Riigikogu menetluses",
+          "@language": "et"
+        },
+        {
+          "@value": "In Riigikogu proceedings",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": "In Riigikogu proceedings",
+      "rdfs:comment": "Eelnõu on Riigikogus algatatud või menetlusse võetud.",
+      "estleg:phaseOrder": {
+        "@value": "7",
+        "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
+      }
+    },
+    {
+      "@id": "estleg:Phase_SecondReading",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Teine lugemine",
+          "@language": "et"
+        },
+        {
+          "@value": "Second reading",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": "Second reading",
+      "rdfs:comment": "Eelnõu on Riigikogus teisel lugemisel.",
+      "estleg:phaseOrder": {
+        "@value": "9",
+        "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
+      }
+    },
+    {
       "@id": "estleg:Phase_Submission",
       "@type": [
         "owl:NamedIndividual",
@@ -10745,6 +11540,37 @@
       "rdfs:comment": "Eelnõu on esitatud Vabariigi Valitsusele otsustamiseks.",
       "estleg:phaseOrder": {
         "@value": "3",
+        "@type": "xsd:integer"
+      },
+      "skos:inScheme": {
+        "@id": "estleg:LegislativePhaseScheme"
+      },
+      "skos:topConceptOf": {
+        "@id": "estleg:LegislativePhaseScheme"
+      }
+    },
+    {
+      "@id": "estleg:Phase_ThirdReading",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase",
+        "eli-dl:ProcessStage",
+        "skos:Concept"
+      ],
+      "rdfs:label": [
+        {
+          "@value": "Kolmas lugemine",
+          "@language": "et"
+        },
+        {
+          "@value": "Third reading",
+          "@language": "en"
+        }
+      ],
+      "skos:prefLabel": "Third reading",
+      "rdfs:comment": "Eelnõu on Riigikogus kolmandal lugemisel.",
+      "estleg:phaseOrder": {
+        "@value": "10",
         "@type": "xsd:integer"
       },
       "skos:inScheme": {

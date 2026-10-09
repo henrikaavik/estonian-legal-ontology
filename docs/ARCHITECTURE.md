@@ -37,6 +37,18 @@ is declined.
   `pyproject.toml` and `metadata.jsonld` `owl:versionInfo`).
   `versionIRI` is `https://w3id.org/estleg/<version>`.
 
+### IRI resolution (#728, pilot)
+
+`w3id/estleg/.htaccess` stages content negotiation: a term IRI asked for as
+RDF or HTML `303`s to `https://estleg.sixtyfour.ee/id/<local>`, and
+`/estleg/vocabulary` to `/vocabulary`. Those are public, read-only routes of
+the MCP HTTP app (`mcp_server/estleg_mcp/resolver.py`, `resolver_web.py`):
+they find the one file that defines the node from its `@id` family and return
+JSON-LD, Turtle or an HTML page. They read the same per-file load surface as
+the MCP tools, never the combined graph. The rules are staged, not live, until
+the maintainer re-submits them to perma-id; the operator question is #730
+(`docs/proposals/2026-10-w3id-content-negotiation.md`).
+
 ## Load surfaces (three products)
 
 | Surface | What you load | Use for |
@@ -134,7 +146,8 @@ the reviewed PRs; full corpus/SHACL conformance remains unresolved. See
   `https://w3id.org/estleg/` 302-redirects to the repository and
   `https://w3id.org/estleg/1.0.0` 302-redirects to the tagged release
   (`releases/tag/v1.0.0`). Content negotiation (RDF vs HTML per `Accept`)
-  is **not** live — that is `#728`.
+  is staged and piloted but **not** live — that is `#728` (see
+  [IRI resolution](#iri-resolution-728-pilot)).
 
 Keep new consumer paths aligned with the three load surfaces above.
 

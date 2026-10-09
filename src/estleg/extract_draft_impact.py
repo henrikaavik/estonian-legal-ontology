@@ -31,7 +31,10 @@ from estleg.estleg_common import (
     jsonld_texts,
     save_json,
 )
-from estleg.generate_draft_legislation import detect_affected_laws
+from estleg.generate_draft_legislation import (
+    detect_affected_laws,
+    split_coordinated_law_names,
+)
 from estleg.estleg_common import (
     sanitize_id as _shared_sanitize_id,
 )
@@ -46,6 +49,7 @@ NS = "https://w3id.org/estleg/"
 # row. A draft is law-naming when a usable existing-law name can be read
 # from ``affectedLawName`` or from the title via ``detect_affected_laws``.
 LAW_NAMING_COVERAGE_FLOOR = 0.60
+CLEARED_DRAFT_KEYS = ("estleg:amendsLaw", "estleg:changeType", "estleg:enactedAs")
 _JUNK_NAME_STEMS = ("muutmi", "täiendami", "kehtetuks", "kehtestami")
 
 
@@ -74,7 +78,11 @@ def law_names_for_draft(node: dict) -> list[str]:
     )
     names: list[str] = []
     seen: set[str] = set()
-    for raw in [*stored, *detect_affected_laws(title)]:
+    # Stored names predate the F2 fix (#717): split a coordinated phrase
+    # ("Karistusseadustiku ja tervishoiuteenuste korraldamise seaduse")
+    # into its member laws so each resolves on its own.
+    candidates = [part for raw in stored for part in split_coordinated_law_names(raw)]
+    for raw in [*candidates, *detect_affected_laws(title)]:
         if not is_usable_law_name(raw):
             continue
         key = raw.casefold()
@@ -167,6 +175,16 @@ _ENACT_TITLE_NOISE = re.compile(
     r"\b(?:eelnõu|eelnou|seaduseelnõu|seaduseelnou)\b",
     re.IGNORECASE,
 )
+_RIIGIKOGU_MARK_NOISE = re.compile(r"\(?\b\d{1,4}\s?(?:SE|OE|AE|UA|PE|DE|TK)\b\)?")
+
+
+def resolve_law_name_exact(name: str, lookup: dict[str, dict]) -> dict | None:
+    """Exact (normalised name or slug) INDEX match; no fuzzy fallback."""
+    norm = normalize_law_name(name)
+    for key in (norm, slug_from_name(norm)):
+        if key in lookup:
+            return lookup[key]
+    return None
 
 
 def resolve_enacted_as(
@@ -174,18 +192,49 @@ def resolve_enacted_as(
     change_type: str | None,
     lookup: dict[str, dict],
     iri_map: dict[str, str],
+    *,
+    riigikogu_enacted: bool = False,
 ) -> str | None:
-    """Resolve a changeType=enacts draft title to an enacted act IRI (#419)."""
-    if change_type != "enacts" or not title:
+    """Resolve a draft to the act it enacted (#419, tightened in #717).
+
+    Two routes, both EXACT INDEX matches (the old fuzzy route linked
+    regulations and käskkirjad that merely "kehtestavad" conditions to
+    unrelated treaty acts; none of the 133 links it produced held up):
+
+    * ``changeType=enacts`` and the cleaned title IS an act name;
+    * ``riigikogu_enacted``: Riigikogu reports the bill adopted
+      (a Riigikogu step at Phase_Enacted) and the bill is not an amending
+      bill, so its title names the new act.
+    """
+    if not title:
         return None
-    cleaned = _ENACT_TITLE_NOISE.sub(" ", title)
+    if change_type != "enacts" and not riigikogu_enacted:
+        return None
+    if riigikogu_enacted and change_type != "enacts" and "muutmi" in title.lower():
+        return None
+    cleaned = _RIIGIKOGU_MARK_NOISE.sub(" ", title)
+    cleaned = _ENACT_TITLE_NOISE.sub(" ", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned).strip(" .,-")
     if not cleaned:
         return None
-    entry = resolve_law_name(cleaned, lookup)
+    entry = resolve_law_name_exact(cleaned, lookup)
     if not entry:
         return None
     return get_ontology_iri(entry, iri_map)
+
+
+def riigikogu_reports_enacted(node: dict, steps_by_id: dict[str, dict]) -> bool:
+    """True when one of the draft's Riigikogu steps is at Phase_Enacted."""
+    from estleg.generate_draft_legislation import _refs, step_phase
+
+    for ref in _refs(node.get("estleg:hasProcessStep")):
+        step = steps_by_id.get(ref)
+        if not step:
+            continue
+        method = str(step.get("estleg:derivationMethod") or "")
+        if method.startswith("riigikogu-") and step_phase(step) == "Enacted":
+            return True
+    return False
 
 
 def classify_change_type(title: str) -> tuple[str, str] | None:
@@ -554,9 +603,11 @@ def main(argv: list[str] | None = None) -> None:
     # ---------- clearing pass ----------
     print("\n[2b/5] Clearing stale draft impact links...")
 
-    # Clear estleg:amendsLaw and estleg:changeType from draft nodes
+    # Clear estleg:amendsLaw / changeType / enactedAs from draft nodes
+    # (enactedAs was never cleared, so a tightened rule could not retract a
+    # stale link, #717).
     for node in draft_nodes:
-        for key in ("estleg:amendsLaw", "estleg:changeType"):
+        for key in CLEARED_DRAFT_KEYS:
             if key in node:
                 del node[key]
 
@@ -605,7 +656,7 @@ def main(argv: list[str] | None = None) -> None:
             continue
         modified = False
         for node in doc.get("@graph", []):
-            for key in ("estleg:amendsLaw", "estleg:changeType"):
+            for key in CLEARED_DRAFT_KEYS:
                 if key in node:
                     del node[key]
                     modified = True
@@ -625,6 +676,11 @@ def main(argv: list[str] | None = None) -> None:
     # ministry → list of draft IRIs
     ministry_drafts: dict[str, int] = defaultdict(int)
 
+    steps_by_id = {
+        n.get("@id"): n
+        for n in drafts_doc.get("@graph", [])
+        if isinstance(n, dict) and "estleg:ProcessStep" in (n.get("@type") or [])
+    }
     for node in draft_nodes:
         draft_iri = node.get("@id", "")
         title = jsonld_text(node.get("rdfs:label", ""), prefer_language="et")
@@ -637,7 +693,13 @@ def main(argv: list[str] | None = None) -> None:
             node["estleg:changeType"] = ctype
             change_type_counts[ctype] += 1
 
-        enacted_iri = resolve_enacted_as(title, ctype, lookup, iri_map)
+        enacted_iri = resolve_enacted_as(
+            title,
+            ctype,
+            lookup,
+            iri_map,
+            riigikogu_enacted=riigikogu_reports_enacted(node, steps_by_id),
+        )
         if enacted_iri:
             node["estleg:enactedAs"] = {"@id": enacted_iri}
 
@@ -645,7 +707,10 @@ def main(argv: list[str] | None = None) -> None:
         affected_names = law_names_for_draft(node)
         if not affected_names:
             continue
-        if not node.get("estleg:affectedLawName"):
+        # Refresh the stored names: the pre-#717 extractor kept §-fragments
+        # and unsplit coordinated phrases (F1/F2).
+        stored = affected_law_name_values(node.get("estleg:affectedLawName"))
+        if stored != affected_names:
             node["estleg:affectedLawName"] = affected_names
 
         # Dedup resolved IRIs by ``@id`` (issue #266). Several affected-name
@@ -688,6 +753,14 @@ def main(argv: list[str] | None = None) -> None:
     print(f"  Resolved: {resolved_count}")
     print(f"  Unresolved: {len(unresolved)}")
 
+    # enactedAs feeds the derived phase (#717): re-derive it from the steps.
+    from estleg.generate_draft_legislation import _refs, finalize_draft
+
+    for node in draft_nodes:
+        steps = [steps_by_id[r] for r in _refs(node.get("estleg:hasProcessStep")) if r in steps_by_id]
+        if steps:
+            finalize_draft(node, steps)
+
     # Save enriched drafts
     save_json(combined_path, drafts_doc)
     print(f"  Updated: {combined_path.name}")
@@ -721,14 +794,30 @@ def main(argv: list[str] | None = None) -> None:
                 "estleg:changeType",
                 "estleg:affectedLawName",
                 "estleg:enactedAs",
+                "estleg:legislativePhase",
             ):
                 if key in src and node.get(key) != src[key]:
                     node[key] = src[key]
+                    changed = True
+            # Present-or-absent keys: mirror absence too.
+            for key in ("estleg:lifecycleStale",):
+                if key in src and node.get(key) != src[key]:
+                    node[key] = src[key]
+                    changed = True
+                elif key not in src and key in node:
+                    del node[key]
                     changed = True
         if changed:
             save_json(fpath, peep_doc)
             peep_synced += 1
     print(f"  Peep files synced: {peep_synced}")
+    if peep_synced:
+        # The index counts drafts by their derived phase.
+        from estleg.generate_draft_legislation import load_phase_peeps, write_index
+
+        phase_docs = load_phase_peeps(EELNOUD_DIR)
+        if phase_docs:
+            write_index(phase_docs, EELNOUD_DIR)
 
     # ---------- inverse linking on law files ----------
     inverse_count = 0

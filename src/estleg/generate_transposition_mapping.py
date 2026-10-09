@@ -5,21 +5,38 @@ Map Estonian laws to the EU directives they transpose, using EUR-Lex SPARQL.
 Data source: EUR-Lex SPARQL endpoint — national transposition measures for Estonia.
 Matches transposition titles against existing Estonian law ontology entries.
 
+Matching covers root law peeps (``INDEX.json``) and, since #711, the state
+regulations under ``krr_outputs/regulations/riik/`` (Vabariigi Valitsuse and
+ministri määrused), which CELLAR lists as Estonian NIMs as often as laws.
+
 Generates:
   - krr_outputs/reports/transposition_mapping.json   (report of all matches)
+  - krr_outputs/reports/transposition_measures.json  (raw CELLAR NIM rows + deadlines,
+                                                      so ``--offline`` reruns need no network)
   - krr_outputs/transposition_schema.json             (OWL property definitions)
-  - Updates existing law JSON-LD files with estleg:transposesDirective
-  - Updates EU directive entries with estleg:transposedBy
+  - krr_outputs/exports/transposition_gap.csv         (three-valued status per directive, #711)
+  - Updates existing law / state-regulation JSON-LD files with estleg:transposesDirective
+  - Updates EU directive entries with estleg:transposedBy and the three-valued
+    estleg:transpositionStatus (transposed / no_measure_required /
+    no_evidence_in_corpus — never "not transposed", #711)
+
+Modes:
+  (default)        fetch NIMs + deadlines from CELLAR, match, write, derive status
+  --offline        same, but read NIMs + deadlines from transposition_measures.json
+  --status-only    re-derive transpositionStatus + the gap CSV from the corpus as it is
 """
 
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import json
 import re
 import sys
 import time
 import unicodedata
+from difflib import SequenceMatcher
 from pathlib import Path
 
 from estleg.estleg_common import (
@@ -27,7 +44,7 @@ from estleg.estleg_common import (
     CONTEXT,
     act_deprecation,
     act_root_node,
-    iter_peep_files,
+    jsonld_id_values,
     jsonld_text,
     merge_title_langstring,
 )
@@ -38,6 +55,10 @@ from estleg.eurlex_common import (
     SPARQL_ENDPOINT,
     sparql_query,
 )
+from estleg.generate_eu_legislation import (
+    _is_valid_iso_date,
+    apply_estonia_relevance_lens,
+)
 from estleg.eurlex_common import (
     sparql_query_with_retry as _sparql_query_with_retry,
 )
@@ -45,6 +66,24 @@ from estleg.eurlex_common import (
 REPO_ROOT = Path(__file__).resolve().parents[2]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 EURLEX_DIR = KRR_DIR / "eurlex"
+
+
+# #711 output paths resolve against the module's KRR_DIR at call time, so a
+# test (or caller) that repoints KRR_DIR never writes into the real corpus.
+def _riik_dir() -> Path:
+    return KRR_DIR / "regulations" / "riik"
+
+
+def _reports_dir() -> Path:
+    return KRR_DIR / "reports"
+
+
+def _measures_cache() -> Path:
+    return _reports_dir() / "transposition_measures.json"
+
+
+def _gap_csv() -> Path:
+    return KRR_DIR / "exports" / "transposition_gap.csv"
 
 NS = "https://w3id.org/estleg/"
 
@@ -92,7 +131,12 @@ def extract_law_name(title: str) -> str | None:
     Patterns like:
       - "Alkoholiseadus"
       - "Isikuandmete kaitse seadus"
-      - Things ending in "seadus", "seadustik", "määrus"
+      - Things ending in "seadus", "seadustik", "määrus" (incl. "põhimäärus")
+
+    The documented ``määrus`` case was never matched before #711 (the regex
+    was ``seadus(?:tik)?`` only). A title ending in ``määrus`` is returned
+    whole: regulation titles are not "X määrus" names the way law titles are
+    "X seadus", so only the whole-title form is a usable lookup key.
     """
     # Strip a trailing consolidation digit run that EUR-Lex appends to
     # some NIM titles (``"Tubakaseadus1"`` → ``"Tubakaseadus"``).
@@ -100,7 +144,7 @@ def extract_law_name(title: str) -> str | None:
 
     # Try to find explicit law name patterns
     # Pattern: title IS the law name (short titles)
-    if re.search(r"seadus(?:tik)?$", title_norm, re.IGNORECASE):
+    if re.search(r"(?:seadus(?:tik)?|m[äa][äa]rus)$", title_norm, re.IGNORECASE):
         return title_norm
 
     # Pattern: "... seadus ..." — extract up to "seadus/seadustik"
@@ -270,12 +314,17 @@ def fetch_directive_deadlines(*, allow_partial: bool = False) -> tuple[dict[str,
     without ``allow_partial`` it propagates like every other SPARQL
     failure in this script (#129).
     """
+    # CELLAR stores 1001-01-01 / 1002-02-02 as null sentinels beside real
+    # deadlines; filter them BEFORE MIN or the sentinel masks the real value
+    # (31992L0014's 2002-04-01, 32025L0872's 2025-12-31, …; #352 / #711).
     query = """
 PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT ?celex (MIN(?d) AS ?deadline) WHERE {
   ?work a cdm:directive .
   ?work cdm:resource_legal_id_celex ?celex .
   ?work cdm:directive_date_transposition ?d .
+  FILTER(?d >= "1900-01-01"^^xsd:date && ?d <= "2100-12-31"^^xsd:date)
 } GROUP BY ?celex
 """
     print("  Fetching directive transposition deadlines...")
@@ -291,8 +340,8 @@ SELECT ?celex (MIN(?d) AS ?deadline) WHERE {
     for b in bindings:
         celex = b.get("celex", {}).get("value", "")
         deadline = b.get("deadline", {}).get("value", "")
-        if not celex or not deadline:
-            continue
+        if not celex or not _is_valid_iso_date(deadline):
+            continue  # #352: sentinel / malformed values never become xsd:date
         # The SPARQL ``MIN`` already picks the earliest; defend anyway.
         cur = deadlines.get(celex)
         if cur is None or deadline < cur:
@@ -324,7 +373,9 @@ def update_directive_deadlines(deadlines: dict[str, str]) -> int:
     for node in data.get("@graph", []):
         celex = node.get("estleg:celexNumber", "")
         deadline = deadlines.get(celex)
-        if not deadline:
+        # #352: the same guard generate_eu_legislation applies, so a cached or
+        # upstream 1001-01-01 / 1002-02-02 sentinel is never typed xsd:date.
+        if not deadline or not _is_valid_iso_date(deadline):
             continue
         new_val = {"@value": deadline, "@type": "xsd:date"}
         if node.get("estleg:transpositionDeadline") == new_val:
@@ -418,6 +469,134 @@ def build_law_index(index_data: dict) -> dict[str, dict]:
             }
 
     return law_index
+
+
+# ---------------------------------------------------------------------------
+# #711: state regulations, "no measure required" rows
+# ---------------------------------------------------------------------------
+
+# CELLAR's Estonian placeholder row when the member state notified that no
+# national measure is needed ("EM estime MNE non nécessaire - MS does not
+# consider NEM necessary."). It is not an unmatched act title: it is evidence
+# for ``transpositionStatus "no_measure_required"``.
+_NEM_NOT_NECESSARY_RE = re.compile(
+    r"MNE\s+non\s+n[ée]cessaire|does\s+not\s+consider\s+NEM\s+necessary",
+    re.IGNORECASE,
+)
+
+
+def is_no_measure_required(title: str) -> bool:
+    """True for CELLAR's "MS does not consider NEM necessary" NIM rows."""
+    return bool(_NEM_NOT_NECESSARY_RE.search(title or ""))
+
+
+def normalize_regulation_title(text: str) -> str:
+    """``normalize_text`` plus RT/CELLAR title noise: a trailing ``*`` or
+    ``(määrus)`` suffix (the regulation peeps' ``rdfs:label`` form)."""
+    text = re.sub(r"\s*\((?:m[äa][äa]rus)\)\s*$", "", text or "", flags=re.IGNORECASE)
+    text = re.sub(r"[\s*]+$", "", text)
+    return normalize_text(text)
+
+
+def build_regulation_index(riik_dir: Path | None = None) -> dict[str, list[dict]]:
+    """Normalized title → state-regulation entries under ``regulations/riik/``.
+
+    Each entry mirrors a ``build_law_index`` value (``name`` / ``files`` /
+    ``source_act``) plus ``kind: "regulation"``; ``files`` are relative to
+    ``KRR_DIR`` (``regulations/riik/<stem>_peep.json``) so the shared
+    ``collect_transposition_file_links`` / ``update_law_file`` path writes
+    them. Several regulations can share a title (ministries reuse "… kord"
+    titles), so values are lists; the matcher refuses an ambiguous title.
+    Deprecated/replaced acts are skipped like in ``build_law_index`` (#578).
+    """
+    base = _riik_dir() if riik_dir is None else riik_dir
+    index: dict[str, list[dict]] = {}
+    if not base.exists():
+        return index
+    krr_root = base.parent.parent
+    for path in sorted(base.glob("*_peep.json")):
+        try:
+            data = load_json(path)
+        except Exception:
+            continue
+        if act_deprecation(data)[0]:
+            continue
+        root = act_root_node(data)
+        if root is None:
+            continue
+        title = jsonld_text(root.get("dc:source", "")) or jsonld_text(
+            root.get("rdfs:label", "")
+        )
+        key = normalize_regulation_title(title)
+        if not key:
+            continue
+        index.setdefault(key, []).append(
+            {
+                "name": path.name.removesuffix("_peep.json"),
+                "files": [path.relative_to(krr_root).as_posix()],
+                "source_act": title,
+                "kind": "regulation",
+            }
+        )
+    return index
+
+
+# Near-title match floor for regulations. NIM titles often carry an older or
+# fuller form of the current title ("Elamislubade ja töölubade registri
+# *pidamise* põhimäärus" vs the in-force "Elamislubade ja töölubade registri
+# põhimäärus", Reg_1032308). A near match must (a) differ only by whole added
+# or dropped words (one token set contains the other), (b) by at most
+# ``_NEAR_MAX_EXTRA_TOKENS`` words or a fifth of the longer title, whichever is
+# larger (a long title that drops a trailing "… ning taotluse vorm" clause),
+# (c) share ``_NEAR_MIN_TOKENS`` words, and (d) clear the character-level
+# ratio; a tie at the best ratio is ambiguous.
+_NEAR_MIN_TOKENS = 3
+_NEAR_MAX_EXTRA_TOKENS = 2
+_NEAR_MIN_RATIO = 0.85
+
+
+def match_regulation_title(
+    title: str, regulation_index: dict[str, list[dict]]
+) -> tuple[dict | None, str]:
+    """Match a NIM title to one state regulation: ``(entry, method)``.
+
+    ``method`` is ``"regulation_exact_title"``, ``"regulation_near_title"``,
+    ``"ambiguous"`` (several regulations fit equally well — no link) or
+    ``""`` (no match).
+    """
+    key = normalize_regulation_title(title)
+    if not key:
+        return None, ""
+    exact = regulation_index.get(key)
+    if exact:
+        if len(exact) == 1:
+            return exact[0], "regulation_exact_title"
+        return None, "ambiguous"
+    tokens = set(key.split())
+    if len(tokens) < _NEAR_MIN_TOKENS:
+        return None, ""
+    best: list[tuple[float, dict]] = []
+    for reg_key, entries in regulation_index.items():
+        reg_tokens = set(reg_key.split())
+        if not (reg_tokens <= tokens or tokens <= reg_tokens):
+            continue
+        if len(reg_tokens & tokens) < _NEAR_MIN_TOKENS:
+            continue
+        allowed = max(_NEAR_MAX_EXTRA_TOKENS, max(len(reg_tokens), len(tokens)) // 5)
+        if len(reg_tokens ^ tokens) > allowed:
+            continue
+        ratio = SequenceMatcher(None, key, reg_key).ratio()
+        if ratio < _NEAR_MIN_RATIO:
+            continue
+        for entry in entries:
+            best.append((ratio, entry))
+    if not best:
+        return None, ""
+    top = max(ratio for ratio, _ in best)
+    winners = [entry for ratio, entry in best if ratio == top]
+    if len(winners) > 1:
+        return None, "ambiguous"
+    return winners[0], "regulation_near_title"
 
 
 def build_directive_index() -> dict[str, str]:
@@ -779,13 +958,19 @@ def generate_schema() -> dict:
             "rdfs:range": {"@id": "estleg:Act"},
             "owl:inverseOf": {"@id": "estleg:transposesDirective"},
         },
-        # DatatypeProperty: transpositionStatus
+        # DatatypeProperty: transpositionStatus — #711 three-valued corpus
+        # status on the directive (was an act-level "unknown" placeholder).
         {
             "@id": "estleg:transpositionStatus",
             "@type": ["owl:DatatypeProperty"],
             "rdfs:label": "ülevõtmise staatus (transposition status)",
-            "rdfs:comment": "Status of directive transposition: full, partial, or unknown.",
-            "rdfs:domain": {"@id": "estleg:Act"},
+            "rdfs:comment": (
+                "Corpus transposition status of an EU directive: transposed, "
+                "no_measure_required or no_evidence_in_corpus (#711). Never "
+                "'not transposed': no_evidence_in_corpus is a statement about "
+                "this corpus, not a legal finding."
+            ),
+            "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "xsd:string"},
         },
         # NOTE: ``estleg:transpositionDeadline`` (the directive's transposition
@@ -897,10 +1082,8 @@ def update_law_file(filepath: Path, directive_ids: list[str]) -> bool:
 
     all_refs = existing + new_refs
     target_node["estleg:transposesDirective"] = all_refs
-
-    # Set transposition status as unknown (EUR-Lex doesn't tell us full vs partial)
-    if "estleg:transpositionStatus" not in target_node:
-        target_node["estleg:transpositionStatus"] = "unknown"
+    # #711: no act-level ``transpositionStatus "unknown"`` any more — the
+    # property moved to the directive with three corpus-status values.
 
     save_json(filepath, data)
     return True
@@ -995,7 +1178,274 @@ def clear_transposition_from_file(filepath: Path) -> bool:
     return modified
 
 
-def parse_args() -> argparse.Namespace:
+# ---------------------------------------------------------------------------
+# #711: NIM cache, three-valued status, gap CSV
+# ---------------------------------------------------------------------------
+
+STATUS_TRANSPOSED = "transposed"
+STATUS_NO_MEASURE_REQUIRED = "no_measure_required"
+STATUS_NO_EVIDENCE = "no_evidence_in_corpus"
+TRANSPOSITION_STATUSES = (STATUS_TRANSPOSED, STATUS_NO_MEASURE_REQUIRED, STATUS_NO_EVIDENCE)
+
+ASSERTED_PROPERTY = "estleg:transposesDirectiveAsserted"
+
+GAP_CSV_COLUMNS = (
+    "celex",
+    "directive_iri",
+    "title",
+    "in_force",
+    "transposition_deadline",
+    "deadline_passed",
+    "status_as_of",
+    "transposition_status",
+    "evidence",
+    "notified_acts",
+    "asserted_acts",
+    "eurlex_url",
+)
+
+
+def write_measures_cache(
+    measures: list[dict],
+    deadlines: dict[str, str] | None,
+    *,
+    partial: bool,
+    path: Path | None = None,
+) -> Path:
+    """Persist the raw CELLAR rows so a later ``--offline`` run re-matches
+    without the network. Rows are sorted, so the file is byte-stable for an
+    unchanged upstream."""
+    target = _measures_cache() if path is None else path
+    doc = {
+        "generated": BUILD_EVALUATION_DATE,
+        "source": SPARQL_ENDPOINT,
+        "country": "EST",
+        "partial": partial,
+        "total_measures": len(measures),
+        "measures": sorted(
+            (
+                {
+                    "celex_dir": m["celex_dir"],
+                    "directive_uri": m.get("directive_uri", ""),
+                    "title_nat": m["title_nat"],
+                    "title_en": m.get("title_en", ""),
+                }
+                for m in measures
+            ),
+            key=lambda m: (m["celex_dir"], m["title_nat"], m["directive_uri"]),
+        ),
+    }
+    if deadlines is not None:
+        doc["deadlines"] = dict(sorted(deadlines.items()))
+    save_json(target, doc)
+    return target
+
+
+def load_measures_cache(path: Path | None = None) -> tuple[list[dict], dict[str, str] | None, bool]:
+    """``(measures, deadlines or None, partial)`` from the NIM cache."""
+    target = _measures_cache() if path is None else path
+    doc = load_json(target)
+    deadlines = doc.get("deadlines")
+    return list(doc.get("measures", [])), deadlines, bool(doc.get("partial"))
+
+
+def clear_act_transposition_status(files: list[Path]) -> int:
+    """Strip the retired act-level ``transpositionStatus`` (``"unknown"``)
+    from law / state-regulation peeps. Since #711 the property lives on the
+    directive and carries the three-valued corpus status."""
+    cleared = 0
+    for path in files:
+        try:
+            data = load_json(path)
+        except Exception:
+            continue
+        modified = False
+        for node in data.get("@graph", []):
+            if "estleg:transpositionStatus" in node:
+                del node["estleg:transpositionStatus"]
+                modified = True
+        if modified:
+            save_json(path, data)
+            cleared += 1
+    return cleared
+
+
+def collect_asserted_by_directive(files: list[Path]) -> dict[str, list[str]]:
+    """Directive @id → act @ids whose RT normitehniline märkus asserts it
+    (``estleg:transposesDirectiveAsserted``, written by extract_ntm_directives)."""
+    out: dict[str, set[str]] = {}
+    for path in files:
+        try:
+            data = load_json(path)
+        except Exception:
+            continue
+        root = act_root_node(data)
+        if root is None or ASSERTED_PROPERTY not in root:
+            continue
+        for directive in jsonld_id_values(root.get(ASSERTED_PROPERTY)):
+            out.setdefault(directive, set()).add(root["@id"])
+    return {key: sorted(value) for key, value in out.items()}
+
+
+def _value(node: dict, key: str) -> str:
+    raw = node.get(key)
+    if isinstance(raw, dict):
+        raw = raw.get("@value", raw.get("@id", ""))
+    return str(raw) if raw is not None else ""
+
+
+def derive_transposition_status(
+    directives_doc: dict,
+    *,
+    no_measure_required: set[str],
+    asserted: dict[str, list[str]],
+    as_of: str = BUILD_EVALUATION_DATE,
+) -> list[dict]:
+    """Stamp the three-valued ``estleg:transpositionStatus`` on directives.
+
+    * ``transposed`` — the corpus holds a transposing act: a CELLAR NIM
+      matched to an Estonian act (``estleg:transposedBy``) or an act whose
+      RT normitehniline märkus names the directive
+      (``estleg:transposesDirectiveAsserted``). It records evidence of a
+      measure, not a finding of complete or correct transposition.
+    * ``no_measure_required`` — no transposing act, but Estonia notified
+      CELLAR that no national measure is necessary.
+    * ``no_evidence_in_corpus`` — neither. A statement about this corpus,
+      never "not transposed": the NIM may be unmatched, the act may be outside
+      the corpus, or the directive may need no measure without a notification.
+
+    Stamped on every directive with a ``transpositionDeadline`` or any
+    evidence; removed elsewhere so a rerun is idempotent. Returns one CSV row
+    per stamped directive, sorted by CELEX.
+    """
+    rows: list[dict] = []
+    for node in directives_doc.get("@graph", []):
+        celex = node.get("estleg:celexNumber", "")
+        iri = node.get("@id", "")
+        if not celex or not iri:
+            continue
+        # Canonical key order whatever the node's history: the status and the
+        # #527 relevance stamp are re-appended last (status here, relevance by
+        # the lens restamp that always follows this derivation).
+        node.pop("estleg:transpositionStatus", None)
+        node.pop("estleg:estoniaRelevant", None)
+        notified = sorted(jsonld_id_values(node.get("estleg:transposedBy")))
+        asserted_acts = asserted.get(iri, [])
+        evidence = []
+        if notified:
+            evidence.append("cellar_nim")
+        if asserted_acts:
+            evidence.append("rt_ntm")
+        if celex in no_measure_required:
+            evidence.append("cellar_no_measure_required")
+        deadline = _value(node, "estleg:transpositionDeadline")
+        if not deadline and not evidence:
+            node.pop("estleg:transpositionStatus", None)
+            continue
+        if notified or asserted_acts:
+            status = STATUS_TRANSPOSED
+        elif celex in no_measure_required:
+            status = STATUS_NO_MEASURE_REQUIRED
+        else:
+            status = STATUS_NO_EVIDENCE
+        node["estleg:transpositionStatus"] = status
+        in_force = _value(node, "estleg:inForce").lower()
+        rows.append(
+            {
+                "celex": celex,
+                "directive_iri": iri,
+                "title": jsonld_text(node.get("rdfs:label", "")),
+                "in_force": in_force if in_force in ("true", "false") else "",
+                "transposition_deadline": deadline,
+                "deadline_passed": ("true" if deadline < as_of else "false") if deadline else "",
+                "status_as_of": as_of,
+                "transposition_status": status,
+                "evidence": ";".join(evidence),
+                "notified_acts": ";".join(notified),
+                "asserted_acts": ";".join(asserted_acts),
+                "eurlex_url": _value(node, "estleg:eurLexLink"),
+            }
+        )
+    rows.sort(key=lambda row: row["celex"])
+    return rows
+
+
+def status_summary(rows: list[dict], directives_doc: dict, *, as_of: str = BUILD_EVALUATION_DATE) -> dict:
+    """Counts for the report, incl. the naive "deadline past ∧ ¬transposedBy"
+    query the three-valued status replaces (it read as 2,368 infringements)."""
+    counts = {status: 0 for status in TRANSPOSITION_STATUSES}
+    for row in rows:
+        counts[row["transposition_status"]] += 1
+    naive = 0
+    for node in directives_doc.get("@graph", []):
+        deadline = _value(node, "estleg:transpositionDeadline")
+        if deadline and deadline < as_of and not node.get("estleg:transposedBy"):
+            naive += 1
+    past_no_evidence = [
+        row for row in rows
+        if row["deadline_passed"] == "true" and row["transposition_status"] == STATUS_NO_EVIDENCE
+    ]
+    return {
+        "as_of": as_of,
+        "directives_with_status": len(rows),
+        "directives_with_deadline": sum(1 for row in rows if row["transposition_deadline"]),
+        "counts": counts,
+        "transposed_by_evidence": {
+            "cellar_nim": sum(1 for row in rows if "cellar_nim" in row["evidence"]),
+            "rt_ntm": sum(1 for row in rows if "rt_ntm" in row["evidence"]),
+            "rt_ntm_only": sum(1 for row in rows if row["evidence"].startswith("rt_ntm")),
+        },
+        "deadline_past_without_transposedBy": naive,
+        "deadline_past_no_evidence_in_corpus": len(past_no_evidence),
+        "deadline_past_no_evidence_in_corpus_in_force": sum(
+            1 for row in past_no_evidence if row["in_force"] == "true"
+        ),
+    }
+
+
+def write_gap_csv(rows: list[dict], path: Path | None = None) -> Path:
+    """Write ``transposition_gap.csv`` (UTF-8, ``\\n`` line ends, CELEX order)."""
+    target = _gap_csv() if path is None else path
+    buf = io.StringIO()
+    writer = csv.DictWriter(buf, fieldnames=GAP_CSV_COLUMNS, lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    text = buf.getvalue()
+    if not target.exists() or target.read_text(encoding="utf-8") != text:
+        target.write_text(text, encoding="utf-8")
+    return target
+
+
+def act_peep_files() -> list[Path]:
+    """Root law peeps and state-regulation peeps (the matcher's write scope)."""
+    files = list(KRR_DIR.glob("*_peep.json"))
+    riik = _riik_dir()
+    if riik.exists():
+        files.extend(riik.glob("*_peep.json"))
+    return sorted(files, key=lambda p: p.as_posix().casefold())
+
+
+def apply_transposition_status(
+    *, no_measure_required: set[str], act_files: list[Path] | None = None
+) -> tuple[list[dict], dict]:
+    """Derive + write directive statuses and the gap CSV; return (rows, summary)."""
+    files = act_peep_files() if act_files is None else act_files
+    directives_file = EURLEX_DIR / "eurlex_directives_peep.json"
+    doc = load_json(directives_file)
+    rows = derive_transposition_status(
+        doc,
+        no_measure_required=no_measure_required,
+        asserted=collect_asserted_by_directive(files),
+    )
+    save_json(directives_file, doc)
+    write_gap_csv(rows)
+    summary = status_summary(rows, doc)
+    _restamp_estonia_relevance()  # re-adds the relevance stamps popped above
+    return rows, summary
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--allow-empty",
@@ -1017,7 +1467,26 @@ def parse_args() -> argparse.Namespace:
             "rather than aborting the run."
         ),
     )
-    return parser.parse_args()
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--offline",
+        action="store_true",
+        help=(
+            "Read the NIM rows (and deadlines, when cached) from "
+            "krr_outputs/reports/transposition_measures.json instead of "
+            "CELLAR (#711). Deadlines are left as-is when the cache has none."
+        ),
+    )
+    mode.add_argument(
+        "--status-only",
+        action="store_true",
+        help=(
+            "Skip matching: re-derive estleg:transpositionStatus, "
+            "transposition_gap.csv and the report's status block from the "
+            "corpus as it is (offline, #711)."
+        ),
+    )
+    return parser.parse_args(argv)
 
 
 def _write_documented_empty_report(*, partial: bool, reason: str) -> Path:
@@ -1043,89 +1512,98 @@ def _write_documented_empty_report(*, partial: bool, reason: str) -> Path:
         "missing_directives_sample": [],
         "missing_law_iris_sample": [],
     }
-    report_path = KRR_DIR / "reports" / "transposition_mapping.json"
+    report_path = _reports_dir() / "transposition_mapping.json"
     save_json(report_path, report)
     return report_path
 
 
-def main():
-    args = parse_args()
+def _restamp_estonia_relevance() -> None:
+    """#527: ``estleg:estoniaRelevant`` and the EURLEX_INDEX ``lens`` are
+    derived from this pass's mapping + ``transposedBy``; restamp them here so
+    a changed mapping never leaves the lens stale (no other DAG step does)."""
+    stats = apply_estonia_relevance_lens(krr_dir=KRR_DIR)
+    print(
+        f"  Estonia-relevance lens: {stats['relevant_celex']} CELEX, "
+        f"{stats['nodes_changed']} node(s) restamped"
+    )
+
+
+def _rebuild_eurlex_combined() -> None:
+    # #417: combined is the consumer entry point; rebuild it from the
+    # now-enriched peeps so transposedBy / transpositionDeadline /
+    # transpositionStatus survive.
+    from estleg.generate_eu_legislation import rebuild_eurlex_combined_from_peeps
+
+    combined_stats = rebuild_eurlex_combined_from_peeps(EURLEX_DIR)
+    print(
+        f"  Rebuilt eurlex_combined.jsonld from peeps "
+        f"({combined_stats['nodes']} nodes)"
+    )
+
+
+def run_status_only() -> None:
+    """``--status-only``: re-derive the #711 status from the corpus as it is."""
+    report_path = _reports_dir() / "transposition_mapping.json"
+    report = load_json(report_path) if report_path.exists() else {}
+    save_json(KRR_DIR / "transposition_schema.json", generate_schema())
+    files = act_peep_files()
+    cleared = clear_act_transposition_status(files)
+    print(f"  Cleared retired act-level transpositionStatus from {cleared} file(s)")
+    nem = {row["directive_celex"] for row in report.get("no_measure_required", [])}
+    rows, summary = apply_transposition_status(no_measure_required=nem, act_files=files)
+    report["transposition_status"] = summary
+    save_json(report_path, report)
+    print(f"  Status: {summary['counts']} over {summary['directives_with_status']} directives")
+    print(
+        "  Deadline past ∧ no transposedBy (naive): "
+        f"{summary['deadline_past_without_transposedBy']}; deadline past ∧ "
+        f"no_evidence_in_corpus: {summary['deadline_past_no_evidence_in_corpus']}"
+    )
+    print(f"  Saved {_gap_csv().relative_to(KRR_DIR.parent)} ({len(rows)} rows)")
+    _rebuild_eurlex_combined()
+
+
+def main(argv: list[str] | None = None):
+    args = parse_args(argv)
     print("=" * 60)
-    print("Generate transposition mapping: Estonian laws ↔ EU directives")
+    print("Generate transposition mapping: Estonian acts ↔ EU directives")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
     print("=" * 60)
 
-    # --- Step 0: Clear existing transposition data ---
-    print("\n--- Clearing existing transposition data ---")
-    cleared_count = 0
-    for peep_file in iter_peep_files(include_kov=False):  # KOV does not apply
-        if peep_file.parent != KRR_DIR:
-            continue
-        if clear_transposition_from_file(peep_file):
-            cleared_count += 1
-    print(f"  Cleared transposition data from {cleared_count} files")
+    if args.status_only:
+        run_status_only()
+        return
 
-    # Also clear transposedBy from directive files
-    directives_path = EURLEX_DIR / "eurlex_directives_peep.json"
-    if directives_path.exists():
-        try:
-            with open(directives_path, "r", encoding="utf-8") as df:
-                dir_doc = json.load(df)
-            modified = False
-            for node in dir_doc.get("@graph", []):
-                if "estleg:transposedBy" in node:
-                    del node["estleg:transposedBy"]
-                    modified = True
-            if modified:
-                save_json(directives_path, dir_doc)
-                print("  Cleared transposedBy from directives file")
-        except Exception as e:
-            print(f"  Warning: could not clear directives file: {e}")
+    # --- Step 0: Load NIM rows (CELLAR or the #711 cache) before clearing
+    # anything, so a fetch failure leaves the corpus untouched. ---
+    deadlines: dict[str, str] | None
+    if args.offline:
+        if not _measures_cache().exists():
+            print(f"ERROR: {_measures_cache()} not found; run once online to create it.")
+            sys.exit(1)
+        measures, deadlines, was_partial = load_measures_cache()
+        print(f"  Loaded {len(measures)} cached NIM rows from {_measures_cache().name}")
+    else:
+        print("\n--- Fetching transposition measures for Estonia ---")
+        measures, was_partial = fetch_transposition_measures(
+            allow_partial=args.allow_partial
+        )
+        print(f"  Total transposition measures found: {len(measures)}")
+        deadlines = None
+        if measures:
+            deadlines, deadlines_partial = fetch_directive_deadlines(
+                allow_partial=args.allow_partial
+            )
+            was_partial = was_partial or deadlines_partial
+            write_measures_cache(measures, deadlines, partial=was_partial)
 
-    # And clear transpositionDeadline so a deadline removed upstream
-    # does not linger on the directive node (#96).
-    cleared_deadlines = clear_directive_deadlines()
-    if cleared_deadlines:
-        print(f"  Cleared transpositionDeadline from {cleared_deadlines} directive node(s)")
-
-    # --- Step 1: Load existing indexes ---
-    print("\n--- Loading existing indexes ---")
-
-    index_path = KRR_DIR / "INDEX.json"
-    if not index_path.exists():
-        print(f"ERROR: {index_path} not found. Run generate_all_laws.py first.")
-        sys.exit(1)
-    index_data = load_json(index_path)
-    print(f"  Loaded INDEX.json: {index_data.get('total_laws', 0)} laws")
-
-    # Build law lookup index
-    print("  Building law name index...")
-    law_index = build_law_index(index_data)
-    print(f"  Law index entries: {len(law_index)}")
-
-    # Build directive lookup
-    print("  Building directive CELEX index...")
-    directive_index = build_directive_index()
-    print(f"  Directive index entries: {len(directive_index)}")
-
-    # Build directive subject (title) lookup so a combined amending-act title
-    # only links the laws whose domain matches the directive — not every law
-    # co-amended in the same omnibus bill (#388).
-    directive_subject_index = build_directive_subject_index()
-
-    # --- Step 2: Generate schema ---
-    print("\n--- Generating transposition schema ---")
-    schema_doc = generate_schema()
-    schema_path = KRR_DIR / "transposition_schema.json"
-    save_json(schema_path, schema_doc)
-    print(f"  Saved: {schema_path.name}")
-
-    # --- Step 3: Fetch transposition measures from EUR-Lex ---
-    print("\n--- Fetching transposition measures for Estonia ---")
-    measures, was_partial = fetch_transposition_measures(
-        allow_partial=args.allow_partial
+    # One canonical row order for both sources (CELLAR pages by NIM URI, the
+    # cache by CELEX): which title represents a pair and the order of the
+    # written link lists must not depend on where the rows came from (#711).
+    measures = sorted(
+        measures,
+        key=lambda m: (m["celex_dir"], m["title_nat"], m.get("directive_uri", "")),
     )
-    print(f"  Total transposition measures found: {len(measures)}")
 
     if not measures:
         if args.allow_empty:
@@ -1152,18 +1630,70 @@ def main():
         )
         sys.exit(1)
 
-    # --- Step 4: Match measures to Estonian laws ---
-    print("\n--- Matching measures to Estonian law ontology entries ---")
-    matched_mappings: list[dict] = []
-    unmatched_titles: list[str] = []
+    # --- Step 1: Clear existing transposition data (laws + state regulations) ---
+    print("\n--- Clearing existing transposition data ---")
+    act_files = act_peep_files()  # KOV does not apply
+    cleared_count = sum(1 for peep_file in act_files if clear_transposition_from_file(peep_file))
+    print(f"  Cleared transposition data from {cleared_count} files")
 
-    # Track which law files need which directives
+    directives_path = EURLEX_DIR / "eurlex_directives_peep.json"
+    if directives_path.exists():
+        try:
+            dir_doc = load_json(directives_path)
+            modified = False
+            for node in dir_doc.get("@graph", []):
+                if "estleg:transposedBy" in node:
+                    del node["estleg:transposedBy"]
+                    modified = True
+            if modified:
+                save_json(directives_path, dir_doc)
+                print("  Cleared transposedBy from directives file")
+        except Exception as e:
+            print(f"  Warning: could not clear directives file: {e}")
+
+    # Clear transpositionDeadline only when a fresh deadline map is in hand,
+    # so a deadline removed upstream does not linger (#96) but an offline
+    # rerun without cached deadlines keeps the shipped ones.
+    if deadlines is not None:
+        cleared_deadlines = clear_directive_deadlines()
+        if cleared_deadlines:
+            print(f"  Cleared transpositionDeadline from {cleared_deadlines} directive node(s)")
+
+    # --- Step 2: Load indexes ---
+    print("\n--- Loading existing indexes ---")
+    index_path = KRR_DIR / "INDEX.json"
+    if not index_path.exists():
+        print(f"ERROR: {index_path} not found. Run generate_all_laws.py first.")
+        sys.exit(1)
+    index_data = load_json(index_path)
+    print(f"  Loaded INDEX.json: {index_data.get('total_laws', 0)} laws")
+    law_index = build_law_index(index_data)
+    print(f"  Law index entries: {len(law_index)}")
+    regulation_index = build_regulation_index()
+    print(
+        f"  State-regulation index entries: {len(regulation_index)} titles "
+        f"({sum(len(v) for v in regulation_index.values())} regulations)"
+    )
+    directive_index = build_directive_index()
+    print(f"  Directive index entries: {len(directive_index)}")
+    # Directive subject (title) lookup so a combined amending-act title only
+    # links the laws whose domain matches the directive (#388).
+    directive_subject_index = build_directive_subject_index()
+
+    # --- Step 3: Schema ---
+    schema_path = KRR_DIR / "transposition_schema.json"
+    save_json(schema_path, generate_schema())
+
+    # --- Step 4: Match measures to Estonian laws, then state regulations ---
+    print("\n--- Matching measures to Estonian acts ---")
+    matched_mappings: list[dict] = []
+    unmatched: list[dict] = []
+    ambiguous: list[dict] = []
+    nem_rows: dict[str, dict] = {}
     law_file_directives: dict[str, list[str]] = {}  # filepath → [directive IRI, ...]
-    # Track which directives are transposed by which law IRIs
-    directive_celex_to_law_iris: dict[str, list[str]] = {}  # celex → [law ontology node IRI, ...]
+    directive_celex_to_law_iris: dict[str, list[str]] = {}  # celex → [act IRI, ...]
     missing_directives: list[dict] = []
     missing_law_iris: list[dict] = []
-
     law_file_english: dict[str, str] = {}
 
     for measure in measures:
@@ -1171,20 +1701,36 @@ def main():
         title_nat = measure["title_nat"]
         title_en = measure.get("title_en") or ""
 
-        # A combined amending act ("A seaduse ja B seaduse muutmise seadus")
-        # transposes the directive into BOTH laws — emit a link for each so the
-        # secondary law is not silently dropped (#288) — but exclude laws that
-        # are merely co-amended in the same omnibus bill and do not belong to
-        # the directive's subject area (#388).
+        # #711: "MS does not consider NEM necessary" is a status, not a title.
+        if is_no_measure_required(title_nat):
+            nem_rows.setdefault(
+                celex_dir,
+                {
+                    "directive_celex": celex_dir,
+                    "directive_iri": resolve_directive_iri(celex_dir, directive_index) or "",
+                    "national_title": title_nat,
+                },
+            )
+            continue
+
+        # Laws first (#288 multi-law titles, #388 co-amendment guard), then a
+        # state regulation by exact/near title (#711). Law-first keeps every
+        # pre-#711 law link stable; a regulation title rarely names a law.
         directive_subject = directive_subject_index.get(celex_dir, "")
         law_matches = match_all_titles_to_laws(
             title_nat, law_index, directive_subject=directive_subject
         )
+        method = "law" if law_matches else ""
         if not law_matches:
-            unmatched_titles.append(title_nat)
+            reg_match, method = match_regulation_title(title_nat, regulation_index)
+            if reg_match is not None:
+                law_matches = [reg_match]
+            elif method == "ambiguous":
+                ambiguous.append({"directive_celex": celex_dir, "national_title": title_nat})
+        if not law_matches:
+            unmatched.append({"directive_celex": celex_dir, "national_title": title_nat})
             continue
 
-        # Determine the directive IRI in our ontology
         directive_iri = resolve_directive_iri(celex_dir, directive_index)
         if not directive_iri:
             missing_directives.append({
@@ -1195,21 +1741,20 @@ def main():
             continue
 
         for law_match in law_matches:
-            # Track the mapping
-            mapping_entry = {
+            matched_mappings.append({
                 "directive_celex": celex_dir,
                 "directive_iri": directive_iri,
                 "national_title": title_nat,
                 "national_title_en": title_en,
                 "matched_law_name": law_match["name"],
                 "matched_source_act": law_match.get("source_act", ""),
+                "matched_act_kind": law_match.get("kind", "law"),
+                "match_method": method,
                 "law_files": law_match["files"],
-            }
+            })
             if title_en:
                 for filepath_str in law_match["files"]:
                     law_file_english.setdefault(filepath_str, title_en)
-            matched_mappings.append(mapping_entry)
-
             collect_transposition_file_links(
                 law_match["files"],
                 directive_iri=directive_iri,
@@ -1220,12 +1765,7 @@ def main():
                 missing_law_iris=missing_law_iris,
             )
 
-    print(f"  Matched: {len(matched_mappings)}")
-    print(f"  Unmatched: {len(unmatched_titles)}")
-    print(f"  Skipped missing directives: {len(missing_directives)}")
-    print(f"  Skipped missing law IRIs: {len(missing_law_iris)}")
-
-    # Deduplicate matched mappings (same law + same directive)
+    # Deduplicate matched mappings (same act + same directive)
     seen_pairs: set[tuple[str, str]] = set()
     deduped: list[dict] = []
     for m in matched_mappings:
@@ -1234,118 +1774,98 @@ def main():
             seen_pairs.add(key)
             deduped.append(m)
     matched_mappings = deduped
-    print(f"  Unique law-directive pairs: {len(matched_mappings)}")
+    print(f"  Unique act-directive pairs: {len(matched_mappings)}")
+    print(f"  Unmatched rows: {len(unmatched)}; NEM-not-necessary directives: {len(nem_rows)}")
 
-    # --- Step 5: Update Estonian law JSON-LD files ---
-    print("\n--- Updating Estonian law JSON-LD files ---")
+    # --- Step 5: Write forward links (law + regulation peeps) ---
     files_updated = 0
     for filepath_str, dir_iris in law_file_directives.items():
         filepath = Path(filepath_str)
-        if not filepath.exists():
-            print(f"    SKIP (not found): {filepath.name}")
-            continue
-        if update_law_file(filepath, dir_iris):
+        if filepath.exists() and update_law_file(filepath, dir_iris):
             files_updated += 1
-            print(f"    Updated: {filepath.name} ({len(dir_iris)} directive(s))")
+    print(f"  Act files updated: {files_updated}")
 
-    print(f"  Total law files updated: {files_updated}")
+    english_titles_updated = sum(
+        1
+        for filepath_str, title_en in law_file_english.items()
+        if update_law_english_title(KRR_DIR / filepath_str, title_en)
+    )
+    print(f"  Act files with English title (#510): {english_titles_updated}")
 
-    print("\n--- Adding CELLAR English NIM titles to matched laws (#510) ---")
-    english_titles_updated = 0
-    for filepath_str, title_en in law_file_english.items():
-        if update_law_english_title(Path(filepath_str), title_en):
-            english_titles_updated += 1
-    print(f"  Law files with English title: {english_titles_updated}")
-
-    # --- Step 6: Update EU directive file with inverse links ---
-    print("\n--- Adding inverse transposedBy links to EU directives ---")
+    # --- Step 6: Inverse links + deadlines on directives ---
     directives_updated = update_directive_file(directive_celex_to_law_iris)
-    print(f"  Directive nodes updated: {directives_updated}")
+    deadline_nodes_updated = update_directive_deadlines(deadlines) if deadlines else 0
+    print(f"  Directive nodes updated: {directives_updated}; with deadline: {deadline_nodes_updated}")
 
-    # --- Step 6b: Add transposition deadlines to EU directive nodes (#96) ---
-    print("\n--- Adding transposition deadlines to EU directives ---")
-    deadlines, deadlines_partial = fetch_directive_deadlines(
-        allow_partial=args.allow_partial
-    )
-    if deadlines_partial:
-        was_partial = True
-    deadline_nodes_updated = update_directive_deadlines(deadlines)
-    print(
-        f"  Directive deadlines fetched: {len(deadlines)}; "
-        f"directive nodes annotated: {deadline_nodes_updated}"
+    # --- Step 7: Three-valued status + gap CSV (#711) ---
+    _rows, summary = apply_transposition_status(
+        no_measure_required=set(nem_rows), act_files=act_files
     )
 
-    # --- Step 7: Generate report ---
-    print("\n--- Generating transposition mapping report ---")
-
-    # Count unique directives and laws
-    unique_directives = set(m["directive_celex"] for m in matched_mappings)
-    unique_laws = set(m["matched_law_name"] for m in matched_mappings)
-
+    # --- Step 8: Report ---
+    unique_directives = {m["directive_celex"] for m in matched_mappings}
+    unique_laws = {m["matched_law_name"] for m in matched_mappings if m["matched_act_kind"] == "law"}
+    unique_regs = {m["matched_law_name"] for m in matched_mappings if m["matched_act_kind"] == "regulation"}
+    unmatched_titles = sorted({row["national_title"] for row in unmatched})
     report = {
         "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": SPARQL_ENDPOINT,
         "country": "EST",
         "documented_empty": False,
         "partial": was_partial,
+        "measures_source": "cache" if args.offline else "cellar",
         "total_measures_fetched": len(measures),
         "total_matched": len(matched_mappings),
-        "total_unmatched": len(unmatched_titles),
+        "total_matched_regulation_pairs": sum(
+            1 for m in matched_mappings if m["matched_act_kind"] == "regulation"
+        ),
+        "total_unmatched": len(unmatched),
+        "total_unmatched_unique_titles": len(unmatched_titles),
+        "total_no_measure_required_rows": sum(
+            1 for measure in measures if is_no_measure_required(measure["title_nat"])
+        ),
+        "total_ambiguous_regulation_titles": len(ambiguous),
         "total_skipped_missing_directives": len(missing_directives),
         "total_skipped_missing_law_iris": len(missing_law_iris),
         "unique_directives": len(unique_directives),
         "unique_laws": len(unique_laws),
+        "unique_regulations": len(unique_regs),
         "law_files_updated": files_updated,
         "directive_nodes_updated": directives_updated,
-        "directive_deadlines_fetched": len(deadlines),
+        "directive_deadlines_fetched": len(deadlines) if deadlines is not None else None,
         "directive_deadline_nodes_updated": deadline_nodes_updated,
-        "mappings": sorted(matched_mappings, key=lambda m: m["directive_celex"]),
+        "transposition_status": summary,
+        "mappings": sorted(
+            matched_mappings, key=lambda m: (m["directive_celex"], m["matched_law_name"])
+        ),
+        "no_measure_required": sorted(nem_rows.values(), key=lambda r: r["directive_celex"]),
+        # Unique titles (the pre-#711 sample repeated one title 34 times).
         "unmatched_sample": unmatched_titles[:50],
+        "ambiguous_regulation_sample": ambiguous[:50],
         "missing_directives_sample": missing_directives[:50],
         "missing_law_iris_sample": missing_law_iris[:50],
     }
-
-    report_path = KRR_DIR / "reports" / "transposition_mapping.json"
+    report_path = _reports_dir() / "transposition_mapping.json"
     save_json(report_path, report)
-    print(f"  Saved: {report_path.name}")
 
-    # --- Summary ---
     print("\n" + "=" * 60)
     print("Transposition mapping complete!")
-    print(f"  Measures fetched from EUR-Lex:  {len(measures)}")
-    print(f"  Matched to Estonian laws:       {len(matched_mappings)}")
-    print(f"  Unmatched:                      {len(unmatched_titles)}")
-    print(f"  Skipped missing directives:     {len(missing_directives)}")
-    print(f"  Skipped missing law IRIs:       {len(missing_law_iris)}")
-    print(f"  Unique EU directives:           {len(unique_directives)}")
-    print(f"  Unique Estonian laws:           {len(unique_laws)}")
-    print(f"  Law files updated:              {files_updated}")
-    print(f"  Directive nodes updated:        {directives_updated}")
-    print(f"  Directive deadlines fetched:    {len(deadlines)}")
-    print(f"  Directive nodes w/ deadline:    {deadline_nodes_updated}")
+    print(f"  NIM rows:                       {len(measures)}")
+    print(f"  Unique act-directive pairs:     {len(matched_mappings)}")
+    print(f"  Unique EU directives matched:   {len(unique_directives)}")
+    print(f"  Laws / state regulations:       {len(unique_laws)} / {len(unique_regs)}")
+    print(f"  Status counts:                  {summary['counts']}")
+    print(f"  Outputs: {report_path.relative_to(KRR_DIR.parent)}, {_gap_csv().relative_to(KRR_DIR.parent)}")
     if was_partial:
         print("  NOTE: run was PARTIAL — re-run without --allow-partial when "
               "EUR-Lex is healthy to refresh the layer.")
-    print("\nOutputs:")
-    print(f"  {report_path.relative_to(REPO_ROOT)}")
-    print(f"  {schema_path.relative_to(REPO_ROOT)}")
     print("=" * 60)
 
-    # #417: combined is the consumer entry point; rebuild it from the
-    # now-enriched peeps so transposedBy / transpositionDeadline survive.
-    from estleg.generate_eu_legislation import rebuild_eurlex_combined_from_peeps
-
-    combined_stats = rebuild_eurlex_combined_from_peeps(EURLEX_DIR)
-    print(
-        f"  Rebuilt eurlex_combined.jsonld from peeps "
-        f"({combined_stats['nodes']} nodes)"
-    )
+    _rebuild_eurlex_combined()
 
     if was_partial:
-        # ``--allow-partial`` was set (otherwise the run would have raised
-        # before reaching here). Non-zero exit signals downstream that the
-        # report/peep files should be refreshed once a clean run is
-        # possible.
+        # Non-zero exit signals downstream that the report/peep files should
+        # be refreshed once a clean run is possible.
         sys.exit(2)
 
 

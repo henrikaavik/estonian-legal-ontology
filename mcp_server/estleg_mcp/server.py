@@ -53,7 +53,7 @@ else:
     _MCP_V2 = True
 from mcp.server.transport_security import TransportSecuritySettings
 
-from . import audit, data, i18n, provenance, security
+from . import audit, data, i18n, provenance, resolver_web, security
 
 mcp = MCPServer("estleg")
 
@@ -1050,7 +1050,10 @@ def amendment_history(law: str, limit: int = 50) -> list[dict[str, Any]]:
     Example question: "What amendments has KarS already received?"
 
     Returns a list of {event_id, label, amendment_date, entry_into_force,
-    amends, rt_reference, rt_url, changed_provisions}. ``rt_reference`` is the
+    amends, amended_provisions, rt_reference, rt_url, changed_provisions}.
+    ``amends`` is the amended act's root IRI; ``amended_provisions`` lists the
+    § / subsection IRIs the amending act touched (#713; empty for an
+    act-level event). ``rt_reference`` is the
     amending act's Riigi Teataja reference as recorded ("RT I, 2002, 86, 504"
     or an RT URL, else ""); ``rt_url`` is the amending act's riigiteataja.ee
     URL when that reference is one, otherwise the amended act's URL, otherwise
@@ -1185,8 +1188,8 @@ def what_changed(
     ``date``). ``rt_url`` is the redaction's riigiteataja.ee URL when recorded.
     ``amendment_events`` lists the effected amendment events in the window
     (only those linked to the changes when scoped to one §), each with
-    {event_id, label, amendment_date, entry_into_force, amends, rt_reference,
-    rt_url, changed_provisions}. ``history_available`` is false (with a
+    {event_id, label, amendment_date, entry_into_force, amends,
+    amended_provisions, rt_reference, rt_url, changed_provisions}. ``history_available`` is false (with a
     ``note``) when the corpus has no version history for the law. A bad date
     or an unknown law / § yields a {note}.
     """
@@ -1265,6 +1268,10 @@ def transposition_gaps(directive: str | None = None, limit: int = 50) -> dict[st
     untransposed: the transposition mapping covers the measures the EU
     publications office reports and the corpus could match to a law.
 
+    Recorded ``transposed`` or ``no_measure_required`` statuses exclude a
+    directive from the gap list, even without a resolved national-law edge.
+    The result exposes ``transposition_status`` from the corpus.
+
     Without ``directive`` it lists the gaps (oldest transposition deadline
     first); with a CELEX ``directive`` it reports that one directive's status.
 
@@ -1278,7 +1285,8 @@ def transposition_gaps(directive: str | None = None, limit: int = 50) -> dict[st
     transposition_deadline, eurlex_url, transposing_laws, coverage_flag,
     caveat}; ``transposing_laws`` are {name, title, rt_url}, and
     ``coverage_flag`` is "noTranspositionEdgeInCorpus" only for an in-force
-    directive without any edge (else ""). An empty or unknown CELEX yields a
+    directive without an edge or recorded transposition/exemption evidence
+    (else ""). An empty or unknown CELEX yields a
     {note}.
     """
     caveat = i18n.msg("coverage_caveat")
@@ -1598,10 +1606,18 @@ def _build_http_app():
         return PlainTextResponse("ok")
 
     app.routes.append(Route(security.HEALTH_PATH, _health, methods=["GET"]))
+    # w3id resolver pilot (#728): public, read-only /id/{local} + /vocabulary.
+    open_resolver = resolver_web.enabled()
+    if open_resolver:
+        resolver_web.mount(app)
     app.add_middleware(
         security.AccessMiddleware,
         registry=registry,
         limiter=limiter,
+        open_resolver=open_resolver,
+        resolver_limiter=security.RateLimiter.from_env(
+            rate_var="ESTLEG_RESOLVER_RATE_LIMIT", burst_var="ESTLEG_RESOLVER_RATE_BURST"
+        ),
         audit_log=audit.get_audit_log,
         identity=lambda: {
             **provenance.corpus_identity(),

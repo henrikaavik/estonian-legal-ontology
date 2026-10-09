@@ -14,11 +14,11 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://henrikaavik.github.io/estonian-legal-ontology/eesti-oigusontoloogia-ulevaade.html) — mis see on, kust andmed pärinevad, litsents, isikuandmed, viitamine ja versioon. GitHub Pages is pending enablement in the repository settings; until it is live, read the source [docs/eesti-oigusontoloogia-ulevaade.html](docs/eesti-oigusontoloogia-ulevaade.html) or the data statement [docs/ANDMED.et.md](docs/ANDMED.et.md).
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,023 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 1,122 enacted laws (1,195 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,104 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **27,029 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. The current generated validation report
-records 26,975 validated files and **0 errors / 2 warnings**. This is the JSON
+records 26,978 validated files and **0 errors / 2 warnings**. This is the JSON
 and corpus-integrity result; freshness, SHACL and consumer-sync are separate
 gates. The freshness gate still fails on the committed snapshots. See the
 measured [validation report](docs/VALIDATION_REPORT.md) and
@@ -637,7 +637,7 @@ The integration layers run as one dependency-ordered DAG (`scripts/run_all_integ
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (27,023 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (27,029 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry

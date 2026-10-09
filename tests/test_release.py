@@ -132,8 +132,10 @@ class TestDAGValidity:
         # steps follow it, ending with the release-asset build (#705). The
         # similarity aggregation runs immediately before the rebuild.
         assert topo[-1] == "build_release_assets.py"
-        assert topo[-3] == "build_release_artifacts.py"
-        assert topo[-4] == "generate_similarity_index.py"
+        assert set(topo[-3:-1]) == {"generate_analytical_overlay.py",
+                                    "emit_release_changes.py"}
+        assert topo[-4] == "build_release_artifacts.py"
+        assert topo[-5] == "generate_similarity_index.py"
 
     def test_cyclic_dag_is_rejected(self) -> None:
         cyclic = [
@@ -653,7 +655,7 @@ class TestReleaseManifestShape:
         assert manifest["dag"]["topoOrder"][-1] == "build_release_assets.py"
         # build_release_artifacts.py rebuilds combined_ontology.jsonld as the
         # last enrichment-side step (issue #252 / #467); packaging follows.
-        assert manifest["dag"]["topoOrder"][-3] == "build_release_artifacts.py"
+        assert manifest["dag"]["topoOrder"][-4] == "build_release_artifacts.py"
         assert len(manifest["dag"]["steps"]) == len(r.STEPS)
         sample = manifest["dag"]["steps"][0]
         assert {"name", "dependsOn", "writes", "reads"} <= set(sample)

@@ -4,7 +4,7 @@ Master orchestration script for the enrichment pipeline and release builds.
 
 This module owns three things:
 
-1. A declarative **step DAG** of 30 steps in four tiers (#704): ingest
+1. A declarative **step DAG** of 35 steps in four tiers (#704): ingest
    (network fetches), enrichment (offline corpus passes and sub-corpus
    aggregate rebuilds), build (the combined/INDEX rebuild) and package
    (consumer artefacts derived from the built corpus). Each step declares
@@ -47,42 +47,55 @@ This module owns three things:
    and fails on one that is not a git object, except the frozen reports in
    ``data/pipeline_version_baseline.json``.
 
+4. **Incremental builds** (#729): ``--only-changed`` hashes every file the
+   steps' ``reads`` / ``writes`` globs match (``build_hash_manifest.py``),
+   diffs it against ``krr_outputs/.cache/hash_manifest.json`` (or
+   ``--manifest PATH``) and runs only the steps that read a changed file,
+   the writers of a changed derived artefact, and all their dependents.
+   No manifest -> full run. ``--record-hash-manifest`` records a baseline.
+
 Execution order (topological):
   Phase 0 — Ingest (network; run only with --with-ingest)
     1.  generate_provision_versions.py          provision_versions/ (laws)
     2.  generate_provision_versions_regulations state-regulation sidecars
     3.  generate_annotations.py                 Oiguskantsler annotations
+    4.  generate_draft_legislation.py           EIS draft feeds (#717)
+    5.  generate_riigikogu_proceedings.py       Riigikogu proceedings (#717)
   Phase 1 — Cross-references
-    4.  extract_cross_references.py
-    5.  generate_inverse_references.py   (after 4)
+    6.  extract_cross_references.py
+    7.  generate_inverse_references.py   (after 6)
   Phase 2 — EU transposition and sub-corpus aggregates
-    6.  generate_transposition_mapping.py
-    7.  rebuild_eurlex_combined           (after 6)
-    8.  link_curia_eu_legislation.py      (after 7)
-    9.  rebuild_curia_combined            (after 8)
-    10. rebuild_eelnoud_combined
-    11. generate_harmonisation_links.py   (after 6)
+    8.  extract_ntm_directives.py         RT normitehniline märkus (#711)
+    9.  generate_transposition_mapping.py (after 8)
+    10. rebuild_eurlex_combined           (after 9)
+    11. link_curia_eu_legislation.py      (after 10)
+    12. rebuild_curia_combined            (after 11)
+    13. generate_harmonisation_links.py   (after 9)
   Phase 3 — Enrichment
-    12. extract_court_provision_links.py
-    13. classify_eurovoc.py
-    14. extract_temporal_data.py
-    15. generate_amendment_history.py
-    16. link_amendment_versions.py        (after 15 and the version layer)
-    17. derive_act_temporal_status.py     (after 14 and the version layer)
+    14. extract_court_provision_links.py
+    15. classify_eurovoc.py
+    16. extract_temporal_data.py
+    17. derive_act_temporal_status.py     (after 16 and the version layer)
     18. generate_act_expressions_608.py   (after the version layer)
-    19-24. extract_legal_concepts.py, classify_deontic.py,
-        classify_target_group.py, extract_institutional_competence.py,
-        extract_sanctions.py, extract_draft_impact.py
-    25. derive_court_interpretation_staleness.py (after 12 and the versions)
-    26. derive_kov_enabling_staleness.py  (after 4 and the versions, #712)
-    27. generate_similarity_index.py      (after all enrichment)
+    19-22. extract_legal_concepts.py, classify_deontic.py,
+        classify_target_group.py, extract_institutional_competence.py
+    23. generate_draft_lifecycle          (after 4, 5, 22; #717)
+    24. rebuild_eelnoud_combined          (after 5, 23)
+    25. extract_sanctions.py
+    26. extract_draft_impact.py           (after 24)
+    27. generate_amendment_history.py     (after 1, 2, 24, 26; runs the version join)
+    28. link_amendment_versions.py        (after 27; join re-run, no-op check)
+    29. derive_court_interpretation_staleness.py (after 14 and the versions)
+    30. derive_kov_enabling_staleness.py  (after 6 and the versions, #712)
+    31. generate_similarity_index.py      (after all enrichment)
   Phase 5 — Build (the last enrichment-side step)
-    28. build_release_artifacts.py        combined_ontology.jsonld + INDEX.json;
+    32. build_release_artifacts.py        combined_ontology.jsonld + INDEX.json;
                                           embeds materialize_combined_inverses
                                           (#520) and the analytical stamps (#521)
   Phase 6 — Package
-    29. generate_analytical_overlay.py    analytical/analytical_overlay.jsonld
-    30. build_release_assets.py           release/ + SHA256SUMS
+    33. generate_analytical_overlay.py    analytical/analytical_overlay.jsonld
+    34. emit_release_changes.py           changes-<version>.jsonld (#713)
+    35. build_release_assets.py           release/ + SHA256SUMS
 
 If a dependency fails, its dependents are automatically skipped.
 
@@ -104,6 +117,8 @@ import time
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from datetime import UTC, datetime
 from pathlib import Path
+
+from estleg import build_hash_manifest as hash_manifest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS_DIR = REPO_ROOT / "scripts"
@@ -162,6 +177,10 @@ COMMITTED_INPUTS: tuple[str, ...] = (
     # two hand-maintained OWL files are already covered by *_owl.jsonld.
     "unresolved_references.jsonld",
     "eurlex/eurlex_directives_peep.json",
+    # #711: the CELLAR national-implementing-measures cache. The transposition
+    # step reads it under --offline and refreshes it on a default (network)
+    # run, so it is a committed input of that step as well as an output.
+    "reports/transposition_measures.json",
 )
 
 # Step tiers (#704). ``ingest`` steps fetch from the network (Riigi Teataja,
@@ -250,6 +269,38 @@ STEPS: list[dict] = [
         "writes": ["annotations/oiguskantsler_seisukohad.jsonld",
                    "reports/kov/extract_annotations_coverage.json"],
     },
+    {
+        "name": "generate_draft_legislation.py",
+        "description": "EIS draft feeds -> eelnoud peeps, merged into committed history (#717, network)",
+        "script": "generate_draft_legislation.py",
+        "tier": TIER_INGEST,
+        # Network: the three EIS RSS feeds (HTTP 403 since the 2026-10-01
+        # Sätla switch-over, so a --with-ingest run currently fetches
+        # nothing). Also reads data/institution_identity.json (outside
+        # krr_outputs) and checks institutions/*.json for existence only;
+        # that read is deliberately NOT declared: ingest steps run before
+        # every enrichment step and consume the committed institution files
+        # of the previous build (the full lifecycle pass below re-checks
+        # them after extract_institutional_competence.py).
+        "depends_on": [],
+        "reads": ["eelnoud/*_peep.json"],
+        "writes": ["eelnoud/*_peep.json", "eelnoud/EELNOUD_INDEX.json",
+                   "eelnoud/eelnoud_combined.jsonld"],
+    },
+    {
+        "name": "generate_riigikogu_proceedings.py",
+        "description": "Riigikogu proceedings onto drafts (#717; network on a data/riigikogu cache miss)",
+        "script": "generate_riigikogu_proceedings.py",
+        "tier": TIER_INGEST,
+        # Offline once data/riigikogu/** (outside krr_outputs) is populated;
+        # api.riigikogu.ee only on a cache miss or --refresh. Runs BEFORE
+        # generate_draft_lifecycle (an ingest step cannot follow an
+        # enrichment step, #704), so the lifecycle pass derives the phase
+        # from the feed AND the proceedings observations.
+        "depends_on": ["generate_draft_legislation.py"],
+        "reads": ["eelnoud/*_peep.json"],
+        "writes": ["eelnoud/*_peep.json", "eelnoud/EELNOUD_INDEX.json"],
+    },
 
     # -- Phase 1: Cross-references ------------------------------------------
     {
@@ -276,15 +327,43 @@ STEPS: list[dict] = [
 
     # -- Phase 2: EU transposition -----------------------------------------
     {
+        "name": "extract_ntm_directives.py",
+        "description": "RT normitehniline märkus -> estleg:transposesDirectiveAsserted (#711)",
+        "script": "extract_ntm_directives.py",
+        # Offline over the cached RT XML in data/riigiteataja/ (outside
+        # krr_outputs); the operator refresh adds --fetch (network), which
+        # stays out of the DAG. State-regulation peeps are read through the
+        # committed-input pattern regulations/**/*_peep.json, as every other
+        # regulation reader does.
+        "depends_on": [],
+        "reads": ["*_peep.json", "regulations/**/*_peep.json",
+                  "eurlex/eurlex_directives_peep.json", "INDEX.json"],
+        "writes": ["*_peep.json", "regulations/riik/*_peep.json",
+                   "reports/ntm_directives.json"],
+    },
+    {
         "name": "generate_transposition_mapping.py",
         "description": "EU directive transposition mapping",
         "script": "generate_transposition_mapping.py",
-        "depends_on": [],
-        "reads": ["*_peep.json", "eurlex/*_peep.json"],
+        # The three-valued status derivation reads the NTM assertions (#711).
+        # Default args still query CELLAR; --offline reads the NIM cache
+        # reports/transposition_measures.json.
+        "depends_on": ["extract_ntm_directives.py"],
+        "reads": ["*_peep.json", "eurlex/*_peep.json", "regulations/**/*_peep.json",
+                  "INDEX.json", "reports/transposition_measures.json"],
         "writes": [
             "*_peep.json",
             "reports/transposition_mapping.json",
             "eurlex/eurlex_combined.jsonld",
+            "regulations/riik/*_peep.json",
+            "eurlex/eurlex_directives_peep.json",
+            # #527 Estonia-relevance lens, re-stamped by the status pass
+            # (generate_eu_legislation.apply_estonia_relevance_lens).
+            "eurlex/*_peep.json",
+            "eurlex/EURLEX_INDEX.json",
+            "reports/transposition_measures.json",
+            "exports/transposition_gap.csv",
+            "transposition_schema.json",
         ],
     },
     {
@@ -321,11 +400,24 @@ STEPS: list[dict] = [
         "writes": ["curia/curia_combined.jsonld"],
     },
     {
+        "name": "generate_draft_lifecycle",
+        "description": "Draft ProcessStep chain, legislativePhase, stale flag, initiatedBy (#717)",
+        "script": "generate_draft_legislation.py",
+        "args": ["--lifecycle-from-peeps"],
+        # initiatedBy is only emitted for an institutions/*.json that exists,
+        # so the institution layer must be built first.
+        "depends_on": ["generate_draft_legislation.py",
+                       "generate_riigikogu_proceedings.py",
+                       "extract_institutional_competence.py"],
+        "reads": ["eelnoud/*_peep.json", "institutions/*.json"],
+        "writes": ["eelnoud/*_peep.json", "eelnoud/EELNOUD_INDEX.json"],
+    },
+    {
         "name": "rebuild_eelnoud_combined",
         "description": "Rebuild eelnoud_combined.jsonld from schema + peeps",
         "script": "rebuild_subcorpus_combined.py",
         "args": ["--subcorpus", "eelnoud"],
-        "depends_on": [],
+        "depends_on": ["generate_riigikogu_proceedings.py", "generate_draft_lifecycle"],
         "reads": ["eelnoud/*_peep.json", "eelnoud/eelnoud_schema.json"],
         "writes": ["eelnoud/eelnoud_combined.jsonld"],
     },
@@ -376,20 +468,32 @@ STEPS: list[dict] = [
     },
     {
         "name": "generate_amendment_history.py",
-        "description": "Amendment history chains",
+        "description": "Amendment history chains + version join (#429, #713)",
         "script": "generate_amendment_history.py",
-        "depends_on": [],
-        "reads": ["*_peep.json", "regulations/**/*_peep.json"],
+        # main() runs the #429 version join (apply_version_join) and writes
+        # provision-level estleg:amends (#713), so the enacted-law sidecars
+        # must exist first. Regulation sidecars are never joined (#431), but
+        # they share the provision_versions/*.jsonld glob, so the DAG check
+        # requires their writer to be ordered first as well. The amending
+        # drafts come from eelnoud_combined.jsonld (load_amendment_drafts).
+        "depends_on": ["generate_provision_versions.py",
+                       "generate_provision_versions_regulations",
+                       "rebuild_eelnoud_combined",
+                       "extract_draft_impact.py"],
+        "reads": ["*_peep.json", "regulations/**/*_peep.json",
+                  "provision_versions/*.jsonld", "eelnoud/eelnoud_combined.jsonld"],
         "writes": ["amendments/**/*.json", "*_peep.json",
-                   "reports/amendment_history_report.json"],
+                   "reports/amendment_history_report.json",
+                   "reports/kov/generate_amendment_history_coverage.json"],
     },
     {
         "name": "link_amendment_versions.py",
-        "description": "Join amendment chains to the version layer (#429)",
+        "description": "Re-run the amendment/version join; no-op after a chain rerun (#429, #713)",
         "script": "link_amendment_versions.py",
-        # generate_amendment_history.main() rebuilds the chains without the
-        # #429 join; this step re-mints the _vf_ events and resultedInVersion
-        # links from provision_versions/ so a chain rerun cannot drop them.
+        # generate_amendment_history.main() already runs this join; the step
+        # re-runs the same apply_version_join so a sidecar-only rerun
+        # (generate_provision_versions without the chains) is repaired, and
+        # is a verified no-op otherwise (scripts/link_amendment_versions.py --check).
         "depends_on": ["generate_amendment_history.py",
                        "generate_provision_versions.py",
                        "generate_provision_versions_regulations"],
@@ -469,9 +573,14 @@ STEPS: list[dict] = [
         "name": "extract_draft_impact.py",
         "description": "Draft impact analysis",
         "script": "extract_draft_impact.py",
-        "depends_on": [],
-        "reads": ["*_peep.json", "eelnoud/*_peep.json"],
-        "writes": ["*_peep.json", "reports/draft_impact_report.json"],
+        # Reads the rebuilt eelnoud_combined.jsonld and rewrites it, the
+        # draft peeps and EELNOUD_INDEX.json (phase re-derived after
+        # enactedAs, #717), plus affectedBy on the law peeps.
+        "depends_on": ["rebuild_eelnoud_combined"],
+        "reads": ["*_peep.json", "eelnoud/*_peep.json", "eelnoud/eelnoud_combined.jsonld"],
+        "writes": ["*_peep.json", "reports/draft_impact_report.json",
+                   "eelnoud/eelnoud_combined.jsonld", "eelnoud/*_peep.json",
+                   "eelnoud/EELNOUD_INDEX.json"],
     },
     {
         "name": "derive_court_interpretation_staleness.py",
@@ -531,14 +640,19 @@ STEPS: list[dict] = [
             "generate_act_expressions_608.py",
             "derive_court_interpretation_staleness.py",
             "derive_kov_enabling_staleness.py",
+            "extract_ntm_directives.py",
+            "generate_draft_lifecycle",
         ],
         "reads": ["*_peep.json", "regulations/**/*_peep.json",
                   "eelnoud/*_peep.json", "riigikohus/*_peep.json"],
         # similarity_index.json + report are the provision-level pass; the
         # KOV act-level pass writes one consolidated kov_similarity_index.json
-        # plus idempotent back-links into the KOV act nodes themselves.
+        # (git-ignored, #539) plus idempotent back-links into the KOV act
+        # nodes themselves; the KOV<->state topical pass (#729) writes the
+        # committed kov_state_similarity_index.json sidecar.
         "writes": ["reports/similarity_index.json", "reports/similarity_report.json",
                    "similarity/kov_similarity_index.json",
+                   "similarity/kov_state_similarity_index.json",
                    "regulations/**/*_peep.json"],
     },
 
@@ -569,12 +683,16 @@ STEPS: list[dict] = [
             "generate_provision_versions.py",
             "generate_provision_versions_regulations",
             "generate_annotations.py",
+            "generate_draft_legislation.py",
+            "generate_riigikogu_proceedings.py",
             "extract_cross_references.py",
             "generate_inverse_references.py",
+            "extract_ntm_directives.py",
             "generate_transposition_mapping.py",
             "rebuild_eurlex_combined",
             "link_curia_eu_legislation.py",
             "rebuild_curia_combined",
+            "generate_draft_lifecycle",
             "rebuild_eelnoud_combined",
             "generate_harmonisation_links.py",
             "extract_court_provision_links.py",
@@ -625,11 +743,25 @@ STEPS: list[dict] = [
         "writes": ["analytical/analytical_overlay.jsonld"],
     },
     {
+        "name": "emit_release_changes.py",
+        "description": "Provision-level release delta vs the latest v* tag (#713)",
+        "script": "emit_release_changes.py",
+        "tier": TIER_PACKAGE,
+        # Reads the previous release's peeps from git (git cat-file --batch on
+        # the latest v* tag) and the working-tree peeps; never needs LFS.
+        "depends_on": ["build_release_artifacts.py"],
+        "reads": ["INDEX.json", "*_peep.json", "*_owl.jsonld",
+                  "provision_versions/*.jsonld"],
+        "writes": ["changes-*.jsonld", "changes-*.jsonl",
+                   "reports/release_changes_report.json"],
+    },
+    {
         "name": "build_release_assets.py",
         "description": "Gzip, dump, hash and catalogue every release asset (#705)",
         "script": "build_release_assets.py",
         "tier": TIER_PACKAGE,
-        "depends_on": ["build_release_artifacts.py", "generate_analytical_overlay.py"],
+        "depends_on": ["build_release_artifacts.py", "generate_analytical_overlay.py",
+                       "emit_release_changes.py"],
         "reads": ["combined_ontology.jsonld", "eelnoud/eelnoud_combined.jsonld",
                   "eurlex/eurlex_combined.jsonld", "curia/curia_combined.jsonld",
                   "concepts/concepts_combined.jsonld", "act_expressions_combined.jsonld",
@@ -1137,6 +1269,29 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="With --release: skip the generation steps and just run the "
         "three release validators against the current corpus, then write "
         "the validator section of release_manifest.json.",
+    )
+    parser.add_argument(
+        "--only-changed",
+        action="store_true",
+        help="Incremental run (#729): hash every file the DAG's reads/writes "
+        "globs match, diff against the hash manifest, and run only the steps "
+        "that read a changed file (plus writers of a changed derived "
+        "artefact) and all their dependents. No manifest -> full run. The "
+        "manifest is refreshed after a successful run.",
+    )
+    parser.add_argument(
+        "--manifest",
+        type=Path,
+        metavar="PATH",
+        default=None,
+        help="Hash manifest path for --only-changed / --record-hash-manifest "
+        "(default krr_outputs/.cache/hash_manifest.json, git-ignored).",
+    )
+    parser.add_argument(
+        "--record-hash-manifest",
+        action="store_true",
+        help="Hash the current tree into the manifest as the --only-changed "
+        "baseline and exit without running any step.",
     )
     return parser.parse_args(argv)
 
@@ -1915,7 +2070,9 @@ def run_dag(
         succeeded.add(n)
         ledger.append({"name": n, "script": step["script"],
                        "status": "skipped_before_resume_point"})
-    done: set[str] = set(succeeded)
+    # Steps outside ``topo`` (an --only-changed plan, #729) are not part of
+    # this run: their committed outputs stand in, so they never block.
+    done: set[str] = set(succeeded) | (set(by_name) - set(topo))
     idx_by_name = {n: i for i, n in enumerate(topo, 1)}
     with ThreadPoolExecutor(max_workers=parallel) as pool:
         futures: dict = {}
@@ -2132,6 +2289,102 @@ def _print_dag_plan(topo: list[str], *, release: bool, validate_only: bool) -> N
             print(f"  - {argv}  ({spec['description']})")
 
 
+# ===========================================================================
+# Incremental builds (#729)
+# ===========================================================================
+
+
+def hash_manifest_path(explicit: Path | None = None) -> Path:
+    """The --only-changed manifest: ``--manifest`` or krr_outputs/.cache/."""
+    return explicit if explicit is not None else hash_manifest.default_manifest_path(KRR_DIR)
+
+
+def plan_only_changed(
+    topo: list[str],
+    manifest_path: Path,
+    *,
+    include_ingest: bool = False,
+    steps: list[dict] | None = None,
+) -> dict:
+    """Hash the tree, diff it against ``manifest_path`` and plan the steps.
+
+    Returns ``{"manifestFound", "changed", "selected", "seeds",
+    "excludedIngest", "current"}``. With no usable manifest every
+    non-ingest step (every step with ``include_ingest``) is selected — a
+    full run — and ``changed`` is ``None``.
+    """
+    steps = STEPS if steps is None else steps
+    previous = hash_manifest.load_manifest(manifest_path)
+    current = hash_manifest.build_manifest(steps, KRR_DIR, previous=previous)
+    by_name = {s["name"]: s for s in steps}
+    recipe_changed = previous is not None and previous.get("recipeDigest") != current["recipeDigest"]
+    ingest_pending = bool(previous and previous.get("ingestInputsChanged"))
+    if previous is None or recipe_changed or (include_ingest and ingest_pending):
+        current["ingestInputsChanged"] = True
+        selected = [n for n in topo
+                    if include_ingest or step_tier(by_name[n]) != TIER_INGEST]
+        return {"manifestFound": False, "changed": None, "selected": selected,
+                "seeds": {}, "excludedIngest": [], "current": current}
+    changed = hash_manifest.changed_paths(hash_manifest.diff_manifests(previous, current))
+    current["ingestInputsChanged"] = ingest_pending or bool(changed)
+    if any(hash_manifest.path_matches(path, pattern)
+           for path in changed for pattern in hash_manifest.SHARED_INPUTS):
+        selected = [n for n in topo
+                    if include_ingest or step_tier(by_name[n]) != TIER_INGEST]
+        return {"manifestFound": True, "changed": changed, "selected": selected,
+                "seeds": {n: ["shared code or auxiliary input changed"] for n in selected},
+                "excludedIngest": [], "current": current}
+    plan = hash_manifest.select_steps(steps, topo, changed, COMMITTED_INPUTS,
+                                      include_ingest=include_ingest,
+                                      ingest_tier=TIER_INGEST)
+    return {"manifestFound": True, "changed": changed, **plan, "current": current}
+
+
+def _print_only_changed_plan(plan: dict, manifest_path: Path) -> None:
+    print(f"\n--only-changed: hash manifest {_rel(manifest_path)}")
+    if not plan["manifestFound"]:
+        print("  Full rebuild required (missing baseline, changed recipe, or pending ingest); the manifest "
+              "is written after a successful run (or record one now with "
+              "--record-hash-manifest).")
+        return
+    changed = plan["changed"]
+    print(f"  Changed inputs since the manifest: {len(changed)}")
+    for rel in changed[:20]:
+        print(f"    {rel}")
+    if len(changed) > 20:
+        print(f"    ... and {len(changed) - 20} more")
+    if not plan["selected"]:
+        print("  Nothing to do: no step reads a changed file.")
+        return
+    print(f"  Selected {len(plan['selected'])} step(s):")
+    for name in plan["selected"]:
+        reasons = plan["seeds"].get(name)
+        why = f"  [{'; '.join(reasons)}]" if reasons else "  [downstream dependent]"
+        print(f"    - {name}{why}")
+    if plan["excludedIngest"]:
+        print(f"  Ingest steps not run (pass --with-ingest): "
+              f"{', '.join(plan['excludedIngest'])}")
+
+
+def refresh_hash_manifest(
+    manifest_path: Path, previous: dict | None = None, *, include_ingest: bool | None = None
+) -> dict:
+    """Re-hash the tree (cache-assisted) and write the manifest."""
+    if previous is None:
+        previous = hash_manifest.load_manifest(manifest_path)
+    current = hash_manifest.build_manifest(STEPS, KRR_DIR, previous=previous)
+    if include_ingest is False:
+        current["ingestInputsChanged"] = (
+            previous is None or bool(previous.get("ingestInputsChanged"))
+            or previous.get("recipeDigest") != current["recipeDigest"]
+            or bool(hash_manifest.changed_paths(hash_manifest.diff_manifests(previous, current)))
+        )
+    # A successful complete ingest run, or explicit baseline recording, clears
+    # the pending marker. Offline runs must not consume ingest invalidations.
+    hash_manifest.write_manifest(current, manifest_path)
+    return current
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
 
@@ -2155,6 +2408,28 @@ def main(argv: list[str] | None = None) -> None:
               file=sys.stderr)
         sys.exit(2)
 
+    manifest_path = hash_manifest_path(args.manifest)
+    if args.record_hash_manifest:
+        recorded = refresh_hash_manifest(manifest_path)
+        print(f"Recorded hash manifest {_rel(manifest_path)}: "
+              f"{recorded['fileCount']} files ({recorded['stats']['hashed']} "
+              f"hashed, {recorded['stats']['reusedFromCache']} cached).")
+        sys.exit(0)
+    if args.only_changed and (args.release or args.resume_from):
+        print("FATAL: --only-changed cannot be combined with --release (a "
+              "release build is full by definition) or --resume-from.",
+              file=sys.stderr)
+        sys.exit(2)
+    only_changed_plan: dict | None = None
+    run_topo = topo
+    if args.only_changed:
+        only_changed_plan = plan_only_changed(topo, manifest_path,
+                                              include_ingest=args.with_ingest)
+        _print_only_changed_plan(only_changed_plan, manifest_path)
+        run_topo = only_changed_plan["selected"]
+        if not run_topo:
+            sys.exit(0)
+
     _print_banner([
         "Estonian Legal Ontology — Integration / Release Pipeline",
         ("Release build" if args.release else "Enrichment pipeline")
@@ -2165,7 +2440,7 @@ def main(argv: list[str] | None = None) -> None:
     ])
 
     if args.dry_run:
-        _print_dag_plan(topo, release=args.release,
+        _print_dag_plan(run_topo, release=args.release,
                         validate_only=args.validate_only)
 
     # ---- Release: validate-only ----------------------------------------
@@ -2228,7 +2503,7 @@ def main(argv: list[str] | None = None) -> None:
     try:
         dag_result = run_dag(
             STEPS,
-            topo,
+            run_topo,
             dry_run=args.dry_run,
             resume_from=args.resume_from,
             validate_each=args.validate_each,
@@ -2328,6 +2603,10 @@ def main(argv: list[str] | None = None) -> None:
         if not args.dry_run:
             path = write_release_manifest(manifest)
             print(f"\nWrote release manifest: {_rel(path)}")
+            if not failed and manifest_path.exists():
+                refresh_hash_manifest(
+                    manifest_path, include_ingest=args.with_ingest and not args.resume_from
+                )  # #729 baseline stays current
         _print_banner([
             ("[DRY-RUN] " if args.dry_run else "") + "RELEASE BUILD COMPLETE",
             f"  releaseOk: {manifest['releaseOk']}",
@@ -2355,8 +2634,31 @@ def main(argv: list[str] | None = None) -> None:
             "failed": len(failed),
         },
         "phases": dag_result["ledger"],
+        # #729 incremental builds: whether this was an --only-changed run, how
+        # many manifest inputs had changed (None = no manifest, full run) and
+        # which steps the plan selected.
+        "onlyChanged": bool(args.only_changed),
+        "changedInputCount": (
+            len(only_changed_plan["changed"])
+            if only_changed_plan and only_changed_plan["changed"] is not None
+            else None
+        ),
+        "changedInputs": (
+            (only_changed_plan["changed"] or [])[:50] if only_changed_plan else []
+        ),
+        "selectedSteps": list(run_topo),
+        "hashManifest": _rel(manifest_path),
     }
     if not args.dry_run:
+        if not failed and (args.only_changed or manifest_path.exists()):
+            refreshed = refresh_hash_manifest(
+                manifest_path,
+                previous=only_changed_plan["current"] if only_changed_plan else None,
+                include_ingest=args.with_ingest and not args.resume_from,
+            )
+            manifest["hashManifestDigest"] = refreshed["manifestDigest"]
+            print(f"  Hash manifest refreshed: {_rel(manifest_path)} "
+                  f"({refreshed['fileCount']} files)")
         write_manifest(manifest)
     if snapshot is not None:
         cleanup_snapshot(snapshot)

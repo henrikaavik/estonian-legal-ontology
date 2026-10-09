@@ -22,6 +22,9 @@ dependencies = [
 [project.optional-dependencies]
 http = [
   "uvicorn>=0.30",
+  # #728: the /id/{local} and /vocabulary resolver routes serialise Turtle,
+  # N-Triples and RDF/XML through rdflib; without it RDF requests answer 406.
+  "rdflib>=7,<8",
 ]
 dev = [
   "pytest>=8,<10",

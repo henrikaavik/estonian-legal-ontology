@@ -105,11 +105,10 @@ estleg:ActTemporalShape
         sh:description "EU directive that this act transposes" ;
     ] ;
     sh:property [
-        sh:path estleg:transpositionStatus ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:name "transpositionStatus" ;
-        sh:description "Status of directive transposition for this act" ;
+        sh:path estleg:transposesDirectiveAsserted ;
+        sh:nodeKind sh:IRI ;
+        sh:name "transposesDirectiveAsserted" ;
+        sh:description "EU directive that this act's own Riigi Teataja normitehniline märkus says it transposes (issue #711). Independent of the CELLAR-notified transposesDirective. Objects are bare estleg:EU_* stubs; do not constrain with sh:class." ;
     ] ;
     sh:property [
         sh:path estleg:harmonisedWith ;
@@ -875,6 +874,133 @@ estleg:DraftLegislationShape
         sh:nodeKind sh:IRI ;
         sh:name "enactedAs" ;
         sh:description "Enacted act IRI for changeType=enacts drafts (#419). No sh:class — objects are cross-bucket act stubs." ;
+    ] ;
+    sh:property [
+        sh:path estleg:hasProcessStep ;
+        sh:class estleg:ProcessStep ;
+        sh:nodeKind sh:IRI ;
+        sh:name "hasProcessStep" ;
+        sh:description "Dated lifecycle steps of the draft (issue #717)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:initiatedBy ;
+        estleg:graphClosureExempt true ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:pattern "^https://w3id.org/estleg/Institution_" ;
+        sh:name "initiatedBy" ;
+        sh:description "Institution owning the draft in EIS (issue #717). No sh:class: institution nodes are not in the drafts bucket." ;
+    ] ;
+    sh:property [
+        sh:path estleg:lifecycleStale ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "lifecycleStale" ;
+        sh:description "True when a public-consultation draft has no evidence newer than a year before the EIS snapshot (issue #717)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:riigikoguMark ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "riigikoguMark" ;
+        sh:description "Riigikogu registration mark, e.g. '897 SE' (issue #717)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:riigikoguUuid ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "riigikoguUuid" ;
+        sh:description "UUID of the Riigikogu draft volume (issue #717)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:riigikoguMembership ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "riigikoguMembership" ;
+        sh:description "Riigikogu membership (koosseis) number (issue #717)." ;
+    ] ;
+    sh:property [
+        sh:path dcterms:subject ;
+        estleg:graphClosureExempt true ;
+        sh:nodeKind sh:IRI ;
+        sh:pattern "^http://eurovoc.europa.eu/" ;
+        sh:name "subject" ;
+        sh:description "EuroVoc descriptors of the draft from api.riigikogu.ee (issue #717)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:subjectSource ;
+        sh:datatype xsd:string ;
+        sh:in ( "riigikogu" ) ;
+        sh:name "subjectSource" ;
+        sh:description "Provenance of the draft's dcterms:subject (issue #717)." ;
+    ] .
+
+# Shape for ProcessStep instances (issue #717): one dated lifecycle observation of a draft
+estleg:ProcessStepShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:ProcessStep ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:processStage ;
+        estleg:graphClosureExempt true ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "processStage" ;
+        sh:description "The estleg:LegislativePhase the step observed." ;
+    ] ;
+    sh:property [
+        sh:path estleg:processStepOf ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:DraftLegislation ;
+        sh:name "processStepOf" ;
+        sh:description "The draft this step belongs to." ;
+    ] ;
+    sh:property [
+        sh:path estleg:stepOrder ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:name "stepOrder" ;
+    ] ;
+    sh:property [
+        sh:path estleg:derivationMethod ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ( "eis-feed" "riigikogu-eis-number" "riigikogu-mark" "riigikogu-title-date" ) ;
+        sh:name "derivationMethod" ;
+    ] ;
+    sh:property [
+        sh:path dcterms:date ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "date" ;
+        sh:description "Optional: EIS submission items can carry no date." ;
+    ] ;
+    sh:property [
+        sh:path dcterms:source ;
+        estleg:graphClosureExempt true ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "source" ;
+    ] ;
+    sh:property [
+        sh:path dcterms:license ;
+        estleg:graphClosureExempt true ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "license" ;
+    ] ;
+    sh:property [
+        sh:path estleg:riigikoguStatus ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "riigikoguStatus" ;
     ] .
 
 # Shape for LegislativePhase instances
@@ -1065,6 +1191,13 @@ estleg:CourtDecisionShape
         sh:nodeKind sh:IRI ;
         sh:name "decisionType" ;
         sh:description "Type of court decision (e.g., judgment, ruling, order)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:derivationMethod ;
+        sh:datatype xsd:string ;
+        sh:in ( "minted-ecli" "rederived-case-type" ) ;
+        sh:name "derivationMethod" ;
+        sh:description "How a derived value on this Riigikohus decision was obtained (issue #717)." ;
     ] .
 
 # Shape for CaseType instances
@@ -1155,6 +1288,14 @@ estleg:EULegislationShape
         sh:datatype xsd:date ;
         sh:name "transpositionDeadline" ;
         sh:description "Deadline for member states to transpose this EU directive into national law (directives only; optional)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:transpositionStatus ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "transposed" "no_measure_required" "no_evidence_in_corpus" ) ;
+        sh:name "transpositionStatus" ;
+        sh:description "Three-valued corpus transposition status of a directive (issue #711): transposed (a transposing act is in the corpus, via estleg:transposedBy or estleg:transposesDirectiveAsserted), no_measure_required (Estonia notified that no national measure is necessary) or no_evidence_in_corpus. Not a legal finding; there is deliberately no 'not transposed' value. The pre-#711 act-level values full / partial / unknown are retired." ;
     ] ;
     sh:property [
         sh:path estleg:inForce ;
@@ -1388,6 +1529,13 @@ estleg:EUCourtDecisionShape
         sh:nodeKind sh:IRI ;
         sh:name "interpretsEULaw" ;
         sh:description "Optional link from this EU court decision to an EU act named in the decision. Objects may be bare estleg:EU_* stubs; do not constrain with sh:class estleg:EULegislation." ;
+    ] ;
+    sh:property [
+        sh:path estleg:derivationMethod ;
+        sh:datatype xsd:string ;
+        sh:in ( "title-regex" "cellar-interprets" ) ;
+        sh:name "derivationMethod" ;
+        sh:description "How this decision's estleg:interpretsEULaw was derived (issue #717)." ;
     ] .
 
 # Shape for EUCourtDecisionType instances
@@ -1423,7 +1571,8 @@ estleg:EUCourtShape
 # Shape for AmendmentEvent instances.
 #
 # Every estleg:AmendmentEvent (88,962 in the committed corpus) carries
-# exactly one estleg:amends pointer to the act it modifies; the
+# one or more estleg:amends pointers: the act root(s) it modifies first
+# and, since #713, each provision the amending act touched; the
 # constraints below pin the core predicates so a regression that emits
 # amends as a plain string, types entryIntoForce as a literal string, or
 # drops the RT reference is caught by the SHACL gate (issue #357).
@@ -1466,6 +1615,13 @@ estleg:AmendmentEventShape
         sh:datatype xsd:boolean ;
         sh:name "isCurrentAmendment" ;
         sh:description "Optional terminal-amendment marker (issue #389): true on the last in-force amendment after chronological sort, letting consumers find the latest amendment without a full date scan. Stamped by generate_amendment_history.py; absent on non-terminal events." ;
+    ] ;
+    sh:property [
+        sh:path estleg:amendmentKind ;
+        sh:datatype xsd:string ;
+        sh:in ( "repeals" "supplements" "amends" ) ;
+        sh:name "amendmentKind" ;
+        sh:description "Inferred amendment kind (#713); optional, multi-valued when one amending act both repeals and amends." ;
     ] .
 
 # Shape for ProposedAmendment instances (issue #423).

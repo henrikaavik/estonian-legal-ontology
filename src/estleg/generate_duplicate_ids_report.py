@@ -32,7 +32,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg.estleg_common import KRR_DIR
+from estleg.estleg_common import KRR_DIR, iter_krr_jsonld_files
 
 REPORT_PATH = Path(__file__).resolve().parents[2] / "docs" / "DUPLICATE_IDS_REPORT.md"
 _LFS_POINTER_PREFIX = "version https://git-lfs.github.com/spec/v1"
@@ -47,14 +47,16 @@ def _is_lfs_pointer(path: Path) -> bool:
 
 
 def iter_corpus_files(krr_dir: Path | None = None) -> list[Path]:
-    """Every readable JSON/JSON-LD file in the corpus, LFS pointers excluded."""
+    """Every readable JSON/JSON-LD corpus file, LFS pointers excluded.
+
+    Goes through ``estleg_common.iter_krr_jsonld_files`` — the one shared
+    corpus enumerator (#240) — so operational state and derived projections
+    (the git-ignored ``retrieval/`` outlines and context packs, the
+    ``.cache/`` regeneration ledgers) are never scanned. A local working tree
+    and CI's clean checkout therefore record the same ``Files scanned`` figure.
+    """
     krr_dir = krr_dir if krr_dir is not None else KRR_DIR
-    files = [
-        path
-        for path in sorted(krr_dir.rglob("*"))
-        if path.suffix in {".json", ".jsonld"} and path.is_file()
-    ]
-    return [path for path in files if not _is_lfs_pointer(path)]
+    return [path for path in iter_krr_jsonld_files(krr_dir) if not _is_lfs_pointer(path)]
 
 
 def collect(krr_dir: Path | None = None) -> tuple[dict[str, Counter], dict[str, set[str]]]:

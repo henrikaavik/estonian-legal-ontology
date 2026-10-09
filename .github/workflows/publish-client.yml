@@ -1,0 +1,117 @@
+# Build and publish the standalone ``estleg-client`` distribution (#716).
+#
+# MAINTAINER STEP (one-time, cannot be done from this repository): register
+# the ``estleg-client`` project on PyPI with a *trusted publisher* for
+#   owner: henrikaavik   repository: estonian-legal-ontology
+#   workflow: publish-client.yml   environment: pypi
+# (https://docs.pypi.org/trusted-publishers/adding-a-publisher/ -- a
+# "pending publisher" works before the first upload), and create the ``pypi``
+# environment under Settings > Environments, ideally with a required reviewer.
+# No API token or secret is used anywhere in this workflow.
+#
+# Release: bump ``__version__`` in estleg_client/__init__.py, merge, then
+#   git tag client-v<version> && git push origin client-v<version>
+# Pull requests touching the client only build and smoke-test the wheel.
+name: estleg-client
+
+on:
+  push:
+    tags: ["client-v*"]
+  pull_request:
+    paths:
+      - "estleg_client/**"
+      - "packaging/estleg-client/**"
+      - ".github/workflows/publish-client.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: estleg-client-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  BUILD_PIN: "build==1.2.2.post1"
+
+jobs:
+  build:
+    name: Build and smoke-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          lfs: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Check the tag matches estleg_client.__version__
+        if: startsWith(github.ref, 'refs/tags/client-v')
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(python -c "import ast,pathlib; t=ast.parse(pathlib.Path('estleg_client/__init__.py').read_text()); print(next(n.value.value for n in t.body if isinstance(n, ast.Assign) and any(getattr(x,'id','')=='__version__' for x in n.targets)))")
+          test "client-v${version}" = "${TAG}" || { echo "tag ${TAG} != client-v${version}"; exit 1; }
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install "${BUILD_PIN}"
+          python packaging/estleg-client/stage.py build/estleg-client
+          python -m build build/estleg-client --outdir dist
+      - name: Install the wheel in a clean venv and smoke-test
+        run: |
+          python -m venv /tmp/client-venv
+          /tmp/client-venv/bin/pip install dist/*.whl
+          cd /tmp
+          /tmp/client-venv/bin/python - <<'PY'
+          import pathlib
+          import estleg_client
+          pkg = pathlib.Path(estleg_client.__file__).parent
+          assert (pkg / "py.typed").is_file(), "py.typed missing from the wheel"
+          try:
+              estleg_client.corpus_root()
+          except estleg_client.CorpusNotFoundError as exc:
+              assert "fetch_corpus" in str(exc), exc
+          else:
+              raise SystemExit("corpus_root() should fail without a corpus")
+          print("estleg-client", estleg_client.__version__, "OK")
+          PY
+          /tmp/client-venv/bin/estleg-load --help > /dev/null
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: estleg-client-dist
+          path: dist/
+          retention-days: 14
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/client-v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: pypi
+      url: https://pypi.org/p/estleg-client
+    permissions:
+      contents: read
+      id-token: write # PyPI trusted publishing (OIDC); no stored token
+    steps:
+      # Rebuilt from the same tagged commit rather than downloaded, so this job
+      # needs no artifact action beyond the pinned ones above.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          lfs: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install "${BUILD_PIN}"
+          python packaging/estleg-client/stage.py build/estleg-client
+          python -m build build/estleg-client --outdir dist
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2

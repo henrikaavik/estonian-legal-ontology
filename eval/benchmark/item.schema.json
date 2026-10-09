@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/estleg/eval/benchmark/item.schema.json",
+  "title": "Estonian legal-reasoning benchmark item (estleg-legal-reasoning 0.1.0)",
+  "description": "One JSONL line of eval/benchmark/**/{train,dev,test}.jsonl, produced by src/estleg/build_legal_benchmark.py (issue #727).",
+  "type": "object",
+  "required": [
+    "id", "task", "split", "group", "prompt", "answer_type", "answers",
+    "distractors", "source_iris", "rt_citation", "source_url", "snapshot", "licence"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^(pit|court|xref)-[^\\s]+$"},
+    "task": {"enum": ["point_in_time", "court_interpretation", "cross_reference"]},
+    "split": {"enum": ["train", "dev", "test"]},
+    "group": {"type": "string", "minLength": 1, "description": "Split key: INDEX.json law name, or the decision IRI."},
+    "prompt": {"type": "string", "minLength": 10, "description": "Estonian-language question."},
+    "answer_type": {"enum": ["choice", "iri", "iri_set"]},
+    "answers": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "answer_labels": {"type": "array", "items": {"type": "string"}},
+    "distractors": {"type": "array", "maxItems": 3, "items": {"type": "string", "minLength": 1}},
+    "choices": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"type": "string"}},
+    "answer_index": {"type": "integer", "minimum": 0, "maximum": 3},
+    "source_iris": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^estleg:"}},
+    "rt_citation": {"type": ["string", "null"], "pattern": "^https://www\\.riigiteataja\\.ee/"},
+    "source_url": {"type": ["string", "null"], "pattern": "^https://"},
+    "snapshot": {
+      "type": "object",
+      "required": ["evaluation_date"],
+      "properties": {
+        "evaluation_date": {"type": "string", "format": "date"},
+        "query_date": {"type": "string", "format": "date"},
+        "version_iri": {"type": "string", "pattern": "^estleg:"},
+        "redaction_id": {"type": "string"},
+        "valid_from": {"type": "string", "format": "date"},
+        "valid_to": {"type": ["string", "null"], "format": "date"},
+        "law_kehtiv": {"type": ["string", "null"]},
+        "decision_date": {"type": "string", "format": "date"},
+        "case_number": {"type": "string"},
+        "ecli": {"type": ["string", "null"], "pattern": "^ECLI:EE:"},
+        "chamber": {"type": ["string", "null"]},
+        "citation_text": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "licence": {
+      "type": "object",
+      "required": ["source_text", "source_terms", "compilation", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "source_text": {"type": "string"},
+        "source_terms": {"type": "string"},
+        "compilation": {"type": "string"},
+        "status": {"type": "string"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"task": {"const": "point_in_time"}}},
+      "then": {
+        "required": ["choices", "answer_index"],
+        "properties": {
+          "answer_type": {"const": "choice"},
+          "answers": {"maxItems": 1},
+          "distractors": {"minItems": 1},
+          "rt_citation": {"type": "string"},
+          "snapshot": {"required": ["query_date", "version_iri", "valid_from", "redaction_id"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"task": {"const": "cross_reference"}}},
+      "then": {
+        "required": ["choices", "answer_index", "answer_labels"],
+        "properties": {
+          "answer_type": {"const": "iri"},
+          "answers": {"maxItems": 1, "items": {"pattern": "^estleg:"}},
+          "rt_citation": {"type": "string"},
+          "snapshot": {"required": ["citation_text"]}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"task": {"const": "court_interpretation"}}},
+      "then": {
+        "required": ["answer_labels"],
+        "not": {"anyOf": [{"required": ["choices"]}, {"required": ["answer_index"]}]},
+        "properties": {
+          "answer_type": {"const": "iri_set"},
+          "answers": {"maxItems": 25, "items": {"pattern": "^estleg:"}},
+          "distractors": {"maxItems": 0},
+          "rt_citation": {"type": "null"},
+          "snapshot": {"required": ["decision_date", "case_number"]}
+        }
+      }
+    }
+  ]
+}

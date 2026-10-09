@@ -124,7 +124,7 @@ Issue #456 is a **dataset-level** PROV-O layer plus per-node classifier confiden
 * `estleg:partOfAct` on subsections: the combined builder walks `parentProvision` / `isPartOf` and asserts a direct `partOfAct` from every lõige to its act root (issue #520). `estleg:isPartOf` is an `owl:TransitiveProperty`.
 * **What a § must carry, and a lõige need not (#709).** `estleg:paragrahv`, `estleg:summary` and `estleg:partOfAct` are required of every `estleg:LegalProvision` except a lõige. An `estleg:Subsection` is a `LegalProvision` (#519) but carries its own `estleg:legalText` and exactly one `estleg:parentProvision` instead; its § reference, summary and act live on that parent. SHACL states this as three shapes, `estleg:ProvisionRequiresParagrahvShape`, `…SummaryShape` and `…PartOfActShape`, each excusing nodes typed `estleg:Subsection`; `estleg:LegalProvisionShape` still constrains the values of all of them, lõiked included. To list §-level provisions only, filter out lõiked: `?p a estleg:LegalProvision . FILTER NOT EXISTS { ?p a estleg:Subsection }`.
 * `estleg:itemNumber`: Number of a punkt (enumerated item) inside a lõige, as a display string (`"3"`); an array when the lõige lists several punktid. Carried by `estleg:Subsection` nodes and written by `law_structure.py` from the Riigi Teataja `punktNr` elements, falling back to the punkt numbers cited in the lõige text (issue #514). `owl:DatatypeProperty`, range `xsd:string`; the domain is left open (`owl:Thing`) with `schema:domainIncludes estleg:Subsection`, because no SHACL shape constrains it (#709).
-* `estleg:inboundCitationCount` / `estleg:interpretationCount` / `estleg:competentAuthorityCount`: integer analytical counts on the same IRIs as the published graph (issue #521). Coverage-gap flags (#701) record a missing edge in this corpus, **not a legal finding**: `estleg:competentAuthorityNotExtracted` on statute roots where no `competentAuthority` edge was extracted, `estleg:noTranspositionEdgeInCorpus` on in-force directives with no transposition edge in the corpus. Every flagged node also carries `estleg:coverageFlagMethod` (generator and rule revision) and `estleg:coverageFlagAsOf` (the pinned build evaluation date), on both the overlay and the `--patch-combined` path. The pre-#701 names `estleg:hasNoCompetentAuthority` / `estleg:hasNoTransposition` stay declared as `owl:deprecated` with `dcterms:isReplacedBy` so old queries parse, but are no longer emitted. Reified similarity scores live in `krr_outputs/analytical/analytical_overlay.jsonld` as `estleg:Similarity` nodes (`similarFrom` / `similarTarget` / `similarityScore`) — not as nested objects on `semanticallySimilarTo` (#422).
+* `estleg:inboundCitationCount` / `estleg:interpretationCount` / `estleg:competentAuthorityCount`: integer analytical counts on the same IRIs as the published graph (issue #521). Coverage-gap flags (#701) record a missing edge in this corpus, **not a legal finding**: `estleg:competentAuthorityNotExtracted` on statute roots where no `competentAuthority` edge was extracted, `estleg:noTranspositionEdgeInCorpus` on in-force directives with no transposition edge in the corpus. For monitoring, prefer the directive's three-valued `estleg:transpositionStatus` (#711), which also counts RT-asserted transposition and "no measure required" notifications; the overlay flag is unchanged. Every flagged node also carries `estleg:coverageFlagMethod` (generator and rule revision) and `estleg:coverageFlagAsOf` (the pinned build evaluation date), on both the overlay and the `--patch-combined` path. The pre-#701 names `estleg:hasNoCompetentAuthority` / `estleg:hasNoTransposition` stay declared as `owl:deprecated` with `dcterms:isReplacedBy` so old queries parse, but are no longer emitted. Reified similarity scores live in `krr_outputs/analytical/analytical_overlay.jsonld` as `estleg:Similarity` nodes (`similarFrom` / `similarTarget` / `similarityScore`) — not as nested objects on `semanticallySimilarTo` (#422).
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
 
 #### Non-statute RT act kinds (issue #529)
@@ -915,8 +915,12 @@ The citation graph is still a single flat `estleg:references` / `estleg:referenc
 ### EU Transposition
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law. **This** (and `krr_outputs/reports/transposition_mapping.json`) is Estonian transposition — not the HarmonisationLink layer. |
-| `estleg:transposedBy` | EULegislation | Act (IRI) | Inverse: Estonian law transposing this directive |
+| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this act: a CELLAR national implementing measure (NIM) for Estonia matched to a law or, since #711, a state regulation under `regulations/riik/`. **This** (and `krr_outputs/reports/transposition_mapping.json`) is Estonian transposition — not the HarmonisationLink layer. No `rdfs:range` (cross-bucket stubs, #563). |
+| `estleg:transposedBy` | EULegislation | Act (IRI) | Inverse: Estonian act (law or state regulation) transposing this directive |
+| `estleg:transposesDirectiveAsserted` | Act | EULegislation (IRI) | EU directive that the act's **own** Riigi Teataja normitehniline märkus (`<normtehnmarkus>`) names (#711, `extract_ntm_directives.py`). Independent of the CELLAR-notified `transposesDirective`, so the two can be diffed; `krr_outputs/reports/ntm_directives.json` lists asserted-not-notified and notified-not-asserted pairs per act. Written on every root of a multipart law. No `rdfs:range`. |
+| `estleg:transpositionStatus` | EULegislation | `xsd:string`, `sh:in ("transposed" "no_measure_required" "no_evidence_in_corpus")` | Three-valued **corpus** status of a directive (#711), stamped on every directive with a `transpositionDeadline` or any evidence. `transposed`: a transposing act is in the corpus (`transposedBy` or `transposesDirectiveAsserted`) — evidence of a measure, not of complete or correct transposition. `no_measure_required`: no act, but Estonia notified CELLAR that no national measure is necessary. `no_evidence_in_corpus`: neither. There is deliberately **no "not transposed" value**. The pre-#711 act-level values `full` / `partial` / `unknown` are retired (only `"unknown"` was ever emitted, on 127 law peeps; removed). |
+
+> **Monitoring product (issue #711).** `krr_outputs/exports/transposition_gap.csv` has one row per stamped directive: `celex, directive_iri, title, in_force, transposition_deadline, deadline_passed, status_as_of, transposition_status, evidence, notified_acts, asserted_acts, eurlex_url`. `evidence` is a `;`-list of `cellar_nim`, `rt_ntm`, `cellar_no_measure_required`; `deadline_passed` is evaluated against the pinned `status_as_of` build date. The naive query "deadline past and no `transposedBy`" is **not** a list of infringements: read `transposition_status` instead. Operator and consumer notes: [docs/TRANSPOSITION.md](TRANSPOSITION.md).
 | `estleg:harmonisedWith` | Act | HarmonisationLink (IRI) | Act → neighbour-state comparative NIM record (LV/LT/FI/SE) for the same EU directive. Not Estonian article-level transposition. Emitted **only** on law peeps (act-level). Inverse of `estleg:harmonises` (issue #425). Combined `estleg:HarmonisationLink` objects may be hollow `isStubNode` closure stubs; real neighbour measures live in `krr_outputs/harmonisation/`. |
 | `estleg:harmonises` | HarmonisationLink | Act (IRI) | Inverse: comparative NIM record → the Estonian act(s) that transpose the shared directive. Emitted **only** on the aggregate `estleg:Harmonisation_<celex>` nodes in `krr_outputs/harmonisation/harmonisation_by_directive/`. Inverse of `estleg:harmonisedWith` (issue #425). |
 
@@ -965,14 +969,39 @@ Effected amendments (from Riigi Teataja) and proposed amendments (from draft bil
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
 | `estleg:amendedBy` | Act | AmendmentEvent (IRI) | Act-root → **effected** amendment events only (from Riigi Teataja). Inverse of `estleg:amends`. |
-| `estleg:amends` | AmendmentEvent | LegalProvision / Act (IRI) | What this effected amendment event changed. Inverse of `estleg:amendedBy`. |
+| `estleg:amends` | AmendmentEvent | LegalProvision / Act (IRI) | What this effected amendment event changed: the act root(s) first, then, since #713, each `estleg:LegalProvision` / `estleg:Subsection` the amending act touched (from the muutmismarge parent nesting). One or more values. Inverse of `estleg:amendedBy`. |
 | `estleg:amendmentDate` | AmendmentEvent | `xsd:date` | Adoption / legal-effect date of an effected amendment. Reserved for effected events — proposals use `estleg:publicationDate`. |
 | `estleg:isCurrentAmendment` | AmendmentEvent | `xsd:boolean` | Marks the latest **effected** event per act. Never emitted on a `ProposedAmendment`. |
+| `estleg:amendmentKind` | AmendmentEvent | `xsd:string` (0..n) | `repeals` / `supplements` / `amends`, inferred from the muutmismarge text only where a token is present (#713). Values mirror `estleg:changeType`. Emitted with `generate_amendment_history.py --emit-amendment-kind`. |
+| `estleg:publicationDate` | AmendmentEvent / ProposedAmendment | `xsd:date` | On an AmendmentEvent: the amending act's Riigi Teataja publication date (avaldamineKuupaev, #713). On a ProposedAmendment: the draft's EIS publication date. |
 | `estleg:hasProposedAmendment` | Act | ProposedAmendment (IRI) | Act-root → **proposed** (not-yet-enacted) amendment nodes. Inverse of `estleg:proposesToAmend`. |
 | `estleg:proposesToAmend` | ProposedAmendment | LegalProvision / Act (IRI) | Act/provision a draft amendment bill proposes to change. Inverse of `estleg:hasProposedAmendment`. |
 | `estleg:amendingDraft` | ProposedAmendment | DraftLegislation (IRI) | The `Draft_*` node behind a proposed amendment. |
 | `estleg:changeType` | DraftLegislation | `xsd:string` | Type of change: amends, repeals, supplements, enacts |
 | `estleg:affectedBy` | LegalProvision | DraftLegislation (IRI) | Pending drafts affecting this provision |
+
+### Release delta (`estleg:ReleaseDelta`)
+
+`krr_outputs/changes-<version>.jsonld` is a `dcat:Dataset` typed
+`estleg:ReleaseDelta` (#549, #713), written by `scripts/emit_release_changes.py`
+and listed in `metadata.jsonld` as a `dcat:distribution`. The #713 record is
+provision-level and uncapped. Above 10,000 listed IRIs the lists move to the
+`changes-<version>.jsonl` sibling. `changes-0.11.0.jsonld` is the legacy
+law-level record. Every property below has domain `estleg:ReleaseDelta`. See
+[AMENDMENT_HISTORY.md](AMENDMENT_HISTORY.md).
+
+| Property | Range | Description |
+|----------|-------|-------------|
+| `estleg:comparedFrom` | `xsd:string` | Label of the older snapshot, e.g. `git v1.0.0 (f018cf05f2)`. |
+| `estleg:comparedTo` | `xsd:string` | Label of the newer snapshot. |
+| `estleg:added` / `estleg:removed` | `xsd:string` | Provision IRI added / removed (#713), or a law IRI in the legacy #549 record. |
+| `estleg:addedCount` / `estleg:removedCount` | `xsd:integer` | Complete counts of the above. |
+| `estleg:changed` | `xsd:string` | Provision IRI whose legalText, summary or temporal fields changed. |
+| `estleg:changedCount` | `xsd:integer` | Count of `estleg:changed`. |
+| `estleg:addedLaw` / `estleg:removedLaw` / `estleg:deprecatedLaw` | `xsd:string` | Act-root IRI of a law added / removed / deprecated in INDEX. |
+| `estleg:addedLawCount` / `estleg:removedLawCount` / `estleg:deprecatedLawCount` | `xsd:integer` | Counts of the above. |
+| `estleg:listedInline` | `xsd:boolean` | False when the IRI lists are in the JSONL sibling. |
+| `estleg:listedIriCap` | `xsd:integer` | Legacy #549 cap on listed IRIs. |
 
 ### Provision versioning (historical redactions)
 
@@ -1381,7 +1410,8 @@ SELECT ?provision ?label ?type ?maxPenalty WHERE {
 |--------|---------|--------|
 | `extract_cross_references.py` | Parse law text for cross-law citation links | #29 |
 | `generate_inverse_references.py` | Generate bidirectional `referencedBy` links | #30 |
-| `generate_transposition_mapping.py` | Map Estonian laws to EU directives they transpose | #31 |
+| `generate_transposition_mapping.py` | Map Estonian laws and state regulations to EU directives they transpose; three-valued `transpositionStatus` + `transposition_gap.csv` | #31, #711 |
+| `extract_ntm_directives.py` | RT normitehniline märkus → `estleg:transposesDirectiveAsserted` | #711 |
 | `extract_court_provision_links.py` | Link court decisions to specific provision IRIs | #32 |
 | `generate_amendment_history.py` | Build amendment chain relationships | #33 |
 | `generate_similarity_index.py` | Keyword-based semantic similarity between provisions | #34 |

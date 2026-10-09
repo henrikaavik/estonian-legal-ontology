@@ -1,23 +1,52 @@
-# SPARQL quickstart (#474).
+# SPARQL quickstart (#474, #716).
 #
-#   docker compose up
+#   docker compose up                                   # full corpus (10M quads)
+#   docker compose --profile sample up sample-sparql    # 14-quad fixture
 #   open http://localhost:7878
 #
-# Default dump is the committed 7-graph sample. Point ESTLEG_DUMP at a
-# full `krr_outputs/estleg_all.nq.gz` (from
-# `python3 -m estleg.serialize_named_graphs --write`) for the whole corpus.
+# Which dump `docker compose up` loads (scripts/compose_fetch_dump.sh):
+#   1. ESTLEG_DUMP=/path/to/dump.nq.gz       an explicit host file, if set;
+#   2. release/estleg_all.nq.gz              built by
+#      `python3 scripts/build_release_assets.py`, checked against
+#      release/SHA256SUMS;
+#   3. otherwise the tagged release asset
+#      https://github.com/henrikaavik/estonian-legal-ontology/releases/download/v${ESTLEG_VERSION}/estleg_all.nq.gz
+#      (ESTLEG_VERSION defaults to the ontology version), downloaded with its
+#      SHA256SUMS, verified and cached in the `dumpvol` volume.
+#
+# Resources for the full dump: ~200 MB download, ~2.4 GB decompressed N-Quads
+# in `dumpvol`, plus the Oxigraph (RocksDB) store in `store`. Oxigraph is a
+# Rust binary: there is no JVM heap to size; give Docker at least 8 GB RAM and
+# ~10 GB free disk for the one-off bulk load (see docs/API_GUIDE.md).
+#
+# Every `up` re-runs `dump` and `load` (loading is idempotent); to restart only
+# the endpoint on an existing store use `docker compose up --no-deps sparql`.
+
+x-oxigraph: &oxigraph
+  image: oxigraph/oxigraph:0.4.11
+
+x-dump-tool: &dump-tool
+  image: alpine:3.20
+
 services:
-  prepare-dump:
-    image: alpine:3.20
+  dump:
+    <<: *dump-tool
+    environment:
+      ESTLEG_VERSION: ${ESTLEG_VERSION:-1.0.0}
+      ESTLEG_DUMP_OVERRIDE: ${ESTLEG_DUMP:+1}
     volumes:
-      - ${ESTLEG_DUMP:-./krr_outputs/exports/estleg_all_sample.nq.gz}:/in/dump.nq.gz:ro
+      - ./scripts/compose_fetch_dump.sh:/usr/local/bin/compose_fetch_dump.sh:ro
+      - ./release:/release:ro
+      # Mounted only so ESTLEG_DUMP can point at any host file; the script
+      # ignores it unless ESTLEG_DUMP is set (the fixture is never a fallback).
+      - ${ESTLEG_DUMP:-./krr_outputs/exports/estleg_all_sample.nq.gz}:/override/dump.nq.gz:ro
       - dumpvol:/out
-    command: ["sh", "-c", "gzip -dc /in/dump.nq.gz > /out/dump.nq"]
+    entrypoint: ["sh", "/usr/local/bin/compose_fetch_dump.sh"]
 
   load:
-    image: oxigraph/oxigraph:0.4.11
+    <<: *oxigraph
     depends_on:
-      prepare-dump:
+      dump:
         condition: service_completed_successfully
     volumes:
       - dumpvol:/import:ro
@@ -25,7 +54,7 @@ services:
     command: ["load", "--location", "/data", "--file", "/import/dump.nq"]
 
   sparql:
-    image: oxigraph/oxigraph:0.4.11
+    <<: *oxigraph
     depends_on:
       load:
         condition: service_completed_successfully
@@ -35,6 +64,42 @@ services:
       - store:/data
     command: ["serve", "--location", "/data", "--bind", "0.0.0.0:7878"]
 
+  # --profile sample: the committed 7-graph fixture (14 quads), in its own
+  # volumes. Name the service so the full chain above does not start too:
+  #   docker compose --profile sample up sample-sparql
+  sample-dump:
+    <<: *dump-tool
+    profiles: ["sample"]
+    volumes:
+      - ./krr_outputs/exports/estleg_all_sample.nq.gz:/in/dump.nq.gz:ro
+      - sample-dumpvol:/out
+    command: ["sh", "-c", "gzip -dc /in/dump.nq.gz > /out/dump.nq"]
+
+  sample-load:
+    <<: *oxigraph
+    profiles: ["sample"]
+    depends_on:
+      sample-dump:
+        condition: service_completed_successfully
+    volumes:
+      - sample-dumpvol:/import:ro
+      - sample-store:/data
+    command: ["load", "--location", "/data", "--file", "/import/dump.nq"]
+
+  sample-sparql:
+    <<: *oxigraph
+    profiles: ["sample"]
+    depends_on:
+      sample-load:
+        condition: service_completed_successfully
+    ports:
+      - "7878:7878"
+    volumes:
+      - sample-store:/data
+    command: ["serve", "--location", "/data", "--bind", "0.0.0.0:7878"]
+
 volumes:
   dumpvol:
   store:
+  sample-dumpvol:
+  sample-store:

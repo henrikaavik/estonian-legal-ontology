@@ -56,7 +56,10 @@ import json
 import re
 from pathlib import Path
 
-from estleg.estleg_common import REPO_ROOT, save_json
+from estleg.estleg_common import REPO_ROOT, add_derivation_method, save_json
+
+# estleg:derivationMethod value stamped on every retyped node (#717).
+CASE_TYPE_DERIVATION = "rederived-case-type"
 
 CASE_TYPE_PREDICATE = "estleg:caseType"
 LEGAL_TEXT_PREDICATE = "estleg:legalText"
@@ -177,7 +180,30 @@ def retype_node(node: dict) -> str | None:
     if derived is None or derived == CASE_TYPE_OTHER:
         return None
     node[CASE_TYPE_PREDICATE] = {"@id": derived}
+    add_derivation_method(node, CASE_TYPE_DERIVATION)
     return derived
+
+
+def stamp_previously_retyped(node: dict) -> bool:
+    """Backfill the #717 provenance stamp on a node retyped before #717.
+
+    A node was retyped by this pass iff the generator's case-number
+    classifier yields ``Other`` for it while its current case type is not
+    ``Other`` and equals what the chamber text implies. Idempotent.
+    """
+    from estleg.generate_court_decisions import classify_case
+
+    current = _case_type_id(node)
+    if not current or current == CASE_TYPE_OTHER:
+        return False
+    case_nr = node.get("estleg:caseNumber")
+    if isinstance(case_nr, dict):
+        case_nr = case_nr.get("@value")
+    if not isinstance(case_nr, str) or classify_case(case_nr)[0] != "Other":
+        return False
+    if derive_case_type(_legal_text(node)) != current:
+        return False
+    return add_derivation_method(node, CASE_TYPE_DERIVATION)
 
 
 def process_file(path: Path, dry_run: bool) -> tuple[int, dict[str, int]]:
@@ -191,6 +217,7 @@ def process_file(path: Path, dry_run: bool) -> tuple[int, dict[str, int]]:
     if not isinstance(graph, list):
         return 0, per_type
     changed = 0
+    stamped = 0
     for node in graph:
         if not isinstance(node, dict):
             continue
@@ -198,7 +225,11 @@ def process_file(path: Path, dry_run: bool) -> tuple[int, dict[str, int]]:
         if new_type is not None:
             changed += 1
             per_type[new_type] = per_type.get(new_type, 0) + 1
-    if changed and not dry_run:
+        elif stamp_previously_retyped(node):
+            stamped += 1
+    if stamped:
+        per_type["derivationMethod backfilled"] = stamped
+    if (changed or stamped) and not dry_run:
         save_json(path, doc)
     return changed, per_type
 
@@ -237,12 +268,13 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  SKIP (git-LFS pointer): {path.name}")
             continue
         changed, per_type = process_file(path, args.dry_run)
-        if changed:
+        if changed or per_type:
             files_changed += 1
             total_changed += changed
             for k, v in per_type.items():
                 total_by_type[k] = total_by_type.get(k, 0) + v
-            print(f"  {path.name}: {changed} retyped")
+            stamped = per_type.get("derivationMethod backfilled", 0)
+            print(f"  {path.name}: {changed} retyped, {stamped} provenance stamps backfilled")
 
     verb = "would retype" if args.dry_run else "retyped"
     print(f"\n  Files scanned: {len(files)}")

@@ -573,6 +573,133 @@ SELECT DISTINCT ?work ?celex ?title ?date ?ecli ?author WHERE {{
     return all_items, partial
 
 
+# ---------------------------------------------------------------------------
+# CELLAR "interprets" edges (#717)
+#
+# The ticket names ``cdm:case-law_cites_legal_resource``; CELLAR has no such
+# predicate (0 triples, probed 2026-10-08). The CDM property that states what
+# EU legislation a decision interprets is
+# ``cdm:case-law_interpretes_resource_legal`` — exactly estleg:interpretsEULaw.
+# It is NOT added to the paginated listing SELECT above: a multi-valued
+# OPTIONAL multiplies its rows (the #699 cost warning). Instead it is fetched
+# in VALUES batches of CELEX numbers (like fetch_eurovoc_official.py) and
+# cached in data/curia/cellar_interprets.json, which link_curia_eu_legislation
+# reads offline and prefers over its title regex.
+# ---------------------------------------------------------------------------
+
+INTERPRETS_PREDICATE = "cdm:case-law_interpretes_resource_legal"
+INTERPRETS_CACHE_PATH = REPO_ROOT / "data" / "curia" / "cellar_interprets.json"
+INTERPRETS_BATCH_SIZE = 500
+_CELEX_SAFE_RE = re.compile(r"^[0-9A-Za-z()._-]+$")
+
+
+def build_interprets_query(celex_batch: list[str]) -> str:
+    """SPARQL selecting ``(celex, cited)`` for a batch of decision CELEX."""
+    terms = []
+    for celex in celex_batch:
+        if not _CELEX_SAFE_RE.match(celex):
+            raise ValueError(f"unsafe CELEX value: {celex!r}")
+        terms.append(f'"{celex}"^^<http://www.w3.org/2001/XMLSchema#string>')
+    return (
+        "PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>\n"
+        "SELECT DISTINCT ?celex ?cited WHERE {\n"
+        f"  VALUES ?celex {{ {' '.join(terms)} }}\n"
+        "  ?work cdm:resource_legal_id_celex ?celex .\n"
+        f"  ?work {INTERPRETS_PREDICATE} ?res .\n"
+        "  ?res cdm:resource_legal_id_celex ?cited .\n"
+        "}"
+    )
+
+
+def parse_interprets_bindings(
+    bindings: list[dict], requested: list[str]
+) -> dict[str, list[str]]:
+    found: dict[str, set[str]] = {c: set() for c in requested}
+    for b in bindings:
+        celex = b.get("celex", {}).get("value", "")
+        cited = b.get("cited", {}).get("value", "")
+        if celex in found and cited and _CELEX_SAFE_RE.match(cited):
+            found[celex].add(cited)
+    return {c: sorted(v) for c, v in found.items()}
+
+
+def load_interprets_cache(path: Path = INTERPRETS_CACHE_PATH) -> dict[str, list[str]]:
+    if not path.exists():
+        return {}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    return {str(k): sorted(v) for k, v in (doc.get("interprets") or {}).items()}
+
+
+def save_interprets_cache(
+    cache: dict[str, list[str]], path: Path = INTERPRETS_CACHE_PATH
+) -> None:
+    """One CELEX per line, sorted, for small git diffs."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    header = {
+        "source": f"CELLAR SPARQL {SPARQL_ENDPOINT}",
+        "predicate": INTERPRETS_PREDICATE,
+        "note": (
+            "Decision CELEX -> CELEX of the EU legal resources it interprets "
+            "(#717). An empty list means CELLAR was asked and states none. "
+            "Written by generate_eu_court_decisions.py --fetch-interprets; read "
+            "offline by link_curia_eu_legislation.py."
+        ),
+        "celex_total": len(cache),
+        "celex_with_interprets": sum(1 for v in cache.values() if v),
+    }
+    lines = ["{"]
+    for key, value in header.items():
+        lines.append(f"  {json.dumps(key)}: {json.dumps(value, ensure_ascii=False)},")
+    lines.append('  "interprets": {')
+    items = sorted(cache.items())
+    for n, (celex, cited) in enumerate(items):
+        sep = "," if n < len(items) - 1 else ""
+        lines.append(f"    {json.dumps(celex)}: {json.dumps(sorted(cited), separators=(',', ':'))}{sep}")
+    lines.append("  }")
+    lines.append("}")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def fetch_interpreted_resources(
+    celex_numbers,
+    *,
+    cache: dict[str, list[str]] | None = None,
+    refresh: bool = False,
+    batch_size: int = INTERPRETS_BATCH_SIZE,
+    query_fn=None,
+    delay: float = RATE_DELAY,
+) -> tuple[dict[str, list[str]], dict[str, int]]:
+    """Batched CELLAR lookup; ``cache`` is updated in place."""
+    cache = cache if cache is not None else {}
+    fn = query_fn if query_fn is not None else sparql_query
+    wanted = sorted({c for c in celex_numbers if c})
+    todo = [c for c in wanted if refresh or c not in cache]
+    stats = {"requested": len(wanted), "cached": len(wanted) - len(todo),
+             "batches": 0, "failed_batches": 0}
+    for start in range(0, len(todo), batch_size):
+        batch = todo[start:start + batch_size]
+        if stats["batches"] and delay:
+            time.sleep(delay)
+        stats["batches"] += 1
+        try:
+            bindings = _sparql_query_with_retry(build_interprets_query(batch), query_fn=fn)
+        except RuntimeError as exc:
+            stats["failed_batches"] += 1
+            print(f"  WARNING: CELLAR batch {start}..{start + len(batch)} failed: {exc}", file=sys.stderr)
+            continue
+        cache.update(parse_interprets_bindings(bindings, batch))
+    return {c: cache[c] for c in wanted if c in cache}, stats
+
+
+def committed_curia_celex(curia_dir: Path = CURIA_DIR) -> list[str]:
+    out: set[str] = set()
+    for path in sorted(curia_dir.glob("curia_*_peep.json")):
+        for node in json.loads(path.read_text(encoding="utf-8")).get("@graph", []):
+            if isinstance(node, dict) and isinstance(node.get("estleg:celexNumber"), str):
+                out.add(node["estleg:celexNumber"])
+    return sorted(out)
+
+
 def generate_schema_nodes() -> list[dict]:
     """Generate OWL schema nodes for EU court decisions."""
     nodes: list[dict] = [
@@ -768,11 +895,41 @@ def parse_args() -> argparse.Namespace:
             "the index) if a SPARQL pagination request fails after retries."
         ),
     )
+    parser.add_argument(
+        "--fetch-interprets",
+        action="store_true",
+        help=(
+            "Only fetch CELLAR cdm:case-law_interpretes_resource_legal for the "
+            "committed curia CELEX numbers into data/curia/cellar_interprets.json "
+            "(batched, cached; #717). No corpus file is written."
+        ),
+    )
+    parser.add_argument(
+        "--refresh-interprets",
+        action="store_true",
+        help="With --fetch-interprets: re-query CELEX already in the cache.",
+    )
     return parser.parse_args()
+
+
+def run_fetch_interprets(refresh: bool = False) -> dict[str, int]:
+    cache = load_interprets_cache()
+    resolved, stats = fetch_interpreted_resources(
+        committed_curia_celex(), cache=cache, refresh=refresh
+    )
+    save_interprets_cache(cache)
+    stats["with_interprets"] = sum(1 for v in resolved.values() if v)
+    print(json.dumps(stats, indent=2))
+    return stats
 
 
 def main():
     args = parse_args()
+    if args.fetch_interprets:
+        stats = run_fetch_interprets(refresh=args.refresh_interprets)
+        if stats["failed_batches"]:
+            sys.exit(2)
+        return
     print("=" * 60)
     print("Fetching EU court decisions from EUR-Lex SPARQL endpoint")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
